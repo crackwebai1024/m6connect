@@ -1,0 +1,67 @@
+/*Breadcrumb styles*/
+.m6_breadcrumb{
+  background: rgba(123,123,123,1);
+  background: -moz-linear-gradient(left, rgba(123,123,123,1) 0%, rgba(0,0,0,1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(123,123,123,1)), color-stop(100%, rgba(0,0,0,1)));
+  background: -webkit-linear-gradient(left, rgba(123,123,123,1) 0%, rgba(0,0,0,1) 100%);
+  background: -o-linear-gradient(left, rgba(123,123,123,1) 0%, rgba(0,0,0,1) 100%);
+  background: -ms-linear-gradient(left, rgba(123,123,123,1) 0%, rgba(0,0,0,1) 100%);
+  background: linear-gradient(to right, rgba(123,123,123,1) 0%, rgba(0,0,0,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7b7b7b', endColorstr='#000000', GradientType=1 );
+
+  p {
+    margin: 0 0 0 15px;
+    color: #fff;
+  }
+}
+/*Buttons styles*/
+.m6_btn_xs{
+  width: 2rem;
+  height: 2rem;
+}
+
+/*Icons styles*/
+.m6_icon_bold {
+  font-weight: bold;
+}
+.m6_icon_xs{
+  font-size:13px;
+}
+
+/*Contact List*/
+.m6_contact_list{
+  .m6_contact_list_body{
+    position: relative;
+    i{
+      position: absolute;
+      top: 25%;
+      right:10px;
+    }
+    p{
+      font-size:12px;
+    }
+  }
+}
+
+/*Banners*/
+.m6_banner_dark{
+  background-color: #0c0c0c;
+  color: #fff;
+}
+
+/*Swiper*/
+.m6_swiper-buttons {
+  margin-top:0 !important;
+  height: 100% !important;
+  top:0 !important;
+  background-color: rgba(0,0,0,.6);
+}
+
+.m6_swiper-button-prev{
+    left:0 !important;
+}
+.m6_swiper-button-next{
+  right:0 !important;
+}
+
+
