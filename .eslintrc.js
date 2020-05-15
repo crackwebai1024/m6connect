@@ -4,9 +4,12 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
-    '@vue/airbnb',
-    '@vue/typescript/recommended',
+    "plugin:@typescript-eslint/recommended",
+    'plugin:vue/recommended',
+    'eslint:recommended',
+    '@vue/typescript',
+    'plugin:es-beautifier/standard',
+    "plugin:@typescript-eslint/eslint-recommended"
   ],
   plugins: [
     'vuetify'
