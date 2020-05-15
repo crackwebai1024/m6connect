@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="m6App">
     <v-content>
       <router-view :key="$route.path" />
     </v-content>
@@ -16,3 +16,7 @@ export default Vue.extend({
   })
 })
 </script>
+
+<style lang="scss">
+  @import '@/m6.scss';
+</style>

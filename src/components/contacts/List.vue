@@ -1,14 +1,13 @@
 <template>
   <v-row
     align="center"
-    class="m6_contact_list"
-
-
+    class="m6_bg_blue--darken-1 m6_contact_list"
+    :class="!main ? 'mb-3' : ''"
+    no-gutters
   >
     <v-col
       cols="12"
-      :md4="!main"
-      :md5="main"
+      :sm="main ? 5 : 4"
     >
       <v-img
         alt="avatar"
@@ -17,14 +16,13 @@
         :src="contact.profilePic || '//vuetifyjs.com/apple-touch-icon-180x180.png'"
       />
     </v-col>
-    <v-col class="px-2"
-           cols="12"
-           :md7="main"
-           :md8="!main"
+    <v-col
+      class="px-2"
+      cols="12"
+      :sm="main ? 7 : 8"
     >
       <v-row
-
-
+        no-gutters
       >
         <v-col
           v-if="main"

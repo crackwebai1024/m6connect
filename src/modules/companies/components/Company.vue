@@ -1,15 +1,15 @@
 <template>
   <div>
+    <!--TODO: Make this a component-->
     <!--Toolbar-->
     <v-toolbar
-      class="m6_breadcrumb"
+      class="m6_breadcrumb px-3"
       dense
       flat
     >
-      <v-row align="center"
-             class="fill-height"
-
-
+      <v-row
+        align="center"
+        class="fill-height"
       >
         <v-avatar size="28">
           <img
@@ -17,14 +17,14 @@
             src="https://vuetifyjs.com/apple-touch-icon-180x180.png"
           >
         </v-avatar>
-        <p>Héctor Fierro, M6Connect</p>
+        <p class="mb-0">
+          Héctor Fierro, M6Connect
+        </p>
         <v-spacer />
         <v-btn
           class="m6_btn_xs"
           color="green darken-2"
-          dark
           fab
-          icon
         >
           <v-icon class="m6_icon_bold">
             add
@@ -33,28 +33,23 @@
       </v-row>
     </v-toolbar>
 
-    <v-container class="pt-0 px-0"
-                 fluid
+    <v-container
+      class="pa-0"
+      fluid
     >
-      <v-row
-
-
-      >
+      <v-row>
         <!--First Column-->
         <v-col
+          class="pt-0"
           cols="12"
           md="3"
         >
-          <v-card height="100%">
-            <v-toolbar flat>
-              <v-list>
-                <v-list-tile>
-                  <v-list-tile-title class="text-center title">
-                    Contacts
-                  </v-list-tile-title>
-                </v-list-tile>
-              </v-list>
-            </v-toolbar>
+          <div>
+            <v-col class="m6_bg_blue--darken-2 m6_dropdown mb-3 pa-5 text-center">
+              <h2>
+                Contacts
+              </h2>
+            </v-col>
             <v-divider />
             <contact-list
               :contact="contacts[0]"
@@ -62,13 +57,12 @@
             />
 
             <v-col
-              class="m6_banner_dark py-3"
+              class="m6_banner_dark py-0"
               cols="12"
             >
-              <v-row align="center"
-                     class="fill-height"
-
-
+              <v-row
+                align="center"
+                class="fill-height"
               >
                 <v-col
                   class="text-center text-sm-right"
@@ -97,118 +91,260 @@
               :key="contact.uid"
               :contact="contact"
             />
-          </v-card>
+          </div>
         </v-col>
 
         <!--Second Column -->
         <v-col
+          class="m6_bg_blue pt-0 px-0"
           cols="12"
           md="3"
         >
-          <v-img
-            min-height="250px"
-            src="https://www.deutschland.de/sites/default/files/styles/crop_page/public/media/image/work-and-travel-germany-jobs.jpg?h=55f18e7c&itok=i5d7MByo"
-          />
-          <h2 class="title">
+          <div class="relative">
+            <v-img
+              min-height="466px"
+              src="https://www.deutschland.de/sites/default/files/styles/crop_page/public/media/image/work-and-travel-germany-jobs.jpg?h=55f18e7c&itok=i5d7MByo"
+            />
+            <div class="m6_bg_blue--darken-3 m6_bottom m6_dark m6_right m6_tag_absolute px-6 py-1">
+              <span>Invited</span>
+            </div>
+          </div>
+          <h2 class="m6_title pa-sm-2 text-center">
             Spectrum Boardroom & Auditorium AV Refresh
           </h2>
-          <p>Company</p>
-          <p>Amount</p>
-          <p>Campus</p>
-          <p>Contact</p>
-          <v-row
-            align="center"
 
+          <!--TODO: Make this a component-->
+          <v-col cols="12 d-flex">
+            <v-col class="m6_bg_blue--darken-3 py-0">
+              <p class="mb-0">
+                Company
+              </p>
+            </v-col>
+            <v-col class="m6_bg_blue--darken-3 py-0 text-right">
+              asdfasdf
+            </v-col>
+          </v-col>
 
-          >
-            <v-col
-              cols="12"
-              md="6"
-            >
-              Notifications
+          <v-col cols="12 d-flex">
+            <v-col class="m6_bg_blue--darken-3 py-0">
+              <p class="mb-0">
+                Amount
+              </p>
             </v-col>
-            <v-col class="text-right"
-                   cols="12"
-                   md="6"
-            >
-              <v-btn
-                color="blue darkeen-1"
-                dark
-                fab
-                small
-              >
-                <v-icon>edit</v-icon>
-              </v-btn>
+            <v-col class="m6_bg_blue--darken-3 py-0 text-right">
+              asdfasdf
             </v-col>
-          </v-row>
+          </v-col>
+
+          <v-col cols="12 d-flex">
+            <v-col class="m6_bg_blue--darken-3 py-0">
+              <p class="mb-0">
+                Campus
+              </p>
+            </v-col>
+            <v-col class="m6_bg_blue--darken-3 py-0 text-right">
+              asdfasdf
+            </v-col>
+          </v-col>
+          <v-col cols="12 d-flex">
+            <v-col class="m6_bg_blue--darken-3 py-0">
+              <p class="mb-0">
+                Contact
+              </p>
+            </v-col>
+            <v-col class="m6_bg_blue--darken-3 py-0 text-right">
+              asdfasdf
+            </v-col>
+          </v-col>
+
+          <v-col cols="12 d-flex">
+            <v-col class="m6_bg_blue--darken-3 py-0">
+              <p class="mb-0">
+                Notifications
+              </p>
+            </v-col>
+            <v-col class="m6_bg_blue--darken-3 py-0 text-right">
+              asdfasdf
+            </v-col>
+          </v-col>
         </v-col>
         <!--Third Column-->
         <v-col
+          class="pt-0"
           cols="12"
           md="6"
         >
-          <v-toolbar
-            flat
-          >
-            <v-row align="center"
-                   class="fill-height"
+          <v-container class="pt-0">
+            <v-row
+              align="center"
+              class="m6_bg_blue--darken-2 mb-2"
             >
-              <v-avatar size="28">
-                <img
-                  alt="avatar"
-                  src="https://vuetifyjs.com/apple-touch-icon-180x180.png"
-                >
-              </v-avatar>
-              <p class="mb-0">
-                Sharp Healthcare: Projects
-              </p>
-              <v-spacer />
               <v-col
+                class="m6_dropdown"
                 cols="12"
-                md="5"
+                sm="5"
               >
-                <v-select
-                  prepend-icon="filter_list"
-                >
-                  <template slot="append">
-                    <v-btn
-                      color="blue darkeen-1"
-                      outline
-                      small
-                    >
-                      Filter
-                    </v-btn>
-                  </template>
-                </v-select>
+                <h2>
+                  Vendor Profile
+                </h2>
+              </v-col>
+
+              <v-col
+                class="m6_dropdown text-right"
+                cols="12"
+                sm="3"
+              >
+                <h3>
+                  Cards
+                </h3>
+              </v-col>
+
+
+              <v-col>
+                <v-text-field
+                  :append-outer-icon="'more_vert'"
+                  class=""
+                  placeholder="Search"
+                  :prepend-icon="'fullscreen'"
+                />
               </v-col>
             </v-row>
-          </v-toolbar>
-          <v-container>
-            <v-row align="start"
-                   class="fill-height"
-            >
-              <swiper
-                ref="mySwiper"
-                class="m6_swiper_multiple"
-                :options="swiperComponentOption"
-              >
-                <template v-for="n in 10">
-                  <swiper-slide
-                    :key="n"
-                  >
+
+            <!--Swiper-->
+            <v-row align="start">
+              <v-col cols="12">
+                <swiper
+                  ref="mySwiper"
+                  :options="swiperComponentOption"
+                >
+                  <swiper-slide>
                     <ProjectSwipeSlide />
                   </swiper-slide>
-                </template>
 
-                <div
-                  slot="button-prev"
-                  class="m6_swiper-button-prev m6_swiper-buttons swiper-button-prev"
+                  <div
+                    slot="button-prev"
+                    class="m6_swiper-button-prev m6_swiper-buttons swiper-button-prev"
+                  />
+                  <div
+                    slot="button-next"
+                    class="m6_swiper-button-next m6_swiper-buttons swiper-button-next"
+                  />
+                </swiper>
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              class="m6_bg_blue--darken-2 mb-2"
+            >
+              <v-col
+                class="m6_dropdown"
+                cols="12"
+                sm="5"
+              >
+                <h3>
+                  General Information
+                </h3>
+              </v-col>
+
+              <v-col
+                class="m6_dropdown text-right"
+                cols="12"
+                sm="3"
+              >
+                <h3>
+                  Widgets
+                </h3>
+              </v-col>
+
+
+              <v-col>
+                <v-text-field
+                  :append-outer-icon="'more_vert'"
+                  class=""
+                  placeholder="Search"
+                  :prepend-icon="'fullscreen'"
                 />
-                <div
-                  slot="button-next"
-                  class="m6_swiper-button-next m6_swiper-buttons swiper-button-next"
+              </v-col>
+            </v-row>
+
+            <v-row justify="space-around">
+              <v-col
+                class="m6_gradient_blue m6_widget_icon text-center"
+              >
+                <i class="fa-lightbulb fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_orange m6_widget_icon text-center"
+              >
+                <i class="fa-laptop-code fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_red m6_widget_icon text-center"
+              >
+                <i class="fa-clipboard-check fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_blue m6_widget_icon text-center"
+              >
+                <i class="fa-handshake fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_green m6_widget_icon text-center"
+              >
+                <i class="fa-bell fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_orange m6_widget_icon text-center"
+              >
+                <ios-arrow-down-icon
+                  h="48px"
+                  w="48px"
                 />
-              </swiper>
+              </v-col>
+              <v-col
+                class="m6_gradient_red m6_widget_icon text-center"
+              >
+                <i class="fa-clipboard-check fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_blue m6_widget_icon text-center"
+              >
+                <i class="fa-handshake fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_green m6_widget_icon text-center"
+              >
+                <i class="fa-bell fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_orange m6_widget_icon text-center"
+              >
+                <i class="fa-laptop-code fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_red m6_widget_icon text-center"
+              >
+                <i class="fa-clipboard-check fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_blue m6_widget_icon text-center"
+              >
+                <i class="fa-handshake fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_green m6_widget_icon text-center"
+              >
+                <i class="fa-bell fas" />
+              </v-col>
+              <v-col
+                class="m6_gradient_orange m6_widget_icon text-center"
+              >
+                <ios-arrow-down-icon
+                  h="48px"
+                  w="48px"
+                />
+              </v-col>
             </v-row>
           </v-container>
         </v-col>
@@ -231,11 +367,9 @@ export default class CompanyIndex extends Vue {
 navigationDrawer = true;
 
 swiperComponentOption: SwiperOptions = {
-  loop: true,
-  slidesPerView: 5,
-  slidesPerGroup: 3,
-  spaceBetween: 10,
+  slidesPerView: 4,
   slidesPerColumn: 2,
+  spaceBetween: 30,
   navigation: {
     nextEl: '.swiper-button-next',
     prevEl: '.swiper-button-prev'
@@ -258,14 +392,14 @@ contacts: Array<Contact> = [
     profilePic: 'https://scontent.felp1-1.fna.fbcdn.net/v/t1.0-9/93009667_2678667545592270_8801538929070178304_n.jpg?_nc_cat=106&_nc_sid=8bfeb9&_nc_eui2=AeGF3ajAgE_4dHuNyNlBqe_CuGzObQpM7Qu4bM5tCkztC1YgY5emCAW2q5A16xIPQgY&_nc_ohc=FdERl_t6y1cAX9eIzTB&_nc_ht=scontent.felp1-1.fna&oh=c72aa32bdd3c06ec700ca8128a329208&oe=5EDE5B07'
   },
   {
-    uid: 2,
+    uid: 3,
     name: 'Leila Fierro',
     email: 'leila@m6connect.com',
     phone: '(656) 265-4653',
     profilePic: 'https://scontent.felp1-1.fna.fbcdn.net/v/t1.0-9/40642305_1701654173293617_1113822012129673216_o.jpg?_nc_cat=107&_nc_sid=a4a2d7&_nc_eui2=AeGLd5Z2q9BtLiWEGvlVS0-U4GttDzruAaLga20POu4BokdiOPlD8LdnyUM-SErBjdk&_nc_ohc=Ba1o4RNyOZ8AX-7IPPQ&_nc_ht=scontent.felp1-1.fna&oh=1cfe8e6ac4ad762f064330159178dbd2&oe=5EE4C847'
   },
   {
-    uid: 3,
+    uid: 4,
     name: 'Emilio Romero',
     email: 'emilio@m6connect.com',
     phone: '(656) 265-4653',
