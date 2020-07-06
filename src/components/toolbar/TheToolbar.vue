@@ -52,10 +52,3 @@ export default class TheToolbar extends Vue {
   }
 }
 </script>
-
-<style scoped lang="sass">
-@import '@/css/_variables.sass'
-
-.toolbar
-    background-color: $darkBlue
-</style>
