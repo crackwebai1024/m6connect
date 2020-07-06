@@ -8,7 +8,8 @@ module.exports = {
       {
         root: ['./src'],
         alias: {
-          '@toolbar': './src/components/toolbar'
+          '@toolbar': './src/components/toolbar',
+          '@search': './src/components/search'
         }
       }]
   ]
