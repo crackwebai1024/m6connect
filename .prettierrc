@@ -4,7 +4,7 @@
 	"proseWrap": "always",
 	"tabWidth": 2,
 	"requireConfig": false,
-	"useTabs": true,
+	"useTabs": false,
 	"trailingComma": "none",
-	"semi": true
+	"semi": false
 }

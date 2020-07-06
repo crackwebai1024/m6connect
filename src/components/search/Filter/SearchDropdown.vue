@@ -1,0 +1,36 @@
+<template>
+  <v-menu offset-y>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        v-bind="attrs"
+        class="rounded-sm"
+        :color="colors.blue[600]"
+        large
+        :width="width"
+        v-on="on"
+      >
+        <div class="align-center d-flex flex-grow-1 justify-space-between">
+          <span class="mr-12">Search</span>
+          <v-icon>filter_list</v-icon>
+        </div>
+      </v-btn>
+    </template>
+    <v-list class="mt-2" color="#fff" :light="true" :width="width">
+      <v-list-item>
+        <v-select :items="[]" label="Standard" :light="true" />
+      </v-list-item>
+    </v-list>
+  </v-menu>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import colors from '@/constants/colors'
+
+@Component
+export default class SearchDropdown extends Vue {
+  colors = colors
+
+  width = 400
+}
+</script>
