@@ -8,7 +8,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class CompanyIndex extends Vue {
+export default class SearchIndex extends Vue {
 
 }
 </script>
