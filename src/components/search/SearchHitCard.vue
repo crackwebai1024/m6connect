@@ -1,9 +1,9 @@
 <template>
   <v-card
-    class="hit mb-4"
+    class="hit"
     height="13rem"
     light
-    width="19%"
+    width="100%"
   >
     <v-img
       class="bg-img"
