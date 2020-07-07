@@ -3,8 +3,8 @@ interface SearchHit {
   title: string,
   phone: string,
   website: string,
-  logo: string,
-  bgImg: string
+  avatar: string,
+  img: string
 }
 
 export {

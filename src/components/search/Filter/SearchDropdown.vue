@@ -15,9 +15,43 @@
         </div>
       </v-btn>
     </template>
-    <v-list class="mt-2" color="#fff" :light="true" :width="width">
+    <v-list
+      class="mt-2"
+      color="#fff"
+      :light="true"
+      :width="width"
+    >
       <v-list-item>
-        <v-select :items="[]" label="Standard" :light="true" />
+        <v-select
+          expand
+          :items="['test']"
+          label="Standard"
+          :light="true"
+        />
+      </v-list-item>
+      <v-list-item>
+        <v-select
+          expand
+          :items="['test']"
+          label="Standard"
+          :light="true"
+        />
+      </v-list-item>
+      <v-list-item>
+        <v-select
+          expand
+          :items="['test']"
+          label="Standard"
+          :light="true"
+        />
+      </v-list-item>
+      <v-list-item>
+        <v-select
+          expand
+          :items="['test']"
+          label="Standard"
+          :light="true"
+        />
       </v-list-item>
     </v-list>
   </v-menu>
