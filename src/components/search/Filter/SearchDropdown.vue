@@ -6,7 +6,7 @@
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
-        class="rounded-sm"
+        class="mr-6 rounded-sm"
         :color="colors.blue[600]"
         large
         :width="width"
