@@ -5,6 +5,17 @@
     />
     <the-search-filter />
     <the-search-hits />
+    <v-btn
+      class="btn-pagination"
+      color="#55708A"
+      :height="50"
+      :rounded="false"
+      width="100%"
+    >
+      <v-icon size="38">
+        expand_more
+      </v-icon>
+    </v-btn>
   </div>
 </template>
 
@@ -31,4 +42,7 @@ export default class SearchIndex extends Vue {
 .search
   min-height: 100%
   background-color: $blue200
+
+  .btn-pagination
+    border-radius: 0 !important
 </style>
