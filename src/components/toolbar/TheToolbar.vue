@@ -100,7 +100,7 @@
         <v-spacer />
         <v-btn
           class="m6_btn_xs"
-          color="green darken-2"
+          :color="colors.green[400]"
           fab
         >
           <v-icon class="m6_icon_bold">
