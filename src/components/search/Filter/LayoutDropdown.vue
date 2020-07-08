@@ -38,5 +38,3 @@ export default class LayoutDropdown extends Vue {
   width = 200
 }
 </script>
-
-<style scoped></style>

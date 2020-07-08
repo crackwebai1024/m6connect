@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@mdi/font": "^5.2.45",
     "core-js": "^3.6.4",
+    "m6components": "git+https://github.com/dafixios/M6Components.git",
     "material-design-icons-iconfont": "^5.0.1",
     "swiper": "^5.3.8",
     "vue": "^2.6.11",

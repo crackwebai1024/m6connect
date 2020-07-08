@@ -28,7 +28,7 @@
         <v-select
           expand
           :items="['test']"
-          label="Standard"
+          label="Regios"
           :light="true"
         />
       </v-list-item>
@@ -36,7 +36,7 @@
         <v-select
           expand
           :items="['test']"
-          label="Standard"
+          label="Diversity Contractor Credentials"
           :light="true"
         />
       </v-list-item>
@@ -44,7 +44,7 @@
         <v-select
           expand
           :items="['test']"
-          label="Standard"
+          label="Company Types"
           :light="true"
         />
       </v-list-item>
@@ -52,7 +52,39 @@
         <v-select
           expand
           :items="['test']"
-          label="Standard"
+          label="Company Credentials"
+          :light="true"
+        />
+      </v-list-item>
+      <v-list-item>
+        <v-select
+          expand
+          :items="['test']"
+          label="Projects"
+          :light="true"
+        />
+      </v-list-item>
+      <v-list-item>
+        <v-select
+          expand
+          :items="['test']"
+          label="Project Size Capable Of"
+          :light="true"
+        />
+      </v-list-item>
+      <v-list-item>
+        <v-select
+          expand
+          :items="['test']"
+          label="Products & Services"
+          :light="true"
+        />
+      </v-list-item>
+      <v-list-item>
+        <v-select
+          expand
+          :items="['test']"
+          label="NAICs Code(s)"
           :light="true"
         />
       </v-list-item>
