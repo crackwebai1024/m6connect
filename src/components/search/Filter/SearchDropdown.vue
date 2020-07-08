@@ -28,7 +28,7 @@
         <v-select
           expand
           :items="['test']"
-          label="Regios"
+          label="Regions"
           :light="true"
         />
       </v-list-item>
