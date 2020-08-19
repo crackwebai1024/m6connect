@@ -9,11 +9,11 @@
         Project Info
       </v-card>
     </v-col>
-    <v-col cols="7">
+    <v-col cols="6">
       <!-- Module of projects list -->
       <projects-list/>
     </v-col>
-    <v-col cols="2">
+    <v-col cols="3">
       <!-- Module of users list -->
       <team-list/>
     </v-col>
