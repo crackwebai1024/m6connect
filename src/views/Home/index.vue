@@ -19,19 +19,19 @@
       </v-card>
     </v-col>
     <v-col cols="2">
-      <v-card
-        class="pa-2"
-        outlined
-        tile
-      >
-        Team List
-      </v-card>
+      <!-- Module of users list -->
+      <TeamList/>
     </v-col>
   </v-row>
 </template>
 
 <script>
+  import TeamList from "./TeamList"
+
 export default {
+  components: {
+    TeamList
+  },
   name: "Home",
   data: () => ({
     //
