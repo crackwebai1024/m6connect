@@ -1,5 +1,5 @@
 <template>
-  <v-carousel hide-delimiters height="415">
+  <v-carousel hide-delimiters :continuous="false" height="415">
     <v-carousel-item v-for="(item,i) in pages" :key="i" class="pa-4">
       <v-row dense>
         <v-col cols="4" class="pa-1" :key="index" v-for="index of remainingPerPage(i)">
@@ -58,3 +58,6 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+</style>
