@@ -15,7 +15,8 @@ export default new Vuex.Store({
       contactPhone: "",
     },
     viewsList: Data.get_views_list(),
-    tabs: Data.get_tabs()
+    tabs: Data.get_tabs(),
+    request_table_header: Data.get_request_table_header()
   },
   getters: {
     // View Home Getters
@@ -30,6 +31,7 @@ export default new Vuex.Store({
 
     // View Tabs Getters
     get_tabs: (state) => () => state.tabs,
+    get_request_table_header: (state) => () => state.request_table_header,
   },
   mutations: {
     setAllProjects(state, proj) {
