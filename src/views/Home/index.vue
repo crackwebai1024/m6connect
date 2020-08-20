@@ -1,6 +1,7 @@
 <template>
   <v-row no-gutters>
     <v-col cols="3" v-if="false">
+      <!-- Module of project or user info -->
       <project-info />
     </v-col>
     <v-col cols="8">

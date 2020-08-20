@@ -8,11 +8,10 @@ export default new Vuex.Store({
     projects: [],
     workers: [],
     info_data: {
-      name: "Raul Mercado",
-      imageUrl:
-        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
-      email: "raulmercado@mail.com",
-      contactPhone: "2321235465",
+      name: "",
+      imageUrl: "",
+      email: "",
+      contactPhone: "",
     },
     viewsList: [
       {

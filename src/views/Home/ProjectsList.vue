@@ -1,4 +1,16 @@
 <template>
+<v-container>
+  <header-component :info="{title:'M6Works', icon:'mdi-map-marker'}">
+    <v-spacer></v-spacer>
+    <v-col cols="4" >
+        <v-text-field
+          label="Search"
+          v-model="searchText"
+          single-line
+          outlined
+        ></v-text-field>
+      </v-col>
+  </header-component>
   <v-carousel hide-delimiters :continuous="false" height="415">
     <v-carousel-item v-for="(item,i) in pages" :key="i" class="pa-4">
       <v-row dense>
@@ -8,14 +20,17 @@
       </v-row>
     </v-carousel-item>
   </v-carousel>
+</v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CardProjectList from "@/components/Home/CardProjectList";
+import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
   components: {
     CardProjectList,
+    HeaderComponent
   },
   name: "ProjectsList",
   data: () => ({

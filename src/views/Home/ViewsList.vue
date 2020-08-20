@@ -1,4 +1,16 @@
 <template>
+<v-container>
+    <header-component :info="{title:'Views', icon:'mdi-map-marker'}">
+    <v-spacer></v-spacer>
+    <v-col cols="4" >
+        <v-text-field
+          label="Search"
+          v-model="searchText"
+          single-line
+          outlined
+        ></v-text-field>
+      </v-col>
+  </header-component>
     <v-row>
         <v-card
             max-width="400"
@@ -22,11 +34,19 @@
             </v-container>
         </v-card>
     </v-row>
+</v-container>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
+    components: {
+        HeaderComponent
+    },
+    data: () => ({
+        searchText:''
+    }),
     name: "ViewsList",
     computed: {
         // get_views_list has a list of objects with name, iconName, route
