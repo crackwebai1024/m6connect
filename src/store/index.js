@@ -29,6 +29,51 @@ export default new Vuex.Store({
         iconName: "mdi-map-marker",
         route: "Hi",
       },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
     ],
   },
   getters: {
