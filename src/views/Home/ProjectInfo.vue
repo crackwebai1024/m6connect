@@ -1,7 +1,7 @@
 <template>
     <v-container>
-        <person :info = info  v-if="!info['projecj_id']"/>
-        <project :info = info v-else/>
+        <person v-if="!info['projecj_id']"/>
+        <project v-else/>
     </v-container>
 </template>
 <script>
@@ -22,6 +22,9 @@ export default {
         ...mapGetters(['get_info_data'])
     },
     mounted(){
+        this.info = this.get_info_data();
+    },
+    updated(){
         this.info = this.get_info_data();
     }
 }

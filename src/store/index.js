@@ -10,16 +10,11 @@ export default new Vuex.Store({
     info_data:{}
   },
   getters: {
-    get_projects: (state) => () => {
-      return state.projects;
-    },
-    get_workers: (state) => () => {
-      return state.workers;
-    },
-    get_info_data: (state) => () => {
-      // Return the first project or the data saved
-      return Object.keys(state.info_data).length === 0 ? state.projects[0] : state.info_data;
-    }
+    get_projects: (state) => () =>  state.projects,
+    get_workers: (state) => () =>  state.workers,
+    // Return the first project or the data saved
+    get_info_data: (state) => () => 
+      Object.keys(state.info_data).length === 0 ? state.projects[0] : state.info_data
   },
   mutations: {
     setAllProjects(state, proj) {

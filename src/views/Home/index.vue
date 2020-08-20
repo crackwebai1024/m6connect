@@ -7,6 +7,7 @@
     <v-col cols="6">
       <!-- Module of projects list -->
       <projects-list/>
+      <views-list/>
     </v-col>
     <v-col cols="3">
       <!-- Module of users list -->
@@ -19,12 +20,14 @@
   import TeamList from "./TeamList"
   import ProjectInfo from "./ProjectInfo"
   import ProjectsList from "./ProjectsList"
+  import ViewsList from "ViewsList"
 
 export default {
   components: {
     TeamList,
     ProjectInfo,
-    ProjectsList
+    ProjectsList,
+    ViewsList
   },
   name: "Home",
 };

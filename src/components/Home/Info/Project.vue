@@ -2,14 +2,20 @@
     <p>{{info['project_name']}}</p>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
     name:"project",
-    props:{
-        // info has project_name, projecj_id, phase, company, department, project_leader, 
-            // project_support, designer, role_two, client_status, internal_description, 
-            // internal_objective, projet_image_url, client_original_request, client_requested_due_date, 
-            // client_in_take_clarification_description, client_follow_up_date
-        info : Object
+    data: () => ({
+        info:{}
+    }),
+    computed: {
+        ...mapGetters(['get_info_data'])
+    },
+    mounted(){
+        this.info = this.get_info_data();
+    },updated(){
+        this.info = this.get_info_data();
     }
 }
 </script>
