@@ -7,7 +7,13 @@ export default new Vuex.Store({
   state: {
     projects: [],
     workers: [],
-    info_data: {},
+    info_data: {
+      name: "Raul Mercado",
+      imageUrl:
+        "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+      email: "raulmercado@mail.com",
+      contactPhone: "2321235465",
+    },
     viewsList: [
       {
         name: "request",
@@ -64,7 +70,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -83,7 +89,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -102,7 +108,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -121,7 +127,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -140,7 +146,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -159,7 +165,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -178,7 +184,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -197,7 +203,7 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -207,6 +213,7 @@ export default new Vuex.Store({
       commit("setAllProjects", data);
     },
     set_info_data({ commit }, data) {
+      console.log(data);
       commit("setNewInfoData", data);
     },
     set_workers({ commit }) {

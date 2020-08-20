@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="mx-auto" tile :class="{ 'on-hover': hover }">
+    <v-card class="mx-auto" tile :class="{ 'on-hover': hover }" @click="updateInfo()">
       <v-img
         class="white--text align-end"
         height="100px"
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: "CardProjectList",
   props: {
@@ -57,6 +59,12 @@ export default {
     // client_in_take_clarification_description, client_follow_up_date
     info: Object,
   },
+  methods: {
+    ...mapActions(['set_info_data']),
+    updateInfo(){
+      this.set_info_data(this.info)
+    }
+  }
 };
 </script>
 

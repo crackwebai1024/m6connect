@@ -1,6 +1,24 @@
 <template>
     <v-container>
-        <person v-if="!info['projecj_id']"/>
+        <v-img :src="!get_info_data().projecj_id ? get_info_data().imageUrl :get_info_data().projet_image_url">
+            <div class="grey darken-4 px-3 py-1" v-if="get_info_data().projecj_id"
+                style="position:absolute; top: 0; right: 0;" >
+                {{ get_info_data()['phase'] }}
+            </div>
+        </v-img>
+        <v-card class="text-center m-auto">
+            <v-card-title class="text-center m-auto">
+                <p class="text-center m-auto">
+                    {{!get_info_data().projecj_id ? get_info_data().name :get_info_data().project_name}}
+                </p>
+            </v-card-title>
+            <v-card-subtitle>
+                <p>
+                    {{!get_info_data().projecj_id ? get_info_data().contactPhone :get_info_data().projecj_id}}
+                </p>
+            </v-card-subtitle>
+        </v-card>
+        <person v-if="!get_info_data().projecj_id"/>
         <project v-else/>
     </v-container>
 </template>
@@ -10,9 +28,6 @@ import Person from '@/components/Home/Info/Person'
 import Project from '@/components/Home/Info/Project'
 
 export default {
-    data: () => ({
-        info:{}
-    }),
     components:{
         Person, 
         Project
@@ -21,11 +36,5 @@ export default {
     computed: {
         ...mapGetters(['get_info_data'])
     },
-    mounted(){
-        this.info = this.get_info_data();
-    },
-    updated(){
-        this.info = this.get_info_data();
-    }
 }
 </script>
