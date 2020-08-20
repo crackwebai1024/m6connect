@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
@@ -22,7 +22,7 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setAllProjects(state, proj){
+    setAllProjects(state, proj) {
       state.projects = proj;
     },
     setAllWorkers(state, work){
@@ -33,63 +33,162 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    set_projects({commit}){
-      let data = [{
-        project_name:"New Vallarta",
-        projecj_id:'123132',
-        phase: "asdasd",
-        company:"m6connect", 
-        department: "Design", 
-        project_leader: "",
-        project_support:"",
-        designer:"",
-        role_two:"",
-        client_status:"",
-        internal_description:"",
-        internal_objective:"",
-        projet_image_url:"",
-        client_original_request:"",
-        client_requested_due_date:"",
-        client_in_take_clarification_description:"",
-        client_follow_up_date:""
-      },{
-        project_name:"New Vallarta",
-        projecj_id:'123132',
-        phase: "asdasd",
-        company:"m6connect", 
-        department: "Design", 
-        project_leader: "",
-        project_support:"",
-        designer:"",
-        role_two:"",
-        client_status:"",
-        internal_description:"",
-        internal_objective:"",
-        projet_image_url:"",
-        client_original_request:"",
-        client_requested_due_date:"",
-        client_in_take_clarification_description:"",
-        client_follow_up_date:""
-      },{
-        project_name:"New Vallarta",
-        projecj_id:'123132',
-        phase: "asdasd",
-        company:"m6connect", 
-        department: "Design", 
-        project_leader: "",
-        project_support:"",
-        designer:"",
-        role_two:"",
-        client_status:"",
-        internal_description:"",
-        internal_objective:"",
-        projet_image_url:"",
-        client_original_request:"",
-        client_requested_due_date:"",
-        client_in_take_clarification_description:"",
-        client_follow_up_date:""
-      }]
-      commit('setAllProjects', data);
+    set_projects({ commit }) {
+      let data = [
+        {
+          project_name: "New Vallarta 1",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 2",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 3",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 4",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 5",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 6",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 7",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 8",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+      ];
+      commit("setAllProjects", data);
     },
     set_info_data({commit}, data){
       commit('setNewInfoData', data)
@@ -110,6 +209,5 @@ export default new Vuex.Store({
       commit('setAllWorkers', data);
     },
   },
-  modules: {
-  }
-})
+  modules: {},
+});
