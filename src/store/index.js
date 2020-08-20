@@ -5,18 +5,31 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    projects:[ ]
+    projects:[],
+    workers: [],
+    info_data:{}
   },
   getters: {
     get_projects: (state) => () => {
       return state.projects;
-    },get_first_project: (state) => () => {
-      return state.projects[0];
+    },
+    get_workers: (state) => () => {
+      return state.workers;
+    },
+    get_info_data: (state) => () => {
+      // Return the first project or the data saved
+      return Object.keys(state.info_data).length === 0 ? state.projects[0] : state.info_data;
     }
   },
   mutations: {
     setAllProjects(state, proj){
       state.projects = proj;
+    },
+    setAllWorkers(state, work){
+      state.workers = work;
+    },
+    setNewInfoData(state, newData){
+      state.info_data = newData
     }
   },
   actions: {
@@ -77,6 +90,24 @@ export default new Vuex.Store({
         client_follow_up_date:""
       }]
       commit('setAllProjects', data);
+    },
+    set_info_data({commit}, data){
+      commit('setNewInfoData', data)
+    },
+    set_workers({commit}){
+      let data = [{
+        name: "Raul Mercado",
+        imageUrl: "https://via.placeholder.com/350/",
+        email: "raulmercado@mail.com",
+        contactPhone: "2321235465",
+      },
+      {
+        name: "Natalia Portman",
+        imageUrl: "https://via.placeholder.com/350/",
+        email: "nataliaportman@mail.com",
+        contactPhone: "1233546529",
+      }]
+      commit('setAllWorkers', data);
     },
   },
   modules: {

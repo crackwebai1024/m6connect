@@ -1,13 +1,8 @@
 <template>
   <v-row no-gutters>
     <v-col cols="3">
-      <v-card
-        class="pa-2"
-        outlined
-        tile
-      >
-        Project Info
-      </v-card>
+      <!-- Module of user or project info -->
+      <project-info/>
     </v-col>
     <v-col cols="6">
       <!-- Module of projects list -->
@@ -22,11 +17,13 @@
 
 <script>
   import TeamList from "./TeamList"
+  import ProjectInfo from "./ProjectInfo"
   import ProjectsList from "./ProjectsList"
 
 export default {
   components: {
     TeamList,
+    ProjectInfo,
     ProjectsList
   },
   name: "Home",
