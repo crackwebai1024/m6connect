@@ -20,7 +20,7 @@
   import TeamList from "./TeamList"
   import ProjectInfo from "./ProjectInfo"
   import ProjectsList from "./ProjectsList"
-  import ViewsList from "ViewsList"
+  import ViewsList from "./ViewsList"
 
 export default {
   components: {

@@ -7,14 +7,29 @@ export default new Vuex.Store({
   state: {
     projects:[],
     workers: [],
-    info_data:{}
+    info_data:{},
+    viewsList:[{
+      name: "request",
+      iconName: "mdi-map-marker",
+      route: "Hi"
+    },{
+      name: "request",
+      iconName: "mdi-map-marker",
+      route: "Hi"
+    },{
+      name: "request",
+      iconName: "mdi-map-marker",
+      route: "Hi"
+    }],
   },
   getters: {
-    get_projects: (state) => () =>  state.projects,
-    get_workers: (state) => () =>  state.workers,
-    // Return the first project or the data saved
-    get_info_data: (state) => () => 
-      Object.keys(state.info_data).length === 0 ? state.projects[0] : state.info_data
+    // Home Gets
+      get_views_list: (state) => () => state.viewsList,
+      get_projects: (state) => () =>  state.projects,
+      get_workers: (state) => () =>  state.workers,
+      // Return the first project or the data saved
+      get_info_data: (state) => () => 
+        Object.keys(state.info_data).length === 0 ? state.projects[0] : state.info_data
   },
   mutations: {
     setAllProjects(state, proj) {
