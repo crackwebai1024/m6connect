@@ -1,6 +1,6 @@
 <template>
 <v-container>
-  <header-component :info="{title:'M6Works', icon:'mdi-map-marker'}">
+  <header-component :info="{height:'100px', title:'M6Works', icon:'mdi-map-marker'}">
     <v-spacer></v-spacer>
     <v-col cols="4" >
         <v-text-field
@@ -35,6 +35,7 @@ export default {
   name: "ProjectsList",
   data: () => ({
     perPage: 6,
+    searchText:''
   }),
   computed: {
     ...mapGetters(["get_projects"]),

@@ -1,6 +1,6 @@
 <template>
 <v-container>
-    <header-component :info="{title:'Views', icon:'mdi-map-marker'}">
+    <header-component :info="{height:'100px', title:'Views', icon:'mdi-map-marker'}">
     <v-spacer></v-spacer>
     <v-col cols="4" >
         <v-text-field

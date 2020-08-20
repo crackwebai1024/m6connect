@@ -1,6 +1,6 @@
 <template>
-    <v-card>
-        <v-card-title class="text-center">
+    <v-card :height="info.height" class="py-0">
+        <v-card-title class="text-center py-0">
             <span><v-icon>{{info.icon}}</v-icon> </span>
             {{info.title}}
             <slot></slot>

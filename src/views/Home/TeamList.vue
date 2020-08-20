@@ -1,6 +1,6 @@
 <template>
 <v-container>
-  <header-component :info="{title:'Team', icon:'mdi-map-marker'}"/>
+  <header-component :info="{height:'50px', title:'Team', icon:'mdi-map-marker'}"/>
   <v-container>
     <card-team-list :info="worker" :key="index" v-for="(worker, index) of get_workers()" />
   </v-container>
