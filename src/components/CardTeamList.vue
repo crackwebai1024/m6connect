@@ -36,7 +36,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .team-card {
   height: 150px;
 }

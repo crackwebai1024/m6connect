@@ -1,36 +1,50 @@
 <template>
-  <v-card class="mx-auto" tile>
-    <v-img
-      class="white--text align-end"
-      height="130px"
-      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-    >
-      <div
-        class="grey darken-4 px-3 py-1"
-        style="position:absolute; top: 0; right: 0;"
-      >{{ info['phase'] }}</div>
-    </v-img>
-    <v-card-text class="text--primary py-1">
-      <div class="d-flex flex-row flex-nowrap align-baseline">
-        <div class="subtitle-1 font-weight-black">{{ info['project_name'] }}</div>
-        <v-spacer></v-spacer>
-        <div>ID: {{ info['projecj_id'] }}</div>
-      </div>
-      <div class="caption">
-        <div>Company: {{ info['company'] }}</div>
-        <div>Department: {{ info['department'] }}</div>
-        <div>Project Leader: {{ info['project_leader'] || 'Not assigned' }}</div>
-      </div>
-    </v-card-text>
-    <!-- <v-list-item three-line>
+  <v-hover v-slot:default="{ hover }">
+    <v-card class="mx-auto" tile :class="{ 'on-hover': hover }">
+      <v-img
+        class="white--text align-end"
+        height="100px"
+        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+      >
+        <div
+          class="grey darken-4 px-3 py-1"
+          style="position:absolute; top: 0; right: 0;"
+        >{{ info['phase'] }}</div>
+      </v-img>
+      <v-card-text class="text--primary py-1">
+        <div class="d-flex flex-row flex-nowrap align-baseline">
+          <div class="subtitle-1 font-weight-black">{{ info['project_name'] }}</div>
+          <v-spacer></v-spacer>
+          <div class="caption">
+            <span class="font-weight-black">ID:</span>
+            {{ info['projecj_id'] }}
+          </div>
+        </div>
+        <div class="caption custom-line-height">
+          <div>
+            <span class="font-weight-black">Company:</span>
+            {{ info['company'] }}
+          </div>
+          <div>
+            <span class="font-weight-black">Department:</span>
+            {{ info['department'] }}
+          </div>
+          <div>
+            <span class="font-weight-black">Project Leader:</span>
+            {{ info['project_leader'] || 'Not assigned' }}
+          </div>
+        </div>
+      </v-card-text>
+      <!-- <v-list-item three-line>
       <v-list-item-content>
         <div class="overline mb-4">{{info['department']}}</div>
         <v-list-item-title class="headline mb-1">{{info['project_name']}}</v-list-item-title>
       </v-list-item-content>
 
       <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar>
-    </v-list-item>-->
-  </v-card>
+      </v-list-item>-->
+    </v-card>
+  </v-hover>
 </template>
 
 <script>
@@ -47,4 +61,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$card-team-line-height: 1rem;
+
+.custom-line-height {
+  line-height: $card-team-line-height;
+}
+.v-card {
+  transition: opacity 0.4s ease-in-out;
+}
+.v-card:not(.on-hover) {
+  opacity: 0.5;
+}
 </style>

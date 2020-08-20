@@ -5,42 +5,48 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    projects:[],
+    projects: [],
     workers: [],
-    info_data:{},
-    viewsList:[{
-      name: "request",
-      iconName: "mdi-map-marker",
-      route: "Hi"
-    },{
-      name: "request",
-      iconName: "mdi-map-marker",
-      route: "Hi"
-    },{
-      name: "request",
-      iconName: "mdi-map-marker",
-      route: "Hi"
-    }],
+    info_data: {},
+    viewsList: [
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+      {
+        name: "request",
+        iconName: "mdi-map-marker",
+        route: "Hi",
+      },
+    ],
   },
   getters: {
     // Home Gets
-      get_views_list: (state) => () => state.viewsList,
-      get_projects: (state) => () =>  state.projects,
-      get_workers: (state) => () =>  state.workers,
-      // Return the first project or the data saved
-      get_info_data: (state) => () => 
-        Object.keys(state.info_data).length === 0 ? state.projects[0] : state.info_data
+    get_views_list: (state) => () => state.viewsList,
+    get_projects: (state) => () => state.projects,
+    get_workers: (state) => () => state.workers,
+    // Return the first project or the data saved
+    get_info_data: (state) => () =>
+      Object.keys(state.info_data).length === 0
+        ? state.projects[0]
+        : state.info_data,
   },
   mutations: {
     setAllProjects(state, proj) {
       state.projects = proj;
     },
-    setAllWorkers(state, work){
+    setAllWorkers(state, work) {
       state.workers = work;
     },
-    setNewInfoData(state, newData){
-      state.info_data = newData
-    }
+    setNewInfoData(state, newData) {
+      state.info_data = newData;
+    },
   },
   actions: {
     set_projects({ commit }) {
@@ -200,23 +206,27 @@ export default new Vuex.Store({
       ];
       commit("setAllProjects", data);
     },
-    set_info_data({commit}, data){
-      commit('setNewInfoData', data)
+    set_info_data({ commit }, data) {
+      commit("setNewInfoData", data);
     },
-    set_workers({commit}){
-      let data = [{
-        name: "Raul Mercado",
-        imageUrl: "https://via.placeholder.com/350/",
-        email: "raulmercado@mail.com",
-        contactPhone: "2321235465",
-      },
-      {
-        name: "Natalia Portman",
-        imageUrl: "https://via.placeholder.com/350/",
-        email: "nataliaportman@mail.com",
-        contactPhone: "1233546529",
-      }]
-      commit('setAllWorkers', data);
+    set_workers({ commit }) {
+      let data = [
+        {
+          name: "Raul Mercado",
+          imageUrl:
+            "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
+          email: "raulmercado@mail.com",
+          contactPhone: "2321235465",
+        },
+        {
+          name: "Natalia Portman",
+          imageUrl:
+            "https://images.pexels.com/photos/5119189/pexels-photo-5119189.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+          email: "nataliaportman@mail.com",
+          contactPhone: "1233546529",
+        },
+      ];
+      commit("setAllWorkers", data);
     },
   },
   modules: {},
