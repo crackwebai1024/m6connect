@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <header-component slot :info="{title:'M6Works', icon:'mdi-map-marker'}">
+    <header-component hasslot :info="{title:'M6Works', icon:'mdi-map-marker'}">
       <v-text-field
         height="37"
         label="SEARCH"

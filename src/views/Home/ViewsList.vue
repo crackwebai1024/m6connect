@@ -3,8 +3,9 @@
     <header-component :info="{ title:'Views', icon:'mdi-map-marker' }" />
     <v-row
       no-gutters
+      class="icons-container flex-nowrap"
       align="center"
-      justify="start icons-container flex-nowrap"
+      justify="start"
       style="overflow: scroll"
     >
       <div
