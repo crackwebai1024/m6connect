@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/views/Home";
+import Tabs from "@/views/Tabs";
 
 Vue.use(VueRouter);
 
@@ -11,7 +12,11 @@ const router = new VueRouter({
       path: "/",
       name: "home",
       component: Home,
-    },
+    },{
+      path: "/tabs",
+      name: "tabs",
+      component: Tabs
+    }
   ],
 });
 Vue.config.devtools = true;

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import Data from "./data";
 
 Vue.use(Vuex);
 
@@ -13,71 +14,11 @@ export default new Vuex.Store({
       email: "",
       contactPhone: "",
     },
-    viewsList: [
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-      {
-        name: "request",
-        iconName: "mdi-map-marker",
-        route: "Hi",
-      },
-    ],
+    viewsList: Data.get_views_list(),
+    tabs: Data.get_tabs()
   },
   getters: {
-    // Home Gets
+    // View Home Getters
     get_views_list: (state) => () => state.viewsList,
     get_projects: (state) => () => state.projects,
     get_workers: (state) => () => state.workers,
@@ -86,6 +27,9 @@ export default new Vuex.Store({
       Object.keys(state.info_data).length === 0
         ? state.projects[0]
         : state.info_data,
+
+    // View Tabs Getters
+    get_tabs: (state) => () => state.tabs,
   },
   mutations: {
     setAllProjects(state, proj) {
@@ -257,7 +201,6 @@ export default new Vuex.Store({
       commit("setAllProjects", data);
     },
     set_info_data({ commit }, data) {
-      console.log(data);
       commit("setNewInfoData", data);
     },
     set_workers({ commit }) {
