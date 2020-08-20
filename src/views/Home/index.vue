@@ -1,33 +1,32 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="3">
-      <!-- Module of user or project info -->
-      <project-info/>
+    <v-col cols="3" v-if="false">
+      <project-info />
     </v-col>
-    <v-col cols="6">
+    <v-col cols="8">
       <!-- Module of projects list -->
-      <projects-list/>
-      <views-list/>
+      <projects-list />
+      <views-list />
     </v-col>
-    <v-col cols="3">
+    <v-col cols="4">
       <!-- Module of users list -->
-      <team-list/>
+      <team-list />
     </v-col>
   </v-row>
 </template>
 
 <script>
-  import TeamList from "./TeamList"
-  import ProjectInfo from "./ProjectInfo"
-  import ProjectsList from "./ProjectsList"
-  import ViewsList from "./ViewsList"
+import TeamList from "./TeamList";
+import ProjectInfo from "./ProjectInfo";
+import ProjectsList from "./ProjectsList";
+import ViewsList from "./ViewsList";
 
 export default {
   components: {
     TeamList,
     ProjectInfo,
     ProjectsList,
-    ViewsList
+    ViewsList,
   },
   name: "Home",
 };

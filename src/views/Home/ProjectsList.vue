@@ -1,6 +1,6 @@
 <template>
   <v-carousel hide-delimiters>
-    <v-carousel-item v-for="(item,i) in pages" :key="i">
+    <v-carousel-item v-for="(item,i) in pages" :key="i" class="pa-4">
       <v-row dense>
         <v-col cols="4" class="pa-1" :key="index" v-for="index of remainingPerPage(i)">
           <card-project-list :info="Object.values(get_projects())[getIndex(i, index)]" />
