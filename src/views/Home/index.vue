@@ -2,8 +2,14 @@
   <div>
     <v-row no-gutters>
       <v-col :cols="computedFirstPreviewColumns" v-if="computedFirstPreviewColumns > 0" class="red">
-        <!-- Module of project or user info -->
-        <project-info />
+        <div>
+          <v-row no-gutters class="pa-3">
+            <v-spacer></v-spacer>
+            <v-icon @click="change_preview_navigation_drawer(false)">mdi-arrow-collapse-left</v-icon>
+          </v-row>
+          <!-- Module of project or user info -->
+          <project-info class="pa-0" />
+        </div>
       </v-col>
       <v-col :cols="computedGridColumns" class="blue">
         <!-- Module of projects list -->
@@ -15,6 +21,7 @@
         <team-list />
       </v-col-->
     </v-row>
+
     <!-- <v-navigation-drawer
       width="33%"
       :permanent="drawer"
@@ -81,3 +88,6 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+</style>
