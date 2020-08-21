@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-row no-gutters>
-      <v-col cols="3" v-if="true">
+      <v-col :cols="computedFirstPreviewColumns" v-if="computedFirstPreviewColumns > 0" class="red">
         <!-- Module of project or user info -->
         <project-info />
       </v-col>
-      <v-col cols="9">
+      <v-col :cols="computedGridColumns" class="blue">
         <!-- Module of projects list -->
         <projects-list />
         <!-- <views-list /> -->
@@ -15,7 +15,7 @@
         <team-list />
       </v-col-->
     </v-row>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       width="33%"
       :permanent="drawer"
       hide-overlay
@@ -28,7 +28,7 @@
         <v-icon @click="change_preview_navigation_drawer(false)">mdi-close</v-icon>
       </v-row>
       <project-info />
-    </v-navigation-drawer>
+    </v-navigation-drawer>-->
   </div>
 </template>
 
@@ -47,10 +47,24 @@ export default {
     // ViewsList,
   },
   data: () => ({
-    drawer: false,
+    first_preview: false,
   }),
   name: "Home",
   computed: {
+    computedFirstPreviewColumns() {
+      if (this.first_preview) {
+        return 3;
+      } else {
+        return 0;
+      }
+    },
+    computedGridColumns() {
+      if (!this.first_preview) {
+        return 12;
+      } else {
+        return 9;
+      }
+    },
     ...mapGetters(["get_preview_navigation_drawer"]),
     navigationDrawer() {
       let navdrawer = this.get_preview_navigation_drawer();
@@ -62,7 +76,7 @@ export default {
   },
   watch: {
     navigationDrawer(val) {
-      this.drawer = val;
+      this.first_preview = val;
     },
   },
 };
