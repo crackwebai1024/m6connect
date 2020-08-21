@@ -9,7 +9,7 @@
     <v-navigation-drawer
       v-model="drawer"
       absolute
-      class="withScroll"
+      class="no-scroll"
       expand-on-hover
     >
       <v-list dense>
@@ -50,8 +50,12 @@
 </script>
 
 <style scoped lang="scss">
-  .withScroll{
-    overflow-y: hidden!important; /* Hide vertical scrollbar */
-    overflow-x: hidden!important; /* Hide horizontal scrollbar */
+  .no-scroll {
+    overflow-x: hidden!important;
+
+    ::-webkit-scrollbar {
+      -webkit-appearance: none !important;
+      width: 0px !important;
+    }
   }
 </style>

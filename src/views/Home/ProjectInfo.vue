@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <drawer-navigator>
-            <v-img :src="!get_info_data()[stayColumn].projecj_id ? get_info_data()[stayColumn].imageUrl :get_info_data()[stayColumn].projet_image_url">
+            <v-img height="120" :src="!get_info_data()[stayColumn].projecj_id ? get_info_data()[stayColumn].imageUrl :get_info_data()[stayColumn].projet_image_url">
                 <div class="grey darken-4 px-3 py-1" v-if="get_info_data()[stayColumn].projecj_id"
                     style="position:absolute; top: 0; right: 0;" >
                     {{ get_info_data()[stayColumn].phase }}
