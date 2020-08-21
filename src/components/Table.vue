@@ -2,10 +2,10 @@
   <v-data-table
     :headers="data.headers"
     :items="data.body"
-    :items-per-page="7"
+    :items-per-page="5"
     class="elevation-1"
-  ></v-data-table>
-</template>
+  />
+ </template>
 
 <script>  
   export default {

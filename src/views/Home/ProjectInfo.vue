@@ -1,5 +1,6 @@
 <template>
     <v-container>
+        <drawer-navigator/>
         <v-img :src="!get_info_data().projecj_id ? get_info_data().imageUrl :get_info_data().projet_image_url">
             <div class="grey darken-4 px-3 py-1" v-if="get_info_data().projecj_id"
                 style="position:absolute; top: 0; right: 0;" >
@@ -20,17 +21,22 @@
         </v-card>
         <person v-if="!get_info_data().projecj_id"/>
         <project v-else/>
+        <views-list/>
     </v-container>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import Person from '@/components/Home/Info/Person'
 import Project from '@/components/Home/Info/Project'
+import ViewsList from './ViewsList'
+import DrawerNavigator from '@/components/Home/DrawerNavigator'
 
 export default {
     components:{
         Person, 
-        Project
+        Project,
+        ViewsList,
+        DrawerNavigator
     },
     name:"ProjectInfo",
     computed: {
