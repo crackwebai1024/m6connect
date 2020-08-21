@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
   name: "CardProjectList",
@@ -60,11 +60,12 @@ export default {
     info: Object,
   },
   methods: {
-    ...mapActions(['set_info_data']),
-    updateInfo(){
-      this.set_info_data(this.info)
-    }
-  }
+    ...mapActions(["set_info_data", "change_preview_navigation_drawer"]),
+    updateInfo() {
+      this.change_preview_navigation_drawer(true);
+      this.set_info_data(this.info);
+    },
+  },
 };
 </script>
 

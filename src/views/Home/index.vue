@@ -1,34 +1,69 @@
 <template>
-  <v-row no-gutters>
-    <v-col cols="3" v-if="false">
-      <!-- Module of project or user info -->
+  <div>
+    <v-row no-gutters>
+      <v-col cols="3" v-if="true">
+        <!-- Module of project or user info -->
+        <project-info />
+      </v-col>
+      <v-col cols="9">
+        <!-- Module of projects list -->
+        <projects-list />
+        <!-- <views-list /> -->
+      </v-col>
+      <!--v-col cols="4">
+        //Module of users list
+        <team-list />
+      </v-col-->
+    </v-row>
+    <v-navigation-drawer
+      width="33%"
+      :permanent="drawer"
+      hide-overlay
+      right
+      v-model="drawer"
+      absolute
+    >
+      <v-row no-gutters class="pa-2">
+        <v-spacer></v-spacer>
+        <v-icon @click="change_preview_navigation_drawer(false)">mdi-close</v-icon>
+      </v-row>
       <project-info />
-    </v-col>
-    <v-col cols="8">
-      <!-- Module of projects list -->
-      <projects-list />
-      <views-list />
-    </v-col>
-    <v-col cols="4">
-      <!-- Module of users list -->
-      <team-list />
-    </v-col>
-  </v-row>
+    </v-navigation-drawer>
+  </div>
 </template>
 
 <script>
-import TeamList from "./TeamList";
+// import TeamList from "./TeamList";
 import ProjectInfo from "./ProjectInfo";
 import ProjectsList from "./ProjectsList";
-import ViewsList from "./ViewsList";
+// import ViewsList from "./ViewsList";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
-    TeamList,
+    // TeamList,
     ProjectInfo,
     ProjectsList,
-    ViewsList,
+    // ViewsList,
   },
+  data: () => ({
+    drawer: false,
+  }),
   name: "Home",
+  computed: {
+    ...mapGetters(["get_preview_navigation_drawer"]),
+    navigationDrawer() {
+      let navdrawer = this.get_preview_navigation_drawer();
+      return navdrawer;
+    },
+  },
+  methods: {
+    ...mapActions(["change_preview_navigation_drawer"]),
+  },
+  watch: {
+    navigationDrawer(val) {
+      this.drawer = val;
+    },
+  },
 };
 </script>

@@ -13,7 +13,7 @@
     <v-carousel hide-delimiters :continuous="false" height="415">
       <v-carousel-item v-for="(item,i) in pages" :key="i" class="pa-4">
         <v-row dense>
-          <v-col cols="4" class="pa-1" :key="index" v-for="index of remainingPerPage(i)">
+          <v-col cols="3" class="pa-1" :key="index" v-for="index of remainingPerPage(i)">
             <card-project-list :info="Object.values(get_projects())[getIndex(i, index)]" />
           </v-col>
         </v-row>
@@ -33,7 +33,7 @@ export default {
   },
   name: "ProjectsList",
   data: () => ({
-    perPage: 6,
+    perPage: 8,
     searchText: "",
   }),
   computed: {

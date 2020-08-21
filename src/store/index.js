@@ -17,7 +17,8 @@ export default new Vuex.Store({
     viewsList: Data.get_views_list(),
     tabs: Data.get_tabs(),
     request_table_header: Data.get_request_table_header(),
-    ticket_table_header: Data.get_ticket_table_header()
+    ticket_table_header: Data.get_ticket_table_header(),
+    previewNavigationDrawer: false
   },
   getters: {
     // View Home Getters
@@ -34,6 +35,8 @@ export default new Vuex.Store({
     get_tabs: (state) => () => state.tabs,
     get_request_table_header: (state) => () => state.request_table_header,
     get_ticket_table_header: (state) => () => state.ticket_table_header,
+    get_preview_navigation_drawer: (state) => () =>
+      state.previewNavigationDrawer
   },
   mutations: {
     setAllProjects(state, proj) {
@@ -45,8 +48,16 @@ export default new Vuex.Store({
     setNewInfoData(state, newData) {
       state.info_data = newData;
     },
+    setPreviewNavigationDrawer(state, drawer_state) {
+      console.log("changing nav drawer: ", drawer_state);
+      state.previewNavigationDrawer = drawer_state;
+    },
   },
   actions: {
+    change_preview_navigation_drawer({ commit }, drawer_state) {
+      console.log("drawer_state", drawer_state);
+      commit("setPreviewNavigationDrawer", drawer_state);
+    },
     set_projects({ commit }) {
       let data = [
         {
@@ -184,6 +195,44 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 8",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 9",
+          projecj_id: "123132",
+          phase: "asdasd",
+          company: "m6connect",
+          department: "Design",
+          project_leader: "",
+          project_support: "",
+          designer: "",
+          role_two: "",
+          client_status: "",
+          internal_description: "",
+          internal_objective: "",
+          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          client_original_request: "",
+          client_requested_due_date: "",
+          client_in_take_clarification_description: "",
+          client_follow_up_date: "",
+        },
+        {
+          project_name: "New Vallarta 10",
           projecj_id: "123132",
           phase: "asdasd",
           company: "m6connect",
