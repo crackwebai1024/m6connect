@@ -1,59 +1,57 @@
 <template>
+  <v-sheet
+    style="position: relative; height:95vh;"
+  >
+    <v-container class="fill-height">
+      <slot></slot>
+    </v-container>
+
     <v-navigation-drawer
       v-model="drawer"
-      :mini-variant.sync="mini"
-      permanent
+      absolute
+      class="withScroll"
+      expand-on-hover=true
     >
-      <v-list-item class="px-2">
-
-        <v-list-item-title>John Leider</v-list-item-title>
-
-        <v-btn
-          icon
-          @click.stop="mini = !mini"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-      </v-list-item>
-
-      <v-divider></v-divider>
-
       <v-list dense>
         <v-list-item
-          v-for="item in items"
-          :key="item.title"
+          v-for="(item, index) in get_views_list()"
+          :key="index"
           link
+          @click="mini=true"
         >
           <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon>{{ item.iconName }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+  </v-sheet>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     data () {
       return {
         drawer: true,
-        items: [
-          { title: 'Home', icon: 'mdi-home-city' },
-          { title: 'My Account', icon: 'mdi-account' },
-          { title: 'Users', icon: 'mdi-account-group-outline' },
-        ],
-        links: ['Home', 'Contacts', 'Settings'],
         mini: true,
       }
     },
-    methods: {
-        asd(){
-
-        }
-    }
+    computed: {
+      // get_views_list has a list of objects with name, iconName, route
+      ...mapGetters(["get_views_list"]),
+    },
   }
 </script>
+
+<style scoped lang="scss">
+  .withScroll{
+    overflow-y: hidden!important; /* Hide vertical scrollbar */
+    overflow-x: hidden!important; /* Hide horizontal scrollbar */
+  }
+</style>
