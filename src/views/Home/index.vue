@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row no-gutters>
-      <v-col :cols="computedFirstPreviewColumns" v-if="computedFirstPreviewColumns > 0" class="red">
+      <v-col :cols="computedFirstPreviewColumns" v-if="computedFirstPreviewColumns > 0">
         <div>
           <v-row no-gutters class="pa-3">
             <v-spacer></v-spacer>
@@ -11,7 +11,7 @@
           <project-info class="pa-0" />
         </div>
       </v-col>
-      <v-col :cols="computedGridColumns" class="blue">
+      <v-col :cols="computedGridColumns">
         <!-- Module of projects list -->
         <projects-list />
         <!-- <views-list /> -->

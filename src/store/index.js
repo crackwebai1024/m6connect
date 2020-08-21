@@ -18,7 +18,7 @@ export default new Vuex.Store({
     tabs: Data.get_tabs(),
     request_table_header: Data.get_request_table_header(),
     ticket_table_header: Data.get_ticket_table_header(),
-    previewNavigationDrawer: false
+    previewNavigationDrawer: false,
   },
   getters: {
     // View Home Getters
@@ -27,16 +27,14 @@ export default new Vuex.Store({
     get_workers: (state) => () => state.workers,
     // Return the first project or the data saved
     get_info_data: (state) => () =>
-      state.info_data.name === ""
-        ? state.projects[0]
-        : state.info_data,
+      state.info_data.name === "" ? state.projects[0] : state.info_data,
 
     // View Tabs Getters
     get_tabs: (state) => () => state.tabs,
     get_request_table_header: (state) => () => state.request_table_header,
     get_ticket_table_header: (state) => () => state.ticket_table_header,
     get_preview_navigation_drawer: (state) => () =>
-      state.previewNavigationDrawer
+      state.previewNavigationDrawer,
   },
   mutations: {
     setAllProjects(state, proj) {
@@ -73,7 +71,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -92,7 +91,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -111,7 +111,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -130,7 +131,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -149,7 +151,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -168,7 +171,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -187,7 +191,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -206,7 +211,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -225,7 +231,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -244,7 +251,8 @@ export default new Vuex.Store({
           client_status: "",
           internal_description: "",
           internal_objective: "",
-          projet_image_url: "https://cdn.vuetifyjs.com/images/cards/docks.jpg",
+          projet_image_url:
+            "https://picsum.photos/200/300?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
