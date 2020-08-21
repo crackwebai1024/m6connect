@@ -9,10 +9,8 @@ export default new Vuex.Store({
     projects: [],
     workers: [],
     info_data: {
-      name: "",
-      imageUrl: "",
-      email: "",
-      contactPhone: "",
+      left:{},
+      right:{},
     },
     viewsList: Data.get_views_list(),
     tabs: Data.get_tabs(),
@@ -26,10 +24,7 @@ export default new Vuex.Store({
     get_projects: (state) => () => state.projects,
     get_workers: (state) => () => state.workers,
     // Return the first project or the data saved
-    get_info_data: (state) => () =>
-      state.info_data.name === ""
-        ? state.projects[0]
-        : state.info_data,
+    get_info_data: (state) => () => state.info_data,
 
     // View Tabs Getters
     get_tabs: (state) => () => state.tabs,
@@ -47,6 +42,7 @@ export default new Vuex.Store({
     },
     setNewInfoData(state, newData) {
       state.info_data = newData;
+      console.log(state.info_data);
     },
     setPreviewNavigationDrawer(state, drawer_state) {
       console.log("changing nav drawer: ", drawer_state);

@@ -8,7 +8,7 @@
             <v-icon @click="change_preview_navigation_drawer(false)">mdi-arrow-collapse-left</v-icon>
           </v-row>
           <!-- Module of project or user info -->
-          <project-info class="pa-0" />
+          <project-info class="pa-0" :stayColumn="'right'"/>
         </div>
       </v-col>
       <v-col :cols="computedGridColumns" class="blue">

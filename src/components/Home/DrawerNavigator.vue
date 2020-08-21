@@ -10,7 +10,7 @@
       v-model="drawer"
       absolute
       class="withScroll"
-      expand-on-hover=true
+      expand-on-hover
     >
       <v-list dense>
         <v-list-item

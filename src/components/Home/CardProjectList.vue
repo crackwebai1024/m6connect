@@ -63,7 +63,8 @@ export default {
     ...mapActions(["set_info_data", "change_preview_navigation_drawer"]),
     updateInfo() {
       this.change_preview_navigation_drawer(true);
-      this.set_info_data(this.info);
+      let data = {left: this.info, right: this.info}
+      this.set_info_data(data);
     },
   },
 };
