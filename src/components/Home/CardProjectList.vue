@@ -1,6 +1,7 @@
 <template>
   <v-hover v-slot:default="{ hover }">
     <v-card class="mx-auto" tile :class="{ 'on-hover': hover }" @click="updateInfo()">
+      <button @click="pushData()"> asdeas</button>
       <v-img class="white--text align-end" height="100px" :src="info['projet_image_url']">
         <div
           class="grey darken-4 px-3 py-1"
@@ -44,7 +45,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CardProjectList",
@@ -56,13 +57,28 @@ export default {
     info: Object,
   },
   methods: {
-    ...mapActions(["set_info_data", "change_preview_navigation_drawer"]),
+    ...mapActions(["set_info_data", "change_preview_navigation_drawer", "push_info_data_carousel"]),
     updateInfo() {
       this.change_preview_navigation_drawer(true);
       let data = {left: this.info, right: this.info}
       this.set_info_data(data);
+      let validator = false;
+      this.get_info_carousel().forEach(element => {
+        if(element.projecj_id === this.info.projecj_id){
+          validator = true;
+        }
+      });
+      if(!validator){
+        this.push_info_data_carousel(this.info);
+      }
     },
+    pushData(){
+      console.log(this.get_info_carousel());
+    }
   },
+  computed: {
+    ...mapGetters(["get_info_carousel"])
+  }
 };
 </script>
 

@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     projects: [],
     workers: [],
+    info_carousel:[],
     info_data: {
       name: "",
       imageUrl: "",
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     get_views_list: (state) => () => state.viewsList,
     get_projects: (state) => () => state.projects,
     get_workers: (state) => () => state.workers,
+    get_info_carousel: (state) => () => state.info_carousel,
     // Return the first project or the data saved
     get_info_data: (state) => () =>
       state.info_data.name === "" ? state.projects[0] : state.info_data,
@@ -39,6 +41,9 @@ export default new Vuex.Store({
   mutations: {
     setAllProjects(state, proj) {
       state.projects = proj;
+    },
+    push_new_info_data_carousel(state, new_data) {
+      state.info_carousel.unshift(new_data)
     },
     setAllWorkers(state, work) {
       state.workers = work;
@@ -60,7 +65,7 @@ export default new Vuex.Store({
       let data = [
         {
           project_name: "New Vallarta 1",
-          projecj_id: "123132",
+          projecj_id: "1123",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -80,7 +85,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 2",
-          projecj_id: "123132",
+          projecj_id: "2321",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -100,7 +105,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 3",
-          projecj_id: "123132",
+          projecj_id: "34123",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -120,7 +125,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 4",
-          projecj_id: "123132",
+          projecj_id: "4312",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -140,7 +145,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 5",
-          projecj_id: "123132",
+          projecj_id: "5123",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -160,7 +165,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 6",
-          projecj_id: "123132",
+          projecj_id: "6231",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -180,7 +185,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 7",
-          projecj_id: "123132",
+          projecj_id: "7q312",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -200,7 +205,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 8",
-          projecj_id: "123132",
+          projecj_id: "81231",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -220,7 +225,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 9",
-          projecj_id: "123132",
+          projecj_id: "91231",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -240,7 +245,7 @@ export default new Vuex.Store({
         },
         {
           project_name: "New Vallarta 10",
-          projecj_id: "123132",
+          projecj_id: "101233",
           phase: "asdasd",
           company: "m6connect",
           department: "Design",
@@ -283,6 +288,9 @@ export default new Vuex.Store({
       ];
       commit("setAllWorkers", data);
     },
+    push_info_data_carousel({commit}, data) {
+      commit("push_new_info_data_carousel", data)
+    }
   },
   modules: {},
 });
