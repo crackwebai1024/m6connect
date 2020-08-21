@@ -25,10 +25,10 @@
     </v-container>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import Person from '@/components/Home/Info/Person'
-import Project from '@/components/Home/Info/Project'
-import DrawerNavigator from '@/components/Home/DrawerNavigator'
+import { mapGetters } from "vuex";
+import Person from "@/components/Home/Info/Person";
+import Project from "@/components/Home/Info/Project";
+import DrawerNavigator from "@/components/Home/DrawerNavigator";
 
 export default {
     components:{
