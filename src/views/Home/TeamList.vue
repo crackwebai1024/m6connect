@@ -10,7 +10,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import CardTeamList from "@/components/CardTeamList";
+import CardTeamList from "@/components/Home/CardTeamList";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {

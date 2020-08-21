@@ -16,7 +16,8 @@ export default new Vuex.Store({
     },
     viewsList: Data.get_views_list(),
     tabs: Data.get_tabs(),
-    request_table_header: Data.get_request_table_header()
+    request_table_header: Data.get_request_table_header(),
+    ticket_table_header: Data.get_ticket_table_header()
   },
   getters: {
     // View Home Getters
@@ -25,13 +26,14 @@ export default new Vuex.Store({
     get_workers: (state) => () => state.workers,
     // Return the first project or the data saved
     get_info_data: (state) => () =>
-      Object.keys(state.info_data).length === 0
+      state.info_data.name === ""
         ? state.projects[0]
         : state.info_data,
 
     // View Tabs Getters
     get_tabs: (state) => () => state.tabs,
     get_request_table_header: (state) => () => state.request_table_header,
+    get_ticket_table_header: (state) => () => state.ticket_table_header,
   },
   mutations: {
     setAllProjects(state, proj) {
