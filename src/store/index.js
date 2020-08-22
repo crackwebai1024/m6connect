@@ -59,7 +59,6 @@ export default new Vuex.Store({
     },
     set_new_status_bootom_template(state, data){
       state.bootom_template = data;
-      console.log(state.bootom_template);
     }
   },
   actions: {

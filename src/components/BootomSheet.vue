@@ -1,22 +1,20 @@
 <template>
-    <v-bottom-sheet v-model="data" persistent>
-        <v-sheet class="text-center" height="200px">
-        <v-btn
-            class="mt-6"
-            text
-            color="error"
-            @click="set_status_bootom_template(false)"
-        >close</v-btn>
-        <div class="py-3">This is a bottom sheet using the persistent prop</div>
+    <v-bottom-sheet v-model="data">
+        <v-sheet class="text-center" height="80vh">
+            <tabs/>
         </v-sheet>
     </v-bottom-sheet>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Tabs from "@/views/Tabs";
 
 export default {
     name: "BootomTemplate",
+    components: {
+        Tabs
+    },
     computed: {
         ...mapGetters(['get_bootom_template']),  
         data:{

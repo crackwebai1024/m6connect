@@ -13,6 +13,14 @@
       expand-on-hover
     >
       <v-list dense>
+        <!-- <v-list-item
+          link
+          @click="asd()"
+        >
+          <v-list-item-content>
+            <v-list-item-title>asdasd</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item> -->
         <v-list-item
           v-for="(item, index) in get_views_list()"
           :key="index"
@@ -48,6 +56,9 @@
     },
     methods: {
       ...mapActions(["set_status_bootom_template"]),
+      asd(){
+        console.log(this.drawer)
+      }
     }
   }
 </script>
