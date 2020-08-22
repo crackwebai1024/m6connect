@@ -17,7 +17,7 @@
           v-for="(item, index) in get_views_list()"
           :key="index"
           link
-          @click="mini=true"
+          @click="set_status_bootom_template(true)"
         >
           <v-list-item-icon>
             <v-icon>{{ item.iconName }}</v-icon>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   export default {
     data () {
@@ -46,6 +46,9 @@
       // get_views_list has a list of objects with name, iconName, route
       ...mapGetters(["get_views_list"]),
     },
+    methods: {
+      ...mapActions(["set_status_bootom_template"]),
+    }
   }
 </script>
 

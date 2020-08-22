@@ -14,44 +14,24 @@
       <v-col :cols="computedGridColumns">
         <!-- Module of projects list -->
         <projects-list />
-        <!-- <views-list /> -->
       </v-col>
-      <!--v-col cols="4">
-        //Module of users list
-        <team-list />
-      </v-col-->
     </v-row>
-
-    <!-- <v-navigation-drawer
-      width="33%"
-      :permanent="drawer"
-      hide-overlay
-      right
-      v-model="drawer"
-      absolute
-    >
-      <v-row no-gutters class="pa-2">
-        <v-spacer></v-spacer>
-        <v-icon @click="change_preview_navigation_drawer(false)">mdi-close</v-icon>
-      </v-row>
-      <project-info />
-    </v-navigation-drawer>-->
+    <BootomTemplate/>
   </div>
 </template>
 
 <script>
-// import TeamList from "./TeamList";
 import ProjectInfo from "./ProjectInfo";
 import ProjectsList from "./ProjectsList";
-// import ViewsList from "./ViewsList";
+import BootomTemplate from "@/components/BootomSheet"
+
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
-    // TeamList,
     ProjectInfo,
     ProjectsList,
-    // ViewsList,
+    BootomTemplate
   },
   data: () => ({
     first_preview: false,

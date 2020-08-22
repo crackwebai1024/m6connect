@@ -1,7 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
     <v-card class="mx-auto" tile :class="{ 'on-hover': hover }" @click="updateInfo()">
-      <button @click="pushData()"> asdeas</button>
       <v-img class="white--text align-end" height="100px" :src="info['projet_image_url']">
         <div
           class="grey darken-4 px-3 py-1"
@@ -72,9 +71,6 @@ export default {
         this.push_info_data_carousel(this.info);
       }
     },
-    pushData(){
-      console.log(this.get_info_carousel());
-    }
   },
   computed: {
     ...mapGetters(["get_info_carousel"])

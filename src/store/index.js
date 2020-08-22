@@ -20,6 +20,7 @@ export default new Vuex.Store({
     request_table_header: Data.get_request_table_header(),
     ticket_table_header: Data.get_ticket_table_header(),
     previewNavigationDrawer: false,
+    bootom_template: false
   },
   getters: {
     // View Home Getters
@@ -37,6 +38,8 @@ export default new Vuex.Store({
     get_ticket_table_header: (state) => () => state.ticket_table_header,
     get_preview_navigation_drawer: (state) => () =>
       state.previewNavigationDrawer,
+    // Tables Getters
+    get_bootom_template: (state) => state.bootom_template
   },
   mutations: {
     setAllProjects(state, proj) {
@@ -52,13 +55,15 @@ export default new Vuex.Store({
       state.info_data = newData;
     },
     setPreviewNavigationDrawer(state, drawer_state) {
-      console.log("changing nav drawer: ", drawer_state);
       state.previewNavigationDrawer = drawer_state;
     },
+    set_new_status_bootom_template(state, data){
+      state.bootom_template = data;
+      console.log(state.bootom_template);
+    }
   },
   actions: {
     change_preview_navigation_drawer({ commit }, drawer_state) {
-      console.log("drawer_state", drawer_state);
       commit("setPreviewNavigationDrawer", drawer_state);
     },
     set_projects({ commit }) {
@@ -287,6 +292,9 @@ export default new Vuex.Store({
         },
       ];
       commit("setAllWorkers", data);
+    },
+    set_status_bootom_template({commit}, data) {
+      commit("set_new_status_bootom_template", data);
     },
     push_info_data_carousel({commit}, data) {
       commit("push_new_info_data_carousel", data)

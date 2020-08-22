@@ -1,21 +1,11 @@
 <template>
-    <v-bottom-sheet v-model="sheet" persistent>
-        <template v-slot:activator="{ on, attrs }">
-        <v-btn
-            color="green"
-            dark
-            v-bind="attrs"
-            v-on="on"
-        >
-            Open Persistent
-        </v-btn>
-        </template>
+    <v-bottom-sheet v-model="data" persistent>
         <v-sheet class="text-center" height="200px">
         <v-btn
             class="mt-6"
             text
             color="error"
-            @click="sheet = !sheet"
+            @click="set_status_bootom_template(false)"
         >close</v-btn>
         <div class="py-3">This is a bottom sheet using the persistent prop</div>
         </v-sheet>
@@ -23,15 +13,23 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
     name: "BootomTemplate",
-    data: () => ({
-      sheet: false,
-    }),
     computed: {
-        ...mapGetters([''])
+        ...mapGetters(['get_bootom_template']),  
+        data:{
+            get(){
+                return this.get_bootom_template
+            },
+            set(){
+                this.set_status_bootom_template(false)
+            }
+        }
+    },
+    methods: {
+        ...mapActions(["set_status_bootom_template"])
     }
 }
 </script>
