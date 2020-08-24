@@ -1,22 +1,27 @@
 <template>
   <div class>
     <div>
-      <drawer-navigator>
+        <div class="d-flex blue darken-1 white--text pl-3 pr-2 py-2">
+          <div class="font-weight-black" style="font-size: 17px;">{{ infoData.project_name }}</div>
+          <v-spacer></v-spacer>
+          <v-icon color="white">mdi-arrow-expand</v-icon>
+          <v-icon color="white">mdi-close</v-icon>
+        </div>
         <div style="width: 100%;">
           <div style="position: relative;">
             <v-img
-              max-height="264"
+              max-height="120"
               :src="!infoData.projecj_id ? infoData.imageUrl : infoData.projet_image_url"
             >
               <div
-                class="m6-secondary-grey px-3 py-1"
+                class="m6-secondary-grey white--text px-3 py-1"
                 v-if="infoData.projecj_id"
                 style="position:absolute; bottom: 0; right: 0;"
               >{{ infoData.phase }}</div>
             </v-img>
           </div>
 
-          <div class="pa-3 m6-secondary-grey">
+          <div class="pa-3 m6-secondary-grey white--text">
             <h2 class="font-weight-black text-center">
               <div>{{!infoData.projecj_id ? infoData.name : infoData.project_name}}</div>
             </h2>
@@ -24,38 +29,27 @@
               <div>Project ID: {{!infoData.projecj_id ? infoData.contactPhone : infoData.projecj_id}}</div>
             </div>
           </div>
-          <project />
         </div>
-      </drawer-navigator>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import Project from "@/components/Home/Info/Project";
-import DrawerNavigator from "@/components/Home/DrawerNavigator";
 
 export default {
   components: {
-    Project,
-    DrawerNavigator,
   },
   name: "ProjectInfo",
   computed: {
-    ...mapGetters(["get_info_data"]),
+    ...mapGetters(["get_active_projects"]),
     infoData() {
-        let info = this.get_info_data()[this.stayColumn]
-        console.log(info)
+        let info = this.get_active_projects()[this.projectIndex]
+        console.log('Info: ', info)
         return info
     }
   },
   props: {
-    stayColumn: String,
-  },
-  methods: {
-    printData() {
-      console.log(this.stayColumn);
-    },
+    projectIndex: Number,
   },
 };
 </script>

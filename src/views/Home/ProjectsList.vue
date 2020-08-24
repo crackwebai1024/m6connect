@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <header-component hasslot :info="{title:'Create Post', icon:''}">
+    <header-component hasslot :info="{title:'Create Post', icon:''}" class="mb-3">
       <template v-slot:select>
         <v-select
             :items="items"
@@ -22,7 +22,7 @@
         ></v-text-field>
       </template>
     </header-component>
-    <div :key="index" v-for="(item, index) of projects" class="mb-3">
+    <div :key="index" v-for="(item, index) of projects" :class="Object.keys(projects).length !== index + 1 ? 'mb-3' : ''">
       <card-project-list :info="projects[index]" />          
     </div>            
   </v-container>
