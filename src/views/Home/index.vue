@@ -4,8 +4,8 @@
       <v-col cols="2" class="red">
         <!-- Side Panel Component  -->
       </v-col>
-      <v-col cols="4" class="green">
-        <!-- M6 News Feed Component -->
+      <v-col cols="4">
+        <project-social-media/>
       </v-col>
       <v-col cols="4">
         <!-- Project List Component-->
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import ProjectSocialMedia from "./ProjectSocialMedia";
 import ProjectInfo from "./ProjectInfo";
 import ProjectsList from "./ProjectsList";
 import BootomTemplate from "@/components/BootomSheet"
@@ -37,6 +38,7 @@ export default {
     ProjectInfo,
     ProjectsList,
     BootomTemplate,
+    ProjectSocialMedia,
     M6Chat
   },
   data: () => ({
