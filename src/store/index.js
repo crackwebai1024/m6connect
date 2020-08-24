@@ -4,6 +4,9 @@ import Data from "./data";
 
 Vue.use(Vuex);
 
+const wi = "1280";
+const le = "1280";
+
 export default new Vuex.Store({
   state: {
     projects: [],
@@ -81,7 +84,12 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/" +
+            wi +
+            "/" +
+            le +
+            "?nocache=" +
+            Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -101,7 +109,12 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/" +
+            wi +
+            "/" +
+            le +
+            "?nocache=" +
+            Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -121,7 +134,12 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/" +
+            wi +
+            "/" +
+            le +
+            "?nocache=" +
+            Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -141,7 +159,12 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/" +
+            wi +
+            "/" +
+            le +
+            "?nocache=" +
+            Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -161,7 +184,7 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/1280/720?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -181,7 +204,12 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/" +
+            wi +
+            "/" +
+            le +
+            "?nocache=" +
+            Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -201,7 +229,7 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/1280/720?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -221,7 +249,12 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/" +
+            wi +
+            "/" +
+            le +
+            "?nocache=" +
+            Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -241,7 +274,12 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/" +
+            wi +
+            "/" +
+            le +
+            "?nocache=" +
+            Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
@@ -261,7 +299,7 @@ export default new Vuex.Store({
           internal_description: "",
           internal_objective: "",
           projet_image_url:
-            "https://picsum.photos/200/300?nocache=" + Math.random(),
+            "https://picsum.photos/1280/720?nocache=" + Math.random(),
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",

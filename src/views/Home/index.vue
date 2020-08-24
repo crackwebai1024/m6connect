@@ -1,21 +1,25 @@
 <template>
   <div>
     <v-row no-gutters>
-      <v-col :cols="computedFirstPreviewColumns" v-if="computedFirstPreviewColumns > 0">
-        <div>
-          <v-row no-gutters class="pa-3">
-            <v-spacer></v-spacer>
-            <v-icon @click="change_preview_navigation_drawer(false)">mdi-arrow-collapse-left</v-icon>
-          </v-row>
-          <!-- Module of project or user info -->
-          <project-info class="pa-0" :stayColumn="'right'"/>
-        </div>
+      <v-col cols="2" class="red">
+        <!-- Side Panel Component  -->
       </v-col>
-      <v-col :cols="computedGridColumns">
-        <!-- Module of projects list -->
+      <v-col cols="4" class="green">
+        <!-- M6 News Feed Component -->
+      </v-col>
+      <v-col cols="4">
+        <!-- Project List Component-->
         <projects-list />
       </v-col>
+      <v-col cols="2" class="blue">
+        <!-- Chat Component -->
+        <m6-chat></m6-chat>
+      </v-col>
     </v-row>
+    <!-- Preview used later -->
+    <div v-if="false">
+      <project-info></project-info>
+    </div>
     <BootomTemplate/>
   </div>
 </template>
@@ -24,6 +28,7 @@
 import ProjectInfo from "./ProjectInfo";
 import ProjectsList from "./ProjectsList";
 import BootomTemplate from "@/components/BootomSheet"
+import M6Chat from "@/components/Home/M6Chat"
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -31,7 +36,8 @@ export default {
   components: {
     ProjectInfo,
     ProjectsList,
-    BootomTemplate
+    BootomTemplate,
+    M6Chat
   },
   data: () => ({
     first_preview: false,

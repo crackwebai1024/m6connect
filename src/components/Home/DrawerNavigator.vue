@@ -1,17 +1,14 @@
 <template>
-  <v-sheet
-    style="position: relative; height:95vh;"
-  >
-    <v-container class="fill-height">
+  <v-sheet style="position: relative; height:100vh;">
+    <div style="padding-left: 56px;">
+      <v-row no-gutters class="pa-3">
+        <v-spacer></v-spacer>
+        <v-icon @click="change_preview_navigation_drawer(false)">mdi-close</v-icon>
+      </v-row>
       <slot></slot>
-    </v-container>
+    </div>
 
-    <v-navigation-drawer
-      v-model="drawer"
-      absolute
-      class="no-scroll"
-      expand-on-hover
-    >
+    <v-navigation-drawer v-model="drawer" absolute class="no-scroll" expand-on-hover>
       <v-list dense>
         <!-- <v-list-item
           link
@@ -64,12 +61,12 @@
 </script>
 
 <style scoped lang="scss">
-  .no-scroll {
-    overflow-x: hidden!important;
+.no-scroll {
+  overflow-x: hidden !important;
 
-    ::-webkit-scrollbar {
-      -webkit-appearance: none !important;
-      width: 0px !important;
-    }
+  ::-webkit-scrollbar {
+    -webkit-appearance: none !important;
+    width: 0px !important;
   }
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <v-card tile :height="info.height || 'inherit'" class="pa-3">
+  <v-card class="pa-3" tile :height="info.height || 'inherit'">
     <v-row no-gutters class="fill-height" align="center" :justify="hasslot ? 'start' : 'center'">
       <div class="d-flex">
         <v-icon left>{{info.icon}}</v-icon>

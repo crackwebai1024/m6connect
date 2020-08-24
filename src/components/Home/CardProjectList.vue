@@ -3,7 +3,7 @@
     <v-card class="mx-auto" tile :class="{ 'on-hover': hover }" @click="updateInfo()">
       <v-img class="white--text align-end" height="100px" :src="info['projet_image_url']">
         <div
-          class="grey darken-4 px-3 py-1"
+          class="px-3 py-1"
           style="position:absolute; top: 0; right: 0;"
         >{{ info['phase'] }}</div>
       </v-img>

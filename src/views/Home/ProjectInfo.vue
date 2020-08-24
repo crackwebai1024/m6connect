@@ -1,52 +1,61 @@
 <template>
-    <v-container>
-        <drawer-navigator>
-            <v-img height="120" :src="!get_info_data()[stayColumn].projecj_id ? get_info_data()[stayColumn].imageUrl :get_info_data()[stayColumn].projet_image_url">
-                <div class="grey darken-4 px-3 py-1" v-if="get_info_data()[stayColumn].projecj_id"
-                    style="position:absolute; top: 0; right: 0;" >
-                    {{ get_info_data()[stayColumn].phase }}
-                </div>
+  <div class>
+    <div>
+      <drawer-navigator>
+        <div style="width: 100%;">
+          <div style="position: relative;">
+            <v-img
+              max-height="264"
+              :src="!infoData.projecj_id ? infoData.imageUrl : infoData.projet_image_url"
+            >
+              <div
+                class="m6-secondary-grey px-3 py-1"
+                v-if="infoData.projecj_id"
+                style="position:absolute; bottom: 0; right: 0;"
+              >{{ infoData.phase }}</div>
             </v-img>
-            <v-card class="text-center m-auto">
-                <v-card-title class="text-center m-auto">
-                    <p class="text-center m-auto">
-                        {{!get_info_data()[stayColumn].projecj_id ? get_info_data()[stayColumn].name :get_info_data()[stayColumn].project_name}}
-                    </p>
-                </v-card-title>
-                <v-card-subtitle>
-                    <p>
-                        {{!get_info_data()[stayColumn].projecj_id ? get_info_data()[stayColumn].contactPhone :get_info_data()[stayColumn].projecj_id}}
-                    </p>
-                </v-card-subtitle>
-            </v-card>
-            <person v-if="!get_info_data()[stayColumn].projecj_id"/>
-            <project v-else/>
-        </drawer-navigator>
-    </v-container>
+          </div>
+
+          <div class="pa-3 m6-secondary-grey">
+            <h2 class="font-weight-black text-center">
+              <div>{{!infoData.projecj_id ? infoData.name : infoData.project_name}}</div>
+            </h2>
+            <div class="caption text-center font-weight-bold">
+              <div>Project ID: {{!infoData.projecj_id ? infoData.contactPhone : infoData.projecj_id}}</div>
+            </div>
+          </div>
+          <project />
+        </div>
+      </drawer-navigator>
+    </div>
+  </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import Person from "@/components/Home/Info/Person";
 import Project from "@/components/Home/Info/Project";
 import DrawerNavigator from "@/components/Home/DrawerNavigator";
 
 export default {
-    components:{
-        Person, 
-        Project,
-        DrawerNavigator
-    },
-    name:"ProjectInfo",
-    computed: {
-        ...mapGetters(['get_info_data'])
-    },
-    props: {
-        stayColumn: String
-    },
-    methods: {
-        printData(){
-            console.log(this.stayColumn);
-        }
+  components: {
+    Project,
+    DrawerNavigator,
+  },
+  name: "ProjectInfo",
+  computed: {
+    ...mapGetters(["get_info_data"]),
+    infoData() {
+        let info = this.get_info_data()[this.stayColumn]
+        console.log(info)
+        return info
     }
-}
+  },
+  props: {
+    stayColumn: String,
+  },
+  methods: {
+    printData() {
+      console.log(this.stayColumn);
+    },
+  },
+};
 </script>
