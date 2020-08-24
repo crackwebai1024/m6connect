@@ -22,7 +22,25 @@ export default {
                 {url:"https://picsum.photos/1280/720?nocache=" + Math.random()},
                 {url:"https://picsum.photos/1280/720?nocache=" + Math.random()},
                 {url:"https://picsum.photos/1280/720?nocache=" + Math.random()},
-            ]
+                {url:"https://picsum.photos/1280/720?nocache=" + Math.random()},
+                {url:"https://picsum.photos/1280/720?nocache=" + Math.random()},
+                {url:"https://picsum.photos/1280/720?nocache=" + Math.random()},
+            ],
+            reactions: {
+                likes: 100,
+                enchants: 23,
+                unlikes: 21
+            },
+            comments:[{
+                name: "Eduarfo Ramirez",
+                imageUrl: "https://upload.wikimedia.org/wikipedia/commons/a/a0/Pierre-Person.jpg",
+                message: "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
+                reactions: {
+                    likes: 17,
+                    enchants: 21,
+                    unlikes: 6
+                },  
+            }]
         }
     })
 }
