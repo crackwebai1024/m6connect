@@ -1,18 +1,18 @@
 <template>
 <v-container>
     <v-card>
-        <v-card-title class="py-0">
-            <v-row>
+        <v-card-title class="pb-0">
+            <v-row no-gutters>
                 <v-col cols="2">
                     <v-avatar>
                         <img :src=data.imageUrl>
                     </v-avatar>
                 </v-col>
-                <v-col cols="8">
+                <v-col cols="9">
                     <h2 class="text-md-body-1 font-weight-bold">{{data.name}}</h2>
                     <p class="text-caption"> {{data.occupation}} </p>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="1">
                     <v-icon>mdi-filter-variant</v-icon>
                 </v-col>
             </v-row>
@@ -34,7 +34,8 @@
             <p class="my-0">Comments <span class="gray">{{data.comments.length}}</span></p>
             <v-icon left>mdi-chevron-down</v-icon>
         </v-card-actions>
-        <post-comments/>
+        <v-divider class="mx-4" />
+        <post-comments :comment=comment v-for="(comment, index) of data.comments" :key="index" />
     </v-card>
 </v-container>
 </template>
