@@ -1,14 +1,26 @@
 <template>
   <v-container>
-    <header-component hasslot :info="{title:'M6Works', icon:'mdi-map-marker'}">
-      <v-text-field
-        height="37"
-        label="SEARCH"
-        v-model="searchText"
-        single-line
-        hide-details
-        solo-inverted
-      ></v-text-field>
+    <header-component hasslot :info="{title:'Create Post', icon:''}">
+      <template v-slot:select>
+        <v-select
+            :items="items"
+            label="Solo field"
+            dense
+            solo
+            ></v-select>
+      </template>
+      <template v-slot:input>
+        <v-text-field
+            height="37"
+            label="Whats on your mind, Manuel"
+            rounded
+            dense
+            v-model="searchText"
+            single-line
+            hide-details
+            solo-inverted
+        ></v-text-field>
+      </template>
     </header-component>
     <div :key="index" v-for="(item, index) of projects" class="mb-3">
       <card-project-list :info="projects[index]" />          
@@ -29,6 +41,7 @@ export default {
   data: () => ({
     perPage: 8,
     searchText: "",
+    items:['Foo', 'Bar', 'Fizz', 'Buzz']
   }),
   computed: {
     ...mapGetters(["get_projects"]),
