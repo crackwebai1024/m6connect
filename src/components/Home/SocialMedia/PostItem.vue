@@ -1,5 +1,5 @@
 <template>
-<v-container>
+<v-container class="px-0 py-0">
     <v-card>
         <v-card-title class="pb-0">
             <v-row no-gutters>
@@ -24,9 +24,10 @@
                 </v-col>
             </v-row>
             <v-row>
-                <p class="text-sm-body-2 mx-4 mt-1">{{data.contain}}</p>
+                <p class="text-sm-body-2 mx-4 mt-1 text-style">{{data.contain}}</p>
             </v-row>
         </v-card-text>
+        <v-divider class="mx-4" />
         <v-card-actions>
             <v-icon @click="likeIcon()">{{like_icon}}</v-icon>
             <p class="my-0">{{contLikes()}}</p>
