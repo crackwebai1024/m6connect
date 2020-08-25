@@ -25,7 +25,6 @@
       </template>
     </header-component>
     <posts-list/>
-    <h2>aloo</h2>
 </v-container>
 </template>
 <script>

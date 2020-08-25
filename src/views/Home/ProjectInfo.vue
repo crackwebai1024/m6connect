@@ -42,7 +42,7 @@ export default {
   },
   name: "ProjectInfo",
   computed: {
-    ...mapGetters(["get_active_projects"]),
+    ...mapGetters("InfoModule", ["get_active_projects"]),
     infoData() {
         let info = this.get_active_projects()[this.projectIndex]
         return info

@@ -115,7 +115,7 @@ export default {
   }),
   name: "Home",
   computed: {
-    ...mapGetters(["get_active_projects", "get_idle_projects"]),
+    ...mapGetters("InfoModule", ["get_active_projects", "get_preview_navigation_drawer", "get_idle_projects"]),
     active_projects() {
       let ap = this.get_active_projects();
       return ap;
@@ -125,11 +125,11 @@ export default {
       return ip;
     },
     overlay() {
-      return this.$store.getters.get_preview_navigation_drawer();
-    },
+      return this.get_preview_navigation_drawer()
+    }
   },
   methods: {
-    ...mapActions(["change_preview_navigation_drawer"]),
+    ...mapActions("InfoModule", ["change_preview_navigation_drawer"]),
     removeFromIdle(id) {
       this.$store.dispatch("remove_from_idle", id);
     },
