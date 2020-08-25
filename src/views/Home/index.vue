@@ -35,7 +35,7 @@
               v-if="!active_projects[0] == false"
               style="pointer-events: auto;"
             >
-              <project-info :projectIndex="0"></project-info>
+              <project-preview :projectIndex="0"></project-preview>
             </div>
           </v-col>
           <v-col cols="3" class="py-0 px-1">
@@ -44,14 +44,9 @@
               v-if="!active_projects[1] == false"
               style="pointer-events: auto;"
             >
-              <project-info :projectIndex="1"></project-info>
+              <project-preview :projectIndex="1"></project-preview>
             </div>
           </v-col>
-          <!-- <v-col cols="3" class="py-0 px-1">
-            <div class="white fill-height elevation-3" v-if="!active_projects[0] == false" style="pointer-events: auto;">
-              <project-info :projectIndex="0"></project-info>
-            </div>
-          </v-col>-->
           <v-col cols="5"></v-col>
           <v-col
             style="width: 90px; height: 100vh; position: fixed; top: 0; right: 0;"
@@ -94,7 +89,7 @@
 
 <script>
 import ProjectSocialMedia from "./ProjectSocialMedia";
-import ProjectInfo from "./ProjectInfo";
+import ProjectPreview from "@/components/PreviewModes/ProjectPreview.vue";
 import ProjectsList from "./ProjectsList";
 import BootomTemplate from "@/components/BootomSheet";
 import M6Chat from "@/components/Home/M6Chat";
@@ -104,7 +99,7 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   components: {
-    ProjectInfo,
+    ProjectPreview,
     ProjectsList,
     BootomTemplate,
     ProjectSocialMedia,
