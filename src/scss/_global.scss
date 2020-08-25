@@ -26,13 +26,49 @@ $border-color: #dddddd;
 
 .text-style {
   background-color: white;
-  color: #4d4e53;
   line-height: 1.5;
+  color: #4d4e53;
 }
 .float-button {
-  position: -webkit-sticky;
   background-color: #ffffffa8;
-  z-index: 1;
   position: sticky;
-  top: 20px;
+  z-index: 1;
+  top: 8vh;
+}
+.cursorhover:hover{
+  cursor: pointer;
+}
+.rotate:hover{
+  transform: rotate(-90deg);
+  /* Safari */
+  -webkit-transform: rotate(-90deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-90deg);
+
+  /* IE */
+  -ms-transform: rotate(-90deg);
+
+  /* Opera */
+  -o-transform: rotate(-90deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+.full-rotate{
+  transform: rotate(-180deg);
+  /* Safari */
+  -webkit-transform: rotate(-180deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-180deg);
+
+  /* IE */
+  -ms-transform: rotate(-180deg);
+
+  /* Opera */
+  -o-transform: rotate(-180deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=6);
 }
