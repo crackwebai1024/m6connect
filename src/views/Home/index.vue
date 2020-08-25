@@ -19,13 +19,13 @@
     <!-- Preview used later -->
     
     <div v-if="overlay" opacity="0" class="d-flex align-end" style="width: 100vw; height: 100vh; position: fixed; left:0; top: 0; pointer-events: none;">
-      <v-card tile width="100vw" height="70vh" class="transparent elevation-0">
+      <v-card tile width="100vw" height="85vh" class="transparent elevation-0">
         <v-row no-gutters class="fill-height">
-          <v-col cols="1">
-          </v-col>
+          <!-- <v-col cols="1">
+          </v-col> -->
           <v-col cols="3" class="py-0 px-1">
-            <div class="white fill-height elevation-3" v-if="!active_projects[2] == false" style="pointer-events: auto;">
-              <project-info :projectIndex="2"></project-info>
+            <div class="white fill-height elevation-3" v-if="!active_projects[0] == false" style="pointer-events: auto;">
+              <project-info :projectIndex="0"></project-info>
             </div>
           </v-col>
           <v-col cols="3" class="py-0 px-1">
@@ -33,11 +33,11 @@
               <project-info :projectIndex="1" ></project-info>
             </div>
           </v-col>
-          <v-col cols="3" class="py-0 px-1">
+          <!-- <v-col cols="3" class="py-0 px-1">
             <div class="white fill-height elevation-3" v-if="!active_projects[0] == false" style="pointer-events: auto;">
               <project-info :projectIndex="0"></project-info>
             </div>
-          </v-col>
+          </v-col> -->
           <v-col cols="2">
             
           </v-col>

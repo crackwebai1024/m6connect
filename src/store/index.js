@@ -50,7 +50,7 @@ export default new Vuex.Store({
       state.projects = proj;
     },
     push_new_info_data_active(state, new_data) {
-      state.active_projects.unshift(new_data)
+      state.active_projects.push(new_data)
     },
     setAllWorkers(state, work) {
       state.workers = work;
