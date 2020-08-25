@@ -1,8 +1,9 @@
 <template>
   <div>
-    <v-row no-gutters>
-      <v-col cols="2" class="red">
+    <v-row no-gutters class="grey lighten-2">
+      <v-col cols="2">
         <!-- Side Panel Component  -->
+        <side-panel/>
       </v-col>
       <v-col cols="4">
         <project-social-media/>
@@ -30,6 +31,7 @@ import ProjectInfo from "./ProjectInfo";
 import ProjectsList from "./ProjectsList";
 import BootomTemplate from "@/components/BootomSheet"
 import M6Chat from "@/components/Home/M6Chat"
+import SidePanel from "./SidePanel"
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -39,7 +41,8 @@ export default {
     ProjectsList,
     BootomTemplate,
     ProjectSocialMedia,
-    M6Chat
+    M6Chat,
+    SidePanel
   },
   data: () => ({
     first_preview: false,
