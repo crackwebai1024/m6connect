@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
 export default {
   name: "CardTeamList",
@@ -23,7 +23,7 @@ export default {
     info: Object,
   },
   methods: {
-    ...mapActions(['set_info_data']),
+    ...mapActions("InfoModule", ["set_info_data"]),
     formatPhoneNumber(phoneNumberString) {
       var cleaned = ("" + phoneNumberString).replace(/\D/g, "");
       var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
@@ -35,10 +35,10 @@ export default {
       }
       return null;
     },
-    updateInfo(){
-      this.set_info_data(this.info)
-    }
-  }
+    updateInfo() {
+      this.set_info_data(this.info);
+    },
+  },
 };
 </script>
 

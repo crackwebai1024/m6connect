@@ -14,14 +14,18 @@ $border-color: #dddddd;
   overflow-y: scroll;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .dont-show-scroll::-webkit-scrollbar {
   display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .dont-show-scroll {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .text-style {

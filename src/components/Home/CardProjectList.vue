@@ -2,10 +2,7 @@
   <v-hover v-slot:default="{ hover }">
     <v-card class="mx-auto" tile :class="{ 'on-hover': hover }" @click="updateInfo()">
       <v-img class="white--text align-end" height="100px" :src="info['projet_image_url']">
-        <div
-          class="px-3 py-1"
-          style="position:absolute; top: 0; right: 0;"
-        >{{ info['phase'] }}</div>
+        <div class="px-3 py-1" style="position:absolute; top: 0; right: 0;">{{ info['phase'] }}</div>
       </v-img>
       <v-card-text class="text--primary py-1">
         <div class="d-flex flex-row flex-nowrap align-baseline">
@@ -44,7 +41,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "CardProjectList",
@@ -56,9 +53,12 @@ export default {
     info: Object,
   },
   methods: {
-    ...mapActions("InfoModule", ["set_info_data", "change_preview_navigation_drawer", "push_info_data_active"]),
+    ...mapActions("InfoModule", [
+      "set_info_data",
+      "change_preview_navigation_drawer",
+    ]),
+    ...mapActions("ProjectsListModule", ["push_info_data_active"]),
     updateInfo() {
-      
       // let data = {left: this.info, right: this.info}
       // this.set_info_data(data);
       // let validator = false;
@@ -68,14 +68,11 @@ export default {
       //   }
       // });
       // if(!validator){
-      this.push_info_data_active(this.info['projecj_id']);
+      this.push_info_data_active(this.info["projecj_id"]);
       this.change_preview_navigation_drawer(true);
       // }
     },
   },
-  computed: {
-    ...mapGetters("InfoModule"["get_info_carousel"])
-  }
 };
 </script>
 
