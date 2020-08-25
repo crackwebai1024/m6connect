@@ -14,25 +14,21 @@
       <v-divider class="mb-3 mt-4 light-blue accent-1"></v-divider>
       <div>
         <p class="ml-3 grey--text text--lighten-2 body-2 mb-1">Quick Access</p>
-        <div class="d-flex align-center my-3" v-for="(item,i) in 2" :key="'link' + i">
-          <img
-            alt=""
-            width="32"
-            height="32"
-            src="@/assets/heart.png"
-          >
-          <p class="ml-5 w-4/5 white--text mb-0">My Favorites</p>
+        <div class="d-flex align-center my-3" v-for="(link,i) in quickAccessLinks" :key="'link' + i">
+          <v-icon :dark="true" :large="true">mdi-{{ link.icon }}</v-icon>
+          <p class="ml-5 w-4/5 white--text mb-0">{{ link.title }}</p>
         </div>
         <v-divider class="my-3 light-blue accent-1"></v-divider>
         <p class="ml-3 grey--text text--lighten-2 body-2 mb-1">Departments</p>
-        <div class="d-flex align-center my-3" v-for="(item,i) in 7" :key="'link2' + i">
-          <img
-            alt=""
-            width="32"
-            height="32"
-            src="@/assets/heart.png"
-          >
-          <p class="ml-5 w-4/5 white--text mb-0">My Favorites</p>
+        <div class="overflow-hidden links" ref="showLinksDiv">
+          <div class="d-flex align-center my-3" v-for="(link,i) in departmentsLinks" :key="'link2' + i">
+            <v-icon :dark="true" :large="true">mdi-{{ link.icon }}</v-icon>
+            <p class="ml-5 w-4/5 white--text mb-0">{{ link.title }}</p>
+          </div>
+        </div>
+        <div @click="toogleLinks" class="cursor-pointer d-flex align-center pt-2">
+          <v-icon :dark="true" :large="true">mdi-chevron-{{ iconShowLinks }}</v-icon>
+          <p class="ml-5 white--text mb-0">{{ showLinksMessage }}</p>
         </div>
       </div>
     </div>
@@ -51,7 +47,7 @@
         </div>
       </div>
       <v-divider class="my-3 grey lighten-2"></v-divider>
-            <div class="d-flex">
+      <div class="d-flex">
         <img
           alt=""
           width="150"
@@ -70,11 +66,38 @@
 <script>
 export default {
   data: () => ({
+    showLinks: false,
+    quickAccessLinks: [
+      { url:'', icon:'heart', title: 'My Favorites' },
+      { url:'', icon:'briefcase-variant', title: 'Sharp Profile Page' }
+    ],
+    departmentsLinks: [
+      { url:'', icon:'chart-pie', title: 'Information Technology' },
+      { url:'', icon:'cookie', title: 'Supply Chain' },
+      { url:'', icon:'shield-half-full', title: 'Capital Projects' },
+      { url:'', icon:'earth', title: 'Request for Proposal' },
+      { url:'', icon:'alert', title: 'Contracts' },
+      { url:'', icon:'biohazard', title: 'BioMed' }
+    ]
   }),
   name: "SidePanel",
   computed: {
+    showLinksMessage: function() {
+      return this.showLinks ? 'Less' : 'More'
+    },
+    iconShowLinks: function()  {
+      return this.showLinks ? 'up' : 'down'
+    },
+    heightShowLinksDiv: function() {
+      return (this.departmentsLinks.length * 48) + 'px'
+    }
   },
   methods: {
+    toogleLinks() {
+      this.showLinks = !this.showLinks
+      let linksdiv = this.$refs.showLinksDiv
+      this.showLinks ? linksdiv.style.height = this.heightShowLinksDiv : linksdiv.style.height = "150px"
+    }
   }
 };
 </script>
@@ -91,5 +114,17 @@ export default {
   }
   .spacing-tight {
     letter-spacing: 1px;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .links {
+    transition: height 5s;
+    height: 150px;
+    overflow:hidden;
+    -webkit-transition: height .5s ease;
+    -moz-transition: height .5s ease;
+    -o-transition: height .5s ease;
+    transition: height .5s ease;
   }
 </style>
