@@ -1,11 +1,13 @@
 <template>
 <v-container>
-    <header-component hasslot :info="{title:'Create Post', icon:''}">
+    <header-component class="mb-4" hasslot :info="{title:'Create Post', icon:''}">
       <template v-slot:select>
         <v-select
             :items="items"
-            label="Solo field"
+            label="Everyone"
             dense
+            flat
+            push-tags
             solo
             ></v-select>
       </template>
@@ -22,20 +24,25 @@
         ></v-text-field>
       </template>
     </header-component>
+    <posts-list/>
     <h2>aloo</h2>
 </v-container>
 </template>
 <script>
-import HeaderComponent from "@/components/Home/HeaderComponent"
+import HeaderComponent from "@/components/Home/HeaderComponent";
+import PostsList from "@/components/Home/SocialMedia/PostsList";
+
 
 export default {
     name: "SocialMedia",
     components:{
-        HeaderComponent
+        HeaderComponent,
+        PostsList
     },
     data: () => ({
         searchText:'',
-        items:['Foo', 'Bar', 'Fizz', 'Buzz']
+        items:['Everyone', 'My Company', 'All My Teams', 'IT Team XY', 'CPM TeamZ', 'All My Departments', 'Finances', 'Operations'],
+        posts_list:[{}]
     })
 }
 </script>
