@@ -41,18 +41,15 @@
         <v-divider class="mx-4" />
         <v-card-actions class="px-4">
             <v-icon @click="likeIcon()">{{like_icon}}</v-icon>
-            <p class="my-0 cursorhover" @click="likeIcon()">{{contLikes()}}</p>
+            <p class="my-0 cursor-hover" @click="likeIcon()">{{contLikes()}}</p>
             <v-spacer/>
-            <p class="my-0 cursorhover" @click="showCommentsPost()" >Comments <span>{{data.comments.length}}</span></p>
-            <v-icon left class="rotate" :class="rotate" @click="showCommentsPost()">mdi-chevron-down</v-icon>
+            <p class="my-0 cursor-hover underline" @click="showCommentsPost()" >Comments <span>{{data.comments.length}}</span></p>
         </v-card-actions>
         <v-divider class="mx-4" />
-        <div v-if="showComments">
-            <post-comments :comment=comment v-for="(comment, index) of data.comments" :key="index" />
-        </div>
         <v-col cols="12">
           <v-text-field
             height="37"
+            flat
             label="Write a comment"
             rounded
             @keyup.enter="pushComment()"
@@ -61,8 +58,15 @@
             single-line
             hide-details
             solo-inverted
-        ></v-text-field>
+            ></v-text-field>
         </v-col>
+        <div v-if="showComments">
+            <post-comments class="py-2 px-4" :comment=comment :size=48 v-for="(comment, index) of data.comments" :key="index">
+                <div>
+                    <post-comments :comment=nested_comment :size=36 v-for="(nested_comment, index2) of comment.nested_comments" :key="index2" />
+                </div>
+            </post-comments>
+        </div>
     </v-card>
 </v-container>
 </template>
@@ -105,7 +109,8 @@ export default {
         },
         likeIcon(){
             this.like_state = !this.like_state;
-            this.like_icon = this.like_state ? "mdi-thumb-up" : "mdi-thumb-up-outline"
+            this.like_icon = this.like_state ? "mdi-thumb-up" : "mdi-thumb-up-outline";
+            this.print();
         },
         pushComment(){
             this.data.comments.push({
@@ -122,6 +127,9 @@ export default {
                 }
             })
             this.comment_data = ''
+        },
+        print(){
+            console.log(this.data.comments.nested_comments);
         }
     },
     created(){

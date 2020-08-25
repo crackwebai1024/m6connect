@@ -1,38 +1,46 @@
 <template>
-    <v-container>
-        <v-card flat>
-            <v-card-title>
+    <v-row no-gutterss>
+        <v-col cols="2">
+            <v-avatar :size=size>
+                <v-img :src=comment.imageUrl aspect-ratio="1.7"></v-img>
+            </v-avatar>
+        </v-col>
+        <v-col cols="10">
+            <v-card class="py-3" flat rounded style="background-color: rgb(240, 240, 240);">
+                <v-card-subtitle class="py-0 comment-user-text">
+                    {{comment.name}}
+                </v-card-subtitle>
+                <v-card-text class="comment-text py-0">
+                    {{comment.message}}
+                </v-card-text>
+            </v-card>
+            <div>
                 <v-row>
-                    <v-col cols="2">
-                        <v-avatar>
-                            <img :src=comment.imageUrl>
-                        </v-avatar>
+                    <v-col cols="8" class="comment-btn">
+                        <span 
+                            class="cursor-hover underline comment-btn">Like
+                        </span> - <span class="cursor-hover underline comment-btn">Reply</span> <span 
+                            class="cursor-hover underline timestamp">1 week</span>
                     </v-col>
-                    <v-col cols="10">
-                        <h2 class="text-md-body-1 font-weight-bold">{{comment.name}}</h2>
+                    <v-col cols="4" class="text-right comment-btn">
+                        <span class="cursor-hover comment-btn">800000000000</span>
                     </v-col>
                 </v-row>
-            </v-card-title>
-            <v-card-subtitle class="text-style">
-                {{comment.message}}
-            </v-card-subtitle>
-            <v-card-actions class="px-4">
-                <v-icon @click="likeIcon()">{{like_icon}}</v-icon>
-                <p class="my-0">{{contLikes()}}</p>
-                <v-spacer/>
-                <p class="my-0">{{comment.timestamps.created}}</p>
-            </v-card-actions>
-        </v-card>
-    </v-container>
+            </div>
+            <slot></slot>
+        </v-col>
+    </v-row>
 </template>
 <script>
 export default {
     name: "PostComments",
     props: {
-        comment: Object
+        comment: Object,
+        size: Number,
     },
     data: () => ({
         like_state : false,
+        toggle_exclusive: 2,
         like_icon: "mdi-thumb-up-outline"
     }),
     methods: {
