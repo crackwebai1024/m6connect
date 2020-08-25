@@ -56,20 +56,21 @@ export default {
     info: Object,
   },
   methods: {
-    ...mapActions(["set_info_data", "change_preview_navigation_drawer", "push_info_data_carousel"]),
+    ...mapActions(["set_info_data", "change_preview_navigation_drawer", "push_info_data_active"]),
     updateInfo() {
+      
+      // let data = {left: this.info, right: this.info}
+      // this.set_info_data(data);
+      // let validator = false;
+      // this.get_info_carousel().forEach(element => {
+      //   if(element.projecj_id === this.info.projecj_id){
+      //     validator = true;
+      //   }
+      // });
+      // if(!validator){
+      this.push_info_data_active(this.info['projecj_id']);
       this.change_preview_navigation_drawer(true);
-      let data = {left: this.info, right: this.info}
-      this.set_info_data(data);
-      let validator = false;
-      this.get_info_carousel().forEach(element => {
-        if(element.projecj_id === this.info.projecj_id){
-          validator = true;
-        }
-      });
-      if(!validator){
-        this.push_info_data_carousel(this.info);
-      }
+      // }
     },
   },
   computed: {
