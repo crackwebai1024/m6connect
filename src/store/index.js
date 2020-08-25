@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Data from "./data";
+import _ from "lodash";
 
 Vue.use(Vuex);
 
@@ -13,12 +14,12 @@ export default new Vuex.Store({
     active_projects: [],
     idle_projects: [],
     workers: [],
-    info_carousel:[],
+    info_carousel: [],
     info_data: {
       name: "",
       imageUrl: "",
       email: "",
-      contactPhone: "",
+      contactPhone: ""
     },
     viewsList: Data.get_views_list(),
     tabs: Data.get_tabs(),
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     get_views_list: (state) => () => state.viewsList,
     get_projects: (state) => () => state.projects,
     get_active_projects: (state) => () => state.active_projects,
+    get_idle_projects: (state) => () => state.idle_projects,
     get_workers: (state) => () => state.workers,
     get_info_carousel: (state) => () => state.info_carousel,
     // Return the first project or the data saved
@@ -50,7 +52,20 @@ export default new Vuex.Store({
       state.projects = proj;
     },
     push_new_info_data_active(state, new_data) {
-      state.active_projects.push(new_data)
+      if (state.active_projects.length !== 2) {
+        state.active_projects.push(new_data);
+      } else {
+        state.idle_projects.push(state.active_projects[0]);
+        state.active_projects.push(new_data);
+        state.active_projects.shift();
+        console.log("New IDLE: ", state.idle_projects);
+      }
+    },
+    set_active_projects(state, new_data) {
+      state.active_projects = new_data;
+    },
+    set_idle_projects(state, new_data) {
+      state.idle_projects = new_data;
     },
     setAllWorkers(state, work) {
       state.workers = work;
@@ -61,7 +76,7 @@ export default new Vuex.Store({
     setPreviewNavigationDrawer(state, drawer_state) {
       state.previewNavigationDrawer = drawer_state;
     },
-    set_new_status_bootom_template(state, data){
+    set_new_status_bootom_template(state, data) {
       state.bootom_template = data;
     }
   },
@@ -94,7 +109,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 2",
@@ -119,7 +134,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 3",
@@ -144,7 +159,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 4",
@@ -169,7 +184,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 5",
@@ -189,7 +204,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 6",
@@ -214,7 +229,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 7",
@@ -234,7 +249,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 8",
@@ -259,7 +274,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 9",
@@ -284,7 +299,7 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
+          client_follow_up_date: ""
         },
         {
           project_name: "New Vallarta 10",
@@ -304,8 +319,8 @@ export default new Vuex.Store({
           client_original_request: "",
           client_requested_due_date: "",
           client_in_take_clarification_description: "",
-          client_follow_up_date: "",
-        },
+          client_follow_up_date: ""
+        }
       ];
       commit("setAllProjects", data);
     },
@@ -319,29 +334,39 @@ export default new Vuex.Store({
           imageUrl:
             "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260",
           email: "raulmercado@mail.com",
-          contactPhone: "2321235465",
+          contactPhone: "2321235465"
         },
         {
           name: "Natalia Portman",
           imageUrl:
             "https://images.pexels.com/photos/5119189/pexels-photo-5119189.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
           email: "nataliaportman@mail.com",
-          contactPhone: "1233546529",
-        },
+          contactPhone: "1233546529"
+        }
       ];
       commit("setAllWorkers", data);
     },
-    set_status_bootom_template({commit}, data) {
+    set_status_bootom_template({ commit }, data) {
       commit("set_new_status_bootom_template", data);
     },
     push_info_data_active(context, id) {
-      console.log('push_info_data_active', id)
-      let searchProject = context.state.projects.find((object)=>{
-        return object.projecj_id === id
-      })
-      // console.log('Project Obj', searchProject)
-      context.commit("push_new_info_data_active", searchProject)
+      let searchProject = context.state.projects.find((object) => {
+        return object.projecj_id === id;
+      });
+      context.commit("push_new_info_data_active", searchProject);
+    },
+    remove_from_active(context, id) {
+      let newArray = _.remove(context.state.active_projects, function(n) {
+        return n.projecj_id != id;
+      });
+      context.commit("set_active_projects", newArray);
+    },
+    remove_from_idle(context, id) {
+      let newArray = _.remove(context.state.idle_projects, function(n) {
+        return n.projecj_id != id;
+      });
+      context.commit("set_idle_projects", newArray);
     }
   },
-  modules: {},
+  modules: {}
 });

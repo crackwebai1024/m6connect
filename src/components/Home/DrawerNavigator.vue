@@ -52,10 +52,7 @@
       ...mapGetters(["get_views_list"]),
     },
     methods: {
-      ...mapActions(["set_status_bootom_template"]),
-      asd(){
-        console.log(this.drawer)
-      }
+      ...mapActions(["set_status_bootom_template"])
     }
   }
 </script>

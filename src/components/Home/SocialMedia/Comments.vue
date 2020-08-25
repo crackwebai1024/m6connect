@@ -37,7 +37,6 @@ export default {
     }),
     methods: {
         contLikes(){
-            console.log(this.comment)
             let reac = this.comment.reactions
             return reac.likes + reac.enchants + reac.unlikes
         },

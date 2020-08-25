@@ -6,7 +6,7 @@
           <v-spacer></v-spacer>
           <v-icon color="white" size="18" class="px-2">mdi-window-minimize</v-icon>
           <v-icon color="white" class="">mdi-arrow-expand</v-icon>
-          <v-icon color="white">mdi-close</v-icon>
+          <v-icon color="white" @click="remove">mdi-close</v-icon>
         </div>
         <div style="width: 100%;">
           <div style="position: relative;">
@@ -45,8 +45,12 @@ export default {
     ...mapGetters(["get_active_projects"]),
     infoData() {
         let info = this.get_active_projects()[this.projectIndex]
-        console.log('Info: ', info)
         return info
+    }
+  },
+  methods: {
+    remove() {
+      this.$store.dispatch('remove_from_active', this.infoData.projecj_id)      
     }
   },
   props: {
