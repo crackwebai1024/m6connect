@@ -12,7 +12,7 @@
             v-if="!active_previews[0] == false"
             style="pointer-events: auto;"
           >
-            <project-preview :projectIndex="0"></project-preview>
+            <preview-Selector :type="active_previews[0].register_type" :data="active_previews[0]"></preview-Selector>
           </div>
         </v-col>
         <v-col cols="3" class="py-0 px-1">
@@ -21,7 +21,7 @@
             v-if="!active_previews[1] == false"
             style="pointer-events: auto;"
           >
-            <project-preview :projectIndex="1"></project-preview>
+            <preview-Selector :type="active_previews[1].register_type" :data="active_previews[1]"></preview-Selector>
           </div>
         </v-col>
         <v-col style="width: 90px; height: 100vh; position: fixed; top: 0; right: 0;" class="pb-3">
@@ -39,7 +39,7 @@
               :key="index"
             >
               <v-avatar size="80">
-                <img :src="item.projet_image_url || ''" alt="project_url" />
+                <img :src="item[item['image_url_type']] || ''" alt="project_url" />
               </v-avatar>
               <v-avatar
                 size="30"
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import ProjectPreview from "@/components/PreviewMode/ProjectPreview";
+import PreviewSelector from "@/components/Shared/PreviewSelector";
 import _ from "lodash";
 
 // Store
@@ -68,7 +68,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "general-overlay",
   components: {
-    ProjectPreview,
+    PreviewSelector,
   },
   methods: {
     ...mapActions("GeneralListModule", ["remove_from_idle"]),

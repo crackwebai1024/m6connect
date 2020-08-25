@@ -17,12 +17,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -38,12 +39,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -59,12 +61,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -80,12 +83,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -101,12 +105,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/1280/720?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -122,12 +127,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -143,12 +149,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/1280/720?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -164,12 +171,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -185,12 +193,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     },
     {
       register_type: "project",
@@ -206,12 +215,13 @@ export default {
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      projet_image_url:
+      project_image_url:
         "https://picsum.photos/1280/720?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
-      client_follow_up_date: ""
+      client_follow_up_date: "",
+      image_url_type: "project_image_url"
     }
   ],
   fake_posts: [
@@ -224,35 +234,201 @@ export default {
       images: [
         {
           url:
-            "https://www.pngitem.com/pimgs/m/160-1600311_free-png-download-happy-person-png-images-background.png"
+            "https://www.pngitem.com/pimgs/m/160-1600311_free-png-download-happy-person-png-images-background.png",
+          title: "Image 0",
+          uid: "11110",
+          register_type: "image",
+          image_url_type: "url"
         },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() },
-        { url: "https://picsum.photos/1280/720?nocache=" + Math.random() }
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11111",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 2",
+          uid: "11112",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 3",
+          uid: "11113",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 4",
+          uid: "11114",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 5",
+          uid: "11115",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 6",
+          uid: "11116",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 7",
+          uid: "11117",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 8",
+          uid: "11118",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 9",
+          uid: "11119",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 10",
+          uid: "11120",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 11",
+          uid: "11122",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 12",
+          uid: "11123",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 13",
+          uid: "11124",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 14",
+          uid: "11125",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 15",
+          uid: "11126",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 16",
+          uid: "11127",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 17",
+          uid: "11128",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 18",
+          uid: "11129",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 19",
+          uid: "11130",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11131",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11132",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11133",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11134",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11135",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11136",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11137",
+          register_type: "image",
+          image_url_type: "url"
+        },
+        {
+          url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
+          title: "Image 1",
+          uid: "11138",
+          register_type: "image",
+          image_url_type: "url"
+        }
       ],
       reactions: {
         likes: 100,

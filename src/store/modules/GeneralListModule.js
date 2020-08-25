@@ -29,21 +29,18 @@ export default {
       let data = MockData.fake_projects;
       commit("set_general_list_data", data);
     },
-    push_data_to_active(context, id) {
-      let received_preview = context.state.general_list.find((object) => {
-        return object.uid === id;
-      });
+    push_data_to_active(context, preview_object) {
+      // let received_preview = context.state.general_list.find((object) => {
+      //   return object.uid === obj;
+      // });
       if (context.state.active_previews.length !== 2) {
-        context.state.active_previews.push(received_preview);
+        context.state.active_previews.push(preview_object);
       } else {
         // Push 1st element from 'active_previews' to 'idle_previews'
-        context.dispatch(
-          "push_data_to_idle",
-          context.state.active_previews[0].uid
-        );
+        context.dispatch("push_data_to_idle", context.state.active_previews[0]);
 
         // Push 'received_preview' to 'active_previews'
-        context.state.active_previews.push(received_preview);
+        context.state.active_previews.push(preview_object);
 
         // Remove 1st element from 'active_previews'
         context.dispatch(
@@ -52,11 +49,11 @@ export default {
         );
       }
     },
-    push_data_to_idle(context, id) {
-      let received_preview = context.state.general_list.find((object) => {
-        return object.uid === id;
-      });
-      context.state.idle_previews.push(received_preview);
+    push_data_to_idle(context, preview_object) {
+      // let received_preview = context.state.general_list.find((object) => {
+      //   return object.uid === id;
+      // });
+      context.state.idle_previews.push(preview_object);
     },
     remove_from_active(context, id) {
       let newArray = _.remove(context.state.active_previews, function(n) {

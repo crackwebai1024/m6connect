@@ -12,7 +12,7 @@
         <div style="position: relative;">
           <v-img
             max-height="120"
-            :src="!infoData.uid ? infoData.imageUrl : infoData.projet_image_url"
+            :src="!infoData.uid ? infoData.imageUrl : infoData.project_image_url"
           >
             <div
               class="m6-secondary-grey white--text px-3 py-1"
@@ -35,16 +35,14 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   components: {},
   name: "ProjectInfo",
   computed: {
-    ...mapGetters("GeneralListModule", ["get_active_previews"]),
     infoData() {
-      let info = this.get_active_previews()[this.projectIndex];
-      return info;
+      return this.data;
     },
   },
   methods: {
@@ -54,6 +52,7 @@ export default {
     },
   },
   props: {
+    data: Object,
     projectIndex: Number,
   },
 };

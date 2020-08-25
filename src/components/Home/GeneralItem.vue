@@ -1,7 +1,7 @@
 <template>
   <v-hover v-slot:default="{ hover }">
     <v-card class="mx-auto" tile :class="{ 'on-hover': hover }" @click="updateInfo()">
-      <v-img class="white--text align-end" height="100px" :src="info['projet_image_url']">
+      <v-img class="white--text align-end" height="100px" :src="info['project_image_url']">
         <div class="px-3 py-1" style="position:absolute; top: 0; right: 0;">{{ info['phase'] }}</div>
       </v-img>
       <v-card-text class="text--primary py-1">
@@ -48,7 +48,7 @@ export default {
   props: {
     // info has project_name, uid, phase, company, department, project_leader,
     // project_support, designer, role_two, client_status, internal_description,
-    // internal_objective, projet_image_url, client_original_request, client_requested_due_date,
+    // internal_objective, project_image_url, client_original_request, client_requested_due_date,
     // client_in_take_clarification_description, client_follow_up_date
     info: Object,
   },
@@ -68,7 +68,7 @@ export default {
       //   }
       // });
       // if(!validator){
-      this.push_data_to_active(this.info["uid"]);
+      this.push_data_to_active(this.info);
       this.change_preview_navigation_drawer(true);
       // }
     },
