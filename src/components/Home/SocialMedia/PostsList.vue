@@ -1,6 +1,6 @@
 <template>
     <v-container class="px-0 py-0">
-        <post-item :data="item" v-for="(item, index) of get_posts_data()" :key="index" />
+        <post-item :data="item" v-for="(item, index) of get_filter_data()" :key="index" />
     </v-container>
 </template>
 <script>
@@ -20,7 +20,7 @@ export default {
         ...mapActions(['set_user_data']),
     },
     computed:{
-        ...mapGetters("SocialNetworkModule", ['get_posts_data'])
+        ...mapGetters("SocialNetworkModule", ['get_filter_data'])
     },
     created(){
         this.set_user_data()

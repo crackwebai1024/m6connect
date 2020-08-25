@@ -5,6 +5,8 @@
         <v-select
             :items="items"
             label="Everyone"
+            v-model="item"
+            @change = "filter_posts([item, 1])"
             dense
             flat
             push-tags
@@ -16,7 +18,9 @@
             height="37"
             label="Whats on your mind, Manuel"
             rounded
+            flat
             dense
+            @keyup.enter="filter_posts(['author', 1])"
             v-model="searchText"
             single-line
             hide-details
@@ -30,7 +34,7 @@
 <script>
 import HeaderComponent from "@/components/Home/HeaderComponent";
 import PostsList from "@/components/Home/SocialMedia/PostsList";
-
+import {mapActions} from "vuex";
 
 export default {
     name: "SocialMedia",
@@ -40,8 +44,24 @@ export default {
     },
     data: () => ({
         searchText:'',
-        items:['Everyone', 'My Company', 'All My Teams', 'IT Team XY', 'CPM TeamZ', 'All My Departments', 'Finances', 'Operations'],
+        // items:['Everyone', 'My Company', 'All My Teams', 'IT Team XY', 'CPM TeamZ', 'All My Departments', 'Finances', 'Operations'],
+        items:[
+            {
+                text: "Everyone",
+                value: "Everyone"
+            },{
+                text: "My posts",
+                value: "author"
+            },{
+                text: "My Company",
+                value: "company"
+            }
+        ],
+        item:"Everyone",
         posts_list:[{}]
-    })
+    }),
+    methods:{
+        ...mapActions("SocialNetworkModule",["filter_posts"]),
+    }
 }
 </script>
