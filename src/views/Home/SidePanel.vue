@@ -6,14 +6,14 @@
           alt=""
           class="mr-2"
           width="100"
-          height="50"
+          height="65"
           src="@/assets/sharp-logo.png"
         >
-        <h2 class="ml-2 white--text">Sharp<br>Healthcare</h2>
+        <h2 class="ml-2 white--text spacing-tight font-weight-medium">Sharp Healthcare</h2>
       </div>
-      <v-divider class="my-3 light-blue accent-1"></v-divider>
+      <v-divider class="mb-3 mt-4 light-blue accent-1"></v-divider>
       <div>
-        <p class="ml-3 grey--text text--lighten-2 body-2">Quick Access</p>
+        <p class="ml-3 grey--text text--lighten-2 body-2 mb-1">Quick Access</p>
         <div class="d-flex align-center my-3" v-for="(item,i) in 2" :key="'link' + i">
           <img
             alt=""
@@ -24,8 +24,8 @@
           <p class="ml-5 w-4/5 white--text mb-0">My Favorites</p>
         </div>
         <v-divider class="my-3 light-blue accent-1"></v-divider>
-        <p class="ml-3 grey--text text--lighten-2 body-2">Departments</p>
-        <div class="d-flex align-center my-3" v-for="(item,i) in 7" :key="'link' + i">
+        <p class="ml-3 grey--text text--lighten-2 body-2 mb-1">Departments</p>
+        <div class="d-flex align-center my-3" v-for="(item,i) in 7" :key="'link2' + i">
           <img
             alt=""
             width="32"
@@ -36,17 +36,17 @@
         </div>
       </div>
     </div>
-    <div class="mt-3 t-6 white ma-2 py-3 px-4">
-      <p class="ml-3 grey--text text--lighten-1 body-2">Links</p>
+    <div class="mt-3 t-6 white ma-2 pt-4 pb-5 px-4">
+      <p class="ml-3 grey--text text--lighten-1 body-2  mb-3">Links</p>
       <div class="d-flex">
         <img
           alt=""
           width="150"
-          height="80"
+          height="75"
           src="@/assets/image.png"
         >
         <div class="ml-3">
-          <p class="mb-1 font-weight-medium">Cool title</p>
+          <p class="mb-1 font-weight-medium leading-tight spacing-tight">Cool title</p>
           <p class="body-2 mb-0">Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.</p>
         </div>
       </div>
@@ -55,12 +55,12 @@
         <img
           alt=""
           width="150"
-          height="80"
+          height="75"
           src="@/assets/image.png"
         >
         <div class="ml-3">
-          <p class="mb-1 font-weight-medium">Cool title</p>
-          <p class="body-2 mb-0">Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.</p>
+          <p class="mb-1 font-weight-medium leading-tight spacing-tight">Cool title</p>
+          <p class="body-2 mb-0 leading-tight">Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.</p>
         </div>
       </div>
     </div>
@@ -80,4 +80,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .leading-tight {
+    line-height: 1.4;
+  }
+  .leading-tight	{
+    line-height: 1.25;
+  }
+  .leading-snug	{
+    line-height: 1.375;
+  }
+  .spacing-tight {
+    letter-spacing: 1px;
+  }
 </style>
