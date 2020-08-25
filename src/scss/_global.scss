@@ -5,3 +5,21 @@ $border-color: #dddddd;
   border-color: $border-color;
   border-style: solid;
 }
+
+.height-100-vh {
+  height: 100vh;
+}
+
+.vertical-scroll {
+  overflow-y: scroll;
+}
+
+.dont-show-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.dont-show-scroll {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}

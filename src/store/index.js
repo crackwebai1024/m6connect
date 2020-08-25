@@ -10,6 +10,8 @@ const le = "1280";
 export default new Vuex.Store({
   state: {
     projects: [],
+    active_projects: [],
+    idle_projects: [],
     workers: [],
     info_carousel:[],
     info_data: {
@@ -29,12 +31,11 @@ export default new Vuex.Store({
     // View Home Getters
     get_views_list: (state) => () => state.viewsList,
     get_projects: (state) => () => state.projects,
+    get_active_projects: (state) => () => state.active_projects,
     get_workers: (state) => () => state.workers,
     get_info_carousel: (state) => () => state.info_carousel,
     // Return the first project or the data saved
-    get_info_data: (state) => () =>
-      state.info_data.name === "" ? state.projects[0] : state.info_data,
-
+    get_info_data: (state) => (index) => state.projects[index],
     // View Tabs Getters
     get_tabs: (state) => () => state.tabs,
     get_request_table_header: (state) => () => state.request_table_header,
@@ -48,8 +49,8 @@ export default new Vuex.Store({
     setAllProjects(state, proj) {
       state.projects = proj;
     },
-    push_new_info_data_carousel(state, new_data) {
-      state.info_carousel.unshift(new_data)
+    push_new_info_data_active(state, new_data) {
+      state.active_projects.push(new_data)
     },
     setAllWorkers(state, work) {
       state.workers = work;
@@ -333,8 +334,13 @@ export default new Vuex.Store({
     set_status_bootom_template({commit}, data) {
       commit("set_new_status_bootom_template", data);
     },
-    push_info_data_carousel({commit}, data) {
-      commit("push_new_info_data_carousel", data)
+    push_info_data_active(context, id) {
+      console.log('push_info_data_active', id)
+      let searchProject = context.state.projects.find((object)=>{
+        return object.projecj_id === id
+      })
+      // console.log('Project Obj', searchProject)
+      context.commit("push_new_info_data_active", searchProject)
     }
   },
   modules: {},
