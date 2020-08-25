@@ -13,10 +13,10 @@
                     </v-col>
                 </v-row>
             </v-card-title>
-            <v-card-subtitle>
+            <v-card-subtitle class="text-style">
                 {{comment.message}}
             </v-card-subtitle>
-            <v-card-actions>
+            <v-card-actions class="px-4">
                 <v-icon @click="likeIcon()">{{like_icon}}</v-icon>
                 <p class="my-0">{{contLikes()}}</p>
                 <v-spacer/>
@@ -37,7 +37,6 @@ export default {
     }),
     methods: {
         contLikes(){
-            console.log(this.comment)
             let reac = this.comment.reactions
             return reac.likes + reac.enchants + reac.unlikes
         },
