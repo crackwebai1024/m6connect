@@ -16,10 +16,11 @@ export default {
         
     }),
     methods:{
-        ...mapActions(['set_user_data', 'set_posts_data']),
+        ...mapActions("SocialNetworkModule", ['set_posts_data']),
+        ...mapActions(['set_user_data']),
     },
     computed:{
-        ...mapGetters(['get_posts_data'])
+        ...mapGetters("SocialNetworkModule", ['get_posts_data'])
     },
     created(){
         this.set_user_data()

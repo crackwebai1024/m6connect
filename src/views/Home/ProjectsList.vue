@@ -44,13 +44,13 @@ export default {
     items:['Foo', 'Bar', 'Fizz', 'Buzz']
   }),
   computed: {
-    ...mapGetters(["get_projects"]),
+    ...mapGetters("ProjectsListModule",["get_projects"]),
     projects() {
       return this.get_projects()
     }
   },
   methods: {
-    ...mapActions(["set_projects"]),
+    ...mapActions("ProjectsListModule", ["set_projects"]),
     remainingPerPage(page) {
       let remaining = this.perPage;
       if (page + 1 === this.pages) {

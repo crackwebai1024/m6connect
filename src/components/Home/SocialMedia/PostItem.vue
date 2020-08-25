@@ -129,8 +129,6 @@ export default {
     },
     computed:{
         ...mapGetters(["get_user_data"])
-    },mounted(){
-
     }
 }
 </script>

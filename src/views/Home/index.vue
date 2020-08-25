@@ -72,16 +72,16 @@ export default {
   }),
   name: "Home",
   computed: {
-    ...mapGetters(["get_active_projects"]),
+    ...mapGetters("InfoModule", ["get_active_projects", "get_preview_navigation_drawer"]),
     active_projects() {
       return this.get_active_projects()
     },
     overlay() {
-      return this.$store.getters.get_preview_navigation_drawer()
+      return this.get_preview_navigation_drawer()
     }
   },
   methods: {
-    ...mapActions(["change_preview_navigation_drawer"]),
+    ...mapActions("InfoModule", ["change_preview_navigation_drawer"]),
   },
 };
 </script>

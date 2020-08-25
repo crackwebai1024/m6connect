@@ -56,7 +56,7 @@ export default {
     info: Object,
   },
   methods: {
-    ...mapActions(["set_info_data", "change_preview_navigation_drawer", "push_info_data_active"]),
+    ...mapActions("InfoModule", ["set_info_data", "change_preview_navigation_drawer", "push_info_data_active"]),
     updateInfo() {
       
       // let data = {left: this.info, right: this.info}
@@ -74,7 +74,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["get_info_carousel"])
+    ...mapGetters("InfoModule"["get_info_carousel"])
   }
 };
 </script>
