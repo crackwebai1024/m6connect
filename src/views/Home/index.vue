@@ -4,7 +4,8 @@
       <v-col cols="2">
         <!-- Side Panel Component  -->
       </v-col>
-      <v-col cols="4">
+      <v-col cols="4" class="height-100-vh vertical-scroll dont-show-scroll">
+        <!-- Social Network -->
         <project-social-media/>
       </v-col>
       <v-col cols="4" class="height-100-vh vertical-scroll dont-show-scroll">
