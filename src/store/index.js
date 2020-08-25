@@ -1,19 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Data from "./data";
-import SocialNetworkModule from "./modules/SocialNetworkModule"
-import ProjectsListModule from "./modules/ProjectsListModule"
-import InfoModule from "./modules/InfoModule"
-import _ from "lodash";
+import SocialNetworkModule from "./modules/SocialNetworkModule";
+import ProjectsListModule from "./modules/ProjectsListModule";
+import InfoModule from "./modules/InfoModule";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    idle_projects: [],
     workers: [],
-    info_carousel:[],
-    user_data:{},
+    info_carousel: [],
+    user_data: {},
     viewsList: Data.get_views_list(),
     tabs: Data.get_tabs(),
     request_table_header: Data.get_request_table_header(),
@@ -25,9 +23,6 @@ export default new Vuex.Store({
     get_info_carousel: (state) => () => state.info_carousel,
     get_views_list: (state) => () => state.viewsList,
     get_user_data: (state) => () => state.user_data,
-    get_projects: (state) => () => state.projects,
-    get_active_projects: (state) => () => state.active_projects,
-    get_idle_projects: (state) => () => state.idle_projects,
     get_workers: (state) => () => state.workers,
     // Return the first project or the data saved
     // View Tabs Getters
@@ -38,31 +33,15 @@ export default new Vuex.Store({
     get_bootom_template: (state) => state.bootom_template
   },
   mutations: {
-    push_new_info_data_active(state, new_data) {
-      if (state.active_projects.length !== 2) {
-        state.active_projects.push(new_data);
-      } else {
-        state.idle_projects.push(state.active_projects[0]);
-        state.active_projects.push(new_data);
-        state.active_projects.shift();
-        console.log("New IDLE: ", state.idle_projects);
-      }
-    },
-    set_active_projects(state, new_data) {
-      state.active_projects = new_data;
-    },
-    set_idle_projects(state, new_data) {
-      state.idle_projects = new_data;
-    },
     setAllWorkers(state, work) {
       state.workers = work;
     },
-    set_new_status_bootom_template(state, data){
+    set_new_status_bootom_template(state, data) {
       state.bootom_template = data;
     },
-    set_user_info_data(state, data){
+    set_user_info_data(state, data) {
       state.user_data = data;
-    },
+    }
   },
   actions: {
     set_workers({ commit }) {
@@ -87,37 +66,19 @@ export default new Vuex.Store({
     set_status_bootom_template({ commit }, data) {
       commit("set_new_status_bootom_template", data);
     },
-    set_user_data({commit}){
+    set_user_data({ commit }) {
       let user_data = {
-        id:'123asd123',
-        name: 'Jose Manuel Valdez Gonzalez',
+        id: "123asd123",
+        name: "Jose Manuel Valdez Gonzalez",
         imageUrl: "https://cdn.vuetifyjs.com/images/john.jpg",
-        occupation: "IT Apps (Department)",
-      }
-      commit("set_user_info_data", user_data)
-    },
-    push_info_data_active(context, id) {
-      let searchProject = context.state.projects.find((object) => {
-        return object.projecj_id === id;
-      });
-      context.commit("push_new_info_data_active", searchProject);
-    },
-    remove_from_active(context, id) {
-      let newArray = _.remove(context.state.active_projects, function(n) {
-        return n.projecj_id != id;
-      });
-      context.commit("set_active_projects", newArray);
-    },
-    remove_from_idle(context, id) {
-      let newArray = _.remove(context.state.idle_projects, function(n) {
-        return n.projecj_id != id;
-      });
-      context.commit("set_idle_projects", newArray);
+        occupation: "IT Apps (Department)"
+      };
+      commit("set_user_info_data", user_data);
     }
   },
   modules: {
     SocialNetworkModule,
     ProjectsListModule,
     InfoModule
-  },
+  }
 });

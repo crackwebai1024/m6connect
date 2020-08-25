@@ -115,23 +115,29 @@ export default {
   }),
   name: "Home",
   computed: {
-    ...mapGetters("InfoModule", ["get_active_projects", "get_preview_navigation_drawer", "get_idle_projects"]),
+    ...mapGetters("InfoModule", ["get_preview_navigation_drawer"]),
+    ...mapGetters("ProjectsListModule", [
+      "get_active_projects",
+      "get_idle_projects",
+    ]),
     active_projects() {
       let ap = this.get_active_projects();
       return ap;
     },
     idle_projects() {
       let ip = _.reverse(this.get_idle_projects());
+      console.log("IDLE Projects: ", ip);
       return ip;
     },
     overlay() {
-      return this.get_preview_navigation_drawer()
-    }
+      return this.get_preview_navigation_drawer();
+    },
   },
   methods: {
     ...mapActions("InfoModule", ["change_preview_navigation_drawer"]),
+    ...mapActions("ProjectsListModule", ["remove_from_idle"]),
     removeFromIdle(id) {
-      this.$store.dispatch("remove_from_idle", id);
+      this.remove_from_idle(id);
     },
   },
 };
