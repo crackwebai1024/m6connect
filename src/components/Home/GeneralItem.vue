@@ -10,7 +10,7 @@
           <v-spacer></v-spacer>
           <div class="caption">
             <span class="font-weight-black">ID:</span>
-            {{ info['projecj_id'] }}
+            {{ info['uid'] }}
           </div>
         </div>
         <div class="caption custom-line-height">
@@ -46,7 +46,7 @@ import { mapActions } from "vuex";
 export default {
   name: "GeneralItem",
   props: {
-    // info has project_name, projecj_id, phase, company, department, project_leader,
+    // info has project_name, uid, phase, company, department, project_leader,
     // project_support, designer, role_two, client_status, internal_description,
     // internal_objective, projet_image_url, client_original_request, client_requested_due_date,
     // client_in_take_clarification_description, client_follow_up_date
@@ -57,18 +57,18 @@ export default {
       "set_info_data",
       "change_preview_navigation_drawer",
     ]),
-    ...mapActions("GeneralListModule", ["push_info_data_active"]),
+    ...mapActions("GeneralListModule", ["push_data_to_active"]),
     updateInfo() {
       // let data = {left: this.info, right: this.info}
       // this.set_info_data(data);
       // let validator = false;
       // this.get_info_carousel().forEach(element => {
-      //   if(element.projecj_id === this.info.projecj_id){
+      //   if(element.uid === this.info.uid){
       //     validator = true;
       //   }
       // });
       // if(!validator){
-      this.push_info_data_active(this.info["projecj_id"]);
+      this.push_data_to_active(this.info["uid"]);
       this.change_preview_navigation_drawer(true);
       // }
     },

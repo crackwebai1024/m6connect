@@ -43,13 +43,13 @@ export default {
     items: ["Foo", "Bar", "Fizz", "Buzz"],
   }),
   computed: {
-    ...mapGetters("GeneralListModule", ["get_projects"]),
+    ...mapGetters("GeneralListModule", ["get_general_list"]),
     projects() {
-      return this.get_projects();
+      return this.get_general_list();
     },
   },
   methods: {
-    ...mapActions("GeneralListModule", ["set_projects"]),
+    ...mapActions("GeneralListModule", ["load_mock_general_data"]),
     remainingPerPage(page) {
       let remaining = this.perPage;
       if (page + 1 === this.pages) {
@@ -64,7 +64,7 @@ export default {
     },
   },
   created() {
-    this.set_projects();
+    this.load_mock_general_data();
   },
 };
 </script>

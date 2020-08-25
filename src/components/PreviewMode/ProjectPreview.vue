@@ -12,11 +12,11 @@
         <div style="position: relative;">
           <v-img
             max-height="120"
-            :src="!infoData.projecj_id ? infoData.imageUrl : infoData.projet_image_url"
+            :src="!infoData.uid ? infoData.imageUrl : infoData.projet_image_url"
           >
             <div
               class="m6-secondary-grey white--text px-3 py-1"
-              v-if="infoData.projecj_id"
+              v-if="infoData.uid"
               style="position:absolute; bottom: 0; right: 0;"
             >{{ infoData.phase }}</div>
           </v-img>
@@ -24,10 +24,10 @@
 
         <div class="pa-3 m6-secondary-grey white--text">
           <h2 class="font-weight-black text-center">
-            <div>{{!infoData.projecj_id ? infoData.name : infoData.project_name}}</div>
+            <div>{{!infoData.uid ? infoData.name : infoData.project_name}}</div>
           </h2>
           <div class="caption text-center font-weight-bold">
-            <div>Project ID: {{!infoData.projecj_id ? infoData.contactPhone : infoData.projecj_id}}</div>
+            <div>Project ID: {{!infoData.uid ? infoData.contactPhone : infoData.uid}}</div>
           </div>
         </div>
       </div>
@@ -41,16 +41,16 @@ export default {
   components: {},
   name: "ProjectInfo",
   computed: {
-    ...mapGetters("GeneralListModule", ["get_active_projects"]),
+    ...mapGetters("GeneralListModule", ["get_active_previews"]),
     infoData() {
-      let info = this.get_active_projects()[this.projectIndex];
+      let info = this.get_active_previews()[this.projectIndex];
       return info;
     },
   },
   methods: {
     ...mapActions("GeneralListModule", ["remove_from_active"]),
     remove() {
-      this.remove_from_active(this.infoData.projecj_id);
+      this.remove_from_active(this.infoData.uid);
     },
   },
   props: {
