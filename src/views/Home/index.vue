@@ -13,9 +13,12 @@
       </v-col>
       <v-col cols="2" style="" class="">
       </v-col>
-      <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0; border-left: 1px solid lightgray" class="">
+      <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0;"
+             class="pt-3">
         <!-- Chat Component -->
-        <m6-chat></m6-chat>
+        <v-card class="fill-height">
+          <m6-chat></m6-chat>
+        </v-card>
       </v-col>
     </v-row>
     <!-- Preview used later -->

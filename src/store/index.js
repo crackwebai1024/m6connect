@@ -9,6 +9,9 @@ const le = "1280";
 
 export default new Vuex.Store({
   state: {
+    layout: {
+      contacts: false // true = fullsize | false = mini
+    },
     projects: [],
     workers: [],
     info_carousel:[],
@@ -27,6 +30,7 @@ export default new Vuex.Store({
   },
   getters: {
     // View Home Getters
+    layout: (state) => state.layout,
     get_views_list: (state) => () => state.viewsList,
     get_projects: (state) => () => state.projects,
     get_workers: (state) => () => state.workers,
