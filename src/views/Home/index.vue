@@ -5,13 +5,18 @@
         <!-- Side Panel Component  -->
         <side-panel/>
       </v-col>
-      <v-col cols="4" class="height-100-vh vertical-scroll dont-show-scroll">
-        <!-- Social Network -->
-        <project-social-media />
-      </v-col>
-      <v-col cols="4" class="height-100-vh vertical-scroll dont-show-scroll">
-        <!-- Project List Component-->
-        <projects-list />
+      <v-col cols="8" class="height-100-vh vertical-scroll dont-show-scroll">
+        <sharp-profile-page/>
+        <v-row no-gutters class="mr-2">
+          <v-col cols="6" class="height-100-vh vertical-scroll dont-show-scroll">
+            <!-- Social Network -->
+            <project-social-media />
+          </v-col>
+          <v-col cols="6" class="height-100-vh vertical-scroll dont-show-scroll">
+            <!-- Project List Component -->
+            <projects-list />
+          </v-col>
+        </v-row>
       </v-col>
       <v-col cols="2" style="" class="">
       </v-col>
@@ -105,6 +110,7 @@ import ProjectsList from "./ProjectsList";
 import BootomTemplate from "@/components/BootomSheet"
 import M6Chat from "@/components/Home/M6Chat"
 import SidePanel from "./SidePanel"
+import SharpProfilePage from './Profile/index'
 import _ from "lodash";
 
 import { mapActions, mapGetters } from "vuex";
@@ -116,7 +122,8 @@ export default {
     BootomTemplate,
     ProjectSocialMedia,
     M6Chat,
-    SidePanel
+    SidePanel,
+    SharpProfilePage
   },
   data: () => ({
     first_preview: false,
