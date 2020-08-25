@@ -11,7 +11,9 @@
         <!-- Project List Component-->
         <projects-list />
       </v-col>
-      <v-col cols="2" class="blue">
+      <v-col cols="2" style="" class="">
+      </v-col>
+      <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0; border-left: 1px solid lightgray" class="">
         <!-- Chat Component -->
         <m6-chat></m6-chat>
       </v-col>
