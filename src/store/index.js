@@ -9,6 +9,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    layout: {
+      contacts: false // true = fullsize | false = mini
+    },
+    projects: [],
     workers: [],
     info_carousel: [],
     user_data: {},
@@ -21,6 +25,7 @@ export default new Vuex.Store({
   getters: {
     // View Home Getters
     get_info_carousel: (state) => () => state.info_carousel,
+    layout: (state) => state.layout,
     get_views_list: (state) => () => state.viewsList,
     get_user_data: (state) => () => state.user_data,
     get_workers: (state) => () => state.workers,
