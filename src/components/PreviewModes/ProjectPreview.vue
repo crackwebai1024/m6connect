@@ -41,14 +41,14 @@ export default {
   components: {},
   name: "ProjectInfo",
   computed: {
-    ...mapGetters("ProjectsListModule", ["get_active_projects"]),
+    ...mapGetters("GeneralListModule", ["get_active_projects"]),
     infoData() {
       let info = this.get_active_projects()[this.projectIndex];
       return info;
     },
   },
   methods: {
-    ...mapActions("ProjectsListModule", ["remove_from_active"]),
+    ...mapActions("GeneralListModule", ["remove_from_active"]),
     remove() {
       this.remove_from_active(this.infoData.projecj_id);
     },

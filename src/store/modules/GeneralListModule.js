@@ -1,5 +1,5 @@
 import MockData from "../MockData";
-import ProjectsListModule from "./ProjectsListModule";
+import GeneralListModule from "./GeneralListModule";
 import _ from "lodash";
 
 export default {
@@ -42,7 +42,7 @@ export default {
       commit("setAllProjects", data);
     },
     push_info_data_active(context, id) {
-      let searchProject = ProjectsListModule.state.projects.find((object) => {
+      let searchProject = GeneralListModule.state.projects.find((object) => {
         return object.projecj_id === id;
       });
       context.commit("push_new_info_data_active", searchProject);

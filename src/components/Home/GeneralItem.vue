@@ -44,7 +44,7 @@
 import { mapActions } from "vuex";
 
 export default {
-  name: "CardProjectList",
+  name: "GeneralItem",
   props: {
     // info has project_name, projecj_id, phase, company, department, project_leader,
     // project_support, designer, role_two, client_status, internal_description,
@@ -57,7 +57,7 @@ export default {
       "set_info_data",
       "change_preview_navigation_drawer",
     ]),
-    ...mapActions("ProjectsListModule", ["push_info_data_active"]),
+    ...mapActions("GeneralListModule", ["push_info_data_active"]),
     updateInfo() {
       // let data = {left: this.info, right: this.info}
       // this.set_info_data(data);

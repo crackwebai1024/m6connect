@@ -9,8 +9,8 @@
         <project-social-media />
       </v-col>
       <v-col cols="4" class="height-100-vh vertical-scroll dont-show-scroll">
-        <!-- Project List Component-->
-        <projects-list />
+        <!-- General use list component-->
+        <general-list />
       </v-col>
       <v-col cols="2">
         <!-- Chat Component -->
@@ -83,15 +83,13 @@
         </v-row>
       </v-card>
     </div>
-    <BootomTemplate />
   </div>
 </template>
 
 <script>
-import ProjectSocialMedia from "./ProjectSocialMedia";
+import ProjectSocialMedia from "@/views/Home/ProjectSocialMedia.vue";
 import ProjectPreview from "@/components/PreviewModes/ProjectPreview.vue";
-import ProjectsList from "./ProjectsList";
-import BootomTemplate from "@/components/BootomSheet";
+import GeneralList from "@/views/Home/GeneralList.vue";
 import M6Chat from "@/components/Home/M6Chat";
 import _ from "lodash";
 
@@ -100,8 +98,7 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     ProjectPreview,
-    ProjectsList,
-    BootomTemplate,
+    GeneralList,
     ProjectSocialMedia,
     M6Chat,
   },
@@ -111,7 +108,7 @@ export default {
   name: "Home",
   computed: {
     ...mapGetters("InfoModule", ["get_preview_navigation_drawer"]),
-    ...mapGetters("ProjectsListModule", [
+    ...mapGetters("GeneralListModule", [
       "get_active_projects",
       "get_idle_projects",
     ]),
@@ -130,7 +127,7 @@ export default {
   },
   methods: {
     ...mapActions("InfoModule", ["change_preview_navigation_drawer"]),
-    ...mapActions("ProjectsListModule", ["remove_from_idle"]),
+    ...mapActions("GeneralListModule", ["remove_from_idle"]),
     removeFromIdle(id) {
       this.remove_from_idle(id);
     },

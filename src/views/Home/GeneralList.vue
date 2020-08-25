@@ -2,55 +2,54 @@
   <v-container>
     <header-component hasslot :info="{title:'Create Post', icon:''}" class="mb-3">
       <template v-slot:select>
-        <v-select
-            :items="items"
-            label="Solo field"
-            dense
-            solo
-            ></v-select>
+        <v-select :items="items" label="Solo field" dense solo></v-select>
       </template>
       <template v-slot:input>
         <v-text-field
-            height="37"
-            label="Whats on your mind, Manuel"
-            rounded
-            dense
-            v-model="searchText"
-            single-line
-            hide-details
-            solo-inverted
+          height="37"
+          label="Whats on your mind, Manuel"
+          rounded
+          dense
+          v-model="searchText"
+          single-line
+          hide-details
+          solo-inverted
         ></v-text-field>
       </template>
     </header-component>
-    <div :key="index" v-for="(item, index) of projects" :class="Object.keys(projects).length !== index + 1 ? 'mb-3' : ''">
-      <card-project-list :info="projects[index]" />          
-    </div>            
+    <div
+      :key="index"
+      v-for="(item, index) of projects"
+      :class="Object.keys(projects).length !== index + 1 ? 'mb-3' : ''"
+    >
+      <general-item :info="projects[index]" />
+    </div>
   </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import CardProjectList from "@/components/Home/CardProjectList";
+import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
   components: {
-    CardProjectList,
+    GeneralItem,
     HeaderComponent,
   },
-  name: "ProjectsList",
+  name: "GeneralList",
   data: () => ({
     perPage: 8,
     searchText: "",
-    items:['Foo', 'Bar', 'Fizz', 'Buzz']
+    items: ["Foo", "Bar", "Fizz", "Buzz"],
   }),
   computed: {
-    ...mapGetters("ProjectsListModule",["get_projects"]),
+    ...mapGetters("GeneralListModule", ["get_projects"]),
     projects() {
-      return this.get_projects()
-    }
+      return this.get_projects();
+    },
   },
   methods: {
-    ...mapActions("ProjectsListModule", ["set_projects"]),
+    ...mapActions("GeneralListModule", ["set_projects"]),
     remainingPerPage(page) {
       let remaining = this.perPage;
       if (page + 1 === this.pages) {
