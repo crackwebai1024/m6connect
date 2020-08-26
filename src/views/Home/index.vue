@@ -110,7 +110,7 @@ import ProjectsList from "./ProjectsList";
 import BootomTemplate from "@/components/BootomSheet"
 import M6Chat from "@/components/Home/M6Chat"
 import SidePanel from "./SidePanel"
-import SharpProfilePage from './Profile/index'
+import SharpProfilePage from '@/components/Profile/index'
 import _ from "lodash";
 
 import { mapActions, mapGetters } from "vuex";

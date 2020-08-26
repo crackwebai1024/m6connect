@@ -14,8 +14,8 @@
 
 <script>
 import SearchBar from './SearchBar'
-import PostProfile from './PostProfile'
-import ProfileInfo from './ProfileInfo'
+import PostProfile from './Wall/PostProfile'
+import ProfileInfo from './Wall/ProfileInfo'
 
 export default {
   components: {
