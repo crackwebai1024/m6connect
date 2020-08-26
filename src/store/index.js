@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Data from "./data";
 import SocialNetworkModule from "./modules/SocialNetworkModule";
-import ProjectsListModule from "./modules/ProjectsListModule";
+import GeneralListModule from "./modules/GeneralListModule";
 import InfoModule from "./modules/InfoModule";
 
 Vue.use(Vuex);
@@ -83,7 +83,7 @@ export default new Vuex.Store({
   },
   modules: {
     SocialNetworkModule,
-    ProjectsListModule,
+    GeneralListModule,
     InfoModule
   }
 });
