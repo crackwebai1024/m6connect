@@ -232,8 +232,13 @@ export default {
       contain:
         "Ad do incididunt reprehenderit enim est laborum. Enim dolore do est eu incididunt. Commodo commodo occaecat tempor magna anim. Minim aute nisi culpa sint est et officia elit. Eiusmod eiusmod cupidatat qui qui mollit et irure nulla eiusmod reprehenderit culpa dolor laboris. Consequat pariatur cillum anim minim.",
       name: "Jose Manuel Valdez Gonzalez",
+      occupation: "Web Developer Jr.",
       department: "IT Apps (Department)",
-      imageUrl: "https://cdn.vuetifyjs.com/images/john.jpg",
+      imageUrl:
+        "https://picsum.photos/" + 50 + "/" + 50 + "?nocache=" + Math.random(),
+      timestamps: {
+        created: "12m"
+      },
       images: [
         {
           url:
@@ -441,8 +446,14 @@ export default {
       comments: [
         {
           name: "Eduardo Ramirez",
+          occupation: "HR Recruiter",
           imageUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/a/a0/Pierre-Person.jpg",
+            "https://picsum.photos/" +
+            50 +
+            "/" +
+            50 +
+            "?nocache=" +
+            Math.random(),
           message:
             "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
           reactions: {
@@ -457,7 +468,12 @@ export default {
             {
               name: "Eduardo Ramirez",
               imageUrl:
-                "https://upload.wikimedia.org/wikipedia/commons/a/a0/Pierre-Person.jpg",
+                "https://picsum.photos/" +
+                50 +
+                "/" +
+                50 +
+                "?nocache=" +
+                Math.random(),
               message:
                 "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
               reactions: {
@@ -473,8 +489,14 @@ export default {
         },
         {
           name: "Eduardo Ramirez",
+          occupation: "CEO",
           imageUrl:
-            "https://upload.wikimedia.org/wikipedia/commons/a/a0/Pierre-Person.jpg",
+            "https://picsum.photos/" +
+            50 +
+            "/" +
+            50 +
+            "?nocache=" +
+            Math.random(),
           message:
             "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
           reactions: {
@@ -489,7 +511,12 @@ export default {
             {
               name: "Eduardo Ramirez",
               imageUrl:
-                "https://upload.wikimedia.org/wikipedia/commons/a/a0/Pierre-Person.jpg",
+                "https://picsum.photos/" +
+                50 +
+                "/" +
+                50 +
+                "?nocache=" +
+                Math.random(),
               message:
                 "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
               reactions: {
@@ -512,8 +539,13 @@ export default {
       contain:
         "Ad do incididunt reprehenderit enim est laborum. Enim dolore do est eu incididunt. Commodo commodo occaecat tempor magna anim. Minim aute nisi culpa sint est et officia elit. Eiusmod eiusmod cupidatat qui qui mollit et irure nulla eiusmod reprehenderit culpa dolor laboris. Consequat pariatur cillum anim minim.",
       name: "Rodrigo Martinez",
+      occupation: "Web Developer Senior",
       department: "IT Apps (Department)",
-      imageUrl: "https://cdn.vuetifyjs.com/images/john.jpg",
+      imageUrl:
+        "https://picsum.photos/" + 50 + "/" + 50 + "?nocache=" + Math.random(),
+      timestamps: {
+        created: "56m"
+      },
       images: [],
       reactions: {
         likes: 12,
@@ -529,8 +561,13 @@ export default {
       contain:
         "Ad do incididunt reprehenderit enim est laborum. Enim dolore do est eu incididunt. Commodo commodo occaecat tempor magna anim. Minim aute nisi culpa sint est et officia elit. Eiusmod eiusmod cupidatat qui qui mollit et irure nulla eiusmod reprehenderit culpa dolor laboris. Consequat pariatur cillum anim minim.",
       name: "Rodrigo Martinez",
+      occupation: "HR Recruiter",
       department: "IT Apps (Department)",
-      imageUrl: "https://cdn.vuetifyjs.com/images/john.jpg",
+      imageUrl:
+        "https://picsum.photos/" + 50 + "/" + 50 + "?nocache=" + Math.random(),
+      timestamps: {
+        created: "2h"
+      },
       images: [],
       reactions: {
         likes: 100,
@@ -546,8 +583,13 @@ export default {
       contain:
         "Ad do incididunt reprehenderit enim est laborum. Enim dolore do est eu incididunt. Commodo commodo occaecat tempor magna anim. Minim aute nisi culpa sint est et officia elit. Eiusmod eiusmod cupidatat qui qui mollit et irure nulla eiusmod reprehenderit culpa dolor laboris. Consequat pariatur cillum anim minim.",
       name: "Rodrigo Martinez",
+      occupation: "Project Manager",
       department: "IT Apps (Department)",
-      imageUrl: "https://cdn.vuetifyjs.com/images/john.jpg",
+      imageUrl:
+        "https://picsum.photos/" + 50 + "/" + 50 + "?nocache=" + Math.random(),
+      timestamps: {
+        created: "2m"
+      },
       images: [],
       reactions: {
         likes: 100,
@@ -563,8 +605,13 @@ export default {
       contain:
         "Ad do incididunt reprehenderit enim est laborum. Enim dolore do est eu incididunt. Commodo commodo occaecat tempor magna anim. Minim aute nisi culpa sint est et officia elit. Eiusmod eiusmod cupidatat qui qui mollit et irure nulla eiusmod reprehenderit culpa dolor laboris. Consequat pariatur cillum anim minim.",
       name: "Rodrigo Martinez",
+      occupation: "DevOps Engineer",
       department: "IT Apps (Department)",
-      imageUrl: "https://cdn.vuetifyjs.com/images/john.jpg",
+      imageUrl:
+        "https://picsum.photos/" + 50 + "/" + 50 + "?nocache=" + Math.random(),
+      timestamps: {
+        created: "25m"
+      },
       images: [],
       reactions: {
         likes: 21,

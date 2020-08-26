@@ -2,23 +2,37 @@
   <v-container class="px-0 py-0">
     <v-card class="mb-4">
       <v-card-title class="pb-0">
-        <v-row no-gutters>
-          <v-col cols="2">
-            <v-avatar>
+        <v-row no-gutters align="center">
+          <div class="d-flex align-center">
+            <v-avatar size="40" class="mr-2">
               <img :src="data.imageUrl" />
             </v-avatar>
-          </v-col>
-          <v-col cols="9">
-            <h2 class="text-md-body-1 font-weight-bold">{{data.name}}</h2>
-            <p class="text-caption">{{data.occupation}}</p>
-          </v-col>
-          <v-col cols="1">
-            <v-icon>mdi-filter-variant</v-icon>
-          </v-col>
+            <div class="d-flex flex-column">
+              <div
+                class="cursor-hover underline size-15 line-height-1 font-weight-bold"
+                style="margin-bottom: 2px;"
+              >{{data.name}}</div>
+              <div class="d-flex text-caption line-height-1 grey--text text--darken-1">
+                <div>{{ data.occupation }}</div>
+                <div class="mx-1">·</div>
+                <div>{{ data.timestamps.created }}</div>
+              </div>
+            </div>
+          </div>
+          <v-spacer></v-spacer>
+          <v-menu bottom offset-y left nudge-left>
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-dots-vertical</v-icon>
+            </template>
+            <v-list>
+              <v-list-item @click="()=> {}">Edit Post</v-list-item>
+              <v-list-item @click="()=> {}">Delete Post</v-list-item>
+            </v-list>
+          </v-menu>
         </v-row>
       </v-card-title>
-      <v-card-text>
-        <div>
+      <div>
+        <div class="px-4 py-4">
           <v-btn
             @click="showAll()"
             outlined
@@ -29,54 +43,61 @@
           <v-row no-gutters v-if="data.images.length !== 0">
             <v-col :cols="widthCols()" v-for="(image, index) of picture_items" :key="index">
               <v-img
-                contain
                 :src="image.url"
-                class="rounded-lg mx-1 my-1"
+                class="mx-1 my-1"
                 aspect-ratio="1.7"
                 @click="previewImage(image)"
               ></v-img>
             </v-col>
           </v-row>
+          <v-btn
+            @click="showAll()"
+            block
+            outlined
+            class="mt-2"
+            color="primary"
+            v-if="!all_images && data.images.length>4"
+          >Show All</v-btn>
+          <div
+            class="text-sm-body-2 text-style"
+            :class="data.images.length !== 0 ? 'mt-3' : ''"
+            v-line-clamp="6"
+          >{{data.contain}}</div>
         </div>
-        <v-btn
-          @click="showAll()"
-          block
-          outlined
-          color="primary"
-          v-if="!all_images && data.images.length>4"
-        >Show All</v-btn>
-        <v-row>
-          <p class="text-sm-body-2 mx-4 mt-1 text-style">{{data.contain}}</p>
-        </v-row>
-      </v-card-text>
+      </div>
       <v-divider class="mx-4" />
       <v-card-actions class="px-4">
-        <v-icon @click="likeIcon()">{{like_icon}}</v-icon>
-        <p class="my-0 cursor-hover" @click="likeIcon()">{{contLikes()}}</p>
-        <v-spacer />
-        <p class="my-0 cursor-hover underline" @click="showCommentsPost()">
-          Comments
-          <span>{{data.comments.length}}</span>
-        </p>
+        <v-row no-gutters align="center" class="px-2">
+          <v-icon class="mr-1" @click="likeIcon()">{{like_icon}}</v-icon>
+          <div
+            class="my-0 cursor-hover grey--text text--darken-1"
+            @click="likeIcon()"
+          >{{ contLikes() }}</div>
+          <v-spacer />
+          <div
+            class="my-0 cursor-hover underline grey--text text--darken-1 size-15"
+            @click="showCommentsPost()"
+          >
+            Comments
+            <span>{{data.comments.length}}</span>
+          </div>
+        </v-row>
       </v-card-actions>
       <v-divider class="mx-4" />
       <v-col cols="12">
         <v-text-field
           height="37"
-          flat
-          label="Write a comment"
-          rounded
-          @keyup.enter="pushComment()"
-          dense
           v-model="comment_data"
-          single-line
+          placeholder="Write a comment..."
+          filled
+          rounded
+          dense
           hide-details
-          solo-inverted
+          @keyup.enter="pushComment()"
         ></v-text-field>
       </v-col>
-      <div v-if="showComments">
+      <div v-if="showComments" class="px-4">
         <post-comments
-          class="py-2 px-4"
           :comment="comment"
           :size="48"
           v-for="(comment, index) of data.comments"
@@ -178,4 +199,7 @@ export default {
 .repeating-gradient {
   background-color: rgba(38, 38, 38, 0.7);
 }
+/* .v-text-field.v-input--dense:not(.v-text-field--outlined) input {
+  padding: 0 !important;
+} */
 </style>
