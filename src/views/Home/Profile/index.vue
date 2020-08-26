@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="ma-3">
     <search-bar/>
-    <v-row no-gutters class="mr-2">
-      <v-col cols="6">
-          first col
+    <v-row no-gutters class="mt-4">
+      <v-col cols="6" class="pr-2">
+        <post-profile/>
       </v-col>
-      <v-col cols="6">
-        first col
+      <v-col cols="6" class="pl-2">
+        <post-profile/>
       </v-col>
     </v-row>
   </div>
@@ -14,10 +14,12 @@
 
 <script>
 import SearchBar from './SearchBar'
+import PostProfile from './PostProfile'
 
 export default {
   components: {
-    SearchBar
+    SearchBar,
+    PostProfile
   },
   data: () => ({
     showLinks: false,

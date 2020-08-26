@@ -1,5 +1,5 @@
 <template>
-    <v-row class="d-flex justify-space-between ma-3 py-2 px-5 white width-100 vertical-scroll dont-show-scroll rounded-pill">
+    <v-row class="d-flex justify-space-between ma-0 py-2 px-5 white width-100 vertical-scroll dont-show-scroll rounded-pill">
       <v-col cols="5" class="pa-0">
         <img alt="" class="mr-2"  height="35" src="@/assets/sharp-logo2.png">
       </v-col>
