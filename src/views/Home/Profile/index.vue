@@ -6,7 +6,7 @@
         <post-profile/>
       </v-col>
       <v-col cols="6" class="pl-2">
-        <post-profile/>
+        <profile-info/>
       </v-col>
     </v-row>
   </div>
@@ -15,11 +15,13 @@
 <script>
 import SearchBar from './SearchBar'
 import PostProfile from './PostProfile'
+import ProfileInfo from './ProfileInfo'
 
 export default {
   components: {
     SearchBar,
-    PostProfile
+    PostProfile,
+    ProfileInfo
   },
   data: () => ({
     showLinks: false,

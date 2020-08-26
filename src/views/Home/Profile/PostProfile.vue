@@ -1,5 +1,5 @@
 <template>
-    <v-row class="d-flex justify-space-between ma-0 py-4 px-5 white width-100 vertical-scroll dont-show-scroll">
+    <v-row class="d-flex justify-space-between ma-0 pt-3 pb-2 px-5 white width-100 vertical-scroll dont-show-scroll">
       <v-col cols="2 d-flex justify-end pt-0">
         <v-avatar size="70">
           <img

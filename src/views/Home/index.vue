@@ -7,7 +7,7 @@
       </v-col>
       <v-col cols="8" class="height-100-vh vertical-scroll dont-show-scroll">
         <sharp-profile-page/>
-        <v-row no-gutters class="mr-2">
+        <v-row no-gutters class="mr-2 d-none">
           <v-col cols="6" class="height-100-vh vertical-scroll dont-show-scroll">
             <!-- Social Network -->
             <project-social-media />
