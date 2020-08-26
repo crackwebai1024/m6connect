@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import Data from "./data";
 import SocialNetworkModule from "./modules/SocialNetworkModule";
 import GeneralListModule from "./modules/GeneralListModule";
+import TablesModule from "./modules/TablesModule";
 import InfoModule from "./modules/InfoModule";
 
 Vue.use(Vuex);
@@ -18,8 +19,6 @@ export default new Vuex.Store({
     user_data: {},
     viewsList: Data.get_views_list(),
     tabs: Data.get_tabs(),
-    request_table_header: Data.get_request_table_header(),
-    ticket_table_header: Data.get_ticket_table_header(),
     bootom_template: false
   },
   getters: {
@@ -30,8 +29,6 @@ export default new Vuex.Store({
     get_workers: (state) => () => state.workers,
     // Return the first project or the data saved
     // View Tabs Getters
-    get_request_table_header: (state) => () => state.request_table_header,
-    get_ticket_table_header: (state) => () => state.ticket_table_header,
     get_tabs: (state) => () => state.tabs
   },
   mutations: {
@@ -81,6 +78,7 @@ export default new Vuex.Store({
   modules: {
     SocialNetworkModule,
     GeneralListModule,
+    TablesModule,
     InfoModule
   }
 });
