@@ -56,4 +56,47 @@ export default{
       { text: 'Start Date', value: 'start_date' },
       { text: 'Actions', value: 'actions' },
     ],
+    get_widgets: () => [
+      {
+        icon: 'mdi-format-bold', 
+        name:'Request',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-italic',   
+        name:'Tickets',
+        component: TicketTab
+      },{
+        icon: 'mdi-format-underline',
+        name:'Projects',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-italic',   
+        name:'Matrix',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-bold', 
+        name:'Schedulez',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-italic',   
+        name:'Teams',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-underline',
+        name:'By Company',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-italic',   
+        name:'Meeting Notes',
+        component: RequestTab
+      }
+    ],
+    get_widgets_previews(preview_list_widget_data){
+      let data =[];
+      this.get_widgets().forEach(widget => {
+        let index = preview_list_widget_data.indexOf(widget.name);
+        index >=0 ? data.push(widget) : null;
+      })
+      return data;
+    }
 }

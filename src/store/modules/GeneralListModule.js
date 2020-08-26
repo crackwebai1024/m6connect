@@ -1,4 +1,5 @@
 import MockData from "../MockData";
+import Data from "../data"
 import _ from "lodash";
 
 export default {
@@ -76,6 +77,10 @@ export default {
         return n.uid != id;
       });
       context.commit("set_idle_previews", newArray);
+    },
+    get_nav_widgets(cont, preview_list_widget_data){
+      let widgets = Data.get_widgets_previews(preview_list_widget_data);
+      return widgets;
     }
   }
 };

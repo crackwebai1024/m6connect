@@ -8,7 +8,7 @@
         <v-icon color="white" class>mdi-arrow-expand</v-icon>
         <v-icon color="white" @click="remove">mdi-close</v-icon>
       </div>
-      <navigation-bar/>
+      <navigation-bar :NavWidgets=actions />
     </div>
   </div>
 </template>
@@ -20,21 +20,40 @@ export default {
   components: {
     NavigationBar
   },
+  data: () => ({
+    actions: []
+  }),
   name: "ProjectInfo",
   computed: {
     infoData() {
       return this.data;
     },
+    infoWidget(){
+      return this.setData();
+    }
   },
   methods: {
-    ...mapActions("GeneralListModule", ["remove_from_active"]),
+    ...mapActions("GeneralListModule", ["remove_from_active", "get_nav_widgets"]),
     remove() {
       this.remove_from_active(this.infoData.uid);
     },
+    async setData(){
+      let data = await this.get_nav_widgets(this.infoData.widgets);
+      this.actions = data;
+      console.log(this.actions);
+    }
   },
   props: {
     data: Object,
     projectIndex: Number,
   },
+  watch:{
+    infoData:function(){
+      this.setData();
+    }
+  },
+  created(){
+    this.setData();
+  }
 };
 </script>

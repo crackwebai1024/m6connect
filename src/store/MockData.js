@@ -23,7 +23,11 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Request', 'Tickets', 'Project,s', 'Matrix', 'Schedulez',
+        'Schedu,lez', 'Teams', 'By Company','Meeting Notes'
+      ]
     },
     {
       register_type: "project",
@@ -45,7 +49,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Request', 'Tickets', 'Project,s', 'Matrix', 'Schedulez', 'Schedu,lez',
+      ]
     },
     {
       register_type: "project",
@@ -67,7 +74,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Schedu,lez', 'Teams', 'By Company','Meeting Notes'
+      ]
     },
     {
       register_type: "project",
@@ -89,7 +99,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Teams', 'By Company','Meeting Notes'
+      ]
     },
     {
       register_type: "project",
@@ -111,7 +124,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Matrix', 'Schedulez',
+      ]
     },
     {
       register_type: "project",
@@ -133,7 +149,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Meeting Notes'
+      ]
     },
     {
       register_type: "project",
@@ -155,7 +174,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Request', 'Tickets', 'By Company','Meeting Notes'
+      ]
     },
     {
       register_type: "project",
@@ -177,7 +199,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Request', 'Teams', 'By Company','Meeting Notes'
+      ]
     },
     {
       register_type: "project",
@@ -199,7 +224,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Request', 'Tickets', 'Project,s', 'Matrix', 'Meeting Notes'
+      ]
     },
     {
       register_type: "project",
@@ -221,7 +249,10 @@ export default {
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url"
+      image_url_type: "project_image_url",
+      widgets:[
+        'Request', 'Teams', 'By Company','Meeting Notes'
+      ]
     }
   ],
   fake_posts: [

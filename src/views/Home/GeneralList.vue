@@ -22,7 +22,7 @@
       v-for="(item, index) of projects"
       :class="Object.keys(projects).length !== index + 1 ? 'mb-3' : ''"
     >
-      <general-item :info="projects[index]" />
+      <general-item :info="item" />
     </div>
   </v-container>
 </template>
