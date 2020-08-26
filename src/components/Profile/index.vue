@@ -36,6 +36,9 @@
           </v-col>
           <v-col cols="6" class="pl-2" v-show="currentTab == 0">
             <profile-info/>
+            <template v-for="i in 2">
+              <chart-card :key="'chart'+i"/>
+            </template>
           </v-col>
           <v-col cols="6" class="pr-2" v-show="currentTab == 1">
             <employees/>
@@ -51,6 +54,7 @@
 <script>
 import PostProfile from './Wall/PostProfile'
 import ProfileInfo from './Wall/ProfileInfo'
+import ChartCard from './Wall/ChartCard'
 import Employees from './People/Employees'
 import MonthEmployee from './People/MonthEmployee'
 
@@ -58,6 +62,7 @@ export default {
   components: {
     PostProfile,
     ProfileInfo,
+    ChartCard,
     Employees,
     MonthEmployee
   },
@@ -77,9 +82,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .no-transition .stepper__content { 
-    transition: none; 
-  }
   .v-tab {
     font-weight: 300;
     min-width: 40px;
