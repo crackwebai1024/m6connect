@@ -9,15 +9,15 @@
         <!-- Social Network -->
         <project-social-media />
       </v-col>
-      <v-col cols="4" class="height-100-vh vertical-scroll dont-show-scroll">
+      <v-col :cols="layout.contacts ? 5 : 4" class="height-100-vh vertical-scroll dont-show-scroll">
         <!-- General use list component-->
         <general-list />
       </v-col>
-      <v-col cols="2" style class></v-col>
-      <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0;"
+      <v-col :cols="layout.contacts ? 1 : 2" style class></v-col>
+      <v-col :cols="layout.contacts ? 1 : 2" style="position:fixed; right: 0; bottom: 0; top: 0;"
              class="pt-3 d-flex flex-column align-end">
         <!-- Chat Component -->
-        <v-card class="fill-height" :width="layout.contacts ? 56 : 256">
+        <v-card class="fill-height" :width="layout.contacts ? 56 : '100%'">
           <m6-chat></m6-chat>
         </v-card>
       </v-col>
