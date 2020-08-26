@@ -24,7 +24,6 @@ export default new Vuex.Store({
   },
   getters: {
     // View Home Getters
-    get_info_carousel: (state) => () => state.info_carousel,
     layout: (state) => state.layout,
     get_views_list: (state) => () => state.viewsList,
     get_user_data: (state) => () => state.user_data,
@@ -33,9 +32,7 @@ export default new Vuex.Store({
     // View Tabs Getters
     get_request_table_header: (state) => () => state.request_table_header,
     get_ticket_table_header: (state) => () => state.ticket_table_header,
-    get_tabs: (state) => () => state.tabs,
-    // Tables Getters
-    get_bootom_template: (state) => state.bootom_template
+    get_tabs: (state) => () => state.tabs
   },
   mutations: {
     setAllWorkers(state, work) {

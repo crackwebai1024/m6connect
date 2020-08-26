@@ -4,8 +4,9 @@ const le = "1280";
 export default {
   fake_projects: [
     {
-      project_name: "New Vallarta 1",
-      projecj_id: "1123",
+      register_type: "project",
+      project_name: "Lead Plutonium",
+      uid: "1123",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -25,8 +26,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 2",
-      projecj_id: "2321",
+      register_type: "project",
+      project_name: "Lutetium Okavango",
+      uid: "2321",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -46,8 +48,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 3",
-      projecj_id: "34123",
+      register_type: "project",
+      project_name: "Curium Wu",
+      uid: "34123",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -67,8 +70,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 4",
-      projecj_id: "4312",
+      register_type: "project",
+      project_name: "Syr Darya",
+      uid: "4312",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -88,8 +92,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 5",
-      projecj_id: "5123",
+      register_type: "project",
+      project_name: "Silver Yttrium",
+      uid: "5123",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -109,8 +114,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 6",
-      projecj_id: "6231",
+      register_type: "project",
+      project_name: "Gold Krishna",
+      uid: "6231",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -130,8 +136,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 7",
-      projecj_id: "7q312",
+      register_type: "project",
+      project_name: "Ruthenium Gada",
+      uid: "7q312",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -151,8 +158,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 8",
-      projecj_id: "81231",
+      register_type: "project",
+      project_name: "Iridium Maranon",
+      uid: "81231",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -172,8 +180,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 9",
-      projecj_id: "91231",
+      register_type: "project",
+      project_name: "Lead Nickel",
+      uid: "91231",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -193,8 +202,9 @@ export default {
       image_url_type: "project_image_url"
     },
     {
-      project_name: "New Vallarta 10",
-      projecj_id: "101233",
+      register_type: "project",
+      project_name: "Krypton Saint",
+      uid: "101233",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",

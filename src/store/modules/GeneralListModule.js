@@ -48,6 +48,10 @@ export default {
           context.state.active_previews[0].uid
         );
       }
+      console.log(
+        "context.state.active_previews",
+        context.state.active_previews
+      );
     },
     push_data_to_idle(context, preview_object) {
       // let received_preview = context.state.general_list.find((object) => {

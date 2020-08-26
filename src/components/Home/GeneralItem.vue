@@ -68,6 +68,7 @@ export default {
       //   }
       // });
       // if(!validator){
+      console.log("this.info", this.info);
       this.push_data_to_active(this.info);
       this.change_preview_navigation_drawer(true);
       // }
