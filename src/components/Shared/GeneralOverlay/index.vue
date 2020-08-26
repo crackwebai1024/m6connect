@@ -12,7 +12,7 @@
             v-if="!active_previews[0] == false"
             style="pointer-events: auto;"
           >
-            <preview-Selector :type="active_previews[0].register_type" :data="active_previews[0]"></preview-Selector>
+            <preview-Selector style="pointer-events: auto;" :type="active_previews[0].register_type" :data="active_previews[0]"></preview-Selector>
           </div>
         </v-col>
         <v-col cols="3" class="py-0 px-1">
@@ -21,7 +21,7 @@
             v-if="!active_previews[1] == false"
             style="pointer-events: auto;"
           >
-            <preview-Selector :type="active_previews[1].register_type" :data="active_previews[1]"></preview-Selector>
+            <preview-Selector style="pointer-events: auto;" :type="active_previews[1].register_type" :data="active_previews[1]"></preview-Selector>
           </div>
         </v-col>
         <v-col style="width: 90px; height: 100vh; position: fixed; top: 0; right: 0;" class="pb-3">
@@ -38,7 +38,9 @@
               v-for="(item, index) in idle_previews"
               :key="index"
             >
-              <v-avatar size="80">
+              <v-avatar size="80"
+                @click="show_preview_of_idle(item)"
+                class="cursor-hover">
                 <img :src="item[item['image_url_type']] || ''" alt="project_url" />
               </v-avatar>
               <v-avatar
@@ -71,7 +73,7 @@ export default {
     PreviewSelector,
   },
   methods: {
-    ...mapActions("GeneralListModule", ["remove_from_idle"]),
+    ...mapActions("GeneralListModule", ["remove_from_idle", "show_preview_of_idle"]),
     removeFromIdle(id) {
       this.remove_from_idle(id);
     },

@@ -50,25 +50,21 @@ export default {
           // Remove 1st element from 'active_previews'
           context.dispatch(
             "remove_from_active",
-            context.state.active_previews[0].uid
+            context.state.active_previews[0]
           );
         }
         let index = context.state.idle_previews.indexOf(preview_object);
-        console.log(index);
         if(index>=0){
           context.state.idle_previews.splice(index, 1)
         }
       }
     },
     push_data_to_idle(context, preview_object) {
-      // let received_preview = context.state.general_list.find((object) => {
-      //   return object.uid === id;
-      // });
       context.state.idle_previews.push(preview_object);
     },
-    remove_from_active(context, id) {
+    remove_from_active(context, item) {
       let newArray = _.remove(context.state.active_previews, function(n) {
-        return n.uid != id;
+        return n != item;
       });
       context.commit("set_active_previews", newArray);
     },
@@ -79,8 +75,15 @@ export default {
       context.commit("set_idle_previews", newArray);
     },
     get_nav_widgets(cont, preview_list_widget_data){
-      let widgets = Data.get_widgets_previews(preview_list_widget_data);
-      return widgets;
+      return Data.get_widgets_previews(preview_list_widget_data);
+    },
+    hidden_preview(context, item){
+      context.dispatch("remove_from_active",item);
+      context.dispatch("push_data_to_idle", item);
+    },
+    show_preview_of_idle(context, item){
+      context.dispatch("remove_from_idle",item);
+      context.dispatch("push_data_to_active", item);
     }
   }
 };

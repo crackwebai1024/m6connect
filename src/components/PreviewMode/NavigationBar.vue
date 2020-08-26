@@ -4,6 +4,7 @@
             <v-tooltip bottom v-for="(action, index) of NavWidgets" :key="index">
                 <template v-slot:activator="{ on, attrs }">
                     <v-avatar 
+                        @click="scroll_to(index)"
                         color="indigo" size="36" class="cursorhover my-2 mx-1"
                         v-bind="attrs"
                         v-on="on">
@@ -13,7 +14,7 @@
                 <span>{{action.name}}</span>
             </v-tooltip>
         </div>
-        <preview-body :NavCommp=component ></preview-body>
+        <preview-body :name="name" :NavCommp=component ></preview-body>
     </v-container>
 </template>
 <script>
@@ -28,10 +29,21 @@ export default {
         component:[]
     }),
     props: {
-        NavWidgets: Array
+        NavWidgets: Array,
+        name: String
     },
-    beforeUpdate(){
-        this.NavWidgets.forEach(action => this.component.push(action.component))
+    methods: {
+        scroll_to(index){
+            let name = this.name.split(' ');
+            let direction = document.getElementById(name.join('-')+'-'+index);
+            direction.scrollIntoView({block: "start", behavior: "smooth"});
+        }
+    },
+    watch:{
+        NavWidgets:function(){
+            this.component = [];
+            this.NavWidgets.forEach(action => this.component.push(action.component))
+        }
     }
 }
 </script>
