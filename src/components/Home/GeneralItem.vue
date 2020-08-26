@@ -28,14 +28,6 @@
           </div>
         </div>
       </v-card-text>
-      <!-- <v-list-item three-line>
-      <v-list-item-content>
-        <div class="overline mb-4">{{info['department']}}</div>
-        <v-list-item-title class="headline mb-1">{{info['project_name']}}</v-list-item-title>
-      </v-list-item-content>
-
-      <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar>
-      </v-list-item>-->
     </v-card>
   </v-hover>
 </template>
@@ -46,10 +38,6 @@ import { mapActions } from "vuex";
 export default {
   name: "GeneralItem",
   props: {
-    // info has project_name, uid, phase, company, department, project_leader,
-    // project_support, designer, role_two, client_status, internal_description,
-    // internal_objective, project_image_url, client_original_request, client_requested_due_date,
-    // client_in_take_clarification_description, client_follow_up_date
     info: Object,
   },
   methods: {
@@ -59,21 +47,10 @@ export default {
     ]),
     ...mapActions("GeneralListModule", ["push_data_to_active"]),
     updateInfo() {
-      // let data = {left: this.info, right: this.info}
-      // this.set_info_data(data);
-      // let validator = false;
-      // this.get_info_carousel().forEach(element => {
-      //   if(element.uid === this.info.uid){
-      //     validator = true;
-      //   }
-      // });
-      // if(!validator){
-      console.log("this.info", this.info);
       this.push_data_to_active(this.info);
       this.change_preview_navigation_drawer(true);
-      // }
-    },
-  },
+    }
+  }
 };
 </script>
 

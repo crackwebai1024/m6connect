@@ -17,8 +17,8 @@
     </v-container>
 </template>
 <script>
-import RequestTab from "@/components/Tabs/RequestTab";
-import TicketTab from "@/components/Tabs/TicketTab";
+import RequestTab from "@/components/PreviewMode/PreviewCommponents/Tabs/RequestTab";
+import TicketTab from "@/components/PreviewMode/PreviewCommponents/Tabs/TicketTab";
 import PreviewBody from "./PreviewBody";
 
 

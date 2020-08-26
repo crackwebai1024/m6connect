@@ -1,5 +1,5 @@
-import RequestTab from "@/components/Tabs/RequestTab";
-import TicketTab from "@/components/Tabs/TicketTab";
+import RequestTab from "@/components/PreviewMode/PreviewCommponents/Tabs/RequestTab";
+import TicketTab from "@/components/PreviewMode/PreviewCommponents/Tabs/TicketTab";
 
 export default{
   // Home Data

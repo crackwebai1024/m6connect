@@ -30,28 +30,34 @@ export default {
       commit("set_general_list_data", data);
     },
     push_data_to_active(context, preview_object) {
-      // let received_preview = context.state.general_list.find((object) => {
-      //   return object.uid === obj;
-      // });
-      if (context.state.active_previews.length !== 2) {
-        context.state.active_previews.push(preview_object);
-      } else {
-        // Push 1st element from 'active_previews' to 'idle_previews'
-        context.dispatch("push_data_to_idle", context.state.active_previews[0]);
+      let validator = false;
+      context.state.active_previews.forEach(element => {
+        if(element === preview_object){
+          validator = true;
+        }
+      });
+      if(!validator){
+        if (context.state.active_previews.length !== 2) {
+          context.state.active_previews.push(preview_object);
+        } else {
+          // Push 1st element from 'active_previews' to 'idle_previews'
+          context.dispatch("push_data_to_idle", context.state.active_previews[0]);
 
-        // Push 'received_preview' to 'active_previews'
-        context.state.active_previews.push(preview_object);
+          // Push 'received_preview' to 'active_previews'
+          context.state.active_previews.push(preview_object);
 
-        // Remove 1st element from 'active_previews'
-        context.dispatch(
-          "remove_from_active",
-          context.state.active_previews[0].uid
-        );
+          // Remove 1st element from 'active_previews'
+          context.dispatch(
+            "remove_from_active",
+            context.state.active_previews[0].uid
+          );
+        }
+        let index = context.state.idle_previews.indexOf(preview_object);
+        console.log(index);
+        if(index>=0){
+          context.state.idle_previews.splice(index, 1)
+        }
       }
-      console.log(
-        "context.state.active_previews",
-        context.state.active_previews
-      );
     },
     push_data_to_idle(context, preview_object) {
       // let received_preview = context.state.general_list.find((object) => {
