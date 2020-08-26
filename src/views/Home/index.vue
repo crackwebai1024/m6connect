@@ -14,9 +14,10 @@
         <general-list />
       </v-col>
       <v-col cols="2" style class></v-col>
-      <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0;" class="pt-3">
+      <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0;"
+             class="pt-3 d-flex flex-column align-end">
         <!-- Chat Component -->
-        <v-card class="fill-height">
+        <v-card class="fill-height" :width="layout.contacts ? 56 : 256">
           <m6-chat></m6-chat>
         </v-card>
       </v-col>
@@ -32,6 +33,7 @@ import M6Chat from "@/components/Home/M6Chat";
 import SidePanel from "./SidePanel";
 import GeneralList from "@/views/Home/GeneralList";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
+import {mapState} from 'vuex'
 
 export default {
   components: {
@@ -40,6 +42,9 @@ export default {
     M6Chat,
     GeneralOverlay,
     SidePanel,
+  },
+  computed: {
+    ...mapState(['layout'])
   },
   name: "Home",
 };

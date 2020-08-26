@@ -1,17 +1,20 @@
 <template>
-    <div>
+    <div class="">
         <v-navigation-drawer
         v-model="drawer"
         right
         absolute
         :mini-variant.sync="mini"
-        permanent>
-            <div v-if="!mini">
+        permanent width="100%">
+            <div v-if="!mini" class="">
+                <v-row class="px-3 py">
+                    <v-icon @click="mini = true" class="text--grey">mdi-chevron-right</v-icon>
+                </v-row>
                 <v-row class="px-3">
-                    <v-col class="">
+                    <v-col class="py-0">
                         <p class="text-subtitle-1 grey--text text--darken-1">People</p>
                     </v-col>
-                    <v-col cols="">
+                    <v-col cols="" class="py-0">
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
@@ -139,7 +142,6 @@ export default {
     name: 'm6-chat',
     data: () => ({
         drawer: true,
-        mini: true,
         departments: ['All my departments', 'Finances', 'Operations'],
         departmentsRaw: [
             {
@@ -173,9 +175,9 @@ export default {
     }),
     computed: {
         ...mapState(['layout']),
-        amini: {
+        mini: {
             get: function () {
-                return !this.layout.contacts
+                return this.layout.contacts
             },
             set: function (value) {
                 this.layout.contacts = value
