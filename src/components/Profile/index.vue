@@ -1,12 +1,22 @@
 <template>
   <div class="ma-3">
     <search-bar/>
-    <v-row no-gutters class="mt-4">
+    <!-- Profile Router -->
+    <!-- <v-row no-gutters class="mt-4">
       <v-col cols="6" class="pr-2">
         <post-profile/>
       </v-col>
       <v-col cols="6" class="pl-2">
         <profile-info/>
+      </v-col>
+    </v-row> -->
+    <!-- People Router -->
+    <v-row no-gutters class="mt-4">
+      <v-col cols="6" class="pr-2">
+        <employees/>
+      </v-col>
+      <v-col cols="6" class="pl-2">
+        <month-employee/>
       </v-col>
     </v-row>
   </div>
@@ -14,14 +24,18 @@
 
 <script>
 import SearchBar from './SearchBar'
-import PostProfile from './Wall/PostProfile'
-import ProfileInfo from './Wall/ProfileInfo'
+// import PostProfile from './Wall/PostProfile'
+// import ProfileInfo from './Wall/ProfileInfo'
+import Employees from './People/Employees'
+import MonthEmployee from './People/MonthEmployee'
 
 export default {
   components: {
     SearchBar,
-    PostProfile,
-    ProfileInfo
+    // PostProfile,
+    // ProfileInfo
+    Employees,
+    MonthEmployee
   },
   data: () => ({
     showLinks: false,
