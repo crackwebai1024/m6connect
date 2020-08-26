@@ -12,7 +12,8 @@ const router = new VueRouter({
       path: "/",
       name: "home",
       component: Home,
-    },{
+    },
+    {
       path: "/tabs",
       name: "tabs",
       component: Tabs

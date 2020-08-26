@@ -10,9 +10,7 @@
       </v-col>
       <v-col cols="10" class="pa-0 align-center">
         <v-row class="d-flex ma-0 align-center rounded-pill grey lighten-3">
-          <v-col cols="12" class="py-3 px-5 text-left">
-            What's on your mind, User?
-          </v-col>
+          <v-text-field label="What's on your mind, User?" class="py-3 px-8 text-left" hide-details="auto"></v-text-field>
         </v-row>
         <v-row class="d-flex align-center mt-3 mb-1 ml-2">
           <div class="caption text-left mr-3 pa-0 blue--text text--lighten-1">
