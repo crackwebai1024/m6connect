@@ -16,11 +16,11 @@
                     offset-y="10"
                     class="mr-3">
                     <v-avatar size="36">
-                        <v-img src="https://cdn.vuetifyjs.com/images/john.jpg"></v-img>
+                        <v-img :src="user.pic"></v-img>
                     </v-avatar>
                 </v-badge>
                 <v-list-item-title
-                :class="display? 'white--text' : 'grey--text text--darken-1'">
+                :class="display? 'white--text' : 'grey--text text--darken-3'">
                     {{user.name}}
                 </v-list-item-title>
             </v-list-item>
@@ -29,20 +29,25 @@
           <v-icon @click="closeChat()">mdi-close</v-icon>
       </v-row>
       <v-row v-if="display" class="white pa-3 d-flex flex-column fill-height">
-          <message>Hi, what's up?</message>
-          <div class="pb-2 text-center">
-              <a class="grey lighten-2 pa-2 grey--text text--darken-2 text-caption rounded">Hoy</a>
-          </div>
-          <message sent>Well....</message>
-          <message sent>Nothing new. ¿ What about you ?</message>
-          <message>Same as always</message>
+            <template v-for="(group, i) in groupedMessages">
+                <div :key="'group-' + group">
+                    <a>{{i}}</a>
+                </div>
+                <message :sent="msg.author === 'me'"
+                   :key="'msg-' + i" 
+                   v-for="(msg, i) in group">
+                   {{msg.body}}
+                </message>
+            </template>
       </v-row>
       <v-row v-if="display" class="white px-3" justify="center">
-            
           <v-text-field
+            v-model="input"
             placeholder="Type a message"
             prepend-inner-icon="mdi-emoticon"
             append-outer-icon="mdi-send"
+            @keydown.enter="sendMessage()"
+            @click:append-outer="sendMessage()"
           ></v-text-field>
       </v-row>
   </div>
@@ -53,7 +58,32 @@ import { mapState } from 'vuex'
 import Message from '@/components/Home/M6Chat/Message'
 export default {
     data: () => ({
-        display: true
+        input: "",
+        display: true,
+        messages: [
+            {
+                date: {
+                    day: 1,
+                    month: 2,
+                    year: 1999,
+                    hour: 19,
+                    minute: 1
+                },
+                body: "This message was sent by me",
+                author: "me"
+            },
+            {
+                date: {
+                    day: 1,
+                    month: 2,
+                    year: 1999,
+                    hour: 19,
+                    minute: 1
+                },
+                body: "Yeah, you're right",
+                author: "1"
+            }
+        ]
     }),
     props: ['data'],
     components: {
@@ -63,6 +93,13 @@ export default {
         ...mapState(['chats', 'users']),
         user: function(){
             return this.users.find(u => u.id === this.data.id)
+        },
+        groupedMessages () {
+            let groupedMessages = this.messages.reduce(function(r,a) {
+                r[a.date.day] = [...r[a.date.day] || [], a];
+                return r;
+            }, {})
+            return groupedMessages
         }
     },
     methods: {
@@ -72,6 +109,24 @@ export default {
                 this.chats.splice(this.chats.indexOf(this.data.id), 1)
                 }
             }
+        },
+        sendMessage(){
+            let input = this.input
+            const date = new Date()
+
+            let message = {
+                date: {
+                    day: date.getDate(),
+                    month: date.getMonth(),
+                    year: date.getFullYear(),
+                    hour: date.getHours(),
+                    minute: date.getMinutes()
+                },
+                body: input,
+                author: 'me'
+            }
+            this.messages.push(message)
+            this.input = ''
         }
     }
 

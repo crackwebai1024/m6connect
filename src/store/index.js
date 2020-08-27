@@ -12,7 +12,7 @@ export default new Vuex.Store({
     layout: {
       contacts: false // true = fullsize | false = mini
     },
-    chats: [1,2],
+    chats: [],
     users: [
         {
             id: 1,

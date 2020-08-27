@@ -63,7 +63,7 @@
                         <v-expansion-panel-content class="px-0 pb-0">
                             <v-list class="" style="">
                                 <v-list-item
-                                    @click="chats.push(u.id)"
+                                    @click="startChat(u.id)"
                                     :key="index"
                                     class="pa-0 my-2"
                                     v-for="(u, index) in dep.users">
@@ -90,8 +90,9 @@
                 <template v-for="(dep, index) in departments">
                     <v-menu offset-x left class="mr-3" open-on-hover :key="index">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-list v-on="on" class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
+                            <v-list class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
                                 <v-list-item
+                                    v-on="on"
                                     :key="index"
                                     :class="{'mt-n7' : index != 0}"
                                     class="justify-center" v-for="(u, index) in dep.users">
@@ -192,6 +193,17 @@ export default {
             }
         }
     },
+    methods: {
+        startChat(id) {
+            let c = this.chats
+            if (!c.includes(id)) {
+                if (c.length > 4) {
+                    c.shift()
+                }
+                c.push(id)
+            }
+        }
+    }
 }
 </script>
 
