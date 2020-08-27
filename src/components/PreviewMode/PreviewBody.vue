@@ -1,11 +1,12 @@
 <template>
-    <v-container class="vertical-scroll dont-show-scroll" style="height:70vh">
+    <!-- <v-container class="vertical-scroll dont-show-scroll" style="height:70vh"> -->
+    <v-container class="vertical-scroll" style="height:70vh">
         <!-- That ID is used to scrolling the component -->
         <component :id="getName()+'-'+index" v-bind:is="item" v-for="(item, index) of items" :key="index"></component>
         <infinite-loading @infinite="infiniteHandler" :identifier="NavCommp">
             <div slot="no-more"></div>
         </infinite-loading>
-        <div class="no-container" style="height: 200px;" :id="getName()+'-'+index" v-for="(item, index) of NavCommp" :key="index+'a'">
+        <div class="no-container" :id="getName()+'-'+index" v-for="(item, index) of NavCommp" :key="index+'a'">
         </div>
     </v-container>
 </template>
@@ -40,6 +41,8 @@ export default {
     },
     watch:{
         NavCommp:function(){
+            this.items = [],
+            this.currentIndex = 0
             this.secondList = this.NavCommp;
         }
     }
