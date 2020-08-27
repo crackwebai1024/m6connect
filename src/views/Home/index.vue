@@ -23,6 +23,7 @@
       </v-col>
     </v-row>
     <!-- Preview overlay -->
+    <chat-wrapper></chat-wrapper>
     <general-overlay></general-overlay>
   </div>
 </template>
@@ -30,6 +31,7 @@
 <script>
 import ProjectSocialMedia from "./ProjectSocialMedia";
 import M6Chat from "@/components/Home/M6Chat";
+import ChatWrapper from "@/components/Home/M6Chat/ChatWrapper";
 import SidePanel from "./SidePanel";
 import GeneralList from "@/views/Home/GeneralList";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
@@ -40,6 +42,7 @@ export default {
     GeneralList,
     ProjectSocialMedia,
     M6Chat,
+    ChatWrapper,
     GeneralOverlay,
     SidePanel,
   },

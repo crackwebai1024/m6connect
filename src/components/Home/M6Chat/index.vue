@@ -62,7 +62,11 @@
                         <v-expansion-panel-header dense class="font-weight-light px-2 grey lighten-3">{{dep.name}}</v-expansion-panel-header>
                         <v-expansion-panel-content class="px-0 pb-0">
                             <v-list class="" style="">
-                                <v-list-item  :key="index" class="pa-0 my-2" v-for="(u, index) in dep.users">
+                                <v-list-item
+                                    @click="chats.push(u.id)"
+                                    :key="index"
+                                    class="pa-0 my-2"
+                                    v-for="(u, index) in dep.users">
                                     <v-badge
                                         bordered
                                         bottom
@@ -86,10 +90,9 @@
                 <template v-for="(dep, index) in departmentsRaw">
                     <v-menu offset-x left class="mr-3" open-on-hover :key="index">
                         <template v-slot:activator="{ on, attrs }">
-                            <v-list class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
+                            <v-list v-on="on" class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
                                 <v-list-item
                                     :key="index"
-                                    v-on="on"
                                     :class="{'mt-n7' : index != 0}"
                                     class="justify-center" v-for="(u, index) in dep.users">
                                     <v-badge
@@ -111,7 +114,6 @@
                             <v-subheader>{{dep.name}}</v-subheader>
                             <v-list-item
                                     :key="index"
-                                    v-on="on"
                                     class="" v-for="(u, index) in dep.users">
                                     <v-badge
                                         bottom
@@ -148,14 +150,17 @@ export default {
                 name: "Information Technologies",
                 users: [
                     {
+                        id: 1,
                         name: "John Doe",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
                     },
                     {
+                        id: 2,
                         name: "Example User",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
                     },
                     {
+                        id: 3,
                         name: "Another Example",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
                     }
@@ -165,6 +170,7 @@ export default {
                 name: "Project Finances",
                 users: [
                     {
+                        id: 4,
                         name: "John Doe",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
                     }
@@ -174,7 +180,7 @@ export default {
         teams: ['All my teams', 'IT Team XY', 'CPM Team Z'],
     }),
     computed: {
-        ...mapState(['layout']),
+        ...mapState(['layout', 'chats']),
         mini: {
             get: function () {
                 return this.layout.contacts
