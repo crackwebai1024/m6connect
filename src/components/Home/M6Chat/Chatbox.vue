@@ -30,8 +30,10 @@
       </v-row>
       <v-row v-if="display" class="white pa-3 d-flex flex-column fill-height">
             <template v-for="(group, i) in groupedMessages">
-                <div :key="'group-' + group">
-                    <a>{{i}}</a>
+                <div class="text-center py-2" :key="'group-' + group">
+                    <a class="px-2 py-1 text-caption rounded-lg grey lighten-2 grey--text text--darken-2">
+                        {{i | day}}
+                    </a>
                 </div>
                 <message :sent="msg.author === 'me'"
                    :key="'msg-' + i" 
@@ -100,6 +102,12 @@ export default {
                 return r;
             }, {})
             return groupedMessages
+        }
+    },
+    filters: {
+        day: day => {
+            var days = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 7: 'Sunday'}
+            return days[day]
         }
     },
     methods: {
