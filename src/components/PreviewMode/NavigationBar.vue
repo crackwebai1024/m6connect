@@ -33,10 +33,23 @@ export default {
         name: String
     },
     methods: {
-        scroll_to(index){
+        async scroll_to(index){
+            for (let i = 0; i <= index; i++) {
+                let direction= document.getElementById(this.getName()+'-'+index);
+                direction.scrollIntoView({block: "start", behavior: "smooth"});
+                await this.resolveAfter2Seconds(1);
+            }
+        },
+        getName(){
             let name = this.name.split(' ');
-            let direction = document.getElementById(name.join('-')+'-'+index);
-            direction.scrollIntoView({block: "start", behavior: "smooth"});
+            return name.join('-')
+        },
+        resolveAfter2Seconds(x) { 
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve(x);
+                }, 300);
+            });
         }
     },
     watch:{

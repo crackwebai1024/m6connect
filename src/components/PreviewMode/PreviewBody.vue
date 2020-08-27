@@ -5,6 +5,7 @@
         <infinite-loading @infinite="infiniteHandler">
             <div slot="no-more"></div>
         </infinite-loading>
+        <div :id="getName()+'-'+index" v-for="(item, index) of NavCommp" :key="index+'a'"></div>
     </v-container>
 </template>
 <script>
@@ -24,20 +25,22 @@ export default {
             return name.join('-')
         },
         infiniteHandler($state) {
+            this.currentState = $state;
             if(this.currentIndex < this.NavCommp.length){
                 this.items.push(this.NavCommp[this.currentIndex])
                 this.currentIndex++;
                 $state.loaded();
             }else{
                 $state.complete();
-                $state.resete();
-            this.items = [];
-            this.currentIndex = 0;
+                
             }
         },
     },
     watch:{
         NavCommp:function(){
+            this.items = [];
+            this.currentIndex = 0;
+            console.log(this.NavCommp)
         }
     }
 }
