@@ -7,10 +7,11 @@ import lineClamp from "vue-line-clamp";
 
 Vue.config.productionTip = false;
 
+Vue.use(lineClamp);
+
 new Vue({
   router,
   store,
   vuetify,
-  lineClamp,
   render: (h) => h(App)
 }).$mount("#app");

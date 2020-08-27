@@ -44,7 +44,7 @@
             <v-col :cols="widthCols()" v-for="(image, index) of picture_items" :key="index">
               <v-img
                 :src="image.url"
-                class="mx-1 my-1"
+                class="mx-1 my-1 pointer"
                 aspect-ratio="1.7"
                 @click="previewImage(image)"
               ></v-img>
@@ -59,9 +59,9 @@
             v-if="!all_images && data.images.length>4"
           >Show All</v-btn>
           <div
-            class="text-sm-body-2 text-style"
+            class="size-14 text-style black--text"
             :class="data.images.length !== 0 ? 'mt-3' : ''"
-            v-line-clamp="6"
+            v-line-clamp="5"
           >{{data.contain}}</div>
         </div>
       </div>
@@ -96,7 +96,7 @@
           @keyup.enter="pushComment()"
         ></v-text-field>
       </v-col>
-      <div v-if="showComments" class="px-4">
+      <div v-if="showComments" class="px-4 pb-3">
         <post-comments
           :comment="comment"
           :size="48"
@@ -139,6 +139,7 @@ export default {
   }),
   methods: {
     ...mapActions("GeneralListModule", ["push_data_to_active"]),
+    ...mapActions(["set_image_preview_overlay"]),
     widthCols() {
       return this.data.images.length === 1 ? 12 : 6;
     },
@@ -182,8 +183,8 @@ export default {
     print() {
       console.log(this.data.comments.nested_comments);
     },
-    previewImage(image_object) {
-      this.push_data_to_active(image_object);
+    previewImage(selected) {
+      this.set_image_preview_overlay([this.picture_items, selected]);
     },
   },
   created() {

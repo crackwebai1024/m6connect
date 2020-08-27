@@ -23,6 +23,12 @@
     </v-row>
     <!-- Preview overlay -->
     <general-overlay></general-overlay>
+    <image-caroussel-overlay
+      @restartImageArray="restartImageArray()"
+      :value="overlayActive"
+      :images="imageArray"
+      :selected="selectedImage"
+    ></image-caroussel-overlay>
   </div>
 </template>
 
@@ -32,6 +38,8 @@ import M6Chat from "@/components/Home/M6Chat";
 import SidePanel from "./SidePanel";
 import GeneralList from "@/views/Home/GeneralList";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
+import ImageCarousselOverlay from "@/components/Shared/ImageCarousselOverlay";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: {
@@ -40,8 +48,33 @@ export default {
     M6Chat,
     GeneralOverlay,
     SidePanel,
+    ImageCarousselOverlay,
+  },
+  computed: {
+    ...mapGetters(["get_image_preview_overlay"]),
+    imageArray() {
+      let images = this.get_image_preview_overlay()[0];
+      console.log("Images", images);
+      return images;
+    },
+    selectedImage() {
+      let selected = this.get_image_preview_overlay()[1];
+      console.log("selected", selected);
+      return selected;
+    },
+    overlayActive() {
+      let selected = this.get_image_preview_overlay()[0].length > 0;
+      console.log("selected", selected);
+      return selected;
+    },
   },
   name: "Home",
+  methods: {
+    ...mapActions(["reset_image_overlay"]),
+    restartImageArray() {
+      this.reset_image_overlay();
+    },
+  },
 };
 </script>
 

@@ -8,7 +8,7 @@
     <v-col cols="10">
       <v-card class="py-3" flat rounded style="background-color: rgb(240, 240, 240);">
         <v-card-subtitle class="py-0 comment-user-text mb-1">{{comment.name}}</v-card-subtitle>
-        <v-card-text class="comment-text py-0" v-line-clamp="5">{{comment.message}}</v-card-text>
+        <v-card-text class="comment-text py-0" v-line-clamp="4">{{comment.message}}</v-card-text>
       </v-card>
       <div class="px-3 py-1">
         <v-row>
