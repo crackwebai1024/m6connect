@@ -21,7 +21,7 @@
                 </v-badge>
                 <v-list-item-title
                 :class="display? 'white--text' : 'grey--text text--darken-1'">
-                    User name in here hah
+                    {{user.name}}
                 </v-list-item-title>
             </v-list-item>
           </v-col>
@@ -60,11 +60,13 @@ export default {
         Message
     },
     computed: {
-        ...mapState(['chats'])
+        ...mapState(['chats', 'users']),
+        user: function(){
+            return this.users.find(u => u.id === this.data.id)
+        }
     },
     methods: {
         closeChat() {
-            console.log(`Closing chat ${this.data.id}`)
             if (this.chats.includes(this.data.id)) {
                 if (this.chats.indexOf(this.data.id) > -1) {
                 this.chats.splice(this.chats.indexOf(this.data.id), 1)

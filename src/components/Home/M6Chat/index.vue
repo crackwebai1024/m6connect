@@ -39,12 +39,12 @@
                                     </v-list-item>
 
                                     <v-subheader>Teams</v-subheader>
-                                    <v-list-item  :key="'team-' + key" v-for="(team, key) in teams">
+                                    <v-list-item  :key="'team-' + key" v-for="(team, key) in filter.teams">
                                         <v-list-item-title>{{team}}</v-list-item-title>
                                     </v-list-item>
 
                                     <v-subheader>Departments</v-subheader>
-                                    <v-list-item :key="'dep-' + key" v-for="(dep, key) in departments">
+                                    <v-list-item :key="'dep-' + key" v-for="(dep, key) in filter.departments">
                                         <v-list-item-title>{{dep}}</v-list-item-title>
                                     </v-list-item>
                                 </v-list>
@@ -58,7 +58,7 @@
                 <v-subheader class=" lighten-3 font-weight-medium px-2 black--text">Departments</v-subheader>
             
                 <v-expansion-panels multiple accordion>
-                    <v-expansion-panel class="" :key="index" dense v-for="(dep, index) in departmentsRaw">
+                    <v-expansion-panel class="" :key="index" dense v-for="(dep, index) in departments">
                         <v-expansion-panel-header dense class="font-weight-light px-2 grey lighten-3">{{dep.name}}</v-expansion-panel-header>
                         <v-expansion-panel-content class="px-0 pb-0">
                             <v-list class="" style="">
@@ -87,7 +87,7 @@
                 </v-expansion-panels>
             </div>
             <div v-else>
-                <template v-for="(dep, index) in departmentsRaw">
+                <template v-for="(dep, index) in departments">
                     <v-menu offset-x left class="mr-3" open-on-hover :key="index">
                         <template v-slot:activator="{ on, attrs }">
                             <v-list v-on="on" class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
@@ -144,8 +144,11 @@ export default {
     name: 'm6-chat',
     data: () => ({
         drawer: true,
-        departments: ['All my departments', 'Finances', 'Operations'],
-        departmentsRaw: [
+        filter: {
+            departments: ['All my departments', 'Finances', 'Operations'],
+            teams: ['All my teams', 'IT Team XY', 'CPM Team Z'],
+        },
+        departments: [
             {
                 name: "Information Technologies",
                 users: [
@@ -177,7 +180,6 @@ export default {
                 ]
             }
         ],
-        teams: ['All my teams', 'IT Team XY', 'CPM Team Z'],
     }),
     computed: {
         ...mapState(['layout', 'chats']),

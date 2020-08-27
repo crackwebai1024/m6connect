@@ -13,6 +13,28 @@ export default new Vuex.Store({
       contacts: false // true = fullsize | false = mini
     },
     chats: [1,2],
+    users: [
+        {
+            id: 1,
+            name: "John Doe",
+            pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
+        },
+        {
+            id: 2,
+            name: "Example User",
+            pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
+        },
+        {
+            id: 3,
+            name: "Another Example",
+            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+        },
+        {
+            id: 4,
+            name: "John Doe",
+            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+        }
+    ],
     projects: [],
     workers: [],
     info_carousel: [],
