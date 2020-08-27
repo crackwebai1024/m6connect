@@ -1,13 +1,10 @@
 <template>
   <v-card class="pa-3" tile :height="info.height || 'inherit'">
-    <v-row no-gutters class="fill-height" align="center" justify="start">
-      <v-col cols="7" class="d-flex">
-        <v-icon left>{{info.icon}}</v-icon>
-        <div class=" text-lg-h6">{{ info.title }}</div>
-      </v-col>
-      <v-col cols="5" class="d-flex" v-if="hasslot">
-        <slot align="center" class=" text-lg-h6" name="select"></slot>
-      </v-col>
+    <v-row no-gutters class="fill-height mb-3" align="center" justify="start">
+      <!-- <v-icon left>{{info.icon}}</v-icon> -->
+      <div class="caption">{{ info.title }}</div>
+      <v-spacer></v-spacer>
+      <slot v-if="hasslot" align="center" class="text-lg-h6" name="select"></slot>
     </v-row>
     <v-row class="mx-2">
       <slot name="input"></slot>
