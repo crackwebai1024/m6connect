@@ -1,12 +1,11 @@
 <template>
-    <!-- <v-container class="vertical-scroll dont-show-scroll" style="height:70vh"> -->
-    <v-container class="vertical-scroll" style="height:70vh">
+    <v-container class="vertical-scroll dont-show-scroll" style="height:70vh">
         <!-- That ID is used to scrolling the component -->
-        <component :id="getName()+'-'+index" v-bind:is="item" v-for="(item, index) of items" :key="index"></component>
+        <component :id="name+'-'+index" v-bind:is="item" v-for="(item, index) of items" :key="index"></component>
         <infinite-loading @infinite="infiniteHandler" :identifier="NavCommp">
             <div slot="no-more"></div>
         </infinite-loading>
-        <div class="no-container" :id="getName()+'-'+index" v-for="(item, index) of NavCommp" :key="index+'a'">
+        <div class="no-container" :id="name+'-'+index" v-for="(item, index) of NavCommp" :key="index+'a'">
         </div>
     </v-container>
 </template>
@@ -23,10 +22,6 @@ export default {
         NavCommp: Array,
         name: String
     },methods: {
-        getName(){
-            let name = this.name.split(' ');
-            return name.join('-')
-        },
         infiniteHandler($state) {
             this.currentState = $state;
             if(this.currentIndex < this.NavCommp.length){

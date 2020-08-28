@@ -14,7 +14,7 @@
                 <span>{{action.name}}</span>
             </v-tooltip>
         </div>
-        <preview-body :name="name" :NavCommp=component ></preview-body>
+        <preview-body :name="getName()" :NavCommp=component ></preview-body>
     </v-container>
 </template>
 <script>
@@ -33,16 +33,26 @@ export default {
         name: String
     },
     methods: {
-        scroll_to(index){
-            let route = document.getElementById(this.getName()+'-'+index);
-            route.scrollIntoView({block: "start", behavior: "smooth"});
-            route = document.getElementById(this.getName()+'-'+index);
+        async scroll_to(index){
+            while (document.getElementById(this.getName()+'-'+index).className == 'no-container') {
+                await this.awaitState(document.getElementById(this.getName()+'-'+index));
+            }if(document.getElementById(this.getName()+'-'+index).className == 'container' ){
+                this.awaitState(document.getElementById(this.getName()+'-'+index));
+            }
         },
         getName(){
             let name = this.name.split(' ');
             return name.join('-')
         },
-        
+        awaitState(x) { 
+            let speed = 280;
+            return new Promise(resolve => {
+                x.scrollIntoView({block: "start", behavior: "smooth"});
+                setTimeout(() => {
+                        resolve("¡Éxito!");
+                }, speed);
+            });
+        }
     },
     watch:{
         NavWidgets:function(){
