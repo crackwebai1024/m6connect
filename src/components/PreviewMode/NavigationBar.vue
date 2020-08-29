@@ -1,10 +1,10 @@
 <template>
     <v-container class="px-0 py-0 ">
         <div class="max-height-container dont-show-scroll">
-            <v-tooltip bottom v-for="(action, index) of NavWidgets" :key="index">
+            <v-tooltip bottom v-for="(action, index) of header" :key="index">
                 <template v-slot:activator="{ on, attrs }">
                     <v-avatar 
-                        @click="scroll_to(index)"
+                        @click="moveComponent(index)"
                         color="indigo" size="36" class="cursorhover my-2 mx-1"
                         v-bind="attrs"
                         v-on="on">
@@ -14,7 +14,7 @@
                 <span>{{action.name}}</span>
             </v-tooltip>
         </div>
-        <preview-body :name="getName()" :NavCommp=component ></preview-body>
+        <preview-body :name="getName()" @items="setState" :NavCommp=component :sortArray=header ></preview-body>
     </v-container>
 </template>
 <script>
@@ -26,37 +26,65 @@ export default {
         PreviewBody
     },
     data: () => ({
-        component:[]
+        header:[],
+        component: [],
+        currentState: 0
     }),
     props: {
         NavWidgets: Array,
         name: String
     },
     methods: {
-        async scroll_to(index){
-            while (document.getElementById(this.getName()+'-'+index).className == 'no-container') {
-                await this.awaitState(document.getElementById(this.getName()+'-'+index));
-            }if(document.getElementById(this.getName()+'-'+index).className == 'container' ){
-                this.awaitState(document.getElementById(this.getName()+'-'+index));
+        // The global function to make scroll and order components
+        async moveComponent(index){
+            this.orderComponents(index);
+            const cont = this.currentState;
+            if(document.getElementById(this.getName()+'-'+index).className == 'container' ){
+                this.scrolling(document.getElementById(this.getName()+'-'+index));
+            }else{
+                let elementClass = document.getElementById(this.getName()+'-'+cont).className;
+                while (elementClass == document.getElementById(this.getName()+'-'+cont).className) {
+                    await this.scrolling(document.getElementById(this.getName()+'-'+cont));
+                }
+                this.scrolling(document.getElementById(this.getName()+'-'+cont));
             }
         },
+        // Order the components in order of call
+        orderComponents(index){
+            const cont = this.currentState;
+            if(index > this.currentState){
+                let state = this.header[index];
+                this.header.splice(index, 1)
+                this.header.splice(cont, 0, state);
+            }
+            
+        },
+        // Get the component name
         getName(){
             let name = this.name.split(' ');
             return name.join('-')
         },
-        awaitState(x) { 
-            let speed = 280;
+        // Action of scroll
+        scrolling(element) { 
+            let speed = 300;
             return new Promise(resolve => {
-                x.scrollIntoView({block: "start", behavior: "smooth"});
+                element.scrollIntoView({block: "start", behavior: "smooth"});
                 setTimeout(() => {
                         resolve("¡Éxito!");
                 }, speed);
             });
+        },
+        // Update the state at the list of widgets
+        setState(index){
+            this.currentState = index;
         }
     },
     watch:{
+        // Clean the component
         NavWidgets:function(){
             this.component = [];
+            this.header = [];
+            this.NavWidgets.forEach(action => this.header.push(action));
             this.NavWidgets.forEach(action => this.component.push(action.component))
         }
     }

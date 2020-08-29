@@ -66,11 +66,11 @@ export default{
         name:'Tickets',
         component: TicketTab
       },{
-        icon: 'mdi-format-underline',
+        icon: 'mdi-play-protected-content',
         name:'Projects',
         component: RequestTab
       },{
-        icon: 'mdi-format-italic',   
+        icon: 'mdi-sync-alert',   
         name:'Matrix',
         component: RequestTab
       },{
@@ -84,11 +84,11 @@ export default{
       },{
         icon: 'mdi-format-underline',
         name:'By Company',
-        component: RequestTab
+        component: TicketTab
       },{
         icon: 'mdi-format-italic',   
         name:'Meeting Notes',
-        component: RequestTab
+        component: TicketTab
       }
     ],
     get_widgets_previews(preview_list_widget_data){
