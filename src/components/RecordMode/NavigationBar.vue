@@ -1,11 +1,30 @@
 <template>
     <v-container class="px-0 py-0 ">
-        <div class="max-height-container dont-show-scroll">
-            <v-tooltip bottom v-for="(action, index) of header" :key="index">
+        <v-card id="create">
+            <v-speed-dial
+            v-model="fab"
+            top
+            left
+            direction="bottom"
+            open-on-hover
+            transition="slide-x-transition"
+            >
+            <template v-slot:activator>
+                <v-btn
+                v-model="fab"
+                color="blue darken-2"
+                dark
+                fab
+                >
+                <v-icon v-if="fab">mdi-close</v-icon>
+                <v-icon v-else>mdi-animation</v-icon>
+                </v-btn>
+            </template>
+            <v-tooltip v-for="(action, index) of header" :key="index" right>
                 <template v-slot:activator="{ on, attrs }">
                     <v-avatar 
                         @click="moveComponent(index)"
-                        color="indigo" size="36" class="cursorhover my-2 mx-1"
+                        color="grey lighten-2" size="36" class="cursorhover my-2 mx-1"
                         v-bind="attrs"
                         v-on="on">
                         <v-icon>{{action.icon}}</v-icon>
@@ -13,22 +32,24 @@
                 </template>
                 <span>{{action.name}}</span>
             </v-tooltip>
-        </div>
-        <preview-body :name="getName()" @items="setState" :NavCommp=component :sortArray=header ></preview-body>
+        </v-speed-dial>
+        </v-card>
+        <record-body :name="getName()" @items="setState" :NavCommp=component :sortArray=header ></record-body>
     </v-container>
 </template>
 <script>
-import PreviewBody from "./PreviewBody";
+import RecordBody from "./RecordBody";
 
 export default {
     name: "NavigationBar",
     components: {
-        PreviewBody
+        RecordBody
     },
     data: () => ({
         header:[],
         component: [],
-        currentState: 0
+        currentState: 0,
+        fab: false,
     }),
     props: {
         NavWidgets: Array,
@@ -37,15 +58,11 @@ export default {
     methods: {
         // The global function to make scroll and order components
         async moveComponent(index){
-            this.orderComponents(index);
+            await this.orderComponents(index);
             const cont = this.currentState;
             if(document.getElementById(this.getName()+'-'+index).className == 'container' ){
                 this.scrolling(document.getElementById(this.getName()+'-'+index));
             }else{
-                let elementClass = document.getElementById(this.getName()+'-'+cont).className;
-                while (elementClass == document.getElementById(this.getName()+'-'+cont).className) {
-                    await this.scrolling(document.getElementById(this.getName()+'-'+cont));
-                }
                 this.scrolling(document.getElementById(this.getName()+'-'+cont));
             }
         },
@@ -56,8 +73,10 @@ export default {
                 let state = this.header[index];
                 this.header.splice(index, 1)
                 this.header.splice(cont, 0, state);
+                return new Promise(resolve => setTimeout(() => {
+                    resolve("¡Éxito!");
+                }, 10));
             }
-            
         },
         // Get the component name
         getName(){
@@ -95,4 +114,12 @@ export default {
         overflow: auto;
         white-space: nowrap;
     }
+  /* This is for documentation purposes and will not be needed in your application */
+  .v-speed-dial {
+    position: absolute;
+  }
+
+  .v-btn--floating {
+    position: relative;
+  }
 </style>

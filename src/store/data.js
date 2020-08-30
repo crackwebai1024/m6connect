@@ -1,5 +1,5 @@
-import RequestTab from "@/components/PreviewMode/PreviewCommponents/Tabs/RequestTab";
-import TicketTab from "@/components/PreviewMode/PreviewCommponents/Tabs/TicketTab";
+import RequestTab from "@/components/RecordMode/RecordCommponents/Tabs/RequestTab";
+import TicketTab from "@/components/RecordMode/RecordCommponents/Tabs/TicketTab";
 
 export default{
   // Home Data
@@ -58,19 +58,19 @@ export default{
     ],
     get_widgets: () => [
       {
-        icon: 'mdi-format-bold', 
+        icon: 'mdi-account-voice', 
         name:'Request',
         component: RequestTab
       },{
-        icon: 'mdi-format-italic',   
+        icon: 'mdi-ticket',   
         name:'Tickets',
         component: TicketTab
       },{
-        icon: 'mdi-play-protected-content',
+        icon: 'mdi-briefcase',
         name:'Projects',
         component: RequestTab
       },{
-        icon: 'mdi-sync-alert',   
+        icon: 'mdi-format-textbox',   
         name:'Matrix',
         component: RequestTab
       },{

@@ -23,7 +23,7 @@ export default {
   data: () => ({
     actions: []
   }),
-  name: "ProjectInfo",
+  name: "ProjectRecord",
   computed: {
     infoData() {
       return this.data;
