@@ -33,16 +33,22 @@
             justify="end"
           >
             <div
-              class="mt-3"
-              style="position: relative; pointer-events: auto;"
               v-for="(item, index) in idle_previews"
-              :key="index"
-            >
-              <v-avatar size="80"
-                @click="show_preview_of_idle(item)"
-                class="cursor-hover">
-                <img :src="item[item['image_url_type']] || ''" alt="project_url" />
-              </v-avatar>
+              class="mt-3 "
+              style="position: relative; pointer-events: auto;"
+              :key="index">
+              <v-tooltip left transition="slide-x-reverse-transition">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-avatar size="80"
+                    @click="show_preview_of_idle(item)"
+                    class="cursor-hover"
+                    v-bind="attrs"
+                    v-on="on">
+                    <img :src="item[item['image_url_type']] || ''" alt="project_url" />
+                  </v-avatar>
+                </template>
+                <span>{{item.project_name}}</span>
+              </v-tooltip>
               <v-avatar
                 size="30"
                 class="pointer"

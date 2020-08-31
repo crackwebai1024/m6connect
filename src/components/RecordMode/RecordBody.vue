@@ -1,5 +1,5 @@
 <template>
-    <v-container class="vertical-scroll dont-show-scroll" style="height:70vh">
+    <v-container class="vertical-scroll dont-show-scroll" style="height:100vh">
         <!-- That ID is used to scrolling the component -->
         <component v-for="(item, index) of items" :key="index+'-widget'" :id="name+'-'+index" v-bind:is="item.component"></component>
         <infinite-loading @infinite="infiniteHandler" :identifier="NavCommp">
@@ -26,7 +26,7 @@ export default {
         // Functionality on the infinite scroll
         infiniteHandler($state) {
             if(this.currentIndex < this.NavCommp.length){
-                this.items.push(this.sortArray[0]);
+                this.items.push(this.sortArray[this.currentIndex]);
                 this.emptyItems.shift();
                 this.refactorWidgets();
                 this.currentIndex ++;
@@ -49,7 +49,7 @@ export default {
         },
         sortArray:function(){
             if(this.currentIndex < this.NavCommp.length){
-                this.items.push(this.sortArray[0]);
+                this.items.push(this.sortArray[this.currentIndex]);
                 this.emptyItems.shift();
                 this.refactorWidgets();
                 this.currentIndex ++;

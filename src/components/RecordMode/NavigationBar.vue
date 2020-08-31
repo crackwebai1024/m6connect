@@ -71,6 +71,7 @@ export default {
             const cont = this.currentState;
             if(index > this.currentState){
                 let state = this.header[index];
+                console.log(state);
                 this.header.splice(index, 1)
                 this.header.splice(cont, 0, state);
                 return new Promise(resolve => setTimeout(() => {

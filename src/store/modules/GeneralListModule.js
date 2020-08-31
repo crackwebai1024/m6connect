@@ -5,14 +5,42 @@ import _ from "lodash";
 export default {
   namespaced: true,
   state: {
-    general_list: [],
+    screen_status: false,
+    project_full_screen : {
+      register_type: "project",
+      project_name: "Ruthenium Gada",
+      uid: "7q312",
+      phase: "asdasd",
+      company: "m6connect",
+      department: "Design",
+      project_leader: "",
+      project_support: "",
+      designer: "",
+      role_two: "",
+      client_status: "",
+      internal_description: "",
+      internal_objective: "",
+      project_image_url:
+        "https://picsum.photos/1280/720?nocache=" + Math.random(),
+      client_original_request: "",
+      client_requested_due_date: "",
+      client_in_take_clarification_description: "",
+      client_follow_up_date: "",
+      image_url_type: "project_image_url",
+      widgets:[
+        'Request', 'Tickets', 'By Company','Meeting Notes'
+      ]
+    },
     active_previews: [],
-    idle_previews: []
+    idle_previews: [],
+    general_list: []
   },
   getters: {
-    get_general_list: (state) => () => state.general_list,
+    get_project_full_screen : (state) => () => state.project_full_screen,
     get_active_previews: (state) => () => state.active_previews,
-    get_idle_previews: (state) => () => state.idle_previews
+    get_screen_status: (state) => () => state.screen_status,
+    get_idle_previews: (state) => () => state.idle_previews,
+    get_general_list: (state) => () => state.general_list
   },
   mutations: {
     set_general_list_data(state, proj) {
@@ -23,6 +51,16 @@ export default {
     },
     set_idle_previews(state, new_data) {
       state.idle_previews = new_data;
+    },
+    preview_screen(state){
+      state.screen_status = false;
+    },
+    full_screen(state, item){
+      state.project_full_screen = item;
+      state.screen_status = true;
+    },
+    push_to_idle(state, data){
+      state.idle_previews.push(data);
     }
   },
   actions: {
@@ -59,8 +97,8 @@ export default {
         }
       }
     },
-    push_data_to_idle(context, preview_object) {
-      context.state.idle_previews.push(preview_object);
+    push_data_to_idle({commit}, preview_object) {
+      commit("push_to_idle", preview_object)
     },
     remove_from_active(context, item) {
       let newArray = _.remove(context.state.active_previews, function(n) {
@@ -83,7 +121,31 @@ export default {
     },
     show_preview_of_idle(context, item){
       context.dispatch("remove_from_idle",item);
+      if(context.state.screen_status){
+        console.log(item)
+        context.dispatch("remove_from_idle", item.uid);
+        context.dispatch("push_data_to_idle", context.state.project_full_screen);
+        context.dispatch("full_screen", item);
+      }else{
+        context.dispatch("push_data_to_active", item);
+      }
+    },
+    full_screen(context, item){
+      context.commit("full_screen", item);
+      context.dispatch("remove_from_active", item);
+      if(context.state.active_previews.length>0)
+        context.dispatch("hidden_preview", context.state.active_previews[0]);
+    },
+    preview_screen(context, item){
+      context.commit("preview_screen")
       context.dispatch("push_data_to_active", item);
+    },
+    close_full_screen({commit}){
+      commit("preview_screen");
+    },
+    hidden_full_screen({commit}, object){
+      commit("preview_screen");
+      commit("push_to_idle", object);
     }
   }
 };
