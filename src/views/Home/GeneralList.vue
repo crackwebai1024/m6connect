@@ -22,7 +22,7 @@
       v-for="(item, index) of records"
       :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
     >
-      <general-item :info="item" />
+      <general-item :recordData="item" />
     </div>
   </v-container>
 </template>

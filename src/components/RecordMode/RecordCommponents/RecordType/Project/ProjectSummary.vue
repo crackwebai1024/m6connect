@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto" tile>
+    <v-container class="px-0 py-0">
         <v-img class="white--text align-end" height="100px" :src="info['record_image_url']">
             <div class="px-3 py-1" style="position:absolute; top: 0; right: 0;">{{ info['phase'] }}</div>
         </v-img>
@@ -27,7 +27,7 @@
             </div>
             </div>
         </v-card-text>
-        </v-card>
+        </v-container>
 </template>
 
 <script>
