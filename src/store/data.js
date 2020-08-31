@@ -1,6 +1,6 @@
 import RequestTab from "@/components/RecordMode/RecordCommponents/Tabs/RequestTab";
 import TicketTab from "@/components/RecordMode/RecordCommponents/Tabs/TicketTab";
-
+import ProjectSummary from "@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary";
 export default{
   // Home Data
     get_views_list: () => [
@@ -56,24 +56,35 @@ export default{
       { text: 'Start Date', value: 'start_date' },
       { text: 'Actions', value: 'actions' },
     ],
+    records_widgets: {
+      project:[
+        {
+          icon: 'mdi-account-voice', 
+          name:'Project Summary',
+          component: ProjectSummary
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Request',
+          component: RequestTab
+        },{
+          icon: 'mdi-ticket',   
+          name:'Tickets',
+          component: TicketTab
+        },{
+          icon: 'mdi-briefcase',
+          name:'Projects',
+          component: RequestTab
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Matrix',
+          component: RequestTab
+        }],
+      rfp:[
+
+      ]
+    },
     get_widgets: () => [
       {
-        icon: 'mdi-account-voice', 
-        name:'Request',
-        component: RequestTab
-      },{
-        icon: 'mdi-ticket',   
-        name:'Tickets',
-        component: TicketTab
-      },{
-        icon: 'mdi-briefcase',
-        name:'Projects',
-        component: RequestTab
-      },{
-        icon: 'mdi-format-textbox',   
-        name:'Matrix',
-        component: RequestTab
-      },{
         icon: 'mdi-format-bold', 
         name:'Schedulez',
         component: RequestTab
@@ -90,13 +101,5 @@ export default{
         name:'Meeting Notes',
         component: TicketTab
       }
-    ],
-    get_widgets_previews(preview_list_widget_data){
-      let data =[];
-      this.get_widgets().forEach(widget => {
-        let index = preview_list_widget_data.indexOf(widget.name);
-        index >=0 ? data.push(widget) : null;
-      })
-      return data;
-    }
+    ]
 }

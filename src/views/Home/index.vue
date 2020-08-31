@@ -15,7 +15,7 @@
       </v-col>
       <v-col v-if="get_screen_status()" cols="8" class="height-100-vh vertical-scroll dont-show-scroll">
         <!-- General use list component-->
-        <project-record :data="get_project_full_screen()"></project-record>
+        <record-container :data="get_record_full_screen()"></record-container>
       </v-col>
       <v-col cols="2" style class></v-col>
       <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0;" class="pt-3">
@@ -38,20 +38,20 @@ import M6Chat from "@/components/Home/M6Chat";
 import SidePanel from "./SidePanel";
 import GeneralList from "@/views/Home/GeneralList";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
-import ProjectRecord from "@/components/RecordMode/ProjectRecord";
+import RecordContainer from "@/components/RecordMode/RecordContainer";
 
 export default {
   components: {
     ProjectSocialMedia,
     GeneralOverlay,
-    ProjectRecord,
+    RecordContainer,
     GeneralList,
     SidePanel,
     M6Chat,
   },
   name: "Home",
   computed:{
-    ...mapGetters("GeneralListModule", ["get_screen_status", "get_project_full_screen"])
+    ...mapGetters("GeneralListModule", ["get_screen_status", "get_record_full_screen"])
   }
 };
 </script>

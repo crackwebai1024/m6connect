@@ -2,258 +2,29 @@ const wi = "1280";
 const le = "1280";
 
 export default {
-  fake_projects: [
+  fake_records: [
     {
-      register_type: "project",
-      project_name: "Lead Plutonium",
+      record_type: "project",
+      record_name: "Lead Plutonium",
       uid: "1123",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
-      project_leader: "",
-      project_support: "",
+      record_leader: "",
+      record_support: "",
       designer: "",
       role_two: "",
       client_status: "",
       internal_description: "",
       internal_objective: "",
-      project_image_url:
+      record_image_url:
         "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
       client_original_request: "",
       client_requested_due_date: "",
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Request', 'Tickets', 'Project,s', 'Matrix', 'Schedulez',
-        'Schedu,lez', 'Teams', 'By Company','Meeting Notes'
-      ]
+      image_url_type: "record_image_url"
     },
-    {
-      register_type: "project",
-      project_name: "Lutetium Okavango",
-      uid: "2321",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Request', 'Tickets', 'Project,s', 'Matrix', 'Schedulez', 'Schedu,lez',
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Curium Wu",
-      uid: "34123",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Schedu,lez', 'Teams', 'By Company','Meeting Notes'
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Syr Darya",
-      uid: "4312",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Teams', 'By Company','Meeting Notes'
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Silver Yttrium",
-      uid: "5123",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/1280/720?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Matrix', 'Schedulez',
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Gold Krishna",
-      uid: "6231",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Meeting Notes'
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Ruthenium Gada",
-      uid: "7q312",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/1280/720?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Request', 'Tickets', 'By Company','Meeting Notes'
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Iridium Maranon",
-      uid: "81231",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Request', 'Teams', 'By Company','Meeting Notes'
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Lead Nickel",
-      uid: "91231",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Request', 'Tickets', 'Project,s', 'Matrix', 'Meeting Notes'
-      ]
-    },
-    {
-      register_type: "project",
-      project_name: "Krypton Saint",
-      uid: "101233",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      project_leader: "",
-      project_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      project_image_url:
-        "https://picsum.photos/1280/720?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "project_image_url",
-      widgets:[
-        'Request', 'Teams', 'By Company','Meeting Notes'
-      ]
-    }
   ],
   fake_posts: [
     {
@@ -271,196 +42,196 @@ export default {
             "https://www.pngitem.com/pimgs/m/160-1600311_free-png-download-happy-person-png-images-background.png",
           title: "Image 0",
           uid: "11110",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11111",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 2",
           uid: "11112",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 3",
           uid: "11113",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 4",
           uid: "11114",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 5",
           uid: "11115",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 6",
           uid: "11116",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 7",
           uid: "11117",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 8",
           uid: "11118",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 9",
           uid: "11119",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 10",
           uid: "11120",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 11",
           uid: "11122",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 12",
           uid: "11123",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 13",
           uid: "11124",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 14",
           uid: "11125",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 15",
           uid: "11126",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 16",
           uid: "11127",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 17",
           uid: "11128",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 18",
           uid: "11129",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 19",
           uid: "11130",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11131",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11132",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11133",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11134",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11135",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11136",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11137",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         },
         {
           url: "https://picsum.photos/1280/720?nocache=" + Math.random(),
           title: "Image 1",
           uid: "11138",
-          register_type: "image",
+          record_type: "image",
           image_url_type: "url"
         }
       ],

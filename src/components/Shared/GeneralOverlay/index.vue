@@ -12,7 +12,7 @@
             v-if="!active_previews[0] == false"
             style="pointer-events: auto;"
           >
-            <preview-Selector style="pointer-events: auto;" :type="active_previews[0].register_type" :data="active_previews[0]"></preview-Selector>
+            <preview-Selector style="pointer-events: auto;" :type="active_previews[0].record_type" :data="active_previews[0]"></preview-Selector>
           </div>
         </v-col>
         <v-col cols="3" class="py-0 px-1">
@@ -21,7 +21,7 @@
             v-if="!active_previews[1] == false"
             style="pointer-events: auto;"
           >
-            <preview-Selector style="pointer-events: auto;" :type="active_previews[1].register_type" :data="active_previews[1]"></preview-Selector>
+            <preview-Selector style="pointer-events: auto;" :type="active_previews[1].record_type" :data="active_previews[1]"></preview-Selector>
           </div>
         </v-col>
         <v-col style="width: 90px; height: 100vh; position: fixed; top: 0; right: 0;" class="pb-3">
@@ -44,10 +44,10 @@
                     class="cursor-hover"
                     v-bind="attrs"
                     v-on="on">
-                    <img :src="item[item['image_url_type']] || ''" alt="project_url" />
+                    <img :src="item[item['image_url_type']] || ''" alt="record_url" />
                   </v-avatar>
                 </template>
-                <span>{{item.project_name}}</span>
+                <span>{{item.record_name}}</span>
               </v-tooltip>
               <v-avatar
                 size="30"

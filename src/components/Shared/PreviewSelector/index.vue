@@ -1,15 +1,15 @@
 <template>
   <div>
-    <project-record v-if="type === 'project'" :data="data"></project-record>
+    <record-container :record_data="data"></record-container>
   </div>
 </template>
 
 <script>
-import ProjectRecord from "@/components/RecordMode/ProjectRecord";
+import RecordContainer from "@/components/RecordMode/RecordContainer";
 
 export default {
   components: {
-    ProjectRecord,
+    RecordContainer,
   },
   props: {
     type: String,

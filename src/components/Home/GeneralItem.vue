@@ -1,12 +1,12 @@
 <template>
   <v-hover v-slot:default="{ hover }">
     <v-card class="mx-auto" tile :class="{ 'on-hover': hover }" @click="updateInfo()">
-      <v-img class="white--text align-end" height="100px" :src="info['project_image_url']">
+      <v-img class="white--text align-end" height="100px" :src="info['record_image_url']">
         <div class="px-3 py-1" style="position:absolute; top: 0; right: 0;">{{ info['phase'] }}</div>
       </v-img>
       <v-card-text class="text--primary py-1">
         <div class="d-flex flex-row flex-nowrap align-baseline">
-          <div class="subtitle-1 font-weight-black">{{ info['project_name'] }}</div>
+          <div class="subtitle-1 font-weight-black">{{ info['record_name'] }}</div>
           <v-spacer></v-spacer>
           <div class="caption">
             <span class="font-weight-black">ID:</span>
@@ -23,8 +23,8 @@
             {{ info['department'] }}
           </div>
           <div>
-            <span class="font-weight-black">Project Leader:</span>
-            {{ info['project_leader'] || 'Not assigned' }}
+            <span class="font-weight-black">record Leader:</span>
+            {{ info['record_leader'] || 'Not assigned' }}
           </div>
         </div>
       </v-card-text>

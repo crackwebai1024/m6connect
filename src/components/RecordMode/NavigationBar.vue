@@ -34,7 +34,7 @@
             </v-tooltip>
         </v-speed-dial>
         </v-card>
-        <record-body :name="getName()" @items="setState" :NavCommp=component :sortArray=header ></record-body>
+        <record-body :name="getName()" @items="setState" :NavCommp=component :sortArray=header :component=project ></record-body>
     </v-container>
 </template>
 <script>
@@ -53,7 +53,7 @@ export default {
     }),
     props: {
         NavWidgets: Array,
-        name: String
+        project: Object
     },
     methods: {
         // The global function to make scroll and order components
@@ -81,7 +81,7 @@ export default {
         },
         // Get the component name
         getName(){
-            let name = this.name.split(' ');
+            let name = this.project.record_name.split(' ');
             return name.join('-')
         },
         // Action of scroll
