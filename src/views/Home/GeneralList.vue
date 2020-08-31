@@ -19,10 +19,10 @@
     </header-component>
     <div
       :key="index"
-      v-for="(item, index) of projects"
-      :class="Object.keys(projects).length !== index + 1 ? 'mb-3' : ''"
+      v-for="(item, index) of records"
+      :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
     >
-      <general-item :info="projects[index]" />
+      <general-item :recordData="item" />
     </div>
   </v-container>
 </template>
@@ -44,7 +44,7 @@ export default {
   }),
   computed: {
     ...mapGetters("GeneralListModule", ["get_general_list"]),
-    projects() {
+    records() {
       return this.get_general_list();
     },
   },
@@ -54,7 +54,7 @@ export default {
       let remaining = this.perPage;
       if (page + 1 === this.pages) {
         remaining =
-          this.perPage - (this.perPage * this.pages - this.projectsLength);
+          this.perPage - (this.perPage * this.pages - this.recordsLength);
       }
       return remaining;
     },

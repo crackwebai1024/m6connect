@@ -29,7 +29,7 @@ export default {
         searchText:''
     }),
     computed: {
-      ...mapGetters(['get_ticket_table_header'])
+      ...mapGetters("TablesModule", ['get_ticket_table_header'])
     }
 }
 </script>

@@ -1,10 +1,13 @@
-import Vue from "vue";
-import App from "./App.vue";
+import InfiniteLoading from 'vue-infinite-loading'
 import vuetify from "./plugins/vuetify";
 import router from "./router";
 import store from "./store";
+import App from "./App.vue";
+import Vue from "vue";
 
 Vue.config.productionTip = false;
+
+Vue.use(InfiniteLoading);
 
 new Vue({
   router,

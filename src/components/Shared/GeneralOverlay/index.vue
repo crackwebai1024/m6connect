@@ -12,7 +12,7 @@
             v-if="!active_previews[0] == false"
             style="pointer-events: auto;"
           >
-            <preview-Selector :type="active_previews[0].register_type" :data="active_previews[0]"></preview-Selector>
+            <preview-Selector style="pointer-events: auto;" :type="active_previews[0].record_type" :data="active_previews[0]"></preview-Selector>
           </div>
         </v-col>
         <v-col cols="3" class="py-0 px-1">
@@ -21,7 +21,7 @@
             v-if="!active_previews[1] == false"
             style="pointer-events: auto;"
           >
-            <preview-Selector :type="active_previews[1].register_type" :data="active_previews[1]"></preview-Selector>
+            <preview-Selector style="pointer-events: auto;" :type="active_previews[1].record_type" :data="active_previews[1]"></preview-Selector>
           </div>
         </v-col>
         <v-col style="width: 90px; height: 100vh; position: fixed; top: 0; right: 0;" class="pb-3">
@@ -33,14 +33,22 @@
             justify="end"
           >
             <div
-              class="mt-3"
-              style="position: relative; pointer-events: auto;"
               v-for="(item, index) in idle_previews"
-              :key="index"
-            >
-              <v-avatar size="80">
-                <img :src="item[item['image_url_type']] || ''" alt="project_url" />
-              </v-avatar>
+              class="mt-3 "
+              style="position: relative; pointer-events: auto;"
+              :key="index">
+              <v-tooltip left transition="slide-x-reverse-transition">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-avatar size="80"
+                    @click="show_preview_of_idle(item)"
+                    class="cursor-hover"
+                    v-bind="attrs"
+                    v-on="on">
+                    <img :src="item[item['image_url_type']] || ''" alt="record_url" />
+                  </v-avatar>
+                </template>
+                <span>{{item.record_name}}</span>
+              </v-tooltip>
               <v-avatar
                 size="30"
                 class="pointer"
@@ -71,7 +79,7 @@ export default {
     PreviewSelector,
   },
   methods: {
-    ...mapActions("GeneralListModule", ["remove_from_idle"]),
+    ...mapActions("GeneralListModule", ["remove_from_idle", "show_preview_of_idle"]),
     removeFromIdle(id) {
       this.remove_from_idle(id);
     },

@@ -1,6 +1,6 @@
-import RequestTab from "@/components/Tabs/RequestTab";
-import TicketTab from "@/components/Tabs/TicketTab";
-
+import RequestTab from "@/components/RecordMode/RecordCommponents/Tabs/RequestTab";
+import TicketTab from "@/components/RecordMode/RecordCommponents/Tabs/TicketTab";
+import ProjectSummary from "@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary";
 export default{
   // Home Data
     get_views_list: () => [
@@ -56,4 +56,50 @@ export default{
       { text: 'Start Date', value: 'start_date' },
       { text: 'Actions', value: 'actions' },
     ],
+    records_widgets: {
+      project:[
+        {
+          icon: 'mdi-account-voice', 
+          name:'Project Summary',
+          component: ProjectSummary
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Request',
+          component: RequestTab
+        },{
+          icon: 'mdi-ticket',   
+          name:'Tickets',
+          component: TicketTab
+        },{
+          icon: 'mdi-briefcase',
+          name:'Projects',
+          component: RequestTab
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Matrix',
+          component: RequestTab
+        }],
+      rfp:[
+
+      ]
+    },
+    get_widgets: () => [
+      {
+        icon: 'mdi-format-bold', 
+        name:'Schedulez',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-italic',   
+        name:'Teams',
+        component: RequestTab
+      },{
+        icon: 'mdi-format-underline',
+        name:'By Company',
+        component: TicketTab
+      },{
+        icon: 'mdi-format-italic',   
+        name:'Meeting Notes',
+        component: TicketTab
+      }
+    ]
 }
