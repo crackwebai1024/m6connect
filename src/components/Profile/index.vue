@@ -28,22 +28,57 @@
         <v-icon :large="true" class="black--text">mdi-magnify</v-icon>
       </v-col>
     </v-row>
-    
+    <v-col class="pa-0 mb-3" v-show="currentTab == 0">
+      <v-btn
+        v-show="!(showColumnLeft && !showColumnRight)"
+        class="ma-2"
+        color="secondary"
+        @click="showColumnLeft = !showColumnLeft"
+      >
+        Toggle Column Left
+      </v-btn>
+      <v-btn
+        v-show="!(showColumnRight && !showColumnLeft)"
+        class="ma-2"
+        color="red"
+        @click="showColumnRight = !showColumnRight"
+      >
+        Toggle Column Right
+      </v-btn>
+    </v-col>
     <v-tabs-items v-model="tab">
-        <v-row no-gutters class="grey lighten-2">
-          <v-col cols="6" class="pr-2" v-show="currentTab == 0">
-            <post-profile/>
-          </v-col>
-          <v-col cols="6" class="pl-2" v-show="currentTab == 0">
-            <profile-info/>
-            <template v-for="i in 2">
-              <chart-card :key="'chart'+i"/>
-            </template>
-          </v-col>
-          <v-col cols="6" class="pr-2" v-show="currentTab == 1">
+        <v-row no-gutters class="grey lighten-2" v-show="currentTab == 0">
+          <v-expand-x-transition>
+            <v-card v-show="showColumnLeft"
+              elevation="0"
+              :height="showColumnLeft ? 'auto': '0'"
+              :width="showColumnLeft ? showColumnRight ? '50%' : '100%' : '0'"
+              :class="{'pr-2' : showColumnRight && showColumnLeft}"
+              class="transparent"
+            >
+              <post-profile/>
+            </v-card>
+          </v-expand-x-transition>
+          <v-expand-x-transition>
+            <v-card v-show="showColumnRight"
+              elevation="0"
+              :height="showColumnRight ? 'auto': '0'"
+              :width="showColumnRight ? showColumnLeft ? '50%' : '100%' : '0'"
+              :class="{'pl-2' : showColumnRight && showColumnLeft}"
+              class="transparent"
+            >
+              <profile-info/>
+              <template v-for="i in 2">
+                <chart-card :key="'chart'+i"/>
+              </template>
+            </v-card>
+          </v-expand-x-transition>
+        </v-row>
+        <v-row no-gutters class="grey lighten-2" v-show="currentTab == 1">
+          <v-col cols="6" class="pr-2">
             <employees/>
           </v-col>
-          <v-col cols="6" class="pl-2" v-show="currentTab == 1">
+          <v-col cols="6" class="pl-2">
             <month-employee/>
           </v-col>
         </v-row>
@@ -71,7 +106,9 @@ export default {
     items: [
       'Profile', 'People', 'Details',
     ],
-    currentTab: 0
+    currentTab: 0,
+    showColumnLeft: true,
+    showColumnRight: true
   }),
   name: "SharpProfilePage",
   computed: {
