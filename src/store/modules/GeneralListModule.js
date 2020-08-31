@@ -5,31 +5,7 @@ export default {
   namespaced: true,
   state: {
     screen_status: false,
-    record_full_screen : {
-      register_type: "record",
-      record_name: "Ruthenium Gada",
-      uid: "7q312",
-      phase: "asdasd",
-      company: "m6connect",
-      department: "Design",
-      record_leader: "",
-      record_support: "",
-      designer: "",
-      role_two: "",
-      client_status: "",
-      internal_description: "",
-      internal_objective: "",
-      record_image_url:
-        "https://picsum.photos/1280/720?nocache=" + Math.random(),
-      client_original_request: "",
-      client_requested_due_date: "",
-      client_in_take_clarification_description: "",
-      client_follow_up_date: "",
-      image_url_type: "record_image_url",
-      widgets:[
-        'Request', 'Tickets', 'By Company','Meeting Notes'
-      ]
-    },
+    record_full_screen : {},
     active_previews: [],
     idle_previews: [],
     general_list: []
