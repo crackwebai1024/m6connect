@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="blue darken-3 ma-2 py-3 px-4">
+    <div class="blue darken-3 mt-3 ml-2 py-3 px-4">
       <div class="d-flex">
         <img alt="" class="mr-2" width="100" height="65" src="@/assets/sharp-logo.png">
         <h2 class="ml-2 white--text spacing-tight font-weight-medium">Sharp Healthcare</h2>
@@ -10,7 +10,7 @@
         <p class="ml-3 grey--text text--lighten-2 body-2 mb-1">Quick Access</p>
         <div class="d-flex align-center my-3" v-for="(link,i) in quickAccessLinks" :key="'link' + i">
           <v-icon :dark="true" :large="true">mdi-{{ link.icon }}</v-icon>
-          <p class="ml-5 w-4/5 white--text mb-0">{{ link.title }}</p>
+          <router-link :to="link.url" tag="p" class="ml-5 w-4/5 white--text mb-0">{{ link.title }}</router-link>
         </div>
         <v-divider class="my-3 light-blue accent-1"></v-divider>
         <p class="ml-3 grey--text text--lighten-2 body-2 mb-1">Departments</p>
@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <div class="mt-3 t-6 white ma-2 pt-4 pb-5 px-4">
+    <div class="mt-3 t-6 white ml-2 pt-4 pb-5 px-4">
       <p class="ml-3 grey--text text--lighten-1 body-2 mb-3">Links</p>
       <template v-for="(card, index) in cardsList">
         <div :key="'card' + index">
@@ -52,7 +52,7 @@ export default {
     showLinks: false,
     quickAccessLinks: [
       { url:'', icon:'heart', title: 'My Favorites' },
-      { url:'', icon:'briefcase-variant', title: 'Sharp Profile Page' }
+      { url:'/company/123', icon:'briefcase-variant', title: 'Sharp Profile Page' }
     ],
     departmentsLinks: [
       { url:'', icon:'chart-pie', title: 'Information Technology' },
