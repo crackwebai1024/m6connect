@@ -2,13 +2,22 @@
   <v-container>
     <header-component hasslot :info="{title:'Create Post', icon:''}" class="mb-3">
       <template v-slot:select>
-        <v-select :items="items" label="Solo field" dense solo></v-select>
+        <v-select
+          :items="items"
+          label="Everyone"
+          dense
+          flat
+          push-tags
+          solo
+          hide-details
+        ></v-select>
       </template>
       <template v-slot:input>
         <v-text-field
           height="37"
-          label="Whats on your mind, Manuel"
+          label="Start typing to search"
           rounded
+          flat
           dense
           v-model="searchText"
           single-line

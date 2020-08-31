@@ -42,7 +42,11 @@ export default new Vuex.Store({
     user_data: {},
     viewsList: Data.get_views_list(),
     tabs: Data.get_tabs(),
-    bootom_template: false
+    request_table_header: Data.get_request_table_header(),
+    ticket_table_header: Data.get_ticket_table_header(),
+    bootom_template: false,
+    preview_images_array: [],
+    preview_images_selected: {}
   },
   getters: {
     // View Home Getters
@@ -52,7 +56,11 @@ export default new Vuex.Store({
     get_workers: (state) => () => state.workers,
     // Return the first project or the data saved
     // View Tabs Getters
-    get_tabs: (state) => () => state.tabs
+    get_tabs: (state) => () => state.tabs,
+    get_image_preview_overlay: (state) => () => [
+      state.preview_images_array,
+      state.preview_images_selected
+    ]
   },
   mutations: {
     setAllWorkers(state, work) {
@@ -63,6 +71,14 @@ export default new Vuex.Store({
     },
     set_user_info_data(state, data) {
       state.user_data = data;
+    },
+    set_image_preview_overlay(state, array) {
+      state.preview_images_array = array[0];
+      state.preview_images_selected = array[1];
+    },
+    reset_image_overlay(state) {
+      state.preview_images_array = [];
+      state.preview_images_selected = {};
     }
   },
   actions: {
@@ -96,6 +112,12 @@ export default new Vuex.Store({
         occupation: "IT Apps (Department)"
       };
       commit("set_user_info_data", user_data);
+    },
+    set_image_preview_overlay({ commit }, array) {
+      commit("set_image_preview_overlay", array);
+    },
+    reset_image_overlay({ commit }) {
+      commit("reset_image_overlay");
     }
   },
   modules: {
