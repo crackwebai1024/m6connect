@@ -13,9 +13,9 @@
         <!-- General use list component-->
         <general-list />
       </v-col>
-      <v-col v-if="get_screen_status()" cols="8" class="height-100-vh vertical-scroll dont-show-scroll">
+      <v-col v-if="get_screen_status()" cols="8" class="height-100-vh vertical-scroll dont-show-scroll" style="padding: 10px!important;">
         <!-- General use list component-->
-        <record-container :data="get_record_full_screen()"></record-container>
+        <record-container style="background: white;" :data="get_record_full_screen()"></record-container>
       </v-col>
       <v-col cols="2" style class></v-col>
       <v-col cols="2" style="position:fixed; right: 0; bottom: 0; top: 0;" class="pt-3">
