@@ -1,17 +1,20 @@
 <template>
-    <div>
+    <div class="">
         <v-navigation-drawer
         v-model="drawer"
         right
         absolute
         :mini-variant.sync="mini"
-        permanent>
-            <div v-if="!mini">
+        permanent width="100%">
+            <div v-if="!mini" class="">
+                <v-row class="px-3 py">
+                    <v-icon @click="mini = true" class="text--grey">mdi-chevron-right</v-icon>
+                </v-row>
                 <v-row class="px-3">
-                    <v-col class="">
+                    <v-col class="py-0">
                         <p class="text-subtitle-1 grey--text text--darken-1">People</p>
                     </v-col>
-                    <v-col cols="">
+                    <v-col cols="" class="py-0">
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
@@ -36,12 +39,12 @@
                                     </v-list-item>
 
                                     <v-subheader>Teams</v-subheader>
-                                    <v-list-item  :key="'team-' + key" v-for="(team, key) in teams">
+                                    <v-list-item  :key="'team-' + key" v-for="(team, key) in filter.teams">
                                         <v-list-item-title>{{team}}</v-list-item-title>
                                     </v-list-item>
 
                                     <v-subheader>Departments</v-subheader>
-                                    <v-list-item :key="'dep-' + key" v-for="(dep, key) in departments">
+                                    <v-list-item :key="'dep-' + key" v-for="(dep, key) in filter.departments">
                                         <v-list-item-title>{{dep}}</v-list-item-title>
                                     </v-list-item>
                                 </v-list>
@@ -55,11 +58,15 @@
                 <v-subheader class=" lighten-3 font-weight-medium px-2 black--text">Departments</v-subheader>
             
                 <v-expansion-panels multiple accordion>
-                    <v-expansion-panel class="" :key="index" dense v-for="(dep, index) in departmentsRaw">
+                    <v-expansion-panel class="" :key="index" dense v-for="(dep, index) in departments">
                         <v-expansion-panel-header dense class="font-weight-light px-2 grey lighten-3">{{dep.name}}</v-expansion-panel-header>
                         <v-expansion-panel-content class="px-0 pb-0">
                             <v-list class="" style="">
-                                <v-list-item  :key="index" class="pa-0 my-2" v-for="(u, index) in dep.users">
+                                <v-list-item
+                                    @click="startChat(u.id)"
+                                    :key="index"
+                                    class="pa-0 my-2"
+                                    v-for="(u, index) in dep.users">
                                     <v-badge
                                         bordered
                                         bottom
@@ -80,13 +87,13 @@
                 </v-expansion-panels>
             </div>
             <div v-else>
-                <template v-for="(dep, index) in departmentsRaw">
+                <template v-for="(dep, index) in departments">
                     <v-menu offset-x left class="mr-3" open-on-hover :key="index">
                         <template v-slot:activator="{ on, attrs }">
                             <v-list class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
                                 <v-list-item
-                                    :key="index"
                                     v-on="on"
+                                    :key="index"
                                     :class="{'mt-n7' : index != 0}"
                                     class="justify-center" v-for="(u, index) in dep.users">
                                     <v-badge
@@ -108,7 +115,6 @@
                             <v-subheader>{{dep.name}}</v-subheader>
                             <v-list-item
                                     :key="index"
-                                    v-on="on"
                                     class="" v-for="(u, index) in dep.users">
                                     <v-badge
                                         bottom
@@ -139,21 +145,26 @@ export default {
     name: 'm6-chat',
     data: () => ({
         drawer: true,
-        mini: true,
-        departments: ['All my departments', 'Finances', 'Operations'],
-        departmentsRaw: [
+        filter: {
+            departments: ['All my departments', 'Finances', 'Operations'],
+            teams: ['All my teams', 'IT Team XY', 'CPM Team Z'],
+        },
+        departments: [
             {
                 name: "Information Technologies",
                 users: [
                     {
+                        id: 1,
                         name: "John Doe",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
                     },
                     {
+                        id: 2,
                         name: "Example User",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
                     },
                     {
+                        id: 3,
                         name: "Another Example",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
                     }
@@ -163,25 +174,36 @@ export default {
                 name: "Project Finances",
                 users: [
                     {
+                        id: 4,
                         name: "John Doe",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
                     }
                 ]
             }
         ],
-        teams: ['All my teams', 'IT Team XY', 'CPM Team Z'],
     }),
     computed: {
-        ...mapState(['layout']),
-        amini: {
+        ...mapState(['layout', 'chats']),
+        mini: {
             get: function () {
-                return !this.layout.contacts
+                return this.layout.contacts
             },
             set: function (value) {
                 this.layout.contacts = value
             }
         }
     },
+    methods: {
+        startChat(id) {
+            let c = this.chats
+            if (!c.includes(id)) {
+                if (c.length > 4) {
+                    c.shift()
+                }
+                c.push(id)
+            }
+        }
+    }
 }
 </script>
 
