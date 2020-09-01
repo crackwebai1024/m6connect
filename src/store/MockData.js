@@ -5,7 +5,7 @@ export default {
   fake_records: [
     {
       record_type: "project",
-      record_name: "Lead Plutonium",
+      record_name: "Las asd",
       uid: "1123",
       phase: "asdasd",
       company: "m6connect",
@@ -27,7 +27,7 @@ export default {
     },{
       record_type: "project",
       record_name: "Lead Plutonium",
-      uid: "1123",
+      uid: "234123",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -47,8 +47,8 @@ export default {
       image_url_type: "record_image_url"
     },{
       record_type: "project",
-      record_name: "Lead Plutonium",
-      uid: "1123",
+      record_name: "Deni alegar",
+      uid: "31234",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
@@ -68,8 +68,8 @@ export default {
       image_url_type: "record_image_url"
     },{
       record_type: "project",
-      record_name: "Lead Plutonium",
-      uid: "1123",
+      record_name: "Art effect",
+      uid: "4123123",
       phase: "asdasd",
       company: "m6connect",
       department: "Design",
