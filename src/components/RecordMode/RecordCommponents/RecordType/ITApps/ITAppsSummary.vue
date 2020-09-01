@@ -29,15 +29,23 @@
         </v-card-text>
     </v-container>
 </template>
-
 <script>
-
 export default {
-  name: "ProjectSummary",
+  components: {
+  },
   props: {
     info: Object,
+  },
+  name: "ITAppsSummary",
+  data: () => ({
+  }),
+  computed: {
   },
   methods: {
   }
 };
 </script>
+
+<style lang="scss">
+
+</style>

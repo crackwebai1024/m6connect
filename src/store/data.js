@@ -1,7 +1,13 @@
 const RequestTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/RequestTab")
 const TicketTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/TicketTab")
 const ProjectSummary = () => import("@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary")
-const Contacts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Contacts")
+const Contacts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Contacts")
+const Contracts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Contracts")
+const Notifications = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Notifications")
+const Licenses = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Licenses")
+const Dependencies = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Dependencies")
+const ITAppsSummary = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/ITAppsSummary")
+
 const Installation = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Installation")
 const Rationalization = {
   Attributes: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/Attributes"),
@@ -11,7 +17,6 @@ const Rationalization = {
   License: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/License"),
   Users: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/Users")
 }
-
 
 export default{
   // Home Data
@@ -72,8 +77,28 @@ export default{
       itapps: [
         {
           icon: 'mdi-account-voice', 
-          name:'Project Summary',
+          name:'ITApps Summary',
+          component: ITAppsSummary
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Contacts',
           component: Contacts
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Dependencies',
+          component: Dependencies
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Notifications',
+          component: Notifications
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Licenses',
+          component: Licenses
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Contracts',
+          component: Contracts
         },{
           icon: 'mdi-briefcase',
           name:'Installation',
