@@ -1,6 +1,7 @@
 import RequestTab from "@/components/RecordMode/RecordCommponents/Tabs/RequestTab";
 import TicketTab from "@/components/RecordMode/RecordCommponents/Tabs/TicketTab";
 import ProjectSummary from "@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary";
+import Contacts from "@/components/RecordMode/RecordCommponents/RecordType/ITApps/Contacts"
 export default{
   // Home Data
     get_views_list: () => [
@@ -57,6 +58,29 @@ export default{
       { text: 'Actions', value: 'actions' },
     ],
     records_widgets: {
+      itapps: [
+        {
+          icon: 'mdi-account-voice', 
+          name:'Project Summary',
+          component: Contacts
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Request',
+          component: RequestTab
+        },{
+          icon: 'mdi-ticket',   
+          name:'Tickets',
+          component: TicketTab
+        },{
+          icon: 'mdi-briefcase',
+          name:'Projects',
+          component: RequestTab
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Matrix',
+          component: RequestTab
+        }
+      ],
       project:[
         {
           icon: 'mdi-account-voice', 
@@ -78,7 +102,8 @@ export default{
           icon: 'mdi-format-textbox',   
           name:'Matrix',
           component: RequestTab
-        }],
+        }
+      ],
       rfp:[
 
       ]

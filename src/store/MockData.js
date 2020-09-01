@@ -87,6 +87,27 @@ export default {
       client_in_take_clarification_description: "",
       client_follow_up_date: "",
       image_url_type: "record_image_url"
+    },{
+      record_type: "itapps",
+      record_name: "Test ITApps",
+      uid: "1123",
+      phase: "asdasd",
+      company: "m6connect",
+      department: "Design",
+      record_leader: "",
+      record_support: "",
+      designer: "",
+      role_two: "",
+      client_status: "",
+      internal_description: "",
+      internal_objective: "",
+      record_image_url:
+        "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
+      client_original_request: "",
+      client_requested_due_date: "",
+      client_in_take_clarification_description: "",
+      client_follow_up_date: "",
+      image_url_type: "record_image_url"
     },
   ],
   fake_posts: [
