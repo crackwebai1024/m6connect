@@ -1,7 +1,10 @@
-import RequestTab from "@/components/RecordMode/RecordCommponents/Tabs/RequestTab";
-import TicketTab from "@/components/RecordMode/RecordCommponents/Tabs/TicketTab";
-import ProjectSummary from "@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary";
-import Contacts from "@/components/RecordMode/RecordCommponents/RecordType/ITApps/Contacts"
+const RequestTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/RequestTab")
+const TicketTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/TicketTab")
+const ProjectSummary = () => import("@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary")
+const Contacts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Contacts")
+const Installation = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Installation")
+
+
 export default{
   // Home Data
     get_views_list: () => [
@@ -73,8 +76,8 @@ export default{
           component: TicketTab
         },{
           icon: 'mdi-briefcase',
-          name:'Projects',
-          component: RequestTab
+          name:'Installation',
+          component: Installation
         },{
           icon: 'mdi-format-textbox',   
           name:'Matrix',
@@ -108,7 +111,7 @@ export default{
 
       ]
     },
-    get_widgets: () => [
+    get_widgets: [
       {
         icon: 'mdi-format-bold', 
         name:'Schedulez',
