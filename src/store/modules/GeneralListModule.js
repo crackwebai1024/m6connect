@@ -76,7 +76,8 @@ export default {
       if(
         NavStack.state.hidden1 == true && 
         NavStack.state.hidden2 == false && 
-        Object.keys(context.state.active_previews[1]).length == 0
+        Object.keys(context.state.active_previews[1]).length == 0 &&
+        Object.keys(context.state.active_previews[0]).length != 0
       ){
         context.dispatch("unshift_data_to_active", preview_object);
         validator = true;
@@ -129,7 +130,7 @@ export default {
 
       if(
         lengthActive1 == 0 && lengthActive2 == 0 &&
-        context.state.idle_previews.length > 0
+        context.state.idle_previews.length > 1
       ){
         NavStack.state.hidden1 = true;
         NavStack.state.hidden2 = true;
