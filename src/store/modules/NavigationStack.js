@@ -11,11 +11,11 @@ export default{
     mutations: {
         hiddenActiveRecord(state, index){
             index == 0 ? state.hidden1 = true : state.hidden2 = true;
-        }
+        },
     },
     actions: {
         hiddenRecord({commit}, index){
             commit("hiddenActiveRecord", index);
-        }
+        },
     }
 }

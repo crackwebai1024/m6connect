@@ -2,7 +2,7 @@
   <v-container class="py-0 px-0">
     <div>
       <record-header :headerDataRecord="infoRecordData"/>
-      <navigation-bar v-if="get_screen_status()" :NavWidgets=actions :project="get_record_full_screen()" />
+      <navigation-bar v-if="get_screen_status() && record_data == null" :NavWidgets=actions :project="get_record_full_screen()" />
       <navigation-bar v-else :NavWidgets=actions :project="infoRecordData" />
     </div>
   </v-container>

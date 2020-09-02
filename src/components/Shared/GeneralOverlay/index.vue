@@ -7,12 +7,12 @@
       <v-col cols ="3"
         v-for="(i,index) of 2" :key="index" class="py-0 px-0 mx-2">
         <div v-if="Object.keys(active_previews[index]).length != 0" class>
+          <!-- <idle-records v-if="get_idle_previews().length != 0" style="pointer-events: auto;" /> -->
           <div
-              class="white elevation-3 py-0 px-0"
-              v-if="active_previews[index]" style="height: 78vh;" >
+              v-if="active_previews[index]" style="height: 78vh;"
+              class="white elevation-3 py-0 px-0" >
             <preview-Selector
-              style="pointer-events: auto; height: 100vh;" 
-              :type="active_previews[index].record_type" 
+              style="pointer-events: auto; height: 100vh;"
               :data="active_previews[index]"></preview-Selector>
           </div>
         </div>
@@ -24,9 +24,9 @@
             style="
               pointer-events: auto;
               position: relative;
-              top: 60vh;
+              top: 70vh;
               height: 78vh;">
-            <idle-records />
+            <idle-records :index="index" />
           </v-col>
         </div>
       </v-col>
