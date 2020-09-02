@@ -49,8 +49,8 @@
           <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-subheader>
-    <v-card>
-      <v-data-table>
+    <v-card class="pt-5">
+      <v-data-table :headers="table.headers">
 
       </v-data-table>
     </v-card>
@@ -61,6 +61,28 @@
 export default {
   data: () => ({
     createModal: false,
+    table: {
+      headers: [
+        {
+          text: 'Cost Type'
+        },
+        {
+          text: 'Cost Owner'
+        },
+        {
+          text: 'Cost'
+        },
+        {
+          text: 'Period'
+        },
+        {
+          text: 'Notes'
+        },
+        {
+          text: 'Actions'
+        },
+      ]
+    },
     options: {
       cost_category: ['Initial Capital', 'Initial Operating', 'One-time Capital'],
       cost_type: ['Consulting', 'Contract Staffing'],

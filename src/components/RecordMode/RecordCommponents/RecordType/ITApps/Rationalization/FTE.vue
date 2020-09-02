@@ -43,8 +43,8 @@
           <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-subheader>
-    <v-card>
-      <v-data-table>
+    <v-card class="pt-5">
+      <v-data-table :headers="table.headers">
 
       </v-data-table>
     </v-card>
@@ -54,7 +54,26 @@
 <script>
 export default {
   data: () => ({
-    createModal: false
+    createModal: false,
+    table: {
+      headers: [
+        {
+          text: 'FTE Type'
+        },
+        {
+          text: 'FTE Count'
+        },
+        {
+          text: 'FTE Costs'
+        },
+        {
+          text: 'Notes'
+        },
+        {
+          text: 'Actions'
+        }
+      ]
+    }
   })
 }
 </script>

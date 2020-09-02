@@ -53,8 +53,8 @@
       </v-btn>
     </v-subheader>
     
-    <v-card>
-      <v-data-table></v-data-table>
+    <v-card class="pt-5">
+      <v-data-table :headers="table.headers"></v-data-table>
     </v-card>
   </v-container>
 </template>
@@ -63,6 +63,42 @@
 export default {
   data: () => ({
     createModal: false,
+    table: {
+      headers: [
+        {
+          text: 'Responsible Division',
+          value: 'name'
+        },
+        {
+          text: 'Responsible Comittee',
+          value: 'a'
+        },
+        {
+          text: 'Responsible Manager',
+          value: 'b'
+        },
+        {
+          text: 'Responsible VP/Dir',
+          value: 'eee'
+        },
+        {
+          text: 'First Contact Group',
+          value: 'dddd'
+        },
+        {
+          text: 'Primary Customer Group',
+          value: 'ss'
+        },
+        {
+          text: 'Estimated days to Replace',
+          value: 'aa'
+        },
+        {
+          text: 'Actions',
+          value: 'namebb'
+        },
+      ]
+    },
     options: {
       resp_division: [
         'Ambulatory Community',

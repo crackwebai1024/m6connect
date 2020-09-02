@@ -47,8 +47,8 @@
           <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-subheader>
-    <v-card>
-      <v-data-table>
+    <v-card class="pt-5">
+      <v-data-table :headers="table.headers">
 
       </v-data-table>
     </v-card>
@@ -59,6 +59,31 @@
 export default {
   data: () => ({
     createModal: false,
+    table: {
+      headers: [
+        {
+          text: 'Purchase Type'
+        },
+        {
+          text: 'License Type'
+        },
+        {
+          text: 'Number of Licenses'
+        },
+        {
+          text: 'Cost per License'
+        },
+        {
+          text: 'Total Licesing Cost'
+        },
+        {
+          text: 'Notes'
+        },
+        {
+          text: 'Actions'
+        },
+      ]
+    },
     options: {
       purchase_type: ['Lease', 'Other', 'Owned', 'SaaS', 'Subscription'],
       license_type: ['Concurrent License', 'Enterprise License']

@@ -40,8 +40,8 @@
           <v-icon>mdi-account-plus-outline</v-icon>
       </v-btn>
     </v-subheader>
-    <v-card>
-      <v-data-table>
+    <v-card class="pt-5">
+      <v-data-table :headers="table.headers">
 
       </v-data-table>
     </v-card>
@@ -51,7 +51,23 @@
 <script>
 export default {
   data: () => ({
-    createModal: false
+    createModal: false,
+    table: {
+      headers: [
+        {
+          text: 'User Type'
+        },
+        {
+          text: 'Users'
+        },
+        {
+          text: 'Notes'
+        },
+        {
+          text: 'Actions'
+        }
+      ]
+    }
   })
 }
 </script>
