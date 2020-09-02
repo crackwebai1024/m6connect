@@ -13,8 +13,8 @@
             </div>
         </template>
         <div v-for="(record, i) of get_idle_previews()" :key="i">
-            <record-stack-item v-if="record != get_idle_previews()[0] && index == 1"  :recorIdle="record" />
-            <record-stack-item v-if="record != get_idle_previews()[get_idle_previews().length-1] && index == 0"  :recorIdle="record" />
+            <record-stack-item :recorIdle="record" :indexState="index" v-if="record != get_idle_previews()[0] && index == 1" />
+            <record-stack-item :recorIdle="record" :indexState="index" v-if="record != get_idle_previews()[get_idle_previews().length-1] && index == 0" />
         </div>
     </v-menu>
 </v-container>
