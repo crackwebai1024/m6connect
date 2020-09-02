@@ -41,9 +41,7 @@
       </v-btn>
     </v-subheader>
     <v-card class="pt-5">
-      <v-data-table :headers="table.headers">
-
-      </v-data-table>
+      <v-data-table :headers="table.headers"></v-data-table>
     </v-card>
   </v-container>
 </template>

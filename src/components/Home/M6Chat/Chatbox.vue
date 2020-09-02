@@ -28,8 +28,9 @@
           <v-icon>mdi-cog-outline</v-icon>
           <v-icon @click="closeChat()">mdi-close</v-icon>
       </v-row>
-      <v-row v-if="display" class="white pa-3 d-flex flex-column fill-height">
-            <template v-for="(group, i) in groupedMessages">
+      <v-row v-if="display" style="overflow: auto" class="white pa-3 fill-height">
+            <v-col class="d-flex flex-column">
+                <template v-for="(group, i) in groupedMessages">
                 <div class="text-center py-2" :key="'group-' + group">
                     <a class="px-2 py-1 text-caption rounded-lg grey lighten-2 grey--text text--darken-2">
                         {{i | day}}
@@ -41,6 +42,7 @@
                    {{msg.body}}
                 </message>
             </template>
+            </v-col>
       </v-row>
       <v-row v-if="display" class="white px-3" justify="center">
           <v-text-field
