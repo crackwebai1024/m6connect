@@ -3,7 +3,7 @@
     <v-dialog v-model="createModal" persistent max-width="600px">
       <v-card>
         <v-card-title class="blue darken-3 white--text">
-          <span class="headline">Create Governance</span>
+          <span class="headline">Create User</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -37,7 +37,7 @@
         right
         fab
         @click="createModal = true">
-          <v-icon>mdi-plus</v-icon>
+          <v-icon>mdi-account-plus-outline</v-icon>
       </v-btn>
     </v-subheader>
     <v-card>
