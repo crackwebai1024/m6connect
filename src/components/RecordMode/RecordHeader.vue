@@ -4,7 +4,7 @@
         <div v-if="get_screen_status() && headerDataRecord == null" class="d-flex blue darken-1 white--text pl-3 pr-2 py-2">
             <div class="font-weight-black" style="font-size: 17px;">{{ get_record_full_screen().record_name }}</div>
             <v-spacer></v-spacer>
-            <v-icon color="white" @click="hidden_full_screen({record: get_record_full_screen()})" size="18" class="px-2" >mdi-minus</v-icon>
+            <v-icon color="white" @click="hidden_full_screen( get_record_full_screen())" size="18" class="px-2" >mdi-minus</v-icon>
             <v-icon color="white" @click="preview_screen_from_full_screen(get_record_full_screen())" class>mdi-arrow-bottom-left</v-icon>
             <v-icon color="white" @click="close_full_screen()">mdi-close</v-icon>
         </div>

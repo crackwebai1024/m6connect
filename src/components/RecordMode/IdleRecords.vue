@@ -8,8 +8,8 @@
             v-bind="attrs"
             v-on="on"
             >
-                <record-stack-item v-if="index == 1" @click="preview_screen(recorIdle)" :recorIdle="get_idle_previews()[0]" />
-                <record-stack-item v-else @click="preview_screen(recorIdle)" :recorIdle="get_idle_previews()[get_idle_previews().length - 1]" />
+                <record-stack-item :indexState="index" v-if="index == 1" @click="preview_screen(recorIdle)" :recorIdle="get_idle_previews()[0]" />
+                <record-stack-item :indexState="index" v-else @click="preview_screen(recorIdle)" :recorIdle="get_idle_previews()[get_idle_previews().length - 1]" />
             </div>
         </template>
         <div v-for="(record, i) of get_idle_previews()" :key="i">

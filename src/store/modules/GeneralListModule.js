@@ -104,6 +104,13 @@ export default {
         }
       }
     },
+    unshift_data_to_active(context, record){
+      if(Object.keys(context.state.active_previews[1]).length == 0){
+        context.state.active_previews.splice(1, 1, record);
+        NavStack.state.hidden2 = false;
+      }
+      context.dispatch("remove_from_idle", record.uid)
+    },
     remove_record_from_active(context, record){
       let index = context.state.active_previews.indexOf(record);
       context.state.active_previews.splice(index, 1, new Object);
@@ -146,10 +153,17 @@ export default {
       }
     },
     remove_from_idle(context, id) {
+      let lengthActive1 = Object.keys(context.state.active_previews[0]).length;
+      let lengthActive2 = Object.keys(context.state.active_previews[1]).length;
       let newArray = _.remove(context.state.idle_previews, function(n) {
         return n.uid != id;
       });
       context.commit("set_idle_previews", newArray);
+      if(context.state.idle_previews.length == 1 && lengthActive1 == 0 && lengthActive2 == 0){
+        console.log(context.state.idle_previews.length);
+        NavStack.state.hidden1 = true;
+        NavStack.state.hidden2 = false
+      }
     },
     show_preview_of_idle(context, item){
       if(context.state.screen_status){
@@ -191,14 +205,28 @@ export default {
     },
     preview_screen_from_full_screen(cont, item){
       cont.dispatch("close_full_screen");
+      NavStack.state.hidden1 == true && NavStack.state.hidden2 == false ?
+      cont.dispatch("unshift_data_to_active", item) :
       cont.dispatch("preview_screen", item);
     },
-    close_full_screen({commit}){
-      commit("preview_screen");
+    close_full_screen(cont){
+      cont.state.record_full_screen = new Object;
+      cont.commit("preview_screen");
     },
-    hidden_full_screen({commit}, object){
-      commit("preview_screen");
-      commit("push_to_idle", object);
+    hidden_full_screen(cont, object){
+      cont.commit("preview_screen");
+      cont.state.idle_previews.length == 0 ? cont.commit("push_to_idle", object) : cont.commit("unshift_to_idle", object);
+      if(cont.state.idle_previews.length != 0 && Object.keys(cont.state.active_previews[1]) == 0 ){
+        NavStack.state.hidden2 = true;
+      }
+      if(
+        Object.keys(cont.state.active_previews[1]) == 0 && 
+        Object.keys(cont.state.active_previews[0]) == 0 &&
+        cont.state.idle_previews.length == 1
+      ){
+        NavStack.state.hidden1 = true;
+        NavStack.state.hidden2 = false;
+      }
     }
   }
 };
