@@ -12,7 +12,6 @@ export default {
     RecordContainer,
   },
   props: {
-    type: String,
     data: Object,
   },
 };

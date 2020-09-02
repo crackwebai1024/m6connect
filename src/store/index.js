@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import Data from "./data";
 import SocialNetworkModule from "./modules/SocialNetworkModule";
 import GeneralListModule from "./modules/GeneralListModule";
+import NavigationStack from "./modules/NavigationStack";
 import TablesModule from "./modules/TablesModule";
 import InfoModule from "./modules/InfoModule";
 
@@ -123,6 +124,7 @@ export default new Vuex.Store({
   modules: {
     SocialNetworkModule,
     GeneralListModule,
+    NavigationStack,
     TablesModule,
     InfoModule
   }
