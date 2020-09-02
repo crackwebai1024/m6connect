@@ -32,6 +32,11 @@
           <v-select label="Application Value" multiple chips :items="application_value"></v-select>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col cols="6">
+          <v-text-field flat label="Retire" prepend-icon="mdi-calendar"></v-text-field>
+        </v-col>
+      </v-row>
     </v-card>
   </v-container>
 </template>

@@ -1,6 +1,7 @@
 <template>
-  <v-container></v-container>
-  
+  <v-container>
+    <v-subheader class="rounded-t primary white--text">Rationalization Costs</v-subheader>
+  </v-container>
 </template>
 
 <script>
