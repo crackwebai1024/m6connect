@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container @mouseenter="isHover = true" @mouseleave="isHover = false">
     <v-dialog v-model="createModal" persistent max-width="600px">
       <v-card>
         <v-card-title class="blue darken-3 white--text">
@@ -41,7 +41,7 @@
     <v-subheader style="position:relative" class="rounded-t primary white--text">
       Rationalization Governance
       <v-btn
-        color="indigo"
+        :color="isHover ? 'orange' : 'blue'"
         dark
         small
         absolute
@@ -62,6 +62,7 @@
 <script>
 export default {
   data: () => ({
+    isHover: false,
     createModal: false,
     table: {
       headers: [
