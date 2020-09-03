@@ -73,6 +73,15 @@ export default {
       if(context.state.active_previews[0] == preview_object || context.state.active_previews[1] == preview_object){
         validator = true;
       }
+      if(
+        NavStack.state.hidden1 == true && 
+        NavStack.state.hidden2 == false && 
+        Object.keys(context.state.active_previews[1]).length == 0 &&
+        Object.keys(context.state.active_previews[0]).length != 0
+      ){
+        context.dispatch("unshift_data_to_active", preview_object);
+        validator = true;
+      }
       if(!validator){
         if(Object.keys(context.state.active_previews[0]).length == 0){
           context.state.active_previews.splice(0, 1, preview_object)
@@ -105,10 +114,11 @@ export default {
       }
     },
     unshift_data_to_active(context, record){
-      if(Object.keys(context.state.active_previews[1]).length == 0){
-        context.state.active_previews.splice(1, 1, record);
-        NavStack.state.hidden2 = false;
+      if(Object.keys(context.state.active_previews[1]).length != 0){
+        context.dispatch("push_data_to_idle", context.state.active_previews[1])
       }
+      context.state.active_previews.splice(1, 1, record);
+      NavStack.state.hidden2 = false;
       context.dispatch("remove_from_idle", record.uid)
     },
     remove_record_from_active(context, record){
@@ -120,7 +130,7 @@ export default {
 
       if(
         lengthActive1 == 0 && lengthActive2 == 0 &&
-        context.state.idle_previews.length > 0
+        context.state.idle_previews.length > 1
       ){
         NavStack.state.hidden1 = true;
         NavStack.state.hidden2 = true;
