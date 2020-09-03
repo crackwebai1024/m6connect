@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container @mouseenter="isHover = true" @mouseleave="isHover = false">
     <v-dialog v-model="editModal" persistent max-width="600px">
       <v-card>
         <v-card-title class="blue darken-3 white--text">
@@ -9,9 +9,77 @@
             <v-tab :key="tab" v-for="tab in tabs.items" class="text-caption">{{tab.tab}}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="tabs.current">
-            <v-tab-item :key="0">a</v-tab-item>
-            <v-tab-item :key="1">b</v-tab-item>
-            <v-tab-item :key="2">c</v-tab-item>
+            <v-tab-item :key="0">
+                <v-container class="px-5">
+                    <v-col>
+                        <v-select :items="options.general.install_type" label="Install Type"></v-select>
+                    </v-col>
+                    <v-col>
+                        <v-select :items="options.general.priority" label="Priority"></v-select>
+                    </v-col>
+                    <v-col>
+                        <v-select :items="options.general.delivery" label="Delivery Method"></v-select>
+                    </v-col>
+                    <v-col>
+                        <v-select :items="options.general.connection_required" label="ODBC Connection Required"></v-select>
+                    </v-col>
+                </v-container>
+            </v-tab-item>
+            <v-tab-item :key="1">
+                <v-container>
+                    <v-btn color="green" dark>Upload File</v-btn>
+                    <v-data-table></v-data-table>
+                </v-container>
+            </v-tab-item>
+            <v-tab-item :key="2">
+                <v-container class="px-5">
+                    <v-row class="">
+                        <v-col cols="auto">
+                            <v-switch v-model="switches.firewall_exceptions" :label="switches.firewall_exceptions? 'Yes' : 'No'"></v-switch>
+                        </v-col>
+                        <v-col class="">
+                            <v-textarea rows="1" label="Firewall Exceptions"></v-textarea>
+                        </v-col>
+                    </v-row>
+                    <v-row class="">
+                        <v-col cols="auto">
+                            <v-switch v-model="switches.install_notes" :label="switches.install_notes? 'Yes' : 'No'"></v-switch>
+                        </v-col>
+                        <v-col class="">
+                            <v-textarea rows="1" label="Install Notes"></v-textarea>
+                        </v-col>
+                    </v-row>
+                    <v-row class="">
+                        <v-col cols="auto">
+                            <v-switch v-model="switches.mapped_drives" :label="switches.mapped_drives? 'Yes' : 'No'"></v-switch>
+                        </v-col>
+                        <v-col class="">
+                            <v-textarea rows="1" label="Mapped Drives"></v-textarea>
+                        </v-col>
+                    </v-row>
+                    <v-row class="">
+                        <v-col cols="auto">
+                            <v-switch v-model="switches.registry_changes" :label="switches.registry_changes? 'Yes' : 'No'"></v-switch>
+                        </v-col>
+                        <v-col class="">
+                            <v-textarea rows="1" label="Registry changes"></v-textarea>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-tab-item>
+            <v-tab-item :key="3">
+                <v-container class="px-5">
+                    <v-col>
+                        <v-textarea rows="1" label="Previous Software Version"></v-textarea>
+                    </v-col>
+                    <v-col>
+                        <v-textarea rows="1" label="AD Groups Machine"></v-textarea>
+                    </v-col>
+                    <v-col>
+                        <v-textarea rows="1" label="AD Groups User"></v-textarea>
+                    </v-col>
+                </v-container>
+            </v-tab-item>
         </v-tabs-items>
         <v-card-text>
           <v-container class="">
@@ -19,8 +87,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="createModal = false">Close</v-btn>
-          <v-btn color="primary" @click="createModal = false">Save</v-btn>
+          <v-btn text @click="editModal = false">Close</v-btn>
+          <v-btn color="primary" @click="editModal = false">Save Changes</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -94,6 +162,12 @@
 <script>
 export default {
     data: () => ({
+        switches: {
+            firewall_exceptions: false,
+            install_notes: false,
+            mapped_drives: false,
+            registry_changes: false
+        },
         isHover: false,
         editModal: false,
         tabs: {
@@ -104,6 +178,15 @@ export default {
                 {tab: 'Install Support'},
                 {tab: 'Additional Package Build Information'}
             ]
+        },
+        options: {
+            general: {
+                install_type: ['Manual', 'Vendor'],
+                priority: [5,4,3,2,1],
+                delivery: ['Web', 'Citrix'],
+                odbc_connection: ['Required', 'No required'],
+
+            },
         },
         installation: {
             general: {
