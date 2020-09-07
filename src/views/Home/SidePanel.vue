@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sharp-menu">
     <div class="blue darken-3 mt-3 ml-2 py-3 px-4">
       <div class="d-flex">
         <img alt="" class="mr-2" width="100" height="65" src="@/assets/sharp-logo.png">
@@ -114,5 +114,8 @@ export default {
     -moz-transition: height .5s ease;
     -o-transition: height .5s ease;
     transition: height .5s ease;
+  }
+  .sharp-menu {
+    width: 315px;
   }
 </style>
