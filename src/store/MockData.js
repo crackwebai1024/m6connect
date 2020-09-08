@@ -89,16 +89,17 @@ export default {
       image_url_type: "record_image_url"
     },{
       record_type: "itapps",
-      record_name: "Test ITApps",
+      record_name: "Citrix Workspace",
       uid: "1123",
       phase: "asdasd",
-      company: "m6connect",
+      company: "Citrix Systems, Inc.",
       department: "Design",
       record_leader: "",
       record_support: "",
       designer: "",
       role_two: "",
-      client_status: "",
+      client_status: "ACTIVE",
+      version: "1912 LTSR",
       internal_description: "",
       internal_objective: "",
       record_image_url:

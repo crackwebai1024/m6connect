@@ -1,32 +1,18 @@
 <template>
-    <v-container class="px-0 py-0">
-        <v-img class="white--text align-end" height="100px" :src="info['record_image_url']">
-            <div class="px-3 py-1" style="position:absolute; top: 0; right: 0;">{{ info['phase'] }}</div>
-        </v-img>
-        <v-card-text class="text--primary py-1">
-            <div class="d-flex flex-row flex-nowrap align-baseline">
-            <div class="subtitle-1 font-weight-black">{{ info['record_name'] }}</div>
-            <v-spacer></v-spacer>
-            <div class="caption">
-                <span class="font-weight-black">ID:</span>
-                {{ info['uid'] }}
-            </div>
-            </div>
-            <div class="caption custom-line-height">
-            <div>
-                <span class="font-weight-black">Company:</span>
-                {{ info['company'] }}
-            </div>
-            <div>
-                <span class="font-weight-black">Department:</span>
-                {{ info['department'] }}
-            </div>
-            <div>
-                <span class="font-weight-black">record Leader:</span>
-                {{ info['record_leader'] || 'Not assigned' }}
-            </div>
-            </div>
-        </v-card-text>
+    <v-container class="pa-5 d-flex justify-space-between rounded-sm grey lighten-4 panel-container">
+        <div>
+            <p class="text-h5 font-weight-regular mb-6">{{ info['record_name'] }} {{ info['version'] }}</p>
+            <ul class="list-items">
+                <li class="font-weight-light text-body-2">{{ info['company'] }}</li>
+                <li class="font-weight-light text-body-2">Status: {{ info['client_status'] }}</li>
+                <li class="font-weight-light text-body-2">Version: {{ info['version'] }}</li>
+                <li class="font-weight-light text-body-2">Software</li>
+                <li class="font-weight-light text-body-2">N/A</li>
+            </ul>
+        </div>
+        <div class="company-image">
+            <img alt="" class="mt-2 rounded-circle" width="100" height="100" :src="info['record_image_url']">
+        </div>
     </v-container>
 </template>
 <script>
@@ -47,5 +33,24 @@ export default {
 </script>
 
 <style lang="scss">
-
+.panel-container {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+.list-items {
+  list-style: none;
+}
+.company-image {
+    position: relative;
+    &:after {
+        height: 22px;
+        width: 22px;
+        border-radius: 100%;
+        background: #81DF06;
+        bottom: 0;
+        content: "";
+        position: absolute;
+        right: 5px;
+        top: 5px;
+    }
+}
 </style>
