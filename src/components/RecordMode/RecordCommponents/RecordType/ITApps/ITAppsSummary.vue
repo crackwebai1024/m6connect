@@ -1,6 +1,6 @@
 <template>
-    <v-container class="pa-5 d-flex justify-space-between rounded-sm grey lighten-4 panel-container">
-        <div>
+    <v-container class="py-5 d-flex justify-space-between rounded-sm grey lighten-4 panel-container">
+        <div class="pl-5">
             <p class="text-h5 font-weight-regular mb-6">{{ info['record_name'] }} {{ info['version'] }}</p>
             <ul class="list-items">
                 <li class="font-weight-light text-body-2">{{ info['company'] }}</li>
@@ -10,7 +10,7 @@
                 <li class="font-weight-light text-body-2">N/A</li>
             </ul>
         </div>
-        <div class="company-image">
+        <div class="company-image pr-5">
             <img alt="" class="mt-2 rounded-circle" width="100" height="100" :src="info['record_image_url']">
         </div>
     </v-container>
@@ -49,7 +49,7 @@ export default {
         bottom: 0;
         content: "";
         position: absolute;
-        right: 5px;
+        right: 22px;
         top: 5px;
     }
 }

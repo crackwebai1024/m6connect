@@ -12,14 +12,14 @@
               v-if="active_previews[index]" style="height: 78vh;"
               class="white elevation-3 py-0 px-0" >
             <preview-Selector
-              style="pointer-events: auto; height: 100vh;"
+              style="pointer-events: auto; height: 100%;"
               :data="active_previews[index]"></preview-Selector>
           </div>
         </div>
         <div v-if="get_idle_previews().length > 0">
           <v-col cols="12"
             v-if="index == 0 ? getHiddenState1() : getHiddenState2()"
-            class="px-1 pb-0"
+            class="px-1 pb-0 panels-preview"
             :id="'idle-'+index"
             style="
               pointer-events: auto;
@@ -73,5 +73,10 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+.panels-preview > div {
+  overflow-y: scroll !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 </style>
