@@ -1,11 +1,11 @@
 <template>
-  <v-container class="pa-0 mx-2 my-3 d-flex">
+  <v-container class="pa-0 mx-2 pt-3 d-flex vertical-scroll dont-show-scroll height-100-vh">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
       <record-container :data="get_record_full_screen()" />
     </template>
     <template v-else>
-      <v-card width="50%" cols="6" class="height-100-vh vertical-scroll dont-show-scroll">
+      <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll">
         <!-- Social Network -->
         <project-social-media />
         <image-caroussel-overlay
@@ -16,10 +16,10 @@
         ></image-caroussel-overlay>
 
       </v-card>
-      <v-col :cols="layout.contacts ? 6 : 6" class="height-100-vh vertical-scroll dont-show-scroll">
+      <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll">
         <!-- Project List Component -->
         <general-list />
-      </v-col>
+      </v-card>
     </template>
   </v-container>
 </template>
