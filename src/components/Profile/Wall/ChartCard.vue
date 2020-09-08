@@ -1,5 +1,5 @@
 <template>
-    <v-row class="chart-card d-flex justify-space-between ma-0 mt-4 pt-3 pb-2 px-5 white">
+    <v-row class="chart-card d-flex justify-space-between ma-0 mt-3 pt-3 pb-2 px-5 white">
         <fusioncharts
             class="h-full mx-6 mt-3"
             :data-source="dataSource"

@@ -201,7 +201,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mdi-chevron-right::before {
     background: #ddd;
     border-radius: 100%;
