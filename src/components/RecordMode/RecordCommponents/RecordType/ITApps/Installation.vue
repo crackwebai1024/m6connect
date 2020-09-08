@@ -288,5 +288,7 @@ export default {
 </script>
 
 <style>
-
+.v-expansion-panels {
+    z-index: 0;
+}
 </style>
