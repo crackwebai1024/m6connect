@@ -3,7 +3,7 @@
     <v-row no-gutters class="grey lighten-2 flex-nowrap">
       <!-- Side Panel Component  -->
       <side-panel />
-      <!-- Home / Sharp Profile -->
+      <!-- Home / Company Profile -->
       <router-view class="grey lighten-2 max-w-none" :class="layout.contacts ? 'content-expanded' : 'content-collapsed'"/>
       <!-- Chat Component -->
       <v-card class="fill-height pt-3 d-flex flex-column align-end" :width="layout.contacts ? 56 : 306" style="position:fixed; right: 0; bottom: 0; top: 0;">

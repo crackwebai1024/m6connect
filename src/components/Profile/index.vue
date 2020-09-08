@@ -128,7 +128,7 @@ export default {
     showColumnLeft: true,
     showColumnRight: true
   }),
-  name: "SharpProfilePage",
+  name: "CompanyProfilePage",
   computed: {
     ...mapGetters({
       get_screen_status: "GeneralListModule/get_screen_status",
