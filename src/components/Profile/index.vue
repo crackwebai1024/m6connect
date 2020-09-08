@@ -1,59 +1,73 @@
 <template>
-  <div class="ma-3">
-    <v-row class="d-flex justify-space-between ma-0 mb-4 py-2 px-5 white width-100 vertical-scroll dont-show-scroll rounded-pill">
-      <v-col cols="5" class="pa-0">
-        <img alt="" class="mr-2"  height="35" src="@/assets/sharp-logo2.png">
-      </v-col>
-      <v-col cols="2" class="pa-0 d-flex align-center">
-        <v-row class="d-flex align-center">
-          <v-tabs
-            class="d-flex justify-center"
-            height="35"
-            :active-class="'font-weight-medium'"
-            :hide-slider="true"
-            v-model="tab"
-          >
-            <v-tab
-              class="black--text px-2"
-              v-for="(item,index) in items"
-              :key="item"
-              @click="currentTab = index"
+  <div class="ma-0 px-2 pt-3 pb-0 height-100-vh">
+        <!-- General use list component-->
+    <template v-if="get_screen_status()">
+      <record-container :data="get_record_full_screen()" />
+    </template>
+    <template v-else>
+      <v-row class="d-flex justify-space-between ma-0 mb-3 py-2 px-5 white width-100 vertical-scroll dont-show-scroll rounded-pill">
+        <v-col cols="5" class="pa-0">
+          <img alt="" class="mr-2"  height="35" src="@/assets/sharp-logo2.png">
+        </v-col>
+        <v-col cols="2" class="pa-0 d-flex align-center">
+          <v-row class="d-flex align-center">
+            <v-tabs
+              class="d-flex justify-center"
+              height="35"
+              :active-class="'font-weight-medium'"
+              :hide-slider="true"
+              v-model="tab"
             >
-              {{ item }}
-            </v-tab>
-          </v-tabs>
-        </v-row>
-      </v-col>      
-      <v-col cols="5" class="d-flex justify-end pa-0">
-        <v-icon :large="true" class="black--text">mdi-magnify</v-icon>
-      </v-col>
-    </v-row>
-    <v-col class="pa-0 mb-3" v-show="currentTab == 0">
-      <v-btn
-        v-show="!(showColumnLeft && !showColumnRight)"
-        class="ma-2"
-        color="secondary"
-        @click="showColumnLeft = !showColumnLeft"
-      >
-        Toggle Column Left
-      </v-btn>
-      <v-btn
-        v-show="!(showColumnRight && !showColumnLeft)"
-        class="ma-2"
-        color="red"
-        @click="showColumnRight = !showColumnRight"
-      >
-        Toggle Column Right
-      </v-btn>
-    </v-col>
-    <v-tabs-items v-model="tab">
+              <v-tab
+                class="black--text px-2"
+                v-for="(item,index) in items"
+                :key="item"
+                @click="currentTab = index"
+              >
+                {{ item }}
+              </v-tab>
+            </v-tabs>
+          </v-row>
+        </v-col>      
+        <v-col cols="5" class="d-flex justify-end pa-0">
+          <v-icon :large="true" class="black--text">mdi-magnify</v-icon>
+        </v-col>
+      </v-row>
+      <v-tabs-items v-model="tab">
+        <v-btn
+          v-show="currentTab == 0 && !(showColumnLeft && !showColumnRight)"
+          @click="showColumnLeft = !showColumnLeft"
+          color="blue lighten-1"
+          dark
+          absolute
+          top
+          left
+          fab
+        >
+          <v-icon v-if="showColumnLeft">mdi-chevron-left</v-icon>
+          <v-icon v-else>mdi-chevron-right</v-icon>
+        </v-btn>
+        <v-btn
+          v-show="currentTab == 0 && !(showColumnRight && !showColumnLeft)"
+          color="blue lighten-1"
+          @click="showColumnRight = !showColumnRight"
+          dark
+          absolute
+          top
+          right
+          fab
+        >
+          <v-icon v-if="!showColumnRight">mdi-chevron-left</v-icon>
+          <v-icon v-else>mdi-chevron-right</v-icon>
+        </v-btn>
+
         <v-row no-gutters class="grey lighten-2" v-show="currentTab == 0">
           <v-expand-x-transition>
             <v-card v-show="showColumnLeft"
               elevation="0"
               :height="showColumnLeft ? 'auto': '0'"
               :width="showColumnLeft ? showColumnRight ? '50%' : '100%' : '0'"
-              :class="{'pr-2' : showColumnRight && showColumnLeft}"
+              :class="{'pr-1' : showColumnRight && showColumnLeft}"
               class="transparent"
             >
               <post-profile/>
@@ -82,16 +96,19 @@
             <month-employee/>
           </v-col>
         </v-row>
-    </v-tabs-items>
+      </v-tabs-items>
+    </template>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 import PostProfile from './Wall/PostProfile'
 import ProfileInfo from './Wall/ProfileInfo'
 import ChartCard from './Wall/ChartCard'
 import Employees from './People/Employees'
 import MonthEmployee from './People/MonthEmployee'
+import RecordContainer from '@/components/RecordMode/RecordContainer'
 
 export default {
   components: {
@@ -99,7 +116,8 @@ export default {
     ProfileInfo,
     ChartCard,
     Employees,
-    MonthEmployee
+    MonthEmployee,
+    RecordContainer
   },
   data: () => ({
     tab: null,
@@ -110,8 +128,13 @@ export default {
     showColumnLeft: true,
     showColumnRight: true
   }),
-  name: "SharpProfilePage",
+  name: "CompanyProfilePage",
   computed: {
+    ...mapGetters({
+      get_screen_status: "GeneralListModule/get_screen_status",
+      get_record_full_screen: "GeneralListModule/get_record_full_screen",
+      get_image_preview_overlay: "get_image_preview_overlay"
+    }),
   },
   methods: {
   }
@@ -123,5 +146,16 @@ export default {
     font-weight: 300;
     min-width: 40px;
     text-transform: none;
+  }
+  .v-btn--fab.v-size--default {
+    top: -15px !important;
+    height: 40px;
+    width: 40px;
+    &.v-btn--right {
+      right: 5px;
+    }
+    &.v-btn--left {
+      left: 5px;
+    }
   }
 </style>

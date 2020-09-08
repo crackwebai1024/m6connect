@@ -1,7 +1,7 @@
 <template>
-    <v-container class="vertical-scroll dont-show-scroll grey lighten-2 px-0" style="height:70vh">
+    <v-container class="vertical-scroll dont-show-scroll grey lighten-4 px-0 max-w-none" style="height:100%">
         <!-- That ID is used to scrolling the component -->
-        <component class="px-0" v-for="(item, index) of items" :key="index+'-widget'" :id="name+'-'+index" v-bind:is="item.component" :info="component" ></component>
+        <component class="max-w-none" :class="index !== 0 ? 'px-2' : 'px-0'" v-for="(item, index) of items" :key="index+'-widget'" :id="name+'-'+index" v-bind:is="item.component" :info="component" ></component>
         <infinite-loading @infinite="infiniteHandler" :identifier="NavCommp">
             <div slot="no-more"></div>
         </infinite-loading>
@@ -59,6 +59,3 @@ export default {
     }
 }
 </script>
-<style>
-
-</style>

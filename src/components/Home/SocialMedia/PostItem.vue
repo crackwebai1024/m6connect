@@ -1,6 +1,6 @@
 <template>
   <v-container class="px-0 py-0">
-    <v-card class="mb-4">
+    <v-card class="mb-3">
       <v-card-title class="pb-0">
         <v-row no-gutters align="center">
           <div class="d-flex align-center">

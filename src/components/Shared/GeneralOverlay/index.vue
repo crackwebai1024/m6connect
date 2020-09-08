@@ -19,7 +19,7 @@
         <div v-if="get_idle_previews().length > 0">
           <v-col cols="12"
             v-if="index == 0 ? getHiddenState1() : getHiddenState2()"
-            class="px-1"
+            class="px-1 pb-0"
             :id="'idle-'+index"
             style="
               pointer-events: auto;

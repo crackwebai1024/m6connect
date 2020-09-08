@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pa-0 grey lighten-2 pl-2">
     <header-component hasslot :info="{title:'Create Post', icon:''}" class="mb-3">
       <template v-slot:select>
         <v-select
