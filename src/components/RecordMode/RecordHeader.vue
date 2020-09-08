@@ -1,5 +1,5 @@
 <template>
-    <v-container class="py-0 px-0">
+    <v-container class="py-0 px-0 max-w-none">
         <!-- Full screen view -->
         <div v-if="get_screen_status() && headerDataRecord == null" class="d-flex blue darken-1 white--text pl-3 pr-2 py-2">
             <div class="font-weight-black" style="font-size: 17px;">{{ get_record_full_screen().record_name }}</div>

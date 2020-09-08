@@ -1,5 +1,5 @@
 <template>
-    <v-container class="px-0 py-0 ">
+    <v-container class="px-0 py-0 max-w-none">
         <v-card id="create">
             <v-speed-dial
             v-model="fab"

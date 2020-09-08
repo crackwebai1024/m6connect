@@ -5,15 +5,15 @@
       <side-panel />
       <!-- Home / Sharp Profile -->
       <!-- <v-col :cols="layout.contacts ? 9 : 8" class="height-100-vh vertical-scroll dont-show-scroll"> -->
-
-      <router-view class="grey lighten-2"/>
-      <v-col :cols="layout.contacts ? 1 : 2" style="position:fixed; right: 0; bottom: 0; top: 0;"
-              class="pt-3 d-flex flex-column align-end">
+<!-- 306 expandido - 56 collapsed entonces seria  100%-621 100%-371 --> 
+      <router-view class="grey lighten-2 max-w-none" :class="layout.contacts ? 'content-expanded' : 'content-collapsed'"/>
+      <!-- <v-col :cols="layout.contacts ? 1 : 2" style="position:fixed; right: 0; bottom: 0; top: 0;"
+              class="pt-3 d-flex flex-column align-end"> -->
         <!-- Chat Component -->
-        <v-card class="fill-height" :width="layout.contacts ? 56 : '100%'">
+        <v-card class="fill-height pt-3 d-flex flex-column align-end" :width="layout.contacts ? 56 : 306" style="position:fixed; right: 0; bottom: 0; top: 0;">
           <m6-chat></m6-chat>
         </v-card>
-      </v-col>
+      <!-- </v-col> -->
     </v-row>
     <!-- Preview overlay -->
     <chat-wrapper></chat-wrapper>
@@ -44,3 +44,14 @@ export default {
   }
 };
 </script>
+<style>
+  .content-expanded {
+    width: calc(100% - 371px);
+  }
+  .content-collapsed {
+    width: calc(100% - 621px);
+  }
+  .max-w-none {
+    max-width: none;
+  }
+</style>
