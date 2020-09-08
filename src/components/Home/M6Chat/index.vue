@@ -7,65 +7,59 @@
         :mini-variant.sync="mini"
         permanent width="100%">
             <div v-if="!mini" class="">
-                <v-row class="px-3 py">
-                    <v-icon @click="mini = true" class="text--grey">mdi-chevron-right</v-icon>
-                </v-row>
-                <v-row class="px-3">
-                    <v-col class="py-0">
-                        <p class="text-subtitle-1 grey--text text--darken-1">People</p>
-                    </v-col>
-                    <v-col cols="" class="py-0">
-                        <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                color="primary"
-                                dark
-                                text
-                                small
-                                v-bind="attrs"
-                                v-on="on"
-                                class="text-caption"
-                                >
-                                Everyone <v-icon right class="text-caption">mdi-filter-outline</v-icon>
-                                </v-btn>
-                            </template>
-                            <template>
-                                <v-list dense>
-                                    <v-list-item>
-                                        <v-list-item-title>Everyone</v-list-item-title>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-list-item-title>My company</v-list-item-title>
-                                    </v-list-item>
+                <v-icon @click="mini = true" class="text--grey">mdi-chevron-right</v-icon>
+                <div class="py-2 px-3 d-flex justify-space-between">
+                    <p class="text-subtitle-1 grey--text text--darken-1 mb-0">People</p>
+                    <v-menu offset-y>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                            color="primary"
+                            dark
+                            text
+                            small
+                            v-bind="attrs"
+                            v-on="on"
+                            class="text-caption"
+                            >
+                            Everyone <v-icon right class="text-caption">mdi-filter-outline</v-icon>
+                            </v-btn>
+                        </template>
+                        <template>
+                            <v-list dense>
+                                <v-list-item>
+                                    <v-list-item-title>Everyone</v-list-item-title>
+                                </v-list-item>
+                                <v-list-item>
+                                    <v-list-item-title>My company</v-list-item-title>
+                                </v-list-item>
 
-                                    <v-subheader>Teams</v-subheader>
-                                    <v-list-item  :key="'team-' + key" v-for="(team, key) in filter.teams">
-                                        <v-list-item-title>{{team}}</v-list-item-title>
-                                    </v-list-item>
+                                <v-subheader>Teams</v-subheader>
+                                <v-list-item  :key="'team-' + key" v-for="(team, key) in filter.teams">
+                                    <v-list-item-title>{{team}}</v-list-item-title>
+                                </v-list-item>
 
-                                    <v-subheader>Departments</v-subheader>
-                                    <v-list-item :key="'dep-' + key" v-for="(dep, key) in filter.departments">
-                                        <v-list-item-title>{{dep}}</v-list-item-title>
-                                    </v-list-item>
-                                </v-list>
-                            </template>
-                        </v-menu>
-                    </v-col>
-                    <v-text-field hide-details class="mx-3 myinput rounded-pill mb-3" flat solo-inverted append-icon="mdi-magnify"  label="Search"></v-text-field>
-                </v-row>
+                                <v-subheader>Departments</v-subheader>
+                                <v-list-item :key="'dep-' + key" v-for="(dep, key) in filter.departments">
+                                    <v-list-item-title>{{dep}}</v-list-item-title>
+                                </v-list-item>
+                            </v-list>
+                        </template>
+                    </v-menu>
+                </div>
+                <v-text-field hide-details class="mx-2 myinput rounded-pill mb-3" flat solo-inverted append-icon="mdi-magnify"  label="Search"></v-text-field>
                 <v-divider></v-divider>
-                <v-subheader class=" lighten-3 font-weight-medium px-2 black--text">Teams</v-subheader>
-                <v-subheader class=" lighten-3 font-weight-medium px-2 black--text">Departments</v-subheader>
+                <v-subheader class="lighten-3 font-weight-medium px-3 black--text">Teams</v-subheader>
+                <v-subheader class="lighten-3 font-weight-medium px-3 black--text">Departments</v-subheader>
             
                 <v-expansion-panels multiple accordion>
                     <v-expansion-panel class="" :key="index" dense v-for="(dep, index) in departments">
-                        <v-expansion-panel-header dense class="font-weight-light px-2 grey lighten-3">{{dep.name}}</v-expansion-panel-header>
+                        <v-expansion-panel-header dense class="font-weight-light px-3 grey lighten-3">{{dep.name}}</v-expansion-panel-header>
                         <v-expansion-panel-content class="px-0 pb-0">
-                            <v-list class="" style="">
+                            <v-list class="px-0" style="padding:0;">
                                 <v-list-item
                                     @click="startChat(u.id)"
                                     :key="index"
-                                    class="pa-0 my-2"
+                                    class="px-4 my-2"
                                     v-for="(u, index) in dep.users">
                                     <v-badge
                                         bordered
@@ -208,5 +202,12 @@ export default {
 </script>
 
 <style lang="scss">
-
+.mdi-chevron-right::before {
+    background: #ddd;
+    border-radius: 100%;
+    margin: 6px 6px 6px 10px;
+}
+.v-expansion-panel-content__wrap {
+    padding: 0;
+}
 </style>
