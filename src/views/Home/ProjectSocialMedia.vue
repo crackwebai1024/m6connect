@@ -1,6 +1,6 @@
 <template>
-  <v-container class="pa-0 grey lighten-2 pr-1">
-    <header-component class="mb-3" hasslot :info="{title:'Create Post', icon:''}">
+  <v-container class="pa-0 grey lighten-2 pr-1" style="height: 100%;">
+    <header-component class="mb-3" hasslot :info="{title:'Create Post', icon:''}" style="height: auto;">
       <template v-slot:select>
         <!-- <v-select
           :items="items"

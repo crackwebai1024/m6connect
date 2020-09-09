@@ -47,4 +47,8 @@ $card-team-line-height: 1rem;
 .v-card:not(.on-hover) {
   opacity: 0.5;
 }
+.v-sheet.v-card:not(.v-sheet--outlined) {
+  box-shadow: none;
+  background: transparent;
+}
 </style>
