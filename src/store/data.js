@@ -1,6 +1,8 @@
 const RequestTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/RequestTab")
 const TicketTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/TicketTab")
 const ProjectSummary = () => import("@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary")
+
+const Description = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Description")
 const Contacts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Contacts")
 const Contracts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Contracts")
 const Notifications = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Notifications")
@@ -79,6 +81,10 @@ export default{
           icon: 'mdi-account-voice', 
           name:'ITApps Summary',
           component: ITAppsSummary
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Description',
+          component: Description
         },{
           icon: 'mdi-account-voice', 
           name:'Contacts',
