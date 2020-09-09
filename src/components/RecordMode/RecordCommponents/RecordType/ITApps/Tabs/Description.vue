@@ -1,6 +1,6 @@
 <template>
   <v-container class="px-4 py-5 mt-5 blue darken-3 white--text relative">
-    <v-btn @click="showUpdateDialog(item)" color="blue lighten-2" small left elevation="0" min-width="37" height="32" class="edit-description rounded-circle transparent pa-0">
+    <v-btn @click="showInfoToUpdate" color="blue lighten-2" small left elevation="0" min-width="37" height="32" class="edit-description rounded-circle transparent pa-0">
       <v-icon class="white--text pa-0 ma-0">mdi-pencil</v-icon>
     </v-btn>
     <div class="d-flex justify-space-between">
@@ -68,175 +68,153 @@
         Impac Elekta MosaiQ {{i}}
       </v-chip>
     </div>
-    
-    <div v-for="(item, index) in items" :key="'item-'+index">
-      <div class="d-flex">
-        <img alt="" class="mr-2 rounded-xl" width="50" height="50" src="@/assets/default_user.png">
-        <div>
-          <p class="mb-0">{{ item.name }}</p>
-          <p>{{ item.email }}</p>
-        </div>
-        <div class="d-flex align-center ml-auto mr-0">
-          <v-tooltip right small>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                small
-                class="rounded-xl text-caption mr-2"
-                color="blue darken-3"
-                dark
-                v-bind="attrs"
-                v-on="on"
-              >App</v-btn>
-            </template>
-            <span>App</span>
-          </v-tooltip>
-          <v-btn @click="showUpdateDialog(item)" small elevation="0" class="transparent rounded-xl"><v-icon>mdi-pencil</v-icon></v-btn>
-        </div>
-      </div>
-      <div v-if="index !== items.length - 1">
-        <v-divider class="my-3 grey lighten-2"></v-divider>
-      </div>
-    </div>
 
     <v-dialog v-model="dialog" persistent max-width="800px">
       <v-form class="white" ref="formItem">
-        <v-toolbar
-          color="blue darken-3"
-          dark
-          flat
-        >
-          <v-toolbar-title>Edit Application Information</v-toolbar-title>
-
-          <template v-slot:extension>
-            <v-tabs
-              v-model="model"
-              centered
-              slider-color="grey lighten-2"
-            >
-              <v-tab
-                v-for="(tab, index) in tabs"
-                :key="'tab-' + index"
-                :href="`#tab-${i}`"
-              >
-                {{ tab.name }}
-              </v-tab>
-            </v-tabs>
-          </template>
-        </v-toolbar>
-
-        <v-tabs-items v-model="model">
-          <v-tab-item
-            v-for="i in 3"
-            :key="i"
-            :value="`tab-${i}`"
+        <v-card-text class="pa-0">
+          <v-toolbar
+            color="blue darken-3"
+            dark
+            flat
           >
-            <v-card flat>
-              <v-card-text class="grey--text" v-text="text">
-                <p>hola</p>
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-        </v-tabs-items>
+            <v-toolbar-title>Edit Application Information</v-toolbar-title>
 
-
-
-
-
-        <v-card-text class="px-16 py-10">
-          <!-- form slot -->
-          <v-container>
-            <v-row>
-              <v-col cols="12" class="py-0">
-                <v-autocomplete
-                  v-model="itemInfo.name"
-                  @change="changeCurrentItemInfo" 
-                  :items="dataPeople"
-                  :filter="customFilter"
-                  color="blue darken-3"
-                  :rules="nameRules"
-                  item-text="name"
-                  return-object
-                  label="Name"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field 
-                  v-model="itemInfo.email"
-                  label="Email*" 
-                  color="blue darken-3"
-                  required
-                  readonly
+            <template v-slot:extension>
+              <v-tabs
+                v-model="tabs"
+                centered
+                slider-color="grey lighten-2"
+              >
+                <v-tab
+                  v-for="(tab, index) in tabTitles"
+                  :key="index + 1"
                 >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.phone"
-                  label="Phone" 
-                  color="blue darken-3"
-                  readonly
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-autocomplete
-                  v-model="itemInfo.tags"
-                  :items="tagItems"
-                  label="Tags*"
-                  multiple
-                  color="blue darken-3"
-                  :rules="tagRules"
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
+                  {{ tab.name }}
+                </v-tab>
+              </v-tabs>
+            </template>
+          </v-toolbar>
+
+          <v-tabs-items v-model="tabs" class="px-16 py-10">
+            <v-tab-item>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-text-field 
+                    v-model="itemInfo.company"
+                    label="Vendor" 
+                    color="blue darken-3"
+                    required
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="itemInfo.client_status"
+                    label="Status" 
+                    color="blue darken-3"
+                    readonly
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-text-field 
+                    v-model="itemInfo.first_contact_group"
+                    label="First Contact Group" 
+                    color="blue darken-3"
+                    required
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="itemInfo.record_type"
+                    label="Type" 
+                    color="blue darken-3"
+                    readonly
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  <v-text-field 
+                    v-model="itemInfo.app_management"
+                    label="App Management" 
+                    color="blue darken-3"
+                    required
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    v-model="itemInfo.hosting_model"
+                    label="Server Hosting Model" 
+                    color="blue darken-3"
+                    readonly
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+          </v-tabs-items>
         </v-card-text>
-        <!-- here another slot -->
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-3" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!infoValid" color="blue darken-3" text @click="updateItem">{{ titleAction }}</v-btn>
+          <v-btn :disabled="!infoValid" color="blue darken-3" text @click="updateItem">Update</v-btn>
         </v-card-actions>
       </v-form>
     </v-dialog>
   </v-container>
 </template>
 <script>
-import {items} from "@/mixins/items";
-
 export default {
   name: "Description",
-  mixins: [items],
   props: {
     info: Object,
   },
   data: () => ({
+    tabs: null,
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    dialog: false,
     model: 'tab-2',
     itemInfo: {
-      name: '',
-      email: null,
-      phone: null,
-      tags: []
     },
-    tagItems: ['App','ITApps','Project'],
-    tabs: [
+    tabTitles: [
       { name: 'General'},
       { name: 'Known As'},
-      { name: 'Security'},
-      { name: 'Image'},
+      { name: 'Security'}
     ]
   }),
   computed: {
     infoValid() {
-      return (this.itemInfo.name !== null && this.itemInfo.tags !== null && this.itemInfo.tags.length > 0) ? true : false
+      return true
+      // return (this.itemInfo.name !== null && this.itemInfo.tags !== null && this.itemInfo.tags.length > 0) ? true : false
     }
   },
   methods: {
-    changeCurrentItemInfo(item) {
-      this.itemInfo.name = item.name
-      this.itemInfo.email = item.email
-      this.itemInfo.phone = item.phone
+    updateItem() {
+      if(this.infoValid) {
+        let info = [this.info,this.itemInfo];
+        this.info = Object.assign(...info);
+        this.$refs.formItem.reset()
+        this.dialog = false
+      }
+    },
+    closeDialog() {
+      this.$refs.formItem.reset()
+      this.dialog = false
+    },
+    showInfoToUpdate() {
+      let info = [this.itemInfo,this.info];
+      this.itemInfo = Object.assign(...info);
+      this.dialog = true
     }
   }
 };
