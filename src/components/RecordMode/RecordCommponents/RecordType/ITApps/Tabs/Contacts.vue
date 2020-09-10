@@ -144,7 +144,7 @@ export default {
   }),
   computed: {
     infoValid() {
-      return (this.itemInfo.name !== null && this.itemInfo.tags !== null && this.itemInfo.tags.length > 0) ? true : false
+      return (this.itemInfo.name !== null && this.itemInfo.name.trim().length !== 0 && this.itemInfo.tags !== null && this.itemInfo.tags.length > 0) ? true : false
     }
   },
   methods: {
