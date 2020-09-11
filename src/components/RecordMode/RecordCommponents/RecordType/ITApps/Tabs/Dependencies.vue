@@ -24,7 +24,6 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
         <div class="licenses-container pa-3">
-          <!-- here is going to render all the items - another slot -->
           <div v-for="(item, index) in items" :key="'item-'+index">
             <div class="d-flex">
               <div>
@@ -50,7 +49,7 @@
     </template>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-form class="white" ref="formItem">
+      <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline text-capitalize">{{ titleDialog }}</span>
           <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
@@ -58,106 +57,85 @@
           </v-btn>
         </v-card-title>
         <v-card-text class="px-16 py-10">
-          <!-- form slot -->
-          <v-container>
-            <v-row>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.type"
-                  label="Type" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.version"
-                  label="Version" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-select
-                  v-model="itemInfo.status"
-                  :items="['Active', 'Inactive']"
-                  label="Status"
-                  :color="baseColor"
-                ></v-select>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.appBuild"
-                  label="App Build" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.edaPackage"
-                  label="EDA Package Build" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.execPath"
-                  label="Updated Exec Path" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.installNotes"
-                  label="Updated Install Notes" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.dctStatus"
-                  label="DCT Status" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>              
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.appCompliant"
-                  label="App Compliant" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>              
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.remDate"
-                  label="Remeditation Date" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>              
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.notes"
-                  label="Notes" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
+          <v-select
+            v-model="itemInfo.type"
+            :items="dependencyTypes"
+            :rules="selectRules"
+            label="Type"
+          ></v-select>
+          <v-text-field 
+            v-model="itemInfo.version"
+            label="Version" 
+          ></v-text-field>
+          <v-select
+            v-model="itemInfo.status"
+            :items="statusOptions"
+            :rules="selectRules"
+            label="Status"
+          ></v-select>
+          <v-select
+            v-model="itemInfo.appBuild"
+            :items="[]"
+            label="App Build"
+          ></v-select>
+          <v-select
+            v-model="itemInfo.edaPackage"
+            :items="[]"
+            label="EDA Package Build"
+          ></v-select>
+          <v-select
+            v-model="itemInfo.execPath"
+            :items="[]"
+            label="Updated Exec Path"
+          ></v-select>
+          <v-select
+            v-model="itemInfo.installNotes"
+            :items="[]"
+            label="Updated Install Notes"
+          ></v-select>
+          <v-select
+            v-model="itemInfo.dctStatus"
+            :items="[]"
+            label="DCT Status"
+          ></v-select>
+          <v-select
+            v-model="itemInfo.appCompliant"
+            :items="[]"
+            label="App Compliant"
+          ></v-select>
+          <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="itemInfo.remDate"
+                label="Remeditation Date"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="itemInfo.remDate" @input="menu2 = false"></v-date-picker>
+          </v-menu>
+          <v-textarea
+            v-model="itemInfo.details"
+          >
+            <template v-slot:label>
+              <div>
+                Notes <small>(optional)</small>
+              </div>
+            </template>
+          </v-textarea>
         </v-card-text>
-        <!-- here another slot -->
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :color="baseColor" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!infoValid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
+          <v-btn :disabled="!valid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
         </v-card-actions>
       </v-form>
     </v-dialog>
@@ -165,10 +143,11 @@
 </template>
 <script>
 import {items} from "@/mixins/items";
+import {validations} from "@/mixins/form-validations"
 
 export default {
-  name: "Contracts",
-  mixins: [items],
+  name: "Dependencies",
+  mixins: [items, validations],
   data: () => ({
     baseColor: 'red darken-2',
     itemsName: 'dependencies',
@@ -185,16 +164,32 @@ export default {
       remDate: null, //Remediation Date
       notes: null //Notes
     },
-    singleSelect: false,
-  }),
-  computed: {
-    infoValid() {
-      return true
-      // return (this.itemInfo.name !== null && this.itemInfo.tags !== null && this.itemInfo.tags.length > 0) ? true : false
-    }
-  },
-  methods: {
-  }
+    dependencyTypes: [
+      '.NET',
+      'Active X',
+      'Android OS (tablet)',
+      'cache.ini',
+      'Chrome',
+      'Dongle',
+      'File System',
+      'Flash',
+      'Internet Explorer',
+      'Internet Explorer 11',
+      'Java',
+      'LDAP',
+      'Luminex software by Vendor',
+      'MS Exchange',
+      'MS Office',
+      'MS SQL Server',
+      'MS Windows Server',
+      'mTilda',
+      'Silverlight',
+      'Windows OS'
+    ],
+    statusOptions: ['Active', 'Inactive'],
+    appBuildOptions: ['64 Bit', 'N/A'],
+
+  })
 };
 </script>
 <style lang="scss">

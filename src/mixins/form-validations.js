@@ -15,7 +15,14 @@ export const validations = {
     ],
     quantityRules: [
       v => (v && v >= 0) || 'Please choose a number equal or greater than 0'
-    ]
+    ],
+    selectRules: [
+      v => !!v || 'Please choose an option',
+    ],
+    date: new Date().toISOString().substr(0, 10),
+    menu: false,
+    modal: false,
+    menu2: false,
   }),
   methods: {
     validate() {
