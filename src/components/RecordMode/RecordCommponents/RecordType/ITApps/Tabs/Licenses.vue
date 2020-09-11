@@ -24,7 +24,7 @@
                 <v-col cols="12" class="pl-4 pr-16 py-1">
                   <div class="d-flex justify-space-between">
                     <p class="font-weight-medium mb-0">{{keyName}}</p>
-                    <p class="mb-0">{{item[keyName]}}</p>
+                    <p class="mb-0" :class="{ 'blue lighten-1 white--text rounded-xl px-3': keyName == 'licenseType' }">{{item[keyName]}}</p>
                   </div>
                   <v-divider class="mt-1 grey lighten-2"></v-divider>
                 </v-col>
@@ -39,7 +39,11 @@
     </template>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-form class="white" ref="formItem">
+      <v-form
+        ref="form"
+        v-model="valid"
+        class="white"
+      >
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline text-capitalize">{{ titleDialog }}</span>
           <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
@@ -47,58 +51,61 @@
           </v-btn>
         </v-card-title>
         <v-card-text class="px-16 py-10">
-          <!-- form slot -->
-          <v-container>
-            <v-row>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.licenseType"
-                  label="Type" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.users"
-                  label="Estimated users" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.concurrentUsers"
-                  label="Estimated concurrent users" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.licenses"
-                  label="Number of licenses" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.details"
-                  label="Details" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
+          <v-select
+            v-model="itemInfo.licenseType"
+            :items="licenseTypes"
+            :rules="nameRules"
+            :color="baseColor"
+            label="Type"
+          ></v-select>
+
+          <v-text-field 
+            v-model="itemInfo.users"
+            :rules="quantityRules"
+            :color="baseColor"
+            type="number"
+            label="Estimated Users" 
+          ></v-text-field>
+
+          <v-text-field 
+            v-model="itemInfo.concurrentUsers"
+            :rules="quantityRules"
+            :color="baseColor"
+            type="number"
+            label="Estimated Concurrent Users" 
+          ></v-text-field>
+
+          <v-text-field 
+            v-model="itemInfo.licenses"
+            :rules="quantityRules"
+            :color="baseColor"
+            type="number"
+            label="Number of Licenses"
+          ></v-text-field>
+
+          <v-textarea
+            v-model="itemInfo.details"
+            :color="baseColor"
+          >
+            <template v-slot:label>
+              <div>
+                Details <small>(optional)</small>
+              </div>
+            </template>
+          </v-textarea>
         </v-card-text>
-        <!-- here another slot -->
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :color="baseColor" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!infoValid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
+          <v-btn
+            :disabled="!valid"
+            text
+            :color="baseColor"
+            class="mr-4"
+            @click="clickAction"
+          >
+            {{ titleAction }}
+          </v-btn>
         </v-card-actions>
       </v-form>
     </v-dialog>
@@ -106,10 +113,11 @@
 </template>
 <script>
 import {items} from "@/mixins/items";
+import {validations} from "@/mixins/form-validations"
 
 export default {
   name: "Licenses",
-  mixins: [items],
+  mixins: [items, validations],
   data: () => ({
     baseColor: 'teal lighten-1',
     itemsName: 'licenses',
@@ -120,24 +128,8 @@ export default {
       licenses: null,
       details: null
     },
-    select: { state: 'Florida', abbr: 'FL' },
-    items2: [
-      { state: 'Florida', abbr: 'FL' },
-      { state: 'Georgia', abbr: 'GA' },
-      { state: 'Nebraska', abbr: 'NE' },
-      { state: 'California', abbr: 'CA' },
-      { state: 'New York', abbr: 'NY' },
-    ],
-    tagItems: ['App','ITApps','Project']
-  }),
-  computed: {
-    infoValid() {
-      return true
-      // return (this.itemInfo.name !== null && this.itemInfo.tags !== null && this.itemInfo.tags.length > 0) ? true : false
-    }
-  },
-  methods: {
-  }
+    licenseTypes: ['Concurrent License','Enterprise License','N/A','Other','Single License','Subscription']
+  })
 };
 </script>
 <style lang="scss">

@@ -13,6 +13,9 @@ export const validations = {
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
     ],
+    quantityRules: [
+      v => (v && v >= 0) || 'Please choose a number equal or greater than 0'
+    ]
   }),
   methods: {
     validate() {
