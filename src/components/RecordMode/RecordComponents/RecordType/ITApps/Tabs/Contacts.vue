@@ -65,6 +65,9 @@
       >
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline text-capitalize">{{ titleDialog }}</span>
+          <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
         </v-card-title>
         <v-card-text class="px-16 py-10">
           <v-autocomplete
