@@ -73,42 +73,41 @@ export default {
       if(context.state.active_previews[0] == preview_object || context.state.active_previews[1] == preview_object){
         validator = true;
       }
-      if(
-        NavStack.state.hidden1 == true && 
-        NavStack.state.hidden2 == false && 
-        Object.keys(context.state.active_previews[1]).length == 0 &&
-        Object.keys(context.state.active_previews[0]).length != 0
-      ){
-        context.dispatch("unshift_data_to_active", preview_object);
-        validator = true;
-      }
       if(!validator){
-        if(Object.keys(context.state.active_previews[0]).length == 0){
-          context.state.active_previews.splice(0, 1, preview_object)
-        }else if(Object.keys(context.state.active_previews[1]).length == 0){
-          context.state.active_previews.splice(1, 1, preview_object)
-        }else{
-          context.dispatch("push_data_to_idle", context.state.active_previews[1]);
-
-          // Push 'received_preview' to 'active_previews'
+        let newArray = _.remove(context.state.idle_previews, function(n) {
+          return n != preview_object;
+        });
+        context.commit("set_idle_previews", newArray);
+        if(NavStack.state.hidden1 == false && Object.keys(context.state.active_previews[0]).length == 0){
+          context.state.active_previews.splice(0, 1, preview_object);
+        }else if(NavStack.state.hidden2 == false && Object.keys(context.state.active_previews[1]).length == 0){
+          context.state.active_previews.splice(1, 1, preview_object);
+        }else if(
+          Object.keys(context.state.active_previews[0]).length != 0 && 
+          Object.keys(context.state.active_previews[1]).length != 0 &&
+          NavStack.state.hidden1 == false && NavStack.state.hidden2 == false
+        ){
           context.state.active_previews.unshift(preview_object);
-
-          // Remove 1st element from 'active_previews'
-          let newArray = _.remove(context.state.active_previews, function(n) {
-            return n != context.state.active_previews[2];
-          });
-          context.commit("set_active_previews", newArray);
-        }
-        // Delete object from idle
-        let index = context.state.idle_previews.indexOf(preview_object);
-        if(index>=0){
-          context.state.idle_previews.splice(index, 1)
-        }
-        // Hidden the idle list
-        if(Object.keys(context.state.active_previews[0]).length != 0){
+          context.dispatch("push_data_to_idle", context.state.active_previews[2])
+          context.state.active_previews.splice(2, 1);
+        }else if(
+          Object.keys(context.state.active_previews[0]).length == 0 && 
+          Object.keys(context.state.active_previews[1]).length == 0 &&
+          NavStack.state.hidden1 == true && NavStack.state.hidden2 == true
+        ){
+          context.dispatch("remove_from_idle", preview_object);
+          context.dispatch("push_data_to_idle", context.state.active_previews[0]);
+          context.state.active_previews.splice(0, 1, preview_object);
           NavStack.state.hidden1 = false;
-        }
-        if(Object.keys(context.state.active_previews[1]).length != 0){
+        }else if(NavStack.state.hidden1 == true && Object.keys(context.state.active_previews[0]).length == 0){
+          context.dispatch("remove_from_idle", preview_object);
+          context.dispatch("push_data_to_idle", context.state.active_previews[0]);
+          context.state.active_previews.splice(0, 1, preview_object);
+          NavStack.state.hidden1 = false;
+        }else if(NavStack.state.hidden2 == true && Object.keys(context.state.active_previews[1]).length == 0){
+          context.dispatch("remove_from_idle", preview_object);
+          context.dispatch("push_data_to_idle", context.state.active_previews[1]);
+          context.state.active_previews.splice(1, 1, preview_object);
           NavStack.state.hidden2 = false;
         }
       }
@@ -119,7 +118,7 @@ export default {
       }
       context.state.active_previews.splice(1, 1, record);
       NavStack.state.hidden2 = false;
-      context.dispatch("remove_from_idle", record.uid)
+      context.dispatch("remove_from_idle", record)
     },
     remove_record_from_active(context, record){
       let index = context.state.active_previews.indexOf(record);
@@ -127,10 +126,9 @@ export default {
 
       let lengthActive1 = Object.keys(context.state.active_previews[0]).length;
       let lengthActive2 = Object.keys(context.state.active_previews[1]).length;
-
       if(
         lengthActive1 == 0 && lengthActive2 == 0 &&
-        context.state.idle_previews.length > 1
+        context.state.idle_previews.length > 0
       ){
         NavStack.state.hidden1 = true;
         NavStack.state.hidden2 = true;
@@ -162,22 +160,24 @@ export default {
         commit("unshift_to_idle", preview_object);
       }
     },
-    remove_from_idle(context, id) {
-      let lengthActive1 = Object.keys(context.state.active_previews[0]).length;
-      let lengthActive2 = Object.keys(context.state.active_previews[1]).length;
+    remove_from_idle(context, item) {
       let newArray = _.remove(context.state.idle_previews, function(n) {
-        return n.uid != id;
+        return n != item;
       });
       context.commit("set_idle_previews", newArray);
-      if(context.state.idle_previews.length == 1 && lengthActive1 == 0 && lengthActive2 == 0){
-        console.log(context.state.idle_previews.length);
+      if(context.state.idle_previews.length == 0){
+        NavStack.state.hidden1 = false;
+        NavStack.state.hidden2 = false;
+      }if(context.state.idle_previews.length == 1 && 
+        NavStack.state.hidden1 == true && NavStack.state.hidden2 == true
+      ){
         NavStack.state.hidden1 = true;
-        NavStack.state.hidden2 = false
+        NavStack.state.hidden2 = false;
       }
     },
     show_preview_of_idle(context, item){
       if(context.state.screen_status){
-        context.dispatch("remove_from_idle", item.uid);
+        context.dispatch("remove_from_idle", item);
         context.dispatch("push_data_to_idle", context.state.record_full_screen);
         context.dispatch("full_screen", item);
       }else{
@@ -191,8 +191,12 @@ export default {
         context.dispatch("remove_record_from_active", context.state.active_previews[i]);
       }
       context.dispatch("push_data_to_idle", context.state.record_full_screen);
-      context.dispatch("remove_from_idle", item.uid);
+      context.dispatch("remove_from_idle", item);
       context.commit("full_screen", item);
+      if(context.state.idle_previews.length==1){
+        NavStack.state.hidden1 = true;
+        NavStack.state.hidden2 = false;
+      }
     },
     preview_screen(context, item){
       context.dispatch("push_data_to_active", item);
