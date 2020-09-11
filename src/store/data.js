@@ -1,23 +1,23 @@
-const RequestTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/RequestTab")
-const TicketTab = () => import("@/components/RecordMode/RecordCommponents/Tabs/TicketTab")
-const ProjectSummary = () => import("@/components/RecordMode/RecordCommponents/RecordType/Project/ProjectSummary")
+const RequestTab = () => import("@/components/RecordMode/RecordComponents/Tabs/RequestTab")
+const TicketTab = () => import("@/components/RecordMode/RecordComponents/Tabs/TicketTab")
+const ProjectSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/Project/ProjectSummary")
 
-const Description = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Description")
-const Contacts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Contacts")
-const Contracts = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Contracts")
-const Notifications = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Notifications")
-const Licenses = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Licenses")
-const Dependencies = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Tabs/Dependencies")
-const ITAppsSummary = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/ITAppsSummary")
+const Description = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Description")
+const Contacts = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Contacts")
+const Contracts = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Contracts")
+const Notifications = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Notifications")
+const Licenses = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Licenses")
+const Dependencies = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Dependencies")
+const ITAppsSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/ITAppsSummary")
 
-const Installation = () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Installation")
+const Installation = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Installation")
 const Rationalization = {
-  Attributes: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/Attributes"),
-  Costs: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/Costs"),
-  FTE: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/FTE"),
-  Governance: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/Governance"),
-  License: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/License"),
-  Users: () => import("@/components/RecordMode/RecordCommponents/RecordType/ITApps/Rationalization/Users")
+  Attributes: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Attributes"),
+  Costs: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Costs"),
+  FTE: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/FTE"),
+  Governance: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Governance"),
+  License: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/License"),
+  Users: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Users")
 }
 
 export default{
