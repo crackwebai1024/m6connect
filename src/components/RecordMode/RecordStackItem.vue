@@ -5,7 +5,7 @@
         <v-spacer v-if="indexState==0" class="cursor-hover" @click="preview_screen(recorIdle)"></v-spacer>
         <v-spacer v-else class="cursor-hover" @click="unshift_data_to_active(recorIdle)"></v-spacer>
         <v-icon color="white" @click="full_screen(recorIdle)" class>mdi-arrow-top-right</v-icon>
-        <v-icon color="white" @click="remove_from_idle(recorIdle.uid)">mdi-close</v-icon>
+        <v-icon color="white" @click="remove_from_idle(recorIdle)">mdi-close</v-icon>
     </div>
 </template>
 <script>
