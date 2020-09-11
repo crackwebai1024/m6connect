@@ -99,7 +99,6 @@ export default {
           context.dispatch("push_data_to_idle", context.state.active_previews[0]);
           context.state.active_previews.splice(0, 1, preview_object);
           NavStack.state.hidden1 = false;
-          console.log('asdasd');
         }else if(NavStack.state.hidden1 == true && Object.keys(context.state.active_previews[0]).length == 0){
           context.dispatch("remove_from_idle", preview_object);
           context.dispatch("push_data_to_idle", context.state.active_previews[0]);
@@ -110,7 +109,6 @@ export default {
           context.dispatch("push_data_to_idle", context.state.active_previews[1]);
           context.state.active_previews.splice(1, 1, preview_object);
           NavStack.state.hidden2 = false;
-          console.log('askdjasd');
         }
       }
     },
