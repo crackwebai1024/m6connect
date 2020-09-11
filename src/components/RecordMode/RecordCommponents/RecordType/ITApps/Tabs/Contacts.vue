@@ -58,95 +58,80 @@
     </template>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-form class="white" ref="formItem">
+      <v-form
+        ref="form"
+        v-model="valid"
+        class="white"
+      >
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline text-capitalize">{{ titleDialog }}</span>
-          <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
         </v-card-title>
         <v-card-text class="px-16 py-10">
-          <!-- form slot -->
-          <v-container>
-            <v-row>
-              <v-col cols="12" class="py-0">
-                <v-autocomplete
-                  v-model="itemInfo.name"
-                  @change="changeCurrentItemInfo" 
-                  :items="dataPeople"
-                  :filter="customFilter"
-                  :color="baseColor"
-                  :rules="nameRules"
-                  item-text="name"
-                  return-object
-                  label="Name"
-                ></v-autocomplete>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field 
-                  v-model="itemInfo.email"
-                  label="Email*" 
-                  :color="baseColor"
-                  required
-                  readonly
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.phone"
-                  label="Phone" 
-                  :color="baseColor"
-                  readonly
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-autocomplete
-                  v-model="itemInfo.tags"
-                  :items="tagItems"
-                  label="Tags*"
-                  multiple
-                  :color="baseColor"
-                  :rules="tagRules"
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
+          <v-autocomplete
+            v-model="itemInfo.name"
+            @change="changeCurrentItemInfo" 
+            :items="dataPeople"
+            :filter="customFilter"
+            :rules="nameRules"
+            :color="baseColor"
+            item-text="name"
+            return-object
+            label="Name"
+          ></v-autocomplete>
+          <v-text-field
+            v-model="itemInfo.email"
+            :color="baseColor"
+            label="E-mail"
+          ></v-text-field>
+          <v-text-field
+            v-model="itemInfo.phone"
+            :color="baseColor"
+            label="Phone"
+          ></v-text-field>
+          <v-autocomplete
+            v-model="itemInfo.tags"
+            :items="tagItems"
+            :rules="tagRules"
+            :color="baseColor"
+            label="Tags*"
+            multiple
+          ></v-autocomplete>
         </v-card-text>
-        <!-- here another slot -->
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :color="baseColor" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!infoValid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
+          <v-btn
+            :disabled="!valid"
+            text
+            :color="baseColor"
+            class="mr-4"
+            @click="clickAction"
+          >
+            {{ titleAction }}
+          </v-btn>
         </v-card-actions>
-      </v-form>
+      </v-form>    
     </v-dialog>
   </v-container>
 </template>
 <script>
 import {items} from "@/mixins/items";
+import {validations} from "@/mixins/form-validations"
 
 export default {
   name: "Contacts",
-  mixins: [items],
+  mixins: [items, validations],
   data: () => ({
     baseColor: 'blue lighten-1',
     itemsName: 'contacts',
     itemInfo: {
       name: '',
-      email: null,
-      phone: null,
+      email: '',
+      phone: '',
       tags: []
     },
     tagItems: ['App','ITApps','Project']
   }),
-  computed: {
-    infoValid() {
-      return (this.itemInfo.name !== null && this.itemInfo.name.trim().length !== 0 && this.itemInfo.tags !== null && this.itemInfo.tags.length > 0) ? true : false
-    }
-  },
   methods: {
     changeCurrentItemInfo(item) {
       this.itemInfo.name = item.name

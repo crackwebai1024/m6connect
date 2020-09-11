@@ -8,14 +8,7 @@ export const items = {
       { name: 'Name 2', email: 'name2@gmail.com', phone: ''},
       { name: 'Name 3', email: 'name3@gmail.com', phone: '999555415'}
     ],
-    items: [],
-    nameRules: [
-      v => !!v || 'Name is required',
-    ],
-    tagRules: [
-      v => v !== null || 'Tag is required',
-      v => (v && v.length !== 0) || 'Tag is required'
-    ],
+    items: []
   }),
   computed: {
     titleDialog() {
@@ -30,7 +23,7 @@ export const items = {
       this.dialogMode ? this.saveItem() : this.updateItem()
     },
     saveItem() {
-      if(this.infoValid) {
+      if(this.valid) {
         let id = parseInt(Date.now() * Math.random())
         let newItem = {}
         let info = [newItem,this.itemInfo];
@@ -41,15 +34,14 @@ export const items = {
       }
     },
     updateItem() {
-      if(this.infoValid) {
+      if(this.valid) {
         this.items.forEach((item) => {
-        if(item.id == this.itemInfo.id) {
-            let info = [item,this.itemInfo];
-            item = Object.assign(...info);
-        }
+          if(item.id == this.itemInfo.id) {
+              let info = [item,this.itemInfo];
+              item = Object.assign(...info);
+          }
         });
-        this.$refs.formItem.reset()
-        this.dialog = false
+        this.closeDialog()
       }
     },
     customFilter (item, queryText) {
@@ -69,7 +61,7 @@ export const items = {
       this.closeDialog()
     },
     closeDialog() {
-      this.$refs.formItem.reset()
+      this.reset()
       this.dialog = false
     }
   }
