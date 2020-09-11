@@ -1,6 +1,6 @@
 <template>
   <v-container class="px-4 py-5 mt-5 blue darken-3 white--text relative">
-    <v-btn @click="showInfoToUpdate" color="blue lighten-2" small left elevation="0" min-width="37" height="32" class="edit-description rounded-circle transparent pa-0">
+    <v-btn @click="showUpdateDialog(info)" color="blue lighten-2" small left elevation="0" min-width="37" height="32" class="edit-description rounded-circle transparent pa-0">
       <v-icon class="white--text pa-0 ma-0">mdi-pencil</v-icon>
     </v-btn>
     <div class="d-flex justify-space-between">
@@ -70,7 +70,7 @@
     </div>
 
     <v-dialog v-model="dialog" persistent max-width="800px">
-      <v-form class="white" ref="formItem">
+      <v-form ref="form" v-model="valid" class="white">
         <v-card-text class="pa-0">
           <v-toolbar
             color="blue darken-3"
@@ -78,7 +78,6 @@
             flat
           >
             <v-toolbar-title>Edit Application Information</v-toolbar-title>
-
             <template v-slot:extension>
               <v-tabs
                 v-model="tabs"
@@ -101,20 +100,20 @@
                 <v-col cols="12" class="py-0">
                   <v-text-field 
                     v-model="itemInfo.company"
-                    label="Vendor" 
+                    :rules="textRules"
                     color="blue darken-3"
-                    required
+                    label="Vendor"
                   >
                   </v-text-field>
                 </v-col>
                 <v-col cols="12" class="py-0">
-                  <v-text-field
+                  <v-select
                     v-model="itemInfo.client_status"
-                    label="Status" 
+                    :items="statusOptions"
+                    :rules="selectRules"
                     color="blue darken-3"
-                    readonly
-                  >
-                  </v-text-field>
+                    label="Status"
+                  ></v-select>
                 </v-col>
               </v-row>
             </v-tab-item>
@@ -123,18 +122,18 @@
                 <v-col cols="12" class="py-0">
                   <v-text-field 
                     v-model="itemInfo.first_contact_group"
-                    label="First Contact Group" 
+                    :rules="textRules"
                     color="blue darken-3"
-                    required
+                    label="First Contact Group" 
                   >
                   </v-text-field>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-text-field
                     v-model="itemInfo.record_type"
-                    label="Type" 
+                    :rules="textRules"
                     color="blue darken-3"
-                    readonly
+                    label="Type" 
                   >
                   </v-text-field>
                 </v-col>
@@ -145,18 +144,18 @@
                 <v-col cols="12" class="py-0">
                   <v-text-field 
                     v-model="itemInfo.app_management"
-                    label="App Management" 
+                    :rules="textRules"
                     color="blue darken-3"
-                    required
+                    label="App Management" 
                   >
                   </v-text-field>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-text-field
                     v-model="itemInfo.hosting_model"
-                    label="Server Hosting Model" 
+                    :rules="textRules"
                     color="blue darken-3"
-                    readonly
+                    label="Server Hosting Model" 
                   >
                   </v-text-field>
                 </v-col>
@@ -167,48 +166,41 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-3" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!infoValid" color="blue darken-3" text @click="updateItem">Update</v-btn>
+          <v-btn :disabled="!valid" color="blue darken-3" text @click="updateItemDescription">Update</v-btn>
         </v-card-actions>
       </v-form>
     </v-dialog>
   </v-container>
 </template>
 <script>
+import {items} from "@/mixins/items";
+import {validations} from "@/mixins/form-validations";
+
 export default {
   name: "Description",
+  mixins: [items, validations],
   props: {
     info: Object,
   },
   data: () => ({
     tabs: null,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    dialog: false,
     model: 'tab-2',
-    itemInfo: {
-    },
+    itemInfo: {},
     tabTitles: [
       { name: 'General'},
       { name: 'Known As'},
       { name: 'Security'}
-    ]
+    ],
+    statusOptions: ['Active', 'Inactive'],
   }),
   methods: {
-    updateItem() {
-      if(this.infoValid) {
+    updateItemDescription() {
+      if(this.valid) {
         let info = [this.info,this.itemInfo];
         this.info = Object.assign(...info);
-        this.$refs.formItem.reset()
-        this.dialog = false
+        this.closeDialog()
       }
-    },
-    closeDialog() {
-      this.$refs.formItem.reset()
-      this.dialog = false
-    },
-    showInfoToUpdate() {
-      let info = [this.itemInfo,this.info];
-      this.itemInfo = Object.assign(...info);
-      this.dialog = true
     }
   }
 };

@@ -101,7 +101,7 @@ export default {
       record_support: "",
       designer: "",
       role_two: "",
-      client_status: "ACTIVE",
+      client_status: "Active",
       version: "1912 LTSR",
       internal_description: "",
       internal_objective: "",
@@ -123,7 +123,7 @@ export default {
       record_support: "",
       designer: "",
       role_two: "",
-      client_status: "",
+      client_status: "Inactive",
       internal_description: "",
       internal_objective: "",
       record_image_url:
@@ -144,7 +144,7 @@ export default {
       record_support: "",
       designer: "",
       role_two: "",
-      client_status: "",
+      client_status: "Active",
       internal_description: "",
       internal_objective: "",
       record_image_url:
