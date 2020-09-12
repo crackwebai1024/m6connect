@@ -24,7 +24,7 @@ export const validations = {
       v => !!v || 'Please choose an option',
     ],
     date: new Date().toISOString().substr(0, 10),
-    files: null
+    files: []
   }),
   methods: {
     validate() {
@@ -42,6 +42,7 @@ export const validations = {
     },
     onFileChanged(e) {
       this.files = [...e.target.files]
+      console.log(this.files)
     }
   },
 };

@@ -221,14 +221,14 @@
 
               <v-col cols="12" class="py-0">
                 <p class="text-center text-h6 mt-8 mb-0">Attachments</p>
-                <!-- <v-data-table
+                <v-data-table
                   :headers="fileHeaders"
                   :items="files"
                   :single-select="singleSelect"
                   item-key="name"
                   class="elevation-0"
                 >
-                </v-data-table> -->
+                </v-data-table>
               </v-col>
             </v-row>
           </v-container>
