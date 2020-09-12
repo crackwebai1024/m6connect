@@ -123,10 +123,10 @@ import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations"
 
 export default {
+  name: 'Governance',
   mixins: [items, validations],
   data: () => ({
     isHover: false,
-    createModal: false,
     itemInfo: {
       respDivision: null,
       respComitte: null,

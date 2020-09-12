@@ -1,4 +1,3 @@
-
 <template>
   <v-container class="px-0 py-0 mt-5">
     <template v-if="items.length === 0">
