@@ -223,7 +223,7 @@
                 <p class="text-center text-h6 mt-8 mb-0">Attachments</p>
                 <v-data-table
                   :headers="fileHeaders"
-                  :items="files"
+                  :items="itemInfo.files"
                   :single-select="singleSelect"
                   item-key="name"
                   class="elevation-0"
@@ -268,6 +268,7 @@ export default {
       decisionDate: null, //Critical Decision Date
       inflator: null, // Capped Inflator
       inflatorValue: null, //Capped Inflator Value
+      files: []
     },
     singleSelect: false,
     headers: [
@@ -282,13 +283,6 @@ export default {
       { text: 'Critical Decision Date', value: 'decisionDate' },
       { text: 'Capped Inflator', value: 'inflator' },
       { text: 'Capped Inflator Value', value: 'inflatorValue' },
-    ],
-    fileHeaders: [
-      { text: 'Name', value: 'name' },
-      { text: 'Date', value: 'date' },
-      { text: 'Required', value: 'required' },
-      { text: 'Who to notify', value: 'notifyWho' },
-      { text: 'Description', value: 'description' },
     ],
   }),
   methods: {

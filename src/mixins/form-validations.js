@@ -24,7 +24,12 @@ export const validations = {
       v => !!v || 'Please choose an option',
     ],
     date: new Date().toISOString().substr(0, 10),
-    files: []
+    fileHeaders: [
+      { text: 'Name', value: 'name' },
+      { text: 'Last Modified Date', value: 'lastModifiedDate' },
+      { text: 'Size', value: 'size' },
+      { text: 'Type', value: 'type' },
+    ],
   }),
   methods: {
     validate() {
@@ -41,8 +46,7 @@ export const validations = {
       this.$refs.uploader.click()
     },
     onFileChanged(e) {
-      this.files = [...e.target.files]
-      console.log(this.files)
+      this.itemInfo.files = [...e.target.files]
     }
   },
 };
