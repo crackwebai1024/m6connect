@@ -16,8 +16,14 @@
     <template v-else>
       <v-card>
         <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text text-capitalize'">{{ itemsName}}</div>
+        <v-btn 
+          :class="baseColor + ' btn-circle-add-item'" 
+          fab small dark
+          @click="dialog = true, dialogMode = true"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
         <div class="notifications-container pa-3">
-          <!-- here is going to render all the items - another slot -->
           <v-data-table
             v-model="selected"
             :headers="headers"
@@ -25,14 +31,27 @@
             :single-select="singleSelect"
             item-key="name"
             class="elevation-0"
-          >
+          > 
+            <template v-slot:item.description="{ item }">
+              <div class="d-flex justify-space-between">
+                <p>{{ item.description }}</p>
+                <v-icon
+                  small
+                  class="mr-2"
+                  color="blue lighten-1"
+                  @click="showUpdateDialog(item)"
+                >
+                  mdi-pencil
+                </v-icon>
+              </div>
+            </template>
           </v-data-table>
         </div>
       </v-card>
     </template>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-form class="white" ref="formItem">
+      <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline text-capitalize">{{ titleDialog }}</span>
           <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
@@ -40,58 +59,70 @@
           </v-btn>
         </v-card-title>
         <v-card-text class="px-16 py-10">
-          <!-- form slot -->
-          <v-container>
-            <v-row>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.name"
-                  label="Name" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.date"
-                  label="Date" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.required"
-                  label="Required*" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.notifyWho"
-                  label="Who to notify" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.description"
-                  label="Description" 
-                  :color="baseColor"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
+          <v-text-field
+            v-model="itemInfo.name"
+            :rules="nameRules"
+            :color="baseColor"
+            label="Name" 
+          >
+          </v-text-field>
+          <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                v-model="itemInfo.date"
+                label="Date"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker v-model="itemInfo.date" @input="menu2 = false"></v-date-picker>
+          </v-menu>
+          <v-select
+            v-model="itemInfo.required"
+            :items="['Yes', 'No']"
+            :rules="selectRules"
+            :color="baseColor"
+            label="Required"
+          ></v-select>
+
+          <v-autocomplete
+            v-model="itemInfo.notifyWho"
+            :items="['Trevor Handsen', 'Alex Nelson']"
+            :color="baseColor"
+            chips
+            label="Who to notify"
+            full-width
+            hide-details
+            hide-no-data
+            item-text="name"
+            hide-selected
+            multiple
+            single-line
+          ></v-autocomplete>
+
+          <v-textarea
+            v-model="itemInfo.description"
+            :color="baseColor"
+          >
+            <template v-slot:label>
+              <div>
+                Description
+              </div>
+            </template>
+          </v-textarea>
         </v-card-text>
-        <!-- here another slot -->
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :color="baseColor" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!infoValid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
+          <v-btn :disabled="!valid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
         </v-card-actions>
       </v-form>
     </v-dialog>
@@ -99,10 +130,11 @@
 </template>
 <script>
 import {items} from "@/mixins/items";
+import {validations} from "@/mixins/form-validations"
 
 export default {
   name: "Notifications",
-  mixins: [items],
+  mixins: [items, validations],
   data: () => ({
     baseColor: 'deep-purple darken-3',
     itemsName: 'notifications',
@@ -121,10 +153,8 @@ export default {
       { text: 'Required', value: 'required' },
       { text: 'Who to notify', value: 'notifyWho' },
       { text: 'Description', value: 'description' },
-    ]
-  }),
-  methods: {
-  }
+    ],
+  })
 };
 </script>
 <style lang="scss">
