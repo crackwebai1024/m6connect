@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import {items} from "@/mixins/items";
+import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"
 
 export default {
