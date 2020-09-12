@@ -24,9 +24,7 @@ export const validations = {
       v => !!v || 'Please choose an option',
     ],
     date: new Date().toISOString().substr(0, 10),
-    menu: false,
-    modal: false,
-    menu2: false,
+    files: null
   }),
   methods: {
     validate() {
@@ -38,5 +36,12 @@ export const validations = {
     resetValidation() {
       this.$refs.form.resetValidation()
     },
+    // upload file button
+    onButtonClick() {
+      this.$refs.uploader.click()
+    },
+    onFileChanged(e) {
+      this.files = [...e.target.files]
+    }
   },
 };

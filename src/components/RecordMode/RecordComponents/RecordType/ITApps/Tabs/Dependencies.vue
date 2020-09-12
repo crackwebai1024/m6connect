@@ -104,7 +104,7 @@
             label="App Compliant"
           ></v-select>
           <v-menu
-            v-model="menu2"
+            v-model="menu"
             :close-on-content-click="false"
             :nudge-right="40"
             transition="scale-transition"
@@ -120,7 +120,7 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="itemInfo.remDate" @input="menu2 = false"></v-date-picker>
+            <v-date-picker v-model="itemInfo.remDate" @input="menu = false"></v-date-picker>
           </v-menu>
           <v-textarea
             v-model="itemInfo.details"
@@ -149,6 +149,7 @@ export default {
   name: "Dependencies",
   mixins: [items, validations],
   data: () => ({
+    menu: false,
     baseColor: 'red darken-2',
     itemsName: 'dependencies',
     itemInfo: {

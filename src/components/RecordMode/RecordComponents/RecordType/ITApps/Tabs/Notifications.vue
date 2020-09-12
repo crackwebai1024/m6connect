@@ -32,6 +32,11 @@
             item-key="name"
             class="elevation-0"
           > 
+            <template v-slot:item.notifyWho="{ item }">
+              <v-chip color="blue lighten-3 mx-1" dark v-for="(who, index) in item.notifyWho" :key="'who-'+index">
+                {{ who }}
+              </v-chip>
+            </template>
             <template v-slot:item.description="{ item }">
               <div class="d-flex justify-space-between">
                 <p>{{ item.description }}</p>
@@ -67,7 +72,7 @@
           >
           </v-text-field>
           <v-menu
-            v-model="menu2"
+            v-model="menu"
             :close-on-content-click="false"
             :nudge-right="40"
             transition="scale-transition"
@@ -84,7 +89,7 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="itemInfo.date" @input="menu2 = false"></v-date-picker>
+            <v-date-picker v-model="itemInfo.date" @input="menu = false"></v-date-picker>
           </v-menu>
           <v-select
             v-model="itemInfo.required"
@@ -137,6 +142,7 @@ export default {
   name: "Notifications",
   mixins: [items, validations],
   data: () => ({
+    menu: false,
     baseColor: 'deep-purple darken-3',
     itemsName: 'notifications',
     itemInfo: {

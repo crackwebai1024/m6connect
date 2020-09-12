@@ -16,7 +16,7 @@
     </template>
     <template v-else>
       <v-card>
-        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text text-capitalize'">{{ itemsName}}</div>
+        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text text-capitalize'">{{ itemsName }}</div>
         <v-btn 
           :class="baseColor + ' btn-circle-add-item'" 
           fab small dark
@@ -24,82 +24,221 @@
         >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
-        <div class="licenses-container pa-3">
-          <!-- here is going to render all the items - another slot -->
+        <div class="contracts-container pa-3">
           <v-data-table
-            v-model="selected"
             :headers="headers"
             :items="items"
             :single-select="singleSelect"
             item-key="name"
             class="elevation-0"
           >
+            <template v-slot:item.inflatorValue="{ item }">
+              <div class="d-flex justify-space-between">
+                <p>{{ item.inflatorValue }}</p>
+                <v-icon
+                  small
+                  class="mr-2"
+                  color="blue lighten-1"
+                  @click="showUpdateDialog(item)"
+                >
+                  mdi-pencil
+                </v-icon>
+              </div>
+            </template>
           </v-data-table>
         </div>
       </v-card>
     </template>
 
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <v-form class="white" ref="formItem">
+    <v-dialog v-model="dialog" persistent max-width="1000px">
+      <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline text-capitalize">{{ titleDialog }}</span>
+          <template v-if="dialogMode">
+            <v-btn
+              color="purple darken-3"
+              class="text-none white--text"
+              @click="onButtonClick"
+            >
+              UPLOAD FILES
+            </v-btn>
+            <input
+              multiple
+              ref="uploader"
+              class="d-none"
+              type="file"
+              accept="image/*"
+              @change="onFileChanged"
+            >
+          </template>
           <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-title>
         <v-card-text class="px-16 py-10">
-          <!-- form slot -->
           <v-container>
             <v-row>
-              <v-col cols="12" class="py-0">
+              <v-col cols="6" class="py-0">
+                <v-text-field
+                  v-model="itemInfo.number"
+                  :rules="nameRules"
+                  label="Contract Number" 
+                  :color="baseColor"
+                >
+                </v-text-field>
+              </v-col>
+              <v-col cols="6" class="py-0">
                 <v-text-field
                   v-model="itemInfo.name"
-                  label="Name" 
+                  :rules="nameRules"
+                  label="Contract Name" 
                   :color="baseColor"
                 >
                 </v-text-field>
               </v-col>
-              <v-col cols="12" class="py-0">
+              <v-col cols="6" class="py-0">
+                <v-select
+                  v-model="itemInfo.status"
+                  :items="['Active', 'Inactive']"
+                  :rules="selectRules"
+                  :color="baseColor"
+                  label="Status"
+                ></v-select>
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="itemInfo.startDate"
+                      :rules="textRules"
+                      label="Contract Term Start Date"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="itemInfo.startDate" @input="menu = false"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-menu
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="itemInfo.endDate"
+                      :rules="textRules"
+                      label="Contract Termination Date"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="itemInfo.endDate" @input="menu1 = false"></v-date-picker>
+                </v-menu>
+              </v-col>
+
+              <v-col cols="4" class="py-0">
+                <v-text-field 
+                  v-model="itemInfo.termLength"
+                  :rules="quantityRules"
+                  :color="baseColor"
+                  type="number"
+                  label="Term Length" 
+                ></v-text-field>
+              </v-col>
+              <v-col cols="2" class="py-0">
+                <v-select
+                  v-model="itemInfo.termUnit"
+                  :items="['Days','Months','Years']"
+                  :rules="selectRules"
+                  :color="baseColor"
+                  label="Term Unit"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="6" class="py-0">
+                <v-text-field 
+                  v-model="itemInfo.termPeriod"
+                  :rules="quantityRules"
+                  :color="baseColor"
+                  type="number"
+                  label="Term Notice Period" 
+                ></v-text-field>
+              </v-col>
+              <v-col cols="6" class="py-0">
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="itemInfo.decisionDate"
+                      :rules="textRules"
+                      label="Critical Decision Date"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="itemInfo.decisionDate" @input="menu2 = false"></v-date-picker>
+                </v-menu>
+              </v-col>
+
+              <v-col cols="6" class="py-0">
                 <v-text-field
-                  v-model="itemInfo.date"
-                  label="Date" 
+                  v-model="itemInfo.inflator"
+                  :rules="nameRules"
+                  label="Capped Inflator" 
                   :color="baseColor"
                 >
                 </v-text-field>
               </v-col>
-              <v-col cols="12" class="py-0">
+              <v-col cols="6" class="py-0">
                 <v-text-field
-                  v-model="itemInfo.required"
-                  label="Required*" 
+                  v-model="itemInfo.inflatorValue"
+                  :rules="nameRules"
+                  label="Capped Inflator Value" 
                   :color="baseColor"
                 >
                 </v-text-field>
               </v-col>
+
               <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.notifyWho"
-                  label="Who to notify" 
-                  :color="baseColor"
+                <p class="text-center text-h6 mt-8 mb-0">Attachments</p>
+                <v-data-table
+                  :headers="fileHeaders"
+                  :items="files"
+                  :single-select="singleSelect"
+                  item-key="name"
+                  class="elevation-0"
                 >
-                </v-text-field>
-              </v-col>
-              <v-col cols="12" class="py-0">
-                <v-text-field
-                  v-model="itemInfo.description"
-                  label="Description" 
-                  :color="baseColor"
-                >
-                </v-text-field>
+                </v-data-table>
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
-        <!-- here another slot -->
+
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn :color="baseColor" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!infoValid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
+          <v-btn :disabled="!valid" :color="baseColor" text @click="clickAction">{{ titleAction }}</v-btn>
         </v-card-actions>
       </v-form>
     </v-dialog>
@@ -107,27 +246,51 @@
 </template>
 <script>
 import {items} from "@/mixins/items";
+import {validations} from "@/mixins/form-validations"
 
 export default {
   name: "Contracts",
-  mixins: [items],
+  mixins: [items, validations],
   data: () => ({
+    menu: false,
+    menu1: false,
+    menu2: false,
     baseColor: 'purple darken-1',
     itemsName: 'contracts',
     itemInfo: {
-      number: null,
-      name: null,
-      status: null,
-      start: null,
-      end: null,
-      termLength: null,
-      termUnit: null,
-      termPeriod: null,
-      decisionDate: null,
-      inflator: null,
-      inflatorValue: null,
+      number: null, // Contract Number
+      name: null, // Contract Name
+      status: null, // Status
+      startDate: null, // Contract Term Start Date
+      endDate: null, // Contrac Termination Date
+      termLength: null, // Term Length
+      termUnit: null, // Term Unit
+      termPeriod: null, // Term Notice Period
+      decisionDate: null, //Critical Decision Date
+      inflator: null, // Capped Inflator
+      inflatorValue: null, //Capped Inflator Value
     },
     singleSelect: false,
+    headers: [
+      { text: 'Contract Number', value: 'number' },
+      { text: 'Contract Name', value: 'name' },
+      { text: 'Status', value: 'status' },
+      { text: 'Contract Term Start Date', value: 'startDate' },
+      { text: 'Contrac Termination Date', value: 'endDate' },
+      { text: 'Term Length', value: 'termLength' },
+      { text: 'Term Unit', value: 'termUnit' },
+      { text: 'Term Notice Period', value: 'termPeriod' },
+      { text: 'Critical Decision Date', value: 'decisionDate' },
+      { text: 'Capped Inflator', value: 'inflator' },
+      { text: 'Capped Inflator Value', value: 'inflatorValue' },
+    ],
+    fileHeaders: [
+      { text: 'Name', value: 'name' },
+      { text: 'Date', value: 'date' },
+      { text: 'Required', value: 'required' },
+      { text: 'Who to notify', value: 'notifyWho' },
+      { text: 'Description', value: 'description' },
+    ],
   }),
   methods: {
   }
@@ -138,7 +301,7 @@ export default {
   width: 100%;
   cursor: pointer;
 }
-.licenses-container {
+.contracts-container {
   min-height: 180px;
   overflow-x: auto;
   overflow-y: auto;
