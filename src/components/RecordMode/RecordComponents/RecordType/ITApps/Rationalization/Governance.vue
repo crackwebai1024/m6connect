@@ -99,7 +99,6 @@
       <v-data-table 
         :headers="table.headers"
         :items="items"
-        :single-select="singleSelect"
         item-key="name"
         class="elevation-0"
       >

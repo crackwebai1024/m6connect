@@ -20,7 +20,7 @@
           <v-input :hint="'$ ' + this.itemInfo.totalAnnualCost" persistent-hint>Total Annual Cost</v-input>
         </v-col>
         <v-col cols="6">
-          <v-input :hint="this.itemInfo.estimatedUsers" persistent-hint>Estimated Users</v-input>
+          <!-- <v-input :hint="this.itemInfo.estimatedUsers" persistent-hint>Estimated Users</v-input> -->
         </v-col>
       </v-row>
       <v-row>
@@ -72,6 +72,7 @@ import {validations} from "@/mixins/form-validations"
 export default {
   mixins: [items, validations],
   data: () => ({
+    menu: false,
     application_value: [
       'Financial/Revenue',
       'Only Vendor',
