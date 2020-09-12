@@ -33,7 +33,7 @@
                 <p>{{ item.email }}</p>
               </div>
               <div class="d-flex align-center ml-auto mr-0">
-                <v-tooltip right small>
+                <v-tooltip right small v-for="(tag, index) in item.tags" :key="'tooltip-'+index">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn
                       small
@@ -42,9 +42,9 @@
                       dark
                       v-bind="attrs"
                       v-on="on"
-                    >App</v-btn>
+                    >{{ tag }}</v-btn>
                   </template>
-                  <span>App</span>
+                  <span>{{ tag }}</span>
                 </v-tooltip>
                 <v-btn @click="showUpdateDialog(item)" small elevation="0" class="transparent rounded-xl"><v-icon>mdi-pencil</v-icon></v-btn>
               </div>
