@@ -77,6 +77,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 v-model="itemInfo.date"
+                :rules="textRules"
                 label="Date"
                 readonly
                 v-bind="attrs"
