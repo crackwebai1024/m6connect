@@ -107,19 +107,19 @@ export default {
         },
         {
           text: 'FTE Count',
-          name: 'fteCount'
+          value: 'fteCount'
         },
         {
           text: 'FTE Costs',
-          name: 'fteCosts'
+          value: 'fteCosts'
         },
         {
           text: 'Notes',
-          name: 'notes'
+          value: 'notes'
         },
         {
           text: 'Actions',
-          name: 'actions'
+          value: 'actions'
         }
       ]
     }
