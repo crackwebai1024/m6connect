@@ -113,9 +113,9 @@
                 <!--Vamos a hacer el item más compacto en caso de que su value esté vacio-->
                 <v-list-item :two-line="item.value.length > 0" :key="'general-' + key"
                     v-for="(item, key) in installation.general">
-                    <v-list-item-content>
+                    <v-list-item-content class="d-flex justify-space-between flex-nowrap mx-2 ">
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
-                        <v-list-item-subtitle>{{item.value}}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="text-right">{{item.value}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-expansion-panel-content>
@@ -160,7 +160,12 @@
 </template>
 
 <script>
+import {items} from "@/mixins/items"
+import {validations} from "@/mixins/form-validations"
+
 export default {
+    name: "Installation",
+    mixins: [items, validations],
     data: () => ({
         switches: {
             firewall_exceptions: false,
@@ -181,25 +186,26 @@ export default {
         },
         options: {
             general: {
-                install_type: ['Manual', 'Vendor'],
+                install_type: ['APM','LANDesk Software Dist.','Manual', 'Vendor'],
                 priority: [5,4,3,2,1],
-                delivery: ['Web', 'Citrix'],
+                delivery: ['APM/MANUAL','Citrix','Desktop Install','NA','Web', 'Web or Citrix'],
                 odbc_connection: ['Required', 'No required'],
+                windows_passed_dct: ['Yes', 'No', 'Windows not needed']
 
             },
         },
-        installation: {
+        itemInfo: {
             general: {
                 install_type: {
-                    label: "Type",
-                    value: ""
+                    label: "Install Type",
+                    value: "48"
                 },
                 priority: {
                     label: "Priority",
-                    value: ""
+                    value: "2"
                 },
-                executable: {
-                    label: "Executable",
+                delivery: {
+                    label: "Delivery Method",
                     value: ""
                 },
                 odbc_connection: {
@@ -210,16 +216,20 @@ export default {
                     label: "(ODBC) Contact name",
                     value: ""
                 },
-                odbc_settings: {
-                    label: "(ODBC) Settings",
-                    value: ""
-                },
                 windows_passed: {
                     label: "Windows Passed DCT",
                     value: ""
                 },
-                delivery: {
-                    label: "Delivery Method",
+                executable: {
+                    label: "Executable",
+                    value: ""
+                },
+                odbc_settings: {
+                    label: "(ODBC) Settings",
+                    value: ""
+                },
+                ldap_auth: {
+                    label: "LDAP/AD Authentication",
                     value: ""
                 },
                 notes: {
@@ -230,32 +240,38 @@ export default {
             support: {
                 firewall_exceptions: {
                     label: "Firewall Exceptions",
-                    value: ""
-                },
-                antivirus_exclusion: {
-                    label: "Firewall Exceptions",
-                    value: ""
-                },
-                mapped_drives: {
-                    label: "Mapped Drives",
-                    value: ""
-                },
-                shortcut_modifications: {
-                    label: "Shortcut Modifications",
-                    value: ""
-                },
-                ini_changes: {
-                    label: "INI Changes",
+                    boolean: "",
                     value: ""
                 },
                 install_notes: {
                     label: "Install Notes",
                     value: ""
                 },
+                mapped_drives: {
+                    label: "Mapped Drives",
+                    boolean: "",
+                    value: ""
+                },
                 registry_changes: {
                     label: "Registry Changes",
+                    boolean: "",
                     value: ""
-                }
+                },
+                antivirus_exclusion: {
+                    label: "Firewall Exceptions",
+                    boolean: "",
+                    value: ""
+                },
+                ini_changes: {
+                    label: "INI Changes",
+                    boolean: "",
+                    value: ""
+                },
+                shortcut_modifications: {
+                    label: "Shortcut Modifications",
+                    boolean: "",
+                    value: ""
+                },
             },
             build_info: {
                 previous_version: {
@@ -284,6 +300,11 @@ export default {
             }
         }
     }),
+    mounted() {
+        this.valid = true
+        this.saveItem()
+        this.valid = false
+    }
 }
 </script>
 

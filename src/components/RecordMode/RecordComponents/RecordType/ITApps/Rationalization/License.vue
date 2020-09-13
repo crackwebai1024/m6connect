@@ -119,7 +119,7 @@ export default {
         },
         {
           text: 'License Type',
-          value: 'purchaseType'
+          value: 'licenseType'
         },
         {
           text: 'Number of Licenses',
