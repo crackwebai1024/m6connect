@@ -112,7 +112,7 @@
             <v-expansion-panel-content>
                 <!--Vamos a hacer el item más compacto en caso de que su value esté vacio-->
                 <v-list-item :two-line="item.value.length > 0" :key="'general-' + key"
-                    v-for="(item, key) in installation.general">
+                    v-for="(item, key) in itemInfo.general">
                     <v-list-item-content class="d-flex justify-space-between flex-nowrap mx-2 ">
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
                         <v-list-item-subtitle class="text-right">{{item.value}}</v-list-item-subtitle>
@@ -134,7 +134,7 @@
             <v-expansion-panel-header class="font-weight-medium">Install Support</v-expansion-panel-header>
             <v-expansion-panel-content>
                 <v-list-item :two-line="item.value.length > 0" :key="'support-' + key"
-                    v-for="(item, key) in installation.support">
+                    v-for="(item, key) in itemInfo.support">
                     <v-list-item-content>
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
                         <v-list-item-subtitle>{{item.value}}</v-list-item-subtitle>
@@ -147,7 +147,7 @@
             <v-expansion-panel-header class="font-weight-medium">Additional Package Build Information</v-expansion-panel-header>
             <v-expansion-panel-content>
                 <v-list-item :two-line="item.value.length > 0" :key="'support-' + key"
-                    v-for="(item, key) in installation.build_info">
+                    v-for="(item, key) in itemInfo.build_info">
                     <v-list-item-content>
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
                         <v-list-item-subtitle>{{item.value}}</v-list-item-subtitle>
@@ -160,12 +160,12 @@
 </template>
 
 <script>
-import {items} from "@/mixins/items"
-import {validations} from "@/mixins/form-validations"
+// import {items} from "@/mixins/items"
+// import {validations} from "@/mixins/form-validations"
 
 export default {
     name: "Installation",
-    mixins: [items, validations],
+    // mixins: [items, validations],
     data: () => ({
         switches: {
             firewall_exceptions: false,
@@ -301,9 +301,9 @@ export default {
         }
     }),
     mounted() {
-        this.valid = true
-        this.saveItem()
-        this.valid = false
+        // this.valid = true
+        // this.saveItem()
+        // this.valid = false
     }
 }
 </script>
