@@ -46,36 +46,34 @@
     <p class="text-center font-weight-medium text-body-1 mt-6 mb-1">Most Commonly Known As</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
-        v-for="i in [1]"
-        :key="i"
         class="ma-2"
         color="primary"
       >
-        Primary {{i}}
+        {{ info['company'] }}
       </v-chip>
     </div>
 
     <p class="text-center font-weight-medium text-body-1 mt-6 mb-1">Also Known As(AKA)</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
-        v-for="i in [1,2,3]"
-        :key="i"
+        v-for="aka in info['aka']"
+        :key="'aka-' + aka"
         class="ma-2"
         color="primary"
       >
-        Impac Elekta MosaiQ {{i}}
+        {{ aka }}
       </v-chip>
     </div>
 
     <p class="text-center font-weight-medium text-body-1 mt-6 mb-1">Formerly Known As(FKA)</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
-        v-for="i in [1,2,3]"
-        :key="i"
+        v-for="fka in info['fka']"
+        :key="'fka-' + fka"
         class="ma-2"
         color="primary"
       >
-        Impac Elekta MosaiQ {{i}}
+        {{ fka }}
       </v-chip>
     </div>
 
@@ -230,7 +228,26 @@
             <!-- KNOWN AS -->
             <v-tab-item>
               <v-row>
-                lalalalalal vacio por ahora
+                <v-col cols="12">
+                  <v-combobox
+                    v-model="itemInfo.aka"
+                    :items="[]"
+                    label="Also Known AS(AKA)"
+                    multiple
+                    hint="Add new AKAs hitting enter"
+                    chips
+                  ></v-combobox>
+                </v-col>
+                <v-col cols="12">
+                  <v-combobox
+                    v-model="itemInfo.fka"
+                    :items="[]"
+                    label="Formerly Known AS(FKA)"
+                    multiple
+                    hint="Add new FKAs hitting enter"
+                    chips
+                  ></v-combobox>
+                </v-col>
               </v-row>
             </v-tab-item>
             <!-- SECURITY -->
@@ -293,7 +310,8 @@ export default {
     tabTitles: [
       { name: 'General'},
       { name: 'Known As'},
-      { name: 'Security'}
+      { name: 'Security'},
+      { name: 'Image'}
     ],
     statusOptions: [
       { name: 'Active'}, 

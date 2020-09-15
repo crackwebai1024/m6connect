@@ -105,6 +105,8 @@ export default {
       role_two: "",
       client_status: "Active",
       version: "1912 LTSR",
+      aka: ['Citrix', 'CWSAC', 'Workspace'],
+      fka: ['Citrix Workspace Formerly'],
       internal_description: "",
       internal_objective: "this is the space for the citrix company description",
       record_image_url:
