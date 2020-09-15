@@ -24,6 +24,16 @@
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
+      <p class="text-caption font-weight-medium mb-1">Category</p>
+      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['category'] }}</p>
+    </div>
+    <v-divider class="grey mb-2"></v-divider>
+    <div class="d-flex justify-space-between">
+      <p class="text-caption font-weight-medium mb-1">SubCategory</p>
+      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['sub_category'] }}</p>
+    </div>
+    <v-divider class="grey mb-2"></v-divider>
+    <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1">App Management</p>
       <p class="text-caption font-weight-bold mb-1 text-right">{{ info['app_management'] }}</p>
     </div>
@@ -95,50 +105,135 @@
           </v-toolbar>
 
           <v-tabs-items v-model="tabs" class="px-16 py-10">
+            <!-- GENERAL -->
             <v-tab-item>
               <v-row>
                 <v-col cols="12" class="py-0">
-                  <v-text-field 
+                  <v-autocomplete
                     v-model="itemInfo.company"
+                    :items="dataCompany"
+                    :filter="customFilter"
                     :rules="textRules"
+                    item-text="name"
                     color="blue darken-3"
                     label="Vendor"
-                  >
-                  </v-text-field>
+                  ></v-autocomplete>
                 </v-col>
-                <v-col cols="12" class="py-0">
-                  <v-select
-                    v-model="itemInfo.client_status"
-                    :items="statusOptions"
-                    :rules="selectRules"
-                    color="blue darken-3"
-                    label="Status"
-                  ></v-select>
-                </v-col>
-              </v-row>
-            </v-tab-item>
-            <v-tab-item>
-              <v-row>
                 <v-col cols="12" class="py-0">
                   <v-text-field 
-                    v-model="itemInfo.first_contact_group"
+                    label="Name"
+                    v-model="itemInfo.record_name"
                     :rules="textRules"
-                    color="blue darken-3"
-                    label="First Contact Group" 
-                  >
-                  </v-text-field>
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" class="py-0">
-                  <v-text-field
-                    v-model="itemInfo.record_type"
+                  <v-text-field 
+                    label="Version"
+                    v-model="itemInfo.version"
                     :rules="textRules"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-text-field 
+                    label="Description"
+                    v-model="itemInfo.internal_description"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.client_status"
+                    :items="statusOptions"
+                    :filter="customFilter"
+                    :rules="textRules"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="Status"
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.first_contact_group"
+                    :items="firstContactGroupOptions"
+                    :filter="customFilter"
+                    :rules="textRules"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="First Contact Group" 
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.category"
+                    :items="category"
+                    :filter="customFilter"
+                    :rules="textRules"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="Category" 
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.sub_category"
+                    :items="[]"
+                    :filter="customFilter"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="SubCategory" 
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.record_type"
+                    :items="type"
+                    :filter="customFilter"
+                    :rules="textRules"
+                    item-text="name"
                     color="blue darken-3"
                     label="Type" 
-                  >
-                  </v-text-field>
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.app_management"
+                    :items="appManagement"
+                    :filter="customFilter"
+                    :rules="textRules"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="App Management" 
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.hosting_model"
+                    :items="serverHostingModel"
+                    :filter="customFilter"
+                    :rules="textRules"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="Server Hosting Model" 
+                  ></v-autocomplete>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.capabilities"
+                    :items="capabilities"
+                    :filter="customFilter"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="Capabilities" 
+                  ></v-autocomplete>
                 </v-col>
               </v-row>
             </v-tab-item>
+            <!-- KNOWN AS -->
+            <v-tab-item>
+              <v-row>
+                lalalalalal vacio por ahora
+              </v-row>
+            </v-tab-item>
+            <!-- SECURITY -->
             <v-tab-item>
               <v-row>
                 <v-col cols="12" class="py-0">
@@ -158,6 +253,14 @@
                     label="Server Hosting Model" 
                   >
                   </v-text-field>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <!-- IMAGE -->
+            <v-tab-item>
+              <v-row>
+                <v-col cols="12" class="py-0">
+                  Image
                 </v-col>
               </v-row>
             </v-tab-item>
@@ -192,7 +295,69 @@ export default {
       { name: 'Known As'},
       { name: 'Security'}
     ],
-    statusOptions: ['Active', 'Inactive'],
+    statusOptions: [
+      { name: 'Active'}, 
+      { name: 'Inactive'},
+      { name: 'PENDING EDA PKG BUILD'}, 
+      { name: 'PENDING EOL'},
+      { name: 'PENDING GO-LIVE'}, 
+      { name: 'Pending Testing'},
+      { name: 'PENDING TRC APPROVAL'}
+    ],
+    firstContactGroupOptions: [
+      { name: 'Access'}, 
+      { name: 'AMBULATORY COMMUNITY SYSTEMS SUPPORT'},
+      { name: 'AMBULATORY EHR SUPPORT'}, 
+      { name: 'BP HRIS'},
+      { name: 'CARDIOVASCULAR & PERIOPERATIVE SYSTEMS SUPPORT'}, 
+      { name: 'CLINICAL IMAGING SYSTEMS SUPPORT'},
+      { name: 'CLINICAL INTERFACES'},
+      { name: 'COMMUNITY CONNECT EHR'}, 
+      { name: 'COMMUNITY CONNECT TECHNICAL'},
+      { name: 'COMPUTER OPERATIONS'}, 
+      { name: 'CORE SUPPORT'},
+      { name: 'CTS'}, 
+      { name: 'DATABASE ADMINISTRATION'},
+      { name: 'DECISION SUPPORT'}
+    ],
+    category: [
+      { name: 'Ambulatory Clinic EMR'}, 
+      { name: 'Application Manager'},
+      { name: 'Cardiology'}, 
+      { name: 'Care Coordination'},
+      { name: 'Care Team'}, 
+      { name: 'Coding'},
+      { name: 'Community Care'},
+      { name: 'Compliance'}, 
+      { name: 'Data Governance'},
+      { name: 'Dietary'}, 
+      { name: 'Document Imaging'},
+      { name: 'Emergency Department'}, 
+      { name: 'Facilities Management'},
+      { name: 'Finance'}
+    ],
+    type: [
+      { name: 'Database'}, 
+      { name: 'Desktop'},
+      { name: 'Device'}, 
+      { name: 'Dongle'},
+      { name: 'Operating System'}, 
+      { name: 'Server Only'},
+      { name: 'System Tools'},
+      { name: 'URL'}
+    ],
+    appManagement: [
+      { name: 'Hybrid Internal/Vendor Managed'}, 
+      { name: 'Internally Managed'},
+      { name: 'Vendor Managed'}
+    ],
+    serverHostingModel: [
+      { name: 'Self Hosted'}, 
+      { name: 'Multi-Tenant'},
+      { name: 'Vendor Hosted'}, 
+      { name: 'Vendor Website'},
+      { name: 'N/A'}
+    ],
   }),
   methods: {
     updateItemDescription() {

@@ -8,6 +8,24 @@ export const items = {
       { name: 'Name 2', email: 'name2@gmail.com', phone: ''},
       { name: 'Name 3', email: 'name3@gmail.com', phone: '999555415'}
     ],
+    dataCompany: [
+      { name: '3DR Labs II, LLC'}, 
+      { name: '3M Health Information Systems, Inc'}, 
+      { name: '4S Information Systems Ltd'},
+      { name: 'AAOS (American Academy of Orthopaedic Surgeons)'}, 
+      { name: 'Abbott (formerly Alere and Medical Automation Systems)'},
+      { name: 'Ability Network Inc'}, 
+      { name: 'Accenture, LLP'}, 
+      { name: 'Accuray'}, 
+      { name: 'ACR Analytics, LLC'}, 
+      { name: 'Acuity Cloud Solutions'}, 
+      { name: 'Adobe Systems Inc'},
+      { name: 'ADP, LLC'}, 
+      { name: 'Advance Innovative Solutions, Inc'}, 
+      { name: 'Advanced Bionics LLC'}, 
+      { name: 'Advancedd Brain Technologies'},
+      { name: 'Advanced Call Processing, Inc'}
+    ],
     items: []
   }),
   computed: {
