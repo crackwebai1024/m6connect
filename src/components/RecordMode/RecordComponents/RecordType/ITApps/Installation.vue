@@ -13,7 +13,7 @@
                     <!-- Tab for General -->
                     <v-tab-item :key="0">
                         <v-container class="px-5">
-                            <v-col class="pa-0" v-for="formElement in itemLabels.general">
+                            <v-col class="pa-0" v-for="(formElement, index) in itemLabels.general" :key="'generalitem' + index">
                                 <v-select v-if="formElement.type === 'select'"
                                     :label="formElement.label" 
                                     :items="options.general[formElement.value]"
@@ -38,7 +38,7 @@
                     <!-- Tab for Support Information -->
                     <v-tab-item :key="2">
                         <v-container class="px-5">
-                            <v-row  v-for="formElement in itemLabels.support">
+                            <v-row  v-for="(formElement, index) in itemLabels.support" :key="'supportitem' + index">
                                 <!-- All of them are checkboxes and v-text -->
                                 <v-col cols="4" class="pa-0 d-flex">
                                     <v-checkbox
