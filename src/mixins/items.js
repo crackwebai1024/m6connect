@@ -8,14 +8,25 @@ export const items = {
       { name: 'Name 2', email: 'name2@gmail.com', phone: ''},
       { name: 'Name 3', email: 'name3@gmail.com', phone: '999555415'}
     ],
-    items: [],
-    nameRules: [
-      v => !!v || 'Name is required',
+    dataCompany: [
+      { name: '3DR Labs II, LLC'}, 
+      { name: '3M Health Information Systems, Inc'}, 
+      { name: '4S Information Systems Ltd'},
+      { name: 'AAOS (American Academy of Orthopaedic Surgeons)'}, 
+      { name: 'Abbott (formerly Alere and Medical Automation Systems)'},
+      { name: 'Ability Network Inc'}, 
+      { name: 'Accenture, LLP'}, 
+      { name: 'Accuray'}, 
+      { name: 'ACR Analytics, LLC'}, 
+      { name: 'Acuity Cloud Solutions'}, 
+      { name: 'Adobe Systems Inc'},
+      { name: 'ADP, LLC'}, 
+      { name: 'Advance Innovative Solutions, Inc'}, 
+      { name: 'Advanced Bionics LLC'}, 
+      { name: 'Advancedd Brain Technologies'},
+      { name: 'Advanced Call Processing, Inc'}
     ],
-    tagRules: [
-      v => v !== null || 'Tag is required',
-      v => (v && v.length !== 0) || 'Tag is required'
-    ],
+    items: []
   }),
   computed: {
     titleDialog() {
@@ -30,7 +41,7 @@ export const items = {
       this.dialogMode ? this.saveItem() : this.updateItem()
     },
     saveItem() {
-      if(this.infoValid) {
+      if(this.valid) {
         let id = parseInt(Date.now() * Math.random())
         let newItem = {}
         let info = [newItem,this.itemInfo];
@@ -41,15 +52,14 @@ export const items = {
       }
     },
     updateItem() {
-      if(this.infoValid) {
+      if(this.valid) {
         this.items.forEach((item) => {
-        if(item.id == this.itemInfo.id) {
-            let info = [item,this.itemInfo];
-            item = Object.assign(...info);
-        }
+          if(item.id == this.itemInfo.id) {
+              let info = [item,this.itemInfo];
+              item = Object.assign(...info);
+          }
         });
-        this.$refs.formItem.reset()
-        this.dialog = false
+        this.closeDialog()
       }
     },
     customFilter (item, queryText) {
@@ -69,7 +79,7 @@ export const items = {
       this.closeDialog()
     },
     closeDialog() {
-      this.$refs.formItem.reset()
+      this.reset()
       this.dialog = false
     }
   }
