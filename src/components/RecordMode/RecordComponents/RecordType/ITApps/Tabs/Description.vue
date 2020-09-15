@@ -77,6 +77,26 @@
       </v-chip>
     </div>
 
+    <div class="d-flex justify-space-between mt-2">
+      <p class="text-caption font-weight-medium mb-1">Patient</p>
+      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['facing'] ? 'Yes' : 'No' }}</p>
+    </div>
+    <v-divider class="grey mb-2"></v-divider>
+    <div class="d-flex justify-space-between">
+      <p class="text-caption font-weight-medium mb-1">PHI</p>
+      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['phi'] ? 'Yes' : 'No' }}</p>
+    </div>
+    <v-divider class="grey mb-2"></v-divider>
+    <div class="d-flex justify-space-between">
+      <p class="text-caption font-weight-medium mb-1">PCI</p>
+      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['pci'] ? 'Yes' : 'No' }}</p>
+    </div>
+    <v-divider class="grey mb-2"></v-divider>
+    <div class="d-flex justify-space-between">
+      <p class="text-caption font-weight-medium mb-1">SSN</p>
+      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['ssn'] }}</p>
+    </div>
+
     <v-dialog v-model="dialog" persistent max-width="800px">
       <v-form ref="form" v-model="valid" class="white">
         <v-card-text class="pa-0">
@@ -216,7 +236,7 @@
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
                     v-model="itemInfo.capabilities"
-                    :items="capabilities"
+                    :items="[]"
                     :filter="customFilter"
                     item-text="name"
                     color="blue darken-3"
@@ -254,30 +274,32 @@
             <v-tab-item>
               <v-row>
                 <v-col cols="12" class="py-0">
-                  <v-text-field 
-                    v-model="itemInfo.app_management"
-                    :rules="textRules"
-                    color="blue darken-3"
-                    label="App Management" 
-                  >
-                  </v-text-field>
+                  <v-checkbox
+                    v-model="itemInfo.facing"
+                    label="Patient/Costumer Facing"
+                  ></v-checkbox>
                 </v-col>
                 <v-col cols="12" class="py-0">
-                  <v-text-field
-                    v-model="itemInfo.hosting_model"
-                    :rules="textRules"
-                    color="blue darken-3"
-                    label="Server Hosting Model" 
-                  >
-                  </v-text-field>
+                  <v-checkbox
+                    v-model="itemInfo.phi"
+                    label="PHI"
+                  ></v-checkbox>
                 </v-col>
-              </v-row>
-            </v-tab-item>
-            <!-- IMAGE -->
-            <v-tab-item>
-              <v-row>
                 <v-col cols="12" class="py-0">
-                  Image
+                  <v-checkbox
+                    v-model="itemInfo.pci"
+                    label="PCI"
+                  ></v-checkbox>
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-autocomplete
+                    v-model="itemInfo.ssn"
+                    :items="ssn"
+                    :filter="customFilter"
+                    item-text="name"
+                    color="blue darken-3"
+                    label="SSN" 
+                  ></v-autocomplete>
                 </v-col>
               </v-row>
             </v-tab-item>
@@ -311,7 +333,6 @@ export default {
       { name: 'General'},
       { name: 'Known As'},
       { name: 'Security'},
-      { name: 'Image'}
     ],
     statusOptions: [
       { name: 'Active'}, 
@@ -375,6 +396,12 @@ export default {
       { name: 'Vendor Hosted'}, 
       { name: 'Vendor Website'},
       { name: 'N/A'}
+    ],
+    ssn: [
+      { name: 'Full SSN Displayed'}, 
+      { name: 'Fully Masked'},
+      { name: 'Last 4 Digits Displayed'}, 
+      { name: 'Not Used'},
     ],
   }),
   methods: {

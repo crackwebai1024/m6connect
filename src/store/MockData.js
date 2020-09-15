@@ -107,6 +107,10 @@ export default {
       version: "1912 LTSR",
       aka: ['Citrix', 'CWSAC', 'Workspace'],
       fka: ['Citrix Workspace Formerly'],
+      facing: true,
+      phi: false,
+      pci: true,
+      ssn: 'Fully Masked',
       internal_description: "",
       internal_objective: "this is the space for the citrix company description",
       record_image_url:
