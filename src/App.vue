@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <top-nav />
     <v-row no-gutters class="grey lighten-2 flex-nowrap">
       <!-- Side Panel Component  -->
       <side-panel />
@@ -18,19 +19,21 @@
 </template>
 
 <script>
+import TopNav from "@/views/Home/TopNav";
+import SidePanel from "@/views/Home/SidePanel";
 import M6Chat from "@/components/Home/M6Chat";
 import ChatWrapper from "@/components/Home/M6Chat/ChatWrapper";
-import SidePanel from "@/views/Home/SidePanel";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
 import { mapState} from "vuex";
 
 export default {
   name: "App",
   components: {
+    TopNav,
+    SidePanel,
     M6Chat,
     ChatWrapper,
     GeneralOverlay,
-    SidePanel,
   },
   data: () => ({
     //
