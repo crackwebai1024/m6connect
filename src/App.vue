@@ -1,20 +1,15 @@
 <template>
   <v-app>
     <top-nav />
-    <v-row no-gutters class="grey lighten-2 flex-nowrap">
-      <!-- Side Panel Component  -->
+    <v-row no-gutters class="flex flex-nowrap grey lighten-3 justify-space-between">
       <side-panel />
       <!-- Home / Company Profile -->
-      <router-view class="grey lighten-2 max-w-none" />
-      <!-- Chat Component -->
-      <v-card class="fill-height pt-3 d-flex flex-column align-end">
-        <m6-chat></m6-chat>
-      </v-card>
-      <!-- </v-col> -->
+      <!-- <router-view /> -->
+      <m6-chat />
     </v-row>
     <!-- Preview overlay -->
-    <chat-wrapper></chat-wrapper>
-    <general-overlay></general-overlay>
+    <chat-wrapper />
+    <general-overlay />
   </v-app>
 </template>
 
@@ -46,5 +41,8 @@ export default {
 <style>
   .max-w-none {
     max-width: none;
+  }
+  #app {
+    font-family: 'Raleway', sans-serif;
   }
 </style>

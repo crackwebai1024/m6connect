@@ -1,5 +1,5 @@
 <template>
-  <div class="company-menu">
+  <div class="company-menu transparent">
     <div class="blue darken-3 mt-3 ml-2 py-3 px-4">
       <div class="d-flex">
         <img alt="" class="mr-2" width="100" height="65" src="@/assets/sharp-logo.png">

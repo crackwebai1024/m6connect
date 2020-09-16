@@ -1,134 +1,83 @@
 <template>
-    <div class="">
-        <v-navigation-drawer
-        v-model="drawer"
-        right
-        :mini-variant.sync="mini"
-        permanent width="100%">
-            <div v-if="!mini" class="">
-                <v-icon @click="mini = true" class="text--grey">mdi-chevron-right</v-icon>
-                <div class="py-2 px-3 d-flex justify-space-between">
-                    <p class="text-subtitle-1 grey--text text--darken-1 mb-0">People</p>
-                    <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                            color="primary"
-                            dark
-                            text
-                            small
-                            v-bind="attrs"
-                            v-on="on"
-                            class="text-caption"
-                            >
-                            Everyone <v-icon right class="text-caption">mdi-filter-outline</v-icon>
-                            </v-btn>
-                        </template>
-                        <template>
-                            <v-list dense>
-                                <v-list-item>
-                                    <v-list-item-title>Everyone</v-list-item-title>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-title>My company</v-list-item-title>
-                                </v-list-item>
-
-                                <v-subheader>Teams</v-subheader>
-                                <v-list-item  :key="'team-' + key" v-for="(team, key) in filter.teams">
-                                    <v-list-item-title>{{team}}</v-list-item-title>
-                                </v-list-item>
-
-                                <v-subheader>Departments</v-subheader>
-                                <v-list-item :key="'dep-' + key" v-for="(dep, key) in filter.departments">
-                                    <v-list-item-title>{{dep}}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </template>
-                    </v-menu>
-                </div>
-                <v-text-field hide-details class="mx-2 myinput rounded-pill mb-3" flat solo-inverted append-icon="mdi-magnify"  label="Search"></v-text-field>
-                <v-divider></v-divider>
-                <v-subheader class="lighten-3 font-weight-medium px-3 black--text">Teams</v-subheader>
-                <v-subheader class="lighten-3 font-weight-medium px-3 black--text">Departments</v-subheader>
-            
-                <v-expansion-panels multiple accordion>
-                    <v-expansion-panel class="" :key="index" dense v-for="(dep, index) in departments">
-                        <v-expansion-panel-header dense class="font-weight-light px-3 grey lighten-3">{{dep.name}}</v-expansion-panel-header>
-                        <v-expansion-panel-content class="px-0 pb-0">
-                            <v-list class="px-0" style="padding:0;">
-                                <v-list-item
-                                    @click="startChat(u.id)"
-                                    :key="index"
-                                    class="px-4 my-2"
-                                    v-for="(u, index) in dep.users">
-                                    <v-badge
-                                        bordered
-                                        bottom
-                                        color="green accent-4"
-                                        dot
-                                        offset-x="10"
-                                        offset-y="10"
-                                        class="mr-3">
-                                        <v-avatar size="40">
-                                            <v-img :src="u.pic"></v-img>
-                                        </v-avatar>
-                                    </v-badge>
-                                    <v-list-item-title class="">{{u.name}}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
+    <div class="panel-people pa-5">
+        <div :key="'department-' + index" v-for="(department, index) in departments">
+            <div class="actions-container mr-5">
+                <v-icon size="30">mdi-filter</v-icon>
+                <v-icon size="30">mdi-magnify</v-icon>
             </div>
-            <div v-else>
-                <template v-for="(dep, index) in departments">
-                    <v-menu offset-x left class="mr-3" open-on-hover :key="index">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-list class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
-                                <v-list-item
-                                    v-on="on"
-                                    :key="index"
-                                    :class="{'mt-n7' : index != 0}"
-                                    class="justify-center" v-for="(u, index) in dep.users">
-                                    <v-badge
-                                        top
-                                        bordered
-                                        color="green accent-4"
-                                        dot
-                                        offset-x="10"
-                                        offset-y="10"
-                                        class="">
-                                        <v-avatar style="border: 2px solid white" size="40">
-                                            <v-img :src="u.pic"></v-img>
-                                        </v-avatar>
-                                    </v-badge>
-                                </v-list-item>
-                            </v-list>
-                        </template>
-                        <v-list>
-                            <v-subheader>{{dep.name}}</v-subheader>
+            <div>
+                <h4 class="test-font-family">{{ department.name }}</h4>
+                <v-list-item
+                    @click="startChat(user.id)"
+                    :key="'user-' + index + department.name"
+                    class="px-4 my-2"
+                    v-for="(user, index) in department.users">
+                    <v-badge
+                        bordered
+                        bottom
+                        color="green accent-4"
+                        dot
+                        offset-x="10"
+                        offset-y="10"
+                        class="mr-3">
+                        <v-avatar size="40">
+                            <v-img :src="user.pic"></v-img>
+                        </v-avatar>
+                    </v-badge>
+                    <v-list-item-title class="">{{user.name}}</v-list-item-title>
+                </v-list-item>
+            </div>
+        </div>
+
+        <!-- <div v-else>
+            <template v-for="(dep, index) in departments">
+                <v-menu offset-x left class="mr-3" open-on-hover :key="index">
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-list class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
                             <v-list-item
-                                    :key="index"
-                                    class="" v-for="(u, index) in dep.users">
-                                    <v-badge
-                                        bottom
-                                        bordered
-                                        color="green accent-4"
-                                        dot
-                                        offset-x="10"
-                                        offset-y="10"
-                                        class="mr-3">
-                                        <v-avatar style="border: 2px solid white" size="40">
-                                            <v-img :src="u.pic"></v-img>
-                                        </v-avatar>
-                                    </v-badge>
-                                    <v-list-item-title class="text-caption">{{u.name}}</v-list-item-title>
+                                v-on="on"
+                                :key="index"
+                                :class="{'mt-n7' : index != 0}"
+                                class="justify-center" v-for="(u, index) in dep.users">
+                                <v-badge
+                                    top
+                                    bordered
+                                    color="green accent-4"
+                                    dot
+                                    offset-x="10"
+                                    offset-y="10"
+                                    class="">
+                                    <v-avatar style="border: 2px solid white" size="40">
+                                        <v-img :src="u.pic"></v-img>
+                                    </v-avatar>
+                                </v-badge>
                             </v-list-item>
                         </v-list>
-                    </v-menu>
-                </template>
-                
-            </div>
-        </v-navigation-drawer>
+                    </template>
+                    <v-list>
+                        <v-subheader>{{dep.name}}</v-subheader>
+                        <v-list-item
+                                :key="index"
+                                class="" v-for="(u, index) in dep.users">
+                                <v-badge
+                                    bottom
+                                    bordered
+                                    color="green accent-4"
+                                    dot
+                                    offset-x="10"
+                                    offset-y="10"
+                                    class="mr-3">
+                                    <v-avatar style="border: 2px solid white" size="40">
+                                        <v-img :src="u.pic"></v-img>
+                                    </v-avatar>
+                                </v-badge>
+                                <v-list-item-title class="text-caption">{{u.name}}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
+            
+        </div> -->
     </div>
 </template>
 
@@ -144,7 +93,7 @@ export default {
         },
         departments: [
             {
-                name: "Information Technologies",
+                name: "My Connections",
                 users: [
                     {
                         id: 1,
@@ -160,19 +109,59 @@ export default {
                         id: 3,
                         name: "Another Example",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                    },
+                                        {
+                        id: 4,
+                        name: "John",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
+                    },
+                    {
+                        id: 5,
+                        name: "Example User 2",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
+                    },
+                    {
+                        id: 6,
+                        name: "Another Example 2",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
                     }
                 ]
             },
             {
-                name: "Project Finances",
+                name: "People in my Company",
                 users: [
                     {
-                        id: 4,
+                        id: 7,
                         name: "John Doe",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                    },
+                    {
+                        id: 8,
+                        name: "John Doe xyz",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                    },
+                    {
+                        id: 9,
+                        name: "John Doe 9875",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
                     }
                 ]
-            }
+            },
+            {
+                name: "People in Vendors",
+                users: [
+                    {
+                        id: 10,
+                        name: "John Doe 4321",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                    },
+                    {
+                        id: 11,
+                        name: "John Doe 1234",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                    }
+                ]
+            }        
         ],
     }),
     computed: {
@@ -201,6 +190,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.panel-people {
+    width: 420px;
+}
+.actions-container {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+// .test-font-family {
+// font-family: 'Raleway', sans-serif;
+// }
 .mdi-chevron-right::before {
     background: #ddd;
     border-radius: 100%;
