@@ -3,7 +3,6 @@
         <v-navigation-drawer
         v-model="drawer"
         right
-        absolute
         :mini-variant.sync="mini"
         permanent width="100%">
             <div v-if="!mini" class="">
