@@ -10,7 +10,7 @@
         <v-tab class="px-13"><v-icon color="white" :large="true">mdi-cog</v-icon></v-tab>
       </v-tabs>
       <div class="d-flex align-center">
-        <img alt="John" class="mr-1 rounded-circle" width="42" height="42" :src="user.imgSrc">
+        <img :alt="user.name" class="mr-1 rounded-circle" width="42" height="42" :src="user.imgSrc">
         <span class="white--text font-weight-medium">{{ user.name }}</span>
         <img :alt="company.name" class="rounded ml-6" width="62" height="45" src="@/assets/sharp-logo.png">
       </div>

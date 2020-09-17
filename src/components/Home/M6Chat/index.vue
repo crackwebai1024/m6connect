@@ -6,7 +6,7 @@
                 <v-icon size="30">mdi-magnify</v-icon>
             </div>
             <div>
-                <h4 class="test-font-family">{{ department.name }}</h4>
+                <h4 class="">{{ department.name }}</h4>
                 <v-list-item
                     @click="startChat(user.id)"
                     :key="'user-' + index + department.name"
@@ -198,9 +198,6 @@ export default {
     right: 0;
     z-index: 1;
 }
-// .test-font-family {
-// font-family: 'Raleway', sans-serif;
-// }
 .mdi-chevron-right::before {
     background: #ddd;
     border-radius: 100%;

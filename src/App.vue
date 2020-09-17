@@ -44,5 +44,9 @@ export default {
   }
   #app {
     font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+  }
+  * {
+    color: var(--v-secondary-lighten1);
   }
 </style>
