@@ -1,16 +1,27 @@
 <template>
   <div class="actionfeed-content transparent ml-4">
-    <div class="pl-3 mt-4 mb-3 d-flex justify-space-between align-center">
+    <div class="pl-3 mt-4 mb-1 d-flex justify-space-between align-center">
       <p class="font-weight-bold mb-0">Action Feed</p>
       <div class="d-flex align-center">
-        <p class="mb-0 purple--text text--darken-1 font-weight-bold">
-          All Apps 
-          <v-icon style="margin-left: -6px;" class="blue--text text--darken-3">mdi-chevron-down</v-icon>
-        </p>
+        <v-menu transition="slide-y-transition" offset-y bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn elevation="0" class="capitalize-text mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
+              All Apps
+              <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item v-for="(item, i) in areas" :key="i" style="height: 15px;">
+              <v-list-item-title
+                :class="item.type == 'title' ? 'grey--text' : 'black--text'"
+              >{{ item.text }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-icon size="28" class="ml-2">mdi-magnify</v-icon>
       </div>
     </div>
-    <div v-for="post in 4" :key="post" class="actionfeed-content__card rounded white mb-4 pt-4 px-3">
+    <div v-for="post in 4" :key="post" class="actionfeed-content__card card-custom-shadow rounded white mb-4 pt-4 px-3">
       <div class="card-content__tag red white--text d-flex justify-center align-center text-body-1 font-weight-regular">
         CPM
       </div>
@@ -77,7 +88,19 @@ export default {
     cardsList: [
       { imgSrc:'', title: 'Cool Title', description: 'Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.'},
       { imgSrc:'', title: 'Cool Title', description: 'Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.' }
-    ]
+    ],
+    areas: [
+      { text: "Everyone", type: "subtitle" },
+      { text: "My company", type: "subtitle" },
+      { text: "Teams", type: "title" },
+      { text: "All my teams", type: "subtitle" },
+      { text: "IT Team XY", type: "subtitle" },
+      { text: "CPM Team Z", type: "subtitle" },
+      { text: "Departments", type: "title" },
+      { text: "All my departments", type: "subtitle" },
+      { text: "Finances", type: "subtitle" },
+      { text: "Operations", type: "subtitle" },
+    ],
   }),
   name: "ActionFeed",
   computed: {
@@ -102,29 +125,14 @@ export default {
 </script>
 
 <style lang="scss">
-  .leading-tight {
-    line-height: 1.4;
+  .capitalize-text {
+    text-transform: capitalize;
   }
-  .leading-tight	{
-    line-height: 1.25;
-  }
-  .leading-snug	{
-    line-height: 1.375;
-  }
-  .spacing-tight {
-    letter-spacing: 1px;
+  .card-custom-shadow {
+    box-shadow: 0px 3px 6px #00000028;
   }
   .cursor-pointer {
     cursor: pointer;
-  }
-  .links {
-    transition: height 5s;
-    height: 150px;
-    overflow:hidden;
-    -webkit-transition: height .5s ease;
-    -moz-transition: height .5s ease;
-    -o-transition: height .5s ease;
-    transition: height .5s ease;
   }
   .actionfeed-content {
     width: 400px;
@@ -132,7 +140,6 @@ export default {
   .actionfeed-content__card {
     position: relative;
     min-height: 223px;
-    box-shadow: 0px 3px 6px #00000028;
   }
   .card-content__tag {
     position: absolute;

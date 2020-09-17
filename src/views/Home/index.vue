@@ -1,11 +1,11 @@
 <template>
-  <v-container class="main-content ma-0 px-2 pt-3 pb-0 d-flex vertical-scroll dont-show-scroll height-100-vh">
+  <v-container class="main-content px-0 ma-0 pt-3 pb-0 d-flex vertical-scroll dont-show-scroll height-100-vh">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
       <record-container :data="get_record_full_screen()" />
     </template>
     <template v-else>
-      <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll">
+      <!-- <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll"> -->
         <!-- Social Network -->
         <project-social-media />
         <image-caroussel-overlay
@@ -15,11 +15,11 @@
           :selected="selectedImage"
         ></image-caroussel-overlay>
 
-      </v-card>
-      <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll">
+      <!-- </v-card> -->
+      <!-- <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll"> -->
         <!-- Project List Component -->
-        <general-list />
-      </v-card>
+        <!-- <general-list />
+      </v-card> -->
     </template>
   </v-container>
 </template>
@@ -27,7 +27,7 @@
 <script>
 import {mapGetters, mapState, mapActions} from 'vuex';
 import ProjectSocialMedia from "./ProjectSocialMedia";
-import GeneralList from "@/views/Home/GeneralList";
+// import GeneralList from "@/views/Home/GeneralList";
 import RecordContainer from "@/components/RecordMode/RecordContainer";
 import ImageCarousselOverlay from "@/components/Shared/ImageCarousselOverlay";
 
@@ -36,7 +36,7 @@ export default {
   components: {
     ProjectSocialMedia,
     RecordContainer,
-    GeneralList,
+    // GeneralList,
     ImageCarousselOverlay,
   },
   computed: {
@@ -70,6 +70,6 @@ export default {
 
 <style lang="scss">
 .main-content {
-  max-width: 950px;
+  max-width: 810px;
 }
 </style>
