@@ -11,7 +11,7 @@
       </v-tabs>
       <div class="d-flex align-center">
         <img :alt="user.name" class="mr-1 rounded-circle" width="42" height="42" :src="user.imgSrc">
-        <span class="white--text font-weight-medium">{{ user.name }}</span>
+        <span class="white--text font-weight-bold">{{ user.name }}</span>
         <img :alt="company.name" class="rounded ml-6" width="62" height="45" src="@/assets/sharp-logo.png">
       </div>
     </div>

@@ -1,31 +1,36 @@
 <template>
     <div class="panel-people pa-5">
-        <div :key="'department-' + index" v-for="(department, index) in departments">
+        <div class="mb-5" :key="'department-' + index" v-for="(department, index) in departments">
             <div class="actions-container mr-5">
-                <v-icon size="30">mdi-filter</v-icon>
-                <v-icon size="30">mdi-magnify</v-icon>
+                <v-icon size="28" class="ml-1 grey--text text--darken-2">mdi-filter</v-icon>
+                <v-icon size="28" class="ml-1 grey--text text--darken-2">mdi-magnify</v-icon>
             </div>
             <div>
-                <h4 class="">{{ department.name }}</h4>
-                <v-list-item
-                    @click="startChat(user.id)"
+                <h4 class="mb-4">{{ department.name }}</h4>
+                <div @click="startChat(user.id)"
                     :key="'user-' + index + department.name"
-                    class="px-4 my-2"
+                    class="my-2 d-flex"
                     v-for="(user, index) in department.users">
                     <v-badge
-                        bordered
                         bottom
-                        color="green accent-4"
+                        color="green accent-3"
                         dot
                         offset-x="10"
                         offset-y="10"
                         class="mr-3">
-                        <v-avatar size="40">
+                        <v-avatar size="36">
                             <v-img :src="user.pic"></v-img>
                         </v-avatar>
                     </v-badge>
-                    <v-list-item-title class="">{{user.name}}</v-list-item-title>
-                </v-list-item>
+                    <div class="d-flex flex-column">
+                        <p class="font-weight-bold mb-0">{{user.name}}</p>
+                        <span class="text-caption grey--text text--darken-1">{{user.departmentName}}</span>
+                    </div>
+                </div>
+            </div>
+            <div v-if="index !== departments.length - 1">
+                <v-divider class="blue-grey lighten-4 mt-4"></v-divider>
+                <v-divider class="blue-grey lighten-4"></v-divider>
             </div>
         </div>
 
@@ -98,32 +103,38 @@ export default {
                     {
                         id: 1,
                         name: "John Doe",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 2,
                         name: "Example User",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 3,
                         name: "Another Example",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     },
                                         {
                         id: 4,
                         name: "John",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 5,
                         name: "Example User 2",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 6,
                         name: "Another Example 2",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     }
                 ]
             },
@@ -133,17 +144,20 @@ export default {
                     {
                         id: 7,
                         name: "John Doe",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 8,
                         name: "John Doe xyz",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 9,
                         name: "John Doe 9875",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     }
                 ]
             },
@@ -153,12 +167,14 @@ export default {
                     {
                         id: 10,
                         name: "John Doe 4321",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 11,
                         name: "John Doe 1234",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     }
                 ]
             }        
@@ -191,12 +207,13 @@ export default {
 
 <style lang="scss" scoped>
 .panel-people {
-    width: 420px;
+    width: 400px;
 }
 .actions-container {
     position: absolute;
     right: 0;
     z-index: 1;
+    margin-top: -5px;
 }
 .mdi-chevron-right::before {
     background: #ddd;
