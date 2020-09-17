@@ -40,6 +40,6 @@ export default {
     max-width: 1800px;
 }
 .tabs-content {
-    max-width: 950px;
+    max-width: 720px;
 }
 </style>

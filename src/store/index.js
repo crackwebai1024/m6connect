@@ -11,9 +11,6 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    layout: {
-      contacts: false // true = fullsize | false = mini
-    },
     chats: [],
     users: [
       {

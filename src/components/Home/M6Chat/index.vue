@@ -33,56 +33,6 @@
                 <v-divider class="blue-grey lighten-4"></v-divider>
             </div>
         </div>
-
-        <!-- <div v-else>
-            <template v-for="(dep, index) in departments">
-                <v-menu offset-x left class="mr-3" open-on-hover :key="index">
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-list class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
-                            <v-list-item
-                                v-on="on"
-                                :key="index"
-                                :class="{'mt-n7' : index != 0}"
-                                class="justify-center" v-for="(u, index) in dep.users">
-                                <v-badge
-                                    top
-                                    bordered
-                                    color="green accent-4"
-                                    dot
-                                    offset-x="10"
-                                    offset-y="10"
-                                    class="">
-                                    <v-avatar style="border: 2px solid white" size="40">
-                                        <v-img :src="u.pic"></v-img>
-                                    </v-avatar>
-                                </v-badge>
-                            </v-list-item>
-                        </v-list>
-                    </template>
-                    <v-list>
-                        <v-subheader>{{dep.name}}</v-subheader>
-                        <v-list-item
-                                :key="index"
-                                class="" v-for="(u, index) in dep.users">
-                                <v-badge
-                                    bottom
-                                    bordered
-                                    color="green accent-4"
-                                    dot
-                                    offset-x="10"
-                                    offset-y="10"
-                                    class="mr-3">
-                                    <v-avatar style="border: 2px solid white" size="40">
-                                        <v-img :src="u.pic"></v-img>
-                                    </v-avatar>
-                                </v-badge>
-                                <v-list-item-title class="text-caption">{{u.name}}</v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
-            </template>
-            
-        </div> -->
     </div>
 </template>
 
@@ -182,14 +132,6 @@ export default {
     }),
     computed: {
         ...mapState(['layout', 'chats']),
-        mini: {
-            get: function () {
-                return this.layout.contacts
-            },
-            set: function (value) {
-                this.layout.contacts = value
-            }
-        }
     },
     methods: {
         startChat(id) {

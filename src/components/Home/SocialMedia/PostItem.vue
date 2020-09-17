@@ -1,6 +1,6 @@
 <template>
   <v-container class="px-0 py-0">
-    <v-card class="mb-3">
+    <div class="mb-3 card-custom-shadow white rounded">
       <v-card-title class="pb-0">
         <v-row no-gutters align="center">
           <div class="d-flex align-center">
@@ -12,10 +12,10 @@
                 class="cursor-hover underline size-15 line-height-1 font-weight-bold"
                 style="margin-bottom: 2px;"
               >{{data.name}}</div>
-              <div class="d-flex text-caption line-height-1 grey--text text--darken-1">
-                <div>{{ data.occupation }}</div>
-                <div class="mx-1">·</div>
-                <div>{{ data.timestamps.created }}</div>
+              <div class="d-flex text-caption line-height-1 grey--text">
+                <div class="grey--text text--darken-1">{{ data.occupation }}</div>
+                <div class="mx-1 grey--text text--darken-1">·</div>
+                <div class="grey--text text--darken-1">{{ data.timestamps.created }}</div>
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@
           </div>
         </post-comments>
       </div>
-    </v-card>
+    </div>
   </v-container>
 </template>
 <script>
