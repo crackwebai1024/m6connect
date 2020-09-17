@@ -1,11 +1,11 @@
 <template>
-  <v-container class="ma-0 px-2 pt-3 pb-0 d-flex vertical-scroll dont-show-scroll height-100-vh">
+  <v-container class="main-content ma-0 px-2 pt-3 pb-0 d-flex vertical-scroll dont-show-scroll height-100-vh">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
       <record-container :data="get_record_full_screen()" />
     </template>
     <template v-else>
-      <v-card width="50%" height="100%" elevation="0" class="bg-transparent vertical-scroll dont-show-scroll">
+      <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll">
         <!-- Social Network -->
         <project-social-media />
         <image-caroussel-overlay
@@ -16,7 +16,7 @@
         ></image-caroussel-overlay>
 
       </v-card>
-      <v-card width="50%" height="100%" elevation="0" class="bg-transparent vertical-scroll dont-show-scroll">
+      <v-card width="50%" height="100%" elevation="0" class="vertical-scroll dont-show-scroll">
         <!-- Project List Component -->
         <general-list />
       </v-card>
@@ -69,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss">
-.bg-transparent {
-  background: transparent !important;
+.main-content {
+  max-width: 950px;
 }
 </style>

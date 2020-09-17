@@ -2,9 +2,9 @@
   <v-app>
     <top-nav />
     <v-row no-gutters class="flex flex-nowrap grey lighten-3 justify-space-between">
-      <side-panel />
+      <action-feed />
       <!-- Home / Company Profile -->
-      <!-- <router-view /> -->
+      <router-view />
       <m6-chat />
     </v-row>
     <!-- Preview overlay -->
@@ -15,7 +15,7 @@
 
 <script>
 import TopNav from "@/views/Home/TopNav";
-import SidePanel from "@/views/Home/SidePanel";
+import ActionFeed from "@/views/Home/ActionFeed";
 import M6Chat from "@/components/Home/M6Chat";
 import ChatWrapper from "@/components/Home/M6Chat/ChatWrapper";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
@@ -25,7 +25,7 @@ export default {
   name: "App",
   components: {
     TopNav,
-    SidePanel,
+    ActionFeed,
     M6Chat,
     ChatWrapper,
     GeneralOverlay,

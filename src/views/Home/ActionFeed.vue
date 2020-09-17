@@ -68,7 +68,7 @@ export default {
       { imgSrc:'', title: 'Cool Title', description: 'Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.' }
     ]
   }),
-  name: "SidePanel",
+  name: "ActionFeed",
   computed: {
     showLinksMessage: function() {
       return this.showLinks ? 'Less' : 'More'
