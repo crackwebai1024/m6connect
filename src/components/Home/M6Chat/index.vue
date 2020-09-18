@@ -6,11 +6,13 @@
                 <v-icon size="28" class="ml-1 grey--text text--darken-2">mdi-magnify</v-icon>
             </div>
             <div>
-                <h4 class="mb-4">{{ department.name }}</h4>
-                <div @click="startChat(user.id)"
+                <h4 class="mb-4 ml-1">{{ department.name }}</h4>
+                <v-btn @click="startChat(user.id)"
                     :key="'user-' + index + department.name"
-                    class="my-2 d-flex"
-                    v-for="(user, index) in department.users">
+                    class="w-full px-2 py-6 my-0 d-flex cursor-pointer text-capitalize justify-start"
+                    v-for="(user, index) in department.users"
+                    elevation="0" 
+                    color="transparent">
                     <v-badge
                         bottom
                         color="green accent-3"
@@ -22,11 +24,11 @@
                             <v-img :src="user.pic"></v-img>
                         </v-avatar>
                     </v-badge>
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column align-start">
                         <p class="font-weight-bold mb-0">{{user.name}}</p>
                         <span class="text-caption grey--text text--darken-1">{{user.departmentName}}</span>
                     </div>
-                </div>
+                </v-btn>
             </div>
             <div v-if="index !== departments.length - 1">
                 <v-divider class="blue-grey lighten-4 mt-4"></v-divider>

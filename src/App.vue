@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <top-nav />
-    <v-row no-gutters class="main-components-content flex flex-nowrap grey lighten-3 justify-space-between">
+    <v-row no-gutters class="top-60 absolute w-full flex flex-nowrap grey lighten-3 justify-space-between">
       <action-feed />
       <!-- Home / Company Profile -->
       <router-view />
@@ -48,10 +48,5 @@ export default {
   }
   * {
     color: var(--v-secondary-lighten1);
-  }
-  .main-components-content {
-    width: 100%;
-    position: absolute;
-    top: 60px;
   }
 </style>

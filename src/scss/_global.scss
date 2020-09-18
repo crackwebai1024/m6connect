@@ -101,3 +101,36 @@ $border-color: #dddddd;
 .line-height-1 {
   line-height: 1;
 }
+
+.w-full {
+  width: 100%;
+}
+
+.max-w-content {
+  max-width: 820px;
+}
+
+.max-w-container {
+  max-width: 1800px;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+}
+
+// this will help to put an offset to the main-container
+.top-60 {
+  top: 60px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

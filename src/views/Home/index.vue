@@ -1,5 +1,5 @@
 <template>
-  <v-container class="main-content px-0 ma-0 pt-3 pb-0 d-flex vertical-scroll dont-show-scroll height-100-vh">
+  <v-container class="max-w-content px-0 ma-0 pt-3 pb-0 d-flex vertical-scroll dont-show-scroll height-100-vh">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
       <record-container :data="get_record_full_screen()" />
@@ -67,9 +67,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.main-content {
-  max-width: 810px;
-}
-</style>

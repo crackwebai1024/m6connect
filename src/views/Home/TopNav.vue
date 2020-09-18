@@ -1,8 +1,8 @@
 <template>
-  <div class="nav-bar blue darken-3 d-flex justify-center">
-    <div class="nav-content d-flex justify-space-between align-center">
+  <div class="nav-bar px-4 w-full blue darken-3 d-flex justify-center">
+    <div class="nav-content w-full d-flex justify-space-between align-center">
       <img alt="M6Connect" src="@/assets/m6-home-logo.png" height="36px">
-      <v-tabs height="60" active-class="blue darken-4" background-color="transparent" color="white" :hide-slider="true" class="tabs-content d-flex justify-center align-center">
+      <v-tabs height="60" active-class="blue darken-4" background-color="transparent" color="white" :hide-slider="true" class="max-w-content d-flex justify-center align-center">
         <v-tab class="px-13"><v-icon color="white" :x-large="true">mdi-home</v-icon></v-tab>
         <v-tab class="px-13"><v-icon color="white" :large="true">mdi-view-comfy</v-icon></v-tab>
         <v-tab class="px-13"><v-icon color="white" :large="true">mdi-office-building</v-icon></v-tab>
@@ -36,16 +36,10 @@ export default {
 <style lang="scss" scoped>
 .nav-bar {
     position: fixed;
-    width: 100%;
     z-index: 100;
-    padding: 0 16px;
 }
 .nav-content {
-    width: 100%;
     height: 60px;
     max-width: 1800px;
-}
-.tabs-content {
-    max-width: 720px;
 }
 </style>
