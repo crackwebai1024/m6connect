@@ -2,17 +2,6 @@
   <v-container class="py-0 px-3" style="height: 100%;">
     <header-component class="mb-3 card-custom-shadow rounded" hasslot :info="{title:'Create Post', icon:''}" style="height: auto;">
       <template v-slot:select>
-        <!-- <v-select
-          :items="items"
-          label="Everyone"
-          v-model="item"
-          @change="filter_posts([item, 1])"
-          dense
-          flat
-          push-tags
-          solo
-          hide-details
-        ></v-select>-->
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn elevation="0" class="capitalize-text mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">

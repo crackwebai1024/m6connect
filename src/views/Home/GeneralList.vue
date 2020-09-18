@@ -1,29 +1,43 @@
 <template>
   <v-container class="py-0 px-3" style="height: 100%;">
-    <header-component hasslot :info="{title:'Create Post', icon:''}"  class="mb-3" style="height: auto;">
+    <header-component hasslot :info="{title:'Search All Apps', icon:''}"  class="mb-3 card-custom-shadow rounded" style="height: auto;">
       <template v-slot:select>
-        <v-select
-          :items="items"
-          label="Everyone"
-          dense
-          flat
-          push-tags
-          solo
-          hide-details
-        ></v-select>
+        <v-menu transition="slide-y-transition" offset-y bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn elevation="0" class="capitalize-text mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
+              All Apps
+              <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item v-for="(item, i) in areas" :key="i" style="height: 15px;">
+              <v-list-item-title
+                :class="item.type == 'title' ? 'grey--text' : 'black--text'"
+              >{{ item.text }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
       <template v-slot:input>
         <v-text-field
-          height="37"
-          label="Start typing to search"
+          class="font-weight-bold"
+          height="40"
+          label="Start Typing to Search"
           rounded
           flat
           dense
+          @keyup.enter="filter_posts(['author', 1])"
           v-model="searchText"
           single-line
           hide-details
           solo-inverted
-        ></v-text-field>
+        >
+          <template v-slot:append>
+            <v-row class="d-flex align-center">
+              <v-icon>mdi-magnify</v-icon>
+            </v-row>
+          </template>
+        </v-text-field>
       </template>
     </header-component>
     <div
@@ -50,6 +64,18 @@ export default {
     perPage: 8,
     searchText: "",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
+    areas: [
+      { text: "Everyone", type: "subtitle" },
+      { text: "My company", type: "subtitle" },
+      { text: "Teams", type: "title" },
+      { text: "All my teams", type: "subtitle" },
+      { text: "IT Team XY", type: "subtitle" },
+      { text: "CPM Team Z", type: "subtitle" },
+      { text: "Departments", type: "title" },
+      { text: "All my departments", type: "subtitle" },
+      { text: "Finances", type: "subtitle" },
+      { text: "Operations", type: "subtitle" },
+    ],
   }),
   computed: {
     ...mapGetters("GeneralListModule", ["get_general_list"]),

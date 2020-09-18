@@ -4,14 +4,17 @@
     <template v-if="get_screen_status()">
       <record-container :data="get_record_full_screen()" />
     </template>
-    hi5
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import RecordContainer from "@/components/RecordMode/RecordContainer";
 
 export default {
+  components: {
+    RecordContainer,
+  },
   data: () => ({
     tab: null,
     items: [

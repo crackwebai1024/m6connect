@@ -21,8 +21,8 @@
         <v-icon size="28" class="ml-2">mdi-magnify</v-icon>
       </div>
     </div>
-    <div v-for="post in 4" :key="post" class="actionfeed-content__card card-custom-shadow rounded white mb-4 pt-4 px-3">
-      <div class="card-content__tag red white--text d-flex justify-center align-center text-body-1 font-weight-regular">
+    <div v-for="post in 4" :key="post" class="actionfeed-content__card relative card-custom-shadow rounded white mb-4 pt-4 px-3">
+      <div class="card-content__tag absolute red white--text d-flex justify-center align-center text-body-1 font-weight-regular">
         CPM
       </div>
       <div class="d-flex">
@@ -54,7 +54,7 @@
         </v-badge>
         <p class="ml-2 mb-0 text-caption grey--text text--darken-1">2 pending</p>
       </div>
-      <div class="d-flex feed-btns pa-3 text-caption align-center">
+      <div class="d-flex feed-btns absolute pa-3 text-caption align-center">
         <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> 157</p>
         <p class="mb-0 mr-2"><v-icon size="17">mdi-message-outline</v-icon> 14</p>
         <p class="mb-0 mr-2"><v-icon size="17">mdi-share</v-icon> 4</p>
@@ -116,32 +116,21 @@ export default {
 </script>
 
 <style lang="scss">
-  .capitalize-text {
-    text-transform: capitalize;
-  }
-  .card-custom-shadow {
-    box-shadow: 0px 3px 6px #00000028;
-  }
-  .cursor-pointer {
-    cursor: pointer;
-  }
   .actionfeed-content {
     width: 400px;
   }
   .actionfeed-content__card {
-    position: relative;
     min-height: 223px;
   }
   .card-content__tag {
-    position: absolute;
+    z-index: 2;
     top: 0px;
     right: 0;
-    width: 62px;
+    padding: 0 16px;
     height: 34px;
     border-radius: 0px 4px;
   }
   .feed-btns {
-    position: absolute;
     bottom: 0;
     left: 0;
   }
