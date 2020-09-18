@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-0 px-3 mt-2" style="height: 100%;">
+  <v-container class="py-0 px-3" style="height: 100%;">
     <header-component class="mb-3 card-custom-shadow rounded" hasslot :info="{title:'Create Post', icon:''}" style="height: auto;">
       <template v-slot:select>
         <!-- <v-select

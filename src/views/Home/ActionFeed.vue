@@ -60,11 +60,6 @@
         <p class="mb-0 mr-2"><v-icon size="17">mdi-share</v-icon> 4</p>
       </div>
     </div>
-
-    <!-- <div class="d-flex align-center my-3" v-for="(link,i) in quickAccessLinks" :key="'link' + i">
-      <v-icon :dark="true" :large="true">mdi-{{ link.icon }}</v-icon>
-      <router-link :to="link.url" tag="p" class="ml-5 w-4/5 white--text mb-0">{{ link.title }}</router-link>
-    </div> -->
   </div>
 </template>
 
@@ -72,10 +67,6 @@
 export default {
   data: () => ({
     showLinks: false,
-    quickAccessLinks: [
-      { url:'', icon:'heart', title: 'My Favorites' },
-      { url:'/company/123', icon:'briefcase-variant', title: 'Sharp Profile Page' }
-    ],
     departmentsLinks: [
       { url:'', icon:'chart-pie', title: 'Information Technology' },
       { url:'', icon:'cookie', title: 'Supply Chain' },

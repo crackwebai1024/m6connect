@@ -2,8 +2,12 @@
     <div class="panel-people pa-5">
         <div class="mb-5" :key="'department-' + index" v-for="(department, index) in departments">
             <div class="actions-container mr-5">
-                <v-icon size="28" class="ml-1 grey--text text--darken-2">mdi-filter</v-icon>
-                <v-icon size="28" class="ml-1 grey--text text--darken-2">mdi-magnify</v-icon>
+                <v-btn icon color="grey darken-4">
+                    <v-icon class="grey--text text--darken-2">mdi-filter</v-icon>
+                </v-btn>
+                <v-btn icon color="grey darken-4">
+                    <v-icon class="grey--text text--darken-2">mdi-magnify</v-icon>
+                </v-btn>
             </div>
             <div>
                 <h4 class="mb-4 ml-1">{{ department.name }}</h4>
