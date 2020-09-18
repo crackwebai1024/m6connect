@@ -31,11 +31,11 @@ export default {
     },
     quickAccessLinks: [
       { url:'/', icon:'home' },
-      { url:'/', icon:'view-comfy' },
-      { url:'/company/123', icon:'office-building' },
-      { url:'/', icon:'storefront' },
-      { url:'/', icon:'cog' }
-    ],
+      { url:'/apps', icon:'view-comfy' },
+      { url:'/companies', icon:'office-building' },
+      { url:'/company/123', icon:'storefront' },
+      { url:'/company/123', icon:'cog' }
+    ]
   })
 };
 </script>

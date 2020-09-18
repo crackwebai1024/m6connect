@@ -5,30 +5,22 @@
       <record-container :data="get_record_full_screen()" />
     </template>
     <template v-else>
-      <!-- Social Network -->
-      <project-social-media />
-      <image-caroussel-overlay
-        @restartImageArray="restartImageArray()"
-        :value="overlayActive"
-        :images="imageArray"
-        :selected="selectedImage"
-      ></image-caroussel-overlay>
+      <!-- Project List Component -->
+      <general-list />
     </template>
   </v-container>
 </template>
 
 <script>
 import {mapGetters, mapState, mapActions} from 'vuex';
-import ProjectSocialMedia from "./ProjectSocialMedia";
+import GeneralList from "@/views/Home/GeneralList";
 import RecordContainer from "@/components/RecordMode/RecordContainer";
-import ImageCarousselOverlay from "@/components/Shared/ImageCarousselOverlay";
 
 export default {
   name: "Home",
   components: {
-    ProjectSocialMedia,
     RecordContainer,
-    ImageCarousselOverlay,
+    GeneralList,
   },
   computed: {
     ...mapGetters({
