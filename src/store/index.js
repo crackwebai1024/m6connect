@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Data from "./data";
+import ITAppsModule from "./modules/Backend/ItApps/ITAppsModule";
 import SocialNetworkModule from "./modules/SocialNetworkModule";
 import GeneralListModule from "./modules/GeneralListModule";
 import NavigationStack from "./modules/NavigationStack";
@@ -125,6 +126,7 @@ export default new Vuex.Store({
     SocialNetworkModule,
     GeneralListModule,
     NavigationStack,
+    ITAppsModule,
     TablesModule,
     InfoModule
   }

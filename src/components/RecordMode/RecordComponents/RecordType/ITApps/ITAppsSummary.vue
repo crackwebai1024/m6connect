@@ -1,17 +1,17 @@
 <template>
     <v-container class="py-5 d-flex justify-space-between rounded-sm grey lighten-4 panel-container">
         <div class="pl-5">
-            <p class="text-h5 font-weight-regular mb-6">{{ info['record_name'] }} {{ info['version'] }}</p>
+            <p class="text-h5 font-weight-regular mb-6">{{ info.title }} {{ info.general_info.version }}</p>
             <ul class="list-items">
-                <li class="font-weight-light text-body-2">{{ info['company'] }}</li>
-                <li class="font-weight-light text-body-2">Status: {{ info['client_status'] }}</li>
-                <li class="font-weight-light text-body-2">Version: {{ info['version'] }}</li>
+                <li class="font-weight-light text-body-2">{{ info.author }}</li>
+                <li class="font-weight-light text-body-2">Status: {{ info.client_status }}</li>
+                <li class="font-weight-light text-body-2">Version: {{ info.general_info.version }}</li>
                 <li class="font-weight-light text-body-2">Software</li>
                 <li class="font-weight-light text-body-2">N/A</li>
             </ul>
         </div>
         <div class="company-image pr-5">
-            <img alt="" class="mt-2 rounded-circle" width="100" height="100" :src="info['record_image_url']">
+            <img alt="" class="mt-2 rounded-circle" width="100" height="100" :src="info.image_info['image_url']">
         </div>
     </v-container>
 </template>

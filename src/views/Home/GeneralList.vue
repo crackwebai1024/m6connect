@@ -26,6 +26,23 @@
         ></v-text-field>
       </template>
     </header-component>
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="blue lighten-2"
+          dark
+          style="width:100%;"
+          v-bind="attrs"
+          v-on="on"
+        >
+          Do new Record
+        </v-btn>
+      </template>
+      <new-record-dialog/>      
+    </v-dialog>
     <div
       :key="index"
       v-for="(item, index) of records"
@@ -39,15 +56,18 @@
 import { mapGetters, mapActions } from "vuex";
 import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
+import NewRecordDialog from "@/components/Home/Dialogs/NewRecordDialog";
 
 export default {
   components: {
     GeneralItem,
+    NewRecordDialog,
     HeaderComponent,
   },
   name: "GeneralList",
   data: () => ({
     perPage: 8,
+    dialog: false,
     searchText: "",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
   }),
@@ -59,6 +79,8 @@ export default {
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_general_data"]),
+    ...mapActions("ITAppsModule", ["get_it_apps","post_it_apps"]),
+
     remainingPerPage(page) {
       let remaining = this.perPage;
       if (page + 1 === this.pages) {
@@ -67,13 +89,26 @@ export default {
       }
       return remaining;
     },
+    post(){
+      this.post_it_apps({
+        id:1,
+        uid:"asda",
+        record_type:"asda",
+        record_name:"asd",
+        company:"asd",
+        description:"asd",
+        created_at:new Date(),
+        updated_at: new Date()
+      });
+    },
     getIndex(i, index) {
       let ind = i * this.perPage + index - 1;
       return ind;
     },
   },
   created() {
-    this.load_mock_general_data();
+    this.get_it_apps();
+    // this.load_mock_general_data();
   },
 };
 </script>

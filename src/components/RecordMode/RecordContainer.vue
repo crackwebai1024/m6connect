@@ -31,8 +31,8 @@ export default {
   },
   methods: {
     setData(){
-      this.actions = this.get_screen_status() ? globalDataApp.records_widgets[this.get_record_full_screen().record_type]
-        : globalDataApp.records_widgets[this.infoRecordData.record_type];
+      this.actions = this.get_screen_status() ? globalDataApp.records_widgets[this.get_record_full_screen().app_type]
+        : globalDataApp.records_widgets[this.infoRecordData.app_type];
     }
   },
   props: {
