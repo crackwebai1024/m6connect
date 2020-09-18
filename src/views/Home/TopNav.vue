@@ -1,5 +1,5 @@
 <template>
-  <div class="blue darken-3 d-flex justify-center">
+  <div class="nav-bar blue darken-3 d-flex justify-center">
     <div class="nav-content d-flex justify-space-between align-center">
       <img alt="M6Connect" src="@/assets/m6-home-logo.png" height="36px">
       <v-tabs height="60" active-class="blue darken-4" background-color="transparent" color="white" :hide-slider="true" class="tabs-content d-flex justify-center align-center">
@@ -34,6 +34,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nav-bar {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    padding: 0 16px;
+}
 .nav-content {
     width: 100%;
     height: 60px;
