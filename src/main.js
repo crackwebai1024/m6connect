@@ -5,6 +5,10 @@ import store from "./store";
 import App from "./App.vue";
 import Vue from "vue";
 import lineClamp from "vue-line-clamp";
+import Helpers from './utils/helpers';
+import { i18n } from './plugins/i18n'
+
+Vue.use(Helpers);
 
 Vue.config.productionTip = false;
 
@@ -15,6 +19,7 @@ Vue.use(lineClamp);
 new Vue({
   router,
   store,
+  i18n,
   vuetify,
   render: (h) => h(App)
 }).$mount("#app");

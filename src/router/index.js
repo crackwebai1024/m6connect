@@ -1,8 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@/views/Home";
-import Tabs from "@/views/Tabs";
-import CompanyProfile from '@/components/Profile'
+
+const Home = () => import(/* webpackChunkName: 'Home' */ "@/views/Home");
+const Tabs = () => import( /* webpackChunkName: 'Tabs' */ "@/views/Tabs");
+const CompanyProfile = () => import( /* webpackChunkName: 'SignUp' */ "@/components/Profile");
+const SignUp = () => import(/* webpackChunkName: 'SignUp' */ "@/views/Auth/SignUp");
+const SignIn = () => import(/* webpackChunkName: 'SignIn' */ "@/views/Auth/SignIn");
 
 Vue.use(VueRouter);
 
@@ -23,6 +26,16 @@ const router = new VueRouter({
       path: "/tabs",
       name: "tabs",
       component: Tabs
+    },
+    {
+      path: "/signup",
+      name: "auth.SignUp",
+      component: SignUp
+    },
+    {
+      path: '/signin',
+      name: "auth.SignIn",
+      component: SignIn
     }
   ],
 });
