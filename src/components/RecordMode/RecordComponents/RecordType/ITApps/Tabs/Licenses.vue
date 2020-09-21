@@ -15,7 +15,7 @@
     </template>
     <template v-else>
       <v-card>
-        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text text-capitalize'">{{ itemsName}}</div>
+        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text capitalize'">{{ itemsName}}</div>
         <div class="licenses-container pa-3">
           <!-- here is going to render all the items - another slot -->
           <div v-for="(item, index) in items" :key="'item-'+index">
@@ -45,7 +45,7 @@
         class="white"
       >
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
-          <span class="headline text-capitalize">{{ titleDialog }}</span>
+          <span class="headline capitalize">{{ titleDialog }}</span>
           <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
             <v-icon>mdi-delete</v-icon>
           </v-btn>

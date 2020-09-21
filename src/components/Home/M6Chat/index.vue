@@ -13,7 +13,7 @@
                 <h4 class="mb-4 ml-1">{{ department.name }}</h4>
                 <v-btn @click="startChat(user.id)"
                     :key="'user-' + index + department.name"
-                    class="w-full px-2 py-6 my-0 d-flex cursor-pointer text-capitalize justify-start"
+                    class="w-full px-2 py-6 my-0 d-flex cursor-pointer capitalize justify-start"
                     v-for="(user, index) in department.users"
                     elevation="0" 
                     color="transparent">

@@ -5,7 +5,7 @@
       <div class="d-flex align-center">
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn elevation="0" class="capitalize-text mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
+            <v-btn elevation="0" class="capitalize mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
               All Apps
               <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
             </v-btn>
