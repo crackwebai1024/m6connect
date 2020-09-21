@@ -52,7 +52,7 @@
     <v-dialog v-model="dialog" persistent max-width="1000px">
       <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
-          <span class="headline capitalize">{{ titleDialog }}</span>
+          <span class="headline capitalize white--text">{{ titleDialog }}</span>
           <template v-if="dialogMode">
             <v-btn
               color="purple darken-3"
