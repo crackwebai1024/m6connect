@@ -31,7 +31,7 @@ export default {
       { url:'/', icon:'home' },
       { url:'/apps', icon:'view-comfy' },
       { url:'/companies', icon:'office-building' },
-      { url:'/company/123', icon:'storefront' },
+      { url:'/store', icon:'storefront' },
       { url:'/company/123', icon:'cog' }
     ]
   })

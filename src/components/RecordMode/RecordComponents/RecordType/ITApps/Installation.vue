@@ -4,7 +4,7 @@
         <v-form ref="form" v-model="valid" class="white">
             <v-card class="pa-0">
                 <v-card-title class="blue darken-3 white--text">
-                    <span class="headline font-weight-light">Update Install Support</span>
+                    <span class="headline font-weight-light white--text">Update Install Support</span>
                 </v-card-title>
                 <v-tabs v-model="tabs.current" fixed-tabs background-color="blue darken-3" slider-color="blue lighten-3" color="white" dark>
                     <v-tab :key="'tab' + index" v-for="(tab, index) in tabs.items" class="text-caption">{{tab.tab}}</v-tab>

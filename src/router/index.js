@@ -5,6 +5,7 @@ import Tabs from "@/views/Tabs";
 import CompanyProfile from '@/components/Profile'
 import Companies from '@/components/Companies'
 import Apps from '@/components/Apps'
+import StoreFront from '@/components/Store'
 
 Vue.use(VueRouter);
 
@@ -35,6 +36,11 @@ const router = new VueRouter({
       path: "/companies",
       name: "companies",
       component: Companies
+    },
+    {
+      path: "/store",
+      name: "store",
+      component: StoreFront
     }
   ],
 });
