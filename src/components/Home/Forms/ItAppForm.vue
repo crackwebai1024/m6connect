@@ -4,22 +4,99 @@
         v-model="valid"
         lazy-validation>
         <v-row>
-            <v-col cols="12" v-for="(item, index) of inputs()" :key="index+'-input'">
+            <v-col cols="12" >
                 <v-text-field
-                    v-model="item.model"
-                    :label=item.label
-                    :rules="stringsRules(item.label)"
+                    v-model="general_ifo.vendor_id"
+                    label="Vendor"
+                    :rules="stringsRules('Vendor')"
                     required
                 ></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6" v-for="(item, index) of selects()" :key="index+'-select'">
+            <v-col cols="12" >
+                <v-text-field
+                    v-model="title"
+                    label="Name"
+                    :rules="stringsRules('Name')"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" >
+                <v-text-field
+                    v-model="general_ifo.version"
+                    label="Version"
+                    :rules="stringsRules('Version')"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" >
+                <v-text-field
+                    v-model="description"
+                    label="Description"
+                    :rules="selectRules('Description')"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="12" sm="6">
                 <v-select
-                    :items="item.items"
+                    :items="status_settings_id"
                     item-value="id"
                     item-text="value"
-                    v-model="item.model"
-                    :label="item.label"
-                    :rules="selectRules(item.label)"
+                    v-model="general_ifo.status_settings_id"
+                    label="Status"
+                    :rules="selectRules('Status')"
+                    solo >
+                </v-select>
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-select
+                    :items="first_contact_group_settings_id"
+                    item-value="id"
+                    item-text="value"
+                    v-model="general_ifo.first_contact_group_settings_id"
+                    label="First Contact Group"
+                    :rules="selectRules('First Contact Group')"
+                    solo >
+                </v-select>
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-select
+                    :items="type_settings_id"
+                    item-value="id"
+                    item-text="value"
+                    v-model="general_ifo.type_settings_id"
+                    label="Type"
+                    :rules="selectRules('Type')"
+                    solo >
+                </v-select>
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-select
+                    :items="app_management_settings_id"
+                    item-value="id"
+                    item-text="value"
+                    v-model="general_ifo.app_management_settings_id"
+                    label="App Management"
+                    solo >
+                </v-select>
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-select
+                    :items="category_settings_id"
+                    item-value="id"
+                    item-text="value"
+                    v-model="general_ifo.category_settings_id"
+                    label="Category"
+                    :rules="selectRules('Category')"
+                    solo >
+                </v-select>
+            </v-col>
+            <v-col cols="12" sm="6">
+                <v-select
+                    :items="server_hosting_model_settings_id"
+                    item-value="id"
+                    item-text="value"
+                    v-model="general_ifo.server_hosting_model_settings_id"
+                    label="Server Hosting Model"
                     solo >
                 </v-select>
             </v-col>
@@ -188,7 +265,8 @@ export default {
     }),
     methods: {
         ...mapActions('ITAppsModule',[
-            'get_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security'
+            'get_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security', 
+            'post_tag'
         ]),
         postNewITApp(){
             this.post_it_apps({
@@ -203,6 +281,7 @@ export default {
                 });
                 this.post_general_ifo(this.general_ifo);
                 this.post_info_security(this.information_security);
+                this.post_fka_aka(res.data.app_id);
             });
         },
         selectRules(name){
@@ -229,56 +308,25 @@ export default {
             this.chipsAKA.splice(this.chipsAKA.indexOf(item), 1)
             this.chipsAKA = [...this.chipsAKA]
         },
+        post_fka_aka(app_id){
+            this.chipsAKA.forEach(item =>{
+                this.post_tag({
+                    field: 'also_know_as',
+                    value: item,
+                    foreign_id: app_id
+                });
+            });
+            this.chipsFKA.forEach(item =>{
+                this.post_tag({
+                    field: 'formerly_known_as',
+                    value: item,
+                    foreign_id: app_id
+                });
+            });
+        },
         validate () {
             if(this.$refs.form.validate())
                 this.postNewITApp();
-        },
-        inputs() {
-            return[
-                {
-                    model:this.general_ifo.vendor_id,
-                    label:"Vendor"
-                },{
-                    model:this.title,
-                    label:"Name"
-                },{
-                    model:this.general_ifo.version,
-                    label:"Version"
-                },{
-                    model:this.description,
-                    label:"Description"
-                }
-            ]
-        },
-        selects() {
-            return [
-                {
-                    items: this.status_settings_id,
-                    model: this.general_ifo.status_settings_id,
-                    label:"Status"
-                },{
-                    items: this.first_contact_group_settings_id,
-                    model: this.general_ifo.first_contact_group_settings_id,
-                    label:"First"
-                },{
-                    items: this.type_settings_id,
-                    model: this.general_ifo.type_settings_id,
-                    label:"Type"
-                },{
-                    items: this.app_management_settings_id,
-                    model: this.general_ifo.app_management_settings_id,
-                    label:"App"
-                },{
-                    items: this.category_settings_id,
-                    model: this.general_ifo.category_settings_id,
-                    label:"Category"
-                },{
-                    items: this.server_hosting_model_settings_id,
-                    model: this.general_ifo.server_hosting_model_settings_id,
-                    label:"Server"
-                }
-            ];
-
         }
     },
     created(){

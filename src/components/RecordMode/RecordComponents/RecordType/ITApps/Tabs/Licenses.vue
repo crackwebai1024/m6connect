@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-0 py-0 mt-5">
+  <v-container class="px-0 py-0 mt-5" v-if="!loading">
     <template v-if="items.length === 0">
       <v-container :class="baseColor + ' rounded-lg px-0 py-10 d-flex justify-center align-center flex-column'">
         <p class="white--text text-h5">There are no {{ itemsName }}</p>
@@ -24,11 +24,12 @@
                 <v-col cols="12" class="pl-4 pr-16 py-1">
                   <div class="d-flex justify-space-between">
                     <p class="font-weight-medium mb-0">{{keyName}}</p>
-                    <p class="mb-0" :class="{ 'blue lighten-1 white--text rounded-xl px-3': keyName == 'licenseType' }">{{item[keyName]}}</p>
+                    <p v-if="keyName == 'licenseType'" class="mb-0" :class="{ 'blue lighten-1 white--text rounded-xl px-3': keyName == 'licenseType' }">{{item[keyName]['value']}}</p>
+                    <p v-else class="mb-0" :class="{ 'blue lighten-1 white--text rounded-xl px-3': keyName == 'licenseType' }">{{item[keyName]}}</p>
                   </div>
                   <v-divider class="mt-1 grey lighten-2"></v-divider>
                 </v-col>
-                <template cols="1" class="pa-0" v-if="index === 0">
+                <template cols="1" class="pa-0" v-if="index === 1">
                   <v-btn @click="showUpdateDialog(item)" small elevation="0" class="edit-license transparent rounded-xl"><v-icon>mdi-pencil</v-icon></v-btn>
                 </template>
               </template>
@@ -54,8 +55,10 @@
           <v-select
             v-model="itemInfo.licenseType"
             :items="licenseTypes"
-            :rules="nameRules"
+            :rules="selectRules"
             :color="baseColor"
+            :item-value="Object"
+            item-text="value"
             label="Type"
           ></v-select>
 
@@ -110,10 +113,18 @@
       </v-form>
     </v-dialog>
   </v-container>
+  <v-container v-else>
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 <script>
 import {items} from "@/mixins/items";
-import {validations} from "@/mixins/form-validations"
+import {validations} from "@/mixins/form-validations";
+import {mapActions} from "vuex";
 
 export default {
   name: "Licenses",
@@ -126,10 +137,55 @@ export default {
       users: null,
       concurrentUsers: null,
       licenses: null,
-      details: null
+      details: ''
     },
-    licenseTypes: ['Concurrent License','Enterprise License','N/A','Other','Single License','Subscription']
-  })
+    licenseTypes: [],
+    loading: true
+  }),
+  props:{
+    info: Object,
+  },
+  methods: {
+    ...mapActions('ITAppsModule',[
+      'get_selects', 'get_licensing', 'post_licensing', 'put_licensing', 'delete_licensing'
+    ]),
+    post(){
+      this.post_licensing({
+        estimated_current_users: parseInt(this.items[0]['concurrentUsers']),
+        number_of_licenses: parseInt(this.items[0]['licenses']),
+        licensing_type: this.items[0]['licenseType']['id'],
+        estimated_users: parseInt(this.items[0]['users']),
+        details: this.items[0]['details'],
+        app_id: this.info.id
+      });
+    },
+    put(){
+      this.put_licensing({
+        estimated_current_users: parseInt(this.items[0]['concurrentUsers']),
+        number_of_licenses: parseInt(this.items[0]['licenses']),
+        licensing_type: this.items[0]['licenseType']['id'],
+        estimated_users: parseInt(this.items[0]['users']),
+        details: this.items[0]['details'],
+        id: this.items[0]['id']
+      });
+    },
+    delete(){
+      this.delete_licensing(this.itemInfo.id);
+    }
+  },
+  created(){
+    this.get_selects('/LicensingType').then(
+      response => (response.data.forEach(item =>{
+        this.licenseTypes.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+    this.get_licensing(this.info.id).then(
+      response => (
+        Object.keys(response).length != 0 ? this.items.push(response) : null,
+        this.loading = false
+      )
+    );
+  }
 };
 </script>
 <style lang="scss">

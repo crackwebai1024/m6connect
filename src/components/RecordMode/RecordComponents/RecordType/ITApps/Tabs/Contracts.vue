@@ -31,7 +31,8 @@
             item-key="name"
             class="elevation-0"
           >
-            <template v-slot:item.inflatorValue="{ item }">
+            <template 
+            v-slot:item.inflatorValue="{ item }">
               <div class="d-flex justify-space-between">
                 <p>{{ item.inflatorValue }}</p>
                 <v-icon

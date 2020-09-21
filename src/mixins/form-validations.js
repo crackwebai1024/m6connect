@@ -36,7 +36,7 @@ export const validations = {
       this.$refs.form.validate()
     },
     reset() {
-      this.$refs.form.reset()
+      this.$refs.form.resetErrorBag()
     },
     resetValidation() {
       this.$refs.form.resetValidation()

@@ -49,6 +49,7 @@ export const items = {
         newItem.id = id
         this.items.push(newItem)
         this.closeDialog()
+        this.post()
       }
     },
     updateItem() {
@@ -60,10 +61,11 @@ export const items = {
           }
         });
         this.closeDialog()
+        this.put()
       }
     },
     customFilter (item, queryText) {
-      const textOne = item.name.toLowerCase()
+      const textOne = item.value.toLowerCase()
       const searchText = queryText.toLowerCase()
       return textOne.indexOf(searchText) > -1
     },
@@ -76,7 +78,8 @@ export const items = {
     deleteItem() {
       let indexDeletedItem = this.items.findIndex((element) => element.id == this.itemInfo.id)
       this.items.splice(indexDeletedItem, 1);
-      this.closeDialog()
+      this.closeDialog();
+      this.delete();
     },
     closeDialog() {
       this.reset()
