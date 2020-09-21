@@ -66,6 +66,21 @@
 <script>
 export default {
   data: () => ({
+    // action feed data 
+    notifications: [
+      {
+        user: {
+          name: 'Username M. Johnson',
+          title: 'Project Manager',
+
+        },
+        textContent: 'This is the budget for next year. Please Review.',
+        document: 'Elevator Modernization All Hospital.cpm.bdg',
+        date: 1600475840821,
+
+
+      },
+    ],
     showLinks: false,
     departmentsLinks: [
       { url:'', icon:'chart-pie', title: 'Information Technology' },
@@ -123,7 +138,7 @@ export default {
     min-height: 223px;
   }
   .card-content__tag {
-    z-index: 2;
+    z-index: 0;
     top: 0px;
     right: 0;
     padding: 0 16px;

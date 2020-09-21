@@ -12,6 +12,31 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     chats: [],
+    departments: {
+      // id and then properties
+      10: {
+        name: 'IT Department',
+        users: [0,1,2,3]
+      },
+      11: {
+        name: 'CPM Department',
+        users: [4,5,6,7]
+      },
+      12: {
+        name: 'Microsoft Corporation',
+        users: [8,9,10,11,12]
+      }
+    },
+    currentUser: {
+      id: 0,
+      name: 'John Doe',
+      pic: 'https://cdn.vuetifyjs.com/images/john.jpg',
+      title: 'Software Developer',
+      departmentId: 10,
+      connections: [2,3,4,5,6],
+      myCompany: [4,6,7,8],
+      vendors: [9,10,11,12]
+    },
     users: [
       {
         id: 1,
@@ -75,6 +100,12 @@ export default new Vuex.Store({
       },
       {
         id: 11,
+        name: "John Doe",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'IT Department'
+      },
+      {
+        id: 12,
         name: "John Doe",
         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
         departmentName: 'IT Department'
