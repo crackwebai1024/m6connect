@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-0 py-0 mt-5">
+  <v-container class="px-0 py-0 mt-5" v-if="!loading">
     <template v-if="items.length === 0">
       <v-container :class="baseColor + ' rounded-lg px-0 py-10 d-flex justify-center align-center flex-column'">
         <p class="white--text text-h5">There are no {{ itemsName }}</p>
@@ -27,16 +27,16 @@
           <div v-for="(item, index) in items" :key="'item-'+index">
             <div class="d-flex">
               <div>
-                <p class="mb-0">{{ item.type }}</p>
+                <p class="mb-0">{{ item.type.value }}</p>
                 <p class="text-caption mb-0">Version {{ item.version }}</p>
-                <p class="text-caption mb-0">App Build {{ item.appBuild }}</p>
+                <p class="text-caption mb-0">App Build {{ item.appBuild.value }}</p>
               </div>
               <div class="d-flex align-center ml-auto mr-0">
                 <v-btn
                   small
                   class="rounded-xl text-caption mr-2 white--text"
-                  :color="item.status == 'Active'? 'green':'blue-grey lighten-1'"
-                >{{item.status}}</v-btn>
+                  :color="item.status == 'Active' || item.status == 1 ? 'green':'blue-grey lighten-1'"
+                >{{item.status == 1 ? 'Active': item.status == 0 ? 'Inactive': item.status}}</v-btn>
                 <v-btn @click="showUpdateDialog(item)" small elevation="0" class="transparent rounded-xl"><v-icon>mdi-pencil</v-icon></v-btn>
               </div>
             </div>
@@ -61,6 +61,8 @@
             v-model="itemInfo.type"
             :items="dependencyTypes"
             :rules="selectRules"
+            :item-value="Object"
+            item-text="value"
             label="Type"
           ></v-select>
           <v-text-field 
@@ -70,37 +72,51 @@
           <v-select
             v-model="itemInfo.status"
             :items="statusOptions"
-            :rules="selectRules"
+            :rules="selectBool"
+            item-value="value"
+            item-text="label"
             label="Status"
           ></v-select>
           <v-select
             v-model="itemInfo.appBuild"
-            :items="[]"
+            :items="appBuildOptions"
+            :item-value="Object"
+            item-text="value"
             label="App Build"
           ></v-select>
           <v-select
             v-model="itemInfo.edaPackage"
-            :items="[]"
+            :items="edaPackageBuild"
+            :item-value="Object"
+            item-text="value"
             label="EDA Package Build"
           ></v-select>
           <v-select
             v-model="itemInfo.execPath"
-            :items="[]"
+            :items="updatedExecPath"
+            :item-value="Object"
+            item-text="value"
             label="Updated Exec Path"
           ></v-select>
           <v-select
             v-model="itemInfo.installNotes"
-            :items="[]"
+            :items="updatedinstallNotes"
+            :item-value="Object"
+            item-text="value"
             label="Updated Install Notes"
           ></v-select>
           <v-select
             v-model="itemInfo.dctStatus"
-            :items="[]"
+            :items="dctStatus"
+            :item-value="Object"
+            item-text="value"
             label="DCT Status"
           ></v-select>
           <v-select
             v-model="itemInfo.appCompliant"
-            :items="[]"
+            :items="appCompliant"
+            :item-value="Object"
+            item-text="value"
             label="App Compliant"
           ></v-select>
           <v-menu
@@ -123,7 +139,7 @@
             <v-date-picker v-model="itemInfo.remDate" @input="menu = false"></v-date-picker>
           </v-menu>
           <v-textarea
-            v-model="itemInfo.details"
+            v-model="itemInfo.notes"
           >
             <template v-slot:label>
               <div>
@@ -140,16 +156,28 @@
       </v-form>
     </v-dialog>
   </v-container>
+  <v-container v-else>
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 <script>
 import {items} from "@/mixins/items";
-import {validations} from "@/mixins/form-validations"
+import {validations} from "@/mixins/form-validations";
+import {mapActions} from "vuex";
 
 export default {
   name: "Dependencies",
   mixins: [items, validations],
+  props:{
+    info: Object
+  },
   data: () => ({
     menu: false,
+    loading: true,
     baseColor: 'red darken-2',
     itemsName: 'dependencies',
     itemInfo: {
@@ -165,32 +193,101 @@ export default {
       remDate: null, //Remediation Date
       notes: null //Notes
     },
-    dependencyTypes: [
-      '.NET',
-      'Active X',
-      'Android OS (tablet)',
-      'cache.ini',
-      'Chrome',
-      'Dongle',
-      'File System',
-      'Flash',
-      'Internet Explorer',
-      'Internet Explorer 11',
-      'Java',
-      'LDAP',
-      'Luminex software by Vendor',
-      'MS Exchange',
-      'MS Office',
-      'MS SQL Server',
-      'MS Windows Server',
-      'mTilda',
-      'Silverlight',
-      'Windows OS'
+    statusOptions: [
+      {label:'Active', value: 1}, {label:'Inactive', value: 0}
     ],
-    statusOptions: ['Active', 'Inactive'],
-    appBuildOptions: ['64 Bit', 'N/A'],
-
-  })
+    updatedinstallNotes:[],
+    dependencyTypes: [],
+    appBuildOptions: [],
+    edaPackageBuild: [],
+    updatedExecPath: [],
+    appCompliant:[],
+    dctStatus:[]
+  }),
+  methods: {
+    ...mapActions("ITAppsModule", 
+      ["get_selects", "post_dependencie", "get_dependencies", "put_dependencies", "delete_dependencie"]
+    ),
+    post(){
+      this.post_dependencie({
+        dependency_update_install_notes: this.itemInfo['installNotes']['id'],
+        dependency_app_compliant: this.itemInfo['appCompliant']['id'],
+        dependency_update_exec_path: this.itemInfo['execPath']['id'],
+        status: this.itemInfo['status'] == 1 ? true : false,
+        dependency_dct_status: this.itemInfo['dctStatus']['id'],
+        dependency_app_build: this.itemInfo['appBuild']['id'],
+        dependency_eda: this.itemInfo['edaPackage']['id'],
+        dependency_type: this.itemInfo['type']['id'],
+        remediation_date: this.itemInfo['remDate'],
+        version: this.itemInfo['version'],
+        notes: this.itemInfo['notes'],
+        app_id: this.info.id
+      });
+    },
+    put(){
+      this.put_dependencies(this.itemInfo);
+    },
+    delete(){
+      this.delete_dependencie(this.itemInfo.id);
+    }
+  },
+  created(){
+    this.get_dependencies(this.info.id).then(
+      res => (
+        res.data.forEach(item => {
+          this.items.push({
+            appBuild: item.app_build,
+            appCompliant: item.app_compliant,
+            dctStatus: item.dct_status,
+            notes: item.notes,
+            edaPackage: item.eda,
+            execPath: item.execPath,
+            id: item.id,
+            installNotes: item.update_install_notes,
+            remDate: item.remediation_date,
+            status: item.status,
+            type: item.type,
+            version: item.version
+          });
+        }),
+        this.loading = false)
+    );
+    this.get_selects('/DependencyType').then(
+      response => (response.data.forEach(item =>{
+        this.dependencyTypes.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+    this.get_selects('/DependencyAppBuild').then(
+      response => (response.data.forEach(item =>{
+        this.appBuildOptions.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+    this.get_selects('/DependencyEDAPackageBuild').then(
+      response => (response.data.forEach(item =>{
+        this.edaPackageBuild.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+    this.get_selects('/DependencyUpdatedExecPath').then(
+      response => (response.data.forEach(item =>{
+        this.updatedExecPath.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+    this.get_selects('/DependencyUpdatedinstallNotes').then(
+      response => (response.data.forEach(item =>{
+        this.updatedinstallNotes.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+    this.get_selects('/DependencyDCTStatus').then(
+      response => (response.data.forEach(item =>{
+        this.dctStatus.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+    this.get_selects('/DependencyAppCompliant').then(
+      response => (response.data.forEach(item =>{
+        this.appCompliant.push({id:item.id, value:item.value, field:item.field});
+      }))
+    );
+  }
 };
 </script>
 <style lang="scss">

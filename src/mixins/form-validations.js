@@ -20,6 +20,9 @@ export const validations = {
     quantityRules: [
       v => (v && v >= 0) || 'Please choose a number equal or greater than 0'
     ],
+    selectBool: [
+      v => v != null || 'Please choose an option',
+    ],
     selectRules: [
       v => !!v || 'Please choose an option',
     ],

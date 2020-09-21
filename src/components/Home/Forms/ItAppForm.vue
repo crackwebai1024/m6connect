@@ -221,17 +221,16 @@ export default {
         valid: false,
         // General Info
         general_ifo:{
-            app_id: null,
+            app_id: undefined,
             vendor_id:'',
             version:'',
-            status_settings_id:null,
-            first_contact_group_settings_id:null,
-            category_settings_id: null,
-            sub_category_settings_id: 1,
-            type_settings_id: null,
-            app_management_settings_id: null,
-            server_hosting_model_settings_id: null,
-            capabilities: null
+            status_settings_id:undefined,
+            first_contact_group_settings_id:undefined,
+            category_settings_id: undefined,
+            sub_category_settings_id: undefined,
+            type_settings_id: undefined,
+            app_management_settings_id: undefined,
+            server_hosting_model_settings_id: undefined
         },
         // RecordInfo
         title:"",

@@ -2,6 +2,7 @@ import axios from "axios";
 import generalListModule from "../../GeneralListModule";
 const Convert = require("../../../models/itapps");
 const ItAppDescription = require("../../../models/itapp_description");
+const ItAppDependencies = require("@/store/models/itapp_dependencies");
 
 export default {
   namespaced: true,
@@ -49,9 +50,7 @@ export default {
         async put_itapp_description(cont, data){
           // itapps/{id}
           let previewCommit = ItAppDescription.itappsDescriptionToJson(data);
-          axios.put(cont.state.backendUrl+'itapps/'+previewCommit.id, previewCommit).then(
-            response => (response.status!=200?console.log('error'):null)
-          );
+          axios.put(cont.state.backendUrl+'itapps/'+previewCommit.id, previewCommit);
           axios.put(cont.state.backendUrl+'app_info_general/'+previewCommit.general_info.id, {
             'server_hosting_model_settings_id':previewCommit.general_info.server_hosting_model.id,
             'first_contact_group_settings_id':previewCommit.general_info.first_contact_group.id,
@@ -62,9 +61,7 @@ export default {
             'type_settings_id':previewCommit.general_info.type.id,
             'vendor_id':previewCommit.general_info.vendor_id,
             'version':previewCommit.general_info.version,
-          }).then(
-            response => (response.status!=200?console.log('error'):null)
-          );
+          });
         },
       // Licensing
         async get_licensing(cont, apId){
@@ -79,17 +76,28 @@ export default {
           };
         },
         post_licensing(cont, data){
-          axios.post(cont.state.backendUrl+'licensing', data).then(
-            response => (response.status!=201?console.log('error'):null)
-          );
+          axios.post(cont.state.backendUrl+'licensing', data);
         },
         put_licensing(cont, data) {
-          axios.put(cont.state.backendUrl+'licensing/'+data.id, data).then(
-            response => (response.status!=200?console.log('error'):null)
-          );
+          axios.put(cont.state.backendUrl+'licensing/'+data.id, data);
         },
         delete_licensing(cont,id){
           axios.delete(cont.state.backendUrl+'licensing/'+id);
+        },
+      // Dependencies
+        async get_dependencies(cont, appId){
+          return await axios.get(cont.state.backendUrl+'dependencie/'+appId);
+        },
+        post_dependencie(cont, data){
+          axios.post(cont.state.backendUrl+'dependencie',data);
+        },
+        put_dependencies(cont, data){
+          axios.put(cont.state.backendUrl+'dependencie/'+data.id, ItAppDependencies.dependenciesToJson(data)).then(
+            response => (console.log(response))
+          );
+        },
+        delete_dependencie(cont, id){
+          axios.delete(cont.state.backendUrl+'dependencie/'+id);
         },
       // GETS Selects
         async get_selects(context, url) {

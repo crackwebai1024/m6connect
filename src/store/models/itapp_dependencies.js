@@ -1,19 +1,25 @@
 // To parse this data:
 //
-//   const Convert = require("./itapps.js");
+//   const Dependencies = require("./itapp_dependencies");
 //
-//   const itapps = Convert.toItapps(json);
-//   const json = Convert.itappsToJson(itapps);
+//   const dependencies = Dependencies.toDependencies(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-function toItapps(json) {
-    return cast(json, r("Itapps"));
+// Dependencies JSON strings to/from your types
+// and asserts the results of JSON.parse at runtime
+function toDependencies(json) {
+    return cast(json, r("Dependencies"));
 }
 
-function itappsToJson(value) {
-    return uncast(value, r("Itapps"));
+function dependenciesToJson(value) {
+    let a = uncast(JSON.parse(JSON.stringify(value)), r("Dependencies"));
+    Object.keys(a).forEach(key => {
+        if(typeof a[key] === 'object') a[key] = a[key]['id']
+    })
+    console.log(a);
+    return a;
 }
 
 function invalidValue(typ, val, key = '') {
@@ -61,15 +67,15 @@ function transform(val, typ, getProps, key = '') {
         return invalidValue(typs, val);
     }
 
-    function transformEnum(cases, val) {
-        if (cases.indexOf(val) !== -1) return val;
-        return invalidValue(cases, val);
-    }
-
     function transformArray(typ, val) {
         // val must be an array with no invalid elements
         if (!Array.isArray(val)) return invalidValue("array", val);
         return val.map(el => transform(el, typ, getProps));
+    }
+
+    function transformEnum(cases, val) {
+        if (cases.indexOf(val) !== -1) return val;
+        return invalidValue(cases, val);
     }
 
     function transformDate(val) {
@@ -112,7 +118,7 @@ function transform(val, typ, getProps, key = '') {
     }
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
-        return {}.hasOwnProperty.call(typ, "unionMembers") ? transformUnion(typ.unionMembers, val)
+        return {}.hasOwnProperty.call(typ, "unionMembers") ? transformUnion(typ.unionMembers, typeof val === 'object' ? JSON.parse(JSON.stringify(val)): val)
             : {}.hasOwnProperty.call(typ, "arrayItems")    ? transformArray(typ.arrayItems, val)
             : {}.hasOwnProperty.call(typ, "props")         ? transformObject(getProps(typ), typ.additional, val)
             : invalidValue(typ, val);
@@ -143,49 +149,31 @@ function r(name) {
 }
 
 const typeMap = {
-    "Itapps": o([
-        { json: "id", js: "id", typ: u(undefined, 0) },
-        { json: "app_number", js: "app_number", typ: u(undefined, "") },
-        { json: "app_type", js: "app_type", typ: u(undefined, "") },
-        { json: "title", js: "title", typ: u(undefined, "") },
-        { json: "author", js: "author", typ: u(undefined, "") },
-        { json: "description", js: "description", typ: u(undefined, "") },
-        { json: "created_at", js: "created_at", typ: u(undefined, Date) },
-        { json: "updated_at", js: "updated_at", typ: u(undefined, Date) },
-        { json: "image_info", js: "image_info", typ: u(undefined, r("ImageInfo")) },
-        { json: "general_info", js: "general_info", typ: u(undefined, r("GeneralInfo")) },
-    ], false),
-    "GeneralInfo": o([
-        { json: "id", js: "id", typ: u(undefined, 0) },
-        { json: "app_id", js: "app_id", typ: u(undefined, 0) },
-        { json: "vendor_id", js: "vendor_id", typ: u(undefined, "") },
+    "Dependencies": o([
+        { json: "dependency_update_install_notes", js: "installNotes", typ: u(undefined, null, r("AppBuild") ) },
+        { json: "dependency_app_compliant", js: "appCompliant", typ: u(undefined, null, r("AppBuild") ) },
+        { json: "dependency_update_exec_path", js: "execPath", typ: u(undefined, null, r("AppBuild") ) },
+        { json: "dependency_dct_status", js: "dctStatus", typ: u(undefined, null, r("AppBuild") ) },
+        { json: "dependency_app_build", js: "appBuild", typ: u(undefined, null, r("AppBuild") ) },
+        { json: "dependency_eda", js: "edaPackage", typ: u(undefined, null, r("AppBuild") ) },
+        { json: "dependency_type", js: "type", typ: u(undefined, null, r("AppBuild") ) },
+        { json: "remediation_date", js: "remDate", typ: u(undefined, "") },
+        { json: "created_at", js: "created_at", typ: u(undefined, "") },
+        { json: "updated_at", js: "updated_at", typ: u(undefined, "") },
+        { json: "status", js: "status", typ: u(undefined, 0, true) },
         { json: "version", js: "version", typ: u(undefined, "") },
-        { json: "created_at", js: "created_at", typ: u(undefined, Date) },
-        { json: "updated_at", js: "updated_at", typ: u(undefined, Date) },
-        { json: "status", js: "status", typ: u(undefined, r("AppSettings")) },
-        { json: "first_contact_group", js: "first_contact_group", typ: u(undefined, r("AppSettings")) },
-        { json: "category", js: "category", typ: u(undefined, null, r("AppSettings")) },
-        { json: "sub_category", js: "sub_category", typ: u(undefined, null, r("AppSettings")) },
-        { json: "type", js: "type", typ: u(undefined, r("AppSettings")) },
-        { json: "app_management", js: "app_management", typ: u(null, r("AppSettings")) },
-        { json: "server_hosting_model", js: "server_hosting_model", typ: u(null, r("AppSettings")) },
-        { json: "capability", js: "capability", typ: u(null, r("AppSettings")) },
-    ], false),
-    "AppSettings": o([
-        { json: "id", js: "id", typ: u(undefined, 0) },
-        { json: "value", js: "value", typ: u(undefined, "") },
-        { json: "field", js: "field", typ: u(undefined, "") },
-    ], false),
-    "ImageInfo": o([
-        { json: "id", js: "id", typ: u(undefined, 0) },
         { json: "app_id", js: "app_id", typ: u(undefined, 0) },
-        { json: "image_url", js: "image_url", typ: u(null, "") },
-        { json: "created_at", js: "created_at", typ: u(undefined, Date) },
-        { json: "updated_at", js: "updated_at", typ: u(undefined, Date) },
+        { json: "notes", js: "notes", typ: u(null, "") },
+        { json: "id", js: "id", typ: u(undefined, 0) }
+    ], false),
+    "AppBuild": o([
+        { json: "id", js: "id", typ: u(0, undefined) },
+        { json: "field", js: "field", typ: u("", undefined) },
+        { json: "value", js: "value", typ: u("", undefined) }
     ], false),
 };
 
 module.exports = {
-    "itappsToJson": itappsToJson,
-    "toItapps": toItapps,
+    "dependenciesToJson": dependenciesToJson,
+    "toDependencies": toDependencies,
 };
