@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <template v-if="false" >
+    <template v-if="loggedIn" >
       <v-row no-gutters class="grey lighten-2 flex-nowrap">
         <!-- Side Panel Component  -->
         <side-panel />
@@ -16,7 +16,7 @@
       <chat-wrapper></chat-wrapper>
       <general-overlay></general-overlay>
     </template>
-    <template>
+    <template v-else >
       <router-view />
     </template>
   </v-app>
@@ -27,7 +27,7 @@ import M6Chat from "@/components/Home/M6Chat";
 import ChatWrapper from "@/components/Home/M6Chat/ChatWrapper";
 import SidePanel from "@/views/Home/SidePanel";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
-import { mapState} from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -41,8 +41,20 @@ export default {
     //
   }),
   computed:{
-    ...mapState(['layout'])
-  }
+    ...mapState(['layout']),
+    ...mapGetters('Auth', {
+      loggedIn: 'loggedIn'
+    })
+  },
+  methods: {
+    ...mapActions('Auth', {
+      searchForToken: 'searchForToken'
+    })
+  },
+  mounted() {
+    this.searchForToken()
+  },
+
 };
 </script>
 <style>

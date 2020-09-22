@@ -18,8 +18,6 @@ const actions = {
             // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
             axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`)
             .then( res => {
-                console.log('res.data.items----')
-                console.log(res.data.items)
                 resolve(res)
                 commit('setCompanyList', res.data.items)
             })

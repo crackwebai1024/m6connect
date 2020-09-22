@@ -48,7 +48,7 @@
                   <powered-by-m6 class="bottom-logo" />
                 </v-flex>
                 <v-flex class="d-flex justify-center" >
-                  <router-link to="/forgot-password" class="text-dec-none" >
+                  <router-link :to="{ name: 'auth.ForgotPassword' }" class="text-dec-none" >
                     <v-btn text class="custom-blue-text" >
                       Forgot Your Password?
                     </v-btn>
@@ -66,32 +66,12 @@
 <script>
 import LeftSideScreen from './LeftSideScreen'
 import PoweredByM6 from './PoweredByM6'
-import { mapActions } from 'vuex'
 
 export default {
   components: {
     LeftSideScreen,
     PoweredByM6
   },
-  methods: {
-    ...mapActions('screens', {
-      findScreen: 'findScreen'
-    }),
-    // async getCustomScreen() {
-    //   const { appID: id } = this.$route.query
-
-    //   if( !Boolean(id) ) return
-      
-    //   try{
-    //       const res = await this.findScreen(id)
-    //   } catch(e) {
-        
-    //   }
-    // }
-  },
-  mounted() {
-    // this.getCustomScreen()
-  }
 }
 </script>
 

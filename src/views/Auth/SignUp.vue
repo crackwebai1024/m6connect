@@ -1,7 +1,7 @@
 <template>
     <auth-layout>
         <template #nav-btn >
-            <router-link to="/signin" class="text-dec-none float-right"  >
+            <router-link :to="{ name: 'auth.SignIn' }" class="text-dec-none float-right"  >
                 <v-btn text class="custom-blue-text"  >
                     Sign In
                 </v-btn>
@@ -120,8 +120,6 @@
 <script>
 import AuthLayout from '@/components/Auth/AuthLayout'
 import { mapActions, mapState } from 'vuex'
-// mapMutations
-import { v4 } from 'uuid'
 
 export default {
     components: {
@@ -153,28 +151,16 @@ export default {
         },
     }),
     methods: {
-        // ...mapActions('auth', {
-        //     userSignUp: 'signUp',
-        //     resetConfirmCode: 'resetConfirmCode',
-        //     userConfirmCode: 'confirmCode'
-        // }),
+
         ...mapActions('Companies', {
-            // createCompanyOnSignUp: 'createCompanyOnSignUp',
             listCompanies: 'getList',
-            // createUserCompanyConnection: 'createUserCompany'
         }),
-        // ...mapMutations('auth', {
-        //     setCurrentUser: 'setCurrentUser'
-        // }),
-        // ...mapMutations('companies', {
-        //     setUserCompany: 'setUserCompany'
-        // }),
-        // ...mapActions('users', {
-        //     createUser: 'create'
-        // }),
         ...mapActions('Auth', {
-            signUpUser: 'signUp'
+            signUpUser: 'signUp',
+            userConfirmCode: 'confirmCode',
+            resetConfirmCode: 'resetConfirmCode',
         }),
+        emailTest(){},
         onPasswordClick() {
             this.showPass = !this.showPass
         },
@@ -212,49 +198,10 @@ export default {
             } catch(e) {
                 console.log('error')
                 console.log(e)
-                // let errorMsg = this.$t('SignUp.error.signUpErr')
-                // if( e.code === 'UsernameExistsException' ) errorMsg = e.message
-                // this.$snotify.error(errorMsg , this.$t('general.error'))
-                // this.loading = false
-
-                // if( e.code === 'UsernameExistsException' ) this.$router.push({ name: 'auth.signedin' })
-            }
-        },
-        async signUpOLD() {
-            if( !this.validate() ) {
-                return
-            }
-
-            try{    
-                this.loading = true 
-                const userDynamoID = v4()
-
-                const userObj = {
-                    username: this.user.email,
-                    password: this.user.password,
-                    attributes: {
-                        name: this.user.firstName,
-                        family_name: this.user.lastName,
-                        email: this.user.email,
-                        "custom:dynamoID": userDynamoID,
-                    }
-                }
-                // herehere
-                typeof this.user.company === "string" ?
-                    await this.createCompanyOnSignUp(this.user.company) :
-                    this.setUserCompany(this.user.company)
-                await this.createUserCompanyConnection( userDynamoID )
-                await this.userSignUp(userObj)
-               
-                await this.createUser(userObj)
-
-                this.$snotify.success(this.$t('SignUp.success.created'), this.$t('general.success'))
-                this.confirmEmail = true
-                this.loading = false
-            } catch(e) {
                 let errorMsg = this.$t('SignUp.error.signUpErr')
                 if( e.code === 'UsernameExistsException' ) errorMsg = e.message
-                this.$snotify.error(errorMsg , this.$t('general.error'))
+                console.log(errorMsg)
+                // this.$snotify.error(errorMsg , this.$t('general.error'))
                 this.loading = false
 
                 if( e.code === 'UsernameExistsException' ) this.$router.push({ name: 'auth.signedin' })
@@ -264,12 +211,12 @@ export default {
             try {
                 this.loading = true
 
-                await this.userConfirmCode({ code: this.codeConfirm })
-                this.$snotify.success(this.$t('SignUp.signUpConfirmed'), this.$t('general.success'))
+                await this.userConfirmCode({ code: this.codeConfirm, email: this.user.email })
+                // this.$snotify.success(this.$t('SignUp.signUpConfirmed'), this.$t('general.success'))
                 this.loading = false
-                this.$router.push({ name: 'auth.signin' })
+                this.$router.push({ name: 'auth.SignIn' })
             } catch (error) {
-                this.$snotify.error(this.$t('SignUp.error.codeConfirmError'), this.$t('general.error'))
+                // this.$snotify.error(this.$t('SignUp.error.codeConfirmError'), this.$t('general.error'))
                 this.loading = false
             }
         },
@@ -277,22 +224,23 @@ export default {
             const email = this.$h.dg(this.$route, 'query.email', '')
 
             if( email.length ) { 
-                this.setCurrentUser({ username: email })
+                // this.setCurrentUser({ username: email })
                 this.confirmEmail = true 
 
                 try {
                     this.loading = true
-                    await this.resetConfirmCode()
+                    this.user.email = email
+                    await this.resetConfirmCode(email)
                     this.loading = false
-                    this.$snotify.success( 
-                        this.$t('SignUp.success.ConfirmCodeResent'), 
-                        this.$t('general.success')
-                    )
+                    // this.$snotify.success( 
+                    //     this.$t('SignUp.success.ConfirmCodeResent'), 
+                    //     this.$t('general.success')
+                    // )
                 } catch (err) {
-                    this.$snotify.error(
-                        this.$t('SignUp.error.ConfirmCodeResentError'),
-                        this.$t('general.error')
-                    )
+                    // this.$snotify.error(
+                    //     this.$t('SignUp.error.ConfirmCodeResentError'),
+                    //     this.$t('general.error')
+                    // )
                     this.loading = false
                 }
             }
@@ -300,12 +248,8 @@ export default {
 
     },
     computed: {
-        // ...mapGetters('screens', {
-        //     currentScreen: 'currentScreen'
-        // }),
         ...mapState('Companies', {
             companiesList: 'list',
-            // getUserCompany: 'getUserCompany'
         })
     },
     mounted() {

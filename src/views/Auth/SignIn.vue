@@ -1,19 +1,23 @@
 <template>
     <auth-layout>
         <template #nav-btn >
-            <router-link to="/signup" class="text-dec-none float-right">
+            <router-link :to="{ name: 'auth.SignUp' }" class="text-dec-none float-right">
                 <v-btn text class="custom-blue-text" >
                     Sign Up
                 </v-btn>
             </router-link>
         </template>
         <template #header >
-            <h1 class="text-xs-6 custom-blue-text">
-                {{ $h.dg(currentScreen, 'signin.title', '') || $t('SignIn.title') }}
-            </h1>
-            <span class="custom-blue-text" >
-                {{ $h.dg(currentScreen, 'signin.subtitle', '') || $t('SignIn.subtitle') }}
-            </span>
+            <div class="d-flex justify-center">
+                <h1 class="text-xs-6 custom-blue-text">
+                    {{ $t('SignIn.title') }}
+                </h1>
+            </div>
+            <div class="d-flex justify-center" >
+                <span class="custom-blue-text" >
+                    {{ $t('SignIn.subtitle') }}
+                </span>
+            </div>
         </template>
         <template #body >
             <v-form ref="form" >
@@ -35,7 +39,7 @@
                                 <v-text-field
                                     dark
                                     v-model="user.password"
-                                    :append-icon="showPass ? 'visibility' : 'visibility_off'"
+                                    :append-icon="showPass ? 'mdi-eye-outline' : 'mdi-eye-off'"
                                     counter
                                     :hint="$t('SignIn.minCharacters', { num: '8' })"
                                     :label="$tc('SignIn.password', 1)"
@@ -60,7 +64,7 @@
 
 <script>
 import AuthLayout from '@/components/Auth/AuthLayout'
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
     components: {
@@ -85,26 +89,9 @@ export default {
             ],
         },
     }),
-    computed: {
-        ...mapGetters('screens', {
-            currentScreen: 'currentScreen'
-        }),
-        ...mapGetters('auth', {
-            currentUser: 'getCurrentUser'
-        }),
-        ...mapGetters('redirects', {
-            isLocalHost: 'isLocalHost',
-            isProd: 'isProd',
-            isUat: 'isUat'
-        })
-    },
     methods: {
-        ...mapActions('auth', {
-            userSignIn: 'signIn'
-        }),
-        ...mapActions('users', {
-            getUserByID: 'getUserByID',
-            createUser: 'create'
+        ...mapActions('Auth', {
+            userSignIn: 'signin'
         }),
         onPasswordClick() {
             this.showPass = !this.showPass
@@ -113,48 +100,39 @@ export default {
             this.loading = true
             if( !this.$refs.form.validate() ) {
                 this.$snotify.error('Please fill in both fields', 'Error')
+                this.loading = false
                 return
             } else {
                 try {
-                    const user = await this.userSignIn(this.user)
- 
-                    const cognitoUser = await this.getUserByID( user.attributes["custom:dynamoID"] )
-                    if( cognitoUser == null ) {
-                        await this.createUser(cognitoUser)
-                        await this.getUserByID( user.attributes["custom:dynamoID"] )
-                    }
-                    
+                    await this.userSignIn(this.user)
                     this.loading = false
-                    const screenLinksExist = Boolean( this.$h.dg(this.currentScreen, 'id', '').length )
-                    
-                    switch (true) {
-                        
-                        case this.isUat && screenLinksExist :
-                            window.location.href = this.currentScreen.uatLink
-                            break
+                    this.$router.push({ name: 'home' })
 
-                        case this.isProd && screenLinksExist : 
-                            window.location.href = this.currentScreen.prodLink
-                            break
-                        
-                        default:
-                            this.$router.push({ name: 'defaultSignedIn' })
-                            break
-                    }
                 } catch (error) {
-                    if( error.code == "UserNotConfirmedException" ) {
+
+                    if( error.type == "UserNotConfirmedException" ) {
+
                         this.$router.push({ 
-                            name: 'auth.signup', 
+                            name: 'auth.SignUp', 
                             query: { email: this.user.email } 
                         })
                     } else {
-                        this.$snotify.error(this.$t('SignIn.error.signin'), this.$t('general.error'))
+                        // this.$snotify.error(this.$t('SignIn.error.signin'), this.$t('general.error'))
                     }
                     this.loading = false
                 }  
-            }  
-        },  
+            } 
+        },
+        getQueryParams() {
+            const email = this.$h.dg(this.$route, 'query.email', '')
+            if( email ) {
+                this.user.email = email
+            } 
+        }
     },
+    mounted() {
+        this.getQueryParams()
+    }
 }
 </script>
 
