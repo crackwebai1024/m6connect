@@ -6,16 +6,19 @@
     </template>
     <template v-else>
       <!-- Companies List Component -->
+      <companies-list />
     </template>
   </v-container>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import CompaniesList from "@/views/Home/CompaniesList"
 import RecordContainer from "@/components/RecordMode/RecordContainer";
 
 export default {
   components: {
+    CompaniesList,
     RecordContainer,
   },
   data: () => ({
