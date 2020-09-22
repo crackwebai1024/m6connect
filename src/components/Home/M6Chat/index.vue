@@ -5,12 +5,13 @@
                 <v-btn icon color="grey darken-4">
                     <v-icon class="grey--text text--darken-2">mdi-filter</v-icon>
                 </v-btn>
-                <v-btn icon color="grey darken-4">
+                <v-btn icon color="grey darken-4" @click="showSearchInput = !showSearchInput">
                     <v-icon class="grey--text text--darken-2">mdi-magnify</v-icon>
                 </v-btn>
             </div>
             <div>
                 <h4 class="mb-4 ml-1">{{ department.name }}</h4>
+                <input v-show="showSearchInput && index === 0" class="search-input-chat" type="text" placeholder="Start Typing to Search" />
                 <v-btn @click="startChat(user.id)"
                     :key="'user-' + index + department.name"
                     class="w-full px-2 py-6 my-0 d-flex pointer capitalize justify-start"
@@ -47,6 +48,7 @@ import {mapState} from 'vuex'
 export default {
     name: 'm6-chat',
     data: () => ({
+        showSearchInput: false,
         drawer: true,
         filter: {
             departments: ['All my departments', 'Finances', 'Operations'],
@@ -170,5 +172,13 @@ export default {
 }
 .v-expansion-panel-content__wrap {
     padding: 0;
+}
+.search-input-chat {
+    width: 100%;
+    padding: 8px 20px;
+    background: #fff;
+    border-radius: 19px;
+    margin-bottom: 10px;
+    outline: none;
 }
 </style>
