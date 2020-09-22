@@ -28,6 +28,10 @@ export default {
         async get_description(context, id) {
           let response = await axios.get(context.state.backendUrl+'itapps/get_itapp_info/'+id);
           let convertModel = ItAppDescription.toItappsDescription(response.data);
+          Object.keys(convertModel.general_info).forEach(key => {
+            if(typeof convertModel.general_info[key] === 'object' && convertModel.general_info[key] === null)
+              convertModel.general_info[key] = {id:undefined, value:undefined, field:undefined}  
+          });
           return convertModel;
         },
       // POST ITApp
@@ -49,6 +53,32 @@ export default {
       // Put Itapps
         async put_itapp_description(cont, data){
           // itapps/{id}
+          data.also_known.forEach(item => {
+            if(typeof item === 'string'){
+              axios.post(cont.state.backendUrl+'tag',{value:item, field:'also_know_as', foreign_id:data.id});
+              data.also_known[data.also_known.indexOf(item)] = {
+                created_at: undefined,
+                field: 'also_know_as',
+                foreign_id: data.id,
+                id: undefined,
+                updated_at: undefined,
+                value: item
+              }
+            }
+          });
+          data.formerly_known.forEach(item => {
+            if(typeof item === 'string'){
+              axios.post(cont.state.backendUrl+'tag',{value:item, field:'formerly_known_as', foreign_id:data.id});
+              data.formerly_known[data.formerly_known.indexOf(item)] = {
+                created_at: undefined,
+                field: 'formerly_known_as',
+                foreign_id: data.id,
+                id: undefined,
+                updated_at: undefined,
+                value: item
+              }
+            }
+          });
           let previewCommit = ItAppDescription.itappsDescriptionToJson(data);
           axios.put(cont.state.backendUrl+'itapps/'+previewCommit.id, previewCommit);
           axios.put(cont.state.backendUrl+'app_info_general/'+previewCommit.general_info.id, {
@@ -61,6 +91,12 @@ export default {
             'type_settings_id':previewCommit.general_info.type.id,
             'vendor_id':previewCommit.general_info.vendor_id,
             'version':previewCommit.general_info.version,
+          });
+          axios.put(cont.state.backendUrl+'information_security/'+data.information_security.id,{
+            ssn: data.information_security.ssn_foreign.id,
+            facing: data.information_security.facing,
+            phi: data.information_security.phi,
+            pci: data.information_security.pci
           });
         },
       // Licensing
@@ -92,9 +128,7 @@ export default {
           axios.post(cont.state.backendUrl+'dependencie',data);
         },
         put_dependencies(cont, data){
-          axios.put(cont.state.backendUrl+'dependencie/'+data.id, ItAppDependencies.dependenciesToJson(data)).then(
-            response => (console.log(response))
-          );
+          axios.put(cont.state.backendUrl+'dependencie/'+data.id, ItAppDependencies.dependenciesToJson(data));
         },
         delete_dependencie(cont, id){
           axios.delete(cont.state.backendUrl+'dependencie/'+id);

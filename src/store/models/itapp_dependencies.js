@@ -14,12 +14,11 @@ function toDependencies(json) {
 }
 
 function dependenciesToJson(value) {
-    let a = uncast(JSON.parse(JSON.stringify(value)), r("Dependencies"));
-    Object.keys(a).forEach(key => {
-        if(typeof a[key] === 'object') a[key] = a[key]['id']
+    let response = uncast(JSON.parse(JSON.stringify(value)), r("Dependencies"));
+    Object.keys(response).forEach(key => {
+        if(typeof response[key] === 'object') response[key] = response[key]['id']
     })
-    console.log(a);
-    return a;
+    return response;
 }
 
 function invalidValue(typ, val, key = '') {

@@ -32,12 +32,12 @@
             item-key="name"
             class="elevation-0"
           > 
-            <template v-slot:item.notifyWho="{ item }">
+            <template v-slot:[`item.notifyWho`]="{ item }">
               <v-chip color="blue lighten-3 mx-1" dark v-for="(who, index) in item.notifyWho" :key="'who-'+index">
                 {{ who }}
               </v-chip>
             </template>
-            <template v-slot:item.description="{ item }">
+            <template v-slot:[`item.description`]="{ item }">
               <div class="d-flex justify-space-between">
                 <p>{{ item.description }}</p>
                 <v-icon

@@ -160,8 +160,8 @@ const typeMap = {
         { json: "general_info", js: "general_info", typ: u(null, r("GeneralInfo"), r("abc")) },
         { json: "information_security", js: "information_security", typ: u(undefined, r("InformationSecurity")) },
         { json: "image_info", js: "image_info", typ: u(undefined, r("ImageInfo")) },
-        { json: "also_known", js: "also_known", typ: u(undefined, a(r("Known"))) },
-        { json: "formerly_known", js: "formerly_known", typ: u(undefined, a(r("Known"))) },
+        { json: "also_known", js: "also_known", typ: u(undefined, "", a(r("Known"))) },
+        { json: "formerly_known", js: "formerly_known", typ: u(undefined, "", a(r("Known"))) },
     ], false),
     "abc": o([
         { json: "id", js: "id", typ: u(undefined, 0) },
@@ -218,9 +218,9 @@ const typeMap = {
     "InformationSecurity": o([
         { json: "id", js: "id", typ: u(undefined, 0) },
         { json: "app_id", js: "app_id", typ: u(undefined, 0) },
-        { json: "facing", js: "facing", typ: u(undefined, 0) },
-        { json: "phi", js: "phi", typ: u(undefined, 0) },
-        { json: "pci", js: "pci", typ: u(undefined, 0) },
+        { json: "facing", js: "facing", typ: u(undefined, 0, true) },
+        { json: "phi", js: "phi", typ: u(undefined, 0, true) },
+        { json: "pci", js: "pci", typ: u(undefined, 0, true) },
         { json: "created_at", js: "created_at", typ: u(undefined, Date) },
         { json: "updated_at", js: "updated_at", typ: u(undefined, Date) },
         { json: "ssn_foreign", js: "ssn_foreign", typ: u(undefined, r("AppManagement")) },
