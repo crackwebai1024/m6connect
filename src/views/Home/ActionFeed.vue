@@ -21,25 +21,28 @@
         <v-icon size="28" class="ml-2">mdi-magnify</v-icon>
       </div>
     </div>
-    <div v-for="post in 4" :key="post" class="actionfeed-content__card relative card-custom-shadow rounded white mb-4 pt-4 px-3">
-      <div class="card-content__tag absolute red white--text d-flex justify-center align-center text-body-1 font-weight-regular">
-        CPM
+    <div v-for="(notification, index) in notifications" :key="'notification-'+index" class="actionfeed-content__card relative card-custom-shadow rounded white mb-4 pt-4 px-3 pb-12">
+      <div :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
+        {{ notification.typeContent }}
       </div>
       <div class="d-flex">
         <v-avatar size="36">
-          <v-img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"></v-img>
+          <v-img :src="notification.userFrom.imgSrc"></v-img>
         </v-avatar>
         <div class="ml-2">
-          <p class="font-weight-bold" style="margin-bottom: -5px;">Username M. Johnson</p>
-          <span class="text-caption grey--text text--darken-1">Project Manager - 15 min</span>
+          <p class="font-weight-bold" style="margin-bottom: -5px;">{{ notification.userFrom.name }}</p>
+          <span class="text-caption grey--text text--darken-1">{{ notification.userFrom.title }} -  {{ diffNow(notification.date) }}</span>
         </div>
       </div>
-      <p class="text-body-2 mt-2 mb-3 ml-2 grey--text text--darken-4">This is the budget for next year. Please review.</p>
-      <p class="text-body-2 ml-1 mb-0 blue--text text--darken-3 d-flex align-center">
+      <p class="text-body-2 mt-2 mb-3 ml-2 grey--text text--darken-4">{{ notification.textContent }}</p>
+      <p v-if="notification.notificationType === 'document'" :class="notification.colorTag + '--text ' + 'text-body-2 ml-1 mb-0 blue--text text--darken-3 d-flex align-center'">
         <v-icon class="mr-1 blue--text text--darken-3">mdi-file-document-outline</v-icon>
-        Elevator Modernization All Hospitals.cpm.bdg
+        {{ notification.message }}
       </p>
-      <div class="d-flex mt-4 ml-2 align-center">
+      <p v-if="notification.notificationType === 'message'" class="message-box text-caption black--text pl-3 ml-1 mb-0 d-flex align-center">
+        {{ notification.message }}
+      </p>
+      <div v-if="notification.notificationType !== 'message'" class="d-flex mt-4 ml-2 align-center">
         <v-badge
           v-for="i in 3" :key="i" style="margin-left:-5px"
           top
@@ -54,10 +57,10 @@
         </v-badge>
         <p class="ml-2 mb-0 text-caption grey--text text--darken-1">2 pending</p>
       </div>
-      <div class="d-flex feed-btns absolute pa-3 text-caption align-center">
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> 157</p>
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-message-outline</v-icon> 14</p>
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-share</v-icon> 4</p>
+      <div v-if="notification.notificationType !== 'message'" class="d-flex feed-btns absolute pa-3 text-caption align-center">
+        <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> {{ notification.likes }}</p>
+        <p class="mb-0 mr-2"><v-icon size="17">mdi-message-outline</v-icon> {{ notification.comments }}</p>
+        <p class="mb-0 mr-2"><v-icon size="17">mdi-share</v-icon> {{ notification.shared }}</p>
       </div>
     </div>
   </div>
@@ -69,16 +72,113 @@ export default {
     // action feed data 
     notifications: [
       {
-        user: {
+        userFrom: {
           name: 'Username M. Johnson',
           title: 'Project Manager',
-
+          imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
         },
+        typeContent: 'CPM',
+        colorTag: 'blue',
         textContent: 'This is the budget for next year. Please Review.',
-        document: 'Elevator Modernization All Hospital.cpm.bdg',
+        message: 'Elevator Modernization All Hospital.cpm.bdg',
         date: 1600475840821,
-
-
+        notificationType: 'document',
+        likes: 157,
+        comments: 14,
+        shared: 4,
+        reviewed: true,
+        followers: [
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+          {
+            review: false,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+        ],
+      },
+      {
+        userFrom: {
+          name: 'John X. Smith',
+          title: 'IT Manager',
+          imgSrc: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
+        },
+        typeContent: 'PPL',
+        colorTag: 'yellow darken-2',
+        textContent: 'John X. Smith wants to connect with you!',
+        message: "Hey! it's John from IT, how's it going? Let's chat and discuss this new awesome platform!",
+        date: 1600747932248,
+        notificationType: 'message',
+        likes: 157,
+        comments: 14,
+        shared: 4,
+      },
+      {
+        userFrom: {
+          name: 'Sally Ackerman',
+          title: 'IT Analyst',
+          imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+        },
+        typeContent: 'ITA',
+        colorTag: 'red',
+        textContent: 'We are doing rationalization and need your approval.',
+        message: 'Awesome IT Application.ita',
+        date: 1600475840821,
+        notificationType: 'document',
+        likes: 97,
+        comments: 1,
+        shared: 2,
+        reviewed: true,
+        followers: [
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+          {
+            review: false,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+        ],
+      },
+      {
+        userFrom: {
+          name: 'Robert Perez',
+          title: 'HR Manager',
+          imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+        },
+        typeContent: 'CPM',
+        colorTag: 'cyan',
+        textContent: 'Please read the September company announcement. Reading acknowledgement is required for all employees.',
+        message: 'Company Announcement September.ann',
+        date: 1600475840821,
+        notificationType: 'document',
+        likes: 2498,
+        comments: 29,
+        shared: 18,
+        reviewed: true,
+        followers: [
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+          {
+            review: false,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+          },
+        ],
       },
     ],
     showLinks: false,
@@ -125,6 +225,19 @@ export default {
       this.showLinks = !this.showLinks
       let linksdiv = this.$refs.showLinksDiv
       this.showLinks ? linksdiv.style.height = this.heightShowLinksDiv : linksdiv.style.height = "150px"
+    },
+    diffNow(date) {
+      let dateNow = new Date();
+      let dateNotification = new Date(date);
+      let diff =(dateNow.getTime() - dateNotification.getTime()) / 1000;
+      let seconds = Math.abs(Math.round(diff % 60));
+      diff = (diff - seconds) / 60;
+      let minutes = Math.abs(Math.round(diff % 60));
+      diff = (diff - minutes) / 60;
+      let hours = Math.abs(Math.round(diff % 24));
+      diff = (diff - hours) / 24;
+      let days = Math.abs(Math.round(diff % 30));
+      return days + ' days, ' + hours + ' hours, ' + minutes +' minutes, ' + seconds + ' seconds';
     }
   }
 };
@@ -135,7 +248,7 @@ export default {
     width: 400px;
   }
   .actionfeed-content__card {
-    min-height: 223px;
+    // min-height: 223px;
   }
   .card-content__tag {
     z-index: 0;
@@ -149,8 +262,7 @@ export default {
     bottom: 0;
     left: 0;
   }
-  // esto es para que se vean mejor las letras pequenhas
-  // .text-caption {
-  //   letter-spacing: 0 !important;
-  // }
+  .message-box {
+    border-left: 2px solid grey;
+  }
 </style>
