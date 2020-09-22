@@ -5,7 +5,7 @@
         <p class="white--text text-h5">There are no {{ itemsName }}</p>
         <v-divider class="mt-0 white w-full"></v-divider>
         <a 
-          class="add-item-btn d-flex justify-center align-center py-3 white--text text-body-2 border-t-1 border"
+          class="w-full pointer d-flex justify-center align-center py-3 white--text text-body-2 border-t-1 border"
           @click="dialog = true, dialogMode = true"
         >
           ADD NEW <v-icon class="white--text">mdi-plus</v-icon>
@@ -165,10 +165,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.v-divider, .add-item-btn {
-  width: 100%;
-  cursor: pointer;
-}
 .notifications-container {
   min-height: 180px;
   overflow-x: auto;

@@ -417,10 +417,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.v-divider, .add-item-btn {
-  width: 100%;
-  cursor: pointer;
-}
 .items-container {
   height: 180px;
   overflow-x: auto;
