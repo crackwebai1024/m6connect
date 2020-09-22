@@ -1,5 +1,5 @@
 <template>
-  <div class="actionfeed-content transparent ml-4">
+  <div class="actionfeed-content transparent ml-4 vertical-scroll dont-show-scroll h-full">
     <div class="pl-3 mt-4 mb-1 d-flex justify-space-between align-center">
       <p class="font-weight-bold mb-0">Action Feed</p>
       <div class="d-flex align-center">

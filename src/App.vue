@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <top-nav />
-    <v-row no-gutters class="top-60 absolute w-full flex flex-nowrap grey lighten-3 justify-space-between">
+    <v-row no-gutters style="height: calc(100vh - 60px);" class="top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
       <action-feed />
       <!-- Home / Company Profile -->
       <router-view />

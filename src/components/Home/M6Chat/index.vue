@@ -1,5 +1,5 @@
 <template>
-    <div class="panel-people pa-5">
+    <div class="panel-people pa-5 vertical-scroll dont-show-scroll h-full">
         <div class="mb-5" :key="'department-' + index" v-for="(department, index) in departments">
             <div class="actions-container mr-5">
                 <v-btn icon color="grey darken-4">

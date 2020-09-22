@@ -151,3 +151,7 @@ html {
 // .text-caption {
 //   letter-spacing: 0 !important;
 // }
+
+.v-overlay--active {
+  z-index: 100 !important;
+}

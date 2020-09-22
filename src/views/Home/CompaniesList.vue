@@ -47,19 +47,28 @@
     >
       <company-item :companyData="item" />
     </div>
+    <div
+      :key="index + 'record'"
+      v-for="(item, index) of records"
+      :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+    >
+      <general-item :recordData="item" />
+    </div>
   </v-container>
 </template>
 <script>
-// import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import CompanyItem from "@/components/Companies/CompanyItem";
+import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
   components: {
     CompanyItem,
+    GeneralItem,
     HeaderComponent,
   },
-  name: "GeneralList",
+  name: "CompaniesList",
   data: () => ({
     perPage: 8,
     searchText: "",
@@ -110,8 +119,31 @@ export default {
     ],
   }),
   computed: {
+    // this is for generalitem
+    ...mapGetters("GeneralListModule", ["get_general_list"]),
+    records() {
+      console.log('this is the general list')
+      console.log(this.get_general_list())
+      return this.get_general_list();
+    },
   },
   methods: {
+    ...mapActions("GeneralListModule", ["load_mock_general_data"]),
+    remainingPerPage(page) {
+      let remaining = this.perPage;
+      if (page + 1 === this.pages) {
+        remaining =
+          this.perPage - (this.perPage * this.pages - this.recordsLength);
+      }
+      return remaining;
+    },
+    getIndex(i, index) {
+      let ind = i * this.perPage + index - 1;
+      return ind;
+    },
+  },
+  created() {
+    this.load_mock_general_data();
   },
 };
 </script>
