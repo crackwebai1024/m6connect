@@ -10,6 +10,8 @@ const Licenses = () => import("@/components/RecordMode/RecordComponents/RecordTy
 const Dependencies = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Dependencies")
 const ITAppsSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/ITAppsSummary")
 
+const CompanyItem = () => import("@/components/Companies/CompanyItem")
+
 const Installation = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Installation")
 const Rationalization = {
   Attributes: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Attributes"),
@@ -161,6 +163,67 @@ export default{
       rfp:[
 
       ]
+    },
+    companies_widgets: {
+      company: [
+        {
+          icon: 'mdi-account-voice', 
+          name:'CompanyItem',
+          component: CompanyItem
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Description',
+          component: Description
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Contacts',
+          component: Contacts
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Dependencies',
+          component: Dependencies
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Notifications',
+          component: Notifications
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Licenses',
+          component: Licenses
+        },{
+          icon: 'mdi-account-voice', 
+          name:'Contracts',
+          component: Contracts
+        },{
+          icon: 'mdi-briefcase',
+          name:'Installation',
+          component: Installation
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Rationalization Costs',
+          component: Rationalization.Costs
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Rationalization License',
+          component: Rationalization.License
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Rationalization FTE',
+          component: Rationalization.FTE
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Rationalization Users',
+          component: Rationalization.Users
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Rationalization Governance',
+          component: Rationalization.Governance
+        },{
+          icon: 'mdi-format-textbox',   
+          name:'Rationalization Attributes',
+          component: Rationalization.Attributes
+        }
+      ],
     },
     get_widgets: [
       {

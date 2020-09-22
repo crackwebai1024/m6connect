@@ -587,6 +587,7 @@ export default {
   ],
   fake_companies: [
     {
+      companyType: 'company',
       title: "The Lorem Ipsum Co.",
       tagType: false,
       type: 'Vendor',
@@ -597,6 +598,7 @@ export default {
       record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
     },
     {
+      companyType: 'company',
       title: "Awesome Company X",
       tagType: true,
       type: 'Vendor',
@@ -607,6 +609,7 @@ export default {
       record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
     },
     {
+      companyType: 'company',
       title: "Nicest Customer Ever",
       tagType: true,
       type: 'Customer',
