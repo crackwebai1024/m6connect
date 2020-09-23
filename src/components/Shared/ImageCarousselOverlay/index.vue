@@ -9,7 +9,7 @@
               size="50"
               color="grey lighten-2"
               class="pointer"
-              style="height: 50px; width: 50px; position: absolute; top: 0px; left: 15px; z-index: 99;"
+              style="height: 50px; width: 50px; position: absolute; top: 0px; left: 15px; z-index: 100;"
             >
               <v-icon size="30" color="black">mdi-close</v-icon>
             </v-avatar>

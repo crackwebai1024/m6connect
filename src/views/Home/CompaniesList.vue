@@ -1,11 +1,11 @@
 <template>
   <v-container class="py-0 px-3" style="height: 100%;">
-    <header-component hasslot :info="{title:'Search All Apps', icon:''}"  class="mb-3 card-custom-shadow rounded" style="height: auto;">
+    <header-component hasslot :info="{title:'Search All Companies', icon:''}"  class="mb-3 card-custom-shadow rounded" style="height: auto;">
       <template v-slot:select>
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn elevation="0" class="capitalize mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
-              All Apps
+              All Companies
               <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
@@ -40,26 +40,35 @@
         </v-text-field>
       </template>
     </header-component>
-    <div
+    <!-- <div
       :key="index"
-      v-for="(item, index) of records"
-      :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+      v-for="(item, index) of companies"
+      :class="Object.keys(companies).length !== index + 1 ? 'mb-3' : ''"
     >
-      <general-item :recordData="item" />
+      <general-item :companyData="item" />
+    </div> -->
+    <div
+      :key="index + 'company'"
+      v-for="(item, index) of companies"
+      :class="Object.keys(companies).length !== index + 1 ? 'mb-3' : ''"
+    >
+      <company-item :companyData="item" />
     </div>
   </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import GeneralItem from "@/components/Home/GeneralItem";
+import CompanyItem from "@/components/Companies/CompanyItem";
+// import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
   components: {
-    GeneralItem,
+    CompanyItem,
+    // GeneralItem,
     HeaderComponent,
   },
-  name: "GeneralList",
+  name: "CompaniesList",
   data: () => ({
     perPage: 8,
     searchText: "",
@@ -78,41 +87,16 @@ export default {
     ],
   }),
   computed: {
-    ...mapGetters("GeneralListModule", ["get_general_list"]),
-    records() {
-      return this.get_general_list();
+    ...mapGetters("GeneralListModule", ["get_companies_list"]),
+    companies() {
+      return this.get_companies_list();
     },
   },
   methods: {
-    ...mapActions("GeneralListModule", ["load_mock_general_data"]),
-    remainingPerPage(page) {
-      let remaining = this.perPage;
-      if (page + 1 === this.pages) {
-        remaining =
-          this.perPage - (this.perPage * this.pages - this.recordsLength);
-      }
-      return remaining;
-    },
-    getIndex(i, index) {
-      let ind = i * this.perPage + index - 1;
-      return ind;
-    },
+    ...mapActions("GeneralListModule", ["load_mock_companies_data"]),
   },
   created() {
-    this.load_mock_general_data();
+    this.load_mock_companies_data();
   },
 };
 </script>
-
-<style lang="scss">
-.v-text-field .v-input__control {
-  min-height: auto !important;
-  display: flex !important;
-  align-items: center !important;
-}
-.v-text-field .v-input__control .v-input__slot {
-  min-height: auto !important;
-  display: flex !important;
-  align-items: center !important;
-}
-</style>

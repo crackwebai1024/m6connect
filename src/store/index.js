@@ -11,31 +11,105 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    layout: {
-      contacts: false // true = fullsize | false = mini
-    },
     chats: [],
+    departments: {
+      // id and then properties
+      10: {
+        name: 'IT Department',
+        users: [0,1,2,3]
+      },
+      11: {
+        name: 'CPM Department',
+        users: [4,5,6,7]
+      },
+      12: {
+        name: 'Microsoft Corporation',
+        users: [8,9,10,11,12]
+      }
+    },
+    currentUser: {
+      id: 0,
+      name: 'John Doe',
+      pic: 'https://cdn.vuetifyjs.com/images/john.jpg',
+      title: 'Software Developer',
+      departmentId: 10,
+      connections: [2,3,4,5,6],
+      myCompany: [4,6,7,8],
+      vendors: [9,10,11,12]
+    },
     users: [
-        {
-            id: 1,
-            name: "John Doe",
-            pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
-        },
-        {
-            id: 2,
-            name: "Example User",
-            pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
-        },
-        {
-            id: 3,
-            name: "Another Example",
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
-        },
-        {
-            id: 4,
-            name: "John Doe",
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
-        }
+      {
+        id: 1,
+        name: "John Doe",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+        departmentName: 'IT Department'
+      },
+      {
+        id: 2,
+        name: "Example User",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+        departmentName: 'IT Department'
+      },
+      {
+        id: 3,
+        name: "Another Example",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'CPM Department'
+      },
+      {
+        id: 4,
+        name: "John Doe",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'HR Department'
+      },
+      {
+        id: 5,
+        name: "Example User",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+        departmentName: 'Microsoft Corporation'
+      },
+      {
+        id: 6,
+        name: "Another Example",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'IT Department'
+      },
+      {
+        id: 7,
+        name: "John Doe",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'IT Department'
+      },
+      {
+        id: 8,
+        name: "Example User",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+        departmentName: 'HR Department'
+      },
+      {
+        id: 9,
+        name: "Another Example",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'CPM Department'
+      },
+      {
+        id: 10,
+        name: "John Doe",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'IT Department'
+      },
+      {
+        id: 11,
+        name: "John Doe",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'IT Department'
+      },
+      {
+        id: 12,
+        name: "John Doe",
+        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+        departmentName: 'IT Department'
+      }
     ],
     projects: [],
     workers: [],

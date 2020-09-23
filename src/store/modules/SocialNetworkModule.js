@@ -4,7 +4,8 @@ export default{
     namespaced: true,
     state: {
         posts_data: [],
-        filter_data: []
+        filter_data: [],
+        companies_data: []
     },
     getters: {
         get_posts_data: (state) => () => state.posts_data,
@@ -21,6 +22,9 @@ export default{
         test(state, data){
             console.log(state.posts_data);
             console.log(data);
+        },
+        set_companies_info_data(state, data){
+            state.companies_data = data;
         },
     },
     actions: {
@@ -44,6 +48,10 @@ export default{
                     data = context.getters.get_posts_data()
             }
             context.commit("set_filter_data", data)
-        }
+        },
+        set_companies_data({commit}){
+            let data = MockData.fake_companies;
+            commit('set_companies_info_data', data);
+        },
     }
 }

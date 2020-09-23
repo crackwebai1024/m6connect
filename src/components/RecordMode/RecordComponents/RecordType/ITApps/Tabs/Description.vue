@@ -4,56 +4,56 @@
       <v-icon class="white--text pa-0 ma-0">mdi-pencil</v-icon>
     </v-btn>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">Vendor</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['company'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">Vendor</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['company'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">Status</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['client_status'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">Status</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['client_status'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">First Contact Group</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['first_contact_group'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">First Contact Group</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['first_contact_group'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">Type</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['record_type'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">Type</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['record_type'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">Category</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['category'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">Category</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['category'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">SubCategory</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['sub_category'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">SubCategory</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['sub_category'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">App Management</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['app_management'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">App Management</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['app_management'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">Server Hosting Model</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['hosting_model'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">Server Hosting Model</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['hosting_model'] }}</p>
     </div>
 
-    <p class="text-center font-weight-medium text-body-1 mt-6 mb-1">Most Commonly Known As</p>
+    <p class="text-center font-weight-medium text-body-1 mt-6 mb-1 white--text">Most Commonly Known As</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
         class="ma-2"
         color="primary"
       >
-        {{ info['company'] }}
+        <span class="white--text">{{ info['company'] }}</span>
       </v-chip>
     </div>
 
-    <p class="text-center font-weight-medium text-body-1 mt-6 mb-1">Also Known As(AKA)</p>
+    <p class="text-center font-weight-medium text-body-1 mt-6 mb-1 white--text">Also Known As(AKA)</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
         v-for="aka in info['aka']"
@@ -61,11 +61,11 @@
         class="ma-2"
         color="primary"
       >
-        {{ aka }}
+        <span class="white--text">{{ aka }}</span>
       </v-chip>
     </div>
 
-    <p class="text-center font-weight-medium text-body-1 mt-6 mb-1">Formerly Known As(FKA)</p>
+    <p class="text-center font-weight-medium text-body-1 mt-6 mb-1 white--text">Formerly Known As(FKA)</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
         v-for="fka in info['fka']"
@@ -73,28 +73,28 @@
         class="ma-2"
         color="primary"
       >
-        {{ fka }}
+        <span class="white--text">{{ fka }}</span>
       </v-chip>
     </div>
 
     <div class="d-flex justify-space-between mt-2">
-      <p class="text-caption font-weight-medium mb-1">Patient</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['facing'] ? 'Yes' : 'No' }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">Patient</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['facing'] ? 'Yes' : 'No' }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">PHI</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['phi'] ? 'Yes' : 'No' }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">PHI</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['phi'] ? 'Yes' : 'No' }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">PCI</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['pci'] ? 'Yes' : 'No' }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">PCI</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['pci'] ? 'Yes' : 'No' }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
-      <p class="text-caption font-weight-medium mb-1">SSN</p>
-      <p class="text-caption font-weight-bold mb-1 text-right">{{ info['ssn'] }}</p>
+      <p class="text-caption font-weight-medium mb-1 white--text">SSN</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['ssn'] }}</p>
     </div>
 
     <v-dialog v-model="dialog" persistent max-width="800px">
@@ -105,7 +105,7 @@
             dark
             flat
           >
-            <v-toolbar-title>Edit Application Information</v-toolbar-title>
+            <v-toolbar-title class="white--text">Edit Application Information</v-toolbar-title>
             <template v-slot:extension>
               <v-tabs
                 v-model="tabs"
@@ -113,6 +113,7 @@
                 slider-color="grey lighten-2"
               >
                 <v-tab
+                  class="white--text"
                   v-for="(tab, index) in tabTitles"
                   :key="index + 1"
                 >
@@ -122,7 +123,7 @@
             </template>
           </v-toolbar>
 
-          <v-tabs-items v-model="tabs" class="px-16 py-10">
+          <v-tabs-items v-model="tabs" class="px-16 py-10 form-labels">
             <!-- GENERAL -->
             <v-tab-item>
               <v-row>
@@ -416,10 +417,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.v-divider, .add-item-btn {
-  width: 100%;
-  cursor: pointer;
-}
 .items-container {
   height: 180px;
   overflow-x: auto;

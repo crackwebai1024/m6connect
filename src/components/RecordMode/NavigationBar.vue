@@ -111,10 +111,10 @@ export default {
 }
 </script>
 <style>
-    .max-height-container{
-        overflow: auto;
-        white-space: nowrap;
-    }
+  .max-height-container{
+    overflow: auto;
+    white-space: nowrap;
+  }
   /* This is for documentation purposes and will not be needed in your application */
   .v-speed-dial {
     position: absolute;

@@ -5,7 +5,7 @@
         <p class="white--text text-h5">There are no {{ itemsName }}</p>
         <v-divider class="mt-0 white w-full"></v-divider>
         <a 
-          class="add-item-btn d-flex justify-center align-center py-3 white--text text-body-2 border-t-1 border"
+          class="w-full pointer d-flex justify-center align-center py-3 white--text text-body-2 border-t-1 border"
           @click="dialog = true, dialogMode = true"
         >
           ADD NEW <v-icon class="white--text">mdi-plus</v-icon>
@@ -15,7 +15,7 @@
     </template>
     <template v-else>
       <v-card>
-        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text text-capitalize'">{{ itemsName}}</div>
+        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text capitalize'">{{ itemsName}}</div>
         <div class="licenses-container pa-3">
           <!-- here is going to render all the items - another slot -->
           <div v-for="(item, index) in items" :key="'item-'+index">
@@ -45,12 +45,12 @@
         class="white"
       >
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
-          <span class="headline text-capitalize">{{ titleDialog }}</span>
+          <span class="headline capitalize white--text">{{ titleDialog }}</span>
           <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-title>
-        <v-card-text class="px-16 py-10">
+        <v-card-text class="px-16 py-10 form-labels">
           <v-select
             v-model="itemInfo.licenseType"
             :items="licenseTypes"
@@ -133,10 +133,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.v-divider, .add-item-btn {
-  width: 100%;
-  cursor: pointer;
-}
 .licenses-container {
   min-height: 180px;
   overflow-x: auto;

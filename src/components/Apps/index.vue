@@ -1,34 +1,26 @@
 <template>
-  <v-container class="w-main-content px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
+  <v-container class="w-main-content w-tight px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
       <record-container class="main-content" :data="get_record_full_screen()" />
     </template>
     <template v-else>
-      <!-- Social Network -->
-      <project-social-media class="main-content"/>
-      <image-caroussel-overlay
-        @restartImageArray="restartImageArray()"
-        :value="overlayActive"
-        :images="imageArray"
-        :selected="selectedImage"
-      ></image-caroussel-overlay>
+      <!-- Project List Component -->
+      <general-list class="main-content"/>
     </template>
   </v-container>
 </template>
 
 <script>
 import {mapGetters, mapState, mapActions} from 'vuex';
-import ProjectSocialMedia from "./ProjectSocialMedia";
+import GeneralList from "@/views/Home/GeneralList";
 import RecordContainer from "@/components/RecordMode/RecordContainer";
-import ImageCarousselOverlay from "@/components/Shared/ImageCarousselOverlay";
 
 export default {
-  name: "Home",
+  name: "Apps",
   components: {
-    ProjectSocialMedia,
     RecordContainer,
-    ImageCarousselOverlay,
+    GeneralList,
   },
   computed: {
     ...mapGetters({
@@ -55,6 +47,6 @@ export default {
     restartImageArray() {
       this.reset_image_overlay();
     },
-  },
+  }
 };
 </script>

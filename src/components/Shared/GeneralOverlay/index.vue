@@ -75,7 +75,6 @@ export default {
 
 <style lang="scss">
 .panels-preview > div {
-  overflow-y: scroll !important;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }

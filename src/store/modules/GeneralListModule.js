@@ -12,16 +12,21 @@ export default {
       {}
     ],
     idle_previews: [],
-    general_list: []
+    general_list: [],
+    companies_list: [],
   },
   getters: {
     get_record_full_screen : (state) => () => state.record_full_screen,
     get_active_previews: (state) => () => state.active_previews,
     get_screen_status: (state) => () => state.screen_status,
     get_idle_previews: (state) => () => state.idle_previews,
-    get_general_list: (state) => () => state.general_list
+    get_general_list: (state) => () => state.general_list,
+    get_companies_list: (state) => () => state.companies_list,
   },
   mutations: {
+    set_companies_list_data(state, proj) {
+      state.companies_list = proj;
+    },
     set_general_list_data(state, proj) {
       state.general_list = proj;
     },
@@ -66,6 +71,11 @@ export default {
     load_mock_general_data({ commit }) {
       let data = MockData.fake_records;
       commit("set_general_list_data", data);
+    },
+    // companies
+    load_mock_companies_data({ commit }) {
+      let data = MockData.fake_companies;
+      commit("set_companies_list_data", data);
     },
     // Active Settings
     push_data_to_active(context, preview_object) {
