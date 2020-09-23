@@ -77,9 +77,11 @@
             <div class="pt-6 pb-2 d-flex align-center">
               <div v-for="(userRequest, index) in data['request'].users" :key="index+'userrequest'" class="d-flex">
                 <v-badge
+                  :bordered="userRequest.approval ? false : true"
+                  :dark="userRequest.approval ? false : true"
                   top
-                  color="green accent-3"
-                  icon="mdi-check"
+                  :color="userRequest.approval ? 'green accent-3' : 'white black--text'"
+                  :icon="userRequest.approval ? 'mdi-check' : 'mdi-help'"
                   offset-x="12"
                   offset-y="12"
                 >
