@@ -52,7 +52,7 @@
           v-bind="attrs"
           v-on="on"
         >
-          Do new Record
+          Add new Record
         </v-btn>
       </template>
       <new-record-dialog/>      
