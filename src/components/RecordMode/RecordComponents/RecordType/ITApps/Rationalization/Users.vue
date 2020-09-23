@@ -13,7 +13,7 @@
               <v-icon>mdi-delete</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text>
+          <v-card-text class="form-labels px-16">
             <v-container>
               <v-row>
                 <v-select 

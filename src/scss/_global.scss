@@ -157,6 +157,7 @@ html {
 }
 
 .w-main-content {
+  justify-content: center;
   width: calc(100vw - 840px);
   // inside the center content
   .main-content {
@@ -165,4 +166,14 @@ html {
   &.w-tight .main-content {
     max-width: 620px;
   }
+}
+
+.v-dialog:not(.v-dialog--fullscreen) {
+  max-height: 800px;
+  overflow: hidden;
+}
+
+.form-labels {
+  max-height: 600px;
+  overflow: auto;
 }

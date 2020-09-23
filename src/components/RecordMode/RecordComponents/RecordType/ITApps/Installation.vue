@@ -9,7 +9,7 @@
                 <v-tabs v-model="tabs.current" fixed-tabs background-color="blue darken-3" slider-color="blue lighten-3" color="white" dark>
                     <v-tab :key="'tab' + index" v-for="(tab, index) in tabs.items" class="text-caption">{{tab.tab}}</v-tab>
                 </v-tabs>
-                <v-tabs-items v-model="tabs.current" class="px-16">
+                <v-tabs-items v-model="tabs.current" class="px-16 form-labels">
                     <!-- Tab for General -->
                     <v-tab-item :key="0">
                         <v-container class="px-5">

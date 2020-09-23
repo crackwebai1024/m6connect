@@ -50,7 +50,7 @@
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-title>
-        <v-card-text class="px-16 py-10">
+        <v-card-text class="px-16 py-10 form-labels">
           <v-select
             v-model="itemInfo.licenseType"
             :items="licenseTypes"

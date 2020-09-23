@@ -123,7 +123,7 @@
             </template>
           </v-toolbar>
 
-          <v-tabs-items v-model="tabs" class="px-16 py-10">
+          <v-tabs-items v-model="tabs" class="px-16 py-10 form-labels">
             <!-- GENERAL -->
             <v-tab-item>
               <v-row>

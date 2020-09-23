@@ -74,7 +74,7 @@
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-title>
-        <v-card-text class="px-16 py-10">
+        <v-card-text class="px-16 py-10 form-labels">
           <v-container>
             <v-row>
               <v-col cols="6" class="py-0">
