@@ -55,7 +55,7 @@
           Add new Record
         </v-btn>
       </template>
-      <new-record-dialog/>      
+      <new-record-dialog @closeModal="closeModal" />      
     </v-dialog>
     <div
       :key="index"
@@ -126,6 +126,9 @@ export default {
         created_at:new Date(),
         updated_at: new Date()
       });
+    },
+    closeModal(){
+      this.dialog = false;
     },
     getIndex(i, index) {
       let ind = i * this.perPage + index - 1;
