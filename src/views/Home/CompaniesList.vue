@@ -47,25 +47,16 @@
     >
       <company-item :companyData="item" />
     </div>
-    <div
-      :key="index + 'record'"
-      v-for="(item, index) of records"
-      :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-    >
-      <general-item :recordData="item" />
-    </div>
   </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CompanyItem from "@/components/Companies/CompanyItem";
-import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
   components: {
     CompanyItem,
-    GeneralItem,
     HeaderComponent,
   },
   name: "CompaniesList",
@@ -85,65 +76,30 @@ export default {
       { text: "Finances", type: "subtitle" },
       { text: "Operations", type: "subtitle" },
     ],
-    companies: [
-      {
-        title: "The Lorem Ipsum Co.",
-        tagType: false,
-        type: 'Vendor',
-        email: "contact@sharp.com",
-        phone: "(915) 445 - 1234",
-        url: "www.sharphealthcare.co",
-        tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
-        record_image_url: "https://picsum.photos/" + '1280' + "/" + '1280' + "?nocache=" + Math.random(),
-      },
-      {
-        title: "Awesome Company X",
-        tagType: true,
-        type: 'Vendor',
-        email: "contact@sharp.com",
-        phone: "(915) 445 - 1234",
-        url: "www.sharphealthcare.co",
-        tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
-        record_image_url: "https://picsum.photos/" + '1280' + "/" + '1280' + "?nocache=" + Math.random(),
-      },
-      {
-        title: "Nicest Customer Ever",
-        tagType: true,
-        type: 'Customer',
-        email: "contact@sharp.com",
-        phone: "(915) 445 - 1234",
-        url: "www.sharphealthcare.co",
-        tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
-        record_image_url: "https://picsum.photos/" + '1280' + "/" + '1280' + "?nocache=" + Math.random(),
-      },
-    ],
   }),
   computed: {
-    // this is for generalitem
-    ...mapGetters("GeneralListModule", ["get_general_list"]),
-    records() {
-      console.log('this is the general list')
-      console.log(this.get_general_list())
-      return this.get_general_list();
+    ...mapGetters("GeneralListModule", ["get_companies_list"]),
+    companies() {
+      return this.get_companies_list();
     },
   },
   methods: {
-    ...mapActions("GeneralListModule", ["load_mock_general_data"]),
-    remainingPerPage(page) {
-      let remaining = this.perPage;
-      if (page + 1 === this.pages) {
-        remaining =
-          this.perPage - (this.perPage * this.pages - this.recordsLength);
-      }
-      return remaining;
-    },
-    getIndex(i, index) {
-      let ind = i * this.perPage + index - 1;
-      return ind;
-    },
+    ...mapActions("GeneralListModule", ["load_mock_companies_data"]),
+    // remainingPerPage(page) {
+    //   let remaining = this.perPage;
+    //   if (page + 1 === this.pages) {
+    //     remaining =
+    //       this.perPage - (this.perPage * this.pages - this.recordsLength);
+    //   }
+    //   return remaining;
+    // },
+    // getIndex(i, index) {
+    //   let ind = i * this.perPage + index - 1;
+    //   return ind;
+    // },
   },
   created() {
-    this.load_mock_general_data();
+    this.load_mock_companies_data();
   },
 };
 </script>
