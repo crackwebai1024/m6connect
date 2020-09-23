@@ -7,6 +7,7 @@ import Vue from "vue";
 import lineClamp from "vue-line-clamp";
 import Helpers from './utils/helpers';
 import { i18n } from './plugins/i18n'
+import './plugins/m6'
 
 Vue.use(Helpers);
 

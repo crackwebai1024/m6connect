@@ -40,8 +40,18 @@
                     </v-row>
                 </v-container>
             </div>
+
+            <m6-loading :loading="loading" />
+
+            <m6-notification 
+                :snackbar="notifShow" 
+                :success="notifSuccess"
+                :danger="notifDanger"
+                top 
+                :text="notifText"  
+                @closing="resetNotif" 
+            />
         </template>
-        <m6-loading :loading="loading" />
     </auth-layout>
 </template>
 
@@ -54,7 +64,10 @@ export default {
         AuthLayout
     },
     data: () => ({
-
+        notifShow: false,
+        notifText: "",
+        notifDanger: false,
+        notifSuccess: false,
         loading: false,
         email: '',
         showPass: false,
@@ -72,6 +85,18 @@ export default {
         ...mapActions('Auth', {
             startPasswordReset: 'startPasswordReset'
         }),
+        resetNotif() {
+            this.notifShow = false
+            this.notifSuccess = false
+            this.notifDanger = false 
+            this.notifText = ""
+        },
+        setNotif( success, text ){
+            this.notifShow = true
+            this.notifSuccess = success
+            this.notifDanger = !success
+            this.notifText = text
+        },
         onPasswordClick() {
             this.showPass = !this.showPass
         },
@@ -79,16 +104,14 @@ export default {
             this.loading = true
 
             this.startPasswordReset(this.email)
-            .then(data => {
+            .then( () => {
                 this.loading = false
-                console.log(data)
-                // this.$snotify.success(this.$t('ForgotPassword.success.checkEmail'), this.$t('general.success'))
+
+                this.setNotif(true, this.$t('ForgotPassword.success.checkEmail'))
                 this.$router.push({ name: 'auth.ResetPassword', query: { email: this.email } })
             })
-            .catch(err => {
-                console.log('startPasswordReset - error')
-                console.log(err)
-                // this.$snotify.error(this.$t('ForgotPassword.error.resetPass'), this.$t('general.error'))
+            .catch( () => {
+                this.setNotif(false, this.$t('ForgotPassword.error.resetPass'))
                 this.loading = false
             })
         }

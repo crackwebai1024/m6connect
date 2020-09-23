@@ -111,9 +111,19 @@
                     </v-row>
                 </v-container>
             </v-form>
-        </template>
 
-        <m6-loading :loading="loading" />
+            <m6-loading :loading="loading" />
+
+            <m6-notification 
+                :snackbar="notifShow" 
+                :success="notifSuccess"
+                :danger="notifDanger"
+                top 
+                :text="notifText"  
+                @closing="resetNotif" 
+            />
+
+        </template>
     </auth-layout>
 </template>
 
@@ -126,6 +136,10 @@ export default {
         AuthLayout
     },
     data: () => ({
+        notifShow: false,
+        notifText: "",
+        notifDanger: false,
+        notifSuccess: false,
         codeConfirm: "",
         loading: false,
         customBlue: "#a4ceea",
@@ -151,7 +165,6 @@ export default {
         },
     }),
     methods: {
-
         ...mapActions('Companies', {
             listCompanies: 'getList',
         }),
@@ -160,23 +173,35 @@ export default {
             userConfirmCode: 'confirmCode',
             resetConfirmCode: 'resetConfirmCode',
         }),
+        resetNotif() {
+            this.notifShow = false
+            this.notifSuccess = false
+            this.notifDanger = false 
+            this.notifText = ""
+        },
+        setNotif( success, text ){
+            this.notifShow = true
+            this.notifSuccess = success
+            this.notifDanger = !success
+            this.notifText = text
+        },
         emailTest(){},
         onPasswordClick() {
             this.showPass = !this.showPass
         },
         validate() {
             if(!this.$refs.form.validate()) {
-                this.$snotify.error(this.$t('general.fillAllFields'), this.$t('general.error'))
+                this.setNotif( false, this.$t('general.fillAllFields') )
                 return false
             }
 
             if(this.user.password !== this.user.passwordConfirm) {
-                this.$snotify.error(this.$t('SignUp.error.passwordsDontMath'), this.$t('general.error'))
+                this.setNotif( false, this.$t('SignUp.error.passwordsDontMath') )
                 return false
             }
 
             if( !this.reg.test(this.user.password) ) {
-                this.$snotify.error(this.$t('SignUp.error.RegexCheck'))
+                this.setNotif( false, this.$t('SignUp.error.RegexCheck') )
                 return false
             }
 
@@ -192,16 +217,14 @@ export default {
                
                 await this.signUpUser(this.user)
 
-                // this.$snotify.success(this.$t('SignUp.success.created'), this.$t('general.success'))
+                this.setNotif( true, this.$t('SignUp.success.created') )
                 this.confirmEmail = true
                 this.loading = false
             } catch(e) {
-                console.log('error')
-                console.log(e)
                 let errorMsg = this.$t('SignUp.error.signUpErr')
                 if( e.code === 'UsernameExistsException' ) errorMsg = e.message
-                console.log(errorMsg)
-                // this.$snotify.error(errorMsg , this.$t('general.error'))
+
+                this.setNotif( false, errorMsg )
                 this.loading = false
 
                 if( e.code === 'UsernameExistsException' ) this.$router.push({ name: 'auth.signedin' })
@@ -212,11 +235,12 @@ export default {
                 this.loading = true
 
                 await this.userConfirmCode({ code: this.codeConfirm, email: this.user.email })
-                // this.$snotify.success(this.$t('SignUp.signUpConfirmed'), this.$t('general.success'))
+
+                this.setNotif( true, this.$t('SignUp.signUpConfirmed') )
                 this.loading = false
-                this.$router.push({ name: 'auth.SignIn' })
+                this.$router.push({ name: 'auth.SignIn', query: { email: this.user.email } })
             } catch (error) {
-                // this.$snotify.error(this.$t('SignUp.error.codeConfirmError'), this.$t('general.error'))
+                this.setNotif( false, this.$t('SignUp.error.codeConfirmError') )
                 this.loading = false
             }
         },
@@ -224,7 +248,6 @@ export default {
             const email = this.$h.dg(this.$route, 'query.email', '')
 
             if( email.length ) { 
-                // this.setCurrentUser({ username: email })
                 this.confirmEmail = true 
 
                 try {
@@ -232,15 +255,10 @@ export default {
                     this.user.email = email
                     await this.resetConfirmCode(email)
                     this.loading = false
-                    // this.$snotify.success( 
-                    //     this.$t('SignUp.success.ConfirmCodeResent'), 
-                    //     this.$t('general.success')
-                    // )
+
+                    this.setNotif( true, this.$t('SignUp.success.ConfirmCodeResent') )
                 } catch (err) {
-                    // this.$snotify.error(
-                    //     this.$t('SignUp.error.ConfirmCodeResentError'),
-                    //     this.$t('general.error')
-                    // )
+                    this.setNotif( false, this.$t('SignUp.error.ConfirmCodeResentError') )
                     this.loading = false
                 }
             }

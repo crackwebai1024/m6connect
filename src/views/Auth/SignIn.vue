@@ -57,8 +57,19 @@
                     </v-row>
                 </v-container>
             </v-form>
+
+            <m6-loading :loading="loading" />
+
+            <m6-notification 
+                :snackbar="notifShow" 
+                :success="notifSuccess"
+                :danger="notifDanger"
+                top 
+                :text="notifText"  
+                @closing="resetNotif" 
+            />
+
         </template>
-        <m6-loading :loading="loading" />
     </auth-layout>
 </template>
 
@@ -71,6 +82,10 @@ export default {
         AuthLayout
     },
     data: () => ({
+        notifShow: false,
+        notifText: "",
+        notifDanger: false,
+        notifSuccess: false,
         screen: {},
         customBlue: "#a4ceea",
         loading: false,
@@ -93,13 +108,25 @@ export default {
         ...mapActions('Auth', {
             userSignIn: 'signin'
         }),
+        resetNotif() {
+            this.notifShow = false
+            this.notifSuccess = false
+            this.notifDanger = false 
+            this.notifText = ""
+        },
+        setNotif( success, text ){
+            this.notifShow = true
+            this.notifSuccess = success
+            this.notifDanger = !success
+            this.notifText = text
+        },
         onPasswordClick() {
             this.showPass = !this.showPass
         },
         async SignIn() {
             this.loading = true
             if( !this.$refs.form.validate() ) {
-                this.$snotify.error('Please fill in both fields', 'Error')
+                this.setNotif(false, 'Please fill in both fields')
                 this.loading = false
                 return
             } else {
@@ -117,7 +144,7 @@ export default {
                             query: { email: this.user.email } 
                         })
                     } else {
-                        // this.$snotify.error(this.$t('SignIn.error.signin'), this.$t('general.error'))
+                        this.setNotif(false, this.$t('SignIn.error.signin'))
                     }
                     this.loading = false
                 }  

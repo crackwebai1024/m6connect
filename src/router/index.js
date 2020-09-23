@@ -72,7 +72,6 @@ router.beforeEach(async (to, from, next) => {
   // Check if we have session in sessionStorage
   store.dispatch('Auth/searchForToken')
   let loggedIn = store.getters["Auth/loggedIn"]
-
   // Verify if route is public
   if (to.meta.public) {
     // Is public Route
