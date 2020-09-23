@@ -1,9 +1,10 @@
 <template>
-    <v-card>
+    <v-card max-height="600px" class="scroll">
         <v-card-title class="headline grey lighten-2">
             Create Record
         </v-card-title>
-        <v-card-text>
+        <v-card-text
+            style="overflow-y: scroll; height: 90vh;">
             <v-tabs 
                 centered
                 v-model="tab">

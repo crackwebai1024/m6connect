@@ -13,7 +13,15 @@ function toItapps(json) {
 }
 
 function itappsToJson(value) {
-    return uncast(value, r("Itapps"));
+    Object.keys(value).forEach(key => {
+        if(typeof value[key] === 'object' && value[key] == null) {
+        value[key] = {
+            id: undefined,
+            field: undefined,
+            value: undefined
+        }
+    }});
+    return uncast(value, r("Itapps")); 
 }
 
 function invalidValue(typ, val, key = '') {
