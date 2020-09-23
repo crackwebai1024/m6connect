@@ -267,7 +267,7 @@ export default {
             'get_all_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security', 
             'post_tag'
         ]),
-        postNewITApp(){
+        postNewITApp(){ 
             this.post_it_apps({
                 title: this.title,
                 description: this.description
