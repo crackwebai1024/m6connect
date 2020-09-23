@@ -139,5 +139,9 @@ export default {
         async get_all_selects(cont, data) {
           return await axios.get(cont.state.backendUrl+'apps_settings/per_param/field', {params:data});
         },
+      // GET Tags
+        async getTagsAkaFka(cont, id) {
+          return await axios.get(cont.state.backendUrl+'tag/specifi/foreign_id/'+id);
+        }      
   }
 };

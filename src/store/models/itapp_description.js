@@ -18,7 +18,11 @@ function itappsDescriptionToJson(value) {
 }
 
 function generalInfo(value){
-    return uncast(JSON.parse(JSON.stringify(value)), r("GeneralInfotoAPI"));
+    let res = uncast(JSON.parse(JSON.stringify(value)), r("GeneralInfotoAPI"));
+    Object.keys(res).forEach(key => {
+        if(typeof res[key] === 'object') res[key] = res[key]['id']
+    })
+    return res;
 }
 
 
