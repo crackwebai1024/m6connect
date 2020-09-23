@@ -75,20 +75,20 @@
         <div class="d-flex justify-space-between pa-3 pt-0 align-center">
           <div>
             <div class="pt-6 pb-2 d-flex align-center">
-              <div v-for="(i, index) in 3" :key="i" class="d-flex">
+              <div v-for="(userRequest, index) in data['request'].users" :key="index+'userrequest'" class="d-flex">
                 <v-badge
                   top
                   color="green accent-3"
                   icon="mdi-check"
-                  offset-x="9"
-                  offset-y="7"
+                  offset-x="12"
+                  offset-y="12"
                 >
                   <v-avatar size="35">
-                    <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                    <v-img :src="userRequest.imgSrc"></v-img>
                   </v-avatar>
                 </v-badge>
-                <template v-if="index !== 3 - 1">
-                  <span style="height: 5px; width: 25px;" class="my-auto grey lighten-2"></span>
+                <template v-if="index !== data['request'].users.length - 1">
+                  <span style="height: 5px; width: 25px;" :class="lineColor(userRequest.approval) + 'my-auto'"></span>
                 </template>
               </div>
             </div>
@@ -221,6 +221,9 @@ export default {
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected]);
     },
+    lineColor(approval) {
+      return approval ? 'green accent-3 ' : 'grey '
+    }
   },
   created() {
     this.picture_items = this.data.images.slice(0, 4);
