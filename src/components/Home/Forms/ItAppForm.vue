@@ -264,7 +264,7 @@ export default {
     }),
     methods: {
         ...mapActions('ITAppsModule',[
-            'get_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security', 
+            'get_all_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security', 
             'post_tag'
         ]),
         postNewITApp(){
@@ -329,26 +329,25 @@ export default {
         }
     },
     created(){
-        this.get_selects('/AppInfoGeneralStatus').then(
-            response => (this.status_settings_id = response.data)
-        );
-        this.get_selects('/AppInfoGeneralFirstContactGroup').then(
-            response => (this.first_contact_group_settings_id = response.data)
-        );
-        this.get_selects('/AppInfoGeneralCategory').then(
-            response => (this.category_settings_id = response.data)
-        );
-        this.get_selects('/AppInfoGeneralType').then(
-            response => (this.type_settings_id = response.data)
-        );
-        this.get_selects('/AppInfoGeneralAppManagement').then(
-            response => (this.app_management_settings_id = response.data)
-        );
-        this.get_selects('/AppInfoGeneralServerHostingModel').then(
-            response => (this.server_hosting_model_settings_id = response.data)
-        );
-        this.get_selects('/AppInfoSecuritySSN').then(
-            response => (this.ssn = response.data)
+        this.get_all_selects({
+            params:['AppInfoGeneralStatus',
+                'AppInfoGeneralFirstContactGroup',
+                'AppInfoGeneralCategory',
+                'AppInfoGeneralType',
+                'AppInfoGeneralAppManagement',
+                'AppInfoGeneralServerHostingModel',
+                'AppInfoSecuritySSN'
+            ]
+        }).then(
+            res => (
+                this.server_hosting_model_settings_id = res.data.AppInfoGeneralServerHostingModel,
+                this.first_contact_group_settings_id = res.data.AppInfoGeneralFirstContactGroup,
+                this.app_management_settings_id = res.data.AppInfoGeneralAppManagement,
+                this.category_settings_id = res.data.AppInfoGeneralCategory,
+                this.status_settings_id = res.data.AppInfoGeneralStatus,
+                this.type_settings_id = res.data.AppInfoGeneralType,
+                this.ssn = res.data.AppInfoSecuritySSN
+            )
         );
     }
 }

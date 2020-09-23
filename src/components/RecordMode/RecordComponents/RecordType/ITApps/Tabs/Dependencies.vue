@@ -165,6 +165,8 @@
   </v-container>
 </template>
 <script>
+const ItAppDependencies = require("@/store/models/itapp_dependencies");
+const app_settings = require("@/store/models/apps_settings");
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
 import {mapActions} from "vuex";
@@ -191,7 +193,7 @@ export default {
       dctStatus: null, //DCT Status
       appCompliant: null, //App Compliant
       remDate: null, //Remediation Date
-      notes: null //Notes
+      notes: '' //Notes
     },
     statusOptions: [
       {label:'Active', value: 1}, {label:'Inactive', value: 0}
@@ -206,87 +208,55 @@ export default {
   }),
   methods: {
     ...mapActions("ITAppsModule", 
-      ["get_selects", "post_dependencie", "get_dependencies", "put_dependencies", "delete_dependencie"]
+      ["get_all_selects", "post_dependency", "get_dependencies", "put_dependencies", "delete_dependency"]
     ),
     post(){
-      this.post_dependencie({
-        dependency_update_install_notes: this.itemInfo['installNotes']['id'],
-        dependency_app_compliant: this.itemInfo['appCompliant']['id'],
-        dependency_update_exec_path: this.itemInfo['execPath']['id'],
-        status: this.itemInfo['status'] == 1 ? true : false,
-        dependency_dct_status: this.itemInfo['dctStatus']['id'],
-        dependency_app_build: this.itemInfo['appBuild']['id'],
-        dependency_eda: this.itemInfo['edaPackage']['id'],
-        dependency_type: this.itemInfo['type']['id'],
-        remediation_date: this.itemInfo['remDate'],
-        version: this.itemInfo['version'],
-        notes: this.itemInfo['notes'],
-        app_id: this.info.id
-      });
+      let data = ItAppDependencies.dependenciesToJson(this.itemInfo);
+      data['app_id'] = this.info.id;
+      this.post_dependency( data ).then(res => (
+        this.items[this.items.length - 1]['id'] = res.data.dependencie_id
+      ));
     },
     put(){
       this.put_dependencies(this.itemInfo);
     },
     delete(){
-      this.delete_dependencie(this.itemInfo.id);
+      this.delete_dependency(this.itemInfo.id);
     }
   },
   created(){
     this.get_dependencies(this.info.id).then(
       res => (
-        res.data.forEach(item => {
-          this.items.push({
-            appBuild: item.app_build,
-            appCompliant: item.app_compliant,
-            dctStatus: item.dct_status,
-            notes: item.notes,
-            edaPackage: item.eda,
-            execPath: item.execPath,
-            id: item.id,
-            installNotes: item.update_install_notes,
-            remDate: item.remediation_date,
-            status: item.status,
-            type: item.type,
-            version: item.version
-          });
-        }),
+        this.items = ItAppDependencies.fromAPI(res.data),
         this.loading = false)
     );
-    this.get_selects('/DependencyType').then(
-      response => (response.data.forEach(item =>{
-        this.dependencyTypes.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/DependencyAppBuild').then(
-      response => (response.data.forEach(item =>{
-        this.appBuildOptions.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/DependencyEDAPackageBuild').then(
-      response => (response.data.forEach(item =>{
-        this.edaPackageBuild.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/DependencyUpdatedExecPath').then(
-      response => (response.data.forEach(item =>{
-        this.updatedExecPath.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/DependencyUpdatedinstallNotes').then(
-      response => (response.data.forEach(item =>{
-        this.updatedinstallNotes.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/DependencyDCTStatus').then(
-      response => (response.data.forEach(item =>{
-        this.dctStatus.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/DependencyAppCompliant').then(
-      response => (response.data.forEach(item =>{
-        this.appCompliant.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
+    this.get_all_selects({params:[
+      'DependencyType',
+      'DependencyAppBuild',
+      'DependencyEDAPackageBuild',
+      'DependencyUpdatedExecPath',
+      'DependencyUpdatedinstallNotes',
+      'DependencyDCTStatus',
+      'DependencyAppCompliant'
+    ]}).then( response => (Object.keys(response.data).forEach(key => {
+      let arraySettings = app_settings.toAppsSettings(response.data[key]);
+      switch (key) {
+        case 'DependencyUpdatedinstallNotes':
+          this.updatedinstallNotes = arraySettings;   break;
+        case 'DependencyUpdatedExecPath':
+          this.updatedExecPath = arraySettings;       break;
+        case 'DependencyEDAPackageBuild':
+          this.edaPackageBuild = arraySettings;       break;
+        case 'DependencyAppBuild':
+          this.appBuildOptions = arraySettings;       break;
+        case 'DependencyType':
+          this.dependencyTypes = arraySettings;       break;
+        case 'DependencyAppCompliant':
+          this.appCompliant = arraySettings;          break;
+        case 'DependencyDCTStatus':
+          this.dctStatus = arraySettings;             break;
+      }
+    })));
   }
 };
 </script>

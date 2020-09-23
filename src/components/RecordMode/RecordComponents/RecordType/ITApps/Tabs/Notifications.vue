@@ -136,21 +136,25 @@
 </template>
 <script>
 import {items} from "@/mixins/items";
-import {validations} from "@/mixins/form-validations"
+import {validations} from "@/mixins/form-validations";
+import {mapActions} from "vuex";
 
 export default {
   name: "Notifications",
   mixins: [items, validations],
+  props:{
+    info: Object
+  },
   data: () => ({
     menu: false,
     baseColor: 'deep-purple darken-3',
     itemsName: 'notifications',
     itemInfo: {
-      name: null,
-      date: null,
-      required: null,
-      notifyWho: null,
-      description: null
+      name: undefined,
+      date: undefined,
+      required: undefined,
+      notifyWho: undefined,
+      description: undefined
     },
     singleSelect: false,
     selected: [],
@@ -161,7 +165,25 @@ export default {
       { text: 'Who to notify', value: 'notifyWho' },
       { text: 'Description', value: 'description' },
     ],
-  })
+  }),
+  methods:{
+    ...mapActions("ITAppsModule", ["post_notification"]),
+    post(){
+      let post = { 
+        noti_date:{
+          date: this.itemInfo.date
+        },
+        notification:{
+          app_id: this.info.id,
+          notification_required: this.itemInfo.required == "Yes"? true : false,
+          name: this.itemInfo.name,
+          date: undefined,
+          description: this.itemInfo.description,
+        }
+      };
+      this.post_notification(post);
+    }
+  }
 };
 </script>
 <style lang="scss">

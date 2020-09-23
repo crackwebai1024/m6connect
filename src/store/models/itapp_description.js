@@ -17,6 +17,11 @@ function itappsDescriptionToJson(value) {
     return uncast(JSON.parse(JSON.stringify(value)), r("ItappsDescription"));
 }
 
+function generalInfo(value){
+    return uncast(JSON.parse(JSON.stringify(value)), r("GeneralInfotoAPI"));
+}
+
+
 function invalidValue(typ, val, key = '') {
     if (key) {
         throw Error(`Invalid value for key "${key}". Expected type ${JSON.stringify(typ)} but got ${JSON.stringify(val)}`);
@@ -148,6 +153,22 @@ function r(name) {
 }
 
 const typeMap = {
+    "GeneralInfotoAPI": o([
+        { json: 'server_hosting_model_settings_id', js: 'server_hosting_model', typ: u(undefined, r("AppManagement"))},
+        { json: 'first_contact_group_settings_id', js: 'first_contact_group', typ: u(undefined, r("AppManagement"))},
+        { json: 'app_management_settings_id', js: 'app_management', typ: u(undefined, r("AppManagement"))},
+        { json: 'sub_category_settings_id', js: 'sub_category', typ: u(undefined, r("AppManagement"))},
+        { json: 'category_settings_id', js: 'category', typ: u(undefined, r("AppManagement"))},
+        { json: 'status_settings_id', js: 'status', typ: u(undefined, r("AppManagement"))},
+        { json: 'type_settings_id', js: 'type', typ: u(undefined, r("AppManagement"))},
+        { json: 'capability', js: 'capability', typ:u(undefined, r("AppManagement"))},
+        { json: 'created_at', js: 'created_at', typ:u(undefined, Date)},
+        { json: 'updated_at', js: 'updated_at', typ:u(undefined, Date)},
+        { json: 'vendor_id', js: 'vendor_id', typ: u(undefined, "")},
+        { json: 'version', js: 'version', typ: u(undefined, "")},
+        { json: 'app_id', js: 'app_id', typ:u(undefined, 0)},
+        { json: 'id', js: 'id', typ:u(undefined, 0)}
+    ], false),
     "ItappsDescription": o([
         { json: "id", js: "id", typ: u(undefined, 0) },
         { json: "app_number", js: "app_number", typ: u(undefined, "") },
@@ -230,4 +251,5 @@ const typeMap = {
 module.exports = {
     "itappsDescriptionToJson": itappsDescriptionToJson,
     "toItappsDescription": toItappsDescription,
+    "generalInfo": generalInfo
 };

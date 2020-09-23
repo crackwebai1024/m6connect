@@ -1,7 +1,7 @@
 import axios from "axios";
 import generalListModule from "../../GeneralListModule";
-const Convert = require("../../../models/itapps");
-const ItAppDescription = require("../../../models/itapp_description");
+const Convert = require("@/store/models/itapps");
+const ItAppDescription = require("@/store/models/itapp_description");
 const ItAppDependencies = require("@/store/models/itapp_dependencies");
 
 export default {
@@ -52,46 +52,36 @@ export default {
         },
       // Put Itapps
         async put_itapp_description(cont, data){
-          // itapps/{id}
-          data.also_known.forEach(item => {
+          data.also_known.forEach((item, index) => {
             if(typeof item === 'string'){
-              axios.post(cont.state.backendUrl+'tag',{value:item, field:'also_know_as', foreign_id:data.id});
-              data.also_known[data.also_known.indexOf(item)] = {
+              data.also_known[index] = {
                 created_at: undefined,
                 field: 'also_know_as',
                 foreign_id: data.id,
                 id: undefined,
                 updated_at: undefined,
                 value: item
-              }
+              };
             }
           });
-          data.formerly_known.forEach(item => {
-            if(typeof item === 'string'){
-              axios.post(cont.state.backendUrl+'tag',{value:item, field:'formerly_known_as', foreign_id:data.id});
-              data.formerly_known[data.formerly_known.indexOf(item)] = {
+          data.formerly_known.forEach((item, index) => {
+            if(typeof item === 'string') {
+              data.formerly_known[index] = {
                 created_at: undefined,
                 field: 'formerly_known_as',
                 foreign_id: data.id,
                 id: undefined,
                 updated_at: undefined,
                 value: item
-              }
+              };
             }
           });
           let previewCommit = ItAppDescription.itappsDescriptionToJson(data);
+          axios.put(cont.state.backendUrl+'some_tags', {params : previewCommit.formerly_known.concat(previewCommit.also_known)});
           axios.put(cont.state.backendUrl+'itapps/'+previewCommit.id, previewCommit);
-          axios.put(cont.state.backendUrl+'app_info_general/'+previewCommit.general_info.id, {
-            'server_hosting_model_settings_id':previewCommit.general_info.server_hosting_model.id,
-            'first_contact_group_settings_id':previewCommit.general_info.first_contact_group.id,
-            'app_management_settings_id':previewCommit.general_info.app_management.id,
-            'sub_category_settings_id':previewCommit.general_info.sub_category.id,
-            'category_settings_id':previewCommit.general_info.category.id,
-            'status_settings_id':previewCommit.general_info.status.id,
-            'type_settings_id':previewCommit.general_info.type.id,
-            'vendor_id':previewCommit.general_info.vendor_id,
-            'version':previewCommit.general_info.version,
-          });
+          axios.put(cont.state.backendUrl+'app_info_general/'+previewCommit.general_info.id, 
+            ItAppDescription.generalInfo(previewCommit.general_info)
+          );
           axios.put(cont.state.backendUrl+'information_security/'+data.information_security.id,{
             ssn: data.information_security.ssn_foreign.id,
             facing: data.information_security.facing,
@@ -111,8 +101,8 @@ export default {
             details : response.data.details
           };
         },
-        post_licensing(cont, data){
-          axios.post(cont.state.backendUrl+'licensing', data);
+        async post_licensing(cont, data){
+          return await axios.post(cont.state.backendUrl+'licensing', data);
         },
         put_licensing(cont, data) {
           axios.put(cont.state.backendUrl+'licensing/'+data.id, data);
@@ -124,18 +114,30 @@ export default {
         async get_dependencies(cont, appId){
           return await axios.get(cont.state.backendUrl+'dependencie/'+appId);
         },
-        post_dependencie(cont, data){
-          axios.post(cont.state.backendUrl+'dependencie',data);
+        async post_dependency(cont, data){
+          return await axios.post(cont.state.backendUrl+'dependencie',data);
         },
         put_dependencies(cont, data){
           axios.put(cont.state.backendUrl+'dependencie/'+data.id, ItAppDependencies.dependenciesToJson(data));
         },
-        delete_dependencie(cont, id){
+        delete_dependency(cont, id){
           axios.delete(cont.state.backendUrl+'dependencie/'+id);
+        },
+      // Notifications
+        post_notification(cont, data){
+          axios.post(cont.state.backendUrl+'notification_date',data.noti_date).then(
+            res => (
+              data.notification.date = res.data.notification_date_id,
+              axios.post(cont.state.backendUrl+'notification', data.notification)
+            )
+          );
         },
       // GETS Selects
         async get_selects(context, url) {
           return await axios.get(context.state.backendUrl+'apps_settings/specifi/field'+url);
+        },
+        async get_all_selects(cont, data) {
+          return await axios.get(cont.state.backendUrl+'apps_settings/per_param/field', {params:data});
         },
   }
 };

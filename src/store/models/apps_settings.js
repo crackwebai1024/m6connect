@@ -1,32 +1,24 @@
 // To parse this data:
 //
-//   const Dependencies = require("./itapp_dependencies");
+//   const Convert = require("./file");
 //
-//   const dependencies = Dependencies.toDependencies(json);
+//   const appsSettings = Convert.toAppsSettings(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-// Dependencies JSON strings to/from your types
+// Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
-function toDependencies(json) {
-    return cast(json, r("Dependencies"));
+function toAppsSettings(json) {
+    let settingArray = cast(json, a(r("AppsSettings")));
+    settingArray.forEach(((item, index) => {
+        settingArray[index] = {id:item.id, value:item.value, field:item.field}
+    }))
+    return settingArray;
 }
 
-function dependenciesToJson(value) {
-    let response = uncast(JSON.parse(JSON.stringify(value)), r("Dependencies"));
-    Object.keys(response).forEach(key => {
-        if(typeof response[key] === 'object') response[key] = response[key]['id']
-    })
-    return response;
-}
-
-function fromAPI(value) {
-    let asa = [];
-    value.forEach(item => {
-        asa.push(cast(item, r("DepFromAPI")));
-    })
-    return asa;
+function appsSettingsToJson(value) {
+    return JSON.stringify(uncast(value, a(r("AppsSettings"))), null, 2);
 }
 
 function invalidValue(typ, val, key = '') {
@@ -74,15 +66,15 @@ function transform(val, typ, getProps, key = '') {
         return invalidValue(typs, val);
     }
 
+    function transformEnum(cases, val) {
+        if (cases.indexOf(val) !== -1) return val;
+        return invalidValue(cases, val);
+    }
+
     function transformArray(typ, val) {
         // val must be an array with no invalid elements
         if (!Array.isArray(val)) return invalidValue("array", val);
         return val.map(el => transform(el, typ, getProps));
-    }
-
-    function transformEnum(cases, val) {
-        if (cases.indexOf(val) !== -1) return val;
-        return invalidValue(cases, val);
     }
 
     function transformDate(val) {
@@ -125,7 +117,7 @@ function transform(val, typ, getProps, key = '') {
     }
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
-        return {}.hasOwnProperty.call(typ, "unionMembers") ? transformUnion(typ.unionMembers, typeof val === 'object' ? JSON.parse(JSON.stringify(val)): val)
+        return {}.hasOwnProperty.call(typ, "unionMembers") ? transformUnion(typ.unionMembers, val)
             : {}.hasOwnProperty.call(typ, "arrayItems")    ? transformArray(typ.arrayItems, val)
             : {}.hasOwnProperty.call(typ, "props")         ? transformObject(getProps(typ), typ.additional, val)
             : invalidValue(typ, val);
@@ -143,6 +135,10 @@ function uncast(val, typ) {
     return transform(val, typ, jsToJSONProps);
 }
 
+function a(typ) {
+    return { arrayItems: typ };
+}
+
 function u(...typs) {
     return { unionMembers: typs };
 }
@@ -156,49 +152,17 @@ function r(name) {
 }
 
 const typeMap = {
-    "DepFromAPI": o([
-        { json: "update_install_notes", js: "installNotes", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "app_compliant", js: "appCompliant", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dependency_update_exec_path", js: "execPath", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dct_status", js: "dctStatus", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "app_build", js: "appBuild", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "eda", js: "edaPackage", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "type", js: "type", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "remediation_date", js: "remDate", typ: u(undefined, "") },
-        { json: "created_at", js: "created_at", typ: u(undefined, "") },
-        { json: "updated_at", js: "updated_at", typ: u(undefined, "") },
-        { json: "status", js: "status", typ: u(undefined, 0, true) },
-        { json: "version", js: "version", typ: u(undefined, "") },
-        { json: "app_id", js: "app_id", typ: u(undefined, 0) },
-        { json: "notes", js: "notes", typ: u(null, "") },
-        { json: "id", js: "id", typ: u(undefined, 0) }
-    ], false),
-    "Dependencies": o([
-        { json: "dependency_update_install_notes", js: "installNotes", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dependency_app_compliant", js: "appCompliant", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dependency_update_exec_path", js: "execPath", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dependency_dct_status", js: "dctStatus", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dependency_app_build", js: "appBuild", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dependency_eda", js: "edaPackage", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "dependency_type", js: "type", typ: u(undefined, null, r("AppBuild") ) },
-        { json: "remediation_date", js: "remDate", typ: u(undefined, "") },
-        { json: "created_at", js: "created_at", typ: u(undefined, "") },
-        { json: "updated_at", js: "updated_at", typ: u(undefined, "") },
-        { json: "status", js: "status", typ: u(undefined, 0, true) },
-        { json: "version", js: "version", typ: u(undefined, "") },
-        { json: "app_id", js: "app_id", typ: u(undefined, 0) },
-        { json: "notes", js: "notes", typ: u(null, "") },
-        { json: "id", js: "id", typ: u(undefined, 0) }
-    ], false),
-    "AppBuild": o([
-        { json: "id", js: "id", typ: u(0, undefined) },
-        { json: "field", js: "field", typ: u("", undefined) },
-        { json: "value", js: "value", typ: u("", undefined) }
+    "AppsSettings": o([
+        { json: "id", js: "id", typ: u(undefined, 0) },
+        { json: "field", js: "field", typ: u(undefined, "") },
+        { json: "value", js: "value", typ: u(undefined, "") },
+        { json: "app_type", js: "app_type", typ: u(undefined, "") },
+        { json: "created_at", js: "created_at", typ: u(undefined, Date) },
+        { json: "updated_at", js: "updated_at", typ: u(undefined, Date) },
     ], false),
 };
 
 module.exports = {
-    "dependenciesToJson": dependenciesToJson,
-    "toDependencies": toDependencies,
-    "fromAPI": fromAPI
+    "appsSettingsToJson": appsSettingsToJson,
+    "toAppsSettings": toAppsSettings,
 };

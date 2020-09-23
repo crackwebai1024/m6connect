@@ -335,6 +335,7 @@
   </v-container>
 </template>
 <script>
+const app_settings = require("@/store/models/apps_settings");
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
 import {mapActions} from "vuex";
@@ -366,7 +367,7 @@ export default {
   }),
   methods: {
     ...mapActions('ITAppsModule',[
-      'get_selects', 'get_description', 'put_itapp_description'
+      'get_all_selects', 'get_description', 'put_itapp_description'
     ]),
     updateItemDescription() {
       if(this.valid) {
@@ -381,41 +382,33 @@ export default {
     this.get_description(this.info.id).then(
       response => (this.itapp_description = response)
     );
-    this.get_selects('/AppInfoGeneralStatus').then(
-      response => (response.data.forEach(item =>{
-        this.statusOptions.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/AppInfoGeneralFirstContactGroup').then(
-      response => (response.data.forEach(item =>{
-        this.firstContactGroupOptions.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/AppInfoGeneralCategory').then(
-      response => (response.data.forEach(item =>{
-        this.category.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/AppInfoGeneralType').then(
-      response => (response.data.forEach(item =>{
-        this.type.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/AppInfoGeneralAppManagement').then(
-      response => (response.data.forEach(item =>{
-        this.appManagement.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/AppInfoGeneralServerHostingModel').then(
-      response => (response.data.forEach(item =>{
-        this.serverHostingModel.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
-    this.get_selects('/AppInfoSecuritySSN').then(
-      response => (response.data.forEach(item =>{
-        this.ssn.push({id:item.id, value:item.value, field:item.field});
-      }))
-    );
+    this.get_all_selects({params:[
+      'AppInfoGeneralStatus',
+      'AppInfoGeneralFirstContactGroup',
+      'AppInfoGeneralCategory',
+      'AppInfoGeneralType',
+      'AppInfoGeneralAppManagement',
+      'AppInfoGeneralServerHostingModel',
+      'AppInfoSecuritySSN'
+    ]}).then(res => (Object.keys(res.data).forEach(key => {
+      let arraySettings = app_settings.toAppsSettings(res.data[key]);
+      switch (key) {
+        case 'AppInfoGeneralStatus':
+          this.statusOptions = arraySettings;                   break;
+        case 'AppInfoGeneralFirstContactGroup':
+          this.firstContactGroupOptions = arraySettings;        break;
+        case 'AppInfoGeneralCategory':
+          this.category = arraySettings;                        break;
+        case 'AppInfoGeneralType':
+          this.type = arraySettings;                            break;
+        case 'AppInfoGeneralAppManagement':
+          this.appManagement = arraySettings;                   break;
+        case 'AppInfoGeneralServerHostingModel':
+          this.serverHostingModel = arraySettings;              break;
+        case 'AppInfoSecuritySSN':
+          this.ssn = arraySettings;                             break;
+      }
+    })));
   }
 };
 </script>

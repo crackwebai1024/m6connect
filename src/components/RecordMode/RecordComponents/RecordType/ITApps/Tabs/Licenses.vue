@@ -151,20 +151,22 @@ export default {
     ]),
     post(){
       this.post_licensing({
-        estimated_current_users: parseInt(this.items[0]['concurrentUsers']),
-        number_of_licenses: parseInt(this.items[0]['licenses']),
+        estimated_current_users: this.items[0]['concurrentUsers'],
+        number_of_licenses: this.items[0]['licenses'],
         licensing_type: this.items[0]['licenseType']['id'],
-        estimated_users: parseInt(this.items[0]['users']),
+        estimated_users: this.items[0]['users'],
         details: this.items[0]['details'],
         app_id: this.info.id
-      });
+      }).then(res =>(
+        this.items[0]['id'] = res.data.licensing_id
+      ));
     },
     put(){
       this.put_licensing({
-        estimated_current_users: parseInt(this.items[0]['concurrentUsers']),
-        number_of_licenses: parseInt(this.items[0]['licenses']),
+        estimated_current_users: this.items[0]['concurrentUsers'],
+        number_of_licenses: this.items[0]['licenses'],
         licensing_type: this.items[0]['licenseType']['id'],
-        estimated_users: parseInt(this.items[0]['users']),
+        estimated_users: this.items[0]['users'],
         details: this.items[0]['details'],
         id: this.items[0]['id']
       });
