@@ -7,6 +7,8 @@ import GeneralListModule from "./modules/GeneralListModule";
 import NavigationStack from "./modules/NavigationStack";
 import TablesModule from "./modules/TablesModule";
 import InfoModule from "./modules/InfoModule";
+import Auth from "./modules/Auth";
+import Companies from "./modules/Companies";
 
 Vue.use(Vuex);
 
@@ -202,6 +204,8 @@ export default new Vuex.Store({
     NavigationStack,
     ITAppsModule,
     TablesModule,
-    InfoModule
+    InfoModule,
+    Auth,
+    Companies
   }
 });

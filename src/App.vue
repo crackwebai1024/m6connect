@@ -1,15 +1,20 @@
 <template>
   <v-app>
-    <top-nav />
-    <v-row no-gutters style="height: calc(100vh - 60px);" class="top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
-      <action-feed />
-      <!-- Home / Company Profile -->
+    <template v-if="loggedIn && !$route.meta.public" >
+      <top-nav />
+      <v-row no-gutters style="height: calc(100vh - 60px);" class="top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
+        <action-feed />
+        <!-- Home / Company Profile -->
+        <router-view />
+        <m6-chat />
+      </v-row>
+      <!-- Preview overlay -->
+      <chat-wrapper />
+      <general-overlay />
+    </template>
+    <template v-else >
       <router-view />
-      <m6-chat />
-    </v-row>
-    <!-- Preview overlay -->
-    <chat-wrapper />
-    <general-overlay />
+    </template>    
   </v-app>
 </template>
 
@@ -19,7 +24,7 @@ import ActionFeed from "@/views/Home/ActionFeed";
 import M6Chat from "@/components/Home/M6Chat";
 import ChatWrapper from "@/components/Home/M6Chat/ChatWrapper";
 import GeneralOverlay from "@/components/Shared/GeneralOverlay";
-import { mapState} from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -34,8 +39,20 @@ export default {
     //
   }),
   computed:{
-    ...mapState(['layout'])
-  }
+    ...mapState(['layout']),
+    ...mapGetters('Auth', {
+      loggedIn: 'loggedIn'
+    })
+  },
+  methods: {
+    ...mapActions('Auth', {
+      searchForToken: 'searchForToken'
+    })
+  },
+  mounted() {
+    this.searchForToken()
+  },
+
 };
 </script>
 <style>

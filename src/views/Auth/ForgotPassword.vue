@@ -1,0 +1,133 @@
+<template>
+    <auth-layout>
+        <template #nav-btn >
+            <router-link :to="{ name: 'auth.SignIn' }" class="text-dec-none float-right">
+                <v-btn text class="custom-blue-text" >
+                    Sign In
+                </v-btn>
+            </router-link>
+        </template>
+        <template #header >
+            <div class="d-flex justify-center">
+                <h1 class="text-xs-6 custom-blue-text">
+                    {{ $t('ForgotPassword.title') }}
+                </h1>
+            </div>
+            <div class="d-flex justify-center">
+                <span class="custom-blue-text" >
+                    {{ $t('ForgotPassword.subtitle') }}
+                </span>
+            </div>
+        </template>
+        <template #body >
+            <div >
+                <v-container  >
+                    <v-row justify="center" >
+
+                        <v-col cols="12" xs="12" md="8" class="pt-0" >
+                            <v-text-field 
+                                dark
+                                v-model="email"
+                                :label="$t('ForgotPassword.email')"
+                                :rules="rules.email"
+                            />
+                            <div class="d-flex justify-center">
+                                <v-btn color="#a4ceea" @click="forgotPass" >
+                                    <span class="black--text" >{{ $t('ForgotPassword.button') }}</span>
+                                </v-btn>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </div>
+
+            <m6-loading :loading="loading" />
+
+            <m6-notification 
+                :snackbar="notifShow" 
+                :success="notifSuccess"
+                :danger="notifDanger"
+                top 
+                :text="notifText"  
+                @closing="resetNotif" 
+            />
+        </template>
+    </auth-layout>
+</template>
+
+<script>
+import AuthLayout from '@/components/Auth/AuthLayout'
+import { mapActions } from 'vuex'
+
+export default {
+    components: {
+        AuthLayout
+    },
+    data: () => ({
+        notifShow: false,
+        notifText: "",
+        notifDanger: false,
+        notifSuccess: false,
+        loading: false,
+        email: '',
+        showPass: false,
+        rules: {
+            required: value => !!value || 'Required.',
+            counter: value => value.length <= 20 || 'Max 20 characters',
+            min: v => v.length >= 8 || 'Min 8 characters',
+            email: [
+                v => !!v || 'E-mail is required',
+                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+            ],
+        },
+    }),
+    methods: {
+        ...mapActions('Auth', {
+            startPasswordReset: 'startPasswordReset'
+        }),
+        resetNotif() {
+            this.notifShow = false
+            this.notifSuccess = false
+            this.notifDanger = false 
+            this.notifText = ""
+        },
+        setNotif( success, text ){
+            this.notifShow = true
+            this.notifSuccess = success
+            this.notifDanger = !success
+            this.notifText = text
+        },
+        onPasswordClick() {
+            this.showPass = !this.showPass
+        },
+        forgotPass() {
+            this.loading = true
+
+            this.startPasswordReset(this.email)
+            .then( () => {
+                this.loading = false
+
+                this.setNotif(true, this.$t('ForgotPassword.success.checkEmail'))
+                this.$router.push({ name: 'auth.ResetPassword', query: { email: this.email } })
+            })
+            .catch( () => {
+                this.setNotif(false, this.$t('ForgotPassword.error.resetPass'))
+                this.loading = false
+            })
+        }
+    },
+}
+</script>
+
+<style lang="scss" scoped >
+.bottom-logo {
+    width: 25%;
+    height: auto;
+}
+.custom-blue-text {
+  color: #a4ceea !important;
+}
+.float-right {
+    float: right;
+}
+</style>
