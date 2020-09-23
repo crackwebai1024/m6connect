@@ -1,31 +1,62 @@
 <template>
-  <v-container class="pa-0 grey lighten-2 pl-2" style="height: 100%;">
-    <header-component hasslot :info="{title:'Create Post', icon:''}"  class="mb-3" style="height: auto;">
+  <v-container class="py-0 px-3" style="height: 100%;">
+    <header-component hasslot :info="{title:'Search All Apps', icon:''}"  class="mb-3 card-custom-shadow rounded" style="height: auto;">
       <template v-slot:select>
-        <v-select
-          :items="items"
-          label="Everyone"
-          dense
-          flat
-          push-tags
-          solo
-          hide-details
-        ></v-select>
+        <v-menu transition="slide-y-transition" offset-y bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn elevation="0" class="capitalize mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
+              All Apps
+              <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list dense>
+            <v-list-item v-for="(item, i) in areas" :key="i" style="height: 15px;">
+              <v-list-item-title
+                :class="item.type == 'title' ? 'grey--text' : 'black--text'"
+              >{{ item.text }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
       <template v-slot:input>
         <v-text-field
-          height="37"
-          label="Start typing to search"
+          class="font-weight-bold"
+          height="40"
+          label="Start Typing to Search"
           rounded
           flat
           dense
+          @keyup.enter="filter_posts(['author', 1])"
           v-model="searchText"
           single-line
           hide-details
           solo-inverted
-        ></v-text-field>
+        >
+          <template v-slot:append>
+            <v-row class="d-flex align-center">
+              <v-icon>mdi-magnify</v-icon>
+            </v-row>
+          </template>
+        </v-text-field>
       </template>
     </header-component>
+    <v-dialog
+      v-model="dialog"
+      width="500"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="blue lighten-2"
+          dark
+          style="width:100%;"
+          v-bind="attrs"
+          v-on="on"
+        >
+          Do new Record
+        </v-btn>
+      </template>
+      <new-record-dialog/>      
+    </v-dialog>
     <div
       :key="index"
       v-for="(item, index) of records"
@@ -39,17 +70,32 @@
 import { mapGetters, mapActions } from "vuex";
 import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
+import NewRecordDialog from "@/components/Home/Dialogs/NewRecordDialog";
 
 export default {
   components: {
     GeneralItem,
+    NewRecordDialog,
     HeaderComponent,
   },
   name: "GeneralList",
   data: () => ({
     perPage: 8,
+    dialog: false,
     searchText: "",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
+    areas: [
+      { text: "Everyone", type: "subtitle" },
+      { text: "My company", type: "subtitle" },
+      { text: "Teams", type: "title" },
+      { text: "All my teams", type: "subtitle" },
+      { text: "IT Team XY", type: "subtitle" },
+      { text: "CPM Team Z", type: "subtitle" },
+      { text: "Departments", type: "title" },
+      { text: "All my departments", type: "subtitle" },
+      { text: "Finances", type: "subtitle" },
+      { text: "Operations", type: "subtitle" },
+    ],
   }),
   computed: {
     ...mapGetters("GeneralListModule", ["get_general_list"]),
@@ -59,6 +105,8 @@ export default {
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_general_data"]),
+    ...mapActions("ITAppsModule", ["get_it_apps","post_it_apps"]),
+
     remainingPerPage(page) {
       let remaining = this.perPage;
       if (page + 1 === this.pages) {
@@ -67,13 +115,26 @@ export default {
       }
       return remaining;
     },
+    post(){
+      this.post_it_apps({
+        id:1,
+        uid:"asda",
+        record_type:"asda",
+        record_name:"asd",
+        company:"asd",
+        description:"asd",
+        created_at:new Date(),
+        updated_at: new Date()
+      });
+    },
     getIndex(i, index) {
       let ind = i * this.perPage + index - 1;
       return ind;
     },
   },
   created() {
-    this.load_mock_general_data();
+    this.get_it_apps();
+    // this.load_mock_general_data();
   },
 };
 </script>

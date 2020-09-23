@@ -2,9 +2,8 @@
   <div style="width: 270px;" class="mx-4 d-flex"
        :style="display? 'height: 400px' : 'height:auto'"
        :class="display? 'flex-column' : 'flex-row align-end'">
-      <v-row style="cursor: pointer"
-             :class="display? 'primary' : 'white'"
-             class="px-3 py-1 rounded-t-lg d-flex align-center">
+      <v-row :class="display? 'primary' : 'white'"
+             class="px-3 py-1 rounded-t-lg d-flex align-center pointer">
           <v-col class="flex-grow-1 pa-0" @click="display = !display">
             <v-list-item class="pa-0 ma-0">
                 <v-badge

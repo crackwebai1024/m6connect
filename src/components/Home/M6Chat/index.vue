@@ -1,135 +1,45 @@
 <template>
-    <div class="">
-        <v-navigation-drawer
-        v-model="drawer"
-        right
-        absolute
-        :mini-variant.sync="mini"
-        permanent width="100%">
-            <div v-if="!mini" class="">
-                <v-icon @click="mini = true" class="text--grey">mdi-chevron-right</v-icon>
-                <div class="py-2 px-3 d-flex justify-space-between">
-                    <p class="text-subtitle-1 grey--text text--darken-1 mb-0">People</p>
-                    <v-menu offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                            color="primary"
-                            dark
-                            text
-                            small
-                            v-bind="attrs"
-                            v-on="on"
-                            class="text-caption"
-                            >
-                            Everyone <v-icon right class="text-caption">mdi-filter-outline</v-icon>
-                            </v-btn>
-                        </template>
-                        <template>
-                            <v-list dense>
-                                <v-list-item>
-                                    <v-list-item-title>Everyone</v-list-item-title>
-                                </v-list-item>
-                                <v-list-item>
-                                    <v-list-item-title>My company</v-list-item-title>
-                                </v-list-item>
-
-                                <v-subheader>Teams</v-subheader>
-                                <v-list-item  :key="'team-' + key" v-for="(team, key) in filter.teams">
-                                    <v-list-item-title>{{team}}</v-list-item-title>
-                                </v-list-item>
-
-                                <v-subheader>Departments</v-subheader>
-                                <v-list-item :key="'dep-' + key" v-for="(dep, key) in filter.departments">
-                                    <v-list-item-title>{{dep}}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </template>
-                    </v-menu>
-                </div>
-                <v-text-field hide-details class="mx-2 myinput rounded-pill mb-3" flat solo-inverted append-icon="mdi-magnify"  label="Search"></v-text-field>
-                <v-divider></v-divider>
-                <v-subheader class="lighten-3 font-weight-medium px-3 black--text">Teams</v-subheader>
-                <v-subheader class="lighten-3 font-weight-medium px-3 black--text">Departments</v-subheader>
-            
-                <v-expansion-panels multiple accordion>
-                    <v-expansion-panel class="" :key="index" dense v-for="(dep, index) in departments">
-                        <v-expansion-panel-header dense class="font-weight-light px-3 grey lighten-3">{{dep.name}}</v-expansion-panel-header>
-                        <v-expansion-panel-content class="px-0 pb-0">
-                            <v-list class="px-0" style="padding:0;">
-                                <v-list-item
-                                    @click="startChat(u.id)"
-                                    :key="index"
-                                    class="px-4 my-2"
-                                    v-for="(u, index) in dep.users">
-                                    <v-badge
-                                        bordered
-                                        bottom
-                                        color="green accent-4"
-                                        dot
-                                        offset-x="10"
-                                        offset-y="10"
-                                        class="mr-3">
-                                        <v-avatar size="40">
-                                            <v-img :src="u.pic"></v-img>
-                                        </v-avatar>
-                                    </v-badge>
-                                    <v-list-item-title class="">{{u.name}}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
+    <div class="panel-people pa-5 vertical-scroll dont-show-scroll h-full">
+        <div class="mb-5" :key="'department-' + index" v-for="(department, index) in departments">
+            <div class="actions-container mr-5">
+                <v-btn icon color="grey darken-4">
+                    <v-icon class="grey--text text--darken-2">mdi-filter</v-icon>
+                </v-btn>
+                <v-btn icon color="grey darken-4" @click="showSearchInput = !showSearchInput">
+                    <v-icon class="grey--text text--darken-2">mdi-magnify</v-icon>
+                </v-btn>
             </div>
-            <div v-else>
-                <template v-for="(dep, index) in departments">
-                    <v-menu offset-x left class="mr-3" open-on-hover :key="index">
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-list class="px-2" v-bind="attrs" :class="{'grey lighten-3' : !index % 2 == 0}">
-                                <v-list-item
-                                    v-on="on"
-                                    :key="index"
-                                    :class="{'mt-n7' : index != 0}"
-                                    class="justify-center" v-for="(u, index) in dep.users">
-                                    <v-badge
-                                        top
-                                        bordered
-                                        color="green accent-4"
-                                        dot
-                                        offset-x="10"
-                                        offset-y="10"
-                                        class="">
-                                        <v-avatar style="border: 2px solid white" size="40">
-                                            <v-img :src="u.pic"></v-img>
-                                        </v-avatar>
-                                    </v-badge>
-                                </v-list-item>
-                            </v-list>
-                        </template>
-                        <v-list>
-                            <v-subheader>{{dep.name}}</v-subheader>
-                            <v-list-item
-                                    :key="index"
-                                    class="" v-for="(u, index) in dep.users">
-                                    <v-badge
-                                        bottom
-                                        bordered
-                                        color="green accent-4"
-                                        dot
-                                        offset-x="10"
-                                        offset-y="10"
-                                        class="mr-3">
-                                        <v-avatar style="border: 2px solid white" size="40">
-                                            <v-img :src="u.pic"></v-img>
-                                        </v-avatar>
-                                    </v-badge>
-                                    <v-list-item-title class="text-caption">{{u.name}}</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-                </template>
-                
+            <div>
+                <h4 class="mb-4 ml-1">{{ department.name }}</h4>
+                <input v-show="showSearchInput && index === 0" class="search-input-chat" type="text" placeholder="Start Typing to Search" />
+                <v-btn @click="startChat(user.id)"
+                    :key="'user-' + index + department.name"
+                    class="w-full px-2 py-6 my-0 d-flex pointer capitalize justify-start"
+                    v-for="(user, index) in department.users"
+                    elevation="0" 
+                    color="transparent">
+                    <v-badge
+                        bottom
+                        color="green accent-3"
+                        dot
+                        offset-x="10"
+                        offset-y="10"
+                        class="mr-3">
+                        <v-avatar size="36">
+                            <v-img :src="user.pic"></v-img>
+                        </v-avatar>
+                    </v-badge>
+                    <div class="d-flex flex-column align-start">
+                        <p class="font-weight-bold mb-0">{{user.name}}</p>
+                        <span class="text-caption grey--text text--darken-1">{{user.departmentName}}</span>
+                    </div>
+                </v-btn>
             </div>
-        </v-navigation-drawer>
+            <div v-if="index !== departments.length - 1">
+                <v-divider class="blue-grey lighten-4 mt-4"></v-divider>
+                <v-divider class="blue-grey lighten-4"></v-divider>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -138,6 +48,7 @@ import {mapState} from 'vuex'
 export default {
     name: 'm6-chat',
     data: () => ({
+        showSearchInput: false,
         drawer: true,
         filter: {
             departments: ['All my departments', 'Finances', 'Operations'],
@@ -145,47 +56,90 @@ export default {
         },
         departments: [
             {
-                name: "Information Technologies",
+                name: "My Connections",
                 users: [
                     {
                         id: 1,
                         name: "John Doe",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 2,
                         name: "Example User",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+                        departmentName: 'IT Department'
                     },
                     {
                         id: 3,
                         name: "Another Example",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
+                    },
+                                        {
+                        id: 4,
+                        name: "John",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+                        departmentName: 'IT Department'
+                    },
+                    {
+                        id: 5,
+                        name: "Example User 2",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+                        departmentName: 'IT Department'
+                    },
+                    {
+                        id: 6,
+                        name: "Another Example 2",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     }
                 ]
             },
             {
-                name: "Project Finances",
+                name: "People in my Company",
                 users: [
                     {
-                        id: 4,
+                        id: 7,
                         name: "John Doe",
-                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
+                    },
+                    {
+                        id: 8,
+                        name: "John Doe xyz",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
+                    },
+                    {
+                        id: 9,
+                        name: "John Doe 9875",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
                     }
                 ]
-            }
+            },
+            {
+                name: "People in Vendors",
+                users: [
+                    {
+                        id: 10,
+                        name: "John Doe 4321",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
+                    },
+                    {
+                        id: 11,
+                        name: "John Doe 1234",
+                        pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                        departmentName: 'IT Department'
+                    }
+                ]
+            }        
         ],
     }),
     computed: {
         ...mapState(['layout', 'chats']),
-        mini: {
-            get: function () {
-                return this.layout.contacts
-            },
-            set: function (value) {
-                this.layout.contacts = value
-            }
-        }
     },
     methods: {
         startChat(id) {
@@ -202,6 +156,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.panel-people {
+    width: 400px;
+}
+.actions-container {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    margin-top: -5px;
+}
 .mdi-chevron-right::before {
     background: #ddd;
     border-radius: 100%;
@@ -209,5 +172,13 @@ export default {
 }
 .v-expansion-panel-content__wrap {
     padding: 0;
+}
+.search-input-chat {
+    width: 100%;
+    padding: 8px 20px;
+    background: #fff;
+    border-radius: 19px;
+    margin-bottom: 10px;
+    outline: none;
 }
 </style>

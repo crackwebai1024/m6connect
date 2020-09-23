@@ -1,5 +1,5 @@
 <template>
-  <v-container class="pa-0 ma-0 max-w-none" style="height: 100%;">
+  <v-container class="pa-0 max-w-none" style="height: 100%;">
     <record-header :headerDataRecord="infoRecordData"/>
     <navigation-bar class="vertical-scroll dont-show-scroll preview-content" v-if="get_screen_status() && record_data == null" :NavWidgets=actions :project="get_record_full_screen()" />
     <navigation-bar class="vertical-scroll dont-show-scroll preview-content" v-else :NavWidgets=actions :project="infoRecordData" />
@@ -31,8 +31,8 @@ export default {
   },
   methods: {
     setData(){
-      this.actions = this.get_screen_status() ? globalDataApp.records_widgets[this.get_record_full_screen().record_type]
-        : globalDataApp.records_widgets[this.infoRecordData.record_type];
+      this.actions = this.get_screen_status() ? globalDataApp.records_widgets[this.get_record_full_screen().app_type]
+        : globalDataApp.records_widgets[this.infoRecordData.app_type];
     }
   },
   props: {

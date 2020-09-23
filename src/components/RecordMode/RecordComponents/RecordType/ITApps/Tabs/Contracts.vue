@@ -5,7 +5,7 @@
         <p class="white--text text-h5">There are no {{ itemsName }}</p>
         <v-divider class="mt-0 white w-full"></v-divider>
         <a 
-          class="add-item-btn d-flex justify-center align-center py-3 white--text text-body-2 border-t-1 border"
+          class="w-full pointer d-flex justify-center align-center py-3 white--text text-body-2 border-t-1 border"
           @click="dialog = true, dialogMode = true"
         >
           ADD NEW <v-icon class="white--text">mdi-plus</v-icon>
@@ -15,7 +15,7 @@
     </template>
     <template v-else>
       <v-card>
-        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text text-capitalize'">{{ itemsName }}</div>
+        <div :class="baseColor + ' card rounded-0 rounded-t-sm px-3 py-4 text-body-1 white--text capitalize'">{{ itemsName }}</div>
         <v-btn 
           :class="baseColor + ' btn-circle-add-item'" 
           fab small dark
@@ -31,7 +31,8 @@
             item-key="name"
             class="elevation-0"
           >
-            <template v-slot:item.inflatorValue="{ item }">
+            <template 
+            v-slot:item.inflatorValue="{ item }">
               <div class="d-flex justify-space-between">
                 <p>{{ item.inflatorValue }}</p>
                 <v-icon
@@ -52,7 +53,7 @@
     <v-dialog v-model="dialog" persistent max-width="1000px">
       <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
-          <span class="headline text-capitalize">{{ titleDialog }}</span>
+          <span class="headline capitalize white--text">{{ titleDialog }}</span>
           <template v-if="dialogMode">
             <v-btn
               color="purple darken-3"
@@ -74,7 +75,7 @@
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-card-title>
-        <v-card-text class="px-16 py-10">
+        <v-card-text class="px-16 py-10 form-labels">
           <v-container>
             <v-row>
               <v-col cols="6" class="py-0">
@@ -290,10 +291,6 @@ export default {
 };
 </script>
 <style lang="scss">
-.v-divider, .add-item-btn {
-  width: 100%;
-  cursor: pointer;
-}
 .contracts-container {
   min-height: 180px;
   overflow-x: auto;

@@ -81,7 +81,7 @@ export default {
         },
         // Get the component name
         getName(){
-            let name = this.project.record_name.split(' ');
+            let name = this.project.title.split(' ');
             return name.join('-')
         },
         // Action of scroll
@@ -111,10 +111,10 @@ export default {
 }
 </script>
 <style>
-    .max-height-container{
-        overflow: auto;
-        white-space: nowrap;
-    }
+  .max-height-container{
+    overflow: auto;
+    white-space: nowrap;
+  }
   /* This is for documentation purposes and will not be needed in your application */
   .v-speed-dial {
     position: absolute;

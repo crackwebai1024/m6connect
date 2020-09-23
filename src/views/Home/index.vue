@@ -1,25 +1,18 @@
 <template>
-  <v-container class="ma-0 px-2 pt-3 pb-0 d-flex vertical-scroll dont-show-scroll height-100-vh">
+  <v-container class="w-main-content px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
-      <record-container :data="get_record_full_screen()" />
+      <record-container class="main-content" :data="get_record_full_screen()" />
     </template>
     <template v-else>
-      <v-card width="50%" height="100%" elevation="0" class="bg-transparent vertical-scroll dont-show-scroll">
-        <!-- Social Network -->
-        <project-social-media />
-        <image-caroussel-overlay
-          @restartImageArray="restartImageArray()"
-          :value="overlayActive"
-          :images="imageArray"
-          :selected="selectedImage"
-        ></image-caroussel-overlay>
-
-      </v-card>
-      <v-card width="50%" height="100%" elevation="0" class="bg-transparent vertical-scroll dont-show-scroll">
-        <!-- Project List Component -->
-        <general-list />
-      </v-card>
+      <!-- Social Network -->
+      <project-social-media class="main-content"/>
+      <image-caroussel-overlay
+        @restartImageArray="restartImageArray()"
+        :value="overlayActive"
+        :images="imageArray"
+        :selected="selectedImage"
+      ></image-caroussel-overlay>
     </template>
   </v-container>
 </template>
@@ -27,7 +20,6 @@
 <script>
 import {mapGetters, mapState, mapActions} from 'vuex';
 import ProjectSocialMedia from "./ProjectSocialMedia";
-import GeneralList from "@/views/Home/GeneralList";
 import RecordContainer from "@/components/RecordMode/RecordContainer";
 import ImageCarousselOverlay from "@/components/Shared/ImageCarousselOverlay";
 
@@ -36,7 +28,6 @@ export default {
   components: {
     ProjectSocialMedia,
     RecordContainer,
-    GeneralList,
     ImageCarousselOverlay,
   },
   computed: {
@@ -67,9 +58,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.bg-transparent {
-  background: transparent !important;
-}
-</style>

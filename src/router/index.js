@@ -9,8 +9,11 @@ const SignIn = () => import(/* webpackChunkName: 'SignIn' */ "@/views/Auth/SignI
 const ForgotPassword = () => import(/* webpackChunkName: 'ForgotPassword' */ "@/views/Auth/ForgotPassword");
 const ResetPassword = () => import(/* webpackChunkName: 'ResetPassword' */ "@/views/Auth/ResetPassword");
 
-import store from '../store/';
+const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components/Companies')
+const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
+const StoreFront = () => import(/* webpackChunkName: 'Store' */ '@/components/Store')
 
+import store from '../store/';
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -62,6 +65,21 @@ const router = new VueRouter({
       meta: {
         public: true
       }
+    },
+    {
+      path: "/apps",
+      name: "apps",
+      component: Apps
+    },
+    {
+      path: "/companies",
+      name: "companies",
+      component: Companies
+    },
+    {
+      path: "/store",
+      name: "store",
+      component: StoreFront
     }
   ],
 });

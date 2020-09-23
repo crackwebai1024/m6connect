@@ -20,6 +20,9 @@ export const validations = {
     quantityRules: [
       v => (v && v >= 0) || 'Please choose a number equal or greater than 0'
     ],
+    selectBool: [
+      v => v != null || 'Please choose an option',
+    ],
     selectRules: [
       v => !!v || 'Please choose an option',
     ],
@@ -36,7 +39,7 @@ export const validations = {
       this.$refs.form.validate()
     },
     reset() {
-      this.$refs.form.reset()
+      this.$refs.form.resetErrorBag()
     },
     resetValidation() {
       this.$refs.form.resetValidation()
