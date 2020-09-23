@@ -81,7 +81,7 @@ export default {
         },
         // Get the component name
         getName(){
-            let name = this.project.record_name.split(' ');
+            let name = this.project.title.split(' ');
             return name.join('-')
         },
         // Action of scroll

@@ -5,7 +5,7 @@
         </div>
         <div class="d-flex">
           <div class="company-image pl-5">
-              <img alt="" class="mt-2 rounded-circle" width="100" height="100" :src="info['record_image_url']">
+              <img alt="" class="mt-2 rounded-circle" width="100" height="100" :src="info.image_info['image_url']">
           </div>
           <div class="pl-5">
               <p class="text-h5 font-weight-regular mt-1 mb-0">{{ info['record_name'] }} {{ info['version'] }}</p>

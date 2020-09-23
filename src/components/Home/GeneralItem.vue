@@ -30,7 +30,7 @@ export default {
     }
   },
   created(){
-    this.compData = globalDataApp.records_widgets[this.recordData.record_type][0].component;
+    this.compData = globalDataApp.records_widgets[this.recordData.app_type][0].component;
   }
 };
 </script>

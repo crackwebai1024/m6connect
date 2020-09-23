@@ -1,46 +1,46 @@
 <template>
-  <v-container class="px-4 py-5 mt-5 blue darken-3 white--text relative">
-    <v-btn @click="showUpdateDialog(info)" color="blue lighten-2" small left elevation="0" min-width="37" height="32" class="edit-description rounded-circle transparent pa-0">
+  <v-container class="px-4 py-5 mt-5 blue darken-3 white--text relative" v-if="Object.keys(itapp_description).length != 0">
+    <v-btn @click="showUpdateDialog(itapp_description)" color="blue lighten-2" small left elevation="0" min-width="37" height="32" class="edit-description rounded-circle transparent pa-0">
       <v-icon class="white--text pa-0 ma-0">mdi-pencil</v-icon>
     </v-btn>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">Vendor</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['company'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['vendor_id'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">Status</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['client_status'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['status']['value'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">First Contact Group</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['first_contact_group'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['first_contact_group']['value'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">Type</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['record_type'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['type']['value'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">Category</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['category'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['category']['value'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">SubCategory</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['sub_category'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['sub_category']['value'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">App Management</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['app_management'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['app_management']['value'] }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">Server Hosting Model</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['hosting_model'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['general_info']['server_hosting_model']['value'] }}</p>
     </div>
 
     <p class="text-center font-weight-medium text-body-1 mt-6 mb-1 white--text">Most Commonly Known As</p>
@@ -56,48 +56,48 @@
     <p class="text-center font-weight-medium text-body-1 mt-6 mb-1 white--text">Also Known As(AKA)</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
-        v-for="aka in info['aka']"
-        :key="'aka-' + aka"
+        v-for="aka in itapp_description['also_known']"
+        :key="'aka-' + aka.value"
         class="ma-2"
         color="primary"
       >
-        <span class="white--text">{{ aka }}</span>
+        <span class="white--text">{{ aka.value }}</span>
       </v-chip>
     </div>
 
     <p class="text-center font-weight-medium text-body-1 mt-6 mb-1 white--text">Formerly Known As(FKA)</p>
     <div class="d-flex justify-center flex-wrap">
       <v-chip
-        v-for="fka in info['fka']"
-        :key="'fka-' + fka"
+        v-for="fka in itapp_description['formerly_known']"
+        :key="'fka-' + fka.value"
         class="ma-2"
         color="primary"
       >
-        <span class="white--text">{{ fka }}</span>
+        <span class="white--text">{{ fka.value }}</span>
       </v-chip>
     </div>
 
     <div class="d-flex justify-space-between mt-2">
       <p class="text-caption font-weight-medium mb-1 white--text">Patient</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['facing'] ? 'Yes' : 'No' }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['information_security']['facing'] == 1 ? 'Yes' : 'No' }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">PHI</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['phi'] ? 'Yes' : 'No' }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['information_security']['phi'] == 1 ? 'Yes' : 'No' }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">PCI</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['pci'] ? 'Yes' : 'No' }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['information_security']['pci'] == 1 ? 'Yes' : 'No' }}</p>
     </div>
     <v-divider class="grey mb-2"></v-divider>
     <div class="d-flex justify-space-between">
       <p class="text-caption font-weight-medium mb-1 white--text">SSN</p>
-      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ info['ssn'] }}</p>
+      <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['information_security']['ssn_foreign']['value'] }}</p>
     </div>
 
-    <v-dialog v-model="dialog" persistent max-width="800px">
+    <v-dialog v-model="dialog" persistent max-width="800px" >
       <v-form ref="form" v-model="valid" class="white">
         <v-card-text class="pa-0">
           <v-toolbar
@@ -123,13 +123,13 @@
             </template>
           </v-toolbar>
 
-          <v-tabs-items v-model="tabs" class="px-16 py-10 form-labels">
+          <v-tabs-items v-model="tabs" class="px-16 py-10 form-labels" v-if="Object.keys(itemInfo).length != 0">
             <!-- GENERAL -->
             <v-tab-item>
               <v-row>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.company"
+                    v-model="itemInfo['general_info']['vendor_id']"
                     :items="dataCompany"
                     :filter="customFilter"
                     :rules="textRules"
@@ -141,105 +141,113 @@
                 <v-col cols="12" class="py-0">
                   <v-text-field 
                     label="Name"
-                    v-model="itemInfo.record_name"
+                    v-model="itemInfo['title']"
                     :rules="textRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-text-field 
                     label="Version"
-                    v-model="itemInfo.version"
+                    v-model="itemInfo['general_info']['version']"
                     :rules="textRules"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-text-field 
                     label="Description"
-                    v-model="itemInfo.internal_description"
+                    v-model="itemInfo.description"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.client_status"
+                    v-model="itemInfo['general_info']['status']"
                     :items="statusOptions"
                     :filter="customFilter"
-                    :rules="textRules"
-                    item-text="name"
+                    :rules="selectRules"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="Status"
                   ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.first_contact_group"
+                    v-model="itemInfo['general_info']['first_contact_group']"
                     :items="firstContactGroupOptions"
                     :filter="customFilter"
-                    :rules="textRules"
-                    item-text="name"
+                    :rules="selectRules"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="First Contact Group" 
                   ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.category"
+                    v-model="itemInfo['general_info']['category']"
                     :items="category"
                     :filter="customFilter"
-                    :rules="textRules"
-                    item-text="name"
+                    :rules="selectRules"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="Category" 
                   ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.sub_category"
+                    v-model="itemInfo['general_info']['sub_category']"
                     :items="[]"
                     :filter="customFilter"
-                    item-text="name"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="SubCategory" 
                   ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.record_type"
+                    v-model="itemInfo['general_info']['type']"
                     :items="type"
                     :filter="customFilter"
-                    :rules="textRules"
-                    item-text="name"
+                    :rules="selectRules"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="Type" 
                   ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.app_management"
+                    v-model="itemInfo['general_info']['app_management']"
                     :items="appManagement"
                     :filter="customFilter"
-                    :rules="textRules"
-                    item-text="name"
+                    :rules="selectRules"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="App Management" 
                   ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.hosting_model"
+                    v-model="itemInfo['general_info']['server_hosting_model']"
                     :items="serverHostingModel"
                     :filter="customFilter"
-                    :rules="textRules"
-                    item-text="name"
+                    :rules="selectRules"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="Server Hosting Model" 
                   ></v-autocomplete>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.capabilities"
+                    v-model="itemInfo['general_info']['capability']"
                     :items="[]"
                     :filter="customFilter"
-                    item-text="name"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="Capabilities" 
                   ></v-autocomplete>
@@ -251,9 +259,11 @@
               <v-row>
                 <v-col cols="12">
                   <v-combobox
-                    v-model="itemInfo.aka"
+                    v-model="itemInfo['also_known']"
                     :items="[]"
                     label="Also Known AS(AKA)"
+                    item-text="value"
+                    item-value="id"
                     multiple
                     hint="Add new AKAs hitting enter"
                     chips
@@ -261,9 +271,11 @@
                 </v-col>
                 <v-col cols="12">
                   <v-combobox
-                    v-model="itemInfo.fka"
+                    v-model="itemInfo['formerly_known']"
                     :items="[]"
                     label="Formerly Known AS(FKA)"
+                    item-text="value"
+                    item-value="id"
                     multiple
                     hint="Add new FKAs hitting enter"
                     chips
@@ -276,28 +288,29 @@
               <v-row>
                 <v-col cols="12" class="py-0">
                   <v-checkbox
-                    v-model="itemInfo.facing"
+                    v-model="itemInfo['information_security']['facing']"
                     label="Patient/Costumer Facing"
                   ></v-checkbox>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-checkbox
-                    v-model="itemInfo.phi"
+                    v-model="itemInfo['information_security']['phi']"
                     label="PHI"
                   ></v-checkbox>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-checkbox
-                    v-model="itemInfo.pci"
+                    v-model="itemInfo['information_security']['pci']"
                     label="PCI"
                   ></v-checkbox>
                 </v-col>
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
-                    v-model="itemInfo.ssn"
+                    v-model="itemInfo['information_security']['ssn_foreign']"
                     :items="ssn"
                     :filter="customFilter"
-                    item-text="name"
+                    item-text="value"
+                    :item-value="Object"
                     color="blue darken-3"
                     label="SSN" 
                   ></v-autocomplete>
@@ -314,10 +327,19 @@
       </v-form>
     </v-dialog>
   </v-container>
+  <v-container v-else>
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 <script>
+const app_settings = require("@/store/models/apps_settings");
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
+import {mapActions} from "vuex";
 
 export default {
   name: "Description",
@@ -326,6 +348,7 @@ export default {
     info: Object,
   },
   data: () => ({
+    itapp_description:{},
     tabs: null,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     model: 'tab-2',
@@ -335,84 +358,58 @@ export default {
       { name: 'Known As'},
       { name: 'Security'},
     ],
-    statusOptions: [
-      { name: 'Active'}, 
-      { name: 'Inactive'},
-      { name: 'PENDING EDA PKG BUILD'}, 
-      { name: 'PENDING EOL'},
-      { name: 'PENDING GO-LIVE'}, 
-      { name: 'Pending Testing'},
-      { name: 'PENDING TRC APPROVAL'}
-    ],
-    firstContactGroupOptions: [
-      { name: 'Access'}, 
-      { name: 'AMBULATORY COMMUNITY SYSTEMS SUPPORT'},
-      { name: 'AMBULATORY EHR SUPPORT'}, 
-      { name: 'BP HRIS'},
-      { name: 'CARDIOVASCULAR & PERIOPERATIVE SYSTEMS SUPPORT'}, 
-      { name: 'CLINICAL IMAGING SYSTEMS SUPPORT'},
-      { name: 'CLINICAL INTERFACES'},
-      { name: 'COMMUNITY CONNECT EHR'}, 
-      { name: 'COMMUNITY CONNECT TECHNICAL'},
-      { name: 'COMPUTER OPERATIONS'}, 
-      { name: 'CORE SUPPORT'},
-      { name: 'CTS'}, 
-      { name: 'DATABASE ADMINISTRATION'},
-      { name: 'DECISION SUPPORT'}
-    ],
-    category: [
-      { name: 'Ambulatory Clinic EMR'}, 
-      { name: 'Application Manager'},
-      { name: 'Cardiology'}, 
-      { name: 'Care Coordination'},
-      { name: 'Care Team'}, 
-      { name: 'Coding'},
-      { name: 'Community Care'},
-      { name: 'Compliance'}, 
-      { name: 'Data Governance'},
-      { name: 'Dietary'}, 
-      { name: 'Document Imaging'},
-      { name: 'Emergency Department'}, 
-      { name: 'Facilities Management'},
-      { name: 'Finance'}
-    ],
-    type: [
-      { name: 'Database'}, 
-      { name: 'Desktop'},
-      { name: 'Device'}, 
-      { name: 'Dongle'},
-      { name: 'Operating System'}, 
-      { name: 'Server Only'},
-      { name: 'System Tools'},
-      { name: 'URL'}
-    ],
-    appManagement: [
-      { name: 'Hybrid Internal/Vendor Managed'}, 
-      { name: 'Internally Managed'},
-      { name: 'Vendor Managed'}
-    ],
-    serverHostingModel: [
-      { name: 'Self Hosted'}, 
-      { name: 'Multi-Tenant'},
-      { name: 'Vendor Hosted'}, 
-      { name: 'Vendor Website'},
-      { name: 'N/A'}
-    ],
-    ssn: [
-      { name: 'Full SSN Displayed'}, 
-      { name: 'Fully Masked'},
-      { name: 'Last 4 Digits Displayed'}, 
-      { name: 'Not Used'},
-    ],
+    statusOptions: [],
+    firstContactGroupOptions: [],
+    category: [],
+    type: [],
+    appManagement: [],
+    serverHostingModel: [],
+    ssn: [],
   }),
   methods: {
+    ...mapActions('ITAppsModule',[
+      'get_all_selects', 'get_description', 'put_itapp_description'
+    ]),
     updateItemDescription() {
       if(this.valid) {
-        let info = [this.info,this.itemInfo];
-        this.info = Object.assign(...info);
-        this.closeDialog()
+        let info = [this.itapp_description,this.itemInfo];
+        this.itapp_description = Object.assign(...info);
+        this.closeDialog();
+        this.put_itapp_description(this.itapp_description);
       }
     }
+  },
+  created(){
+    this.get_description(this.info.id).then(
+      response => (this.itapp_description = response)
+    );
+    this.get_all_selects({params:[
+      'AppInfoGeneralStatus',
+      'AppInfoGeneralFirstContactGroup',
+      'AppInfoGeneralCategory',
+      'AppInfoGeneralType',
+      'AppInfoGeneralAppManagement',
+      'AppInfoGeneralServerHostingModel',
+      'AppInfoSecuritySSN'
+    ]}).then(res => (Object.keys(res.data).forEach(key => {
+      let arraySettings = app_settings.toAppsSettings(res.data[key]);
+      switch (key) {
+        case 'AppInfoGeneralStatus':
+          this.statusOptions = arraySettings;                   break;
+        case 'AppInfoGeneralFirstContactGroup':
+          this.firstContactGroupOptions = arraySettings;        break;
+        case 'AppInfoGeneralCategory':
+          this.category = arraySettings;                        break;
+        case 'AppInfoGeneralType':
+          this.type = arraySettings;                            break;
+        case 'AppInfoGeneralAppManagement':
+          this.appManagement = arraySettings;                   break;
+        case 'AppInfoGeneralServerHostingModel':
+          this.serverHostingModel = arraySettings;              break;
+        case 'AppInfoSecuritySSN':
+          this.ssn = arraySettings;                             break;
+      }
+    })));
   }
 };
 </script>
