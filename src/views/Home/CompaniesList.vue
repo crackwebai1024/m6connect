@@ -40,8 +40,15 @@
         </v-text-field>
       </template>
     </header-component>
-    <div
+    <!-- <div
       :key="index"
+      v-for="(item, index) of companies"
+      :class="Object.keys(companies).length !== index + 1 ? 'mb-3' : ''"
+    >
+      <general-item :companyData="item" />
+    </div> -->
+    <div
+      :key="index + 'company'"
       v-for="(item, index) of companies"
       :class="Object.keys(companies).length !== index + 1 ? 'mb-3' : ''"
     >
@@ -52,11 +59,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CompanyItem from "@/components/Companies/CompanyItem";
+// import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
   components: {
     CompanyItem,
+    // GeneralItem,
     HeaderComponent,
   },
   name: "CompaniesList",
@@ -85,18 +94,6 @@ export default {
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_companies_data"]),
-    // remainingPerPage(page) {
-    //   let remaining = this.perPage;
-    //   if (page + 1 === this.pages) {
-    //     remaining =
-    //       this.perPage - (this.perPage * this.pages - this.recordsLength);
-    //   }
-    //   return remaining;
-    // },
-    // getIndex(i, index) {
-    //   let ind = i * this.perPage + index - 1;
-    //   return ind;
-    // },
   },
   created() {
     this.load_mock_companies_data();

@@ -10,7 +10,7 @@ const Licenses = () => import("@/components/RecordMode/RecordComponents/RecordTy
 const Dependencies = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Tabs/Dependencies")
 const ITAppsSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/ITAppsSummary")
 
-const CompanyItem = () => import("@/components/Companies/CompanyItem")
+const CompanySummary = () => import("@/components/Companies/CompanySummary")
 
 const Installation = () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Installation")
 const Rationalization = {
@@ -168,8 +168,8 @@ export default{
       company: [
         {
           icon: 'mdi-account-voice', 
-          name:'CompanyItem',
-          component: CompanyItem
+          name:'CompanySummary',
+          component: CompanySummary
         },{
           icon: 'mdi-account-voice', 
           name:'Description',

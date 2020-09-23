@@ -587,6 +587,8 @@ export default {
   ],
   fake_companies: [
     {
+      record_type: "itapps",
+      record_name: "Test Company 0",
       companyType: 'company',
       title: "The Lorem Ipsum Co.",
       tagType: false,
@@ -598,6 +600,8 @@ export default {
       record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
     },
     {
+      record_type: "itapps",
+      record_name: "Test Company 1",
       companyType: 'company',
       title: "Awesome Company X",
       tagType: true,
@@ -609,6 +613,8 @@ export default {
       record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
     },
     {
+      record_type: "itapps",
+      record_name: "Test Company 2",
       companyType: 'company',
       title: "Nicest Customer Ever",
       tagType: true,
@@ -618,36 +624,6 @@ export default {
       url: "www.sharphealthcare.co",
       tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
       record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
-    },
-    {
-      title: "The Lorem Ipsum Co.",
-      tagType: false,
-      type: 'Vendor',
-      email: "contact@sharp.com",
-      phone: "(915) 445 - 1234",
-      url: "www.sharphealthcare.co",
-      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
-      record_image_url: "https://picsum.photos/" + '1280' + "/" + '1280' + "?nocache=" + Math.random(),
-    },
-    {
-      title: "Awesome Company X",
-      tagType: true,
-      type: 'Vendor',
-      email: "contact@sharp.com",
-      phone: "(915) 445 - 1234",
-      url: "www.sharphealthcare.co",
-      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
-      record_image_url: "https://picsum.photos/" + '1280' + "/" + '1280' + "?nocache=" + Math.random(),
-    },
-    {
-      title: "Nicest Customer Ever",
-      tagType: true,
-      type: 'Customer',
-      email: "contact@sharp.com",
-      phone: "(915) 445 - 1234",
-      url: "www.sharphealthcare.co",
-      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
-      record_image_url: "https://picsum.photos/" + '1280' + "/" + '1280' + "?nocache=" + Math.random(),
     },
   ],
 };
