@@ -94,10 +94,10 @@
                 </template>
               </div>
             </div>
-            <div class="text-caption black--text">2 Pending Approvals from You and Hanna</div>
+            <div class="text-caption black--text" v-if="pendingApprovals(data['request'].users) > 0">{{ pendingApprovals(data['request'].users  ) }} Pending Approvals</div>
           </div>
           <div class="d-flex justify-end">
-            <v-btn class="my-2 mr-2 px-6 capitalize" text color="grey darken-3">Approve</v-btn>
+            <v-btn class="my-2 mr-2 px-6 capitalize" text color="grey darken-3">Deny</v-btn>
             <v-btn class="my-2 px-8 capitalize" outlined color="green accent-4">Approve</v-btn>
           </div>
         </div>
@@ -225,6 +225,14 @@ export default {
     },
     lineColor(approval) {
       return approval ? 'green accent-3 ' : 'grey '
+    },
+    pendingApprovals(approvals) {
+      let pendingApprovals = 0 ;
+      approvals.forEach(element => {
+        if(!element.approval) pendingApprovals++
+      });
+      
+      return pendingApprovals;
     }
   },
   created() {
