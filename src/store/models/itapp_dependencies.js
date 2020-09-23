@@ -14,7 +14,6 @@ function toDependencies(json) {
 }
 
 function dependenciesToJson(value) {
-    console.log(value);
     Object.keys(value).forEach(key => {
         if(typeof value[key] === 'object' && value[key] == null) {
         value[key] = {
@@ -22,7 +21,6 @@ function dependenciesToJson(value) {
             field: undefined,
             value: undefined
         }
-        console.log(value[key]);
     }})
     let response = uncast(JSON.parse(JSON.stringify(value)), r("Dependencies"));
     Object.keys(response).forEach(key => {
