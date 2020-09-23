@@ -158,10 +158,11 @@ html {
 
 .w-main-content {
   width: calc(100vw - 840px);
-  div {
+  // inside the center content
+  .main-content {
     max-width: 820px;
   }
-  &.w-tight div {
+  &.w-tight .main-content {
     max-width: 620px;
   }
 }
