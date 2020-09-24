@@ -73,7 +73,7 @@
         <v-divider></v-divider>
         <!-- post component reference-->
         <template v-if="data['componentName']">
-          <component v-bind:is="data['componentName']" class="pa-0"></component>
+          <component v-bind:is="data['componentName']" class="pa-0 profile-component"></component>
         </template>
         <div class="d-flex justify-space-between pa-3 pt-0 align-center">
           <div>
@@ -263,5 +263,9 @@ export default {
   display: flex;
   justify-content: center;
   padding: 0;
+}
+.profile-component .v-subheader, .profile-component .v-card {
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
 </style>
