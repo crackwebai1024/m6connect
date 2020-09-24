@@ -1,5 +1,5 @@
 <template>
-  <v-container class="py-0 px-3 d-flex flex-wrap">
+  <v-container class="pa-0 d-flex flex-wrap">
     <header-component hasslot :info="{title:'Search All Companies', icon:''}"  
       class="max-w-tight mb-3 card-custom-shadow rounded w-full mx-auto h-auto">
       <template v-slot:select>
