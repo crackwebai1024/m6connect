@@ -26,37 +26,43 @@ export default {
                         id: 1,
                         name: "John Doe",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     },
                     {
                         id: 2,
                         name: "Example User",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     },
                     {
                         id: 3,
                         name: "Another Example",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'Microsoft Corporation',
+                        type: 'customer',
                     },
-                                        {
+                    {
                         id: 4,
                         name: "John",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'Tesla Inc.',
+                        type: 'vendor',
                     },
                     {
                         id: 5,
                         name: "Example User 2",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     },
                     {
                         id: 6,
                         name: "Another Example 2",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     }
                 ]
             },
@@ -67,19 +73,22 @@ export default {
                         id: 7,
                         name: "John Doe",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'Microsoft Corporation',
+                        type: 'customer',
                     },
                     {
                         id: 8,
                         name: "John Doe xyz",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     },
                     {
                         id: 9,
                         name: "John Doe 9875",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     }
                 ]
             },
@@ -90,13 +99,15 @@ export default {
                         id: 10,
                         name: "John Doe 4321",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     },
                     {
                         id: 11,
                         name: "John Doe 1234",
                         pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                        departmentName: 'IT Department'
+                        departmentName: 'IT Department',
+                        type: 'internal',
                     }
                 ]
             }        
