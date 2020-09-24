@@ -1,5 +1,5 @@
 <template>
-  <v-container class="w-main-content w-tight px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
+  <v-container class="w-main-content px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
       <record-container class="main-content mx-auto" :data="get_record_full_screen()" />

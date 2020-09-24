@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="mx-auto" tile :class="{ 'on-hover': !hover }" @click="updateInfo()">
+    <v-card elevation="0" class="rounded mx-auto transparent" tile :class="{ 'on-hover': !hover }" @click="updateInfo()">
       <component v-bind:is="compData" :info="recordData" ></component>
     </v-card>
   </v-hover>
