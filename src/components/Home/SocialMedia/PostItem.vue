@@ -71,7 +71,10 @@
       <div v-if="data['postType'] === 'request'" class="ma-4 mt-0 border-1">
         <div :class="'text-h6 py-2 px-3 font-weight-regular ' + this.tagColor + '--text'">{{ data['request'].title }}</div>
         <v-divider></v-divider>
-        <!-- here will live the other component -->
+        <!-- post component reference-->
+        <template v-if="data['componentName']">
+          <component v-bind:is="data['componentName']" class="pa-0"></component>
+        </template>
         <div class="d-flex justify-space-between pa-3 pt-0 align-center">
           <div>
             <div class="pt-6 pb-2 d-flex align-center">
