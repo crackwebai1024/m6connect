@@ -35,8 +35,8 @@
         </div>
       </div>
       <p class="text-body-2 mt-2 mb-3 ml-2 grey--text text--darken-4">{{ notification.textContent }}</p>
-      <p v-if="notification.notificationType === 'document'" :class="notification.colorTag + '--text ' + 'text-body-2 ml-1 mb-0 blue--text text--darken-3 d-flex align-center'">
-        <v-icon class="mr-1 blue--text text--darken-3">mdi-file-document-outline</v-icon>
+      <p v-if="notification.notificationType === 'document'" :class="notification.colorTag + '--text ' + 'text-body-2 ml-1 mb-0 d-flex align-center'">
+        <v-icon :class="notification.colorTag + '--text ' + 'mr-1'">mdi-file-document-outline</v-icon>
         {{ notification.message }}
       </p>
       <p v-if="notification.notificationType === 'message'" class="message-box text-caption black--text pl-3 ml-1 mb-0 d-flex align-center">
@@ -44,18 +44,22 @@
       </p>
       <div v-if="notification.notificationType !== 'message'" class="d-flex mt-4 ml-2 align-center">
         <v-badge
-          v-for="i in 3" :key="i" style="margin-left:-5px"
+          v-for="(follower, index) in notification.followers" :key="index + 'follower'" style="margin-left:-5px"
+          :bordered="follower.review ? false : true"
+          :dark="follower.review ? false : true"
           top
-          color="green lighten-2"
-          dot
-          offset-x="9"
-          offset-y="7"
+          :color="follower.review ? 'green accent-3' : 'white black--text'"
+          :icon="follower.review ? 'mdi-check' : 'mdi-help'"
+          offset-x="12"
+          offset-y="12"
         >
           <v-avatar size="28">
-            <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+            <v-img :src="follower.imgSrc"></v-img>
           </v-avatar>
         </v-badge>
-        <p class="ml-2 mb-0 text-caption grey--text text--darken-1">2 pending</p>
+        <p v-if="pendingApprovals(notification.followers) > 0" class="ml-2 mb-0 text-caption grey--text text--darken-1">
+          {{ pendingApprovals(notification.followers) }} pending
+        </p>
       </div>
       <div v-if="notification.notificationType !== 'message'" class="d-flex feed-btns absolute pa-3 text-caption align-center">
         <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> {{ notification.likes }}</p>
@@ -94,11 +98,11 @@ export default {
           },
           {
             review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
           },
           {
             review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
           },
         ],
       },
@@ -137,15 +141,23 @@ export default {
         followers: [
           {
             review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
           },
           {
             review: true,
             imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
           },
           {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+          },
+          {
             review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+          },
+          {
+            review: false,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
           },
         ],
       },
@@ -172,11 +184,15 @@ export default {
           },
           {
             review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
           },
           {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+          },
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
           },
         ],
       },
@@ -238,6 +254,14 @@ export default {
       diff = (diff - hours) / 24;
       let days = Math.abs(Math.round(diff % 30));
       return days + ' days, ' + hours + ' hours, ' + minutes +' minutes, ' + seconds + ' seconds';
+    },
+    pendingApprovals(approvals) {
+      let pendingApprovals = 0 ;
+      approvals.forEach(element => {
+        if(!element.review) pendingApprovals++
+      });
+      
+      return pendingApprovals;
     }
   }
 };
