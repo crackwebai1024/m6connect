@@ -26,8 +26,7 @@
           rounded
           flat
           dense
-          @keyup.enter="filter_posts(['author', 1])"
-          v-model="searchText"
+          v-model="searchInput"
           single-line
           hide-details
           solo-inverted
@@ -59,11 +58,12 @@
     </v-dialog>
     <div
       :key="index"
-      v-for="(item, index) of records"
+      v-for="(item, index) of filteredRecords"
       :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
     >
       <general-item :recordData="item" />
     </div>
+    <div v-if="filteredRecords.length === 0">No results found</div>
   </v-container>
 </template>
 <script>
@@ -82,7 +82,7 @@ export default {
   data: () => ({
     perPage: 8,
     dialog: false,
-    searchText: "",
+    searchInput: "",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
     areas: [
       { text: "Everyone", type: "subtitle" },
@@ -102,6 +102,13 @@ export default {
     records() {
       return this.get_general_list();
     },
+    filteredRecords() {
+      return this.records.filter((record) => {
+      return record.record_name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+        || record.company.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+        || record.department.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;            
+      })
+    }
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_general_data"]),
