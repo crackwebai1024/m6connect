@@ -10,11 +10,11 @@
         </div>
         <div>
             <h4 class="mb-4 ml-1">{{ department.name }}</h4>
-            <input v-show="showSearchInput" class="search-input-chat" type="text" placeholder="Start Typing to Search" />
+            <input v-show="showSearchInput" v-model="searchInput" class="search-input-chat" type="text" placeholder="Start Typing to Search" />
             <v-btn @click="startChat(user.id)"
                 :key="'user-' + department.name"
                 class="w-full px-2 py-6 my-0 d-flex pointer capitalize justify-start"
-                v-for="user in department.users"
+                v-for="user in filteredUsers"
                 elevation="0" 
                 color="transparent">
                 <v-badge
@@ -33,6 +33,7 @@
                     <span class="text-caption grey--text text--darken-1">{{user.departmentName}}</span>
                 </div>
             </v-btn>
+            <div v-if="filteredUsers.length === 0">No results found</div>
         </div>
         <div v-if="lastDepartment">
             <v-divider class="blue-grey lighten-4 mt-4"></v-divider>
@@ -51,6 +52,7 @@ export default {
     },
     data: () => ({
         showSearchInput: false,
+        searchInput: '',
         drawer: true,
         filter: {
             departments: ['All my departments', 'Finances', 'Operations'],
@@ -59,6 +61,11 @@ export default {
     }),
     computed: {
         ...mapState(['layout', 'chats']),
+        filteredUsers() {
+            return this.department.users.filter((user) => {
+                return user.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+            })
+        }
     },
     methods: {
         startChat(id) {
