@@ -10,7 +10,7 @@
         </div>
         <div>
             <h4 class="mb-4 ml-1">{{ department.name }}</h4>
-            <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input-chat" type="text" placeholder="Start Typing to Search" />
+            <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
             <v-btn @click="startChat(user.id)"
                 :key="'user-' + department.name + user.id"
                 class="w-full px-2 py-6 my-0 d-flex pointer capitalize justify-start"
@@ -99,13 +99,5 @@ export default {
 }
 .v-expansion-panel-content__wrap {
     padding: 0;
-}
-.search-input-chat {
-    width: 100%;
-    padding: 8px 20px;
-    background: #fff;
-    border-radius: 19px;
-    margin-bottom: 10px;
-    outline: none;
 }
 </style>

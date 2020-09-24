@@ -18,10 +18,14 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-icon size="28" class="ml-2">mdi-magnify</v-icon>
+        <v-btn icon color="grey darken-4" @click="showSearchInputFunction">
+          <v-icon class="grey--text text--darken-2">mdi-magnify</v-icon>
+        </v-btn>
       </div>
     </div>
-    <action-feed-item v-for="(notification, index) in notifications" :key="'notification-'+index" :notification="notification"/>
+    <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
+    <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
+    <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
 </template>
 
@@ -32,6 +36,8 @@ export default {
     ActionFeedItem,
   },
   data: () => ({
+    showSearchInput: false,
+    searchInput: '',
     showActionBtns: false,
     // action feed data 
     notifications: [
@@ -172,8 +178,18 @@ export default {
   }),
   name: "ActionFeed",
   computed: {
+    filteredNotifications() {
+        return this.notifications.filter((notification) => {
+            return notification.userFrom.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+              || notification.textContent.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+        })
+    },
   },
   methods: {
+    showSearchInputFunction() {
+      this.showSearchInput = !this.showSearchInput
+      this.$nextTick(() => this.$refs.searchInput.focus())
+    },
   }
 };
 </script>
