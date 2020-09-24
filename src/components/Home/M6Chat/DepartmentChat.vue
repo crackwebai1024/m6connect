@@ -4,15 +4,15 @@
             <v-btn icon color="grey darken-4">
                 <v-icon class="grey--text text--darken-2">mdi-filter</v-icon>
             </v-btn>
-            <v-btn icon color="grey darken-4" @click="showSearchInput = !showSearchInput">
+            <v-btn icon color="grey darken-4" @click="showSearchInputFunction">
                 <v-icon class="grey--text text--darken-2">mdi-magnify</v-icon>
             </v-btn>
         </div>
         <div>
             <h4 class="mb-4 ml-1">{{ department.name }}</h4>
-            <input v-show="showSearchInput" v-model="searchInput" class="search-input-chat" type="text" placeholder="Start Typing to Search" />
+            <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input-chat" type="text" placeholder="Start Typing to Search" />
             <v-btn @click="startChat(user.id)"
-                :key="'user-' + department.name"
+                :key="'user-' + department.name + user.id"
                 class="w-full px-2 py-6 my-0 d-flex pointer capitalize justify-start"
                 v-for="user in filteredUsers"
                 elevation="0" 
@@ -65,7 +65,7 @@ export default {
             return this.department.users.filter((user) => {
                 return user.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
             })
-        }
+        },
     },
     methods: {
         startChat(id) {
@@ -76,7 +76,11 @@ export default {
                 }
                 c.push(id)
             }
-        }
+        },
+        showSearchInputFunction() {
+            this.showSearchInput = !this.showSearchInput
+            this.$nextTick(() => this.$refs.searchInput.focus())
+        },
     }
 }
 </script>
