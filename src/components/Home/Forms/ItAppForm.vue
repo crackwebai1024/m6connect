@@ -199,6 +199,7 @@
             <v-spacer></v-spacer>
             <v-btn
                 color="error"
+                @click="close()"
                 class="mr-4">
                 Cancel
             </v-btn>
@@ -265,7 +266,7 @@ export default {
     methods: {
         ...mapActions('ITAppsModule',[
             'get_all_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security', 
-            'post_tag'
+            'post_tag', 'push_record'
         ]),
         postNewITApp(){ 
             this.post_it_apps({
@@ -281,6 +282,7 @@ export default {
                 this.post_general_ifo(this.general_ifo);
                 this.post_info_security(this.information_security);
                 this.post_fka_aka(res.data.app_id);
+                this.push_record(res.data.app_id);
             });
         },
         selectRules(name){
@@ -308,24 +310,31 @@ export default {
             this.chipsAKA = [...this.chipsAKA]
         },
         post_fka_aka(app_id){
+            let fka_aka = [];
             this.chipsAKA.forEach(item =>{
-                this.post_tag({
+                fka_aka.push({
                     field: 'also_know_as',
                     value: item,
                     foreign_id: app_id
                 });
             });
             this.chipsFKA.forEach(item =>{
-                this.post_tag({
+                fka_aka.push({
                     field: 'formerly_known_as',
                     value: item,
                     foreign_id: app_id
                 });
             });
+            return fka_aka;
+        },
+        close(){
+            this.$emit('closeModal');
         },
         validate () {
-            if(this.$refs.form.validate())
+            if(this.$refs.form.validate()){
                 this.postNewITApp();
+                this.close();
+            }
         }
     },
     created(){

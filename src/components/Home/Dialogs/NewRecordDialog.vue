@@ -1,10 +1,10 @@
 <template>
-    <v-card max-height="600px" class="scroll">
+    <v-card>
         <v-card-title class="headline grey lighten-2">
             Create Record
         </v-card-title>
         <v-card-text
-            style="overflow-y: scroll; height: 90vh;">
+            style="overflow-y: scroll; height: 80vh;">
             <v-tabs 
                 centered
                 v-model="tab">
@@ -15,7 +15,7 @@
 
             <v-tabs-items v-model="tab">
                 <v-tab-item v-for="item in items" :key="item.tab" >
-                    <component v-bind:is="item.component"></component>
+                    <component @closeModal="closeModal" v-bind:is="item.component"></component>
                 </v-tab-item>
             </v-tabs-items>
         </v-card-text>
@@ -27,6 +27,11 @@ import ItAppForm from '../Forms/ItAppForm'
 
 export default {
     name: "NewRecordDialog",
+    methods: {
+        closeModal(){
+            this.$emit('closeModal');
+        }
+    },
     data: () => ({
         tab: null,
         items:[{
