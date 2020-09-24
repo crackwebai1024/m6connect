@@ -1,11 +1,9 @@
 <template>
   <v-row no-gutters>
-    <v-col cols="2">
-      <v-avatar :size="size">
-        <v-img :src="comment.imageUrl" aspect-ratio="1.7"></v-img>
-      </v-avatar>
-    </v-col>
-    <v-col cols="10">
+    <v-avatar :size="size" class="mr-3">
+      <v-img :src="comment.imageUrl" aspect-ratio="1.7"></v-img>
+    </v-avatar>
+    <v-col>
       <v-card class="py-3" flat rounded style="background-color: rgb(240, 240, 240);">
         <v-card-subtitle class="py-0 comment-user-text mb-1">{{comment.name}}</v-card-subtitle>
         <v-card-text class="comment-text py-0" v-line-clamp="4">{{comment.message}}</v-card-text>

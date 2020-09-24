@@ -4,8 +4,8 @@
     class="d-flex align-end"
     style="width: 100vw; height: 100vh; position: fixed; left:0; top: 0; pointer-events: none;">
     <v-row no-gutters>
-      <v-col cols ="3"
-        v-for="(i,index) of 2" :key="index" class="py-0 px-0 mx-2">
+      <div
+        v-for="(i,index) of 2" :key="index" class="preview-container py-0 px-0 mx-2">
         <div v-if="Object.keys(active_previews[index]).length != 0" class>
           <!-- <idle-records v-if="get_idle_previews().length != 0" style="pointer-events: auto;" /> -->
           <div
@@ -29,7 +29,7 @@
             <idle-records :index="index" />
           </v-col>
         </div>
-      </v-col>
+      </div>
     </v-row>
   </div>
 </template>
@@ -77,5 +77,8 @@ export default {
 .panels-preview > div {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+.preview-container {
+  width: 460px;
 }
 </style>

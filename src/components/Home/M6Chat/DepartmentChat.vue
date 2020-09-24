@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-5">
+    <div class="mb-5 relative">
         <div class="actions-container mr-5">
             <v-btn icon color="grey darken-4">
                 <v-icon class="grey--text text--darken-2">mdi-filter</v-icon>
@@ -30,7 +30,7 @@
                 </v-badge>
                 <div class="d-flex flex-column align-start">
                     <p class="font-weight-bold mb-0">{{user.name}}</p>
-                    <span class="text-caption grey--text text--darken-1">{{user.departmentName}}</span>
+                    <span :class="'text-caption ' + departmentColor(user.type)">{{user.departmentName}}</span>
                 </div>
             </v-btn>
             <div v-if="filteredUsers.length === 0">No results found</div>
@@ -53,11 +53,6 @@ export default {
     data: () => ({
         showSearchInput: false,
         searchInput: '',
-        drawer: true,
-        filter: {
-            departments: ['All my departments', 'Finances', 'Operations'],
-            teams: ['All my teams', 'IT Team XY', 'CPM Team Z'],
-        },
     }),
     computed: {
         ...mapState(['layout', 'chats']),
@@ -81,6 +76,9 @@ export default {
             this.showSearchInput = !this.showSearchInput
             this.$nextTick(() => this.$refs.searchInput.focus())
         },
+        departmentColor(type) {
+            return type === 'internal' ? 'grey--text text--darken-1' : 'blue--text text--darken-1'
+        }
     }
 }
 </script>
