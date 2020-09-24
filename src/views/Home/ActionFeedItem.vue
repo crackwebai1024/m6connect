@@ -72,13 +72,13 @@ export default {
       let dateNow = new Date();
       let dateNotification = new Date(date);
       let diff =(dateNow.getTime() - dateNotification.getTime()) / 1000;
-      let seconds = Math.abs(Math.round(diff % 60));
+      let seconds = Math.abs(Math.floor(diff % 60));
       diff = (diff - seconds) / 60;
-      let minutes = Math.abs(Math.round(diff % 60));
+      let minutes = Math.abs(Math.floor(diff % 60));
       diff = (diff - minutes) / 60;
-      let hours = Math.abs(Math.round(diff % 24));
+      let hours = Math.abs(Math.floor(diff % 24));
       diff = (diff - hours) / 24;
-      let days = Math.abs(Math.round(diff % 30));
+      let days = Math.abs(Math.floor(diff % 30));
       return days + ' days, ' + hours + ' hours, ' + minutes +' minutes, ' + seconds + ' seconds';
     },
     pendingApprovals(approvals) {
