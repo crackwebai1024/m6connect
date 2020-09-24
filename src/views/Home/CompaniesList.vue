@@ -26,8 +26,7 @@
           rounded
           flat
           dense
-          @keyup.enter="filter_posts(['author', 1])"
-          v-model="searchText"
+          v-model="searchInput"
           single-line
           hide-details
           solo-inverted
@@ -40,38 +39,30 @@
         </v-text-field>
       </template>
     </header-component>
-    <!-- <div
-      :key="index"
-      v-for="(item, index) of companies"
-      :class="Object.keys(companies).length !== index + 1 ? 'mb-3' : ''"
-    >
-      <general-item :companyData="item" />
-    </div> -->
     <div
       :key="index + 'company'"
-      v-for="(item, index) of companies"
+      v-for="(item, index) of filteredCompanies"
       :class="Object.keys(companies).length !== index + 1 ? 'mb-3' : ''"
     >
       <company-item :companyData="item" />
     </div>
+    <div v-if="filteredCompanies.length === 0">No results found</div>
   </v-container>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
 import CompanyItem from "@/components/Companies/CompanyItem";
-// import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 
 export default {
   components: {
     CompanyItem,
-    // GeneralItem,
     HeaderComponent,
   },
   name: "CompaniesList",
   data: () => ({
     perPage: 8,
-    searchText: "",
+    searchInput: "",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
     areas: [
       { text: "Everyone", type: "subtitle" },
@@ -91,6 +82,13 @@ export default {
     companies() {
       return this.get_companies_list();
     },
+    filteredCompanies() {
+      return this.companies.filter((company) => {
+            return company.record_name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+              || company.title.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+              || company.url.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;            
+      })
+    }
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_companies_data"]),

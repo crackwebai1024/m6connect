@@ -18,57 +18,27 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-icon size="28" class="ml-2">mdi-magnify</v-icon>
+        <v-btn icon color="grey darken-4" @click="showSearchInputFunction">
+          <v-icon class="grey--text text--darken-2">mdi-magnify</v-icon>
+        </v-btn>
       </div>
     </div>
-    <div v-for="(notification, index) in notifications" :key="'notification-'+index" class="actionfeed-content__card relative card-custom-shadow rounded white mb-4 pt-4 px-3 pb-12">
-      <div :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
-        {{ notification.typeContent }}
-      </div>
-      <div class="d-flex">
-        <v-avatar size="36">
-          <v-img :src="notification.userFrom.imgSrc"></v-img>
-        </v-avatar>
-        <div class="ml-2">
-          <p class="font-weight-bold" style="margin-bottom: -5px;">{{ notification.userFrom.name }}</p>
-          <span class="text-caption grey--text text--darken-1">{{ notification.userFrom.title }} -  {{ diffNow(notification.date) }}</span>
-        </div>
-      </div>
-      <p class="text-body-2 mt-2 mb-3 ml-2 grey--text text--darken-4">{{ notification.textContent }}</p>
-      <p v-if="notification.notificationType === 'document'" :class="notification.colorTag + '--text ' + 'text-body-2 ml-1 mb-0 blue--text text--darken-3 d-flex align-center'">
-        <v-icon class="mr-1 blue--text text--darken-3">mdi-file-document-outline</v-icon>
-        {{ notification.message }}
-      </p>
-      <p v-if="notification.notificationType === 'message'" class="message-box text-caption black--text pl-3 ml-1 mb-0 d-flex align-center">
-        {{ notification.message }}
-      </p>
-      <div v-if="notification.notificationType !== 'message'" class="d-flex mt-4 ml-2 align-center">
-        <v-badge
-          v-for="i in 3" :key="i" style="margin-left:-5px"
-          top
-          color="green lighten-2"
-          dot
-          offset-x="9"
-          offset-y="7"
-        >
-          <v-avatar size="28">
-            <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
-          </v-avatar>
-        </v-badge>
-        <p class="ml-2 mb-0 text-caption grey--text text--darken-1">2 pending</p>
-      </div>
-      <div v-if="notification.notificationType !== 'message'" class="d-flex feed-btns absolute pa-3 text-caption align-center">
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> {{ notification.likes }}</p>
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-message-outline</v-icon> {{ notification.comments }}</p>
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-share</v-icon> {{ notification.shared }}</p>
-      </div>
-    </div>
+    <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
+    <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
+    <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
 </template>
 
 <script>
+import ActionFeedItem from './ActionFeedItem'
 export default {
+  components: {
+    ActionFeedItem,
+  },
   data: () => ({
+    showSearchInput: false,
+    searchInput: '',
+    showActionBtns: false,
     // action feed data 
     notifications: [
       {
@@ -94,11 +64,11 @@ export default {
           },
           {
             review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
           },
           {
             review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
           },
         ],
       },
@@ -137,15 +107,23 @@ export default {
         followers: [
           {
             review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
           },
           {
             review: true,
             imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
           },
           {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+          },
+          {
             review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+          },
+          {
+            review: false,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
           },
         ],
       },
@@ -172,28 +150,18 @@ export default {
           },
           {
             review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
           },
           {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+          },
+          {
+            review: true,
+            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
           },
         ],
       },
-    ],
-    showLinks: false,
-    departmentsLinks: [
-      { url:'', icon:'chart-pie', title: 'Information Technology' },
-      { url:'', icon:'cookie', title: 'Supply Chain' },
-      { url:'', icon:'shield-half-full', title: 'Capital Projects' },
-      { url:'', icon:'earth', title: 'Request for Proposal' },
-      { url:'', icon:'alert', title: 'Contracts' },
-      { url:'', icon:'asterisk', title: 'Forensics' },
-      { url:'', icon:'biohazard', title: 'BioMed' }
-    ],
-    cardsList: [
-      { imgSrc:'', title: 'Cool Title', description: 'Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.'},
-      { imgSrc:'', title: 'Cool Title', description: 'Lorem ipsum dolor sit amet, consetetus sadipscing elitr, sed.' }
     ],
     areas: [
       { text: "Everyone", type: "subtitle" },
@@ -210,35 +178,18 @@ export default {
   }),
   name: "ActionFeed",
   computed: {
-    showLinksMessage: function() {
-      return this.showLinks ? 'Less' : 'More'
+    filteredNotifications() {
+        return this.notifications.filter((notification) => {
+            return notification.userFrom.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+              || notification.textContent.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+        })
     },
-    iconShowLinks: function()  {
-      return this.showLinks ? 'up' : 'down'
-    },
-    heightShowLinksDiv: function() {
-      return (this.departmentsLinks.length * 48) + 'px'
-    }
   },
   methods: {
-    toogleLinks() {
-      this.showLinks = !this.showLinks
-      let linksdiv = this.$refs.showLinksDiv
-      this.showLinks ? linksdiv.style.height = this.heightShowLinksDiv : linksdiv.style.height = "150px"
+    showSearchInputFunction() {
+      this.showSearchInput = !this.showSearchInput
+      this.$nextTick(() => this.$refs.searchInput.focus())
     },
-    diffNow(date) {
-      let dateNow = new Date();
-      let dateNotification = new Date(date);
-      let diff =(dateNow.getTime() - dateNotification.getTime()) / 1000;
-      let seconds = Math.abs(Math.round(diff % 60));
-      diff = (diff - seconds) / 60;
-      let minutes = Math.abs(Math.round(diff % 60));
-      diff = (diff - minutes) / 60;
-      let hours = Math.abs(Math.round(diff % 24));
-      diff = (diff - hours) / 24;
-      let days = Math.abs(Math.round(diff % 30));
-      return days + ' days, ' + hours + ' hours, ' + minutes +' minutes, ' + seconds + ' seconds';
-    }
   }
 };
 </script>
@@ -261,6 +212,10 @@ export default {
   .feed-btns {
     bottom: 0;
     left: 0;
+  }
+  .action-btns {
+    bottom: 0;
+    right: 0;
   }
   .message-box {
     border-left: 2px solid grey;
