@@ -10,6 +10,8 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "eslint-plugin-es-beautifier": "^1.0.1",
+    "eslint-plugin-react": "^7.21.1",
     "fusioncharts": "^3.15.2",
     "lodash": "^4.17.20",
     "vue": "^2.6.11",
@@ -27,7 +29,7 @@
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
+    "eslint": "^7.9.0",
     "eslint-plugin-vue": "^6.2.2",
     "sass": "^1.19.0",
     "sass-loader": "^8.0.0",

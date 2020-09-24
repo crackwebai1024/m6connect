@@ -1,19 +1,27 @@
 <template>
-  <div class="pa-0 px-5 d-flex" style="height: auto; position: fixed; bottom: 0; right: 0; z-index: 20">
-      <chatbox :data="{id: chat}" :key="'chatbox-' + chat" v-for="chat in chats"></chatbox>
+  <div
+    class="d-flex pa-0 px-5"
+    style="height: auto; position: fixed; bottom: 0; right: 0; z-index: 20"
+  >
+    <chatbox
+      v-for="chat in chats"
+      :key="'chatbox-' + chat"
+      :data="{id: chat}"
+    />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import Chatbox from "@/components/Home/M6Chat/Chatbox";
+import Chatbox from '@/components/Home/M6Chat/Chatbox'
 export default {
-    components: {
-        Chatbox
-    },
-    computed: {
-        ...mapState(['chats'])
-    }
+  name: 'ChatWrapper',
+  components: {
+    Chatbox
+  },
+  computed: {
+    ...mapState(['chats'])
+  }
 }
 </script>
 

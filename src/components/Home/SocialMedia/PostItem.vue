@@ -1,35 +1,60 @@
 <template>
   <v-container class="px-0 py-0 relative">
-    <div class="mb-3 card-custom-shadow white rounded">
+    <div class="card-custom-shadow mb-3 rounded white">
       <div v-if="data['postTagTitle']" :class="tagColor + ' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
         {{ data['postTagTitle'] }}
       </div>
       <v-card-title class="pb-0 pt-6">
-        <v-row no-gutters align="center">
-          <div class="d-flex align-center">
-            <v-avatar size="40" class="mr-2">
-              <img :src="data.imageUrl" />
+        <v-row
+          align="center"
+          no-gutters
+        >
+          <div class="align-center d-flex">
+            <v-avatar
+              class="mr-2"
+              size="40"
+            >
+              <img :src="data.imageUrl">
             </v-avatar>
             <div class="d-flex flex-column">
               <div
-                class="cursor-hover underline size-15 line-height-1 font-weight-bold"
+                class="cursor-hover font-weight-bold line-height-1 size-15 underline"
                 style="margin-bottom: 2px;"
-              >{{data.name}}</div>
-              <div class="d-flex text-caption line-height-1 grey--text">
-                <div class="grey--text text--darken-1">{{ data.occupation }}</div>
-                <div class="mx-1 grey--text text--darken-1">·</div>
-                <div class="grey--text text--darken-1">{{ data.timestamps.created }}</div>
+              >
+                {{ data.name }}
+              </div>
+              <div class="d-flex grey--text line-height-1 text-caption">
+                <div class="grey--text text--darken-1">
+                  {{ data.occupation }}
+                </div>
+                <div class="grey--text mx-1 text--darken-1">
+                  ·
+                </div>
+                <div class="grey--text text--darken-1">
+                  {{ data.timestamps.created }}
+                </div>
               </div>
             </div>
           </div>
-          <v-spacer></v-spacer>
-          <v-menu bottom offset-y left nudge-left>
+          <v-spacer />
+          <v-menu
+            bottom
+            left
+            nudge-left
+            offset-y
+          >
             <template v-slot:activator="{ on }">
-              <v-icon v-on="on">mdi-dots-vertical</v-icon>
+              <v-icon :on="on">
+                mdi-dots-vertical
+              </v-icon>
             </template>
             <v-list>
-              <v-list-item @click="()=> {}">Edit Post</v-list-item>
-              <v-list-item @click="()=> {}">Delete Post</v-list-item>
+              <v-list-item @click="()=> {}">
+                Edit Post
+              </v-list-item>
+              <v-list-item @click="()=> {}">
+                Delete Post
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-row>
@@ -37,35 +62,48 @@
       <div>
         <div class="px-4 py-4">
           <v-btn
-            @click="showAll()"
-            outlined
-            color="primary"
             v-if="all_images && data.images.length>4"
             class="float-button"
-          >Show less</v-btn>
-          <v-row no-gutters v-if="data.images.length !== 0">
-            <v-col :cols="widthCols()" v-for="(image, index) of picture_items" :key="index">
+            color="primary"
+            outlined
+            @click="showAll"
+          >
+            Show less
+          </v-btn>
+          <v-row
+            v-if="data.images.length !== 0"
+            no-gutters
+          >
+            <v-col
+              v-for="(image, index) of picture_items"
+              :key="index"
+              :cols="widthCols()"
+            >
               <v-img
-                :src="image.url"
-                class="mx-1 my-1 pointer"
                 aspect-ratio="1.7"
+                class="mx-1 my-1 pointer"
+                :src="image.url"
                 @click="previewImage(image)"
-              ></v-img>
+              />
             </v-col>
           </v-row>
           <v-btn
-            @click="showAll()"
+            v-if="!all_images && data.images.length>4"
             block
-            outlined
             class="mt-2"
             color="primary"
-            v-if="!all_images && data.images.length>4"
-          >Show All</v-btn>
+            outlined
+            @click="showAll"
+          >
+            Show All
+          </v-btn>
           <div
-            class="size-14 text-style black--text"
-            :class="data.images.length !== 0 ? 'mt-3' : ''"
             v-line-clamp="5"
-          >{{data.contain}}</div>
+            class="black--text size-14 text-style"
+            :class="data.images.length !== 0 ? 'mt-3' : ''"
+          >
+            {{ data.contain }}
+          </div>
         </div>
       </div>
       <div v-if="data['postType'] === 'request'" class="ma-4 mt-0 border-1">
@@ -107,48 +145,62 @@
       </div>
       <v-divider class="mx-4" />
       <v-card-actions class="px-4">
-        <v-row no-gutters align="center" class="px-2">
-          <v-icon class="mr-1" @click="likeIcon()">{{like_icon}}</v-icon>
+        <v-row
+          align="center"
+          class="px-2"
+          no-gutters
+        >
+          <v-icon
+            class="mr-1"
+            @click="likeIcon"
+          >
+            {{ like_icon }}
+          </v-icon>
           <div
-            class="my-0 cursor-hover grey--text text--darken-1"
-            @click="likeIcon()"
-          >{{ contLikes() }}</div>
+            class="cursor-hover grey--text my-0 text--darken-1"
+            @click="likeIcon"
+          >
+            {{ contLikes() }}
+          </div>
           <v-spacer />
           <div
-            class="my-0 cursor-hover underline grey--text text--darken-1 size-15"
-            @click="showCommentsPost()"
+            class="cursor-hover grey--text my-0 size-15 text--darken-1 underline"
+            @click="showCommentsPost"
           >
             Comments
-            <span>{{data.comments.length}}</span>
+            <span>{{ data.comments.length }}</span>
           </div>
         </v-row>
       </v-card-actions>
       <v-divider class="mx-4" />
       <v-col cols="12">
         <v-text-field
-          height="37"
           v-model="comment_data"
-          placeholder="Write a comment..."
-          filled
-          rounded
           dense
+          filled
+          height="37"
           hide-details
-          @keyup.enter="pushComment()"
-        ></v-text-field>
+          placeholder="Write a comment..."
+          rounded
+          @keyup.enter="pushComment"
+        />
       </v-col>
-      <div v-if="showComments" class="px-4 pb-3">
+      <div
+        v-if="showComments"
+        class="pb-3 px-4"
+      >
         <post-comments
-          :comment="comment"
-          :size="48"
           v-for="(comment, index) of data.comments"
           :key="index"
+          :comment="comment"
+          :size="48"
         >
           <div>
             <post-comments
-              :comment="nested_comment"
-              :size="36"
               v-for="(nested_comment, index2) of comment.nested_comments"
               :key="index2"
+              :comment="nested_comment"
+              :size="36"
             />
           </div>
         </post-comments>
@@ -156,53 +208,54 @@
     </div>
   </v-container>
 </template>
+
 <script>
-import PostComments from "./Comments";
-import { mapGetters, mapActions } from "vuex";
+import PostComments from './Comments'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "PostItem",
+  name: 'PostItem',
   components: {
-    PostComments,
+    PostComments
   },
   props: {
-    data: Object,
+    data: Object
   },
   data: () => ({
-    like_icon: "mdi-thumb-up-outline",
+    like_icon: 'mdi-thumb-up-outline',
     showComments: false,
     picture_items: [],
     like_state: false,
     all_images: false,
-    comment_data: "",
-    rotate: "",
+    comment_data: '',
+    rotate: ''
   }),
   methods: {
-    ...mapActions("GeneralListModule", ["push_data_to_active"]),
-    ...mapActions(["set_image_preview_overlay"]),
+    ...mapActions('GeneralListModule', ['push_data_to_active']),
+    ...mapActions(['set_image_preview_overlay']),
     widthCols() {
-      return this.data.images.length === 1 ? 12 : 6;
+      return this.data.images.length === 1 ? 12 : 6
     },
     contLikes() {
-      let reac = this.data.reactions;
-      return reac.likes + reac.enchants + reac.unlikes;
+      const reac = this.data.reactions
+      return reac.likes + reac.enchants + reac.unlikes
     },
     showAll() {
       this.picture_items = this.all_images
         ? this.data.images.slice(0, 4)
-        : this.data.images;
-      this.all_images = !this.all_images;
+        : this.data.images
+      this.all_images = !this.all_images
     },
     showCommentsPost() {
-      this.rotate = this.showComments ? "" : "full-rotate";
-      this.showComments = !this.showComments;
+      this.rotate = this.showComments ? '' : 'full-rotate'
+      this.showComments = !this.showComments
     },
     likeIcon() {
-      this.like_state = !this.like_state;
+      this.like_state = !this.like_state
       this.like_icon = this.like_state
-        ? "mdi-thumb-up"
-        : "mdi-thumb-up-outline";
-      this.print();
+        ? 'mdi-thumb-up'
+        : 'mdi-thumb-up-outline'
+      this.print()
     },
     pushComment() {
       this.data.comments.push({
@@ -212,16 +265,16 @@ export default {
         reactions: {
           likes: 0,
           enchants: 0,
-          unlikes: 0,
+          unlikes: 0
         },
         timestamps: {
-          created: "1 min",
-        },
-      });
-      this.comment_data = "";
+          created: '1 min'
+        }
+      })
+      this.comment_data = ''
     },
     print() {
-      console.log(this.data.comments.nested_comments);
+      console.log(this.data.comments.nested_comments)
     },
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected]);
@@ -234,20 +287,20 @@ export default {
       approvals.forEach(element => {
         if(!element.approval) pendingApprovals++
       });
-      
+
       return pendingApprovals;
     }
   },
   created() {
-    this.picture_items = this.data.images.slice(0, 4);
+    this.picture_items = this.data.images.slice(0, 4)
   },
   computed: {
-    ...mapGetters(["get_user_data"]),
+    ...mapGetters(['get_user_data'])
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3';
     }
-  },
-};
+  }
+}
 </script>
 
 <style>
