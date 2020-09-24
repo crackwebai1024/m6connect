@@ -93,7 +93,7 @@
             </v-card>
         </v-form>
     </v-dialog>
-    <v-subheader style="position:relative" class="primary rounded-t white--text">
+    <v-subheader class="relative primary rounded-t white--text">
     Installation
     <v-btn
         :color="isHover ? 'orange' : 'blue'"

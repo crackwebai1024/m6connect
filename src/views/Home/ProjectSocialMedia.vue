@@ -1,6 +1,6 @@
 <template>
-  <v-container class="py-0 px-3" style="height: 100%;">
-    <header-component class="mb-3 card-custom-shadow rounded" hasslot :info="{title:'Create Post', icon:''}" style="height: auto;">
+  <v-container class="py-0 px-3 h-full">
+    <header-component class="mb-3 card-custom-shadow rounded h-auto" hasslot :info="{title:'Create Post', icon:''}">
       <template v-slot:select>
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -10,7 +10,7 @@
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item v-for="(item, i) in areas" :key="i" style="height: 15px;">
+            <v-list-item v-for="(item, i) in areas" :key="i">
               <v-list-item-title
                 :class="item.type == 'title' ? 'grey--text' : 'black--text'"
               >{{ item.text }}</v-list-item-title>

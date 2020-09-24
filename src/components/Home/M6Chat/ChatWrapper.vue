@@ -1,7 +1,6 @@
 <template>
   <div
-    class="d-flex pa-0 px-5"
-    style="height: auto; position: fixed; bottom: 0; right: 0; z-index: 20"
+    class="d-flex pa-0 px-5 h-auto fixed bottom-0 right-0 z-20"
   >
     <chatbox
       v-for="chat in chats"

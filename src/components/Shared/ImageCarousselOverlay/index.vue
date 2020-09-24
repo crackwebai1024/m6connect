@@ -1,20 +1,20 @@
 <template>
   <transition name="fade">
     <v-overlay opacity="0.6" :value="overlay">
-      <v-card style="height: 100vh; width: 100vw;">
+      <v-card class="h-viewport w-viewport">
         <v-row no-gutters align="center" justify="center" class="fill-height">
-          <v-col cols="8" style="position: relative;">
+          <v-col cols="8" class="relative">
             <v-avatar
               @click="closeOverlay()"
               size="50"
               color="grey lighten-2"
-              class="pointer"
-              style="height: 50px; width: 50px; position: absolute; top: 0px; left: 15px; z-index: 100;"
+              class="pointer absolute top-0"
+              style="height: 50px; width: 50px; left: 15px; z-index: 100;"
             >
               <v-icon size="30" color="black">mdi-close</v-icon>
             </v-avatar>
             <carousel
-              style="width: 100%;"
+              class="w-full"
               :navigationEnabled="false"
               :paginationEnabled="false"
               :perPage="1"
@@ -25,7 +25,7 @@
               </slide>
             </carousel>
           </v-col>
-          <v-col cols="4" style="height: 100vh;" class="white"></v-col>
+          <v-col cols="4" class="h-viewport white"></v-col>
         </v-row>
       </v-card>
     </v-overlay>

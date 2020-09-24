@@ -11,7 +11,7 @@
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item v-for="(item, i) in areas" :key="i" style="height: 15px;">
+            <v-list-item v-for="(item, i) in areas" :key="i">
               <v-list-item-title
                 :class="item.type == 'title' ? 'grey--text' : 'black--text'"
               >{{ item.text }}</v-list-item-title>

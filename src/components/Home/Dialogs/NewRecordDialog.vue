@@ -4,7 +4,7 @@
             Create Record
         </v-card-title>
         <v-card-text
-            style="overflow-y: scroll; height: 80vh;">
+            class="record-text overflow-y">
             <v-tabs 
                 centered
                 v-model="tab">
@@ -41,3 +41,8 @@ export default {
     }),
 }
 </script>
+<style scoped>
+.record-text {
+    height: 80vh;
+}
+</style>

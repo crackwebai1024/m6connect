@@ -2,7 +2,7 @@
   <v-app>
     <template v-if="loggedIn && !$route.meta.public" >
       <top-nav />
-      <v-row no-gutters style="height: calc(100vh - 60px);" class="top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
+      <v-row no-gutters class="central-content top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
         <action-feed />
         <!-- Home / Company Profile -->
         <router-view />
@@ -65,5 +65,8 @@ export default {
   }
   * {
     color: var(--v-secondary-lighten1);
+  }
+  .central-content {
+    height: calc(100vh - 60px);
   }
 </style>
