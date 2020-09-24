@@ -2,11 +2,11 @@
   <v-container class="w-main-content px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
     <!-- General use list component-->
     <template v-if="get_screen_status()">
-      <record-container class="main-content" :data="get_record_full_screen()" />
+      <record-container class="main-content align-content-start" :data="get_record_full_screen()" />
     </template>
     <template v-else>
       <!-- Project List Component -->
-      <general-list class="main-content"/>
+      <general-list class="main-content align-content-start"/>
     </template>
   </v-container>
 </template>

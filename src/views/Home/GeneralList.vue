@@ -1,6 +1,7 @@
 <template>
-  <v-container class="py-0 px-3" style="height: 100%;">
-    <header-component hasslot :info="{title:'Search All Apps', icon:''}"  class="mb-3 card-custom-shadow rounded" style="height: auto;">
+  <v-container class="py-0 px-3 d-flex flex-wrap">
+    <header-component hasslot :info="{title:'Search All Apps', icon:''}" 
+      class="max-w-tight mb-3 card-custom-shadow rounded w-full mx-auto h-auto">
       <template v-slot:select>
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -45,9 +46,9 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="blue lighten-2"
+          color="blue lighten-2 w-full mx-auto"
+          class="max-w-tight"
           dark
-          style="width:100%;"
           v-bind="attrs"
           v-on="on"
         >
@@ -58,12 +59,12 @@
     </v-dialog>
     <div
       :key="index"
-      v-for="(item, index) of filteredRecords"
+      v-for="(item, index) of records"
       :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
     >
       <general-item :recordData="item" />
     </div>
-    <div v-if="filteredRecords.length === 0">No results found</div>
+    <div class="w-full max-w-tight mx-auto py-3" v-if="filteredRecords.length === 0">No results found</div>
   </v-container>
 </template>
 <script>

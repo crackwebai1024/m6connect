@@ -27,10 +27,9 @@
           </v-col>
         </v-row>
         <div class="d-flex flex-wrap mt-2">
-          <v-chip style="height: 25px;"
-          v-for="(tag, index) in companyData['tags']"
+          <v-chip v-for="(tag, index) in companyData['tags']"
           :key="'tagcompany-' + index"
-          class="my-1 mr-1 text-caption"
+          class="company-chip my-1 mr-1 text-caption"
           color="grey lighten-3"
           >
           {{ tag }}
@@ -54,3 +53,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.company-chip {
+  height: 25px;
+}
+</style>
