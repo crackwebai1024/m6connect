@@ -1,6 +1,15 @@
 const wi = "1280";
 const le = "1280";
 
+const Rationalization = {
+  Attributes: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Attributes"),
+  Costs: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Costs"),
+  FTE: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/FTE"),
+  Governance: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Governance"),
+  License: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/License"),
+  Users: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Users")
+}
+
 export default {
   fake_records: [
     {
@@ -501,14 +510,14 @@ export default {
       company: 2,
       teams: 2,
       contain:
-        "Ad do incididunt reprehenderit enim est laborum. Enim dolore do est eu incididunt. Commodo commodo occaecat tempor magna anim. Minim aute nisi culpa sint est et officia elit. Eiusmod eiusmod cupidatat qui qui mollit et irure nulla eiusmod reprehenderit culpa dolor laboris. Consequat pariatur cillum anim minim.",
-      name: "Rodrigo Martinez",
-      occupation: "Web Developer Senior",
+        "We are doing rationalization and need your approval.",
+      name: "Sally Ackerman",
+      occupation: "IT Analyst",
       department: "IT Apps (Department)",
       imageUrl:
         "https://picsum.photos/" + 50 + "/" + 50 + "?nocache=" + Math.random(),
       timestamps: {
-        created: "56m"
+        created: "2h"
       },
       images: [],
       reactions: {
@@ -516,7 +525,20 @@ export default {
         enchants: 23,
         unlikes: 21
       },
-      comments: []
+      comments: [],
+      postTagTitle: 'IT App Request For Approval',
+      postType: 'request',
+      request: {
+        title: 'Awesome IT Application',
+        users: [
+          { approval: true, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'John' },
+          { approval: true, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Joe' },
+          { approval: true, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Anne' },
+          { approval: false, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Julia' },
+          { approval: false, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Hanna' },
+        ]
+      },
+      componentName: Rationalization.Costs
     },
     {
       author: 3,

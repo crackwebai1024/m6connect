@@ -1,7 +1,10 @@
 <template>
-  <v-container class="px-0 py-0">
+  <v-container class="px-0 py-0 relative">
     <div class="mb-3 card-custom-shadow white rounded">
-      <v-card-title class="pb-0">
+      <div v-if="data['postTagTitle']" :class="tagColor + ' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
+        {{ data['postTagTitle'] }}
+      </div>
+      <v-card-title class="pb-0 pt-6">
         <v-row no-gutters align="center">
           <div class="d-flex align-center">
             <v-avatar size="40" class="mr-2">
@@ -63,6 +66,43 @@
             :class="data.images.length !== 0 ? 'mt-3' : ''"
             v-line-clamp="5"
           >{{data.contain}}</div>
+        </div>
+      </div>
+      <div v-if="data['postType'] === 'request'" class="ma-4 mt-0 border-1">
+        <div :class="'text-h6 py-2 px-3 font-weight-regular ' + this.tagColor + '--text'">{{ data['request'].title }}</div>
+        <v-divider></v-divider>
+        <!-- post component reference-->
+        <template v-if="data['componentName']">
+          <component v-bind:is="data['componentName']" class="pa-0 profile-component"></component>
+        </template>
+        <div class="d-flex justify-space-between pa-3 pt-0 align-center">
+          <div>
+            <div class="pt-6 pb-2 d-flex align-center">
+              <div v-for="(userRequest, index) in data['request'].users" :key="index+'userrequest'" class="d-flex">
+                <v-badge
+                  :bordered="userRequest.approval ? false : true"
+                  :dark="userRequest.approval ? false : true"
+                  top
+                  :color="userRequest.approval ? 'green accent-3' : 'white black--text'"
+                  :icon="userRequest.approval ? 'mdi-check' : 'mdi-help'"
+                  offset-x="12"
+                  offset-y="12"
+                >
+                  <v-avatar size="35">
+                    <v-img :src="userRequest.imgSrc"></v-img>
+                  </v-avatar>
+                </v-badge>
+                <template v-if="index !== data['request'].users.length - 1">
+                  <span style="height: 5px; width: 25px;" :class="lineColor(userRequest.approval) + 'my-auto'"></span>
+                </template>
+              </div>
+            </div>
+            <div class="text-caption black--text" v-if="pendingApprovals(data['request'].users) > 0">{{ pendingApprovals(data['request'].users  ) }} Pending Approvals</div>
+          </div>
+          <div class="d-flex justify-end">
+            <v-btn class="my-2 mr-2 px-6 capitalize" text color="grey darken-3">Deny</v-btn>
+            <v-btn class="my-2 px-8 capitalize" outlined color="green accent-4">Approve</v-btn>
+          </div>
         </div>
       </div>
       <v-divider class="mx-4" />
@@ -186,21 +226,46 @@ export default {
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected]);
     },
+    lineColor(approval) {
+      return approval ? 'green accent-3 ' : 'grey '
+    },
+    pendingApprovals(approvals) {
+      let pendingApprovals = 0 ;
+      approvals.forEach(element => {
+        if(!element.approval) pendingApprovals++
+      });
+      
+      return pendingApprovals;
+    }
   },
   created() {
     this.picture_items = this.data.images.slice(0, 4);
   },
   computed: {
     ...mapGetters(["get_user_data"]),
+    tagColor() {
+      return this.data['postType'] === 'request' ? 'red' : 'teal accent-3';
+    }
   },
 };
 </script>
 
-<style scoped>
+<style>
 .repeating-gradient {
   background-color: rgba(38, 38, 38, 0.7);
 }
 /* .v-text-field.v-input--dense:not(.v-text-field--outlined) input {
   padding: 0 !important;
 } */
+.v-badge--icon .v-badge__badge {
+  height: 15px !important;
+  min-width: 15px !important;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+.profile-component .v-subheader, .profile-component .v-card {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
 </style>
