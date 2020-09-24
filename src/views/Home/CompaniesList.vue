@@ -1,6 +1,7 @@
 <template>
-  <v-container class="py-0 px-3" style="height: 100%;">
-    <header-component hasslot :info="{title:'Search All Companies', icon:''}"  class="mb-3 card-custom-shadow rounded" style="height: auto;">
+  <v-container class="pa-0 d-flex flex-wrap">
+    <header-component hasslot :info="{title:'Search All Companies', icon:''}"  
+      class="max-w-tight mb-3 card-custom-shadow rounded w-full mx-auto h-auto">
       <template v-slot:select>
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -42,7 +43,7 @@
     <div
       :key="index + 'company'"
       v-for="(item, index) of filteredCompanies"
-      :class="Object.keys(companies).length !== index + 1 ? 'mb-3' : ''"
+      class="w-half px-1"
     >
       <company-item :companyData="item" />
     </div>
