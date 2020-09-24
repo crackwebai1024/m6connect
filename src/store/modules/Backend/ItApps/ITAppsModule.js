@@ -80,19 +80,7 @@ export default {
               };
             }
           });
-          let previewCommit = ItAppDescription.itappsDescriptionToJson(data);
-          
-          cont.dispatch('put_tags', previewCommit.formerly_known.concat(previewCommit.also_known))
-          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps/previewCommit.id`, previewCommit);
-          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/app_info_general/previewCommit.general_info.id`, 
-            ItAppDescription.generalInfo(previewCommit.general_info)
-          );
-          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/information_security/${data.information_security.id}`,{
-            ssn: data.information_security.ssn_foreign.id,
-            facing: data.information_security.facing,
-            phi: data.information_security.phi,
-            pci: data.information_security.pci
-          });
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps/update_all_info/${data.id}`, ItAppDescription.itappsDescriptionToJson(data));
         },
       // Licensing
         async get_licensing(cont, appId){
@@ -110,7 +98,7 @@ export default {
           return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/licensing`, data);
         },
         put_licensing(cont, data) {
-          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/licensinglicensing/${data.id}`, data);
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/licensing/${data.id}`, data);
         },
         delete_licensing(cont,id){
           axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/licensing/${id}`);

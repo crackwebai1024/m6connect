@@ -14,7 +14,9 @@ function toItappsDescription(json) {
 }
 
 function itappsDescriptionToJson(value) {
-    return uncast(JSON.parse(JSON.stringify(value)), r("ItappsDescription"));
+    let res = uncast(JSON.parse(JSON.stringify(value)), r("ItappsDescription"));
+    res.general_info = generalInfo(res.general_info);
+    return res;
 }
 
 function generalInfo(value){

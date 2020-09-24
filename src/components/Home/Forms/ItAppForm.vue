@@ -325,6 +325,7 @@ export default {
                     foreign_id: app_id
                 });
             });
+            return fka_aka;
         },
         close(){
             this.$emit('closeModal');
