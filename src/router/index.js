@@ -98,6 +98,7 @@ router.beforeEach(async (to, from, next) => {
 
   let loggedIn = store.getters["Auth/loggedIn"]
   let user = store.getters["Auth/getUser"]
+
   if(!user.id) await store.dispatch('Auth/getUserData')
 
   // Verify if route is public

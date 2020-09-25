@@ -2,17 +2,17 @@ import axios from 'axios'
 import { dataGet } from '@/utils/helpers'
 
 const state = {
-    AccessToken: "",
-    IdToken: "",
-    exp: "",
-    user: {}
-};
+  AccessToken: '',
+  IdToken: '',
+  exp: '',
+  user: {}
+}
 
 const getters = {
   loggedIn(state) {
     return (state.exp * 1000) >= +new Date()
   },
-    getUser:(state) => state.userData
+  getUser: state => state.userData
 }
 
 const mutations = {
@@ -22,27 +22,30 @@ const mutations = {
     state.exp = payload.exp
     state.user = payload.user
 
-        delete payload.userwindow.localStorage.setItem('m6Token', JSON.stringify(payload))
+    delete payload.userwindow.localStorage.setItem('m6Token', JSON.stringify(payload))
   },
-    setUser(state, payload){
-        state.user = payload
-    }
+  setUser(state, payload) {
+    state.user = payload
+  }
 }
 
 const actions = {
   getUserData({ state, commit }) {
-        return new Promise( (resolve, reject) => {
-            const { IdToken } = state
-            axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/auth/getUser`, { IdToken })
-            .then( res => {
-                commit('setUser', res.data)
-                resolve(res)
-            })
-            .catch( err => {
-                reject(err)
-            })
+    return new Promise((resolve, reject) => {
+      const { IdToken } = state
+      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/auth/getUser`, {
+        IdToken
+      })
+        .then(res => {
+          commit('setUser', res.data)
+          resolve(res)
         })
-    },searchForToken({ commit }) {
+        .catch(err => {
+          reject(err)
+        })
+    })
+  },
+  searchForToken({ commit }) {
     const str = window.localStorage.getItem('m6Token')
     if (str) {
       const m6token = JSON.parse(str)

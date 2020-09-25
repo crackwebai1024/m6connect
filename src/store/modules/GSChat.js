@@ -32,6 +32,7 @@ const mutations = {
       }
     }
   },
+  SET_CHATS: (state, payload) => state.chats = payload,
   SET_CLIENT: state => {
     state.client = new StreamChat(process.env.VUE_APP_GS_ID)
   },
@@ -62,7 +63,7 @@ const actions = {
       resolve(true)
     })
   },
-  async retrieveChats({ state }) {
+  async retrieveChats({ state, commit }) {
     const filter = {
       type: 'messaging',
       members: {
@@ -76,7 +77,7 @@ const actions = {
       watch: true,
       state: true
     })
-
+    commit('SET_CHATS', channels)
     for (const c of channels) {
       console.log(c.custom.name, c.cid)
     }
