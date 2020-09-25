@@ -193,7 +193,7 @@ export default {
     }
   },
   mounted(){
-    this.get_notifications(6).then(
+    this.get_notifications(this.info.id).then(
       res => (this.items = res),
       this.isLoading = false
     );

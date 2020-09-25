@@ -121,7 +121,7 @@ export default {
       return ind;
     },
   },
-  created() {
+  mounted() {
     this.get_it_apps().then(
       res => (this.records = this.get_general_list())
     );
