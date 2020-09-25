@@ -1,4 +1,4 @@
-import InfiniteLoading from 'vue-infinite-loading'
+import InfiniteLoading from 'vue-infinite-loading';
 import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store'
@@ -7,7 +7,7 @@ import Vue from 'vue'
 import lineClamp from 'vue-line-clamp'
 import Helpers from './utils/helpers'
 import { i18n } from './plugins/i18n'
-import './plugins/m6'
+import './plugins'
 
 Vue.use(Helpers)
 

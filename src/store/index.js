@@ -10,6 +10,9 @@ import InfoModule from './modules/InfoModule'
 import Auth from './modules/Auth'
 import Companies from './modules/Companies'
 import GSChat from './modules/GSChat'
+import PageControl from "./modules/PageControl";
+import UserSettingsControl from './modules/UserSettingsControl'
+
 
 Vue.use(Vuex)
 
@@ -208,6 +211,8 @@ export default new Vuex.Store({
     InfoModule,
     Auth,
     Companies,
-    GSChat
+    GSChat,
+    PageControl,
+    UserSettingsControl
   }
 })

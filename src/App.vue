@@ -7,10 +7,10 @@
         no-gutters
         style="height: calc(100vh - 60px);"
       >
-        <action-feed />
+        <action-feed v-show="showSidePanels" />
         <!-- Home / Company Profile -->
         <router-view />
-        <m6-chat />
+        <m6-chat v-show="showSidePanels" />
       </v-row>
       <!-- Preview overlay -->
       <chat-wrapper />
@@ -28,8 +28,8 @@ import ActionFeed from '@/views/Home/ActionFeed'
 import M6Chat from '@/components/Home/M6Chat'
 import ChatWrapper from '@/components/Home/M6Chat/ChatWrapper'
 import GeneralOverlay from '@/components/Shared/GeneralOverlay'
-import { mapState, mapActions, mapGetters } from 'vuex'
-
+import { mapState, mapGetters } from 'vuex'
+// mapActions
 export default {
   name: 'App',
   components: {
@@ -46,17 +46,21 @@ export default {
     ...mapState(['layout']),
     ...mapGetters('Auth', {
       loggedIn: 'loggedIn'
+    }),
+    ...mapState('PageControl', {
+      showSidePanels: 'showSidePanels'
     })
   },
-  mounted() {
-    this.searchForToken()
-  },
-  methods: {
-    ...mapActions('Auth', {
-      searchForToken: 'searchForToken'
-    })
-  }
-}
+  // methods: {
+  //   ...mapActions('Auth', {
+  //     searchForToken: 'searchForToken'
+  //   })
+  // },
+  // mounted() {
+  //   this.searchForToken()
+  // },
+
+};
 </script>
 
 <style>
