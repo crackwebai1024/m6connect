@@ -1,6 +1,6 @@
 <template>
     <div class="mb-5 relative">
-        <div class="actions-container mr-5">
+        <div class="actions-container">
             <v-btn icon color="grey darken-4">
                 <v-icon class="grey--text text--darken-2">mdi-filter</v-icon>
             </v-btn>

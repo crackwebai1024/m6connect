@@ -1,6 +1,6 @@
 <template>
-  <v-sheet style="position: relative; height:100vh;">
-    <div style="padding-left: 56px;">
+  <v-sheet class="relative h-viewport">
+    <div class="pl-14">
       <v-row no-gutters class="pa-3">
         <v-spacer></v-spacer>
         <v-icon @click="change_preview_navigation_drawer(false)">mdi-close</v-icon>

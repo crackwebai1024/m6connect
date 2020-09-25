@@ -110,12 +110,24 @@ $border-color: #dddddd;
   height: 100%;
 }
 
+.h-viewport {
+  height: 100vh;
+}
+
 .w-full {
   width: 100%;
 }
 
 .w-half {
   width: 50%;
+}
+
+.w-viewport {
+  width: 100vw;
+}
+
+.w-fit {
+  width: fit-content;
 }
 
 .max-w-content {
@@ -194,4 +206,37 @@ html {
   border-radius: 19px;
   margin-bottom: 10px;
   outline: none;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.right-0 {
+  right: 0
+}
+
+.left-0 {
+  left: 0
+}
+
+.top-0 {
+  top: 0
+}
+
+// z index
+.z-10 {
+  z-index: 10;
+}
+
+.z-20 {
+  z-index: 20;
+}
+
+.z-30 {
+  z-index: 30;
+}
+
+.pointer-auto {
+  pointer-events: auto;
 }

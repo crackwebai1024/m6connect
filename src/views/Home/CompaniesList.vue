@@ -6,12 +6,12 @@
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn elevation="0" class="capitalize mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
-              All Companies
+              {{ filterTypeText }}
               <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
-          <v-list dense>
-            <v-list-item v-for="(item, i) in areas" :key="i" style="height: 15px;">
+          <v-list>
+            <v-list-item @click="setTypeFilter(item.type)" v-for="(item, i) in areas" :key="i" v-if="item.type !== typeFilter">
               <v-list-item-title
                 :class="item.type == 'title' ? 'grey--text' : 'black--text'"
               >{{ item.text }}</v-list-item-title>
@@ -64,18 +64,12 @@ export default {
   data: () => ({
     perPage: 8,
     searchInput: "",
+    typeFilter: "all",
     items: ["Foo", "Bar", "Fizz", "Buzz"],
     areas: [
-      { text: "Everyone", type: "subtitle" },
-      { text: "My company", type: "subtitle" },
-      { text: "Teams", type: "title" },
-      { text: "All my teams", type: "subtitle" },
-      { text: "IT Team XY", type: "subtitle" },
-      { text: "CPM Team Z", type: "subtitle" },
-      { text: "Departments", type: "title" },
-      { text: "All my departments", type: "subtitle" },
-      { text: "Finances", type: "subtitle" },
-      { text: "Operations", type: "subtitle" },
+      { text: "All Companies", type: "all" },
+      { text: "Vendor", type: "Vendor" },
+      { text: "Customer", type: "Customer" },
     ],
   }),
   computed: {
@@ -85,14 +79,28 @@ export default {
     },
     filteredCompanies() {
       return this.companies.filter((company) => {
-            return company.record_name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
-              || company.title.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
-              || company.url.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;            
+        let indexFound = company.record_name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+          || company.title.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+          || company.url.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+
+        let typeFound = true
+        if(this.typeFilter !== "all") {
+          typeFound = company.type.toUpperCase() === this.typeFilter.toUpperCase() ? true : false
+        }
+        return indexFound &&  typeFound
       })
+    },
+    filterTypeText() {
+      return this.areas.filter((area) => {
+        return area.type == this.typeFilter
+      })[0].text
     }
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_companies_data"]),
+    setTypeFilter(type) {
+      this.typeFilter = type
+    }
   },
   created() {
     this.load_mock_companies_data();
