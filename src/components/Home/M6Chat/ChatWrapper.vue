@@ -12,16 +12,17 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Chatbox from '@/components/Home/M6Chat/Chatbox'
+
+
 export default {
   name: 'ChatWrapper',
   components: {
     Chatbox
-  },
-  computed: {
-    ...mapState(['chats'])
   }
+
+
 }
 </script>
 

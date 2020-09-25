@@ -86,6 +86,7 @@ import { mapState } from 'vuex'
 import Message from '@/components/Home/M6Chat/Message'
 
 export default {
+  name: 'Chatbox',
   components: {
     Message
   },
@@ -105,7 +106,7 @@ export default {
   },
   props: {
     data: {
-      type: {},
+      type: Object,
       default: () => {},
       required: true
     }
@@ -150,14 +151,9 @@ export default {
       }, {})
     }
   },
-
   methods: {
     closeChat() {
-      if (this.chats.includes(this.data.id)) {
-        if (this.chats.indexOf(this.data.id) > -1) {
-          this.chats.splice(this.chats.indexOf(this.data.id), 1)
-        }
-      }
+      this.$store.dispatch('GSChat/removeChat', this.data.id)
     },
     sendMessage() {
       const input = this.input

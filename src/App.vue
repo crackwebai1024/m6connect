@@ -1,8 +1,12 @@
 <template>
   <v-app>
-    <template v-if="loggedIn && !$route.meta.public" >
+    <template v-if="loggedIn && !$route.meta.public">
       <top-nav />
-      <v-row no-gutters style="height: calc(100vh - 60px);" class="top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
+      <v-row
+        class="flex flex-nowrap grey justify-space-between lighten-3 relative top-60 w-full"
+        no-gutters
+        style="height: calc(100vh - 60px);"
+      >
         <action-feed />
         <!-- Home / Company Profile -->
         <router-view />
@@ -12,49 +16,49 @@
       <chat-wrapper />
       <general-overlay />
     </template>
-    <template v-else >
+    <template v-else>
       <router-view />
-    </template>    
+    </template>
   </v-app>
 </template>
 
 <script>
-import TopNav from "@/views/Home/TopNav";
-import ActionFeed from "@/views/Home/ActionFeed";
-import M6Chat from "@/components/Home/M6Chat";
-import ChatWrapper from "@/components/Home/M6Chat/ChatWrapper";
-import GeneralOverlay from "@/components/Shared/GeneralOverlay";
-import { mapState, mapActions, mapGetters } from "vuex";
+import TopNav from '@/views/Home/TopNav'
+import ActionFeed from '@/views/Home/ActionFeed'
+import M6Chat from '@/components/Home/M6Chat'
+import ChatWrapper from '@/components/Home/M6Chat/ChatWrapper'
+import GeneralOverlay from '@/components/Shared/GeneralOverlay'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     TopNav,
     ActionFeed,
     M6Chat,
     ChatWrapper,
-    GeneralOverlay,
+    GeneralOverlay
   },
   data: () => ({
     //
   }),
-  computed:{
+  computed: {
     ...mapState(['layout']),
     ...mapGetters('Auth', {
       loggedIn: 'loggedIn'
     })
   },
+  mounted() {
+    this.searchForToken()
+  },
   methods: {
     ...mapActions('Auth', {
       searchForToken: 'searchForToken'
     })
-  },
-  mounted() {
-    this.searchForToken()
-  },
-
-};
+  }
+}
 </script>
+
 <style>
   .max-w-none {
     max-width: none;
