@@ -7,23 +7,21 @@
       <div
         v-for="(i,index) of 2" :key="index" class="preview-container py-0 px-0 mx-2">
         <div v-if="Object.keys(active_previews[index]).length != 0" class>
-          <!-- <idle-records v-if="get_idle_previews().length != 0" style="pointer-events: auto;" /> -->
+          <!-- <idle-records v-if="get_idle_previews().length != 0" class="pointer-auto" /> -->
           <div
               v-if="active_previews[index]" style="height: 78vh;"
               class="white elevation-3 py-0 px-0" >
             <preview-Selector
-              class="h-full"
-              style="pointer-events: auto;"
+              class="h-full pointer-auto"
               :data="active_previews[index]"></preview-Selector>
           </div>
         </div>
         <div v-if="get_idle_previews().length > 0">
           <v-col cols="12"
             v-if="index == 0 ? getHiddenState1() : getHiddenState2()"
-            class="px-1 pb-0 panels-preview relative"
+            class="px-1 pb-0 panels-preview relative  pointer-auto"
             :id="'idle-'+index"
             style="
-              pointer-events: auto;
               top: 70vh;
               height: 78vh;">
             <idle-records :index="index" />

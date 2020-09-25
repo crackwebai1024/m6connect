@@ -4,7 +4,7 @@
       <v-img :src="comment.imageUrl" aspect-ratio="1.7"></v-img>
     </v-avatar>
     <v-col>
-      <v-card class="py-3" flat rounded style="background-color: #F0F2F5">
+      <v-card class="py-3 grey lighten-5" flat rounded >
         <v-card-subtitle class="py-0 comment-user-text mb-1">{{comment.name}}</v-card-subtitle>
         <v-card-text class="comment-text py-0" v-line-clamp="4">{{comment.message}}</v-card-text>
       </v-card>
@@ -36,16 +36,6 @@ export default {
     like_icon: "mdi-thumb-up-outline",
   }),
   methods: {
-    contLikes() {
-      let reac = this.comment.reactions;
-      return reac.likes + reac.enchants + reac.unlikes;
-    },
-    likeIcon() {
-      this.like_state = !this.like_state;
-      this.like_icon = this.like_state
-        ? "mdi-thumb-up"
-        : "mdi-thumb-up-outline";
-    },
   },
 };
 </script>

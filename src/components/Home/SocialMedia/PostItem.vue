@@ -178,7 +178,6 @@
           </div>
         </div>
       </div>
-      <v-divider class="mx-4" />
       <v-card-actions class="px-4">
         <v-row
           align="center"
@@ -208,8 +207,34 @@
         </v-row>
       </v-card-actions>
       <v-divider class="mx-4" />
-      <v-col cols="12">
+      <v-card-actions class="px-4 py-0">
+        <v-row
+          align="center"
+          class="px-2"
+          no-gutters
+        >
+          <v-col cols="4">
+            <v-btn text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
+              <v-icon size="18" class="mr-2">mdi-thumb-up-outline</v-icon> Like
+            </v-btn>
+          </v-col>
+          <v-col cols="4">
+            <v-btn @click="showCommentsPost" text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
+              <v-icon size="18" class="mr-2">mdi-message-outline</v-icon> Comment
+            </v-btn>
+          </v-col>
+          <v-col cols="4">
+            <v-btn text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
+              <v-icon size="18" class="mr-2">mdi-share</v-icon> Share
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+      <v-divider class="mx-4" />
+
+      <v-col v-if="showComments" cols="12">
         <v-text-field
+          ref="currentUserComment"
           v-model="comment_data"
           dense
           filled
@@ -284,6 +309,7 @@ export default {
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
       this.showComments = !this.showComments
+      this.$nextTick(() => this.$refs.currentUserComment.focus())
     },
     likeIcon() {
       this.like_state = !this.like_state
