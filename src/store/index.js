@@ -9,6 +9,8 @@ import TablesModule from "./modules/TablesModule";
 import InfoModule from "./modules/InfoModule";
 import Auth from "./modules/Auth";
 import Companies from "./modules/Companies";
+import PageControl from "./modules/PageControl";
+import UserSettingsControl from './modules/UserSettingsControl'
 
 Vue.use(Vuex);
 
@@ -206,6 +208,8 @@ export default new Vuex.Store({
     TablesModule,
     InfoModule,
     Auth,
-    Companies
+    Companies,
+    PageControl,
+    UserSettingsControl
   }
 });

@@ -3,26 +3,47 @@ import { dataGet } from '../../utils/helpers';
 
 const state = {
     AccessToken: "",
-    userDynamoID: "",
-    exp: ""
+    IdToken: "",
+    exp: "",
+    userData: {}
 };
 
 const getters = {
     loggedIn(state){
         return (state.exp * 1000) >= + new Date()
-    }
+    },
+    getUser:(state) => state.userData
 };
 
 const mutations = {
     setTokens(state, payload) {
         state.AccessToken = payload.AccessToken
-        state.userDynamoID = payload.userDynamoID
+        state.IdToken = payload.IdToken
         state.exp = payload.exp
+        state.user = payload.user
+        
+        delete payload.user
         window.localStorage.setItem( 'm6Token', JSON.stringify(payload) )
+    },
+    setUser(state, payload){
+        state.user = payload
     }
 };
 
 const actions = {
+    getUserData({ state, commit }) {
+        return new Promise( (resolve, reject) => {
+            const { IdToken } = state
+            axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/auth/getUser`, { IdToken })
+            .then( res => {
+                commit('setUser', res.data)
+                resolve(res)
+            })
+            .catch( err => {
+                reject(err)
+            })
+        })
+    },
     searchForToken({ commit }) {
         const str = window.localStorage.getItem('m6Token')
         if(str) {
