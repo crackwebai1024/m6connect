@@ -5,7 +5,7 @@ const state = {
     AccessToken: "",
     IdToken: "",
     exp: "",
-    userData: {}
+    user: {}
 };
 
 const getters = {
