@@ -10,7 +10,7 @@
       </v-card>
       <div class="px-3 py-1">
         <v-row>
-          <span class="cursor-hover underline comment-btn">Like</span>
+          <span @click="like_state = !like_state" :class="likeClass + 'cursor-hover underline comment-btn'">Like</span>
           <div class="px-1">·</div>
           <span class="cursor-hover underline comment-btn">Reply</span>
           <div class="px-1">·</div>
@@ -35,6 +35,11 @@ export default {
     toggle_exclusive: 2,
     like_icon: "mdi-thumb-up-outline",
   }),
+  computed: {
+    likeClass() {
+      return this.like_state ? 'blue--text ' : ''
+    }
+  },
   methods: {
   },
 };
