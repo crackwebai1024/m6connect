@@ -15,7 +15,16 @@ const mutations = {
 const actions = {
     getList( { commit } ) {
         return new Promise( (resolve, reject) => {
-            // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+            axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`)
+            .then( res => {
+                resolve(res)
+                commit('setCompanyList', res.data.items)
+            })
+            .catch( err => reject(err))
+        })
+    },
+    getCompanyByID({ commit }) {
+        return new Promise( (resolve, reject) => {
             axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`)
             .then( res => {
                 resolve(res)
