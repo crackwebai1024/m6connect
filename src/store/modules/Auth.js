@@ -12,7 +12,9 @@ const getters = {
     loggedIn(state){
         return (state.exp * 1000) >= + new Date()
     },
-    getUser:(state) => state.userData
+    getUser(state) {
+        return state.user 
+    }
 };
 
 const mutations = {
@@ -20,12 +22,11 @@ const mutations = {
         state.AccessToken = payload.AccessToken
         state.IdToken = payload.IdToken
         state.exp = payload.exp
-        state.user = payload.user
-        
-        delete payload.user
+
         window.localStorage.setItem( 'm6Token', JSON.stringify(payload) )
     },
     setUser(state, payload){
+        console.log(payload)
         state.user = payload
     }
 };
@@ -76,7 +77,7 @@ const actions = {
             axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/auth/signin`, payload)
             .then( res => {
                 commit('setTokens', res.data)
-                resolve(res)
+                resolve(res.data)
             })
             .catch( err => {
                 reject(dataGet(err, 'response.data'))

@@ -136,7 +136,6 @@ export default {
                     this.$router.push({ name: 'home' })
 
                 } catch (error) {
-
                     if( error.type == "UserNotConfirmedException" ) {
 
                         this.$router.push({ 
