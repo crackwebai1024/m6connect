@@ -61,7 +61,7 @@ export default {
   }
   #app {
     font-family: 'Raleway', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
   }
   * {
     color: var(--v-secondary-lighten1);

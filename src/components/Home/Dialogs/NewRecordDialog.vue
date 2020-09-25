@@ -4,7 +4,7 @@
             Create Record
         </v-card-title>
         <v-card-text
-            class="record-text overflow-y">
+            class="record-text vertical-scroll">
             <v-tabs 
                 centered
                 v-model="tab">
