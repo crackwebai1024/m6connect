@@ -64,7 +64,7 @@
     >
       <general-item :recordData="item" />
     </div>
-    <div class="w-full max-w-tight mx-auto py-3" v-if="filteredRecords.length === 0">No results found</div>
+    <div class="w-full max-w-tight mx-auto py-3" v-if="records.length === 0">No results found</div>
   </v-container>
 </template>
 <script>
@@ -82,9 +82,9 @@ export default {
   name: "GeneralList",
   data: () => ({
     perPage: 8,
+    records: [],
     dialog: false,
     searchInput: "",
-    items: ["Foo", "Bar", "Fizz", "Buzz"],
     areas: [
       { text: "Everyone", type: "subtitle" },
       { text: "My company", type: "subtitle" },
@@ -100,20 +100,10 @@ export default {
   }),
   computed: {
     ...mapGetters("GeneralListModule", ["get_general_list"]),
-    records() {
-      return this.get_general_list();
-    },
-    filteredRecords() {
-      return this.records.filter((record) => {
-      return record.record_name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
-        || record.company.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
-        || record.department.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;            
-      })
-    }
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_general_data"]),
-    ...mapActions("ITAppsModule", ["get_it_apps","post_it_apps"]),
+    ...mapActions("ITAppsModule", ["get_it_apps"]),
 
     remainingPerPage(page) {
       let remaining = this.perPage;
@@ -122,18 +112,6 @@ export default {
           this.perPage - (this.perPage * this.pages - this.recordsLength);
       }
       return remaining;
-    },
-    post(){
-      this.post_it_apps({
-        id:1,
-        uid:"asda",
-        record_type:"asda",
-        record_name:"asd",
-        company:"asd",
-        description:"asd",
-        created_at:new Date(),
-        updated_at: new Date()
-      });
     },
     closeModal(){
       this.dialog = false;
@@ -144,7 +122,9 @@ export default {
     },
   },
   created() {
-    this.get_it_apps();
+    this.get_it_apps().then(
+      res => (this.records = this.get_general_list())
+    );
     // this.load_mock_general_data();
   },
 };
