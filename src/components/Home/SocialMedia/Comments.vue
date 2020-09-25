@@ -9,14 +9,14 @@
         <v-card-text class="comment-text py-0" v-line-clamp="4">{{comment.message}}</v-card-text>
         <v-card elevation="1" class="likes-comment absolute right-0 rounded-xl px-2" flat >
           <v-icon size="13" class="blue--text">mdi-thumb-up-outline</v-icon>
-          <span class="text-caption ml-1">3</span>
+          <span class="text-caption ml-1">{{likeQuantity}}</span>
         </v-card>
       </v-card>
       <div class="px-3 py-1">
         <v-row>
-          <span @click="like_state = !like_state" :class="likeClass + 'cursor-hover underline comment-btn'">Like</span>
+          <span @click="like_state = !like_state" :class="likeClass + 'cursor-hover underline comment-btn pointer'">Like</span>
           <div class="px-1">·</div>
-          <span v-if="reply" class="cursor-hover underline comment-btn">Reply</span>
+          <span v-if="reply" class="cursor-hover underline comment-btn pointer">Reply</span>
           <div v-if="reply" class="px-1">·</div>
           <span class="cursor-hover underline timestamp">1 week</span>
           <v-spacer></v-spacer>
@@ -42,6 +42,10 @@ export default {
   computed: {
     likeClass() {
       return this.like_state ? 'blue--text ' : ''
+    },
+    likeQuantity() {
+      let quantity = this.like_state ? this.comment.reactions.likes + 1 : this.comment.reactions.likes
+      return quantity
     }
   },
   methods: {

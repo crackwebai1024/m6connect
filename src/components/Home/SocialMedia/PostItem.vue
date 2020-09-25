@@ -215,7 +215,7 @@
           no-gutters
         >
           <v-col cols="4">
-            <v-btn text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
+            <v-btn @click="likeIcon" text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1" :class="{ 'grey lighten-4 white--text': like_state }" >
               <v-icon size="18" class="mr-2">mdi-thumb-up-outline</v-icon> Like
             </v-btn>
           </v-col>
@@ -290,7 +290,6 @@
                   </v-avatar>
               </v-badge>
               <v-text-field
-                ref="currentUserComment"
                 dense
                 filled
                 height="35"
