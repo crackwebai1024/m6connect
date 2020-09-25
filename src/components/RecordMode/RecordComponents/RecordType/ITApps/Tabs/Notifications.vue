@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-0 py-0 mt-5">
+  <v-container v-if="!isLoading" class="px-0 py-0 mt-5">
     <template v-if="items.length === 0">
       <v-container :class="baseColor + ' rounded-lg px-0 py-10 d-flex justify-center align-center flex-column'">
         <p class="white--text text-h5">There are no {{ itemsName }}</p>
@@ -29,7 +29,7 @@
             :headers="headers"
             :items="items"
             :single-select="singleSelect"
-            item-key="name"
+            item-key="id"
             class="elevation-0"
           > 
             <template v-slot:[`item.notifyWho`]="{ item }">
@@ -81,7 +81,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                v-model="itemInfo.date"
+                v-model="itemInfo.notification_date.date"
                 :rules="textRules"
                 label="Date"
                 readonly
@@ -92,7 +92,7 @@
             <v-date-picker v-model="itemInfo.date" @input="menu = false"></v-date-picker>
           </v-menu>
           <v-select
-            v-model="itemInfo.required"
+            v-model="itemInfo.notification_required"
             :items="['Yes', 'No']"
             :rules="selectRules"
             :color="baseColor"
@@ -133,6 +133,13 @@
       </v-form>
     </v-dialog>
   </v-container>
+  <v-container v-else>
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 <script>
 import {items} from "@/mixins/items";
@@ -147,6 +154,7 @@ export default {
   },
   data: () => ({
     menu: false,
+    isLoading: true,
     baseColor: 'deep-purple darken-3',
     itemsName: 'notifications',
     itemInfo: {
@@ -160,14 +168,14 @@ export default {
     selected: [],
     headers: [
       { text: 'Name', value: 'name' },
-      { text: 'Date', value: 'date' },
-      { text: 'Required', value: 'required' },
+      { text: 'Date', value: 'notification_date.date' },
+      { text: 'Required', value: 'notification_required' },
       { text: 'Who to notify', value: 'notifyWho' },
       { text: 'Description', value: 'description' },
     ],
   }),
   methods:{
-    ...mapActions("ITAppsModule", ["post_notification"]),
+    ...mapActions("ITAppsModule", ["post_notification", "get_notifications"]),
     post(){
       let post = { 
         noti_date:{
@@ -183,6 +191,12 @@ export default {
       };
       this.post_notification(post);
     }
+  },
+  mounted(){
+    this.get_notifications(this.info.id).then(
+      res => (this.items = res),
+      this.isLoading = false
+    );
   }
 };
 </script>
