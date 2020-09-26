@@ -113,30 +113,6 @@ export default {
   data: () => ({
     input: '',
     display: true,
-    messages: [
-      {
-        date: {
-          day: 1,
-          month: 2,
-          year: 1999,
-          hour: 19,
-          minute: 1
-        },
-        body: 'This message was sent by me',
-        author: 'me'
-      },
-      {
-        date: {
-          day: 1,
-          month: 2,
-          year: 1999,
-          hour: 19,
-          minute: 1
-        },
-        body: 'Yeah, you\'re right',
-        author: '1'
-      }
-    ]
   }),
   computed: {
     ...mapState(['chats', 'users']),
