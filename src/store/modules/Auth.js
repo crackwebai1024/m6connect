@@ -26,17 +26,19 @@ const mutations = {
         window.localStorage.setItem( 'm6Token', JSON.stringify(payload) )
     },
     setUser(state, payload){
-        console.log(payload)
         state.user = payload
     }
 };
 
 const actions = {
-    getUserData({ state, commit }) {
+    
+    getUserData({ state, commit, dispatch }) {
         return new Promise( (resolve, reject) => {
             const { IdToken } = state
             axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/auth/getUser`, { IdToken })
             .then( res => {
+                const companyRel = res.data.companies.items.find( c => c.active )
+                dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
                 commit('setUser', res.data)
                 resolve(res)
             })
