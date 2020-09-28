@@ -33,13 +33,13 @@ export default {
         messages: [
           {
             timeStamp: 1601059391854,
-            body: 'Hi!',
+            body: 'Hi! 😁',
             authorId: 1,
             read: true
           },
           {
             timeStamp: 1601059452149,
-            body: 'I need to talk to you!',
+            body: 'I need to talk to you! 🆘',
             authorId: 1,
             read: true
           },

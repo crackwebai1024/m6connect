@@ -114,11 +114,11 @@
       </div> -->
     </div>
     <!-- <v-emoji-picker @select="selectEmoji" /> -->
-    <div id="exampleInputEmoji" style="position:relative;">
-      <VEmojiPicker
-        style="position: absolute; bottom: 0px;right:0px;"
+    <div class="relative">
+      <v-emoji-picker
         v-show="showDialog"
-        labelSearch="Search"
+        class="absolute bottom-0 card-custom-shadow emoji-component grey lighten-5"
+        label-search="Search"
         lang="en"
         @select="onSelectEmoji"
       />
@@ -140,9 +140,9 @@
       <input
         ref="inputMessage"
         v-model="valueInput"
-        @keyup.enter="sendMessage"
         class="h-full mx-2 outline-none text-body-1 w-full"
         placeholder="Type a message here..."
+        @keyup.enter="sendMessage"
       >
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
@@ -230,7 +230,7 @@ export default {
         r[a.date.day] = [...r[a.date.day] || [], a]
         return r
       }, {})
-    },
+    }
   },
 
   methods: {
@@ -249,12 +249,12 @@ export default {
       }
     },
     toogleDialogEmoji() {
-      this.showDialog = !this.showDialog;
+      this.showDialog = !this.showDialog
     },
     onSelectEmoji(emoji) {
-      this.valueInput += emoji.data;
+      this.valueInput += emoji.data
       // Optional
-      this.toogleDialogEmoji();
+      this.toogleDialogEmoji()
       this.$nextTick(() => this.$refs.inputMessage.focus())
     },
     sendMessage() {
@@ -366,5 +366,21 @@ export default {
 .container-emoji::-webkit-scrollbar-track {
   background: #fff;
   border-radius: 2px;
+}
+.emoji-component {
+  right: 23px;
+}
+.emoji-component div {
+  background: #fff;
+}
+.emoji-component span {
+  display: flex !important;
+  padding: 7px 0px;
+}
+.container-search {
+  padding: 0 10px;
+}
+.container-search input {
+  outline: none;
 }
 </style>
