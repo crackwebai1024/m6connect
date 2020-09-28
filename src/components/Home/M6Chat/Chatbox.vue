@@ -140,6 +140,7 @@
       <input
         ref="inputMessage"
         v-model="valueInput"
+        @keyup.enter="sendMessage"
         class="h-full mx-2 outline-none text-body-1 w-full"
         placeholder="Type a message here..."
       >
@@ -257,7 +258,7 @@ export default {
       this.$nextTick(() => this.$refs.inputMessage.focus())
     },
     sendMessage() {
-      if(this.valueInput.trim().length === 0) {
+      if (this.valueInput.trim().length === 0) {
         this.valueInput = ''
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
@@ -269,17 +270,12 @@ export default {
         read: false,
         timeStamp: date.getTime()
       })
-      // var target = document.getElementById("target");
-      // const scrollHeightValue = this.$refs.messages.scrollHeight + 100
 
-      // this.$refs.messages.scrollIntoView(false)
-      // var container = this.$el.querySelector("#container");
-      // target.parentNode.scrollTop = target.offsetTop;
       const self = this
       this.valueInput = ''
       this.$nextTick(() => {
-        this.$refs.inputMessage.focus()
         self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.inputMessage.focus()
       })
     }
   }
