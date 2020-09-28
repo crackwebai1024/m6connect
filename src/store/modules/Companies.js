@@ -1,14 +1,22 @@
 import axios from 'axios';
 
 const state = {
-    list: []
+    list: [],
+    currentCompany: []
 };
 
-const getters = {};
+const getters = {
+    getCurrentCompanyUsers(state) {
+        return state.currentCompany.users || []
+    }
+};
 
 const mutations = {
     setCompanyList(state, payload) {
         state.list = payload;
+    },
+    setCurrentCompany(state, payload) {
+        state.currentCompany = payload;
     }
 };
 
@@ -23,12 +31,12 @@ const actions = {
             .catch( err => reject(err))
         })
     },
-    getCompanyByID({ commit }) {
+    getCompanyByID({ commit }, companyID) {
         return new Promise( (resolve, reject) => {
-            axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`)
+            axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/company/${ companyID }`)
             .then( res => {
+                commit('setCurrentCompany', res.data)
                 resolve(res)
-                commit('setCompanyList', res.data.items)
             })
             .catch( err => reject(err))
         })

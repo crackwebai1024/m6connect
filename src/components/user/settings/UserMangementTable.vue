@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 export default {
     name: "UserMangementTable",
     data: () => ({
@@ -47,12 +47,12 @@ export default {
             { text: 'Status', value: 'status' },
             { text: 'Email', value: 'email' },
         ],
-        users: [
-            { id: "1", firstName: "Emma", lastName: "Smith", status: { name: "Active", color: "green" }, email: "emmasmith@email.com", img: "https://randomuser.me/api/portraits/women/90.jpg", lastVisit: new Date(), roles: [ { name: "Staff", color: "blue darken-2" }, { name: "Company Admin", color: "red" } ], departments: [ { name: "Marketing", color: "blue" }, { name: "Sales", color: "yellow" } ] },
-            { id: "2", firstName: "Tony", lastName: "Hawk", status: { name: "Active", color: "green" }, email: "tonyhawk@email.com", img: "https://randomuser.me/api/portraits/men/13.jpg", lastVisit: new Date(), roles: [ { name: "Marketing", color: "orange darken-2" }, { name: "Developer", color: "purple" } ], departments: [ { name: "Development", color: "blue darken-2" }, { name: "Sys Ops", color: "red darken-2" } ] },
-            { id: "3", firstName: "Mary", lastName: "Williamson", status: { name: "Vacation", color: "blue" }, email: "marywilliamson@email.com", img: "https://randomuser.me/api/portraits/women/82.jpg", lastVisit: new Date(), roles: [ { name: "Staff", color: "blue darken-2" }, { name: "Company Admin", color: "red" } ], departments: [ { name: "Development", color: "blue darken-2" }, { name: "Sys Ops", color: "red darken-2" } ] },
-            { id: "4", firstName: "Duke", lastName: "Silver", status: { name: "Vacation", color: "blue" }, email: "dukesilver@email.com", img: "https://randomuser.me/api/portraits/men/59.jpg", lastVisit: new Date(), roles: [ { name: "Marketing", color: "orange darken-2" }, { name: "Developer", color: "purple" } ], departments: [ { name: "Marketing", color: "blue" }, { name: "Sales", color: "yellow" } ] },
-        ]
+        // users: [
+        //     { id: "1", firstName: "Emma", lastName: "Smith", status: { name: "Active", color: "green" }, email: "emmasmith@email.com", img: "https://randomuser.me/api/portraits/women/90.jpg", lastVisit: new Date(), roles: [ { name: "Staff", color: "blue darken-2" }, { name: "Company Admin", color: "red" } ], departments: [ { name: "Marketing", color: "blue" }, { name: "Sales", color: "yellow" } ] },
+        //     { id: "2", firstName: "Tony", lastName: "Hawk", status: { name: "Active", color: "green" }, email: "tonyhawk@email.com", img: "https://randomuser.me/api/portraits/men/13.jpg", lastVisit: new Date(), roles: [ { name: "Marketing", color: "orange darken-2" }, { name: "Developer", color: "purple" } ], departments: [ { name: "Development", color: "blue darken-2" }, { name: "Sys Ops", color: "red darken-2" } ] },
+        //     { id: "3", firstName: "Mary", lastName: "Williamson", status: { name: "Vacation", color: "blue" }, email: "marywilliamson@email.com", img: "https://randomuser.me/api/portraits/women/82.jpg", lastVisit: new Date(), roles: [ { name: "Staff", color: "blue darken-2" }, { name: "Company Admin", color: "red" } ], departments: [ { name: "Development", color: "blue darken-2" }, { name: "Sys Ops", color: "red darken-2" } ] },
+        //     { id: "4", firstName: "Duke", lastName: "Silver", status: { name: "Vacation", color: "blue" }, email: "dukesilver@email.com", img: "https://randomuser.me/api/portraits/men/59.jpg", lastVisit: new Date(), roles: [ { name: "Marketing", color: "orange darken-2" }, { name: "Developer", color: "purple" } ], departments: [ { name: "Marketing", color: "blue" }, { name: "Sales", color: "yellow" } ] },
+        // ]
     }),
     methods: {
         ...mapMutations('UserSettingsControl', {
@@ -63,7 +63,12 @@ export default {
             this.setUserToShow(user)
             this.setThirdColumnComponent({ name: "user-settings-details" })
         } 
-    }
+    },
+    computed: {
+        ...mapGetters('Companies', {
+            user: 'getCurrentCompanyUsers' 
+        })
+    },
 }
 </script>
 
