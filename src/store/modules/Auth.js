@@ -9,13 +9,13 @@ const state = {
 }
 
 const getters = {
-    loggedIn(state){
-        return (state.exp * 1000) >= + new Date()
-    },
-    getUser(state) {
-        return state.user
-    }
-};
+  loggedIn(state) {
+    return (state.exp * 1000) >= +new Date()
+  },
+  getUser(state) {
+    return state.user
+  }
+}
 
 const mutations = {
   setTokens(state, payload) {
@@ -24,8 +24,8 @@ const mutations = {
     state.exp = payload.exp
     window.localStorage.setItem('m6Token', JSON.stringify(payload))
   },
-  setUser(state, payload){
-        console.log(payload)
+  setUser(state, payload) {
+    console.log(payload)
     state.user = payload
   }
 }

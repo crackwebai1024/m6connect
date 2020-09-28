@@ -37,17 +37,30 @@ const mutations = {
     state.client = new StreamChat(process.env.VUE_APP_GS_ID)
   },
   SET_USER: async (state, payload) => {
-    await state.client.setUser(payload, state.gsToken)
+    await state.client.setUser(
+      payload,
+      state.gsToken
+    )
   }
 }
 
 const actions = {
-  createChat() {},
-  getGSToken({ commit }) {
+  createChat({ state, commit }, payload) {
+    return new Promise(resolve => {
+      const chat = state.client.channel('messaging', {
+        members: payload
+      })
+      resolve(chat)
+    })
+  },
+  getGSToken({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/getGSToken`).then(({ data }) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/getGSToken`, {
+        id: payload.id
+      }).then(({ data }) => {
         commit('SET_GS_TOKEN', data.token)
         commit('SET_CLIENT')
+        resolve(true)
       }).catch(e => reject(e))
     })
   },
@@ -81,7 +94,14 @@ const actions = {
     for (const c of channels) {
       console.log(c.custom.name, c.cid)
     }
+  },
+  setUser({ commit }, payload) {
+    return new Promise(resolve => {
+      commit('SET_USER', payload)
+      resolve(true)
+    })
   }
+
 }
 
 export default {

@@ -20,6 +20,11 @@ export default {
   name: 'ChatWrapper',
   components: {
     Chatbox
+  },
+  computed: {
+    ...mapGetters('GSChat', [
+      'chats'
+    ])
   }
 
 
