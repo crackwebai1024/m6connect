@@ -99,17 +99,19 @@ export default {
           axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/dependencie/${id}`);
         },
       // Notifications
-        post_notification(cont, data){
-          axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/notification_date`, data.noti_date).then(
-            res => (
-              data.notification.date = res.data.notification_date_id,
-              axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/notification`, data.notification)
-            )
-          );
+        async post_notification(cont, data){
+          let res = await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/notification`, data);
+          return res.data;
         },
         async get_notifications(cont, id){
           let res = await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/notifications/${id}`);
           return res.data;
+        },
+        delete_notification(cont,id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/notification/${id}`);
+        },
+        async put_notification(cont, obj){
+          return await axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/notification/${obj.notification.id}`, obj);
         },
       // GETS Selects
         async get_selects(cont, url) {
