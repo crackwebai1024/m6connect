@@ -1,9 +1,14 @@
 <template>
   <v-card
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
+    :class="[minimized ? 'minimized' : '']"
     elevation="3"
   >
-    <div class="align-center chat-title d-flex justify-space-between px-4">
+    <div
+      class="align-center chat-title d-flex justify-space-between px-4"
+      :class="[minimized ? 'blue lighten-2' : '']"
+      @click="minimizeChatBox"
+    >
       <div class="align-center d-flex">
         <img
           :alt="chatData.name"
@@ -13,7 +18,10 @@
           width="42"
         >
         <div class="ml-1">
-          <p class="font-weight-medium ma-0 pa-0 text-body-2">
+          <p
+            class="font-weight-medium ma-0 pa-0 text-body-2"
+            :class="[minimized ? 'white--text' : '']"
+          >
             {{ chatData.userName }}
           </p>
           <p
@@ -60,11 +68,13 @@
     </div>
     <v-divider
       class="divider-chat"
+      :class="[minimized ? 'd-none' : '']"
     />
     <!-- Messages Container -->
     <div
       ref="messages"
       class="messages-container mt-2 mx-2 px-2 vertical-scroll white"
+      :class="[minimized ? 'd-none' : '']"
     >
       <div
         v-for="(message, index) in chatData.messages"
@@ -114,7 +124,10 @@
       </div> -->
     </div>
     <!-- <v-emoji-picker @select="selectEmoji" /> -->
-    <div class="relative">
+    <div
+      class="relative"
+      :class="[minimized ? 'd-none' : '']"
+    >
       <v-emoji-picker
         v-show="showDialog"
         class="absolute bottom-0 card-custom-shadow emoji-component grey lighten-5"
@@ -124,8 +137,14 @@
       />
     </div>
 
-    <v-divider class="blue-grey lighten-5" />
-    <div class="align-center chat-send-section d-flex px-4">
+    <v-divider
+      class="blue-grey lighten-5"
+      :class="[minimized ? 'd-none' : '']"
+    />
+    <div
+      class="align-center chat-send-section px-4"
+      :class="[minimized ? 'd-none' : 'd-flex']"
+    >
       <v-menu
         elevation="0"
         :offset-y="offset"
@@ -219,14 +238,11 @@
 
 <script>
 import { mapState } from 'vuex'
-// import Message from '@/components/Home/M6Chat/Message'
-// import VEmojiPicker, { emojisDefault, categoriesDefault } from "v-emoji-picker";
 import VEmojiPicker from 'v-emoji-picker'
 
 export default {
   name: 'Chatbox',
   components: {
-    // Message,
     VEmojiPicker
   },
   filters: {
@@ -259,7 +275,8 @@ export default {
       { icon: 'image', type: 'image', title: 'Image' },
       { icon: 'file-outline', type: 'file', title: 'Document' }
     ],
-    offset: true
+    offset: true,
+    minimized: false
   }),
   computed: {
     ...mapState(['chats', 'users']),
@@ -325,6 +342,10 @@ export default {
     openFileManager(type) {
       console.log(type)
       return true
+    },
+    minimizeChatBox() {
+      console.log('minimizar')
+      this.minimized = !this.minimized
     }
   }
 }
@@ -334,6 +355,9 @@ export default {
 .chat-box {
   width: 370px;
   height: 460px;
+}
+.chat-box.minimized {
+  height: 70px;
 }
 .chat-title {
   height: 70px;

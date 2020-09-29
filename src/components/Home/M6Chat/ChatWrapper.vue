@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
+    class="align-end bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
   >
     <chatbox
       v-for="chatData in chatsData"
