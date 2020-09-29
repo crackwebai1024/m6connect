@@ -15,7 +15,7 @@
                 :key="'user-' + department.name + user.id"
                 class="w-full px-2 py-6 my-0 d-flex pointer capitalize justify-start"
                 v-for="user in filteredUsers"
-                elevation="0" 
+                elevation="0"
                 color="transparent">
                 <v-badge
                     bottom
@@ -43,12 +43,13 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
-    name: 'DepartmentChat',
-    props: {
-        department: Object,
-        lastDepartment: Boolean,
+  name: 'DepartmentChat',
+  props: {
+    department: {
+      type: Object,
+      default: () => {}
     },
     data: () => ({
         showSearchInput: false,
@@ -80,6 +81,7 @@ export default {
             return type === 'internal' ? 'grey--text text--darken-1' : 'blue--text text--darken-1'
         }
     }
+  }
 }
 </script>
 

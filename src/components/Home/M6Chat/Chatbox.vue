@@ -1,29 +1,29 @@
 <template>
-  <v-card 
+  <v-card
     elevation="3"
     class="chat-box d-flex mx-2 rounded-t-lg flex-column"
   >
-    <div 
+    <div
       class="chat-title d-flex justify-space-between align-center px-4"
     >
       <div class="d-flex align-center">
-        <img 
-          :alt="chatData.name" 
-          class="mr-1 rounded-circle" 
-          width="42" 
-          height="42" 
+        <img
+          :alt="chatData.name"
+          class="mr-1 rounded-circle"
+          width="42"
+          height="42"
           :src="chatData.userImgSrc"
         />
         <div class="ml-1">
           <p class="pa-0 ma-0 text-body-2 font-weight-medium">
             {{chatData.userName}}
           </p>
-          <p v-if="chatData.online" 
+          <p v-if="chatData.online"
             class="pa-0 ma-0 green--text text--accent-4 text-caption font-weight-medium"
           >
             online
           </p>
-          <p v-else 
+          <p v-else
             class="pa-0 ma-0 blue--text text-caption font-weight-medium"
           >
             last online 5 hours ago
@@ -31,26 +31,26 @@
         </div>
       </div>
       <div>
-        <v-btn 
-          class="btn-chat-shadow ml-2" 
-          color="white" 
-          fab 
+        <v-btn
+          class="btn-chat-shadow ml-2"
+          color="white"
+          fab
           x-small
         >
-          <v-icon 
-            size="15" 
+          <v-icon
+            size="15"
             class="rotate-45"
           >
             mdi-paperclip
           </v-icon>
         </v-btn>
-        <v-btn 
-          class="btn-chat-shadow ml-2" 
-          color="white" 
-          fab 
+        <v-btn
+          class="btn-chat-shadow ml-2"
+          color="white"
+          fab
           x-small
         >
-          <v-icon 
+          <v-icon
             size="15"
           >
             mdi-dots-vertical
@@ -63,25 +63,25 @@
     <div class="mx-2 mt-2 px-2 white vertical-scroll messages-container">
       <div class="d-flex" v-for="(message, index) in chatData.messages" :key="'message-'+ chatData.userId + '-' + index">
         <template v-if="currentUserId == message.authorId">
-          <div 
+          <div
             class="message-arrow arrow-up relative text-body-2 w-fit mb-3 px-3 py-2 grey lighten-4 grey--text text--darken-3 mr-2 text-right ml-auto"
           >
             {{message.body}}
           </div>
-          <v-icon 
-            size="11" 
-            :class="[message.read ? 'blue--text' : 'grey--text']" 
-          > 
+          <v-icon
+            size="11"
+            :class="[message.read ? 'blue--text' : 'grey--text']"
+          >
             mdi-check-all
           </v-icon>
         </template>
         <template v-else>
-          <img 
-            v-if="firstCommentBeforeAnswer(message.authorId, index, chatData.messages)" 
-            :alt="chatData.userName" 
-            class="mr-3 rounded-circle" 
-            width="30" 
-            height="30" 
+          <img
+            v-if="firstCommentBeforeAnswer(message.authorId, index, chatData.messages)"
+            :alt="chatData.userName"
+            class="mr-3 rounded-circle"
+            width="30"
+            height="30"
             :src="chatData.userImgSrc"
           />
           <v-card v-else elevation="0" width="30" height="30" class="mr-3"></v-card>
@@ -117,6 +117,7 @@ import { mapState } from 'vuex'
 import Message from '@/components/Home/M6Chat/Message'
 
 export default {
+  name: 'Chatbox',
   components: {
     Message
   },
@@ -136,7 +137,7 @@ export default {
   },
   props: {
     // data: {
-    //   type: {},
+    //   type: Object,
     //   default: () => {},
     //   required: true,
     // },
@@ -159,14 +160,9 @@ export default {
       }, {})
     }
   },
-
   methods: {
     closeChat() {
-      if (this.chats.includes(this.data.id)) {
-        if (this.chats.indexOf(this.data.id) > -1) {
-          this.chats.splice(this.chats.indexOf(this.data.id), 1)
-        }
-      }
+      this.$store.dispatch('GSChat/removeChat', this.data.id)
     },
     sendMessage() {
       const input = this.input
