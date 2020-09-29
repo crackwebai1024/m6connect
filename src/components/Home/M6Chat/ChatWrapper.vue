@@ -3,7 +3,7 @@
     class="bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
   >
     <chatbox
-      v-for="chatData in chatsData"
+      v-for="chatData in chats"
       :key="'chatbox-user' + chatData.userId"
       :chat-data="chatData"
     />
@@ -19,11 +19,6 @@ export default {
   name: 'ChatWrapper',
   components: {
     Chatbox
-  },
-  computed: {
-    ...mapGetters('GSChat', [
-      'chats'
-    ])
   },
   data: () => ({
     chatsData: [
@@ -131,6 +126,11 @@ export default {
       }
     ]
   }),
+  computed: {
+    ...mapGetters('GSChat', [
+      'chats'
+    ])
+  },
   methods: {
   }
 

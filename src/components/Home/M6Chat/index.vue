@@ -13,38 +13,28 @@
 import DepartmentChat from './DepartmentChat'
 import { mapGetters } from 'vuex'
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'M6Chat',
   components: {
     DepartmentChat
   },
-  data: () => ({
-    departments: [
-      {
-        name: 'My Connections'
-      },
-      {
-        name: 'People in my Company',
-        users: this.companyUsers
-      },
-      {
-        name: 'People in Vendors',
-        users: [
-          {
-            id: 10,
-            name: 'John Doe 4321',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 11,
-            name: 'John Doe 1234',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            departmentName: 'IT Department'
-          }
-        ]
-      }
-    ]
-  }),
+  data() {
+    return {
+      departments: [
+        {
+          name: 'My Connections'
+        },
+        {
+          name: 'People in my Company',
+          users: this.companyUsers
+        },
+        {
+          name: 'People in Vendors',
+          users: []
+        }
+      ]
+    }
+  },
   computed: {
     ...mapGetters('GSChat', {
       gsToken: 'gsToken',
