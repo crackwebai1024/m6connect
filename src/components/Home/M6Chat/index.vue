@@ -20,68 +20,11 @@ export default {
   data: () => ({
     departments: [
       {
-        name: 'My Connections',
-        users: [
-          {
-            id: 1,
-            name: 'John Doe',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 2,
-            name: 'Example User',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 3,
-            name: 'Another Example',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 4,
-            name: 'John',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 5,
-            name: 'Example User 2',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 6,
-            name: 'Another Example 2',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            departmentName: 'IT Department'
-          }
-        ]
+        name: 'My Connections'
       },
       {
         name: 'People in my Company',
-        users: [
-          {
-            id: 7,
-            name: 'John Doe',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 8,
-            name: 'John Doe xyz',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            departmentName: 'IT Department'
-          },
-          {
-            id: 9,
-            name: 'John Doe 9875',
-            pic: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            departmentName: 'IT Department'
-          }
-        ]
+        users: this.companyUsers
       },
       {
         name: 'People in Vendors',
@@ -107,7 +50,8 @@ export default {
       gsToken: 'gsToken',
       chats: 'chats'
     }),
-    ...mapGetters('Auth', { user: 'getUser' })
+    ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' })
   },
   watch: {
     user(a) {

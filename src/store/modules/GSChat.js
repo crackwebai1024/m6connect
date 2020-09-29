@@ -101,7 +101,6 @@ const actions = {
       resolve(true)
     })
   }
-
 }
 
 export default {
