@@ -67,9 +67,19 @@
       <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline capitalize white--text">{{ titleDialog }}</span>
-          <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-dialog
+            v-if="!dialogMode"
+            v-model="deleteDialog"
+            width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs" v-on="on" icon
+                color="white" >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <delete-dialog :element="itemInfo.name+' notification'" @closeDeleteModal="beforeDelete" />
+          </v-dialog>
         </v-card-title>
         <v-card-text class="px-16 py-10 form-labels">
           <v-text-field
@@ -157,14 +167,19 @@
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
 import {mapActions} from "vuex";
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 export default {
   name: "Notifications",
+  components: {
+    DeleteDialog
+  },
   mixins: [items, validations],
   props:{
     info: Object
   },
   data: () => ({
+    deleteDialog: false,
     menu: false,
     isLoading: true,
     contacts: [
@@ -234,6 +249,9 @@ export default {
         preview_noti_cont: this.preview_noti_cont
       });
     },
+    beforeDelete(decision){
+      decision ? this.deleteItem() : this.deleteDialog = false;
+    },
     delete(){
       this.delete_notification(this.itemInfo.id);
     }
@@ -243,7 +261,9 @@ export default {
         if( val ){
           this.dialogMode ? this.itemInfo.noti_cont = [] : null;
           this.itemInfo.noti_cont.forEach((item, ind) => {
-            this.itemInfo.noti_cont[ind] = this.contacts[this.contacts.findIndex(i => i.id === item.contact_id)]
+            if(item.contact_id !== undefined){
+              this.itemInfo.noti_cont[ind] = this.contacts[this.contacts.findIndex(i => i.id === item.contact_id)]
+            }
           });
           this.preview_noti_cont = this.itemInfo.noti_cont;
         }
