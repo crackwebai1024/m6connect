@@ -298,10 +298,10 @@ export default {
   mounted() {
     this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
   },
-
   methods: {
     closeChat() {
-      this.$emit('closeChat', this.chatData.userId)
+      // this.$emit('closeChat', this.chatData.userId)
+      this.$store.dispatch('GSChat/removeChat', this.data.id)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
       if (index === 0) {

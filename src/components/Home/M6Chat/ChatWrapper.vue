@@ -3,7 +3,7 @@
     class="align-end bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
   >
     <chatbox
-      v-for="chatData in chatsData"
+      v-for="chatData in chats"
       :key="'chatbox-user' + chatData.userId"
       :chat-data="chatData"
       @closeChat="closeChat"
@@ -12,15 +12,14 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Chatbox from '@/components/Home/M6Chat/Chatbox'
+
+
 export default {
   name: 'ChatWrapper',
   components: {
     Chatbox
-  },
-  computed: {
-    // ...mapState(['chats'])
   },
   data: () => ({
     chats: [1, 2],
@@ -129,6 +128,11 @@ export default {
       }
     ]
   }),
+  computed: {
+    ...mapGetters('GSChat', [
+      'chats'
+    ])
+  },
   methods: {
     closeChat(value) {
       this.chatsData = this.chatsData.filter(function (chatData) {
@@ -136,5 +140,7 @@ export default {
       })
     }
   }
+
+
 }
 </script>

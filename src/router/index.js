@@ -8,6 +8,7 @@ const SignUp = () => import(/* webpackChunkName: 'SignUp' */ "@/views/Auth/SignU
 const SignIn = () => import(/* webpackChunkName: 'SignIn' */ "@/views/Auth/SignIn");
 const ForgotPassword = () => import(/* webpackChunkName: 'ForgotPassword' */ "@/views/Auth/ForgotPassword");
 const ResetPassword = () => import(/* webpackChunkName: 'ResetPassword' */ "@/views/Auth/ResetPassword");
+const UserSettings = () => import(/* webpackChunkName: 'UserSettings' */ "@/views/User/UserSettings")
 
 const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components/Companies')
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
@@ -80,6 +81,11 @@ const router = new VueRouter({
       path: "/store",
       name: "store",
       component: StoreFront
+    },
+    {
+      path: "/user/settings",
+      name: "user.settings",
+      component: UserSettings
     }
   ],
 });
@@ -89,7 +95,13 @@ Vue.config.devtools = true;
 router.beforeEach(async (to, from, next) => {
   // Check if we have session in sessionStorage
   store.dispatch('Auth/searchForToken')
+
   let loggedIn = store.getters["Auth/loggedIn"]
+  if(loggedIn){
+    let user = store.getters["Auth/getUser"]
+    if(!user.id) await store.dispatch('Auth/getUserData')
+  }
+
   // Verify if route is public
   if (to.meta.public) {
     // Is public Route
@@ -107,8 +119,6 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // Check always if im logged in
     try {      
-      store.dispatch('Auth/searchForToken')
-      let loggedIn = store.getters["Auth/loggedIn"]
 
       if( loggedIn ) {
         next()

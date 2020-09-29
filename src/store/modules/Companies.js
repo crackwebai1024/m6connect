@@ -1,35 +1,52 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const state = {
-    list: []
-};
+  list: [],
+  currentCompany: []
+}
 
-const getters = {};
+const getters = {
+  getCurrentCompanyUsers(state) {
+    return state.currentCompany.users.items || []
+  }
+}
 
 const mutations = {
-    setCompanyList(state, payload) {
-        state.list = payload;
-    }
-};
+  setCompanyList(state, payload) {
+    state.list = payload
+  },
+  setCurrentCompany(state, payload) {
+    state.currentCompany = payload
+  }
+}
 
 const actions = {
-    getList( { commit } ) {
-        return new Promise( (resolve, reject) => {
-            // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-            axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`)
-            .then( res => {
-                resolve(res)
-                commit('setCompanyList', res.data.items)
-            })
-            .catch( err => reject(err))
+  getList({ commit }) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`)
+        .then(res => {
+          resolve(res)
+          commit('setCompanyList', res.data.items)
         })
-    }
+        .catch(err => reject(err))
+    })
+  },
+  getCompanyByID({ commit }, companyID) {
+    return new Promise((resolve, reject) => {
+      axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/company/${companyID}`)
+        .then(res => {
+          commit('setCurrentCompany', res.data)
+          resolve(res)
+        })
+        .catch(err => reject(err))
+    })
+  }
 }
 
 export default {
-    namespaced: true,
-    state,
-    getters,
-    mutations,
-    actions
+  namespaced: true,
+  state,
+  getters,
+  mutations,
+  actions
 }
