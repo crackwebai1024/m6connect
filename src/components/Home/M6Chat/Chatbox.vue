@@ -300,8 +300,8 @@ export default {
   },
   methods: {
     closeChat() {
-      // this.$emit('closeChat', this.chatData.userId)
-      this.$store.dispatch('GSChat/removeChat', this.data.id)
+      this.$emit('closeChat', this.chatData.userId)
+      // this.$store.dispatch('GSChat/removeChat', this.data.id)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
       if (index === 0) {
