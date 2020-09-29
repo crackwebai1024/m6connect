@@ -10,13 +10,21 @@
       @click="minimizeChatBox"
     >
       <div class="align-center d-flex">
-        <img
-          :alt="chatData.name"
-          class="mr-1 rounded-circle"
-          height="42"
-          :src="chatData.userImgSrc"
-          width="42"
+        <v-badge
+          bottom
+          class="mr-2"
+          :color="chatData.online ? 'green accent-3' : 'transparent'"
+          dot
+          offset-x="10"
+          offset-y="10"
         >
+          <v-avatar size="42">
+            <img
+              :alt="chatData.name"
+              :src="chatData.userImgSrc"
+            >
+          </v-avatar>
+        </v-badge>
         <div class="ml-1">
           <p
             class="font-weight-medium ma-0 pa-0 text-body-2"
@@ -26,20 +34,22 @@
           </p>
           <p
             v-if="chatData.online"
-            class="font-weight-medium green--text ma-0 pa-0 text--accent-4 text-caption"
+            class="font-weight-medium ma-0 pa-0 text-caption"
+            :class="[minimized ? 'white--text' : 'green--text text--accent-4']"
           >
             online
           </p>
           <p
             v-else
-            class="blue--text font-weight-medium ma-0 pa-0 text-caption"
+            class="font-weight-medium ma-0 pa-0 text-caption"
+            :class="[minimized ? 'white--text' : 'blue--text']"
           >
             last online 5 hours ago
           </p>
         </div>
       </div>
       <div>
-        <v-btn
+        <!-- <v-btn
           class="btn-chat-shadow ml-2"
           color="white"
           fab
@@ -51,8 +61,9 @@
           >
             mdi-paperclip
           </v-icon>
-        </v-btn>
+        </v-btn> -->
         <v-btn
+          @click="closeChat"
           class="btn-chat-shadow ml-2"
           color="white"
           fab
@@ -61,7 +72,7 @@
           <v-icon
             size="15"
           >
-            mdi-dots-vertical
+            mdi-close
           </v-icon>
         </v-btn>
       </div>
@@ -197,22 +208,29 @@
           </v-list-item>
         </v-list>
       </v-menu>
+      <!-- <div>
+        <div class="">
+          <input type="file" accept="image/*" @change="loadFile($event)">
+          <img style="max-height: 50px; width: 50px;" id="output">
+        </div> -->
+
       <input
         ref="inputMessage"
         v-model="valueInput"
-        class="h-full mx-2 outline-none text-body-1 w-full"
+        class="h-full px-2 outline-none text-body-1 w-full"
         placeholder="Type a message here..."
         @keyup.enter="sendMessage"
       >
+      <!-- </div> -->
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
         fab
-        height="2"
+        height="23"
         width="23"
         x-small
         @click="toogleDialogEmoji"
       >
-        <v-icon size="16">
+        <v-icon size="22">
           mdi-emoticon-happy-outline
         </v-icon>
       </v-btn>
@@ -245,20 +263,6 @@ export default {
   components: {
     VEmojiPicker
   },
-  filters: {
-    day: day => {
-      const days = {
-        1: 'Monday',
-        2: 'Tuesday',
-        3: 'Wednesday',
-        4: 'Thursday',
-        5: 'Friday',
-        6: 'Saturday',
-        7: 'Sunday'
-      }
-      return days[day]
-    }
-  },
   props: {
     chatData: {
       type: Object,
@@ -268,6 +272,7 @@ export default {
   data: () => ({
     input: '',
     display: true,
+    // user id john doe
     currentUserId: 2,
     valueInput: '',
     showDialog: false,
@@ -296,11 +301,7 @@ export default {
 
   methods: {
     closeChat() {
-      if (this.chats.includes(this.data.id)) {
-        if (this.chats.indexOf(this.data.id) > -1) {
-          this.chats.splice(this.chats.indexOf(this.data.id), 1)
-        }
-      }
+      this.$emit('closeChat', this.chatData.userId)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
       if (index === 0) {
@@ -344,8 +345,15 @@ export default {
       return true
     },
     minimizeChatBox() {
-      console.log('minimizar')
       this.minimized = !this.minimized
+    },
+    loadFile(event) {
+      const reader = new FileReader()
+      reader.onload = function () {
+        const output = document.getElementById('output')
+        output.src = reader.result
+      }
+      reader.readAsDataURL(event.target.files[0])
     }
   }
 }
@@ -353,11 +361,11 @@ export default {
 
 <style>
 .chat-box {
-  width: 370px;
+  width: 335px;
   height: 460px;
 }
 .chat-box.minimized {
-  height: 70px;
+  height: 55px;
 }
 .chat-title {
   height: 70px;
@@ -440,7 +448,7 @@ export default {
   border-radius: 2px;
 }
 .emoji-component {
-  right: 23px;
+  right: 6px;
 }
 .emoji-component div {
   background: #fff;

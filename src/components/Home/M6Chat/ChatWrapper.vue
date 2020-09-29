@@ -6,6 +6,7 @@
       v-for="chatData in chatsData"
       :key="'chatbox-user' + chatData.userId"
       :chat-data="chatData"
+      @closeChat="closeChat"
     />
   </div>
 </template>
@@ -129,6 +130,11 @@ export default {
     ]
   }),
   methods: {
+    closeChat(value) {
+      this.chatsData = this.chatsData.filter(function (chatData) {
+        return chatData.userId !== value
+      })
+    }
   }
 }
 </script>
