@@ -2,12 +2,8 @@
   <v-app>
     <template v-if="loggedIn && !$route.meta.public">
       <top-nav />
-      <v-row
-        class="flex flex-nowrap grey justify-space-between lighten-3 relative top-60 w-full"
-        no-gutters
-        style="height: calc(100vh - 60px);"
-      >
-        <action-feed v-show="showSidePanels" />
+      <v-row no-gutters class="central-content top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
+        <action-feed />
         <!-- Home / Company Profile -->
         <router-view />
         <m6-chat v-show="showSidePanels" />
@@ -69,9 +65,12 @@ export default {
   }
   #app {
     font-family: 'Raleway', sans-serif;
-    font-size: 15px;
+    font-size: 16px;
   }
   * {
     color: var(--v-secondary-lighten1);
+  }
+  .central-content {
+    height: calc(100vh - 60px);
   }
 </style>

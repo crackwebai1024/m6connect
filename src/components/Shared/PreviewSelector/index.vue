@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100%;">
+  <div class="h-full">
     <record-container :record_data="data"></record-container>
   </div>
 </template>

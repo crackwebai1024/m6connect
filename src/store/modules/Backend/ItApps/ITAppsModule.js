@@ -23,36 +23,18 @@ export default {
       // GET ITApps
         async get_it_apps(cont){
           let response = await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps`);
-          response['data'].forEach(e => {
-            let a = Convert.toItapps(e);
-            cont.state.itappsRecords.push(a);
-          });
+          cont.state.itappsRecords = Convert.toItappsArray(response['data']);
           generalListModule.state.general_list = cont.state.itappsRecords;
         },
         async get_description(cont, id) {
           let response = await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps/get_itapp_info/${id}`);
-          let convertModel = ItAppDescription.toItappsDescription(response.data);
-          Object.keys(convertModel.general_info).forEach(key => {
-            if(typeof convertModel.general_info[key] === 'object' && convertModel.general_info[key] === null)
-              convertModel.general_info[key] = {id:undefined, value:undefined, field:undefined}  
-          });
-          return convertModel;
+          return ItAppDescription.toItappsDescription(response.data);
         },
       // POST ITApp
         async post_it_apps(cont, data) {
-          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps`, Convert.itappsToJson(data));
-        },
-        async post_it_app_image(cont, data) {
-          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/app_image`, data);
-        },
-        async post_general_ifo(cont, data) {
-          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/app_info_general`, data);
-        },
-        async post_info_security(cont, data) {
-          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/information_security`, data);
-        },
-        async post_tag(cont, data) {
-          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/tag`, data);
+          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/record/itapp`, data).then(record => {
+            generalListModule.state.general_list.push(record.data.record);
+          });
         },
       // Put Itapps
         async put_itapp_description(cont, data){
@@ -117,13 +99,33 @@ export default {
           axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/dependencie/${id}`);
         },
       // Notifications
-        post_notification(cont, data){
-          axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/notification_date`, data.noti_date).then(
-            res => (
-              data.notification.date = res.data.notification_date_id,
-              axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/notification`, data.notification)
-            )
-          );
+        async post_notification(cont, data){
+          let res = await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/notification`, data);
+          return res.data;
+        },
+        async get_notifications(cont, id){
+          let res = await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/notifications/${id}`);
+          return res.data;
+        },
+        delete_notification(cont,id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/notification/${id}`);
+        },
+        async put_notification(cont, obj){
+          return await axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/notification/${obj.notification.id}`, obj);
+        },
+      // Contracts
+        async get_contracts(cont, id) {
+          return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/contract/${id}`);
+        },
+        async post_contract(cont, data){
+          let res = await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/contract`, data);
+          return res.data;
+        },
+        put_contract(cont, contract){
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/contract/${contract.id}`, contract);
+        },
+        delete_contract(cont, id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/contract/${id}`);
         },
       // GETS Selects
         async get_selects(cont, url) {

@@ -7,7 +7,7 @@
       >
         {{ data['postTagTitle'] }}
       </div>
-      <v-card-title class="pb-0 pt-6">
+      <v-card-title class="pb-0 pt-6 px-5">
         <v-row
           align="center"
           no-gutters
@@ -63,7 +63,7 @@
         </v-row>
       </v-card-title>
       <div>
-        <div class="px-4 py-4">
+        <div class="px-5 py-4">
           <v-btn
             v-if="all_images && data.images.length>4"
             class="float-button"
@@ -178,15 +178,15 @@
           </div>
         </div>
       </div>
-      <v-divider class="mx-4" />
-      <v-card-actions class="px-4">
+      <v-card-actions class="px-5">
         <v-row
           align="center"
           class="px-2"
           no-gutters
         >
           <v-icon
-            class="mr-1"
+            class="mr-1 blue--text"
+            size="20"
             @click="likeIcon"
           >
             {{ like_icon }}
@@ -208,8 +208,46 @@
         </v-row>
       </v-card-actions>
       <v-divider class="mx-4" />
-      <v-col cols="12">
+      <v-card-actions class="px-5 py-0">
+        <v-row
+          align="center"
+          class="px-2"
+          no-gutters
+        >
+          <v-col cols="4">
+            <v-btn @click="likeIcon" text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1" :class="{ 'grey lighten-4 white--text': like_state }" >
+              <v-icon size="18" class="mr-2">mdi-thumb-up-outline</v-icon> Like
+            </v-btn>
+          </v-col>
+          <v-col cols="4">
+            <v-btn @click="showCommentsPost" text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
+              <v-icon size="18" class="mr-2">mdi-message-outline</v-icon> Comment
+            </v-btn>
+          </v-col>
+          <v-col cols="4">
+            <v-btn text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
+              <v-icon size="18" class="mr-2">mdi-share</v-icon> Share
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-actions>
+      <v-divider class="mx-4" />
+
+      <v-col v-if="showComments" cols="12" class="px-5 d-flex">
+        <v-badge
+            bottom
+            color="green accent-3"
+            dot
+            offset-x="10"
+            offset-y="10"
+            class="mr-3">
+            <v-avatar size="48">
+              <img :alt="user.name" :src="user.imgSrc">
+            </v-avatar>
+        </v-badge>
         <v-text-field
+          class="black--text"
+          ref="currentUserComment"
           v-model="comment_data"
           dense
           filled
@@ -222,13 +260,14 @@
       </v-col>
       <div
         v-if="showComments"
-        class="pb-3 px-4"
+        class="pb-3 px-5"
       >
         <post-comments
           v-for="(comment, index) of data.comments"
           :key="index"
           :comment="comment"
           :size="48"
+          :reply="true"
         >
           <div>
             <post-comments
@@ -236,7 +275,29 @@
               :key="index2"
               :comment="nested_comment"
               :size="36"
+              :reply="false"
             />
+            <div class="d-flex">
+              <v-badge
+                  bottom
+                  color="green accent-3"
+                  dot
+                  offset-x="10"
+                  offset-y="10"
+                  class="mr-3">
+                  <v-avatar size="37">
+                    <img :alt="user.name" :src="user.imgSrc">
+                  </v-avatar>
+              </v-badge>
+              <v-text-field
+                dense
+                filled
+                height="35"
+                hide-details
+                placeholder="Write a reply..."
+                rounded
+              />
+            </div>
           </div>
         </post-comments>
       </div>
@@ -263,7 +324,11 @@ export default {
     like_state: false,
     all_images: false,
     comment_data: '',
-    rotate: ''
+    rotate: '',
+    user: {
+      name: 'John Doe',
+      imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'
+    },
   }),
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -284,6 +349,7 @@ export default {
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
       this.showComments = !this.showComments
+      this.$nextTick(() => this.$refs.currentUserComment.focus())
     },
     likeIcon() {
       this.like_state = !this.like_state

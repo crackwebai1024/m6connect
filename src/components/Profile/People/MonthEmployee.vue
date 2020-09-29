@@ -15,7 +15,7 @@
             <p class="mb-0 body-2 white--text text-h5">John Doeskiltsin</p>
             <p class="deep-purple--text text--lighten-4">IT Manager</p>
             <p class="deep-purple--text text--lighten-4">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor individunt ut labore et dolore magna.</p>
-            <v-btn :depressed="true" max-width="230" min-height="45" class="deep-purple accent-3 white--text rounded-lg text-h6 font-weight-medium" style="text-transform: none;">
+            <v-btn :depressed="true" max-width="230" min-height="45" class="deep-purple accent-3 white--text rounded-lg text-h6 font-weight-medium capitalize">
               Say Congrats to John!
             </v-btn>
           </div>

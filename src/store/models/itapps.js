@@ -12,6 +12,14 @@ function toItapps(json) {
     return cast(json, r("Itapps"));
 }
 
+function toItappsArray(json) {
+    let arr = [];
+    json.forEach(i => {
+        arr.push(cast(i, r("Itapps")));
+    });
+    return arr;
+}
+
 function itappsToJson(value) {
     Object.keys(value).forEach(key => {
         if(typeof value[key] === 'object' && value[key] == null) {
@@ -196,4 +204,5 @@ const typeMap = {
 module.exports = {
     "itappsToJson": itappsToJson,
     "toItapps": toItapps,
+    "toItappsArray": toItappsArray
 };
