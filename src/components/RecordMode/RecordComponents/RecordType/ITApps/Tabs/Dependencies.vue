@@ -67,6 +67,7 @@
           ></v-select>
           <v-text-field 
             v-model="itemInfo.version"
+            :rules="nameRules"
             label="Version" 
           ></v-text-field>
           <v-select
@@ -132,6 +133,7 @@
                 v-model="itemInfo.remDate"
                 label="Remeditation Date"
                 readonly
+                :rules="textRules"
                 v-bind="attrs"
                 v-on="on"
               ></v-text-field>
@@ -224,7 +226,7 @@ export default {
       this.delete_dependency(this.itemInfo.id);
     }
   },
-  created(){
+  mounted(){
     this.get_dependencies(this.info.id).then(
       res => (
         this.items = ItAppDependencies.fromAPI(res.data),
