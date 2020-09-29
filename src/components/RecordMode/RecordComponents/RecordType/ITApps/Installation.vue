@@ -15,7 +15,9 @@
                         <v-container class="px-5">
                             <v-col class="pa-0" v-for="(formElement, index) in itemLabels.general" :key="'generalitem' + index">
                                 <v-select v-if="formElement.type === 'select'"
-                                    :label="formElement.label" 
+                                    :label="formElement.label"
+                                    item-value="id"
+                                    item-text="value"
                                     :items="options.general[formElement.value]"
                                     v-model="itemInfo[formElement.value]"
                                     :rules="selectRules"
@@ -161,8 +163,9 @@
 </template>
 
 <script>
-import {items} from "@/mixins/items"
-import {validations} from "@/mixins/form-validations"
+import {items} from "@/mixins/items";
+import {validations} from "@/mixins/form-validations";
+import {mapActions} from "vuex";
 
 export default {
     name: "Installation",
@@ -172,16 +175,18 @@ export default {
         // initial information
         info: {
             // General Information
-            installType: 'APM',
-            priority: 2,
-            delivery: 'Citrix',
-            odbcConnection: 'Yes',
-            odbcName: 'description contact name',
-            windowsDct: 'No',
-            executable: '/srv/info/alala',
-            odbcSettings: 'settings description',
-            ldapAuth: 'null',
-            notes: 'notes description',
+            general_info:{
+                odbcConnection: undefined,
+                odbcSettings: undefined,
+                installType: undefined,
+                windowsDct: undefined,
+                executable: undefined,
+                priority: undefined,
+                delivery: undefined,
+                odbcName: undefined,
+                ldapAuth: undefined,
+                notes: undefined
+            },
             // Support Information
             firewallExceptions: true,
             installNotes: false,
@@ -221,11 +226,11 @@ export default {
         },
         options: {
             general: {
-                installType: ['APM','LANDesk Software Dist.','Manual', 'Vendor'],
+                installType: [],
                 priority: [5,4,3,2,1],
-                delivery: ['APM/MANUAL','Citrix','Desktop Install','NA','Web', 'Web or Citrix'],
+                delivery: [],
                 odbcConnection: ['Yes', 'No'],
-                windowsDct: ['Yes', 'No', 'Windows not needed'],
+                windowsDct: [],
                 ldapAuth: ['first option', 'second option']
             },
         },
@@ -273,46 +278,37 @@ export default {
         }
     }),
     methods: {
+        ...mapActions("ITAppsModule", ["get_all_selects"]),
         updateItemDescription() {
             if(this.valid) {
                 let info = [this.info,this.itemInfo];
                 this.info = Object.assign(...info);
+                console.log('u',this.itemInfo);
+                console.log('t',this.tabs.current);
                 this.closeDialog()
             }
         }
     },
     watch: {
-        // dialog(){
-        //     if (this.dialog) {
-        //         this.get_all_selects({params:[
-        //             'AppInfoGeneralStatus',
-        //             'AppInfoGeneralFirstContactGroup',
-        //             'AppInfoGeneralCategory',
-        //             'AppInfoGeneralType',
-        //             'AppInfoGeneralAppManagement',
-        //             'AppInfoGeneralServerHostingModel',
-        //             'AppInfoSecuritySSN'
-        //         ]}).then(res => (Object.keys(res.data).forEach(key => {
-        //             let arraySettings = app_settings.toAppsSettings(res.data[key]);
-        //             switch (key) {
-        //                 case 'AppInfoGeneralStatus':
-        //                 this.options.general.installType = arraySettings;                     break;
-        //                 case 'AppInfoGeneralFirstContactGroup':
-        //                 this.options.general.priority = arraySettings;        break;
-        //                 case 'AppInfoGeneralCategory':
-        //                 this.options.general.delivery = arraySettings;                        break;
-        //                 case 'AppInfoGeneralType':
-        //                 this.options.general.odbcConnection = arraySettings;                            break;
-        //                 case 'AppInfoGeneralAppManagement':
-        //                 this.options.general.windowsDct = arraySettings;                   break;
-        //                 case 'AppInfoGeneralServerHostingModel':
-        //                 this.options.general.ldapAuth = arraySettings;              break;
-        //                 case 'AppInfoSecuritySSN':
-        //                 this.options.general.ssn = arraySettings;                             break;
-        //             }
-        //         })));
-        //     }
-        // }
+        dialog(){
+            if (this.dialog && this.options.general.installType.length === 0) {
+                this.get_all_selects({params:[
+                    'InstallGeneralDeliveryMethod',
+                    'InstallGeneralType',
+                    'InstallGeneralWindowsPassedDCT'
+                ]}).then(res => (Object.keys(res.data).forEach(key => {
+                    let arraySettings = res.data[key];
+                    switch (key) {
+                        case 'InstallGeneralType':
+                            this.options.general.installType = arraySettings;         break;
+                        case 'InstallGeneralDeliveryMethod':
+                            this.options.general.delivery = arraySettings;            break;
+                        case 'InstallGeneralWindowsPassedDCT':
+                            this.options.general.windowsDct = arraySettings;          break;
+                    }
+                })));
+            }
+        }
     }
 }
 </script>
