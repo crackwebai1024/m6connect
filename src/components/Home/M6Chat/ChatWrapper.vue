@@ -1,11 +1,12 @@
 <template>
   <div
-    class="d-flex pa-0 mx-2 h-auto fixed bottom-0 right-0 z-20"
+    class="align-end bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
   >
     <chatbox
       v-for="chatData in chatsData"
       :key="'chatbox-user' + chatData.userId"
-      :chatData="chatData"
+      :chat-data="chatData"
+      @closeChat="closeChat"
     />
   </div>
 </template>
@@ -22,7 +23,7 @@ export default {
     // ...mapState(['chats'])
   },
   data: () => ({
-    chats: [1,2],
+    chats: [1, 2],
     chatsData: [
       {
         userId: 1,
@@ -33,46 +34,46 @@ export default {
         messages: [
           {
             timeStamp: 1601059391854,
-            body: 'Hi!',
+            body: 'Hi! 😁',
             authorId: 1,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601059452149,
-            body: 'I need to talk to you!',
+            body: 'I need to talk to you! 🆘',
             authorId: 1,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601059472148,
             body: 'Hey! How are you?',
             authorId: 2,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082639909,
             body: 'Great! Thanks, I want to send you something for your birthday',
             authorId: 1,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082706358,
             body: 'Lorem ipsum lala erdj skdjadnak',
             authorId: 2,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082740373,
             body: 'Great! Thanks, I want to send you something for your birthday',
             authorId: 1,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082746273,
             body: 'Lorem ipsum lala erdj skdjadnak',
             authorId: 2,
-            read: true,
-          },
+            read: true
+          }
         ]
       },
       {
@@ -86,49 +87,54 @@ export default {
             timeStamp: 1601059391854,
             body: 'Hey John, how have you been?',
             authorId: 3,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601059472148,
             body: 'Hi Anne! Fine',
             authorId: 2,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601059472148,
             body: 'How about you?',
             authorId: 2,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082639909,
             body: 'Great! Thanks, I need you to sign a document',
             authorId: 3,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082706358,
             body: 'Sure, send it to john@m6connect.com',
             authorId: 2,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082740373,
             body: 'Thanks! Let me a minute',
             authorId: 3,
-            read: true,
+            read: true
           },
           {
             timeStamp: 1601082746273,
             body: 'No problem',
             authorId: 2,
-            read: false,
-          },
+            read: false
+          }
         ]
       }
-    ],
+    ]
   }),
   methods: {
+    closeChat(value) {
+      this.chatsData = this.chatsData.filter(function (chatData) {
+        return chatData.userId !== value
+      })
+    }
   }
 }
 </script>
