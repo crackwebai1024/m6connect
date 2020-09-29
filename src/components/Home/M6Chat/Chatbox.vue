@@ -126,17 +126,58 @@
 
     <v-divider class="blue-grey lighten-5" />
     <div class="align-center chat-send-section d-flex px-4">
-      <v-btn
-        class="align-center btn-chat-shadow d-flex justify-center send-message white--text"
-        fab
-        height="20"
-        width="20"
-        x-small
+      <v-menu
+        elevation="0"
+        :offset-y="offset"
+        top
       >
-        <v-icon size="16">
-          mdi-plus
-        </v-icon>
-      </v-btn>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            class="align-center btn-chat-shadow d-flex justify-center send-message white--text"
+            fab
+            height="25"
+            width="25"
+            x-small
+            v-on="on"
+          >
+            <v-icon size="19">
+              mdi-plus
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <v-list class="mb-2 pa-0 transparent">
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            class="pa-0"
+          >
+            <v-tooltip
+              class="tooltip-upload-file"
+              left
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  class="align-center btn-chat-shadow d-flex justify-center pointer send-message white--text"
+                  fab
+                  height="25"
+                  width="25"
+                  x-small
+                  v-on="on"
+                  @click="openFileManager(item.type)"
+                >
+                  <v-icon size="15">
+                    mdi-{{ item.icon }}
+                  </v-icon>
+                </v-btn>
+              </template>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">{{ item.title }}</span>
+            </v-tooltip>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <input
         ref="inputMessage"
         v-model="valueInput"
@@ -147,7 +188,7 @@
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
         fab
-        height="23"
+        height="2"
         width="23"
         x-small
         @click="toogleDialogEmoji"
@@ -203,11 +244,6 @@ export default {
     }
   },
   props: {
-    // data: {
-    //   type: {},
-    //   default: () => {},
-    //   required: true,
-    // },
     chatData: {
       type: Object,
       default: null
@@ -218,7 +254,12 @@ export default {
     display: true,
     currentUserId: 2,
     valueInput: '',
-    showDialog: false
+    showDialog: false,
+    items: [
+      { icon: 'image', type: 'image', title: 'Image' },
+      { icon: 'file-outline', type: 'file', title: 'Document' }
+    ],
+    offset: true
   }),
   computed: {
     ...mapState(['chats', 'users']),
@@ -231,6 +272,9 @@ export default {
         return r
       }, {})
     }
+  },
+  mounted() {
+    this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
   },
 
   methods: {
@@ -277,6 +321,10 @@ export default {
         self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
+    },
+    openFileManager(type) {
+      console.log(type)
+      return true
     }
   }
 }
@@ -382,5 +430,15 @@ export default {
 }
 .container-search input {
   outline: none;
+}
+.v-list-item {
+  min-height: 30px !important;
+}
+.v-menu__content {
+  box-shadow: none !important;
+}
+.v-tooltip__content {
+  background: transparent !important;
+  padding: 0;
 }
 </style>
