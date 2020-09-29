@@ -113,6 +113,20 @@ export default {
         async put_notification(cont, obj){
           return await axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/notification/${obj.notification.id}`, obj);
         },
+      // Contracts
+        async get_contracts(cont, id) {
+          return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/contract/${id}`);
+        },
+        async post_contract(cont, data){
+          let res = await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/contract`, data);
+          return res.data;
+        },
+        put_contract(cont, contract){
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/contract/${contract.id}`, contract);
+        },
+        delete_contract(cont, id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/contract/${id}`);
+        },
       // GETS Selects
         async get_selects(cont, url) {
           return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps_settings/specifi/field${url}`);

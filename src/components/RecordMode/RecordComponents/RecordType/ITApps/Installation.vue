@@ -280,6 +280,39 @@ export default {
                 this.closeDialog()
             }
         }
+    },
+    watch: {
+        // dialog(){
+        //     if (this.dialog) {
+        //         this.get_all_selects({params:[
+        //             'AppInfoGeneralStatus',
+        //             'AppInfoGeneralFirstContactGroup',
+        //             'AppInfoGeneralCategory',
+        //             'AppInfoGeneralType',
+        //             'AppInfoGeneralAppManagement',
+        //             'AppInfoGeneralServerHostingModel',
+        //             'AppInfoSecuritySSN'
+        //         ]}).then(res => (Object.keys(res.data).forEach(key => {
+        //             let arraySettings = app_settings.toAppsSettings(res.data[key]);
+        //             switch (key) {
+        //                 case 'AppInfoGeneralStatus':
+        //                 this.options.general.installType = arraySettings;                     break;
+        //                 case 'AppInfoGeneralFirstContactGroup':
+        //                 this.options.general.priority = arraySettings;        break;
+        //                 case 'AppInfoGeneralCategory':
+        //                 this.options.general.delivery = arraySettings;                        break;
+        //                 case 'AppInfoGeneralType':
+        //                 this.options.general.odbcConnection = arraySettings;                            break;
+        //                 case 'AppInfoGeneralAppManagement':
+        //                 this.options.general.windowsDct = arraySettings;                   break;
+        //                 case 'AppInfoGeneralServerHostingModel':
+        //                 this.options.general.ldapAuth = arraySettings;              break;
+        //                 case 'AppInfoSecuritySSN':
+        //                 this.options.general.ssn = arraySettings;                             break;
+        //             }
+        //         })));
+        //     }
+        // }
     }
 }
 </script>
