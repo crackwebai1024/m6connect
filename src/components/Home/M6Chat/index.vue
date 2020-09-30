@@ -18,11 +18,19 @@ export default {
   components: {
     DepartmentChat
   },
-  data() {
-    return {
-      departments: [
+  computed: {
+    ...mapGetters('GSChat', {
+      gsToken: 'gsToken',
+      chats: 'chats',
+      connections: 'connections'
+    }),
+    ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
+    departments() {
+      return [
         {
-          name: 'My Connections'
+          name: 'My Connections',
+          users: []
         },
         {
           name: 'People in my Company',
@@ -35,14 +43,6 @@ export default {
       ]
     }
   },
-  computed: {
-    ...mapGetters('GSChat', {
-      gsToken: 'gsToken',
-      chats: 'chats'
-    }),
-    ...mapGetters('Auth', { user: 'getUser' }),
-    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' })
-  },
   watch: {
     user(a) {
       if (!this.gsToken && a.id) {
@@ -53,6 +53,7 @@ export default {
             image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
           }
           this.$store.dispatch('GSChat/setUser', user)
+          this.$store.dispatch('GSChat/retrieveChats', this.user.id)
         })
       }
     }

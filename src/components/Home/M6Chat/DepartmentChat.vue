@@ -33,11 +33,11 @@
       >
       <v-btn
         v-for="user in filteredUsers"
-        :key="'user-' + department.name + user.id"
+        :key="'user-' + department.name + user.user.id"
         class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
         color="transparent"
         elevation="0"
-        @click="startChat(user.id)"
+        @click="startChat(user.user.id)"
       >
         <v-badge
           bottom
@@ -47,13 +47,23 @@
           offset-x="10"
           offset-y="10"
         >
-          <v-avatar size="36">
-            <v-img :src="user.pic" />
+          <v-avatar
+            color="blue"
+            dark
+            size="36"
+          >
+            <v-img
+              v-if="user.pic"
+              :src="user.pic"
+            />
+            <template v-else>
+              <span class="text-uppercase white--text">{{ user.user.firstName.charAt(0) }}{{ user.user.lastName.charAt(0) }}</span>
+            </template>
           </v-avatar>
         </v-badge>
         <div class="align-start d-flex flex-column">
           <p class="font-weight-bold mb-0">
-            {{ user.name }}
+            {{ user.user.firstName }} {{ user.user.lastName }}
           </p>
           <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
         </div>
@@ -70,7 +80,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'DepartmentChat',
   props: {
@@ -86,22 +96,25 @@ export default {
   }),
   computed: {
     ...mapState(['layout', 'chats']),
+    ...mapGetters('Auth', { user: 'getUser' }),
     filteredUsers() {
       if (this.department.users) {
-        return this.department.users.filter(user => user.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1)
+        return this.department.users.filter(user => {
+          if (user.user.firstName.toLowerCase().trim().indexOf(this.searchInput.toLowerCase().trim()) !== -1) {
+            return true
+          }
+          if (user.user.lastName.toLowerCase().trim().indexOf(this.searchInput.toLowerCase().trim()) !== -1) {
+            return true
+          }
+          return false
+        })
       }
       return []
     }
   },
   methods: {
     startChat(id) {
-      const c = this.chats
-      if (!c.includes(id)) {
-        if (c.length > 4) {
-          c.shift()
-        }
-        c.push(id)
-      }
+      this.$store.dispatch('GSChat/createChat', [this.user.id, id])
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput

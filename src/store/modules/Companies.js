@@ -7,7 +7,10 @@ const state = {
 
 const getters = {
   getCurrentCompanyUsers(state) {
-    return state.currentCompany.users.items || []
+    if (state.currentCompany.users) {
+      return state.currentCompany.users.items || []
+    }
+    return []
   }
 }
 
