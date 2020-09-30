@@ -62,7 +62,7 @@ export default {
               };
             }
           });
-          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps/update_all_info/${data.id}`, ItAppDescription.itappsDescriptionToJson(data));
+          return await axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps/update_all_info/${data.id}`, ItAppDescription.itappsDescriptionToJson(data));
         },
       // Licensing
         async get_licensing(cont, appId){

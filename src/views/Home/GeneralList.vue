@@ -42,7 +42,7 @@
     </header-component>
     <v-dialog
       v-model="dialog"
-      width="500"
+      width="800"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -71,7 +71,7 @@
 import { mapGetters, mapActions } from "vuex";
 import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
-import NewRecordDialog from "@/components/Home/Dialogs/NewRecordDialog";
+import NewRecordDialog from "@/components/Dialogs/NewRecordDialog";
 
 export default {
   components: {

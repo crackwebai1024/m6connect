@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import ItAppForm from '../Forms/ItAppForm'
+import NewRecordDialog from "@/components/Home/Forms/ItAppForm";
 
 export default {
     name: "NewRecordDialog",

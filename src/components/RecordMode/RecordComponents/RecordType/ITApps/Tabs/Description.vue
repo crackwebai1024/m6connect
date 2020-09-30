@@ -97,7 +97,7 @@
       <p class="text-caption font-weight-bold mb-1 text-right white--text">{{ itapp_description['information_security']['ssn_foreign']['value'] }}</p>
     </div>
 
-    <v-dialog v-model="dialog" persistent max-width="800px" >
+    <v-dialog v-model="dialog" persistent max-width="800px">
       <v-form ref="form" v-model="valid" class="white">
         <v-card-text class="pa-0">
           <v-toolbar
@@ -123,7 +123,7 @@
             </template>
           </v-toolbar>
 
-          <v-tabs-items v-model="tabs" class="px-16 py-10 form-labels" v-if="Object.keys(itemInfo).length != 0">
+          <v-tabs-items v-model="tabs" class="record-text px-16 py-10 form-labels" v-if="Object.keys(itemInfo).length != 0">
             <!-- GENERAL -->
             <v-tab-item>
               <v-row>
@@ -263,7 +263,7 @@
                     :items="[]"
                     label="Also Known AS(AKA)"
                     item-text="value"
-                    item-value="id"
+                    deletable-chips
                     multiple
                     hint="Add new AKAs hitting enter"
                     chips
@@ -275,7 +275,7 @@
                     :items="[]"
                     label="Formerly Known AS(FKA)"
                     item-text="value"
-                    item-value="id"
+                    deletable-chips
                     multiple
                     hint="Add new FKAs hitting enter"
                     chips
@@ -322,7 +322,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-3" text @click="closeDialog">Cancel</v-btn>
-          <v-btn :disabled="!valid" color="blue darken-3" text @click="updateItemDescription">Update</v-btn>
+          <v-btn :disabled="!valid" color="blue darken-3" text @click="updateItem">Update</v-btn>
         </v-card-actions>
       </v-form>
     </v-dialog>
@@ -362,6 +362,7 @@ export default {
     firstContactGroupOptions: [],
     category: [],
     type: [],
+    preview_tags: [],
     appManagement: [],
     serverHostingModel: [],
     ssn: [],
@@ -370,16 +371,17 @@ export default {
     ...mapActions('ITAppsModule',[
       'get_all_selects', 'get_description', 'put_itapp_description'
     ]),
-    updateItemDescription() {
-      if(this.valid) {
-        let info = [this.itapp_description,this.itemInfo];
-        this.itapp_description = Object.assign(...info);
-        this.closeDialog();
-        this.put_itapp_description(this.itapp_description);
-      }
+    put() {
+      this.itemInfo['tags'] = this.preview_tags;
+      this.itapp_description = this.itemInfo;
+      this.put_itapp_description(this.itemInfo).then(
+        res => (
+          this.itapp_description['also_known'] = res.data['known_as']['also_know_as'],
+          this.itapp_description['formerly_known'] = res.data['known_as']['formerly_known_as']
+        ));
     }
   },
-  created(){
+  mounted(){
     this.get_description(this.info.id).then(
       response => (this.itapp_description = response)
     );
@@ -410,14 +412,23 @@ export default {
           this.ssn = arraySettings;                             break;
       }
     })));
-  }
+  },
+  watch:{
+      dialog:function(val){
+        if( val ){
+          this.preview_tags = this.itemInfo.formerly_known.concat(this.itemInfo.also_known);
+        }
+      }
+  },
 };
 </script>
 <style lang="scss">
 .items-container {
-  height: 180px;
   overflow-x: auto;
   overflow-y: auto;
+}
+.record-text{
+  height: 70vh;
 }
 .btn-circle-add-item {
   position: absolute;
