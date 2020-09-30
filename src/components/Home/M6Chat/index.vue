@@ -75,15 +75,7 @@ export default {
             image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
           }
           this.$store.dispatch('GSChat/setUser', user)
-          this.$store.dispatch('GSChat/retrieveChats', this.user.id).then(() => {
-            // Here we will initializate the watchers for new messages
-            this.connections.forEach(channel => {
-              channel.watch()
-              channel.on('message.new', event => {
-                console.log('desde index')
-              })
-            })
-          })
+          this.$store.dispatch('GSChat/retrieveChats', this.user.id)
         })
       }
     }

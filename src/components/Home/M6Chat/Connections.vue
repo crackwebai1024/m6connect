@@ -62,9 +62,16 @@
           </v-avatar>
         </v-badge>
         <div class="align-start d-flex flex-column">
-          <p class="font-weight-bold mb-0">
-            {{ channel.membersInChannel.user.name }}
-          </p>
+          <v-badge
+            :content="channel.unreads"
+            inline
+            :value="channel.unreads"
+          >
+            <p class="font-weight-bold mb-0">
+              {{ channel.membersInChannel.user.name }}
+            </p>
+          </v-badge>
+
           <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
         </div>
       </v-btn>
@@ -97,6 +104,7 @@ export default {
   computed: {
     ...mapState(['layout', 'chats']),
     ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('GSChat', { client: 'client' }),
     filteredChannels() {
       const result = []
       this.department.channels.forEach(channel => {
@@ -114,7 +122,13 @@ export default {
       return result
     }
   },
+  async mounted() {
+    this.client.on('notification.message_new', r => {
+      console.log(r)
+    })
+  },
   methods: {
+    addNewMessage(event) {},
     startChat(channel) {
       this.$store.dispatch('GSChat/pushChat', channel)
     },
