@@ -152,8 +152,29 @@
       class="blue-grey lighten-5"
       :class="[minimized ? 'd-none' : '']"
     />
+    <!-- images or files ui -->
+    <template v-if="srcImageFiles.length > 0">
+      <div class="images-container d-flex pt-4 pb-6 px-2 mx-4">
+        <div class="relative w-fit mx-1" v-for="(srcImageFile, index) in srcImageFiles" :key="'previewimage-' + index">
+          <img class="image-preview" :src="srcImageFile"/>
+          <v-btn
+            @click="removeImage(index)"
+            class="absolute top-0 right-0 btn-chat-shadow ml-2"
+            color="grey lighten-2"
+            fab
+            style="height:15px; width:15px;"
+          >
+            <v-icon
+              size="12"
+            >
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </template>
     <div
-      class="align-end chat-send-section px-4 py-3"
+      class="align-center chat-send-section px-4"
       :class="[minimized ? 'd-none' : 'd-flex']"
     >
       <v-menu
@@ -196,7 +217,7 @@
                     multiple
                     prepend-icon="mdi-image"
                     hide-input
-                    @change="onDocsChange($event)"
+                    @change="onImagesChange($event)"
                   ></v-file-input>
                 </div>
               </template>
@@ -219,7 +240,7 @@
                     multiple
                     prepend-icon="mdi-file-outline"
                     hide-input
-                    @change="onImagesChange($event)"
+                    @change="onDocsChange($event)"
                   ></v-file-input>
                 </div>
               </template>
@@ -228,36 +249,13 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <div class="w-full">
-        <!-- images or files ui -->
-        <div class="d-flex px-2">
-          <div class="relative w-fit">
-            <template v-if="url.length > 0">
-              <img class="image-preview" :src="url"/>
-              <v-btn
-                @click="removeFile"
-                class="absolute top-0 right-0 btn-chat-shadow ml-2"
-                color="grey lighten-2"
-                fab
-                style="height:15px; width:15px;"
-              >
-                <v-icon
-                  size="12"
-                >
-                  mdi-close
-                </v-icon>
-              </v-btn>
-            </template>
-          </div>
-        </div>
-        <input
-          ref="inputMessage"
-          v-model="valueInput"
-          class="h-full px-2 outline-none text-body-1 w-full"
-          placeholder="Type a message here..."
-          @keyup.enter="sendMessage"
-        >
-      </div>
+      <input
+        ref="inputMessage"
+        v-model="valueInput"
+        class="h-full px-2 outline-none text-body-1 w-full"
+        placeholder="Type a message here..."
+        @keyup.enter="sendMessage"
+      >
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
         fab
@@ -328,6 +326,13 @@ export default {
         r[a.date.day] = [...r[a.date.day] || [], a]
         return r
       }, {})
+    },
+    srcImageFiles() {
+      let srcImages = []
+      this.imageFiles.forEach((imageFile) => {
+        srcImages.push(URL.createObjectURL(imageFile))
+      })
+      return srcImages
     }
   },
   mounted() {
@@ -370,31 +375,28 @@ export default {
 
       const self = this
       this.valueInput = ''
+      this.imageFiles = []
+      this.docFiles = []
       this.$nextTick(() => {
         self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
     },
-    openFileManager(type) {
-      console.log(type)
-      return true
-    },
     minimizeChatBox() {
       this.minimized = !this.minimized
     },
     onImagesChange(e) {
-      // const file = e.target.files[0]
-      console.log(e[0])
-      // this.imageFiles = e.target.files
+      this.imageFiles = e
       this.url = URL.createObjectURL(e[0])
-      // console.log(url)
+      this.$refs.inputMessage.focus()
     },
     onDocsChange(e) {
-      // const file = e.target.files[0];
-      console.log(e[0])
-      // this.docFiles = e.target.files
+      this.docFiles = e
       this.url = URL.createObjectURL(e[0])
-      // console.log(url)
+      this.$refs.inputMessage.focus()
+    },
+    removeImage(index) {
+      this.imageFiles.splice(index, 1);
     }
   }
 }
@@ -412,9 +414,9 @@ export default {
   min-height: 60px;
   background: #F7FCFF;
 }
-.rotate-45 {
+/* .rotate-45 {
   transform: rotate(45deg);
-}
+} */
 .-rotate-45 {
   transform: rotate(-45deg);
 }
@@ -471,7 +473,7 @@ export default {
   top: 0px;
 }
 .chat-send-section {
-  /* height: 60px; */
+  min-height: 50px;
 }
 .container-emoji {
     height: 158px !important;
@@ -538,5 +540,8 @@ export default {
   width: 40px;
   object-fit: cover;
   border-radius: 6px;
+}
+.images-container {
+  overflow-x: scroll;
 }
 </style>
