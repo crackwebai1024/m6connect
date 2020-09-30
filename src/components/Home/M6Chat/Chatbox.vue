@@ -1,9 +1,8 @@
 <template>
   <v-card
-    class="chat-box d-flex flex-column mx-2 rounded-t-lg"
-    :class="[minimized ? 'minimized' : '']"
     v-if="dataReady"
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
+    :class="[minimized ? 'minimized' : '']"
     elevation="3"
   >
     <div
@@ -65,11 +64,11 @@
           </v-icon>
         </v-btn> -->
         <v-btn
-          @click="closeChat"
           class="btn-chat-shadow ml-2"
           color="white"
           fab
           x-small
+          @click="closeChat"
         >
           <v-icon
             size="15"
@@ -219,7 +218,7 @@
       <input
         ref="inputMessage"
         v-model="valueInput"
-        class="h-full px-2 outline-none text-body-1 w-full"
+        class="h-full outline-none px-2 text-body-1 w-full"
         placeholder="Type a message here..."
         @keyup.enter="sendMessage"
       >
