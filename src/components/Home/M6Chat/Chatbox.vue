@@ -1,46 +1,57 @@
 <template>
   <v-card
+    class="chat-box d-flex flex-column mx-2 rounded-t-lg"
+    :class="[minimized ? 'minimized' : '']"
     v-if="dataReady"
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
     elevation="3"
   >
     <div
       class="align-center chat-title d-flex justify-space-between px-4"
-      @click="closeChat"
+      :class="[minimized ? 'blue lighten-2' : '']"
+      @click="minimizeChatBox"
     >
       <div class="align-center d-flex">
-        <template v-if="users.length > 1" />
-        <template v-else>
-          <img
-            :alt="channel.name"
-            class="mr-1 rounded-circle"
-            height="42"
-            :src="users[0].user.image"
-            width="42"
-          >
-        </template>
+        <v-badge
+          bottom
+          class="mr-2"
+          :color="chatData.online ? 'green accent-3' : 'transparent'"
+          dot
+          offset-x="10"
+          offset-y="10"
+        >
+          <v-avatar size="42">
+            <img
+              :alt="chatData.name"
+              :src="chatData.userImgSrc"
+            >
+          </v-avatar>
+        </v-badge>
         <div class="ml-1">
-          <p class="font-weight-medium ma-0 pa-0 text-body-2">
-            <template v-for="userInfo in users">
-              {{ userInfo.user.name }}
-            </template>
+          <p
+            class="font-weight-medium ma-0 pa-0 text-body-2"
+            :class="[minimized ? 'white--text' : '']"
+          >
+            {{ chatData.userName }}
           </p>
           <p
-            v-if="users[0].user.online"
-            class="font-weight-medium green--text ma-0 pa-0 text--accent-4 text-caption"
+            v-if="chatData.online"
+            class="font-weight-medium ma-0 pa-0 text-caption"
+            :class="[minimized ? 'white--text' : 'green--text text--accent-4']"
           >
             online
           </p>
           <p
             v-else
-            class="blue--text font-weight-medium ma-0 pa-0 text-caption"
+            class="font-weight-medium ma-0 pa-0 text-caption"
+            :class="[minimized ? 'white--text' : 'blue--text']"
           >
             {{ users[0].user.last_active }}
           </p>
         </div>
       </div>
       <div>
-        <v-btn
+        <!-- <v-btn
           class="btn-chat-shadow ml-2"
           color="white"
           fab
@@ -52,8 +63,9 @@
           >
             mdi-paperclip
           </v-icon>
-        </v-btn>
+        </v-btn> -->
         <v-btn
+          @click="closeChat"
           class="btn-chat-shadow ml-2"
           color="white"
           fab
@@ -62,20 +74,27 @@
           <v-icon
             size="15"
           >
-            mdi-dots-vertical
+            mdi-close
           </v-icon>
         </v-btn>
       </div>
     </div>
-    <v-divider class="divider-chat" />
+    <v-divider
+      class="divider-chat"
+      :class="[minimized ? 'd-none' : '']"
+    />
     <!-- Messages Container -->
-    <div class="messages-container mt-2 mx-2 px-2 vertical-scroll white">
+    <div
+      ref="messages"
+      class="messages-container mt-2 mx-2 px-2 vertical-scroll white"
+      :class="[minimized ? 'd-none' : '']"
+    >
       <div
-        v-for="(message, index) in messages"
-        :key="'message-'+ state.channel.id + '-' + index"
+        v-for="(message, index) in chatData.messages"
+        :key="'message-'+ chatData.userId + '-' + index"
         class="d-flex"
       >
-        <template v-if="user.id === message.user.id">
+        <template v-if="currentUserId === message.authorId">
           <div
             class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-auto mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
@@ -94,7 +113,7 @@
             :alt="channel.userName"
             class="mr-3 rounded-circle"
             height="30"
-            :src="channel.userImgSrc"
+            :src="chatData.userImgSrc"
             width="30"
           >
           <v-card
@@ -117,32 +136,103 @@
         <v-divider class="blue-grey lighten-5"></v-divider>
       </div> -->
     </div>
-    <v-divider class="blue-grey lighten-5" />
-    <div class="align-center chat-send-section d-flex px-4">
-      <v-btn
-        class="align-center btn-chat-shadow d-flex justify-center send-message white--text"
-        fab
-        height="20"
-        width="20"
-        x-small
+    <!-- <v-emoji-picker @select="selectEmoji" /> -->
+    <div
+      class="relative"
+      :class="[minimized ? 'd-none' : '']"
+    >
+      <v-emoji-picker
+        v-show="showDialog"
+        class="absolute bottom-0 card-custom-shadow emoji-component grey lighten-5"
+        label-search="Search"
+        lang="en"
+        @select="onSelectEmoji"
+      />
+    </div>
+
+    <v-divider
+      class="blue-grey lighten-5"
+      :class="[minimized ? 'd-none' : '']"
+    />
+    <div
+      class="align-center chat-send-section px-4"
+      :class="[minimized ? 'd-none' : 'd-flex']"
+    >
+      <v-menu
+        elevation="0"
+        :offset-y="offset"
+        top
       >
-        <v-icon size="16">
-          mdi-plus
-        </v-icon>
-      </v-btn>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-bind="attrs"
+            class="align-center btn-chat-shadow d-flex justify-center send-message white--text"
+            fab
+            height="25"
+            width="25"
+            x-small
+            v-on="on"
+          >
+            <v-icon size="19">
+              mdi-plus
+            </v-icon>
+          </v-btn>
+        </template>
+
+        <v-list class="mb-2 pa-0 transparent">
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            class="pa-0"
+          >
+            <v-tooltip
+              class="tooltip-upload-file"
+              left
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  class="align-center btn-chat-shadow d-flex justify-center pointer send-message white--text"
+                  fab
+                  height="25"
+                  width="25"
+                  x-small
+                  v-on="on"
+                  @click="openFileManager(item.type)"
+                >
+                  <v-icon size="15">
+                    mdi-{{ item.icon }}
+                  </v-icon>
+                </v-btn>
+              </template>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">{{ item.title }}</span>
+            </v-tooltip>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- <div>
+        <div class="">
+          <input type="file" accept="image/*" @change="loadFile($event)">
+          <img style="max-height: 50px; width: 50px;" id="output">
+        </div> -->
+
       <input
-        v-model="input"
-        class="h-full mx-2 outline-none text-body-2 w-full"
+        ref="inputMessage"
+        v-model="valueInput"
+        class="h-full px-2 outline-none text-body-1 w-full"
         placeholder="Type a message here..."
+        @keyup.enter="sendMessage"
       >
+      <!-- </div> -->
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
         fab
         height="23"
         width="23"
         x-small
+        @click="toogleDialogEmoji"
       >
-        <v-icon size="16">
+        <v-icon size="22">
           mdi-emoticon-happy-outline
         </v-icon>
       </v-btn>
@@ -168,26 +258,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Message from '@/components/Home/M6Chat/Message'
+import VEmojiPicker from 'v-emoji-picker'
 
 export default {
   name: 'Chatbox',
   components: {
-    Message
-  },
-  filters: {
-    day: day => {
-      const days = {
-        1: 'Monday',
-        2: 'Tuesday',
-        3: 'Wednesday',
-        4: 'Thursday',
-        5: 'Friday',
-        6: 'Saturday',
-        7: 'Sunday'
-      }
-      return days[day]
-    }
+    VEmojiPicker
   },
   props: {
     channel: {
@@ -198,6 +274,7 @@ export default {
   data: () => ({
     input: '',
     display: true,
+    // user id john doe
     currentUserId: 2,
     dataReady: false,
     messages: [],
@@ -205,7 +282,15 @@ export default {
       messages: [],
       members: [],
       channel: {}
-    }
+    },
+    valueInput: '',
+    showDialog: false,
+    items: [
+      { icon: 'image', type: 'image', title: 'Image' },
+      { icon: 'file-outline', type: 'file', title: 'Document' }
+    ],
+    offset: true,
+    minimized: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -234,6 +319,9 @@ export default {
     this.channel.on('message.new', this.addNewMessage)
     this.dataReady = true
   },
+  mounted() {
+    this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+  },
   methods: {
     addNewMessage(event) {
       console.log('desde chatbox')
@@ -260,17 +348,63 @@ export default {
       // } else {
       //   return authorId === messages[index - 1].authorId ? false : true
       // }
+    },
+    toogleDialogEmoji() {
+      this.showDialog = !this.showDialog
+    },
+    onSelectEmoji(emoji) {
+      this.valueInput += emoji.data
+      // Optional
+      this.toogleDialogEmoji()
+      this.$nextTick(() => this.$refs.inputMessage.focus())
+    },
+    sendMessage() {
+      if (this.valueInput.trim().length === 0) {
+        this.valueInput = ''
+        this.$nextTick(() => this.$refs.inputMessage.focus())
+        return true
+      }
+      const date = new Date()
+      this.chatData.messages.push({
+        authorId: this.currentUserId,
+        body: this.valueInput,
+        read: false,
+        timeStamp: date.getTime()
+      })
+
+      const self = this
+      this.valueInput = ''
+      this.$nextTick(() => {
+        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.inputMessage.focus()
+      })
+    },
+    openFileManager(type) {
+      console.log(type)
+      return true
+    },
+    minimizeChatBox() {
+      this.minimized = !this.minimized
+    },
+    loadFile(event) {
+      const reader = new FileReader()
+      reader.onload = function () {
+        const output = document.getElementById('output')
+        output.src = reader.result
+      }
+      reader.readAsDataURL(event.target.files[0])
     }
   }
-
 }
 </script>
 
-
 <style>
 .chat-box {
-  width: 370px;
+  width: 335px;
   height: 460px;
+}
+.chat-box.minimized {
+  height: 55px;
 }
 .chat-title {
   height: 70px;
@@ -337,5 +471,45 @@ export default {
 .chat-send-section {
   height: 60px;
 }
+.container-emoji {
+    height: 158px !important;
+    margin-right: 5px;
+}
+.container-emoji::-webkit-scrollbar {
+  width: 4px !important;
+}
+.container-emoji::-webkit-scrollbar-thumb {
+  background: #B4B1CA;
+  border-radius: 2px;
+}
+.container-emoji::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 2px;
+}
+.emoji-component {
+  right: 6px;
+}
+.emoji-component div {
+  background: #fff;
+}
+.emoji-component span {
+  display: flex !important;
+  padding: 7px 0px;
+}
+.container-search {
+  padding: 0 10px;
+}
+.container-search input {
+  outline: none;
+}
+.v-list-item {
+  min-height: 30px !important;
+}
+.v-menu__content {
+  box-shadow: none !important;
+}
+.v-tooltip__content {
+  background: transparent !important;
+  padding: 0;
+}
 </style>
-

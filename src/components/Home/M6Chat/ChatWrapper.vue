@@ -1,11 +1,12 @@
 <template>
   <div
-    class="bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
+    class="align-end bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
   >
     <chatbox
-      v-for="chatData in chats"
+      v-for="chatData in chatsData"
       :key="'chatbox-user' + chatData.userId"
       :channel="chatData"
+      @closeChat="closeChat"
     />
   </div>
 </template>
@@ -22,12 +23,17 @@ export default {
   },
   data: () => ({
   }),
-  computed: {
-    ...mapGetters('GSChat', [
-      'chats'
-    ])
-  },
+  // computed: {
+  //   ...mapGetters('GSChat', [
+  //     'chats'
+  //   ])
+  // },
   methods: {
+    closeChat(value) {
+      this.chatsData = this.chatsData.filter(function (chatData) {
+        return chatData.userId !== value
+      })
+    }
   }
 
 
