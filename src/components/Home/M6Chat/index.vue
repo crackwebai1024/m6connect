@@ -1,22 +1,40 @@
 <template>
   <div class="dont-show-scroll h-full pa-5 panel-people vertical-scroll">
-    <department-chat
+    <template
       v-for="(department, index) in departments"
-      :key="'department-' + index"
-      :department="department"
-      :last-department=" index !== departments.length - 1 "
-    />
+    >
+      {{ department.type }}
+      <department-chat
+        v-if="department.type !== 'connections'"
+        :key="'department-' + index"
+        :department="department"
+        :last-department=" index !== departments.length - 1 "
+      />
+      <connections
+        v-else-if="department.channels.length"
+        :key="'department-' + index"
+        :department="department"
+        :last-department=" index !== departments.length - 1 "
+      />
+    </template>
   </div>
 </template>
 
 <script>
 import DepartmentChat from './DepartmentChat'
+import Connections from './Connections'
 import { mapGetters } from 'vuex'
 export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'M6Chat',
   components: {
-    DepartmentChat
+    DepartmentChat,
+    Connections
+  },
+  data() {
+    return {
+      watchers: []
+    }
   },
   computed: {
     ...mapGetters('GSChat', {
@@ -30,7 +48,8 @@ export default {
       return [
         {
           name: 'My Connections',
-          users: []
+          channels: this.connections,
+          type: 'connections'
         },
         {
           name: 'People in my Company',
@@ -53,7 +72,15 @@ export default {
             image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
           }
           this.$store.dispatch('GSChat/setUser', user)
-          this.$store.dispatch('GSChat/retrieveChats', this.user.id)
+          this.$store.dispatch('GSChat/retrieveChats', this.user.id).then(() => {
+            // Here we will initializate the watchers for new messages
+            this.connections.forEach(channel => {
+              channel.watch()
+              channel.on('message.new', event => {
+                console.log('desde index')
+              })
+            })
+          })
         })
       }
     }

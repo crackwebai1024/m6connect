@@ -27,7 +27,7 @@ const mutations = {
     }
   },
   REMOVE_CHAT: (state, payload) => {
-    const channel = state.chats.find(chat => chat.channel.id === payload)
+    const channel = state.chats.find(chat => chat.id === payload)
     const index = state.chats.indexOf(channel)
     if (index > -1) {
       state.chats.splice(index, 1)
@@ -102,7 +102,7 @@ const actions = {
 
     const channels = await state.client.queryChannels(filter, sort, {
       watch: false,
-      state: true
+      state: false
     })
     commit('SET_MY_CONNECTIONS', channels)
   },

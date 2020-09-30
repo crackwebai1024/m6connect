@@ -9,19 +9,24 @@
       @click="closeChat"
     >
       <div class="align-center d-flex">
-        <img
-          :alt="channel.name"
-          class="mr-1 rounded-circle"
-          height="42"
-          :src="members.user.image"
-          width="42"
-        >
+        <template v-if="users.length > 1" />
+        <template v-else>
+          <img
+            :alt="channel.name"
+            class="mr-1 rounded-circle"
+            height="42"
+            :src="users[0].user.image"
+            width="42"
+          >
+        </template>
         <div class="ml-1">
           <p class="font-weight-medium ma-0 pa-0 text-body-2">
-            {{ members.user.name }}
+            <template v-for="userInfo in users">
+              {{ userInfo.user.name }}
+            </template>
           </p>
           <p
-            v-if="members.user.online"
+            v-if="users[0].user.online"
             class="font-weight-medium green--text ma-0 pa-0 text--accent-4 text-caption"
           >
             online
@@ -30,7 +35,7 @@
             v-else
             class="blue--text font-weight-medium ma-0 pa-0 text-caption"
           >
-            last online 5 hours ago
+            {{ users[0].user.last_active }}
           </p>
         </div>
       </div>
@@ -70,11 +75,11 @@
         :key="'message-'+ state.channel.id + '-' + index"
         class="d-flex"
       >
-        <template v-if="currentUserId === message.authorId">
+        <template v-if="user.id === message.user.id">
           <div
             class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-auto mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
-            {{ message.body }}
+            {{ message.text }}
           </div>
           <v-icon
             :class="[message.read ? 'blue--text' : 'grey--text']"
@@ -162,7 +167,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import Message from '@/components/Home/M6Chat/Message'
 
 export default {
@@ -195,6 +200,7 @@ export default {
     display: true,
     currentUserId: 2,
     dataReady: false,
+    messages: [],
     state: {
       messages: [],
       members: [],
@@ -202,6 +208,7 @@ export default {
     }
   }),
   computed: {
+    ...mapGetters('Auth', { user: 'getUser' }),
     groupedMessages() {
       return this.messages.reduce(function (r, a) {
         r[a.date.day] = [...r[a.date.day] || [], a]
@@ -211,25 +218,30 @@ export default {
     owner: function () {
       return this.state.members.find(r => r.role === 'owner')
     },
-    members: function () {
-      return this.state.members.find(r => r.role === 'member')
-    },
-    messages: function () {
-      return this.state.messages || []
+    users: function () {
+      const users = []
+      this.state.members.forEach(user => {
+        if (user.user.id !== this.user.id) {
+          users.push(user)
+        }
+      })
+      return users
     }
   },
   async mounted() {
     this.state = await this.channel.watch()
-
-
-    this.channel.on('message.new', event => {
-      console.log(event)
-    })
+    this.messages = this.state.messages
+    this.channel.on('message.new', this.addNewMessage)
     this.dataReady = true
   },
   methods: {
-    closeChat() {
-      this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
+    addNewMessage(event) {
+      console.log('desde chatbox')
+      this.messages = [...this.messages, event.message]
+    },
+    async closeChat() {
+      this.channel.off('message.new', this.addNewMessage)
+      await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
     sendMessage() {
       const input = this.input.trim()
@@ -239,8 +251,6 @@ export default {
       this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
         message: input
-      }).then(response => {
-        console.log(response)
       }).catch(e => console.error(e))
       this.input = ''
     },
