@@ -14,15 +14,15 @@
         <v-badge
           bottom
           class="mr-2"
-          :color="chatData.online ? 'green accent-3' : 'transparent'"
+          :color="channel.online ? 'green accent-3' : 'transparent'"
           dot
           offset-x="10"
           offset-y="10"
         >
           <v-avatar size="42">
             <img
-              :alt="chatData.name"
-              :src="chatData.userImgSrc"
+              :alt="channel.name"
+              :src="users[0].user.image"
             >
           </v-avatar>
         </v-badge>
@@ -31,10 +31,10 @@
             class="font-weight-medium ma-0 pa-0 text-body-2"
             :class="[minimized ? 'white--text' : '']"
           >
-            {{ chatData.userName }}
+            {{ users[0].user.name }}
           </p>
           <p
-            v-if="chatData.online"
+            v-if="users[0].user.online"
             class="font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'green--text text--accent-4']"
           >
@@ -89,11 +89,11 @@
       :class="[minimized ? 'd-none' : '']"
     >
       <div
-        v-for="(message, index) in chatData.messages"
-        :key="'message-'+ chatData.userId + '-' + index"
+        v-for="(message, index) in messages"
+        :key="'message-'+ channel.userId + '-' + index"
         class="d-flex"
       >
-        <template v-if="currentUserId === message.authorId">
+        <template v-if="user.id === message.user.id">
           <div
             class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-auto mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
@@ -112,7 +112,7 @@
             :alt="channel.userName"
             class="mr-3 rounded-circle"
             height="30"
-            :src="chatData.userImgSrc"
+            :src="channel.userImgSrc"
             width="30"
           >
           <v-card
@@ -121,7 +121,21 @@
             elevation="0"
             height="30"
             width="30"
-          />
+          >
+            <v-avatar
+              :color="users[0].user.image ? '' : 'blue'"
+              dark
+              size="36"
+            >
+              <v-img
+                v-if="users[0].user.image"
+                :src="users[0].user.image"
+              />
+              <template v-else>
+                <span class="text-uppercase white--text">{{ users[0].user.name.charAt(0) }}</span>
+              </template>
+            </v-avatar>
+          </v-card>
           <div class="arrow-down blue mb-3 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
             {{ message.text }}
           </div>
@@ -317,29 +331,24 @@ export default {
     this.messages = this.state.messages
     this.channel.on('message.new', this.addNewMessage)
     this.dataReady = true
-  },
-  mounted() {
-    this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+
+    this.$nextTick(() => {
+      this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+      this.$refs.inputMessage.focus()
+    })
   },
   methods: {
     addNewMessage(event) {
       console.log('desde chatbox')
       this.messages = [...this.messages, event.message]
+      this.$nextTick(() => {
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.inputMessage.focus()
+      })
     },
     async closeChat() {
       this.channel.off('message.new', this.addNewMessage)
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
-    },
-    sendMessage() {
-      const input = this.input.trim()
-      if (input === '') {
-        return
-      }
-      this.$store.dispatch('GSChat/sendMessage', {
-        channel: this.channel,
-        message: input
-      }).catch(e => console.error(e))
-      this.input = ''
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
       // if (index === 0) {
@@ -364,19 +373,13 @@ export default {
         return true
       }
       const date = new Date()
-      this.chatData.messages.push({
-        authorId: this.currentUserId,
-        body: this.valueInput,
-        read: false,
-        timeStamp: date.getTime()
-      })
 
-      const self = this
+      this.$store.dispatch('GSChat/sendMessage', {
+        channel: this.channel,
+        message: this.valueInput
+      }).catch(e => console.error(e))
+
       this.valueInput = ''
-      this.$nextTick(() => {
-        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-        this.$refs.inputMessage.focus()
-      })
     },
     openFileManager(type) {
       console.log(type)

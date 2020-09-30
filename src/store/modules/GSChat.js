@@ -36,9 +36,9 @@ const mutations = {
   SET_CHATS: (state, payload) => state.chats = payload,
   SET_CLIENT: state => {
     state.client = new StreamChat(process.env.VUE_APP_GS_ID, null, {
-      logger: (type, msg) => {
-        console.log(msg)
-      }
+      // logger: (type, msg) => {
+      //   console.log(msg)
+      // }
     })
   },
   SET_USER: async (state, payload) => {
@@ -49,22 +49,30 @@ const mutations = {
   },
   SET_MY_CONNECTIONS: (state, payload) => {
     state.connections = payload
+  },
+  PUSH_CONNECTION: (state, payload) => {
+    state.connections.push(payload)
   }
 }
 
 const actions = {
   createChat({ state, commit }, payload) {
-    return new Promise((resolve, reject) => {
-      const conversation = state.client.channel('messaging', {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
+      const conversation = state.client.channel('messaging', null, {
         members: payload
       })
+      await conversation.create()
 
-      conversation.create().then(() => {
+      const connection = state.connections.find(item => item.id === conversation.id)
+
+      if (connection !== false) {
+        commit('PUSH_CHAT', connection)
+      } else {
         commit('PUSH_CHAT', conversation)
-        resolve(true)
-      }).catch(e => {
-        reject(e)
-      })
+        commit('PUSH_CONNECTION', conversation)
+      }
+      resolve(true)
     })
   },
   getGSToken({ commit }, payload) {
@@ -104,6 +112,7 @@ const actions = {
       watch: false,
       state: false
     })
+
     commit('SET_MY_CONNECTIONS', channels)
   },
   setUser({ commit }, payload) {
