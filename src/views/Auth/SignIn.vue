@@ -150,6 +150,7 @@ export default {
             image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
           }
           await this.$store.dispatch('GSChat/setUser', user)
+          await this.$store.dispatch('GSChat/retrieveChats', userLogged.id)
 
           // Start GSFeed
           await this.$store.dispatch('GSFeed/getGSFeedToken', userLogged)
