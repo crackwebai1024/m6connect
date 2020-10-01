@@ -32,7 +32,7 @@
         type="text"
       >
       <v-btn
-        v-for="channel in filteredChannels"
+        v-for="(channel, ind) in filteredChannels"
         :key="'channel-' + channel.id"
         class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
         color="transparent"
@@ -42,7 +42,7 @@
         <v-badge
           bottom
           class="mr-3"
-          color="green accent-3"
+          :color="channel.membersInChannel.user.online ? 'green accent-3' : 'red accent-3'"
           dot
           offset-x="10"
           offset-y="10"
@@ -63,9 +63,9 @@
         </v-badge>
         <div class="align-start d-flex flex-column">
           <v-badge
-            :content="channel.unreads"
+            :content="unread_count[ind]['unread']"
             inline
-            :value="channel.unreads"
+            :value="unread_count[ind]['unread']"
           >
             <p class="font-weight-bold mb-0">
               {{ channel.membersInChannel.user.name }}
@@ -98,6 +98,7 @@ export default {
   },
   data: () => ({
     showSearchInput: false,
+    unread_count: [],
     searchInput: '',
     lastDepartment: false
   }),
@@ -119,15 +120,34 @@ export default {
           }
         })
       })
+      result.forEach(channel => {
+        this.unread_count.push ({
+          cid: channel['cid'],
+          online: channel['membersInChannel']['user']['online'],
+          unread: channel['state']['read'][this.user.id]['unread_messages']
+        })
+      });
       return result
     }
   },
   async mounted() {
     this.client.on('notification.message_new', r => {
-      console.log(r)
+      this.pushUnreadCount(r.channel.cid);
+    })
+    this.client.on('message.new', r => {
+      if(r.user.id !== this.user.id ) {
+        this.pushUnreadCount(r.cid);
+      }
     })
   },
   methods: {
+    pushUnreadCount(cid){
+      this.unread_count.forEach((item, ind) => {
+        if(item.cid == cid){
+          this.unread_count[ind]['unread'] += 1;
+        }
+      });
+    },
     addNewMessage(event) {},
     startChat(channel) {
       this.$store.dispatch('GSChat/pushChat', channel)

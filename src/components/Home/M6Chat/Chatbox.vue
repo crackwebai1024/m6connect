@@ -100,6 +100,7 @@
             {{ message.text }}
           </div>
           <v-icon
+            @click="print(message)"
             :class="[message.read ? 'blue--text' : 'grey--text']"
             size="11"
           >
