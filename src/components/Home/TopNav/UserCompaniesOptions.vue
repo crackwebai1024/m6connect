@@ -56,7 +56,7 @@
                     mdi-check-circle
                   </v-icon>
 
-                  <v-btn v-else-if="!$h.dg(item, 'active') && item.joinStatus === 'ACTIVE'" icon color="blue darken-2" >
+                  <v-btn v-else-if="!$h.dg(item, 'active') && item.joinStatus === 'ACTIVE'" icon color="blue darken-2" @click="changeCompanies(item)" >
                     <v-icon>mdi-hand-pointing-left</v-icon>
                   </v-btn>
 
@@ -87,12 +87,14 @@
           </v-btn>
         </v-card-actions>
       </v-card>
+
+      <m6-loading :loading="loading" />
     </v-dialog>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -101,6 +103,9 @@ export default {
       type: Boolean
     }
   },
+  data: () => ({
+    loading: false
+  }),
   computed: {
     ...mapGetters('Auth', {
       userCompanies: 'getCurrentUserCompanies'
@@ -109,5 +114,21 @@ export default {
       statusColors: 'statusColors'
     })
   },
+  methods:{
+    ...mapActions('Companies', {
+      switchCompanies: 'switchCompanies'
+    }),
+    async changeCompanies(nextCompany) {
+      const currentCompany = this.userCompanies.find( u => u.active && u.joinStatus === "ACTIVE" )
+      try{
+        this.loading = true
+        await this.switchCompanies({ currentCompany, nextCompany })
+        this.$emit('close')
+        this.loading = false
+      } catch(e) {
+        this.loading = false
+      }
+    }
+  }
 }
 </script>

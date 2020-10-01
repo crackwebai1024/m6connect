@@ -45,7 +45,7 @@ const actions = {
         IdToken
       })
         .then(res => {const companyRel = res.data.companies.items.find( c => c.active )
-                dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
+          dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
           commit('setUser', res.data)
           resolve(res)
         })
