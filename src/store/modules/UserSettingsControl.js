@@ -14,7 +14,9 @@ const mutations = {
         state.secondColumnComponent = payload
     },
     setThirdColumnComponent: (state, payload) => state.thirdColumnComponent = payload,
-    setUserToShow: (state, payload) => state.userToShow = payload
+    setUserToShow(state, payload) {
+        state.userToShow = payload
+    }
 }
 
 const actions = {}

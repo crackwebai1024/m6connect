@@ -43,42 +43,7 @@ export default {
       connections: 'connections'
     }),
     ...mapGetters('Auth', { user: 'getUser' }),
-    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
-    listUsers() {
-      return this.companyUsers.filter(user => user.user.id !== this.user.id)
-    },
-    departments() {
-      return [
-        {
-          name: 'My Connections',
-          channels: this.connections,
-          type: 'connections'
-        },
-        {
-          name: 'People in my Company',
-          users: this.listUsers
-        },
-        {
-          name: 'People in Vendors',
-          users: []
-        }
-      ]
-    }
-  },
-  watch: {
-    user(a) {
-      if (!this.gsToken && a.id) {
-        this.$store.dispatch('GSChat/getGSToken', this.user).then(() => {
-          const user = {
-            id: this.user.id,
-            name: `${this.user.firstName} ${this.user.lastName}`,
-            image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
-          }
-          this.$store.dispatch('GSChat/setUser', user)
-          this.$store.dispatch('GSChat/retrieveChats', this.user.id)
-        })
-      }
-    }
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' })
   }
 }
 </script>

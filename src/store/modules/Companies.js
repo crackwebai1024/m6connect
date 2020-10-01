@@ -1,18 +1,16 @@
-import axios from 'axios'
+import axios from 'axios';
+import { dataGet } from '@/utils/helpers'
 
 const state = {
   list: [],
-  currentCompany: []
-}
+  currentCompany: {},
+};
 
 const getters = {
   getCurrentCompanyUsers(state) {
-    if (state.currentCompany.users) {
-      return state.currentCompany.users.items || []
-    }
-    return []
+    return dataGet(state, 'currentCompany.users.items', [])
   }
-}
+};
 
 const mutations = {
   setCompanyList(state, payload) {
@@ -42,8 +40,39 @@ const actions = {
           resolve(res)
         })
         .catch(err => reject(err))
+
+    })
+  },
+  updateUserCompany(context, userCompany) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, { userCompany })
+      .then(res => {
+          resolve(res)
+      })
+      .catch(reject)
+    })
+  },
+  createUserCompany({ rootState }, data) {
+    data.userID = rootState.Auth.user.id
+    return new Promise( (resolve, reject) => {
+      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, data)
+      .then(resolve)
+      .catch(reject)
+    })
+  },
+  switchCompanies( { dispatch }, params ) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/switchCompanies`, params)
+      .then(res => {
+        dispatch('Auth/getUserData', {}, { root: true })
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
     })
   }
+
 }
 
 export default {

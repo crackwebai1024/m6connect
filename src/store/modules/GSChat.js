@@ -53,6 +53,7 @@ const mutations = {
   PUSH_CONNECTION: (state, payload) => {
     state.connections.push(payload)
   }
+
 }
 
 const actions = {
@@ -82,7 +83,7 @@ const actions = {
       }).then(({ data }) => {
         commit('SET_GS_TOKEN', data.token)
         commit('SET_CLIENT')
-        resolve(true)
+        resolve(data.token)
       }).catch(e => reject(e))
     })
   },
