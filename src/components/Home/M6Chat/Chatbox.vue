@@ -84,19 +84,26 @@
     <!-- Messages Container -->
     <div
       ref="messages"
-      class="messages-container mx-2 px-2 vertical-scroll white"
+      class="messages-container ml-2 px-1 vertical-scroll white"
       :class="[minimized ? 'd-none' : '']"
     >
       <div
         v-for="(message, index) in chatData.messages"
         :key="'message-'+ chatData.userId + '-' + index"
         class="d-flex"
+        :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
       >
         <template v-if="currentUserId === message.authorId">
+          <span class="text-caption ml-auto mb-3 align-center d-flex grey--text">{{ messageTime(message.timeStamp) }}</span>
           <div
-            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-auto mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
             {{ message.body }}
+            <div v-if="message.images" class="d-flex ml-auto w-fit">
+              <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
+                <img class="image-preview" :src="image"/>
+              </div>
+            </div>
           </div>
           <v-icon
             :class="[message.read ? 'blue--text' : 'grey--text']"
@@ -121,9 +128,15 @@
             height="30"
             width="30"
           />
-          <div class="arrow-down blue mb-3 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
+          <div class="arrow-down blue mb-3 mr-1 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
             {{ message.body }}
+            <div v-if="message.images" class="d-flex mr-auto w-fit">
+              <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
+                <img class="image-preview" :src="image"/>
+              </div>
+            </div>
           </div>
+          <span class="text-caption mr-auto mb-3 align-center d-flex grey--text">{{ messageTime(message.timeStamp) }}</span>
         </template>
       </div>
 
@@ -152,9 +165,32 @@
       class="blue-grey lighten-5"
       :class="[minimized ? 'd-none' : '']"
     />
+    <!-- files -->
+    <template v-if="docFiles.length > 0">
+      <div class="images-container docs d-flex px-0 py-1 mx-1">
+        <div
+          v-for="(docFile, index) in docFiles"
+          :key="'previewdoc-' + index"
+          class="previewdoc mx-1 blue d-flex rounded-pill px-2 align-center justify-center"
+        >
+          <v-icon left class="white--text">
+            mdi-file-outline
+          </v-icon>
+          <span class="white--text text-caption docfile-name">{{ docFile.name }}</span>
+
+          <v-icon
+            @click="removeDoc(index)"
+            size="12"
+            class="white--text blue lighten-2 ml-2 rounded-xl pa-1"
+          >
+            mdi-close
+          </v-icon>
+        </div>
+      </div>
+    </template>
     <!-- images or files ui -->
     <template v-if="srcImageFiles.length > 0">
-      <div class="images-container d-flex pt-4 pb-6 px-2 mx-4">
+      <div class="images-container d-flex px-0 py-3 mx-1">
         <div class="relative w-fit mx-1" v-for="(srcImageFile, index) in srcImageFiles" :key="'previewimage-' + index">
           <img class="image-preview" :src="srcImageFile"/>
           <v-btn
@@ -236,7 +272,7 @@
                 >
                   <v-file-input
                     class="ma-0 pa-0 upload-icon align-center d-flex justify-center white--text"
-                    accept="image/png, image/jpeg, image/bmp"
+                    accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
                     multiple
                     prepend-icon="mdi-file-outline"
                     hide-input
@@ -312,7 +348,6 @@ export default {
     showDialog: false,
     imageFiles: [],
     docFiles: [],
-    url: '',
     offset: true,
     minimized: false
   }),
@@ -387,16 +422,21 @@ export default {
     },
     onImagesChange(e) {
       this.imageFiles = e
-      this.url = URL.createObjectURL(e[0])
-      this.$refs.inputMessage.focus()
-    },
-    onDocsChange(e) {
-      this.docFiles = e
-      this.url = URL.createObjectURL(e[0])
       this.$refs.inputMessage.focus()
     },
     removeImage(index) {
       this.imageFiles.splice(index, 1);
+    },
+    onDocsChange(e) {
+      this.docFiles = e
+      this.$refs.inputMessage.focus()
+    },
+    removeDoc(index) {
+      this.docFiles.splice(index, 1);
+    },
+    messageTime(time) {
+      let messageDate = new Date(time)
+      return messageDate.getHours() + ':' + messageDate.getMinutes()
     }
   }
 }
@@ -436,7 +476,6 @@ export default {
   background: #B4B1CA;
   border-radius: 2px;
   border: 5px solid #fff;
-
 }
 .messages-container::-webkit-scrollbar-track {
   background: #fff;
@@ -543,5 +582,27 @@ export default {
 }
 .images-container {
   overflow-x: scroll;
+  min-height: 60px;
+}
+.images-container::-webkit-scrollbar {
+  height: 5px;
+  width: 3px;
+}
+.images-container::-webkit-scrollbar-thumb {
+  background: #B4B1CA;
+  border-radius: 2px;
+}
+.images-container::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 2px;
+}
+.docfile-name {
+  white-space: nowrap;
+}
+.docs {
+  min-height: 42px;
+}
+.preview-doc {
+  height: 30px;
 }
 </style>

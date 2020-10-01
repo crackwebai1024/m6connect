@@ -65,13 +65,15 @@ export default {
             timeStamp: 1601082740373,
             body: 'Great! Thanks, I want to send you something for your birthday',
             authorId: 1,
-            read: true
+            read: true,
+            images: ['https://cdn.vuetifyjs.com/images/lists/3.jpg','https://cdn.vuetifyjs.com/images/lists/3.jpg']
           },
           {
             timeStamp: 1601082746273,
             body: 'Lorem ipsum lala erdj skdjadnak',
             authorId: 2,
-            read: true
+            read: true,
+            images: ['https://cdn.vuetifyjs.com/images/lists/3.jpg','https://cdn.vuetifyjs.com/images/lists/3.jpg']
           }
         ]
       },
@@ -140,7 +142,5 @@ export default {
       })
     }
   }
-
-
 }
 </script>
