@@ -19,6 +19,9 @@ const getters = {
   },
   getUser(state) {
     return state.user
+  },
+  getCurrentUserCompanies(state) {
+    return dataGet(state, 'user.companies.items', [])
   }
 }
 

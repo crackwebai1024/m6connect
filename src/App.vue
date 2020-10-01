@@ -3,7 +3,7 @@
     <template v-if="loggedIn && !$route.meta.public">
       <top-nav />
       <v-row no-gutters class="central-content top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
-        <action-feed />
+        <action-feed v-show="showSidePanels" />
         <!-- Home / Company Profile -->
         <router-view />
         <m6-chat v-show="showSidePanels" />
