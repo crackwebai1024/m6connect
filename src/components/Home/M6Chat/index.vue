@@ -3,7 +3,6 @@
     <template
       v-for="(department, index) in departments"
     >
-      {{ department.type }}
       <department-chat
         v-if="department.type !== 'connections'"
         :key="'department-' + index"
@@ -43,7 +42,27 @@ export default {
       connections: 'connections'
     }),
     ...mapGetters('Auth', { user: 'getUser' }),
-    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' })
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
+    listUsers() {
+      return this.companyUsers.filter(user => user.id !== this.user.id)
+    },
+    departments() {
+      return [
+        {
+          name: 'My Connections',
+          channels: this.connections,
+          type: 'connections'
+        },
+        {
+          name: 'People in my Company',
+          users: this.listUsers
+        },
+        {
+          name: 'People in Vendors',
+          users: []
+        }
+      ]
+    }
   }
 }
 </script>
