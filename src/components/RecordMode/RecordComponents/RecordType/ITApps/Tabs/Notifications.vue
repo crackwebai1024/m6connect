@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-0 py-0 mt-5">
+  <v-container v-if="!isLoading" class="px-0 py-0 mt-5">
     <template v-if="items.length === 0">
       <v-container :class="baseColor + ' rounded-lg px-0 py-10 d-flex justify-center align-center flex-column'">
         <p class="white--text text-h5">There are no {{ itemsName }}</p>
@@ -29,12 +29,20 @@
             :headers="headers"
             :items="items"
             :single-select="singleSelect"
-            item-key="name"
+            item-key="id"
             class="elevation-0"
           > 
-            <template v-slot:[`item.notifyWho`]="{ item }">
-              <v-chip color="blue lighten-3 mx-1" dark v-for="(who, index) in item.notifyWho" :key="'who-'+index">
-                {{ who }}
+            <template v-slot:[`item.notification_required`]="{ item }">
+                {{ item.notification_required == 1 || item.notification_required == 'Yes' ? 'Yes' : 'No' }}
+            </template>
+            <template v-slot:[`item.noti_cont`]="{ item }">
+              <v-chip color="blue lighten-3 mx-1" dark v-for="(who, index) in item.noti_cont" :key="'who-'+index">
+                <span v-if="who.contact_id">
+                  {{ contacts[contacts.findIndex(i => i.id === who.contact_id)]['name'] }}
+                </span>
+                <span v-if="who.name">
+                  {{ contacts[contacts.findIndex(i => i.id === who.id)]['name'] }}
+                </span>
               </v-chip>
             </template>
             <template v-slot:[`item.description`]="{ item }">
@@ -81,7 +89,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                v-model="itemInfo.date"
+                v-model="itemInfo.notification_date.date"
                 :rules="textRules"
                 label="Date"
                 readonly
@@ -89,24 +97,28 @@
                 v-on="on"
               ></v-text-field>
             </template>
-            <v-date-picker v-model="itemInfo.date" @input="menu = false"></v-date-picker>
+            <v-date-picker v-model="itemInfo.notification_date.date" @input="menu = false"></v-date-picker>
           </v-menu>
           <v-select
-            v-model="itemInfo.required"
-            :items="['Yes', 'No']"
-            :rules="selectRules"
+            v-model="itemInfo.notification_required"
+            :items="validation"
+            :rules="selectBool"
+            item-value="value"
+            item-text="label"
             :color="baseColor"
             label="Required"
           ></v-select>
 
           <v-autocomplete
-            v-model="itemInfo.notifyWho"
-            :items="['Trevor Handsen', 'Alex Nelson']"
+            v-model="itemInfo.noti_cont"
+            :items="contacts"
             :color="baseColor"
             chips
             label="Who to notify"
             full-width
+            :item-value="Object"
             hide-details
+            deletable-chips
             hide-no-data
             item-text="name"
             hide-selected
@@ -133,6 +145,13 @@
       </v-form>
     </v-dialog>
   </v-container>
+  <v-container v-else>
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 <script>
 import {items} from "@/mixins/items";
@@ -147,42 +166,94 @@ export default {
   },
   data: () => ({
     menu: false,
+    isLoading: true,
+    contacts: [
+      {id:'asdjkl', name:'Trevor Handsen'},
+      {id:'qweryzxc', name: 'Alex Nelson'}
+    ],
     baseColor: 'deep-purple darken-3',
     itemsName: 'notifications',
     itemInfo: {
       name: undefined,
-      date: undefined,
-      required: undefined,
-      notifyWho: undefined,
+      notification_date:{
+        id: undefined,
+        date: undefined
+      },
+      notification_required: undefined,
+      noti_cont: [],
       description: undefined
     },
+    preview_noti_cont: [],
     singleSelect: false,
     selected: [],
+    validation:[{
+      label: "Yes",
+      value: 1
+    },{
+      label: "No",
+      value: 0
+    }],
     headers: [
       { text: 'Name', value: 'name' },
-      { text: 'Date', value: 'date' },
-      { text: 'Required', value: 'required' },
-      { text: 'Who to notify', value: 'notifyWho' },
+      { text: 'Date', value: 'notification_date.date' },
+      { text: 'Required', value: 'notification_required' },
+      { text: 'Who to notify', value: 'noti_cont' },
       { text: 'Description', value: 'description' },
     ],
   }),
   methods:{
-    ...mapActions("ITAppsModule", ["post_notification"]),
+    ...mapActions("ITAppsModule", ["post_notification", "get_notifications", "delete_notification", "put_notification"]),
+    getContact( contactId ){
+      return this.contacts[this.contacts.findIndex(i => i.id === contactId.contact_id)]['name'];
+    },
     post(){
-      let post = { 
-        noti_date:{
-          date: this.itemInfo.date
-        },
+      this.post_notification({
+        noti_date:this.itemInfo.notification_date,
         notification:{
           app_id: this.info.id,
-          notification_required: this.itemInfo.required == "Yes"? true : false,
+          notification_required: this.itemInfo.notification_required == 1 ? true : false,
           name: this.itemInfo.name,
-          date: undefined,
           description: this.itemInfo.description,
-        }
-      };
-      this.post_notification(post);
+        },
+        noti_cont: this.itemInfo.noti_cont
+      }).then(res => (
+        Object.assign(...[this.items[this.items.length-1], res])
+      ));
+    },
+    put(){
+      this.put_notification({
+        noti_date:this.itemInfo.notification_date,
+        notification:{
+          notification_required: this.itemInfo.notification_required == 1 ? true : false,
+          description: this.itemInfo.description,
+          name: this.itemInfo.name,
+          id: this.itemInfo.id,
+          app_id: this.info.id
+        },
+        noti_cont: this.itemInfo.noti_cont,
+        preview_noti_cont: this.preview_noti_cont
+      });
+    },
+    delete(){
+      this.delete_notification(this.itemInfo.id);
     }
+  },
+  watch:{
+      dialog:function(val){
+        if( val ){
+          this.dialogMode ? this.itemInfo.noti_cont = [] : null;
+          this.itemInfo.noti_cont.forEach((item, ind) => {
+            this.itemInfo.noti_cont[ind] = this.contacts[this.contacts.findIndex(i => i.id === item.contact_id)]
+          });
+          this.preview_noti_cont = this.itemInfo.noti_cont;
+        }
+      }
+  },
+  mounted(){
+    this.get_notifications(this.info.id).then(
+      res => (this.items = res),
+      this.isLoading = false
+    );
   }
 };
 </script>

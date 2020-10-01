@@ -32,9 +32,21 @@
             class="elevation-0"
           >
             <template 
-            v-slot:item.inflatorValue="{ item }">
+            v-slot:[`item.status`]="{ item }">
               <div class="d-flex justify-space-between">
-                <p>{{ item.inflatorValue }}</p>
+                {{ item.status == 1 ?  "Active" : "Inactive"}}
+              </div>
+            </template>
+            <template 
+            v-slot:[`item.term_until`]="{ item }">
+              <div class="d-flex justify-space-between">
+                {{ termUnit[termUnit.findIndex(i => i.id === item.term_until)]['value'] }}
+              </div>
+            </template>
+            <template 
+            v-slot:[`item.capped_inflator_value`]="{ item }">
+              <div class="d-flex justify-space-between">
+                <p>{{ item.capped_inflator_value }}</p>
                 <v-icon
                   small
                   class="mr-2"
@@ -89,7 +101,7 @@
               </v-col>
               <v-col cols="6" class="py-0">
                 <v-text-field
-                  v-model="itemInfo.name"
+                  v-model="itemInfo.contract_name"
                   :rules="nameRules"
                   label="Contract Name" 
                   :color="baseColor"
@@ -99,8 +111,10 @@
               <v-col cols="6" class="py-0">
                 <v-select
                   v-model="itemInfo.status"
-                  :items="['Active', 'Inactive']"
-                  :rules="selectRules"
+                  :items="validation"
+                  item-value="value"
+                  item-text="label"
+                  :rules="selectBool"
                   :color="baseColor"
                   label="Status"
                 ></v-select>
@@ -116,7 +130,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="itemInfo.startDate"
+                      v-model="itemInfo.start_contract"
                       :rules="textRules"
                       label="Contract Term Start Date"
                       readonly
@@ -124,7 +138,7 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="itemInfo.startDate" @input="menu = false"></v-date-picker>
+                  <v-date-picker v-model="itemInfo.start_contract" @input="menu = false"></v-date-picker>
                 </v-menu>
               </v-col>
               <v-col cols="6" class="py-0">
@@ -138,7 +152,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="itemInfo.endDate"
+                      v-model="itemInfo.finish_contract"
                       :rules="textRules"
                       label="Contract Termination Date"
                       readonly
@@ -146,13 +160,13 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="itemInfo.endDate" @input="menu1 = false"></v-date-picker>
+                  <v-date-picker v-model="itemInfo.finish_contract" @input="menu1 = false"></v-date-picker>
                 </v-menu>
               </v-col>
 
               <v-col cols="4" class="py-0">
                 <v-text-field 
-                  v-model="itemInfo.termLength"
+                  v-model="itemInfo.term_length"
                   :rules="quantityRules"
                   :color="baseColor"
                   type="number"
@@ -161,8 +175,10 @@
               </v-col>
               <v-col cols="2" class="py-0">
                 <v-select
-                  v-model="itemInfo.termUnit"
-                  :items="['Days','Months','Years']"
+                  v-model="itemInfo.term_until"
+                  :items="termUnit"
+                  item-value="id"
+                  item-text="value"
                   :rules="selectRules"
                   :color="baseColor"
                   label="Term Unit"
@@ -171,7 +187,7 @@
 
               <v-col cols="6" class="py-0">
                 <v-text-field 
-                  v-model="itemInfo.termPeriod"
+                  v-model="itemInfo.term_notice_period"
                   :rules="quantityRules"
                   :color="baseColor"
                   type="number"
@@ -189,7 +205,7 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                      v-model="itemInfo.decisionDate"
+                      v-model="itemInfo.critical_decision_date"
                       :rules="textRules"
                       label="Critical Decision Date"
                       readonly
@@ -197,13 +213,13 @@
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="itemInfo.decisionDate" @input="menu2 = false"></v-date-picker>
+                  <v-date-picker v-model="itemInfo.critical_decision_date" @input="menu2 = false"></v-date-picker>
                 </v-menu>
               </v-col>
 
               <v-col cols="6" class="py-0">
                 <v-text-field
-                  v-model="itemInfo.inflator"
+                  v-model="itemInfo.capped_inflator"
                   :rules="nameRules"
                   label="Capped Inflator" 
                   :color="baseColor"
@@ -212,7 +228,7 @@
               </v-col>
               <v-col cols="6" class="py-0">
                 <v-text-field
-                  v-model="itemInfo.inflatorValue"
+                  v-model="itemInfo.capped_inflator_value"
                   :rules="nameRules"
                   label="Capped Inflator Value" 
                   :color="baseColor"
@@ -246,11 +262,15 @@
 </template>
 <script>
 import {items} from "@/mixins/items";
-import {validations} from "@/mixins/form-validations"
+import {validations} from "@/mixins/form-validations";
+import {mapActions} from "vuex";
 
 export default {
   name: "Contracts",
   mixins: [items, validations],
+  props:{
+    info: Object
+  },
   data: () => ({
     menu: false,
     menu1: false,
@@ -258,35 +278,62 @@ export default {
     baseColor: 'purple darken-1',
     itemsName: 'contracts',
     itemInfo: {
-      number: null, // Contract Number
-      name: null, // Contract Name
-      status: null, // Status
-      startDate: null, // Contract Term Start Date
-      endDate: null, // Contrac Termination Date
-      termLength: null, // Term Length
-      termUnit: null, // Term Unit
-      termPeriod: null, // Term Notice Period
-      decisionDate: null, //Critical Decision Date
-      inflator: null, // Capped Inflator
-      inflatorValue: null, //Capped Inflator Value
-      files: []
+      critical_decision_date: undefined, //Critical Decision Date
+      capped_inflator_value: undefined, //Capped Inflator Value
+      term_notice_period: undefined, // Term Notice Period
+      capped_inflator: undefined, // Capped Inflator
+      finish_contract: undefined, // Contrac Termination Date
+      start_contract: undefined, // Contract Term Start Date
+      contract_name: undefined, // Contract Name
+      term_length: undefined, // Term Length
+      term_until: undefined, // Term Unit
+      status: undefined, // Status
+      number: undefined, // Contract Number
+      id: undefined, // Contract ID
+      files: [],
     },
     singleSelect: false,
+    termUnit:[],
     headers: [
       { text: 'Contract Number', value: 'number' },
-      { text: 'Contract Name', value: 'name' },
+      { text: 'Contract Name', value: 'contract_name' },
       { text: 'Status', value: 'status' },
-      { text: 'Contract Term Start Date', value: 'startDate' },
-      { text: 'Contrac Termination Date', value: 'endDate' },
-      { text: 'Term Length', value: 'termLength' },
-      { text: 'Term Unit', value: 'termUnit' },
-      { text: 'Term Notice Period', value: 'termPeriod' },
-      { text: 'Critical Decision Date', value: 'decisionDate' },
-      { text: 'Capped Inflator', value: 'inflator' },
-      { text: 'Capped Inflator Value', value: 'inflatorValue' },
+      { text: 'Contract Term Start Date', value: 'start_contract' },
+      { text: 'Contrac Termination Date', value: 'finish_contract' },
+      { text: 'Term Length', value: 'term_length' },
+      { text: 'Term Unit', value: 'term_until' },
+      { text: 'Term Notice Period', value: 'term_notice_period' },
+      { text: 'Critical Decision Date', value: 'critical_decision_date' },
+      { text: 'Capped Inflator', value: 'capped_inflator' },
+      { text: 'Capped Inflator Value', value: 'capped_inflator_value' },
+    ],
+    validation:[
+      { label: "Active", value: 1 },
+      { label: "Inactive", value: 0 }
     ],
   }),
   methods: {
+    ...mapActions("ITAppsModule", 
+      ["get_contracts", "get_selects", "post_contract", "put_contract", "delete_contract"]
+    ),
+    post(){
+      this.itemInfo['app_id'] = this.info.id;
+      this.post_contract(this.itemInfo).then(res => (
+        this.items[this.items.length - 1].id = res.contract_id
+      ));
+    },
+    put(){
+      this.put_contract(this.itemInfo);
+    },
+    delete(){
+      this.delete_contract(this.itemInfo.id);
+    }
+  },
+  mounted() {
+    this.get_selects('/ContractTermUnit').then(res=>(this.termUnit = res.data))
+    this.get_contracts(this.info.id).then(res => (
+      this.items = res.data
+    ));
   }
 };
 </script>

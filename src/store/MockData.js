@@ -1,6 +1,15 @@
 const wi = "1280";
 const le = "1280";
 
+const Rationalization = {
+  Attributes: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Attributes"),
+  Costs: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Costs"),
+  FTE: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/FTE"),
+  Governance: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Governance"),
+  License: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/License"),
+  Users: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Users")
+}
+
 export default {
   fake_records: [
     {
@@ -419,9 +428,9 @@ export default {
             "?nocache=" +
             Math.random(),
           message:
-            "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
+            "In duis ea irure et magna quis cecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
           reactions: {
-            likes: 17,
+            likes: 3,
             enchants: 21,
             unlikes: 6
           },
@@ -439,9 +448,9 @@ export default {
                 "?nocache=" +
                 Math.random(),
               message:
-                "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
+                "In duis ea irure et magna quis commodo sunt enimit voluptate tempor aute.",
               reactions: {
-                likes: 17,
+                likes: 7,
                 enchants: 21,
                 unlikes: 6
               },
@@ -462,9 +471,9 @@ export default {
             "?nocache=" +
             Math.random(),
           message:
-            "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
+            "In duis ea irure et magna quis commodo sunt enim fugiatre eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
           reactions: {
-            likes: 17,
+            likes: 21,
             enchants: 21,
             unlikes: 6
           },
@@ -482,9 +491,29 @@ export default {
                 "?nocache=" +
                 Math.random(),
               message:
-                "In duis ea irure et magna quis commodo sunt enim fugiat anim eu. Consequat ex eu eiusmod culpa tempor officia aute excepteur ex consequat esse occaecat nostrud. Aliqua irure eiusmod duis occaecat consectetur aute officia in incididunt ut exercitation do. Eiusmod irure tempor reprehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
+                "In duirem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
               reactions: {
-                likes: 17,
+                likes: 9,
+                enchants: 21,
+                unlikes: 6
+              },
+              timestamps: {
+                created: "14min"
+              }
+            },
+            {
+              name: "Eduardo Ramirez",
+              imageUrl:
+                "https://picsum.photos/" +
+                50 +
+                "/" +
+                50 +
+                "?nocache=" +
+                Math.random(),
+              message:
+                "In duirem temtate tempor aute.",
+              reactions: {
+                likes: 1,
                 enchants: 21,
                 unlikes: 6
               },
@@ -501,14 +530,14 @@ export default {
       company: 2,
       teams: 2,
       contain:
-        "Ad do incididunt reprehenderit enim est laborum. Enim dolore do est eu incididunt. Commodo commodo occaecat tempor magna anim. Minim aute nisi culpa sint est et officia elit. Eiusmod eiusmod cupidatat qui qui mollit et irure nulla eiusmod reprehenderit culpa dolor laboris. Consequat pariatur cillum anim minim.",
-      name: "Rodrigo Martinez",
-      occupation: "Web Developer Senior",
+        "We are doing rationalization and need your approval.",
+      name: "Sally Ackerman",
+      occupation: "IT Analyst",
       department: "IT Apps (Department)",
       imageUrl:
         "https://picsum.photos/" + 50 + "/" + 50 + "?nocache=" + Math.random(),
       timestamps: {
-        created: "56m"
+        created: "2h"
       },
       images: [],
       reactions: {
@@ -516,7 +545,20 @@ export default {
         enchants: 23,
         unlikes: 21
       },
-      comments: []
+      comments: [],
+      postTagTitle: 'IT App Request For Approval',
+      postType: 'request',
+      request: {
+        title: 'Awesome IT Application',
+        users: [
+          { approval: true, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'John' },
+          { approval: true, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Joe' },
+          { approval: true, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Anne' },
+          { approval: false, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Julia' },
+          { approval: false, imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg", name: 'Hanna' },
+        ]
+      },
+      componentName: Rationalization.Costs
     },
     {
       author: 3,
@@ -538,7 +580,71 @@ export default {
         enchants: 23,
         unlikes: 21
       },
-      comments: []
+      comments: [
+        {
+          name: "Eduardo Ramirez",
+          occupation: "HR Recruiter",
+          imageUrl:
+            "https://picsum.photos/" +
+            50 +
+            "/" +
+            50 +
+            "?nocache=" +
+            Math.random(),
+          message:
+            "In duis ea irure et magna quis commrehenderit do minim nostrud proident reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
+          reactions: {
+            likes: 13,
+            enchants: 21,
+            unlikes: 6
+          },
+          timestamps: {
+            created: "14min"
+          },
+          nested_comments: [
+            {
+              name: "Eduardo Ramirez",
+              imageUrl:
+                "https://picsum.photos/" +
+                50 +
+                "/" +
+                50 +
+                "?nocache=" +
+                Math.random(),
+              message:
+                "In duis ea irure et magna quis commodo sunt enim fugiator aute.",
+              reactions: {
+                likes: 0,
+                enchants: 21,
+                unlikes: 6
+              },
+              timestamps: {
+                created: "14min"
+              }
+            },
+            {
+              name: "Eduardo Ramirez",
+              imageUrl:
+                "https://picsum.photos/" +
+                50 +
+                "/" +
+                50 +
+                "?nocache=" +
+                Math.random(),
+              message:
+                "In duis ea irure et magna quis co reprehenderit. Irure aute do proident duis Lorem tempor. Nisi sit eiusmod duis qui elit voluptate tempor aute.",
+              reactions: {
+                likes: 4,
+                enchants: 21,
+                unlikes: 6
+              },
+              timestamps: {
+                created: "14min"
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       author: 1,
@@ -592,7 +698,85 @@ export default {
       companyType: 'company',
       title: "The Lorem Ipsum Co.",
       tagType: false,
+      type: 'All',
+      email: "contact@sharp.com",
+      phone: "(915) 445 - 1234",
+      url: "www.sharphealthcare.co",
+      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
+      record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
+    },
+    {
+      record_type: "itapps",
+      record_name: "Test Company 1",
+      companyType: 'company',
+      title: "Awesome Company X",
+      tagType: true,
       type: 'Vendor',
+      email: "contact@sharp.com",
+      phone: "(915) 445 - 1234",
+      url: "www.sharphealthcare.co",
+      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
+      record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
+    },
+    {
+      record_type: "itapps",
+      record_name: "Test Company 2",
+      companyType: 'company',
+      title: "Nicest Customer Ever",
+      tagType: true,
+      type: 'Customer',
+      email: "contact@sharp.com",
+      phone: "(915) 445 - 1234",
+      url: "www.sharphealthcare.co",
+      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
+      record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
+    },
+    {
+      record_type: "itapps",
+      record_name: "Test Company 0",
+      companyType: 'company',
+      title: "The Lorem Ipsum Co.",
+      tagType: false,
+      type: 'All',
+      email: "contact@sharp.com",
+      phone: "(915) 445 - 1234",
+      url: "www.sharphealthcare.co",
+      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
+      record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
+    },
+    {
+      record_type: "itapps",
+      record_name: "Test Company 1",
+      companyType: 'company',
+      title: "Awesome Company X",
+      tagType: true,
+      type: 'Vendor',
+      email: "contact@sharp.com",
+      phone: "(915) 445 - 1234",
+      url: "www.sharphealthcare.co",
+      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
+      record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
+    },
+    {
+      record_type: "itapps",
+      record_name: "Test Company 2",
+      companyType: 'company',
+      title: "Nicest Customer Ever",
+      tagType: true,
+      type: 'Customer',
+      email: "contact@sharp.com",
+      phone: "(915) 445 - 1234",
+      url: "www.sharphealthcare.co",
+      tags: ['Veteran Owned','Economically Disadvantaged Women',' Women-Owned Small Business Joint Venture'],
+      record_image_url: "https://picsum.photos/" + wi + "/" + le + "?nocache=" + Math.random(),
+    },
+        {
+      record_type: "itapps",
+      record_name: "Test Company 0",
+      companyType: 'company',
+      title: "The Lorem Ipsum Co.",
+      tagType: false,
+      type: 'All',
       email: "contact@sharp.com",
       phone: "(915) 445 - 1234",
       url: "www.sharphealthcare.co",

@@ -1,7 +1,7 @@
 <template>
     <v-container class="px-0 py-0 white">
         <v-img class="white--text align-end" height="100px" :src="info['record_image_url']">
-            <div class="px-3 py-1" style="position:absolute; top: 0; right: 0;">{{ info['phase'] }}</div>
+            <div class="px-3 py-1 absolute top-0 right-0">{{ info['phase'] }}</div>
         </v-img>
         <v-card-text class="text--primary py-1">
             <div class="d-flex flex-row flex-nowrap align-baseline">

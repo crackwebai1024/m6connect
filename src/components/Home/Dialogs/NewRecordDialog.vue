@@ -3,7 +3,8 @@
         <v-card-title class="headline grey lighten-2">
             Create Record
         </v-card-title>
-        <v-card-text>
+        <v-card-text
+            class="record-text vertical-scroll">
             <v-tabs 
                 centered
                 v-model="tab">
@@ -14,7 +15,7 @@
 
             <v-tabs-items v-model="tab">
                 <v-tab-item v-for="item in items" :key="item.tab" >
-                    <component v-bind:is="item.component"></component>
+                    <component @closeModal="closeModal" v-bind:is="item.component"></component>
                 </v-tab-item>
             </v-tabs-items>
         </v-card-text>
@@ -26,6 +27,11 @@ import ItAppForm from '../Forms/ItAppForm'
 
 export default {
     name: "NewRecordDialog",
+    methods: {
+        closeModal(){
+            this.$emit('closeModal');
+        }
+    },
     data: () => ({
         tab: null,
         items:[{
@@ -35,3 +41,8 @@ export default {
     }),
 }
 </script>
+<style scoped>
+.record-text {
+    height: 80vh;
+}
+</style>

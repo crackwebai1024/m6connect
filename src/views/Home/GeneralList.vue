@@ -1,6 +1,7 @@
 <template>
-  <v-container class="py-0 px-3" style="height: 100%;">
-    <header-component hasslot :info="{title:'Search All Apps', icon:''}"  class="mb-3 card-custom-shadow rounded" style="height: auto;">
+  <v-container class="pa-0 d-flex flex-wrap">
+    <header-component hasslot :info="{title:'Search All Apps', icon:''}" 
+      class="max-w-tight mb-3 card-custom-shadow rounded w-full mx-auto h-auto">
       <template v-slot:select>
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -10,7 +11,7 @@
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item v-for="(item, i) in areas" :key="i" style="height: 15px;">
+            <v-list-item v-for="(item, i) in areas" :key="i">
               <v-list-item-title
                 :class="item.type == 'title' ? 'grey--text' : 'black--text'"
               >{{ item.text }}</v-list-item-title>
@@ -26,8 +27,7 @@
           rounded
           flat
           dense
-          @keyup.enter="filter_posts(['author', 1])"
-          v-model="searchText"
+          v-model="searchInput"
           single-line
           hide-details
           solo-inverted
@@ -46,16 +46,16 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          color="blue lighten-2"
+          color="blue lighten-2 w-full mx-auto"
+          class="max-w-tight"
           dark
-          style="width:100%;"
           v-bind="attrs"
           v-on="on"
         >
-          Do new Record
+          Add new Record
         </v-btn>
       </template>
-      <new-record-dialog/>      
+      <new-record-dialog @closeModal="closeModal" />      
     </v-dialog>
     <div
       :key="index"
@@ -64,6 +64,7 @@
     >
       <general-item :recordData="item" />
     </div>
+    <div class="w-full max-w-tight mx-auto py-3" v-if="records.length === 0">No results found</div>
   </v-container>
 </template>
 <script>
@@ -81,9 +82,9 @@ export default {
   name: "GeneralList",
   data: () => ({
     perPage: 8,
+    records: [],
     dialog: false,
-    searchText: "",
-    items: ["Foo", "Bar", "Fizz", "Buzz"],
+    searchInput: "",
     areas: [
       { text: "Everyone", type: "subtitle" },
       { text: "My company", type: "subtitle" },
@@ -99,13 +100,10 @@ export default {
   }),
   computed: {
     ...mapGetters("GeneralListModule", ["get_general_list"]),
-    records() {
-      return this.get_general_list();
-    },
   },
   methods: {
     ...mapActions("GeneralListModule", ["load_mock_general_data"]),
-    ...mapActions("ITAppsModule", ["get_it_apps","post_it_apps"]),
+    ...mapActions("ITAppsModule", ["get_it_apps"]),
 
     remainingPerPage(page) {
       let remaining = this.perPage;
@@ -115,25 +113,18 @@ export default {
       }
       return remaining;
     },
-    post(){
-      this.post_it_apps({
-        id:1,
-        uid:"asda",
-        record_type:"asda",
-        record_name:"asd",
-        company:"asd",
-        description:"asd",
-        created_at:new Date(),
-        updated_at: new Date()
-      });
+    closeModal(){
+      this.dialog = false;
     },
     getIndex(i, index) {
       let ind = i * this.perPage + index - 1;
       return ind;
     },
   },
-  created() {
-    this.get_it_apps();
+  mounted() {
+    this.get_it_apps().then(
+      res => (this.records = this.get_general_list())
+    );
     // this.load_mock_general_data();
   },
 };

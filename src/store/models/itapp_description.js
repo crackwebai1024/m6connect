@@ -10,15 +10,26 @@
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 function toItappsDescription(json) {
-    return cast(json, r("ItappsDescription"));
+    let res = cast(json, r("ItappsDescription"));
+    Object.keys(res.general_info).forEach(key => {
+        if(typeof res.general_info[key] === 'object' && res.general_info[key] === null)
+            res.general_info[key] = {id:undefined, value:undefined, field:undefined}  
+    });
+    return res;
 }
 
 function itappsDescriptionToJson(value) {
-    return uncast(JSON.parse(JSON.stringify(value)), r("ItappsDescription"));
+    let res = uncast(JSON.parse(JSON.stringify(value)), r("ItappsDescription"));
+    res.general_info = generalInfo(res.general_info);
+    return res;
 }
 
 function generalInfo(value){
-    return uncast(JSON.parse(JSON.stringify(value)), r("GeneralInfotoAPI"));
+    let res = uncast(JSON.parse(JSON.stringify(value)), r("GeneralInfotoAPI"));
+    Object.keys(res).forEach(key => {
+        if(typeof res[key] === 'object') res[key] = res[key]['id']
+    })
+    return res;
 }
 
 

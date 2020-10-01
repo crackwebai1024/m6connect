@@ -45,7 +45,7 @@
         </v-card>
       </v-form>
     </v-dialog>
-    <v-subheader style="position:relative" class="rounded-t primary white--text">
+    <v-subheader class="relative rounded-t primary white--text">
       Rationalization Users
       <v-btn
         :color="isHover ? 'orange' : 'blue'"

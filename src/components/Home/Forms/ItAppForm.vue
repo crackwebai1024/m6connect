@@ -199,6 +199,7 @@
             <v-spacer></v-spacer>
             <v-btn
                 color="error"
+                @click="close()"
                 class="mr-4">
                 Cancel
             </v-btn>
@@ -267,20 +268,37 @@ export default {
             'get_all_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security', 
             'post_tag'
         ]),
-        postNewITApp(){
+        postNewITApp(){ 
+            let fka_aka = []
+            this.chipsAKA.forEach(item => {
+                fka_aka.push({ 
+                    created_at: undefined,
+                    field: 'also_know_as',
+                    foreign_id: undefined,
+                    id: undefined,
+                    updated_at: undefined,
+                    value: item
+                });
+            });
+            this.chipsFKA.forEach(item => {
+                fka_aka.push({
+                    created_at: undefined,
+                    field: 'formerly_known_as',
+                    foreign_id: undefined,
+                    id: undefined,
+                    updated_at: undefined,
+                    value: item
+                })
+            });
             this.post_it_apps({
                 title: this.title,
-                description: this.description
-            }).then((res) => {
-                this.general_ifo.app_id = res.data.app_id;
-                this.information_security.app_id = res.data.app_id;
-
-                this.post_it_app_image({
-                    app_id: res.data.app_id
-                });
-                this.post_general_ifo(this.general_ifo);
-                this.post_info_security(this.information_security);
-                this.post_fka_aka(res.data.app_id);
+                description: this.description,
+                general_ifo: this.general_ifo,
+                information_security: this.information_security,
+                tags: fka_aka,
+                image:{
+                    image_url: undefined
+                }
             });
         },
         selectRules(name){
@@ -308,24 +326,31 @@ export default {
             this.chipsAKA = [...this.chipsAKA]
         },
         post_fka_aka(app_id){
+            let fka_aka = [];
             this.chipsAKA.forEach(item =>{
-                this.post_tag({
+                fka_aka.push({
                     field: 'also_know_as',
                     value: item,
                     foreign_id: app_id
                 });
             });
             this.chipsFKA.forEach(item =>{
-                this.post_tag({
+                fka_aka.push({
                     field: 'formerly_known_as',
                     value: item,
                     foreign_id: app_id
                 });
             });
+            return fka_aka;
+        },
+        close(){
+            this.$emit('closeModal');
         },
         validate () {
-            if(this.$refs.form.validate())
+            if(this.$refs.form.validate()){
                 this.postNewITApp();
+                this.close();
+            }
         }
     },
     created(){
