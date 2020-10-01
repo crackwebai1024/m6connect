@@ -19,6 +19,9 @@ const getters = {
   },
   getUser(state) {
     return state.user
+  },
+  getCurrentUserCompanies(state) {
+    return dataGet(state, 'user.companies.items', [])
   }
 }
 
@@ -30,7 +33,6 @@ const mutations = {
     window.localStorage.setItem('m6Token', JSON.stringify(payload))
   },
   setUser(state, payload) {
-
     state.user = payload
   }
 }
@@ -43,7 +45,7 @@ const actions = {
         IdToken
       })
         .then(res => {const companyRel = res.data.companies.items.find( c => c.active )
-                dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
+          dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
           commit('setUser', res.data)
           resolve(res)
         })

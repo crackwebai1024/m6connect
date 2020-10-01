@@ -51,6 +51,26 @@ const actions = {
       })
       .catch(reject)
     })
+  },
+  createUserCompany({ rootState }, data) {
+    data.userID = rootState.Auth.user.id
+    return new Promise( (resolve, reject) => {
+      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, data)
+      .then(resolve)
+      .catch(reject)
+    })
+  },
+  switchCompanies( { dispatch }, params ) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/switchCompanies`, params)
+      .then(res => {
+        dispatch('Auth/getUserData', {}, { root: true })
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
+    })
   }
 
 }
