@@ -143,7 +143,8 @@ export default {
           this.loading = false
           this.$router.push({ name: 'home' })
         } catch (error) {
-          if (error.type === 'UserNotConfirmedException') {
+          if( this.$h.dg(error, 'type', '') == "UserNotConfirmedException" ) {
+
             this.$router.push({
               name: 'auth.SignUp',
               query: { email: this.user.email }

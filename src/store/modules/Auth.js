@@ -2,11 +2,16 @@ import axios from 'axios'
 import { dataGet } from '@/utils/helpers'
 
 const state = {
-  AccessToken: '',
-  IdToken: '',
-  exp: '',
-  user: {}
-}
+  AccessToken: "",
+  IdToken: "",
+  exp: "",
+  user: {},
+  statusColors:{
+    PENDING: "#e3aa27",
+    ACTIVE: "#59cf51",
+    INACTIVE: "#bf2121"
+  }
+};
 
 const getters = {
   loggedIn(state) {
