@@ -40,7 +40,6 @@ const actions = {
           resolve(res)
         })
         .catch(err => reject(err))
-<<<<<<< HEAD
         
     })
   },
@@ -54,10 +53,6 @@ const actions = {
     })
   }
 
-=======
-    })
-  }
->>>>>>> origin/master
 }
 
 export default {
