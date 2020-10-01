@@ -5,7 +5,12 @@ const state = {
     AccessToken: "",
     IdToken: "",
     exp: "",
-    user: {}
+    user: {},
+    statusColors:{
+        PENDING: "#e3aa27",
+        ACTIVE: "#59cf51",
+        INACTIVE: "#bf2121"
+    }
 };
 
 const getters = {
