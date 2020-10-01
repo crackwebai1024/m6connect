@@ -10,17 +10,22 @@ const defaultState = {
 const state = () => defaultState
 
 const getters = {
-  getTimeline: state => state.timeline
+  getTimeline: state => state.timeline,
+  getFeed: state => state.feed,
+  getClient: state => state.client
 }
 
 const mutations = {
+  PUSH_ACTIVITY: (state, payload) => {
+    state.timeline.unshift(payload)
+  },
   SET_GS_TOKEN: (state, payload) => state.gsToken = payload,
   SET_CLIENT: (state, token) => {
-    state.client = connect(process.env.VUE_APP_GS_ID, token)
+    state.client = connect(process.env.VUE_APP_GS_ID, token, process.env.VUE_APP_ID)
   },
   SET_FEED: async (state, userID) => {
     state.feed = await state.client.feed(
-      'timeline',
+      'users',
       userID,
       state.gsToken
     )
@@ -35,6 +40,13 @@ const mutations = {
 }
 
 const actions = {
+  addReaction({ state }, { type, id, options = null }) {
+    return new Promise(resolve => {
+      state.client.reactions.add(type, id, options).then(response => {
+        resolve(response)
+      })
+    })
+  },
   addActivity({ state }, payload) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
@@ -42,7 +54,6 @@ const actions = {
         ...payload,
         actor: state.client.currentUser
       })
-      console.log(activity)
       resolve(true)
     })
   },
@@ -57,9 +68,26 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
+  pushActivity({ commit }, activities) {
+    return new Promise(resolve => {
+      activities.forEach(item => {
+        commit('PUSH_ACTIVITY', item)
+        resolve(true)
+      })
+    })
+  },
+  removeReaction({ state }, id) {
+    return new Promise(resolve => {
+      state.client.reactions.delete(id).then(response => {
+        resolve(response)
+      })
+    })
+  },
   retrieveFeed({ state, commit }) {
     return new Promise((resolve, reject) => {
-      state.feed.get().then(({ results }) => {
+      state.feed.get({
+        reactions: { own: true, recent: true, counts: true }
+      }).then(({ results }) => {
         commit('SET_TIMELINE', results)
         resolve(true)
       }).catch(e => reject(e))

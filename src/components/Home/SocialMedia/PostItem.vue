@@ -17,24 +17,24 @@
               class="mr-2"
               size="40"
             >
-              <img :src="data.imageUrl">
+              <img :src="data.actor.data.image">
             </v-avatar>
             <div class="d-flex flex-column">
               <div
                 class="cursor-hover font-weight-bold line-height-1 size-15 underline"
                 style="margin-bottom: 2px;"
               >
-                {{ data.name }}
+                {{ data.actor.data.name }}
               </div>
               <div class="d-flex grey--text line-height-1 text-caption">
+                <!--                <div class="grey&#45;&#45;text text&#45;&#45;darken-1">-->
+                <!--                  {{ data.occupation || '' }}-->
+                <!--                </div>-->
+                <!--                <div class="grey&#45;&#45;text mx-1 text&#45;&#45;darken-1">-->
+                <!--                  ·-->
+                <!--                </div>-->
                 <div class="grey--text text--darken-1">
-                  {{ data.occupation }}
-                </div>
-                <div class="grey--text mx-1 text--darken-1">
-                  ·
-                </div>
-                <div class="grey--text text--darken-1">
-                  {{ data.timestamps.created }}
+                  {{ new Date(data.time).toLocaleString('en-US') }}
                 </div>
               </div>
             </div>
@@ -62,122 +62,133 @@
           </v-menu>
         </v-row>
       </v-card-title>
+
       <div>
         <div class="px-5 py-4">
-          <v-btn
-            v-if="all_images && data.images.length>4"
-            class="float-button"
-            color="primary"
-            outlined
-            @click="showAll"
-          >
-            Show less
-          </v-btn>
-          <v-row
-            v-if="data.images.length !== 0"
-            no-gutters
-          >
-            <v-col
-              v-for="(image, index) of picture_items"
-              :key="index"
-              :cols="widthCols()"
-            >
-              <v-img
-                aspect-ratio="1.7"
-                class="mx-1 my-1 pointer"
-                :src="image.url"
-                @click="previewImage(image)"
-              />
-            </v-col>
-          </v-row>
-          <v-btn
-            v-if="!all_images && data.images.length>4"
-            block
-            class="mt-2"
-            color="primary"
-            outlined
-            @click="showAll"
-          >
-            Show All
-          </v-btn>
-          <div
-            v-line-clamp="5"
-            class="black--text size-14 text-style"
-            :class="data.images.length !== 0 ? 'mt-3' : ''"
-          >
-            {{ data.contain }}
-          </div>
+          {{ data.message }}
         </div>
       </div>
-      <div
-        v-if="data['postType'] === 'request'"
-        class="border-1 ma-4 mt-0"
-      >
-        <div :class="'text-h6 py-2 px-3 font-weight-regular ' + this.tagColor + '--text'">
-          {{ data['request'].title }}
-        </div>
-        <v-divider />
-        <!-- post component reference-->
-        <template v-if="data['componentName']">
-          <component
-            :is="data['componentName']"
-            class="pa-0 profile-component"
-          />
-        </template>
-        <div class="align-center d-flex justify-space-between pa-3 pt-0">
-          <div>
-            <div class="align-center d-flex pb-2 pt-6">
-              <div
-                v-for="(userRequest, index) in data['request'].users"
-                :key="index+'userrequest'"
-                class="d-flex"
-              >
-                <v-badge
-                  :bordered="userRequest.approval ? false : true"
-                  :color="userRequest.approval ? 'green accent-3' : 'white black--text'"
-                  :dark="userRequest.approval ? false : true"
-                  :icon="userRequest.approval ? 'mdi-check' : 'mdi-help'"
-                  offset-x="12"
-                  offset-y="12"
-                  top
-                >
-                  <v-avatar size="35">
-                    <v-img :src="userRequest.imgSrc" />
-                  </v-avatar>
-                </v-badge>
-                <template v-if="index !== data['request'].users.length - 1">
-                  <span
-                    :class="lineColor(userRequest.approval) + 'my-auto'"
-                    style="height: 5px; width: 25px;"
-                  />
-                </template>
-              </div>
-            </div>
-            <div
-              v-if="pendingApprovals(data['request'].users) > 0"
-              class="black--text text-caption"
-            >
-              {{ pendingApprovals(data['request'].users ) }} Pending Approvals
-            </div>
-          </div>
-          <div class="d-flex justify-end">
-            <v-btn
-              class="capitalize mr-2 my-2 px-6"
-              color="grey darken-3"
-              text
-            >
-              Deny
-            </v-btn>
-            <v-btn
-              class="capitalize my-2 px-8"
-              color="green accent-4"
-              outlined
-            >
-              Approve
-            </v-btn>
-          </div>
-        </div>
-      </div>
+      <!--IMAGES-->
+      <!--      <div>-->
+      <!--        <div class="px-5 py-4">-->
+      <!--          <v-btn-->
+      <!--            v-if="all_images && data.images.length>4"-->
+      <!--            class="float-button"-->
+      <!--            color="primary"-->
+      <!--            outlined-->
+      <!--            @click="showAll"-->
+      <!--          >-->
+      <!--            Show less-->
+      <!--          </v-btn>-->
+      <!--          <v-row-->
+      <!--            v-if="data.images.length !== 0"-->
+      <!--            no-gutters-->
+      <!--          >-->
+      <!--            <v-col-->
+      <!--              v-for="(image, index) of picture_items"-->
+      <!--              :key="index"-->
+      <!--              :cols="widthCols()"-->
+      <!--            >-->
+      <!--              <v-img-->
+      <!--                aspect-ratio="1.7"-->
+      <!--                class="mx-1 my-1 pointer"-->
+      <!--                :src="image.url"-->
+      <!--                @click="previewImage(image)"-->
+      <!--              />-->
+      <!--            </v-col>-->
+      <!--          </v-row>-->
+      <!--          <v-btn-->
+      <!--            v-if="!all_images && data.images.length>4"-->
+      <!--            block-->
+      <!--            class="mt-2"-->
+      <!--            color="primary"-->
+      <!--            outlined-->
+      <!--            @click="showAll"-->
+      <!--          >-->
+      <!--            Show All-->
+      <!--          </v-btn>-->
+      <!--          <div-->
+      <!--            v-line-clamp="5"-->
+      <!--            class="black&#45;&#45;text size-14 text-style"-->
+      <!--            :class="data.images.length !== 0 ? 'mt-3' : ''"-->
+      <!--          >-->
+      <!--            {{ data.contain }}-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--END IMAGES-->
+
+
+      <!--      <div-->
+      <!--        v-if="data['postType'] === 'request'"-->
+      <!--        class="border-1 ma-4 mt-0"-->
+      <!--      >-->
+      <!--        <div :class="'text-h6 py-2 px-3 font-weight-regular ' + this.tagColor + '&#45;&#45;text'">-->
+      <!--          {{ data['request'].title }}-->
+      <!--        </div>-->
+      <!--        <v-divider />-->
+      <!--        &lt;!&ndash; post component reference&ndash;&gt;-->
+      <!--        <template v-if="data['componentName']">-->
+      <!--          <component-->
+      <!--            :is="data['componentName']"-->
+      <!--            class="pa-0 profile-component"-->
+      <!--          />-->
+      <!--        </template>-->
+      <!--        <div class="align-center d-flex justify-space-between pa-3 pt-0">-->
+      <!--          <div>-->
+      <!--            <div class="align-center d-flex pb-2 pt-6">-->
+      <!--              <div-->
+      <!--                v-for="(userRequest, index) in data['request'].users"-->
+      <!--                :key="index+'userrequest'"-->
+      <!--                class="d-flex"-->
+      <!--              >-->
+      <!--                <v-badge-->
+      <!--                  :bordered="userRequest.approval ? false : true"-->
+      <!--                  :color="userRequest.approval ? 'green accent-3' : 'white black&#45;&#45;text'"-->
+      <!--                  :dark="userRequest.approval ? false : true"-->
+      <!--                  :icon="userRequest.approval ? 'mdi-check' : 'mdi-help'"-->
+      <!--                  offset-x="12"-->
+      <!--                  offset-y="12"-->
+      <!--                  top-->
+      <!--                >-->
+      <!--                  <v-avatar size="35">-->
+      <!--                    <v-img :src="userRequest.imgSrc" />-->
+      <!--                  </v-avatar>-->
+      <!--                </v-badge>-->
+      <!--                <template v-if="index !== data['request'].users.length - 1">-->
+      <!--                  <span-->
+      <!--                    :class="lineColor(userRequest.approval) + 'my-auto'"-->
+      <!--                    style="height: 5px; width: 25px;"-->
+      <!--                  />-->
+      <!--                </template>-->
+      <!--              </div>-->
+      <!--            </div>-->
+      <!--            <div-->
+      <!--              v-if="pendingApprovals(data['request'].users) > 0"-->
+      <!--              class="black&#45;&#45;text text-caption"-->
+      <!--            >-->
+      <!--              {{ pendingApprovals(data['request'].users ) }} Pending Approvals-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--          <div class="d-flex justify-end">-->
+      <!--            <v-btn-->
+      <!--              class="capitalize mr-2 my-2 px-6"-->
+      <!--              color="grey darken-3"-->
+      <!--              text-->
+      <!--            >-->
+      <!--              Deny-->
+      <!--            </v-btn>-->
+      <!--            <v-btn-->
+      <!--              class="capitalize my-2 px-8"-->
+      <!--              color="green accent-4"-->
+      <!--              outlined-->
+      <!--            >-->
+      <!--              Approve-->
+      <!--            </v-btn>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+
       <v-card-actions class="px-5">
         <v-row
           align="center"
@@ -185,15 +196,15 @@
           no-gutters
         >
           <v-icon
-            class="mr-1 blue--text"
+            class="blue--text mr-1"
             size="20"
-            @click="likeIcon"
+            @click="likeIcon(data)"
           >
             {{ like_icon }}
           </v-icon>
           <div
             class="cursor-hover grey--text my-0 text--darken-1"
-            @click="likeIcon"
+            @click="likeIcon(data)"
           >
             {{ contLikes() }}
           </div>
@@ -203,7 +214,7 @@
             @click="showCommentsPost"
           >
             Comments
-            <span>{{ data.comments.length }}</span>
+            <span>{{ data.comments || 0 }}</span>
           </div>
         </v-row>
       </v-card-actions>
@@ -215,40 +226,78 @@
           no-gutters
         >
           <v-col cols="4">
-            <v-btn @click="likeIcon" text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1" :class="{ 'grey lighten-4 white--text': like_state }" >
-              <v-icon size="18" class="mr-2">mdi-thumb-up-outline</v-icon> Like
+            <v-btn
+              class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
+              :class="{ 'grey lighten-4 white--text': like_state }"
+              small
+              text
+              @click="likeIcon(data)"
+            >
+              <v-icon
+                class="mr-2"
+                size="18"
+              >
+                mdi-thumb-up-outline
+              </v-icon> Like
             </v-btn>
           </v-col>
           <v-col cols="4">
-            <v-btn @click="showCommentsPost" text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
-              <v-icon size="18" class="mr-2">mdi-message-outline</v-icon> Comment
+            <v-btn
+              class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
+              small
+              text
+              @click="showCommentsPost"
+            >
+              <v-icon
+                class="mr-2"
+                size="18"
+              >
+                mdi-message-outline
+              </v-icon> Comment
             </v-btn>
           </v-col>
           <v-col cols="4">
-            <v-btn text small class="capitalize text-body-1 grey--text text--darken-1 w-full h-full py-5 my-1">
-              <v-icon size="18" class="mr-2">mdi-share</v-icon> Share
+            <v-btn
+              class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
+              small
+              text
+            >
+              <v-icon
+                class="mr-2"
+                size="18"
+              >
+                mdi-share
+              </v-icon> Share
             </v-btn>
           </v-col>
         </v-row>
       </v-card-actions>
       <v-divider class="mx-4" />
 
-      <v-col v-if="showComments" cols="12" class="px-5 d-flex">
+      <v-col
+        v-if="showComments"
+        class="d-flex px-5"
+        cols="12"
+      >
         <v-badge
-            bottom
-            color="green accent-3"
-            dot
-            offset-x="10"
-            offset-y="10"
-            class="mr-3">
-            <v-avatar size="48">
-              <img :alt="user.name" :src="user.imgSrc">
-            </v-avatar>
+          bottom
+          class="mr-3"
+          color="green accent-3"
+          dot
+          offset-x="10"
+          offset-y="10"
+        >
+          <v-avatar size="48">
+            <img
+              :alt="user.name"
+              :src="user.imgSrc"
+            >
+          </v-avatar>
         </v-badge>
         <v-text-field
-          class="black--text"
           ref="currentUserComment"
           v-model="comment_data"
+          class="black--text"
           dense
           filled
           height="37"
@@ -266,28 +315,32 @@
           v-for="(comment, index) of data.comments"
           :key="index"
           :comment="comment"
-          :size="48"
           :reply="true"
+          :size="48"
         >
           <div>
             <post-comments
               v-for="(nested_comment, index2) of comment.nested_comments"
               :key="index2"
               :comment="nested_comment"
-              :size="36"
               :reply="false"
+              :size="36"
             />
             <div class="d-flex">
               <v-badge
-                  bottom
-                  color="green accent-3"
-                  dot
-                  offset-x="10"
-                  offset-y="10"
-                  class="mr-3">
-                  <v-avatar size="37">
-                    <img :alt="user.name" :src="user.imgSrc">
-                  </v-avatar>
+                bottom
+                class="mr-3"
+                color="green accent-3"
+                dot
+                offset-x="10"
+                offset-y="10"
+              >
+                <v-avatar size="37">
+                  <img
+                    :alt="user.name"
+                    :src="user.imgSrc"
+                  >
+                </v-avatar>
               </v-badge>
               <v-text-field
                 dense
@@ -328,8 +381,17 @@ export default {
     user: {
       name: 'John Doe',
       imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'
-    },
+    }
   }),
+  computed: {
+    ...mapGetters(['get_user_data']),
+    tagColor() {
+      return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
+    }
+  },
+  created() {
+    // this.picture_items = this.data.images.slice(0, 4)
+  },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
@@ -337,8 +399,7 @@ export default {
       return this.data.images.length === 1 ? 12 : 6
     },
     contLikes() {
-      const reac = this.data.reactions
-      return reac.likes + reac.enchants + reac.unlikes
+      return this.$h.dg(this.data, 'reaction_counts.like', '0')
     },
     showAll() {
       this.picture_items = this.all_images
@@ -351,11 +412,23 @@ export default {
       this.showComments = !this.showComments
       this.$nextTick(() => this.$refs.currentUserComment.focus())
     },
-    likeIcon() {
-      this.like_state = !this.like_state
-      this.like_icon = this.like_state
-        ? 'mdi-thumb-up'
-        : 'mdi-thumb-up-outline'
+    likeIcon(activity) {
+      if (this.data.own_reactions.like) {
+        this.data.own_reactions.like.forEach(item => {
+          this.$store.dispatch('GSFeed/removeReaction', item.id)
+        })
+      } else {
+        const payload = {
+          id: activity.id,
+          type: 'like'
+        }
+        this.$store.dispatch('GSFeed/addReaction', payload)
+      }
+      // this.like_state = !this.like_state
+      // this.like_icon = this.like_state
+      //   ? 'mdi-thumb-up'
+      //   : 'mdi-thumb-up-outline'
+
       this.print()
     },
     pushComment() {
@@ -375,7 +448,7 @@ export default {
       this.comment_data = ''
     },
     print() {
-      console.log(this.data.comments.nested_comments)
+      // console.log(this.data.comments.nested_comments)
     },
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected])
@@ -391,16 +464,9 @@ export default {
 
       return pendingApprovals
     }
-  },
-  created() {
-    this.picture_items = this.data.images.slice(0, 4)
-  },
-  computed: {
-    ...mapGetters(['get_user_data']),
-    tagColor() {
-      return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
-    }
   }
+
+
 }
 </script>
 
