@@ -42,20 +42,6 @@ export default {
     }),
     ...mapGetters('Auth', { user: 'getUser' }),
     ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' })
-  },
-  watch: {
-    user(a) {
-      if (!this.gsToken && a.id) {
-        this.$store.dispatch('GSChat/getGSToken', this.user).then(() => {
-          const user = {
-            id: this.user.id,
-            name: `${this.user.firstName} ${this.user.lastName}`,
-            image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
-          }
-          this.$store.dispatch('GSChat/setUser', user)
-        })
-      }
-    }
   }
 }
 </script>

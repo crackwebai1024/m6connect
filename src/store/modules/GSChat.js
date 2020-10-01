@@ -42,6 +42,7 @@ const mutations = {
       state.gsToken
     )
   }
+
 }
 
 const actions = {
@@ -60,7 +61,7 @@ const actions = {
       }).then(({ data }) => {
         commit('SET_GS_TOKEN', data.token)
         commit('SET_CLIENT')
-        resolve(true)
+        resolve(data.token)
       }).catch(e => reject(e))
     })
   },
@@ -91,9 +92,6 @@ const actions = {
       state: true
     })
     commit('SET_CHATS', channels)
-    for (const c of channels) {
-      console.log(c.custom.name, c.cid)
-    }
   },
   setUser({ commit }, payload) {
     return new Promise(resolve => {
