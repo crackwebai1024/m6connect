@@ -65,9 +65,10 @@ const actions = {
       })
       await conversation.create()
 
+
       const connection = state.connections.find(item => item.id === conversation.id)
 
-      if (connection !== false) {
+      if (connection !== undefined) {
         commit('PUSH_CHAT', connection)
       } else {
         commit('PUSH_CHAT', conversation)

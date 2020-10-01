@@ -110,6 +110,7 @@ router.beforeEach(async (to, from, next) => {
         image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
       }
       await store.dispatch('GSChat/setUser', user)
+      await store.dispatch('GSChat/retrieveChats', userLogged.id)
 
       // Start GSFeed
       await store.dispatch('GSFeed/getGSFeedToken', userLogged)

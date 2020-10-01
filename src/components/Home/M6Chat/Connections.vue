@@ -121,32 +121,32 @@ export default {
         })
       })
       result.forEach(channel => {
-        this.unread_count.push ({
+        this.unread_count.push({
           cid: channel['cid'],
           online: channel['membersInChannel']['user']['online'],
           unread: channel['state']['read'][this.user.id]['unread_messages']
         })
-      });
+      })
       return result
     }
   },
   async mounted() {
     this.client.on('notification.message_new', r => {
-      this.pushUnreadCount(r.channel.cid);
+      this.pushUnreadCount(r.channel.cid)
     })
     this.client.on('message.new', r => {
-      if(r.user.id !== this.user.id ) {
-        this.pushUnreadCount(r.cid);
+      if (r.user.id !== this.user.id) {
+        this.pushUnreadCount(r.cid)
       }
     })
   },
   methods: {
-    pushUnreadCount(cid){
+    pushUnreadCount(cid) {
       this.unread_count.forEach((item, ind) => {
-        if(item.cid == cid){
-          this.unread_count[ind]['unread'] += 1;
+        if (item.cid == cid) {
+          this.unread_count[ind]['unread'] += 1
         }
-      });
+      })
     },
     addNewMessage(event) {},
     startChat(channel) {

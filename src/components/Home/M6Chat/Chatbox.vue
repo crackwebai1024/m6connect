@@ -95,21 +95,31 @@
         :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
       >
         <template v-if="user.id === message.user.id">
-          <span class="text-caption ml-auto mb-3 align-center d-flex grey--text">{{ messageTime(message.timeStamp) }}</span>
+          <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
           <div
             class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
             {{ message.text }}
-            <div v-if="message.images" class="d-flex ml-auto w-fit">
-              <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
-                <img class="image-preview" :src="image"/>
+            <div
+              v-if="message.images"
+              class="d-flex ml-auto w-fit"
+            >
+              <div
+                v-for="(image, index) in message.images"
+                :key="'imagemsg-' + index"
+                class="mt-2 mx-1 relative w-fit"
+              >
+                <img
+                  class="image-preview"
+                  :src="image"
+                >
               </div>
             </div>
           </div>
           <v-icon
-            @click="print(message)"
             :class="[message.read ? 'blue--text' : 'grey--text']"
             size="11"
+            @click="print(message)"
           >
             mdi-check-all
           </v-icon>
@@ -144,15 +154,25 @@
               </template>
             </v-avatar>
           </v-card>
-          <div class="arrow-down blue mb-3 mr-1 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
+          <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
             {{ message.text }}
-            <div v-if="message.images" class="d-flex mr-auto w-fit">
-              <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
-                <img class="image-preview" :src="image"/>
+            <div
+              v-if="message.images"
+              class="d-flex mr-auto w-fit"
+            >
+              <div
+                v-for="(image, index) in message.images"
+                :key="'imagemsg-' + index"
+                class="mt-2 mx-1 relative w-fit"
+              >
+                <img
+                  class="image-preview"
+                  :src="image"
+                >
               </div>
             </div>
           </div>
-          <span class="text-caption mr-auto mb-3 align-center d-flex grey--text">{{ messageTime(message.timeStamp) }}</span>
+          <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
         </template>
       </div>
 
@@ -183,21 +203,24 @@
     />
     <!-- files -->
     <template v-if="docFiles.length > 0">
-      <div class="images-container docs d-flex px-0 py-1 mx-1">
+      <div class="d-flex docs images-container mx-1 px-0 py-1">
         <div
           v-for="(docFile, index) in docFiles"
           :key="'previewdoc-' + index"
-          class="previewdoc mx-1 blue d-flex rounded-pill px-2 align-center justify-center"
+          class="align-center blue d-flex justify-center mx-1 previewdoc px-2 rounded-pill"
         >
-          <v-icon left class="white--text">
+          <v-icon
+            class="white--text"
+            left
+          >
             mdi-file-outline
           </v-icon>
-          <span class="white--text text-caption docfile-name">{{ docFile.name }}</span>
+          <span class="docfile-name text-caption white--text">{{ docFile.name }}</span>
 
           <v-icon
-            @click="removeDoc(index)"
+            class="blue lighten-2 ml-2 pa-1 rounded-xl white--text"
             size="12"
-            class="white--text blue lighten-2 ml-2 rounded-xl pa-1"
+            @click="removeDoc(index)"
           >
             mdi-close
           </v-icon>
@@ -206,15 +229,22 @@
     </template>
     <!-- images or files ui -->
     <template v-if="srcImageFiles.length > 0">
-      <div class="images-container d-flex px-0 py-3 mx-1">
-        <div class="relative w-fit mx-1" v-for="(srcImageFile, index) in srcImageFiles" :key="'previewimage-' + index">
-          <img class="image-preview" :src="srcImageFile"/>
+      <div class="d-flex images-container mx-1 px-0 py-3">
+        <div
+          v-for="(srcImageFile, index) in srcImageFiles"
+          :key="'previewimage-' + index"
+          class="mx-1 relative w-fit"
+        >
+          <img
+            class="image-preview"
+            :src="srcImageFile"
+          >
           <v-btn
-            @click="removeImage(index)"
-            class="absolute top-0 right-0 btn-chat-shadow ml-2"
+            class="absolute btn-chat-shadow ml-2 right-0 top-0"
             color="grey lighten-2"
             fab
             style="height:15px; width:15px;"
+            @click="removeImage(index)"
           >
             <v-icon
               size="12"
@@ -230,16 +260,16 @@
       :class="[minimized ? 'd-none' : 'd-flex']"
     >
       <v-menu
+        :close-on-content-click="false"
         elevation="0"
         :offset-y="offset"
-        :close-on-content-click="false"
         top
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-            elevation="0"
             v-bind="attrs"
-            class="align-center d-flex justify-center btns-message white--text"
+            class="align-center btns-message d-flex justify-center white--text"
+            elevation="0"
             fab
             height="25"
             width="25"
@@ -253,7 +283,7 @@
         </template>
 
         <v-list class="mb-2 pa-0 transparent">
-          <v-list-item class="pa-0 ma-0 uploadfile-btn">
+          <v-list-item class="ma-0 pa-0 uploadfile-btn">
             <v-tooltip
               class="tooltip-upload-file"
               left
@@ -264,19 +294,19 @@
                   v-on="on"
                 >
                   <v-file-input
-                    class="ma-0 pa-0 upload-icon align-center d-flex justify-center white--text"
                     accept="image/png, image/jpeg, image/bmp"
+                    class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                    hide-input
                     multiple
                     prepend-icon="mdi-image"
-                    hide-input
                     @change="onImagesChange($event)"
-                  ></v-file-input>
+                  />
                 </div>
               </template>
               <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image</span>
             </v-tooltip>
           </v-list-item>
-          <v-list-item class="pa-0 ma-0 uploadfile-btn">
+          <v-list-item class="ma-0 pa-0 uploadfile-btn">
             <v-tooltip
               class="tooltip-upload-file"
               left
@@ -287,13 +317,13 @@
                   v-on="on"
                 >
                   <v-file-input
-                    class="ma-0 pa-0 upload-icon align-center d-flex justify-center white--text"
                     accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
+                    class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                    hide-input
                     multiple
                     prepend-icon="mdi-file-outline"
-                    hide-input
                     @change="onDocsChange($event)"
-                  ></v-file-input>
+                  />
                 </div>
               </template>
               <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Document</span>
@@ -395,8 +425,8 @@ export default {
       return users
     },
     srcImageFiles() {
-      let srcImages = []
-      this.imageFiles.forEach((imageFile) => {
+      const srcImages = []
+      this.imageFiles.forEach(imageFile => {
         srcImages.push(URL.createObjectURL(imageFile))
       })
       return srcImages
@@ -415,7 +445,6 @@ export default {
   },
   methods: {
     addNewMessage(event) {
-      console.log('desde chatbox')
       this.messages = [...this.messages, event.message]
       this.$nextTick(() => {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
@@ -448,7 +477,6 @@ export default {
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
-      const date = new Date()
 
       this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
@@ -459,7 +487,7 @@ export default {
       this.imageFiles = []
       this.docFiles = []
       this.$nextTick(() => {
-        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
     },
@@ -471,17 +499,17 @@ export default {
       this.$refs.inputMessage.focus()
     },
     removeImage(index) {
-      this.imageFiles.splice(index, 1);
+      this.imageFiles.splice(index, 1)
     },
     onDocsChange(e) {
       this.docFiles = e
       this.$refs.inputMessage.focus()
     },
     removeDoc(index) {
-      this.docFiles.splice(index, 1);
+      this.docFiles.splice(index, 1)
     },
     messageTime(time) {
-      let messageDate = new Date(time)
+      const messageDate = new Date(time)
       return messageDate.getHours() + ':' + messageDate.getMinutes()
     }
   }
