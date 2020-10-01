@@ -99,7 +99,23 @@ router.beforeEach(async (to, from, next) => {
   let loggedIn = store.getters["Auth/loggedIn"]
   if(loggedIn){
     let user = store.getters["Auth/getUser"]
-    if(!user.id) await store.dispatch('Auth/getUserData')
+    if(!user.id) {
+      const { data: userLogged } = await store.dispatch('Auth/getUserData')
+
+      // Start GSChat
+      await store.dispatch('GSChat/getGSToken', userLogged)
+      const user = {
+        id: userLogged.id,
+        name: `${userLogged.firstName} ${userLogged.lastName}`,
+        image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
+      }
+      await store.dispatch('GSChat/setUser', user)
+
+      // Start GSFeed
+      await store.dispatch('GSFeed/getGSFeedToken', userLogged)
+      await store.dispatch('GSFeed/setUser', user)
+      await store.dispatch('GSFeed/setFeed', userLogged.id)
+    }
   }
 
   // Verify if route is public

@@ -140,11 +140,27 @@ export default {
       } else {
         try {
           await this.userSignIn(this.user)
+          const { data: userLogged } = await this.$store.dispatch('Auth/getUserData')
+
+          // Start GSChat
+          await this.$store.dispatch('GSChat/getGSToken', userLogged)
+          const user = {
+            id: userLogged.id,
+            name: `${userLogged.firstName} ${userLogged.lastName}`,
+            image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
+          }
+          await this.$store.dispatch('GSChat/setUser', user)
+
+          // Start GSFeed
+          await this.$store.dispatch('GSFeed/getGSFeedToken', userLogged)
+          await this.$store.dispatch('GSFeed/setUser', user)
+          await this.$store.dispatch('GSFeed/setFeed', userLogged.id)
+
+
           this.loading = false
           this.$router.push({ name: 'home' })
         } catch (error) {
-          if( this.$h.dg(error, 'type', '') == "UserNotConfirmedException" ) {
-
+          if (this.$h.dg(error, 'type', '') === 'UserNotConfirmedException') {
             this.$router.push({
               name: 'auth.SignUp',
               query: { email: this.user.email }
