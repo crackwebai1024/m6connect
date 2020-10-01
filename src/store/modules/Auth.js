@@ -19,6 +19,9 @@ const getters = {
   },
   getUser(state) {
     return state.user
+  },
+  getCurrentUserCompanies(state) {
+    return dataGet(state, 'user.companies.items', [])
   }
 }
 
@@ -30,7 +33,6 @@ const mutations = {
     window.localStorage.setItem('m6Token', JSON.stringify(payload))
   },
   setUser(state, payload) {
-
     state.user = payload
   }
 }

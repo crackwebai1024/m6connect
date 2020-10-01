@@ -51,6 +51,14 @@ const actions = {
       })
       .catch(reject)
     })
+  },
+  createUserCompany({ rootState }, data) {
+    data.userID = rootState.Auth.user.id
+    return new Promise( (resolve, reject) => {
+      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, data)
+      .then(resolve)
+      .catch(reject)
+    })
   }
 
 }
