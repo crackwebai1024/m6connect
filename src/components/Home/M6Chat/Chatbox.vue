@@ -85,19 +85,26 @@
     <!-- Messages Container -->
     <div
       ref="messages"
-      class="messages-container mt-2 mx-2 px-2 vertical-scroll white"
+      class="messages-container ml-2 px-1 vertical-scroll white"
       :class="[minimized ? 'd-none' : '']"
     >
       <div
         v-for="(message, index) in messages"
         :key="'message-'+ channel.userId + '-' + index"
         class="d-flex"
+        :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
       >
         <template v-if="user.id === message.user.id">
+          <span class="text-caption ml-auto mb-3 align-center d-flex grey--text">{{ messageTime(message.timeStamp) }}</span>
           <div
-            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-auto mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
             {{ message.text }}
+            <div v-if="message.images" class="d-flex ml-auto w-fit">
+              <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
+                <img class="image-preview" :src="image"/>
+              </div>
+            </div>
           </div>
           <v-icon
             @click="print(message)"
@@ -137,9 +144,15 @@
               </template>
             </v-avatar>
           </v-card>
-          <div class="arrow-down blue mb-3 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
+          <div class="arrow-down blue mb-3 mr-1 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
             {{ message.text }}
+            <div v-if="message.images" class="d-flex mr-auto w-fit">
+              <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
+                <img class="image-preview" :src="image"/>
+              </div>
+            </div>
           </div>
+          <span class="text-caption mr-auto mb-3 align-center d-flex grey--text">{{ messageTime(message.timeStamp) }}</span>
         </template>
       </div>
 
@@ -168,6 +181,50 @@
       class="blue-grey lighten-5"
       :class="[minimized ? 'd-none' : '']"
     />
+    <!-- files -->
+    <template v-if="docFiles.length > 0">
+      <div class="images-container docs d-flex px-0 py-1 mx-1">
+        <div
+          v-for="(docFile, index) in docFiles"
+          :key="'previewdoc-' + index"
+          class="previewdoc mx-1 blue d-flex rounded-pill px-2 align-center justify-center"
+        >
+          <v-icon left class="white--text">
+            mdi-file-outline
+          </v-icon>
+          <span class="white--text text-caption docfile-name">{{ docFile.name }}</span>
+
+          <v-icon
+            @click="removeDoc(index)"
+            size="12"
+            class="white--text blue lighten-2 ml-2 rounded-xl pa-1"
+          >
+            mdi-close
+          </v-icon>
+        </div>
+      </div>
+    </template>
+    <!-- images or files ui -->
+    <template v-if="srcImageFiles.length > 0">
+      <div class="images-container d-flex px-0 py-3 mx-1">
+        <div class="relative w-fit mx-1" v-for="(srcImageFile, index) in srcImageFiles" :key="'previewimage-' + index">
+          <img class="image-preview" :src="srcImageFile"/>
+          <v-btn
+            @click="removeImage(index)"
+            class="absolute top-0 right-0 btn-chat-shadow ml-2"
+            color="grey lighten-2"
+            fab
+            style="height:15px; width:15px;"
+          >
+            <v-icon
+              size="12"
+            >
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </template>
     <div
       class="align-center chat-send-section px-4"
       :class="[minimized ? 'd-none' : 'd-flex']"
@@ -175,12 +232,14 @@
       <v-menu
         elevation="0"
         :offset-y="offset"
+        :close-on-content-click="false"
         top
       >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            elevation="0"
             v-bind="attrs"
-            class="align-center btn-chat-shadow d-flex justify-center send-message white--text"
+            class="align-center d-flex justify-center btns-message white--text"
             fab
             height="25"
             width="25"
@@ -194,42 +253,54 @@
         </template>
 
         <v-list class="mb-2 pa-0 transparent">
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            class="pa-0"
-          >
+          <v-list-item class="pa-0 ma-0 uploadfile-btn">
             <v-tooltip
               class="tooltip-upload-file"
               left
             >
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
+                <div
                   v-bind="attrs"
-                  class="align-center btn-chat-shadow d-flex justify-center pointer send-message white--text"
-                  fab
-                  height="25"
-                  width="25"
-                  x-small
                   v-on="on"
-                  @click="openFileManager(item.type)"
                 >
-                  <v-icon size="15">
-                    mdi-{{ item.icon }}
-                  </v-icon>
-                </v-btn>
+                  <v-file-input
+                    class="ma-0 pa-0 upload-icon align-center d-flex justify-center white--text"
+                    accept="image/png, image/jpeg, image/bmp"
+                    multiple
+                    prepend-icon="mdi-image"
+                    hide-input
+                    @change="onImagesChange($event)"
+                  ></v-file-input>
+                </div>
               </template>
-              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">{{ item.title }}</span>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image</span>
+            </v-tooltip>
+          </v-list-item>
+          <v-list-item class="pa-0 ma-0 uploadfile-btn">
+            <v-tooltip
+              class="tooltip-upload-file"
+              left
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-file-input
+                    class="ma-0 pa-0 upload-icon align-center d-flex justify-center white--text"
+                    accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
+                    multiple
+                    prepend-icon="mdi-file-outline"
+                    hide-input
+                    @change="onDocsChange($event)"
+                  ></v-file-input>
+                </div>
+              </template>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Document</span>
             </v-tooltip>
           </v-list-item>
         </v-list>
       </v-menu>
-      <!-- <div>
-        <div class="">
-          <input type="file" accept="image/*" @change="loadFile($event)">
-          <img style="max-height: 50px; width: 50px;" id="output">
-        </div> -->
-
       <input
         ref="inputMessage"
         v-model="valueInput"
@@ -237,7 +308,6 @@
         placeholder="Type a message here..."
         @keyup.enter="sendMessage"
       >
-      <!-- </div> -->
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
         fab
@@ -251,7 +321,7 @@
         </v-icon>
       </v-btn>
       <v-btn
-        class="btn-chat-shadow send-message white--text"
+        class="btns-message white--text"
         fab
         height="25"
         icon
@@ -299,10 +369,8 @@ export default {
     },
     valueInput: '',
     showDialog: false,
-    items: [
-      { icon: 'image', type: 'image', title: 'Image' },
-      { icon: 'file-outline', type: 'file', title: 'Document' }
-    ],
+    imageFiles: [],
+    docFiles: [],
     offset: true,
     minimized: false
   }),
@@ -325,6 +393,13 @@ export default {
         }
       })
       return users
+    },
+    srcImageFiles() {
+      let srcImages = []
+      this.imageFiles.forEach((imageFile) => {
+        srcImages.push(URL.createObjectURL(imageFile))
+      })
+      return srcImages
     }
   },
   async mounted() {
@@ -381,21 +456,33 @@ export default {
       }).catch(e => console.error(e))
 
       this.valueInput = ''
-    },
-    openFileManager(type) {
-      console.log(type)
-      return true
+      this.imageFiles = []
+      this.docFiles = []
+      this.$nextTick(() => {
+        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.inputMessage.focus()
+      })
     },
     minimizeChatBox() {
       this.minimized = !this.minimized
     },
-    loadFile(event) {
-      const reader = new FileReader()
-      reader.onload = function () {
-        const output = document.getElementById('output')
-        output.src = reader.result
-      }
-      reader.readAsDataURL(event.target.files[0])
+    onImagesChange(e) {
+      this.imageFiles = e
+      this.$refs.inputMessage.focus()
+    },
+    removeImage(index) {
+      this.imageFiles.splice(index, 1);
+    },
+    onDocsChange(e) {
+      this.docFiles = e
+      this.$refs.inputMessage.focus()
+    },
+    removeDoc(index) {
+      this.docFiles.splice(index, 1);
+    },
+    messageTime(time) {
+      let messageDate = new Date(time)
+      return messageDate.getHours() + ':' + messageDate.getMinutes()
     }
   }
 }
@@ -404,43 +491,42 @@ export default {
 <style>
 .chat-box {
   width: 335px;
-  height: 460px;
+  max-height: 455px;
 }
 .chat-box.minimized {
   height: 55px;
 }
 .chat-title {
-  height: 70px;
+  min-height: 60px;
   background: #F7FCFF;
 }
-.rotate-45 {
+/* .rotate-45 {
   transform: rotate(45deg);
-}
+} */
 .-rotate-45 {
   transform: rotate(-45deg);
 }
 .btn-chat-shadow {
   box-shadow: 0px 3px 13px -4px #b4b4ec !important;
 }
-.btn-chat-shadow.send-message {
+.btns-message {
   background: #366AF5 !important;
 }
 .divider-chat {
   border-color: rgba(165, 160, 160, 0.12) !important;
 }
-.messages-container {
-  height: 325px;
-}
 .messages-container::-webkit-scrollbar {
-  width: 3.5px;
+  width: 13px;
 }
 .messages-container::-webkit-scrollbar-thumb {
   background: #B4B1CA;
   border-radius: 2px;
+  border: 5px solid #fff;
 }
 .messages-container::-webkit-scrollbar-track {
   background: #fff;
   border-radius: 2px;
+  border: 5px solid #fff;
 }
 .arrow-down {
   max-width: 240px;
@@ -472,7 +558,7 @@ export default {
   top: 0px;
 }
 .chat-send-section {
-  height: 60px;
+  min-height: 50px;
 }
 .container-emoji {
     height: 158px !important;
@@ -514,5 +600,55 @@ export default {
 .v-tooltip__content {
   background: transparent !important;
   padding: 0;
+}
+.mdi-file-outline::before, .mdi-image::before{
+  color: #fff;
+  font-size: 15px;
+}
+.uploadfile-btn * {
+  cursor: default;
+}
+.uploadfile-btn .upload-icon .v-icon--link {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  cursor: pointer;
+  background: #366AF5 !important;
+  box-shadow: none;
+}
+.uploadfile-btn .v-input__prepend-outer {
+  padding: 0;
+  margin: 0;
+}
+.image-preview {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.images-container {
+  overflow-x: scroll;
+  min-height: 60px;
+}
+.images-container::-webkit-scrollbar {
+  height: 5px;
+  width: 3px;
+}
+.images-container::-webkit-scrollbar-thumb {
+  background: #B4B1CA;
+  border-radius: 2px;
+}
+.images-container::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 2px;
+}
+.docfile-name {
+  white-space: nowrap;
+}
+.docs {
+  min-height: 42px;
+}
+.preview-doc {
+  height: 30px;
 }
 </style>
