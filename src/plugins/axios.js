@@ -12,3 +12,4 @@ axios.defaults.headers = {
   'Authorization': `Bearer ${ store.state.Auth.AccessToken }`
 }
 
+export { axios }

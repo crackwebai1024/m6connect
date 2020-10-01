@@ -2,11 +2,16 @@ import axios from 'axios'
 import { dataGet } from '@/utils/helpers'
 
 const state = {
-  AccessToken: '',
-  IdToken: '',
-  exp: '',
-  user: {}
-}
+  AccessToken: "",
+  IdToken: "",
+  exp: "",
+  user: {},
+  statusColors:{
+    PENDING: "#e3aa27",
+    ACTIVE: "#59cf51",
+    INACTIVE: "#bf2121"
+  }
+};
 
 const getters = {
   loggedIn(state) {
@@ -14,6 +19,9 @@ const getters = {
   },
   getUser(state) {
     return state.user
+  },
+  getCurrentUserCompanies(state) {
+    return dataGet(state, 'user.companies.items', [])
   }
 }
 
@@ -25,7 +33,6 @@ const mutations = {
     window.localStorage.setItem('m6Token', JSON.stringify(payload))
   },
   setUser(state, payload) {
-
     state.user = payload
   }
 }
@@ -37,8 +44,11 @@ const actions = {
       axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/auth/getUser`, {
         IdToken
       })
-        .then(res => {const companyRel = res.data.companies.items.find( c => c.active )
-                dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
+        .then(res => {
+          const companyRel = res.data.companies.items.find(c => c.active)
+          dispatch('Companies/getCompanyByID', companyRel.company.id, {
+            root: true
+          })
           commit('setUser', res.data)
           resolve(res)
         })

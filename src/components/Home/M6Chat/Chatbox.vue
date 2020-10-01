@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-if="dataReady"
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
     :class="[minimized ? 'minimized' : '']"
     elevation="3"
@@ -13,15 +14,15 @@
         <v-badge
           bottom
           class="mr-2"
-          :color="chatData.online ? 'green accent-3' : 'transparent'"
+          :color="channel.online ? 'green accent-3' : 'transparent'"
           dot
           offset-x="10"
           offset-y="10"
         >
           <v-avatar size="42">
             <img
-              :alt="chatData.name"
-              :src="chatData.userImgSrc"
+              :alt="channel.name"
+              :src="users[0].user.image"
             >
           </v-avatar>
         </v-badge>
@@ -30,10 +31,10 @@
             class="font-weight-medium ma-0 pa-0 text-body-2"
             :class="[minimized ? 'white--text' : '']"
           >
-            {{ chatData.userName }}
+            {{ users[0].user.name }}
           </p>
           <p
-            v-if="chatData.online"
+            v-if="users[0].user.online"
             class="font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'green--text text--accent-4']"
           >
@@ -44,7 +45,7 @@
             class="font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
-            last online 5 hours ago
+            {{ users[0].user.last_active }}
           </p>
         </div>
       </div>
@@ -63,11 +64,11 @@
           </v-icon>
         </v-btn> -->
         <v-btn
-          @click="closeChat"
           class="btn-chat-shadow ml-2"
           color="white"
           fab
           x-small
+          @click="closeChat"
         >
           <v-icon
             size="15"
@@ -88,17 +89,17 @@
       :class="[minimized ? 'd-none' : '']"
     >
       <div
-        v-for="(message, index) in chatData.messages"
-        :key="'message-'+ chatData.userId + '-' + index"
+        v-for="(message, index) in messages"
+        :key="'message-'+ channel.userId + '-' + index"
         class="d-flex"
         :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
       >
-        <template v-if="currentUserId === message.authorId">
+        <template v-if="user.id === message.user.id">
           <span class="text-caption ml-auto mb-3 align-center d-flex grey--text">{{ messageTime(message.timeStamp) }}</span>
           <div
             class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
-            {{ message.body }}
+            {{ message.text }}
             <div v-if="message.images" class="d-flex ml-auto w-fit">
               <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
                 <img class="image-preview" :src="image"/>
@@ -106,6 +107,7 @@
             </div>
           </div>
           <v-icon
+            @click="print(message)"
             :class="[message.read ? 'blue--text' : 'grey--text']"
             size="11"
           >
@@ -114,11 +116,11 @@
         </template>
         <template v-else>
           <img
-            v-if="firstCommentBeforeAnswer(message.authorId, index, chatData.messages)"
-            :alt="chatData.userName"
+            v-if="firstCommentBeforeAnswer(message.authorId, index, channel.messages)"
+            :alt="channel.userName"
             class="mr-3 rounded-circle"
             height="30"
-            :src="chatData.userImgSrc"
+            :src="channel.userImgSrc"
             width="30"
           >
           <v-card
@@ -127,9 +129,23 @@
             elevation="0"
             height="30"
             width="30"
-          />
+          >
+            <v-avatar
+              :color="users[0].user.image ? '' : 'blue'"
+              dark
+              size="36"
+            >
+              <v-img
+                v-if="users[0].user.image"
+                :src="users[0].user.image"
+              />
+              <template v-else>
+                <span class="text-uppercase white--text">{{ users[0].user.name.charAt(0) }}</span>
+              </template>
+            </v-avatar>
+          </v-card>
           <div class="arrow-down blue mb-3 mr-1 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
-            {{ message.body }}
+            {{ message.text }}
             <div v-if="message.images" class="d-flex mr-auto w-fit">
               <div class="relative w-fit mx-1 mt-2" v-for="(image, index) in message.images" :key="'imagemsg-' + index">
                 <img class="image-preview" :src="image"/>
@@ -288,7 +304,7 @@
       <input
         ref="inputMessage"
         v-model="valueInput"
-        class="h-full px-2 outline-none text-body-1 w-full"
+        class="h-full outline-none px-2 text-body-1 w-full"
         placeholder="Type a message here..."
         @keyup.enter="sendMessage"
       >
@@ -325,7 +341,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 
 export default {
@@ -334,9 +350,9 @@ export default {
     VEmojiPicker
   },
   props: {
-    chatData: {
+    channel: {
       type: Object,
-      default: null
+      default: () => {}
     }
   },
   data: () => ({
@@ -344,6 +360,13 @@ export default {
     display: true,
     // user id john doe
     currentUserId: 2,
+    dataReady: false,
+    messages: [],
+    state: {
+      messages: [],
+      members: [],
+      channel: {}
+    },
     valueInput: '',
     showDialog: false,
     imageFiles: [],
@@ -352,15 +375,24 @@ export default {
     minimized: false
   }),
   computed: {
-    ...mapState(['chats', 'users']),
-    user: function () {
-      return this.users.find(u => u.id === this.data.id)
-    },
+    ...mapGetters('Auth', { user: 'getUser' }),
     groupedMessages() {
       return this.messages.reduce(function (r, a) {
         r[a.date.day] = [...r[a.date.day] || [], a]
         return r
       }, {})
+    },
+    owner: function () {
+      return this.state.members.find(r => r.role === 'owner')
+    },
+    users: function () {
+      const users = []
+      this.state.members.forEach(user => {
+        if (user.user.id !== this.user.id) {
+          users.push(user)
+        }
+      })
+      return users
     },
     srcImageFiles() {
       let srcImages = []
@@ -370,20 +402,36 @@ export default {
       return srcImages
     }
   },
-  mounted() {
-    this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+  async mounted() {
+    this.state = await this.channel.watch()
+    this.messages = this.state.messages
+    this.channel.on('message.new', this.addNewMessage)
+    this.dataReady = true
+
+    this.$nextTick(() => {
+      this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+      this.$refs.inputMessage.focus()
+    })
   },
   methods: {
-    closeChat() {
-      this.$emit('closeChat', this.chatData.userId)
-      // this.$store.dispatch('GSChat/removeChat', this.data.id)
+    addNewMessage(event) {
+      console.log('desde chatbox')
+      this.messages = [...this.messages, event.message]
+      this.$nextTick(() => {
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.inputMessage.focus()
+      })
+    },
+    async closeChat() {
+      this.channel.off('message.new', this.addNewMessage)
+      await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
-      if (index === 0) {
-        return true
-      } else {
-        return authorId === messages[index - 1].authorId ? false : true
-      }
+      // if (index === 0) {
+      //   return true
+      // } else {
+      //   return authorId === messages[index - 1].authorId ? false : true
+      // }
     },
     toogleDialogEmoji() {
       this.showDialog = !this.showDialog
@@ -401,14 +449,12 @@ export default {
         return true
       }
       const date = new Date()
-      this.chatData.messages.push({
-        authorId: this.currentUserId,
-        body: this.valueInput,
-        read: false,
-        timeStamp: date.getTime()
-      })
 
-      const self = this
+      this.$store.dispatch('GSChat/sendMessage', {
+        channel: this.channel,
+        message: this.valueInput
+      }).catch(e => console.error(e))
+
       this.valueInput = ''
       this.imageFiles = []
       this.docFiles = []
