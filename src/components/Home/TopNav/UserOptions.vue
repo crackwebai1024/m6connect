@@ -7,14 +7,14 @@
         >
             <template v-slot:activator="{ on }">
                 <img
+                    v-show="Boolean($h.dg(currentUser, 'profilePic', '').length)"
                     v-on="on" 
                     :alt="currentUser.firstName" 
-                    class="mr-1 rounded-circle"
+                    class="mr-1 img-size"
                     :src="$h.dg(currentUser, 'profilePic', '')"
-                    v-if="$h.dg(currentUser, 'profilePic', '')"
                 >
                 <v-icon 
-                    v-else 
+                    v-show="!Boolean($h.dg(currentUser, 'profilePic', '').length)"
                     x-large 
                     v-on="on" 
                     :alt="currentUser.firstName" 
@@ -43,10 +43,18 @@
                     </v-list-item-title>
                 </v-list-item>
                 <v-divider />
-                <v-list-item>
-                    <v-list-item-title>
-                        <v-btn color="red" class="white--text" small @click="logout" >Log out</v-btn>
-                    </v-list-item-title>
+                <v-list-item class="pa-2" >
+                    <v-list-item-avatar >
+                        <v-btn color="green darken-2" icon @click="showUserData = true" >
+                            <v-icon>mdi-lead-pencil</v-icon>
+                        </v-btn>
+                    </v-list-item-avatar>
+                    <v-list-item-content />
+                    <v-list-item-action>
+                        <v-btn color="red" @click="logout" >
+                            <v-icon class="white--text" >mdi-account-cancel</v-icon>
+                        </v-btn>
+                    </v-list-item-action>
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -63,6 +71,12 @@
             :show="showJoinCompanies"
             @close="showJoinCompanies = false"
         />
+
+        <user-profile-update 
+            :v-show="showUserData"
+            :show="showUserData"
+            @close="showUserData = false"
+        />
     </div>
 </template>
 
@@ -70,14 +84,18 @@
 import { mapState, mapMutations } from 'vuex'
 import UserCompaniesOptions from '@/components/Home/TopNav/UserCompaniesOptions'
 import JoinCompanies from '@/components/Home/TopNav/JoinCompanies'
+import UserProfileUpdate from '@/components/user/settings/UserProfileUpdate'
+
 export default {
     components: {
         UserCompaniesOptions,
-        JoinCompanies
+        JoinCompanies,
+        UserProfileUpdate
     },
     data: () => ({
         showCompanies: false,
-        showJoinCompanies: false
+        showJoinCompanies: false,
+        showUserData: false
     }),
     computed: {
         ...mapState('Companies', {
@@ -105,3 +123,11 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.img-size {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+}
+</style>
