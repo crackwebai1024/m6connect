@@ -74,15 +74,6 @@
             </v-form>
 
             <m6-loading :loading="loading" />
-
-            <m6-notification 
-                :snackbar="notifShow" 
-                :success="notifSuccess"
-                :danger="notifDanger"
-                top 
-                :text="notifText"  
-                @closing="resetNotif" 
-            />
             
         </template>
     </auth-layout>
@@ -91,17 +82,13 @@
 <script>
 
 import AuthLayout from '@/components/Auth/AuthLayout'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
     components: {
         AuthLayout
     },
     data: () => ({
-        notifShow: false,
-        notifText: "",
-        notifDanger: false,
-        notifSuccess: false,
         loading: false,
         customBlue: "#a4ceea",
         confirmCode: true,
@@ -127,34 +114,26 @@ export default {
         ...mapActions('Auth', {
             confirmPasswordReset: 'confirmPasswordReset'
         }),
-        resetNotif() {
-            this.notifShow = false
-            this.notifSuccess = false
-            this.notifDanger = false 
-            this.notifText = ""
-        },
-        setNotif( success, text ){
-            this.notifShow = true
-            this.notifSuccess = success
-            this.notifDanger = !success
-            this.notifText = text
-        },
+        ...mapMutations('SnackBarNotif', {
+            notifDanger: 'notifDanger',
+            notifSuccess: 'notifSuccess'
+        }),
         onPasswordClick() {
             this.showPass = !this.showPass
         },
         validate() {
             if(!this.$refs.form.validate()) {
-                this.setNotif(false, this.$t('general.fillAllFields'))
+                this.notifDanger(this.$t('general.fillAllFields'))
                 return false
             }
 
             if(this.password !== this.passwordConfirm) {
-                this.setNotif(false, this.$t('SignUp.error.passwordsDontMath'))                
+                this.notifDanger(this.$t('SignUp.error.passwordsDontMath'))
                 return false
             }
 
             if( !this.reg.test(this.password) ) {
-                this.setNotif(false, this.$t('SignUp.error.RegexCheck'))           
+                this.notifDanger(this.$t('SignUp.error.RegexCheck'))           
                 return false
             }
 
@@ -166,12 +145,12 @@ export default {
                 const { email, codeConfirm: code, password } = this.user
                 await this.confirmPasswordReset({email, code, password})
               
-                this.setNotif(true, this.$t('ResetPassword.success.passChanged'))       
+                this.notifSuccess( this.$t('ResetPassword.success.passChanged') )   
                 this.loading = false
                 this.$router.push({ name: 'auth.SignIn', query: { email: this.user.email } })
             } catch(err){
                 this.loading = false
-                this.setNotif(false, this.$t('ResetPassword.error.passError'))
+                this.notifDanger( this.$t('ResetPassword.error.passError') )
             }
         },
         getQueryParams() {

@@ -12,6 +12,7 @@ import Companies from './modules/Companies'
 import GSChat from './modules/GSChat'
 import PageControl from "./modules/PageControl";
 import UserSettingsControl from './modules/UserSettingsControl'
+import SnackBarNotif from './modules/SnackBarNotif'
 
 
 Vue.use(Vuex)
@@ -213,6 +214,7 @@ export default new Vuex.Store({
     Companies,
     GSChat,
     PageControl,
-    UserSettingsControl
+    UserSettingsControl,
+    SnackBarNotif
   }
 })

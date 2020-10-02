@@ -69,31 +69,19 @@
 
       <m6-loading :loading="loading" />
 
-      <m6-notification
-        :danger="notifDanger"
-        :snackbar="notifShow"
-        :success="notifSuccess"
-        :text="notifText"
-        top
-        @closing="resetNotif"
-      />
     </template>
   </auth-layout>
 </template>
 
 <script>
 import AuthLayout from '@/components/Auth/AuthLayout'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   components: {
     AuthLayout
   },
   data: () => ({
-    notifShow: false,
-    notifText: '',
-    notifDanger: false,
-    notifSuccess: false,
     screen: {},
     customBlue: '#a4ceea',
     loading: false,
@@ -116,25 +104,16 @@ export default {
     ...mapActions('Auth', {
       userSignIn: 'signin'
     }),
-    resetNotif() {
-      this.notifShow = false
-      this.notifSuccess = false
-      this.notifDanger = false
-      this.notifText = ''
-    },
-    setNotif(success, text) {
-      this.notifShow = true
-      this.notifSuccess = success
-      this.notifDanger = !success
-      this.notifText = text
-    },
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger'
+    }),
     onPasswordClick() {
       this.showPass = !this.showPass
     },
     async SignIn() {
       this.loading = true
       if (!this.$refs.form.validate()) {
-        this.setNotif(false, 'Please fill in both fields')
+        this.notifDanger('Please fill in both fields')
         this.loading = false
         return
       } else {
@@ -143,6 +122,7 @@ export default {
           this.loading = false
           this.$router.push({ name: 'home' })
         } catch (error) {
+          console.log(error)
           if( this.$h.dg(error, 'type', '') == "UserNotConfirmedException" ) {
 
             this.$router.push({
@@ -150,7 +130,7 @@ export default {
               query: { email: this.user.email }
             })
           } else {
-            this.setNotif(false, this.$t('SignIn.error.signin'))
+            this.notifDanger(this.$t('SignIn.error.signin'))
           }
           this.loading = false
         }

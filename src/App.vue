@@ -15,6 +15,15 @@
     <template v-else>
       <router-view />
     </template>
+
+    <m6-notification
+      :danger="notifDanger"
+      :snackbar="notifShow"
+      :success="notifSuccess"
+      :text="notifText"
+      top
+      @closing="notifClose"
+    />
   </v-app>
 </template>
 
@@ -24,7 +33,7 @@ import ActionFeed from '@/views/Home/ActionFeed'
 import M6Chat from '@/components/Home/M6Chat'
 import ChatWrapper from '@/components/Home/M6Chat/ChatWrapper'
 import GeneralOverlay from '@/components/Shared/GeneralOverlay'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 // mapActions
 export default {
   name: 'App',
@@ -45,17 +54,19 @@ export default {
     }),
     ...mapState('PageControl', {
       showSidePanels: 'showSidePanels'
+    }),
+    ...mapState('SnackBarNotif', {
+      notifShow : 'notifShow',
+      notifSuccess : 'notifSuccess',
+      notifDanger : 'notifDanger',
+      notifText : 'notifText'
     })
   },
-  // methods: {
-  //   ...mapActions('Auth', {
-  //     searchForToken: 'searchForToken'
-  //   })
-  // },
-  // mounted() {
-  //   this.searchForToken()
-  // },
-
+  methods: {
+    ...mapMutations('SnackBarNotif', {
+      notifClose: 'notifClose'
+    })
+  },
 };
 </script>
 
