@@ -14,7 +14,7 @@ import GSFeed from './modules/GSFeed'
 import PageControl from './modules/PageControl'
 import UserSettingsControl from './modules/UserSettingsControl'
 import SnackBarNotif from './modules/SnackBarNotif'
-
+import File from './modules/File'
 
 Vue.use(Vuex)
 
@@ -217,6 +217,7 @@ export default new Vuex.Store({
     GSFeed,
     PageControl,
     UserSettingsControl,
-    SnackBarNotif
+    SnackBarNotif,
+    File
   }
 })

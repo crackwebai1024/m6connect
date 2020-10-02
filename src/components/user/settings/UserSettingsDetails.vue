@@ -2,14 +2,14 @@
     <v-card>
         <v-card-text>
             <div class="flex-column flex-end" >
-                <v-btn icon >
+                <v-btn icon @click="showUserData = true" >
                     <v-icon>mdi-lead-pencil</v-icon>
                 </v-btn>
             </div>
             
             <div class="flex-column flex-center" >
-                <img v-if="$h.dg(userData, 'img')" :src="$h.dg(userData, 'img')" class="round-img" alt="user profile image">
-                <v-icon v-else x-large  >mdi-account-circle</v-icon>
+                <img v-if="$h.dg(userData, 'user.profilePic')" :src="$h.dg(userData, 'user.profilePic')" class="round-img" alt="user profile image">
+                <v-icon v-else size="10rem"  >mdi-account-circle</v-icon>
                 <v-chip v-if="$h.dg(userData, 'joinStatus', '')" :color=" statusColors[$h.dg(userData, 'joinStatus', '')] " >
                     <b class="white--text" >{{ $h.dg(userData, 'joinStatus', '').toLowerCase() }}</b>
                 </v-chip>
@@ -66,15 +66,28 @@
                 </div>
             </div>
         </v-card-text>
+
+        <user-profile-update 
+            :v-show="showUserData"
+            :show="showUserData"
+            @close="showUserData = false"
+        />
+        
     </v-card>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import UserProfileUpdate from '@/components/user/settings/UserProfileUpdate'
+
 export default {
     name: "UserSettingsDetails",
+    components: {
+        UserProfileUpdate
+    },
     data: () => ({
         dateOptions: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+        showUserData: false
     }),
     computed: {
         ...mapState('UserSettingsControl', {
@@ -89,8 +102,10 @@ export default {
 
 <style lang="scss" scoped >
 .round-img {
+    object-fit: cover;
     border-radius: 50%;
     width: 10rem;
+    height: 10rem;
     margin-bottom: -0.5rem;
 }
 .flex-column {

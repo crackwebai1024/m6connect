@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "compressorjs": "^1.0.6",
     "core-js": "^3.6.5",
     "eslint-plugin-es-beautifier": "^1.0.1",
     "eslint-plugin-react": "^7.21.1",

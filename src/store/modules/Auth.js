@@ -22,6 +22,9 @@ const getters = {
   },
   getCurrentUserCompanies(state) {
     return dataGet(state, 'user.companies.items', [])
+  },
+  getAccessToken(state){
+    return state.AccessToken
   }
 }
 
@@ -48,7 +51,7 @@ const actions = {
   getUserData({ state, commit, dispatch }) {
     return new Promise((resolve, reject) => {
       const { IdToken } = state
-      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/auth/getUser`, {
+      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/user`, {
         IdToken
       })
         .then(res => {
@@ -131,6 +134,24 @@ const actions = {
         .catch(err => {
           reject(dataGet(err, 'response.data'))
         })
+    })
+  },
+  updateUserData({ commit, state, dispatch }, user) { //update user in dynamo
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/user`, { user })
+        .then(res => {
+          let data = res.data
+          
+          if( state.user.id == data.id ){
+            data.companies = state.user.companies
+            commit('setUser', data)
+          } else {
+            const companyRel = state.user.companies.items.find( c => c.active )
+            dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
+          }
+          resolve(res)
+        })
+        .catch(reject)
     })
   }
 }

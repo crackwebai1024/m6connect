@@ -61,6 +61,7 @@
 
 <script>
 import { mapMutations, mapGetters, mapState, mapActions } from 'vuex'
+
 export default {
     name: "UserMangementTable",
     data: () => ({
