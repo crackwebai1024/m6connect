@@ -34,6 +34,13 @@ const mutations = {
   },
   setUser(state, payload) {
     state.user = payload
+  },
+  logoutUser(state) {
+    state.AccessToken = ""
+    state.IdToken = ""
+    state.exp = ""
+    state.user = {}
+    window.localStorage.removeItem('m6Token')
   }
 }
 
@@ -45,11 +52,19 @@ const actions = {
         IdToken
       })
         .then(res => {
-          const companyRel = res.data.companies.items.find(c => c.active)
-          dispatch('Companies/getCompanyByID', companyRel.company.id, {
-            root: true
-          })
-          commit('setUser', res.data)
+          const activeCompanies = res.data.companies.items.filter( c => c.joinStatus === "ACTIVE" )
+
+          // if empty as in they have not been acepted by any company, send back to signin with error
+          if( !activeCompanies.length ) { 
+            dispatch('SnackBarNotif/notifDanger', 'Please wait to be accepted by your company to start', { root: true } )
+            commit('logoutUser')
+            reject({})
+          } else {
+            const companyRel = res.data.companies.items.find( c => c.active )
+            dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
+            commit('setUser', res.data)
+          }
+
           resolve(res)
         })
         .catch(err => {

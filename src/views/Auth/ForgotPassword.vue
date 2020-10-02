@@ -43,31 +43,19 @@
 
             <m6-loading :loading="loading" />
 
-            <m6-notification 
-                :snackbar="notifShow" 
-                :success="notifSuccess"
-                :danger="notifDanger"
-                top 
-                :text="notifText"  
-                @closing="resetNotif" 
-            />
         </template>
     </auth-layout>
 </template>
 
 <script>
 import AuthLayout from '@/components/Auth/AuthLayout'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
     components: {
         AuthLayout
     },
     data: () => ({
-        notifShow: false,
-        notifText: "",
-        notifDanger: false,
-        notifSuccess: false,
         loading: false,
         email: '',
         showPass: false,
@@ -85,18 +73,10 @@ export default {
         ...mapActions('Auth', {
             startPasswordReset: 'startPasswordReset'
         }),
-        resetNotif() {
-            this.notifShow = false
-            this.notifSuccess = false
-            this.notifDanger = false 
-            this.notifText = ""
-        },
-        setNotif( success, text ){
-            this.notifShow = true
-            this.notifSuccess = success
-            this.notifDanger = !success
-            this.notifText = text
-        },
+        ...mapMutations('SnackBarNotif', {
+            notifDanger: 'notifDanger',
+            notifSuccess: 'notifSuccess'
+        }),
         onPasswordClick() {
             this.showPass = !this.showPass
         },
@@ -107,11 +87,11 @@ export default {
             .then( () => {
                 this.loading = false
 
-                this.setNotif(true, this.$t('ForgotPassword.success.checkEmail'))
+                this.notifSuccess(this.$t('ForgotPassword.success.checkEmail'))
                 this.$router.push({ name: 'auth.ResetPassword', query: { email: this.email } })
             })
             .catch( () => {
-                this.setNotif(false, this.$t('ForgotPassword.error.resetPass'))
+                this.notifDanger(this.$t('ForgotPassword.error.resetPass'))
                 this.loading = false
             })
         }

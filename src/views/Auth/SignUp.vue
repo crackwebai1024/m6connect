@@ -114,32 +114,19 @@
 
             <m6-loading :loading="loading" />
 
-            <m6-notification 
-                :snackbar="notifShow" 
-                :success="notifSuccess"
-                :danger="notifDanger"
-                top 
-                :text="notifText"  
-                @closing="resetNotif" 
-            />
-
         </template>
     </auth-layout>
 </template>
 
 <script>
 import AuthLayout from '@/components/Auth/AuthLayout'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 
 export default {
     components: {
         AuthLayout
     },
     data: () => ({
-        notifShow: false,
-        notifText: "",
-        notifDanger: false,
-        notifSuccess: false,
         codeConfirm: "",
         loading: false,
         customBlue: "#a4ceea",
@@ -173,35 +160,27 @@ export default {
             userConfirmCode: 'confirmCode',
             resetConfirmCode: 'resetConfirmCode',
         }),
-        resetNotif() {
-            this.notifShow = false
-            this.notifSuccess = false
-            this.notifDanger = false 
-            this.notifText = ""
-        },
-        setNotif( success, text ){
-            this.notifShow = true
-            this.notifSuccess = success
-            this.notifDanger = !success
-            this.notifText = text
-        },
+        ...mapMutations('SnackBarNotif', {
+            notifDanger: 'notifDanger',
+            notifSuccess: 'notifSuccess'
+        }),
         emailTest(){},
         onPasswordClick() {
             this.showPass = !this.showPass
         },
         validate() {
             if(!this.$refs.form.validate()) {
-                this.setNotif( false, this.$t('general.fillAllFields') )
+                this.notifDanger(this.$t('general.fillAllFields'))
                 return false
             }
 
             if(this.user.password !== this.user.passwordConfirm) {
-                this.setNotif( false, this.$t('SignUp.error.passwordsDontMath') )
+                this.notifDanger(this.$t('SignUp.error.passwordsDontMath'))
                 return false
             }
 
             if( !this.reg.test(this.user.password) ) {
-                this.setNotif( false, this.$t('SignUp.error.RegexCheck') )
+                this.notifDanger(this.$t('SignUp.error.RegexCheck'))
                 return false
             }
 
@@ -217,14 +196,14 @@ export default {
                
                 await this.signUpUser(this.user)
 
-                this.setNotif( true, this.$t('SignUp.success.created') )
+                this.notifSuccess( this.$t('SignUp.success.created') )
                 this.confirmEmail = true
                 this.loading = false
             } catch(e) {
                 let errorMsg = this.$t('SignUp.error.signUpErr')
                 if( e.code === 'UsernameExistsException' ) errorMsg = e.message
 
-                this.setNotif( false, errorMsg )
+                this.notifDanger(errorMsg)
                 this.loading = false
 
                 if( e.code === 'UsernameExistsException' ) this.$router.push({ name: 'auth.signedin' })
@@ -236,11 +215,11 @@ export default {
 
                 await this.userConfirmCode({ code: this.codeConfirm, email: this.user.email })
 
-                this.setNotif( true, this.$t('SignUp.signUpConfirmed') )
+                this.notifSuccess( this.$t('SignUp.signUpConfirmed') )
                 this.loading = false
                 this.$router.push({ name: 'auth.SignIn', query: { email: this.user.email } })
             } catch (error) {
-                this.setNotif( false, this.$t('SignUp.error.codeConfirmError') )
+                this.notifDanger( this.$t('SignUp.error.codeConfirmError') )
                 this.loading = false
             }
         },
@@ -255,10 +234,10 @@ export default {
                     this.user.email = email
                     await this.resetConfirmCode(email)
                     this.loading = false
-
-                    this.setNotif( true, this.$t('SignUp.success.ConfirmCodeResent') )
+                    
+                    this.notifSuccess( this.$t('SignUp.success.ConfirmCodeResent') )
                 } catch (err) {
-                    this.setNotif( false, this.$t('SignUp.error.ConfirmCodeResentError') )
+                    this.notifDanger(this.$t('SignUp.error.ConfirmCodeResentError'))
                     this.loading = false
                 }
             }
