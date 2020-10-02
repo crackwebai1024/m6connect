@@ -47,6 +47,9 @@ const mutations = {
       state.gsToken
     )
   },
+  REMOVE_USER: async (state) => {
+    await state.client.wsConnection.disconnect();
+  },
   SET_MY_CONNECTIONS: (state, payload) => {
     state.connections = payload
   },
@@ -91,6 +94,12 @@ const actions = {
   pushChat({ commit }, payload) {
     return new Promise(resolve => {
       commit('PUSH_CHAT', payload)
+      resolve(true)
+    })
+  },
+  removeClient({ commit }){
+    return new Promise(resolve => {
+      commit('REMOVE_USER');
       resolve(true)
     })
   },

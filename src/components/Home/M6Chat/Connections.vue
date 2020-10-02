@@ -110,6 +110,7 @@ export default {
     filteredChannels() {
       const result = []
       this.department.channels.forEach(channel => {
+        this.unread_count = [];
         Object.keys(channel.state.members).forEach(member => {
           if (member !== this.user.id) {
             const user = channel.state.members[member]
@@ -117,15 +118,14 @@ export default {
               // If there are more than one user, we need to add an array of users and modify the template
               channel.membersInChannel = user
               result.push(channel)
+              this.unread_count.push({
+                isOpen:false,
+                cid: channel['cid'],
+                online: channel['membersInChannel']['user']['online'],
+                unread: channel['state']['read'][this.user.id]['unread_messages']
+              })
             }
           }
-        })
-      })
-      result.forEach(channel => {
-        this.unread_count.push({
-          cid: channel['cid'],
-          online: channel['membersInChannel']['user']['online'],
-          unread: channel['state']['read'][this.user.id]['unread_messages']
         })
       })
       return result
@@ -133,25 +133,35 @@ export default {
   },
   async mounted() {
     this.client.on('notification.message_new', r => {
-      this.pushUnreadCount(r.channel.cid)
+      this.pushUnreadCount(r.channel)
     })
     this.client.on('message.new', r => {
       if (r.user.id !== this.user.id) {
-        this.pushUnreadCount(r.cid)
+        this.pushUnreadCount(r)
       }
+    })
+    this.client.on('channel.visible', r => {
+      this.unread_count.forEach((item, ind) => {
+        if (item.cid == r.cid){
+          this.unread_count[ind]['isOpen'] = !this.unread_count[ind]['isOpen'];
+          this.unread_count[ind]['unread'] = 0;
+        }
+      })
     })
   },
   methods: {
-    pushUnreadCount(cid) {
+    pushUnreadCount(channel) {
       this.unread_count.forEach((item, ind) => {
-        if (item.cid == cid) {
+        if (item.cid == channel.cid && item.isOpen === false) {
           this.unread_count[ind]['unread'] += 1
         }
       })
     },
     addNewMessage(event) {},
-    startChat(channel) {
-      this.$store.dispatch('GSChat/pushChat', channel)
+    async startChat(channel) {
+      await this.$store.dispatch('GSChat/pushChat', channel)
+      await channel.hide();
+      await channel.show();
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput

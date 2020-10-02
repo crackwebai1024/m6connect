@@ -119,7 +119,6 @@
           <v-icon
             :class="[message.read ? 'blue--text' : 'grey--text']"
             size="11"
-            @click="print(message)"
           >
             mdi-check-all
           </v-icon>
@@ -452,6 +451,8 @@ export default {
       })
     },
     async closeChat() {
+      await this.channel.hide();
+      await this.channel.show();
       this.channel.off('message.new', this.addNewMessage)
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
