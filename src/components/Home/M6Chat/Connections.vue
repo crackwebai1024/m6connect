@@ -106,6 +106,7 @@ export default {
     ...mapState(['layout', 'chats']),
     ...mapGetters('Auth', { user: 'getUser' }),
     ...mapGetters('GSChat', { client: 'client' }),
+    ...mapGetters('GSFeed', { feed: 'getFeed' }),
     filteredChannels() {
       const result = []
       this.department.channels.forEach(channel => {

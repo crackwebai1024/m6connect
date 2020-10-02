@@ -50,11 +50,16 @@ const actions = {
   addActivity({ state }, payload) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
+      // const attachments = await Promise.all(payload.images.map(async image => {
+      //   console.log(image)
+      //   await state.client.images.upload(image)
+      // }))
+      // console.log(attachments)
       const activity = await state.feed.addActivity({
         ...payload,
         actor: state.client.currentUser
       })
-      resolve(true)
+      resolve(activity)
     })
   },
   getGSFeedToken({ commit }, payload) {

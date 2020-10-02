@@ -1,60 +1,66 @@
 <template>
-  <v-container class="w-main-content px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
+  <v-container
+    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-main-content"
+  >
     <!-- General use list component-->
     <template v-if="get_screen_status()">
-      <record-container class="main-content" :data="get_record_full_screen()" />
+      <record-container
+        class="main-content"
+        :data="get_record_full_screen()"
+      />
     </template>
     <template v-else>
       <!-- Social Network -->
-      <project-social-media class="main-content"/>
+      <project-social-media class="main-content" />
       <image-caroussel-overlay
-        @restartImageArray="restartImageArray()"
-        :value="overlayActive"
         :images="imageArray"
         :selected="selectedImage"
-      ></image-caroussel-overlay>
+        :value="overlayActive"
+        @restartImageArray="restartImageArray"
+      />
     </template>
   </v-container>
 </template>
 
 <script>
-import {mapGetters, mapState, mapActions} from 'vuex';
-import ProjectSocialMedia from "./ProjectSocialMedia";
-import RecordContainer from "@/components/RecordMode/RecordContainer";
-import ImageCarousselOverlay from "@/components/Shared/ImageCarousselOverlay";
+import { mapGetters, mapState, mapActions } from 'vuex'
+import ProjectSocialMedia from './ProjectSocialMedia'
+import RecordContainer from '@/components/RecordMode/RecordContainer'
+import ImageCarousselOverlay from '@/components/Shared/ImageCarousselOverlay'
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     ProjectSocialMedia,
     RecordContainer,
-    ImageCarousselOverlay,
+    ImageCarousselOverlay
   },
   computed: {
     ...mapGetters({
-      get_screen_status: "GeneralListModule/get_screen_status",
-      get_record_full_screen: "GeneralListModule/get_record_full_screen",
-      get_image_preview_overlay: "get_image_preview_overlay"
+      get_screen_status: 'GeneralListModule/get_screen_status',
+      get_record_full_screen: 'GeneralListModule/get_record_full_screen',
+      get_image_preview_overlay: 'get_image_preview_overlay'
     }),
     ...mapState(['layout']),
     imageArray() {
-      let images = this.get_image_preview_overlay()[0];
-      return images;
+      const images = this.get_image_preview_overlay()[0]
+      return images
     },
     selectedImage() {
-      let selected = this.get_image_preview_overlay()[1];
-      return selected;
+      const selected = this.get_image_preview_overlay()[1]
+      return selected
     },
     overlayActive() {
-      let selected = this.get_image_preview_overlay()[0].length > 0;
-      return selected;
-    },
+      const selected = this.get_image_preview_overlay()[0].length > 0
+      return selected
+    }
   },
   methods: {
-    ...mapActions(["reset_image_overlay"]),
+    ...mapActions(['reset_image_overlay']),
     restartImageArray() {
-      this.reset_image_overlay();
-    },
-  },
-};
+      this.reset_image_overlay()
+    }
+  }
+}
 </script>
+

@@ -477,6 +477,7 @@ export default {
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
+      const date = new Date()
 
       this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
@@ -487,7 +488,7 @@ export default {
       this.imageFiles = []
       this.docFiles = []
       this.$nextTick(() => {
-        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
     },

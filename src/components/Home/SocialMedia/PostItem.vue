@@ -15,10 +15,25 @@
           <div class="align-center d-flex">
             <v-avatar
               class="mr-2"
-              size="40"
+              color="blue"
+              dark
+              size="36"
             >
-              <img :src="data.actor.data.image">
+              <v-img
+                v-if="user.pic"
+                :src="user.pic"
+              />
+              <template v-else>
+                <span class="text-uppercase white--text">{{ data.actor.data.name.charAt(0) }}</span>
+              </template>
             </v-avatar>
+
+            <!--            <v-avatar-->
+            <!--              class="mr-2"-->
+            <!--              size="40"-->
+            <!--            >-->
+            <!--              <img :src="data.actor.data.image">-->
+            <!--            </v-avatar>-->
             <div class="d-flex flex-column">
               <div
                 class="cursor-hover font-weight-bold line-height-1 size-15 underline"
@@ -198,13 +213,13 @@
           <v-icon
             class="blue--text mr-1"
             size="20"
-            @click="likeIcon(data)"
+            @click="likeActivity(data)"
           >
-            {{ like_icon }}
+            {{ likeIcon }}
           </v-icon>
           <div
             class="cursor-hover grey--text my-0 text--darken-1"
-            @click="likeIcon(data)"
+            @click="likeActivity(data)"
           >
             {{ contLikes() }}
           </div>
@@ -214,7 +229,7 @@
             @click="showCommentsPost"
           >
             Comments
-            <span>{{ data.comments || 0 }}</span>
+            <span>{{ $h.dg(data, 'comments', '').length || 0 }}</span>
           </div>
         </v-row>
       </v-card-actions>
@@ -228,10 +243,10 @@
           <v-col cols="4">
             <v-btn
               class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
-              :class="{ 'grey lighten-4 white--text': like_state }"
+              :class="{ 'grey lighten-4 white--text': likeState }"
               small
               text
-              @click="likeIcon(data)"
+              @click="likeActivity(data)"
             >
               <v-icon
                 class="mr-2"
@@ -304,7 +319,7 @@
           hide-details
           placeholder="Write a comment..."
           rounded
-          @keyup.enter="pushComment"
+          @keyup.enter="pushComment(data)"
         />
       </v-col>
       <div
@@ -371,10 +386,10 @@ export default {
     data: Object
   },
   data: () => ({
-    like_icon: 'mdi-thumb-up-outline',
+    likeIcon: 'mdi-thumb-up-outline',
     showComments: false,
     picture_items: [],
-    like_state: false,
+    likeState: false,
     all_images: false,
     comment_data: '',
     rotate: '',
@@ -412,28 +427,41 @@ export default {
       this.showComments = !this.showComments
       this.$nextTick(() => this.$refs.currentUserComment.focus())
     },
-    likeIcon(activity) {
+    likeActivity(activity) {
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
           this.$store.dispatch('GSFeed/removeReaction', item.id)
         })
+        this.likeState = false
       } else {
         const payload = {
           id: activity.id,
           type: 'like'
         }
+        this.likeState = true
         this.$store.dispatch('GSFeed/addReaction', payload)
       }
-      // this.like_state = !this.like_state
-      // this.like_icon = this.like_state
-      //   ? 'mdi-thumb-up'
-      //   : 'mdi-thumb-up-outline'
 
-      this.print()
+      this.likeIcon = this.likeState
+        ? 'mdi-thumb-up'
+        : 'mdi-thumb-up-outline'
     },
-    pushComment() {
+    pushComment(activity) {
+      const payload = {
+        id: activity.id,
+        type: 'comment',
+        options: {
+          text: this.comment_data
+        }
+      }
+      this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
+        console.log(response)
+      })
+      if (!this.data.comments) {
+        this.data.comments = []
+      }
       this.data.comments.push({
-        name: this.get_user_data().name,
+        name: `${this.user.firstName} ${this.user.lastName}`,
         imageUrl: this.get_user_data().imageUrl,
         message: this.comment_data,
         reactions: {
