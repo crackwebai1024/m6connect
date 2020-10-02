@@ -1,43 +1,85 @@
 <template>
-  <v-container class="py-0 px-3 h-full">
-    <header-component class="mb-3 card-custom-shadow rounded h-auto" hasslot :info="{title:'Create Post', icon:''}">
+  <v-container class="h-full px-3 py-0">
+    <header-component
+      class="card-custom-shadow h-auto mb-3 rounded"
+      hasslot
+      :info="{title: 'Create Post', icon: ''}"
+    >
       <template v-slot:select>
-        <v-menu transition="slide-y-transition" offset-y bottom>
+        <v-menu
+          bottom
+          offset-y
+          transition="slide-y-transition"
+        >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn elevation="0" class="capitalize mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
+            <v-btn
+              v-bind="attrs"
+              class="capitalize font-weight-bold mb-0 pl-1 purple--text px-0 text--darken-1 transparent"
+              elevation="0"
+              v-on="on"
+            >
               Public
-              <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
+              <v-icon class="blue--text text--darken-3">
+                mdi-chevron-down
+              </v-icon>
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item v-for="(item, i) in areas" :key="i">
+            <v-list-item
+              v-for="(item, i) in areas"
+              :key="i"
+            >
               <v-list-item-title
-                :class="item.type == 'title' ? 'grey--text' : 'black--text'"
-              >{{ item.text }}</v-list-item-title>
+                :class="item.type === 'title' ? 'grey--text' : 'black--text'"
+              >
+                {{ item.text }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </template>
       <template v-slot:input>
-        <img :alt="user.name" class="mr-1 rounded-circle" width="40" height="40" :src="user.imgSrc">
-        <v-text-field
-          class="font-weight-bold ml-1"
+        <img
+          :alt="user.firstName"
+          class="mr-1 rounded-circle"
           height="40"
-          label="Whats on your mind, John?"
-          rounded
-          flat
+          :src="user.imgSrc"
+          width="40"
+        >
+        <v-text-field
+          v-model="activityText"
+          class="font-weight-bold ml-1"
           dense
-          @keyup.enter="filter_posts(['author', 1])"
-          v-model="searchText"
-          single-line
+          flat
+          height="40"
           hide-details
+          :label="`Whats on your mind, ${user.firstName}?`"
+          rounded
+          single-line
           solo-inverted
+          @keyup.enter="filter_posts(['author', 1])"
         >
           <template v-slot:append>
-            <v-row class="d-flex align-center">
-              <v-icon class="blue--text text--lighten-1">mdi-file-document-outline</v-icon>
-              <v-icon class="lime--text text--darken-1 mx-1">mdi-image</v-icon>
-              <v-icon class="red--text text--lighten-1">mdi-link-variant</v-icon>
+            <v-row class="align-center d-flex">
+              <!--              <v-icon class="blue&#45;&#45;text text&#45;&#45;lighten-1">-->
+              <!--                mdi-file-document-outline-->
+              <!--              </v-icon>-->
+              <!--              <v-icon class="lime&#45;&#45;text mx-1 text&#45;&#45;darken-1">-->
+              <!--                mdi-image-->
+              <!--              </v-icon>-->
+              <!--              <v-icon class="red&#45;&#45;text text&#45;&#45;lighten-1">-->
+              <!--                mdi-link-variant-->
+              <!--              </v-icon>-->
+              <v-btn
+                icon
+                @click="addActivity"
+              >
+                <v-icon
+                  class="blue--text text--lighten-1"
+                >
+                  mdi-send
+                </v-icon>
+              </v-btn>
             </v-row>
           </template>
         </v-text-field>
@@ -46,55 +88,68 @@
     <posts-list />
   </v-container>
 </template>
+
 <script>
-import HeaderComponent from "@/components/Home/HeaderComponent";
-import PostsList from "@/components/Home/SocialMedia/PostsList";
-import { mapActions } from "vuex";
+import HeaderComponent from '@/components/Home/HeaderComponent'
+import PostsList from '@/components/Home/SocialMedia/PostsList'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "SocialMedia",
+  name: 'SocialMedia',
   components: {
     HeaderComponent,
-    PostsList,
+    PostsList
   },
   data: () => ({
-    user: {
-      name: 'John Doe',
-      imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'
-    },
     areas: [
-      { text: "Everyone", type: "subtitle" },
-      { text: "My company", type: "subtitle" },
-      { text: "Teams", type: "title" },
-      { text: "All my teams", type: "subtitle" },
-      { text: "IT Team XY", type: "subtitle" },
-      { text: "CPM Team Z", type: "subtitle" },
-      { text: "Departments", type: "title" },
-      { text: "All my departments", type: "subtitle" },
-      { text: "Finances", type: "subtitle" },
-      { text: "Operations", type: "subtitle" },
+      { text: 'Everyone', type: 'subtitle' },
+      { text: 'My company', type: 'subtitle' },
+      { text: 'Teams', type: 'title' },
+      { text: 'All my teams', type: 'subtitle' },
+      { text: 'IT Team XY', type: 'subtitle' },
+      { text: 'CPM Team Z', type: 'subtitle' },
+      { text: 'Departments', type: 'title' },
+      { text: 'All my departments', type: 'subtitle' },
+      { text: 'Finances', type: 'subtitle' },
+      { text: 'Operations', type: 'subtitle' }
     ],
-    searchText: "",
+    activityText: '',
     // items:['Everyone', 'My Company', 'All My Teams', 'IT Team XY', 'CPM TeamZ', 'All My Departments', 'Finances', 'Operations'],
     items: [
       {
-        text: "Everyone",
-        value: "Everyone",
+        text: 'Everyone',
+        value: 'Everyone'
       },
       {
-        text: "My posts",
-        value: "author",
+        text: 'My posts',
+        value: 'author'
       },
       {
-        text: "My Company",
-        value: "company",
-      },
+        text: 'My Company',
+        value: 'company'
+      }
     ],
-    item: "Everyone",
-    posts_list: [{}],
+    item: 'Everyone',
+    posts_list: [{}]
   }),
-  methods: {
-    ...mapActions("SocialNetworkModule", ["filter_posts"]),
+  computed: {
+    ...mapGetters('Auth', { user: 'getUser' })
   },
-};
+  methods: {
+    ...mapActions('SocialNetworkModule', ['filter_posts']),
+    addActivity() {
+      if (this.activityText.trim() === '') {
+        return
+      }
+      const activity = {
+        message: this.activityText,
+        verb: 'post',
+        object: 1
+      }
+      this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+        this.activityText = ''
+      })
+    }
+  }
+}
 </script>

@@ -1,5 +1,6 @@
 <template>
   <v-card
+    v-if="dataReady"
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
     :class="[minimized ? 'minimized' : '']"
     elevation="3"
@@ -13,15 +14,15 @@
         <v-badge
           bottom
           class="mr-2"
-          :color="chatData.online ? 'green accent-3' : 'transparent'"
+          :color="channel.online ? 'green accent-3' : 'transparent'"
           dot
           offset-x="10"
           offset-y="10"
         >
           <v-avatar size="42">
             <img
-              :alt="chatData.name"
-              :src="chatData.userImgSrc"
+              :alt="channel.name"
+              :src="users[0].user.image"
             >
           </v-avatar>
         </v-badge>
@@ -30,10 +31,10 @@
             class="font-weight-medium ma-0 pa-0 text-body-2"
             :class="[minimized ? 'white--text' : '']"
           >
-            {{ chatData.userName }}
+            {{ users[0].user.name }}
           </p>
           <p
-            v-if="chatData.online"
+            v-if="users[0].user.online"
             class="font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'green--text text--accent-4']"
           >
@@ -44,7 +45,7 @@
             class="font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
-            last online 5 hours ago
+            {{ users[0].user.last_active }}
           </p>
         </div>
       </div>
@@ -63,11 +64,11 @@
           </v-icon>
         </v-btn> -->
         <v-btn
-          @click="closeChat"
           class="btn-chat-shadow ml-2"
           color="white"
           fab
           x-small
+          @click="closeChat"
         >
           <v-icon
             size="15"
@@ -84,34 +85,52 @@
     <!-- Messages Container -->
     <div
       ref="messages"
-      class="messages-container mt-2 mx-2 px-2 vertical-scroll white"
+      class="messages-container ml-2 px-1 vertical-scroll white"
       :class="[minimized ? 'd-none' : '']"
     >
       <div
-        v-for="(message, index) in chatData.messages"
-        :key="'message-'+ chatData.userId + '-' + index"
+        v-for="(message, index) in messages"
+        :key="'message-'+ channel.userId + '-' + index"
         class="d-flex"
+        :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
       >
-        <template v-if="currentUserId === message.authorId">
+        <template v-if="user.id === message.user.id">
+          <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
           <div
-            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-auto mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
-            {{ message.body }}
+            {{ message.text }}
+            <div
+              v-if="message.images"
+              class="d-flex ml-auto w-fit"
+            >
+              <div
+                v-for="(image, index) in message.images"
+                :key="'imagemsg-' + index"
+                class="mt-2 mx-1 relative w-fit"
+              >
+                <img
+                  class="image-preview"
+                  :src="image"
+                >
+              </div>
+            </div>
           </div>
           <v-icon
             :class="[message.read ? 'blue--text' : 'grey--text']"
             size="11"
+            @click="print(message)"
           >
             mdi-check-all
           </v-icon>
         </template>
         <template v-else>
           <img
-            v-if="firstCommentBeforeAnswer(message.authorId, index, chatData.messages)"
-            :alt="chatData.userName"
+            v-if="firstCommentBeforeAnswer(message.authorId, index, channel.messages)"
+            :alt="channel.userName"
             class="mr-3 rounded-circle"
             height="30"
-            :src="chatData.userImgSrc"
+            :src="channel.userImgSrc"
             width="30"
           >
           <v-card
@@ -120,10 +139,40 @@
             elevation="0"
             height="30"
             width="30"
-          />
-          <div class="arrow-down blue mb-3 message-arrow mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
-            {{ message.body }}
+          >
+            <v-avatar
+              :color="users[0].user.image ? '' : 'blue'"
+              dark
+              size="36"
+            >
+              <v-img
+                v-if="users[0].user.image"
+                :src="users[0].user.image"
+              />
+              <template v-else>
+                <span class="text-uppercase white--text">{{ users[0].user.name.charAt(0) }}</span>
+              </template>
+            </v-avatar>
+          </v-card>
+          <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
+            {{ message.text }}
+            <div
+              v-if="message.images"
+              class="d-flex mr-auto w-fit"
+            >
+              <div
+                v-for="(image, index) in message.images"
+                :key="'imagemsg-' + index"
+                class="mt-2 mx-1 relative w-fit"
+              >
+                <img
+                  class="image-preview"
+                  :src="image"
+                >
+              </div>
+            </div>
           </div>
+          <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
         </template>
       </div>
 
@@ -152,11 +201,66 @@
       class="blue-grey lighten-5"
       :class="[minimized ? 'd-none' : '']"
     />
+    <!-- files -->
+    <template v-if="docFiles.length > 0">
+      <div class="d-flex docs images-container mx-1 px-0 py-1">
+        <div
+          v-for="(docFile, index) in docFiles"
+          :key="'previewdoc-' + index"
+          class="align-center blue d-flex justify-center mx-1 previewdoc px-2 rounded-pill"
+        >
+          <v-icon
+            class="white--text"
+            left
+          >
+            mdi-file-outline
+          </v-icon>
+          <span class="docfile-name text-caption white--text">{{ docFile.name }}</span>
+
+          <v-icon
+            class="blue lighten-2 ml-2 pa-1 rounded-xl white--text"
+            size="12"
+            @click="removeDoc(index)"
+          >
+            mdi-close
+          </v-icon>
+        </div>
+      </div>
+    </template>
+    <!-- images or files ui -->
+    <template v-if="srcImageFiles.length > 0">
+      <div class="d-flex images-container mx-1 px-0 py-3">
+        <div
+          v-for="(srcImageFile, index) in srcImageFiles"
+          :key="'previewimage-' + index"
+          class="mx-1 relative w-fit"
+        >
+          <img
+            class="image-preview"
+            :src="srcImageFile"
+          >
+          <v-btn
+            class="absolute btn-chat-shadow ml-2 right-0 top-0"
+            color="grey lighten-2"
+            fab
+            style="height:15px; width:15px;"
+            @click="removeImage(index)"
+          >
+            <v-icon
+              size="12"
+            >
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </template>
     <div
       class="align-center chat-send-section px-4"
       :class="[minimized ? 'd-none' : 'd-flex']"
     >
       <v-menu
+        :close-on-content-click="false"
         elevation="0"
         :offset-y="offset"
         top
@@ -164,7 +268,8 @@
         <template v-slot:activator="{ on, attrs }">
           <v-btn
             v-bind="attrs"
-            class="align-center btn-chat-shadow d-flex justify-center send-message white--text"
+            class="align-center btns-message d-flex justify-center white--text"
+            elevation="0"
             fab
             height="25"
             width="25"
@@ -178,50 +283,61 @@
         </template>
 
         <v-list class="mb-2 pa-0 transparent">
-          <v-list-item
-            v-for="(item, index) in items"
-            :key="index"
-            class="pa-0"
-          >
+          <v-list-item class="ma-0 pa-0 uploadfile-btn">
             <v-tooltip
               class="tooltip-upload-file"
               left
             >
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
+                <div
                   v-bind="attrs"
-                  class="align-center btn-chat-shadow d-flex justify-center pointer send-message white--text"
-                  fab
-                  height="25"
-                  width="25"
-                  x-small
                   v-on="on"
-                  @click="openFileManager(item.type)"
                 >
-                  <v-icon size="15">
-                    mdi-{{ item.icon }}
-                  </v-icon>
-                </v-btn>
+                  <v-file-input
+                    accept="image/png, image/jpeg, image/bmp"
+                    class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                    hide-input
+                    multiple
+                    prepend-icon="mdi-image"
+                    @change="onImagesChange($event)"
+                  />
+                </div>
               </template>
-              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">{{ item.title }}</span>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image</span>
+            </v-tooltip>
+          </v-list-item>
+          <v-list-item class="ma-0 pa-0 uploadfile-btn">
+            <v-tooltip
+              class="tooltip-upload-file"
+              left
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-file-input
+                    accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
+                    class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                    hide-input
+                    multiple
+                    prepend-icon="mdi-file-outline"
+                    @change="onDocsChange($event)"
+                  />
+                </div>
+              </template>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Document</span>
             </v-tooltip>
           </v-list-item>
         </v-list>
       </v-menu>
-      <!-- <div>
-        <div class="">
-          <input type="file" accept="image/*" @change="loadFile($event)">
-          <img style="max-height: 50px; width: 50px;" id="output">
-        </div> -->
-
       <input
         ref="inputMessage"
         v-model="valueInput"
-        class="h-full px-2 outline-none text-body-1 w-full"
+        class="h-full outline-none px-2 text-body-1 w-full"
         placeholder="Type a message here..."
         @keyup.enter="sendMessage"
       >
-      <!-- </div> -->
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
         fab
@@ -235,7 +351,7 @@
         </v-icon>
       </v-btn>
       <v-btn
-        class="btn-chat-shadow send-message white--text"
+        class="btns-message white--text"
         fab
         height="25"
         icon
@@ -255,7 +371,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 
 export default {
@@ -264,9 +380,9 @@ export default {
     VEmojiPicker
   },
   props: {
-    chatData: {
+    channel: {
       type: Object,
-      default: null
+      default: () => {}
     }
   },
   data: () => ({
@@ -274,41 +390,77 @@ export default {
     display: true,
     // user id john doe
     currentUserId: 2,
+    dataReady: false,
+    messages: [],
+    state: {
+      messages: [],
+      members: [],
+      channel: {}
+    },
     valueInput: '',
     showDialog: false,
-    items: [
-      { icon: 'image', type: 'image', title: 'Image' },
-      { icon: 'file-outline', type: 'file', title: 'Document' }
-    ],
+    imageFiles: [],
+    docFiles: [],
     offset: true,
     minimized: false
   }),
   computed: {
-    ...mapState(['chats', 'users']),
-    user: function () {
-      return this.users.find(u => u.id === this.data.id)
-    },
+    ...mapGetters('Auth', { user: 'getUser' }),
     groupedMessages() {
       return this.messages.reduce(function (r, a) {
         r[a.date.day] = [...r[a.date.day] || [], a]
         return r
       }, {})
+    },
+    owner: function () {
+      return this.state.members.find(r => r.role === 'owner')
+    },
+    users: function () {
+      const users = []
+      this.state.members.forEach(user => {
+        if (user.user.id !== this.user.id) {
+          users.push(user)
+        }
+      })
+      return users
+    },
+    srcImageFiles() {
+      const srcImages = []
+      this.imageFiles.forEach(imageFile => {
+        srcImages.push(URL.createObjectURL(imageFile))
+      })
+      return srcImages
     }
   },
-  mounted() {
-    this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+  async mounted() {
+    this.state = await this.channel.watch()
+    this.messages = this.state.messages
+    this.channel.on('message.new', this.addNewMessage)
+    this.dataReady = true
+
+    this.$nextTick(() => {
+      this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+      this.$refs.inputMessage.focus()
+    })
   },
   methods: {
-    closeChat() {
-      this.$emit('closeChat', this.chatData.userId)
-      // this.$store.dispatch('GSChat/removeChat', this.data.id)
+    addNewMessage(event) {
+      this.messages = [...this.messages, event.message]
+      this.$nextTick(() => {
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.inputMessage.focus()
+      })
+    },
+    async closeChat() {
+      this.channel.off('message.new', this.addNewMessage)
+      await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
-      if (index === 0) {
-        return true
-      } else {
-        return authorId === messages[index - 1].authorId ? false : true
-      }
+      // if (index === 0) {
+      //   return true
+      // } else {
+      //   return authorId === messages[index - 1].authorId ? false : true
+      // }
     },
     toogleDialogEmoji() {
       this.showDialog = !this.showDialog
@@ -325,35 +477,40 @@ export default {
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
-      const date = new Date()
-      this.chatData.messages.push({
-        authorId: this.currentUserId,
-        body: this.valueInput,
-        read: false,
-        timeStamp: date.getTime()
-      })
 
-      const self = this
+      this.$store.dispatch('GSChat/sendMessage', {
+        channel: this.channel,
+        message: this.valueInput
+      }).catch(e => console.error(e))
+
       this.valueInput = ''
+      this.imageFiles = []
+      this.docFiles = []
       this.$nextTick(() => {
-        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
-    },
-    openFileManager(type) {
-      console.log(type)
-      return true
     },
     minimizeChatBox() {
       this.minimized = !this.minimized
     },
-    loadFile(event) {
-      const reader = new FileReader()
-      reader.onload = function () {
-        const output = document.getElementById('output')
-        output.src = reader.result
-      }
-      reader.readAsDataURL(event.target.files[0])
+    onImagesChange(e) {
+      this.imageFiles = e
+      this.$refs.inputMessage.focus()
+    },
+    removeImage(index) {
+      this.imageFiles.splice(index, 1)
+    },
+    onDocsChange(e) {
+      this.docFiles = e
+      this.$refs.inputMessage.focus()
+    },
+    removeDoc(index) {
+      this.docFiles.splice(index, 1)
+    },
+    messageTime(time) {
+      const messageDate = new Date(time)
+      return messageDate.getHours() + ':' + messageDate.getMinutes()
     }
   }
 }
@@ -362,43 +519,42 @@ export default {
 <style>
 .chat-box {
   width: 335px;
-  height: 460px;
+  max-height: 455px;
 }
 .chat-box.minimized {
   height: 55px;
 }
 .chat-title {
-  height: 70px;
+  min-height: 60px;
   background: #F7FCFF;
 }
-.rotate-45 {
+/* .rotate-45 {
   transform: rotate(45deg);
-}
+} */
 .-rotate-45 {
   transform: rotate(-45deg);
 }
 .btn-chat-shadow {
   box-shadow: 0px 3px 13px -4px #b4b4ec !important;
 }
-.btn-chat-shadow.send-message {
+.btns-message {
   background: #366AF5 !important;
 }
 .divider-chat {
   border-color: rgba(165, 160, 160, 0.12) !important;
 }
-.messages-container {
-  height: 325px;
-}
 .messages-container::-webkit-scrollbar {
-  width: 3.5px;
+  width: 13px;
 }
 .messages-container::-webkit-scrollbar-thumb {
   background: #B4B1CA;
   border-radius: 2px;
+  border: 5px solid #fff;
 }
 .messages-container::-webkit-scrollbar-track {
   background: #fff;
   border-radius: 2px;
+  border: 5px solid #fff;
 }
 .arrow-down {
   max-width: 240px;
@@ -430,7 +586,7 @@ export default {
   top: 0px;
 }
 .chat-send-section {
-  height: 60px;
+  min-height: 50px;
 }
 .container-emoji {
     height: 158px !important;
@@ -472,5 +628,55 @@ export default {
 .v-tooltip__content {
   background: transparent !important;
   padding: 0;
+}
+.mdi-file-outline::before, .mdi-image::before{
+  color: #fff;
+  font-size: 15px;
+}
+.uploadfile-btn * {
+  cursor: default;
+}
+.uploadfile-btn .upload-icon .v-icon--link {
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  cursor: pointer;
+  background: #366AF5 !important;
+  box-shadow: none;
+}
+.uploadfile-btn .v-input__prepend-outer {
+  padding: 0;
+  margin: 0;
+}
+.image-preview {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.images-container {
+  overflow-x: scroll;
+  min-height: 60px;
+}
+.images-container::-webkit-scrollbar {
+  height: 5px;
+  width: 3px;
+}
+.images-container::-webkit-scrollbar-thumb {
+  background: #B4B1CA;
+  border-radius: 2px;
+}
+.images-container::-webkit-scrollbar-track {
+  background: #fff;
+  border-radius: 2px;
+}
+.docfile-name {
+  white-space: nowrap;
+}
+.docs {
+  min-height: 42px;
+}
+.preview-doc {
+  height: 30px;
 }
 </style>
