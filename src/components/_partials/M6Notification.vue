@@ -10,7 +10,7 @@
       :top="top"
       :vertical="vertical"
     >
-      <span class="white--text" >{{ text }}</span>
+      <b class="white--text" >{{ text }}</b>
 
       <template v-slot:action="{ attrs }">
         <v-btn

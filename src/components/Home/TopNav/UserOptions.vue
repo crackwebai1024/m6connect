@@ -30,6 +30,7 @@
                         {{ currentCompany.name }}
                     </v-list-item-title>
                 </v-list-item>
+                <v-divider />
                 <v-list-item>
                     <v-list-item-title >
                         <v-btn 
@@ -39,6 +40,12 @@
                         >
                             Switch Companies
                         </v-btn>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-divider />
+                <v-list-item>
+                    <v-list-item-title>
+                        <v-btn color="red" class="white--text" small @click="logout" >Log out</v-btn>
                     </v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -60,7 +67,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import UserCompaniesOptions from '@/components/Home/TopNav/UserCompaniesOptions'
 import JoinCompanies from '@/components/Home/TopNav/JoinCompanies'
 export default {
@@ -81,12 +88,19 @@ export default {
         })
     },
     methods: {
+        ...mapMutations('Auth', {
+            logoutUser: 'logoutUser'
+        }),
         openJoinCompanies() {
             this.showJoinCompanies = true
             
             this.$nextTick( () => {
                 this.showCompanies = false    
             })
+        },
+        logout(){
+            this.logoutUser()
+            this.$router.push({ name: 'auth.SignIn' })
         }
     }
 }

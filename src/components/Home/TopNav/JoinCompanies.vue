@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
     props: {
         show: {
@@ -63,23 +63,28 @@ export default {
             listCompanies: 'getList',
             createUserCompany: 'createUserCompany'
         }),
+        ...mapMutations('SnackBarNotif', {
+            notifDanger: 'notifDanger',
+            notifSuccess: 'notifSuccess'
+        }),
         validate () {
             this.$refs.form.validate()
         },
         async joinCompany() {
 
             if( !this.newCompanyToJoin.id ) {
-                // error message here
-                console.log('error')
+                this.notifDanger('Please pick a company')
                 return
             }
             
             try {
                 this.loading = true
                 await this.createUserCompany({ companyID: this.newCompanyToJoin.id })
+                this.notifSuccess('Your request has been sent')
                 this.loading = false
                 this.$emit('close')
             } catch(e) {
+                this.notifDanger('There was an error while sending the request')
                 this.loading = false
             }
         }

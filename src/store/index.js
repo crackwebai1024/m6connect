@@ -13,6 +13,7 @@ import GSChat from './modules/GSChat'
 import GSFeed from './modules/GSFeed'
 import PageControl from './modules/PageControl'
 import UserSettingsControl from './modules/UserSettingsControl'
+import SnackBarNotif from './modules/SnackBarNotif'
 
 
 Vue.use(Vuex)
@@ -215,6 +216,7 @@ export default new Vuex.Store({
     GSChat,
     GSFeed,
     PageControl,
-    UserSettingsControl
+    UserSettingsControl,
+    SnackBarNotif
   }
 })

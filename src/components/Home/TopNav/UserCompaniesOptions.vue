@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -118,14 +118,20 @@ export default {
     ...mapActions('Companies', {
       switchCompanies: 'switchCompanies'
     }),
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess'
+    }),
     async changeCompanies(nextCompany) {
       const currentCompany = this.userCompanies.find( u => u.active && u.joinStatus === "ACTIVE" )
       try{
         this.loading = true
         await this.switchCompanies({ currentCompany, nextCompany })
         this.$emit('close')
+        this.notifSuccess('You have switched companies')
         this.loading = false
       } catch(e) {
+        this.notifDanger('There was an error while switching companies')
         this.loading = false
       }
     }
