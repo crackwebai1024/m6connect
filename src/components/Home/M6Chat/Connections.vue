@@ -151,7 +151,6 @@ export default {
     },
     addNewMessage(event) {},
     startChat(channel) {
-      this.feed.follow('users', 'af754c91-d327-4d66-a031-814d37540e0d')
       this.$store.dispatch('GSChat/pushChat', channel)
     },
     showSearchInputFunction() {

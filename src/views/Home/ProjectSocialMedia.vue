@@ -123,10 +123,6 @@
         </v-text-field>
       </template>
     </header-component>
-  </v-container>
-</template>
-
-    </header-component>
     <posts-list />
   </v-container>
 </template>
