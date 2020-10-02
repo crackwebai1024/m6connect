@@ -95,7 +95,7 @@
         :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
       >
         <template v-if="user.id === message.user.id">
-          <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
+          <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.timeStamp) }}</span>
           <div
             class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
           >
@@ -172,7 +172,7 @@
               </div>
             </div>
           </div>
-          <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
+          <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.timeStamp) }}</span>
         </template>
       </div>
 
@@ -477,6 +477,7 @@ export default {
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
+      const date = new Date()
 
       this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
@@ -487,7 +488,7 @@ export default {
       this.imageFiles = []
       this.docFiles = []
       this.$nextTick(() => {
-        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
     },

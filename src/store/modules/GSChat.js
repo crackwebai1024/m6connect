@@ -123,7 +123,7 @@ const actions = {
       resolve(true)
     })
   },
-  sendMessage(_, { channel, message }) {
+  sendMessage(_, { channel, message, files, images }) {
     return new Promise((resolve, reject) => {
       channel.sendMessage({
         text: message

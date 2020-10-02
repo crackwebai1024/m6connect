@@ -1,5 +1,8 @@
 <template>
-  <v-container class="px-0 py-0">
+  <v-container
+    class="px-0 py-0"
+    style="margin-bottom: 80px;"
+  >
     <post-item
       v-for="(item, index) of timeline"
       :key="index"
@@ -32,11 +35,6 @@ export default {
     this.set_user_data()
     this.set_posts_data()
     await this.$store.dispatch('GSFeed/retrieveFeed')
-
-    // This is for demo
-    if (this.user.id !== 'af754c91-d327-4d66-a031-814d37540e0d') {
-      this.feed.follow('users', 'af754c91-d327-4d66-a031-814d37540e0d')
-    }
 
     this.feed.subscribe(data => {
       if (data.new) {

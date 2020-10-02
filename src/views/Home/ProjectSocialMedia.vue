@@ -1,5 +1,7 @@
 <template>
-  <v-container class="h-full px-3 py-0">
+  <v-container
+    class="h-full px-3 py-0"
+  >
     <header-component
       class="card-custom-shadow h-auto mb-3 rounded"
       hasslot
@@ -46,6 +48,7 @@
           :src="user.imgSrc"
           width="40"
         >
+
         <v-text-field
           v-model="activityText"
           class="font-weight-bold ml-1"
@@ -64,9 +67,14 @@
               <!--              <v-icon class="blue&#45;&#45;text text&#45;&#45;lighten-1">-->
               <!--                mdi-file-document-outline-->
               <!--              </v-icon>-->
-              <!--              <v-icon class="lime&#45;&#45;text mx-1 text&#45;&#45;darken-1">-->
-              <!--                mdi-image-->
-              <!--              </v-icon>-->
+              <v-file-input
+                accept="image/png, image/jpeg, image/bmp"
+                class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
+                hide-input
+                multiple
+                prepend-icon="mdi-image-outline"
+                @change="onImagesChange($event)"
+              />
               <!--              <v-icon class="red&#45;&#45;text text&#45;&#45;lighten-1">-->
               <!--                mdi-link-variant-->
               <!--              </v-icon>-->
@@ -82,8 +90,42 @@
               </v-btn>
             </v-row>
           </template>
+
+          <template v-slot:prepend-inner>
+            <template v-if="srcImageFiles.length > 0">
+              <div class="d-flex images-container mx-1 px-0 py-3">
+                <div
+                  v-for="(srcImageFile, index) in srcImageFiles"
+                  :key="'previewimage-' + index"
+                  class="mx-1 relative w-fit"
+                >
+                  <img
+                    class="image-preview"
+                    :src="srcImageFile"
+                  >
+                  <v-btn
+                    class="absolute btn-chat-shadow ml-2 right-0 top-0"
+                    color="grey lighten-2"
+                    fab
+                    style="height:15px; width:15px;"
+                    @click="removeImage(index)"
+                  >
+                    <v-icon
+                      size="12"
+                    >
+                      mdi-close
+                    </v-icon>
+                  </v-btn>
+                </div>
+              </div>
+            </template>
+          </template>
         </v-text-field>
       </template>
+    </header-component>
+  </v-container>
+</template>
+
     </header-component>
     <posts-list />
   </v-container>
@@ -130,10 +172,18 @@ export default {
       }
     ],
     item: 'Everyone',
+    imageFiles: [],
     posts_list: [{}]
   }),
   computed: {
-    ...mapGetters('Auth', { user: 'getUser' })
+    ...mapGetters('Auth', { user: 'getUser' }),
+    srcImageFiles() {
+      const srcImages = []
+      this.imageFiles.forEach(imageFile => {
+        srcImages.push(URL.createObjectURL(imageFile))
+      })
+      return srcImages
+    }
   },
   methods: {
     ...mapActions('SocialNetworkModule', ['filter_posts']),
@@ -144,11 +194,18 @@ export default {
       const activity = {
         message: this.activityText,
         verb: 'post',
-        object: 1
+        object: 1,
+        images: this.imageFiles
       }
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
         this.activityText = ''
       })
+    },
+    onImagesChange(e) {
+      this.imageFiles = e
+    },
+    removeImage(index) {
+      this.imageFiles.splice(index, 1)
     }
   }
 }
