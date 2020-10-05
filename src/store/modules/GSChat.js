@@ -48,6 +48,7 @@ const mutations = {
     )
   },
   REMOVE_USER: async (state) => {
+    await state.client.disconnect();
     await state.client.wsConnection.disconnect();
   },
   SET_MY_CONNECTIONS: (state, payload) => {
@@ -121,6 +122,7 @@ const actions = {
 
     const channels = await state.client.queryChannels(filter, sort, {
       watch: false,
+      presence: true,
       state: false
     })
 

@@ -14,7 +14,7 @@
         <v-badge
           bottom
           class="mr-2"
-          :color="channel.online ? 'green accent-3' : 'transparent'"
+          :color="users[0].user.online ? 'green accent-3' : 'transparent'"
           dot
           offset-x="10"
           offset-y="10"
@@ -418,9 +418,9 @@ export default {
     },
     users: function () {
       const users = []
-      this.state.members.forEach(user => {
-        if (user.user.id !== this.user.id) {
-          users.push(user)
+      Object.keys(this.channel.state.members).forEach(userKey => {
+        if (userKey !== this.user.id) {
+          users.push(this.channel.state.members[userKey]);
         }
       })
       return users
@@ -452,17 +452,8 @@ export default {
       await this.channel.stopTyping();
     },
     setDate(item){
-      let milliseconds = Math.abs(new Date() -  item)
-      let day, hour, minute, seconds;
-      seconds = Math.floor(milliseconds / 1000);
-      minute = Math.floor(seconds / 60);
-      seconds = seconds % 60;
-      hour = Math.floor(minute / 60);
-      minute = minute % 60;
-      day = Math.floor(hour / 24);
-      hour = hour % 24;
-      
-      return `Last connection: ${hour.toString().padStart(2,'0')}:${minute.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')} ago`
+      const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+      return `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}`
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
