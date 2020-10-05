@@ -186,17 +186,3 @@ export default {
 }
 </style>
 
-<!-- 
-
-  pick file
-  dont upload the file until they click update/save/create 
-
-  save the file data into the File store
-  onBeforeDestroy => clean the store object
-
-  after doing the upload how would i get the data to place it in the correct place
-
-
-  click upload
-  saves the data to the store in an array, need a unique key to where its supposed to go
--->
