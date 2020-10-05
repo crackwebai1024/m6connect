@@ -453,7 +453,13 @@ export default {
     },
     setDate(item){
       const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-      return `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}`
+      
+      // If the last session was more than 1 day ago it shows the date else it shows the time.
+      return 86400000 - (new Date - item) <= 0 ? 
+        `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}` :
+        `Last connection: ${
+          item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2,'0') : item.getHours().toString().padStart(2,'0')
+        }:${item.getMinutes().toString().padStart(2,'0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
@@ -501,7 +507,7 @@ export default {
       this.imageFiles = []
       this.docFiles = []
       this.$nextTick(() => {
-        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
     },

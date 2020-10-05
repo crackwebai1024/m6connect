@@ -30,6 +30,7 @@ const mutations = {
     const channel = state.chats.find(chat => chat.id === payload)
     const index = state.chats.indexOf(channel)
     if (index > -1) {
+      state.chats[index].stopWatching();
       state.chats.splice(index, 1)
     }
   },

@@ -125,7 +125,6 @@ export default {
               this.unread_count.push({
                 isOpen:false,
                 cid: channel['cid'],
-                online: channel['membersInChannel']['user']['online'],
                 unread: channel['state']['read'][this.user.id]['unread_messages']
               })
             }
@@ -138,11 +137,6 @@ export default {
   async mounted() {
     this.client.on('notification.message_new', r => {
       this.pushUnreadCount(r.channel)
-    })
-    this.client.on('message.new', r => {
-      if (r.user.id !== this.user.id) {
-        this.pushUnreadCount(r)
-      }
     })
     this.client.on('channel.visible', r => {
       this.unread_count.forEach((item, ind) => {
