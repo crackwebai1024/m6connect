@@ -74,6 +74,7 @@
 
         <user-profile-update 
             :v-show="showUserData"
+            is-current-user
             :show="showUserData"
             @close="showUserData = false"
         />

@@ -17,8 +17,7 @@
                     <v-list-item-title >User Mangement</v-list-item-title>
                 </template>
 
-                <v-list-item @click="pickingComponent({ name:'user-mangement-table', type: 'all' })" >All Users</v-list-item>
-                <v-list-item @click="pickingComponent({ name:'user-mangement-table', type: 'pending' })" >Pending Invites</v-list-item>
+                <v-list-item @click="pickingComponent({ name:'user-mangement-table' })" >All Users</v-list-item>
             </v-list-group>
 
             <div class="px-2" >
