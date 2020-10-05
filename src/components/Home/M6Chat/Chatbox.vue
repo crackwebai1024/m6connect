@@ -88,11 +88,12 @@
       class="messages-container ml-2 px-1 vertical-scroll white"
       :class="[minimized ? 'd-none' : '']"
     >
+      hola
       <div
         v-for="(message, index) in messages"
         :key="'message-'+ channel.userId + '-' + index"
         class="d-flex"
-        :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
+        :class="[currentUserId === message.authorId ? 'mr-8' : 'ml-8' ]"
       >
         <template v-if="user.id === message.user.id">
           <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
