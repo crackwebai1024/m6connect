@@ -74,6 +74,9 @@
 
           <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
         </div>
+        <div v-if="typing">
+          <span class="font-weight-light text--secondary font-italic">Typing...</span>
+        </div>
       </v-btn>
       <div v-if="filteredChannels.length === 0">
         No results found
@@ -99,6 +102,7 @@ export default {
   data: () => ({
     showSearchInput: false,
     unread_count: [],
+    typing: false,
     searchInput: '',
     lastDepartment: false
   }),
@@ -147,6 +151,16 @@ export default {
           this.unread_count[ind]['unread'] = 0;
         }
       })
+    })
+    this.client.on('typing.start', r => {
+      if (r.user.id != this.user.id) {
+        this.typing = true;
+      }
+    })
+    this.client.on('typing.stop', r => {
+      if (r.user.id != this.user.id) {
+        this.typing = false;
+      }
     })
   },
   methods: {

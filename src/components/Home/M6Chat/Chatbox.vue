@@ -45,7 +45,7 @@
             class="font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
-            {{ users[0].user.last_active }}
+            {{ setDate( new Date( users[0].user.last_active )) }}
           </p>
         </div>
       </div>
@@ -335,6 +335,8 @@
         v-model="valueInput"
         class="h-full outline-none px-2 text-body-1 w-full"
         placeholder="Type a message here..."
+        @keyup="typing"
+        @keydown="stopTyping"
         @keyup.enter="sendMessage"
       >
       <v-btn
@@ -443,6 +445,25 @@ export default {
     })
   },
   methods: {
+    async typing(){
+      await this.channel.keystroke();
+    },
+    async stopTyping(){
+      await this.channel.stopTyping();
+    },
+    setDate(item){
+      let milliseconds = Math.abs(new Date() -  item)
+      let day, hour, minute, seconds;
+      seconds = Math.floor(milliseconds / 1000);
+      minute = Math.floor(seconds / 60);
+      seconds = seconds % 60;
+      hour = Math.floor(minute / 60);
+      minute = minute % 60;
+      day = Math.floor(hour / 24);
+      hour = hour % 24;
+      
+      return `Last connection: ${hour.toString().padStart(2,'0')}:${minute.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')} ago`
+    },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
       this.$nextTick(() => {
