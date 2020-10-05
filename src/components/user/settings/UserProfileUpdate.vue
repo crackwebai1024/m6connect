@@ -76,6 +76,10 @@ export default {
       default: false, 
       type: Boolean
     },
+    isCurrentUser: {
+      default: false,
+      type: Boolean
+    }
   },
   data: () => ({
     formRules: [ v => !!v || 'Name is required' ],
@@ -138,14 +142,15 @@ export default {
     }),
   },
   watch: {
-    show(){
-      if ( this.$route.name === 'user.settings' ) {
-        this.user = {...this.userSettingsToShow.user}
-      } else {
-        this.user = {...this.currentUser}
-      }
 
+    show(){
+      if( this.isCurrentUser ) {
+        this.user = {...this.currentUser}
+      } else {
+        this.user = {...this.userSettingsToShow.user}
+      }
     }
+
   }
 }
 </script>

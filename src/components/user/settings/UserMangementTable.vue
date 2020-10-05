@@ -4,9 +4,11 @@
             <div class="pa-1 subtitle-2 blue--text">User Management | </div> 
 
             <div class="pa-1 subtitle-2 blue--text" >
-                {{ 
-                    secondColumnComponent.type === 'pending' ? 'Pending' : 'All Users'
-                }}    
+                <v-spacer />
+                <v-switch
+                    v-model="showPendingOnly"
+                    :label=" showPendingOnly ? 'Pending Users' : 'All Users' "
+                ></v-switch>
             </div>
         </v-card-title>
         <v-card-text>
@@ -42,7 +44,6 @@
 
                 <template #item.actions="{ item }" >
                     <v-select
-                        chips
                         v-model="item.joinStatus"
                         :items="selectItems"
                         item-text="label"
@@ -66,6 +67,7 @@ export default {
     name: "UserMangementTable",
     data: () => ({
         loading: false,
+        showPendingOnly: false
     }),
     methods: {
         ...mapMutations('UserSettingsControl', {
@@ -108,14 +110,13 @@ export default {
                 { text: 'Status', value: 'status' },
                 { text: 'Email', value: 'email' },
             ]
-
-            if( this.secondColumnComponent.type === 'pending' ) 
-                headers.push({ text: 'Actions', value: "actions", sortable: false })
+            
+            headers.push({ text: 'Actions', value: "actions", sortable: false })
 
             return headers
         },
         usersFiltered() {
-            return this.secondColumnComponent.type === 'pending' ? 
+            return this.showPendingOnly ? 
                 this.users.filter( u => u.joinStatus === "PENDING" ) : 
                 this.users
         }
