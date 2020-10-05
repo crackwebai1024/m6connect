@@ -1,5 +1,5 @@
 <template>
-  <div class="dont-show-scroll h-full pa-5 panel-people vertical-scroll">
+  <div class="dont-show-scroll h-full pa-5 vertical-scroll w-side">
     <template
       v-for="(department, index) in departments"
     >
@@ -66,9 +66,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.panel-people {
-    width: 400px;
-}
-</style>

@@ -10,7 +10,7 @@
         </v-avatar>
         <div class="ml-2">
           <p class="font-weight-bold" style="margin-bottom: -5px;">{{ notification.userFrom.name }}</p>
-          <span class="text-caption grey--text text--darken-1">{{ notification.userFrom.title }} -  {{ diffNow(notification.date) }}</span>
+          <span class="leading-tight text-caption grey--text text--darken-1">{{ notification.userFrom.title }} -  {{ diffNow(notification.date) }}</span>
         </div>
       </div>
       <p class="text-body-2 mt-2 mb-3 ml-2 grey--text text--darken-4">{{ notification.textContent }}</p>
