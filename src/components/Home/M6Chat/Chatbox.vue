@@ -14,7 +14,7 @@
         <v-badge
           bottom
           class="mr-2"
-          :color="channel.online ? 'green accent-3' : 'transparent'"
+          :color="users[0].user.online ? 'green accent-3' : 'transparent'"
           dot
           offset-x="10"
           offset-y="10"
@@ -45,34 +45,39 @@
             class="font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
-            {{ users[0].user.last_active }}
+            {{ setDate( new Date( users[0].user.last_active )) }}
           </p>
         </div>
       </div>
       <div>
-        <!-- <v-btn
-          class="btn-chat-shadow ml-2"
-          color="white"
-          fab
-          x-small
-        >
-          <v-icon
-            class="rotate-45"
-            size="15"
-          >
-            mdi-paperclip
-          </v-icon>
-        </v-btn> -->
+        <v-hover
+          v-slot:default="{ hover }">
+          <div style="position: absolute; right: 5vw;">
+            <v-card v-if="hover" class="settings-message">
+              <v-icon
+                @click="cleanChat">
+                mdi-delete
+              </v-icon>
+              <v-icon>
+                mdi-pencil
+              </v-icon>
+            </v-card>
+            <v-btn
+              class="btn-chat-shadow ml-2"
+              color="white" fab x-small >
+              <v-icon
+                size="15" >
+                mdi-cogs
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-hover>
         <v-btn
           class="btn-chat-shadow ml-2"
-          color="white"
-          fab
-          x-small
-          @click="closeChat"
-        >
+          color="white" fab x-small
+          @click="closeChat" >
           <v-icon
-            size="15"
-          >
+            size="15" >
             mdi-close
           </v-icon>
         </v-btn>
@@ -80,8 +85,7 @@
     </div>
     <v-divider
       class="divider-chat"
-      :class="[minimized ? 'd-none' : '']"
-    />
+      :class="[minimized ? 'd-none' : '']" />
     <!-- Messages Container -->
     <div
       ref="messages"
@@ -119,10 +123,28 @@
           <v-icon
             :class="[message.read ? 'blue--text' : 'grey--text']"
             size="11"
-            @click="print(message)"
           >
             mdi-check-all
           </v-icon>
+          <v-hover
+            v-slot:default="{ hover }">
+            <div style="position: relative;">
+              <v-card v-if="hover" class="settings-message">
+                <v-icon
+                  @click="removeMessage(message.id)">
+                  mdi-delete
+                </v-icon>
+                <v-icon
+                  @click="removeMessage(message.id)">
+                  mdi-pencil
+                </v-icon>
+              </v-card>
+              <v-icon>
+                mdi-settings-helper
+              </v-icon>
+            </div>
+          </v-hover>
+
         </template>
         <template v-else>
           <img
@@ -336,6 +358,8 @@
         v-model="valueInput"
         class="h-full outline-none px-2 text-body-1 w-full"
         placeholder="Type a message here..."
+        @keyup="typing"
+        @keydown="stopTyping"
         @keyup.enter="sendMessage"
       >
       <v-btn
@@ -371,7 +395,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 
 export default {
@@ -386,6 +410,7 @@ export default {
     }
   },
   data: () => ({
+    hover: false,
     input: '',
     display: true,
     // user id john doe
@@ -417,9 +442,9 @@ export default {
     },
     users: function () {
       const users = []
-      this.state.members.forEach(user => {
-        if (user.user.id !== this.user.id) {
-          users.push(user)
+      Object.keys(this.channel.state.members).forEach(userKey => {
+        if (userKey !== this.user.id) {
+          users.push(this.channel.state.members[userKey]);
         }
       })
       return users
@@ -432,10 +457,20 @@ export default {
       return srcImages
     }
   },
+  watch: {
+    messages: function(){
+      this.messages.forEach((message, ind) => {
+        if (message.type === 'deleted') {
+          this.messages.splice(ind, 1);
+        }
+      })
+    }
+  },
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
     this.channel.on('message.new', this.addNewMessage)
+    this.channel.on('message.deleted', this.deleteMessage)
     this.dataReady = true
 
     this.$nextTick(() => {
@@ -444,6 +479,28 @@ export default {
     })
   },
   methods: {
+    ...mapActions("GSChat", ["removeMessage"]),
+    async typing(){
+      await this.channel.keystroke();
+    },
+    async cleanChat(){
+      this.messages = [];
+      await this.channel.hide(null, true);
+      await this.channel.show();
+    },
+    async stopTyping(){
+      await this.channel.stopTyping();
+    },
+    setDate(item){
+      const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+      
+      // If the last session was more than 1 day ago it shows the date else it shows the time.
+      return 86400000 - (new Date - item) <= 0 ? 
+        `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}` :
+        `Last connection: ${
+          item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2,'0') : item.getHours().toString().padStart(2,'0')
+        }:${item.getMinutes().toString().padStart(2,'0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
+    },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
       this.$nextTick(() => {
@@ -451,7 +508,14 @@ export default {
         this.$refs.inputMessage.focus()
       })
     },
+    deleteMessage(event){
+      this.messages.splice(this.messages.indexOf(
+        this.messages.filter((e) => { return e.id === event.message.id; })[0]
+      ), 1);
+    },
     async closeChat() {
+      await this.channel.hide();
+      await this.channel.show();
       this.channel.off('message.new', this.addNewMessage)
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
@@ -488,7 +552,7 @@ export default {
       this.imageFiles = []
       this.docFiles = []
       this.$nextTick(() => {
-        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
     },
@@ -629,6 +693,13 @@ export default {
 .v-tooltip__content {
   background: transparent !important;
   padding: 0;
+}
+.settings-message {
+  position: absolute; 
+  padding: 1px; 
+  right: 1.5vw; 
+  top: 1vh; 
+  z-index: 1;
 }
 .mdi-file-outline::before, .mdi-image::before{
   color: #fff;
