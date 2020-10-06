@@ -50,29 +50,34 @@
         </div>
       </div>
       <div>
-        <!-- <v-btn
-          class="btn-chat-shadow ml-2"
-          color="white"
-          fab
-          x-small
-        >
-          <v-icon
-            class="rotate-45"
-            size="15"
-          >
-            mdi-paperclip
-          </v-icon>
-        </v-btn> -->
+        <v-hover
+          v-slot:default="{ hover }">
+          <div style="position: absolute; right: 5vw;">
+            <v-card v-if="hover" class="settings-message">
+              <v-icon
+                @click="cleanChat">
+                mdi-delete
+              </v-icon>
+              <v-icon>
+                mdi-pencil
+              </v-icon>
+            </v-card>
+            <v-btn
+              class="btn-chat-shadow ml-2"
+              color="white" fab x-small >
+              <v-icon
+                size="15" >
+                mdi-cogs
+              </v-icon>
+            </v-btn>
+          </div>
+        </v-hover>
         <v-btn
           class="btn-chat-shadow ml-2"
-          color="white"
-          fab
-          x-small
-          @click="closeChat"
-        >
+          color="white" fab x-small
+          @click="closeChat" >
           <v-icon
-            size="15"
-          >
+            size="15" >
             mdi-close
           </v-icon>
         </v-btn>
@@ -80,8 +85,7 @@
     </div>
     <v-divider
       class="divider-chat"
-      :class="[minimized ? 'd-none' : '']"
-    />
+      :class="[minimized ? 'd-none' : '']" />
     <!-- Messages Container -->
     <div
       ref="messages"
@@ -122,6 +126,25 @@
           >
             mdi-check-all
           </v-icon>
+          <v-hover
+            v-slot:default="{ hover }">
+            <div style="position: relative;">
+              <v-card v-if="hover" class="settings-message">
+                <v-icon
+                  @click="removeMessage(message.id)">
+                  mdi-delete
+                </v-icon>
+                <v-icon
+                  @click="removeMessage(message.id)">
+                  mdi-pencil
+                </v-icon>
+              </v-card>
+              <v-icon>
+                mdi-settings-helper
+              </v-icon>
+            </div>
+          </v-hover>
+
         </template>
         <template v-else>
           <img
@@ -372,7 +395,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 
 export default {
@@ -387,6 +410,7 @@ export default {
     }
   },
   data: () => ({
+    hover: false,
     input: '',
     display: true,
     // user id john doe
@@ -433,10 +457,20 @@ export default {
       return srcImages
     }
   },
+  watch: {
+    messages: function(){
+      this.messages.forEach((message, ind) => {
+        if (message.type === 'deleted') {
+          this.messages.splice(ind, 1);
+        }
+      })
+    }
+  },
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
     this.channel.on('message.new', this.addNewMessage)
+    this.channel.on('message.deleted', this.deleteMessage)
     this.dataReady = true
 
     this.$nextTick(() => {
@@ -445,8 +479,14 @@ export default {
     })
   },
   methods: {
+    ...mapActions("GSChat", ["removeMessage"]),
     async typing(){
       await this.channel.keystroke();
+    },
+    async cleanChat(){
+      this.messages = [];
+      await this.channel.hide(null, true);
+      await this.channel.show();
     },
     async stopTyping(){
       await this.channel.stopTyping();
@@ -467,6 +507,11 @@ export default {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
+    },
+    deleteMessage(event){
+      this.messages.splice(this.messages.indexOf(
+        this.messages.filter((e) => { return e.id === event.message.id; })[0]
+      ), 1);
     },
     async closeChat() {
       await this.channel.hide();
@@ -648,6 +693,13 @@ export default {
 .v-tooltip__content {
   background: transparent !important;
   padding: 0;
+}
+.settings-message {
+  position: absolute; 
+  padding: 1px; 
+  right: 1.5vw; 
+  top: 1vh; 
+  z-index: 1;
 }
 .mdi-file-outline::before, .mdi-image::before{
   color: #fff;

@@ -52,6 +52,9 @@ const mutations = {
     await state.client.disconnect();
     await state.client.wsConnection.disconnect();
   },
+  REMOVE_MESSAGE: async (state, msgId) => {
+    await state.client.deleteMessage(msgId);
+  },
   SET_MY_CONNECTIONS: (state, payload) => {
     state.connections = payload
   },
@@ -103,6 +106,12 @@ const actions = {
     return new Promise(resolve => {
       commit('REMOVE_USER');
       resolve(true)
+    })
+  },
+  removeMessage({commit}, msgID){
+    return new Promise(resolve => {
+      commit('REMOVE_MESSAGE', msgID);
+      resolve(true);
     })
   },
   removeChat({ commit }, payload) {
