@@ -49,16 +49,19 @@
           </p>
         </div>
       </div>
-      <div>
+      <div class="d-flex">
         <v-hover
           v-slot:default="{ hover }">
-          <div style="position: absolute; right: 5vw;">
-            <v-card v-if="hover" class="settings-message">
+          <div>
+            <v-card v-if="hover" class="absolute settings-message top-0">
               <v-icon
+                size="18"
                 @click="cleanChat">
                 mdi-delete
               </v-icon>
-              <v-icon>
+              <v-icon
+                size="18"
+              >
                 mdi-pencil
               </v-icon>
             </v-card>
