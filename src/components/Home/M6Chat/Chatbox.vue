@@ -82,15 +82,16 @@
       >
         <!-- Day Divider -->
         <div
+          v-if="dayDivider(message.created_at, index, channel.messages).show"
           class="d-flex text-caption align-center my-2 grey--text"
         >
           <v-divider class="blue-grey lighten-5"></v-divider>
-          1 day ago
+            {{ dayDivider().value }} 1 day ago
           <v-divider class="blue-grey lighten-5"></v-divider>
         </div>
         <div
           class="d-flex"
-          :class="[currentUserId === message.authorId ? 'mr-8' : 'ml-8' ]"
+          :class="[user.id === message.user.id ? 'ml-8' : 'mr-8' ]"
         >
           <template v-if="user.id === message.user.id">
             <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
@@ -124,11 +125,11 @@
           </template>
           <template v-else>
             <img
-              v-if="firstCommentBeforeAnswer(message.authorId, index, channel.messages)"
+              v-if="firstCommentBeforeAnswer(message.user.id, index)"
               :alt="channel.userName"
               class="mr-3 rounded-circle"
               height="30"
-              :src="channel.userImgSrc"
+              :src="users[0].user.image"
               width="30"
             >
             <v-card
@@ -429,11 +430,6 @@ export default {
     this.messages = this.state.messages
     this.channel.on('message.new', this.addNewMessage)
     this.dataReady = true
-
-    this.$nextTick(() => {
-      this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-      this.$refs.inputMessage.focus()
-    })
   },
   methods: {
     addNewMessage(event) {
@@ -448,11 +444,22 @@ export default {
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
+      if (index === 0) {
+        return true
+      } else {
+        return authorId === this.messages[index - 1].user.id ? false : true
+      }
+    },
+    dayDivider(messageTime, index, messages) {
       // if (index === 0) {
       //   return true
       // } else {
       //   return authorId === messages[index - 1].authorId ? false : true
       // }
+      return {
+        show: true,
+        value: '2 days ago'
+      }
     },
     toogleDialogEmoji() {
       this.showDialog = !this.showDialog
