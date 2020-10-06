@@ -88,7 +88,6 @@
       class="messages-container ml-2 px-1 vertical-scroll white"
       :class="[minimized ? 'd-none' : '']"
     >
-      hola
       <div
         v-for="(message, index) in messages"
         :key="'message-'+ channel.userId + '-' + index"
