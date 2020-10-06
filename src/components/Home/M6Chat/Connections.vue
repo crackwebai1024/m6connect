@@ -74,6 +74,9 @@
 
           <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
         </div>
+        <div v-if="typing">
+          <span class="font-weight-light text--secondary font-italic">Typing...</span>
+        </div>
       </v-btn>
       <div v-if="filteredChannels.length === 0">
         No results found
@@ -99,6 +102,7 @@ export default {
   data: () => ({
     showSearchInput: false,
     unread_count: [],
+    typing: false,
     searchInput: '',
     lastDepartment: false
   }),
@@ -110,6 +114,7 @@ export default {
     filteredChannels() {
       const result = []
       this.department.channels.forEach(channel => {
+        this.unread_count = [];
         Object.keys(channel.state.members).forEach(member => {
           if (member !== this.user.id) {
             const user = channel.state.members[member]
@@ -117,15 +122,13 @@ export default {
               // If there are more than one user, we need to add an array of users and modify the template
               channel.membersInChannel = user
               result.push(channel)
+              this.unread_count.push({
+                isOpen:false,
+                cid: channel['cid'],
+                unread: channel['state']['read'][this.user.id]['unread_messages']
+              })
             }
           }
-        })
-      })
-      result.forEach(channel => {
-        this.unread_count.push({
-          cid: channel['cid'],
-          online: channel['membersInChannel']['user']['online'],
-          unread: channel['state']['read'][this.user.id]['unread_messages']
         })
       })
       return result
@@ -133,25 +136,40 @@ export default {
   },
   async mounted() {
     this.client.on('notification.message_new', r => {
-      this.pushUnreadCount(r.channel.cid)
+      this.pushUnreadCount(r.channel)
     })
-    this.client.on('message.new', r => {
-      if (r.user.id !== this.user.id) {
-        this.pushUnreadCount(r.cid)
+    this.client.on('channel.visible', r => {
+      this.unread_count.forEach((item, ind) => {
+        if (item.cid == r.cid){
+          this.unread_count[ind]['isOpen'] = !this.unread_count[ind]['isOpen'];
+          this.unread_count[ind]['unread'] = 0;
+        }
+      })
+    })
+    this.client.on('typing.start', r => {
+      if (r.user.id != this.user.id) {
+        this.typing = true;
+      }
+    })
+    this.client.on('typing.stop', r => {
+      if (r.user.id != this.user.id) {
+        this.typing = false;
       }
     })
   },
   methods: {
-    pushUnreadCount(cid) {
+    pushUnreadCount(channel) {
       this.unread_count.forEach((item, ind) => {
-        if (item.cid == cid) {
+        if (item.cid == channel.cid && item.isOpen === false) {
           this.unread_count[ind]['unread'] += 1
         }
       })
     },
     addNewMessage(event) {},
-    startChat(channel) {
-      this.$store.dispatch('GSChat/pushChat', channel)
+    async startChat(channel) {
+      await this.$store.dispatch('GSChat/pushChat', channel)
+      await channel.hide();
+      await channel.show();
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput

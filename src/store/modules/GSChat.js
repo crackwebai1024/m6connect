@@ -30,6 +30,7 @@ const mutations = {
     const channel = state.chats.find(chat => chat.id === payload)
     const index = state.chats.indexOf(channel)
     if (index > -1) {
+      state.chats[index].stopWatching();
       state.chats.splice(index, 1)
     }
   },
@@ -46,6 +47,13 @@ const mutations = {
       payload,
       state.gsToken
     )
+  },
+  REMOVE_USER: async (state) => {
+    await state.client.disconnect();
+    await state.client.wsConnection.disconnect();
+  },
+  REMOVE_MESSAGE: async (state, msgId) => {
+    await state.client.deleteMessage(msgId);
   },
   SET_MY_CONNECTIONS: (state, payload) => {
     state.connections = payload
@@ -94,6 +102,18 @@ const actions = {
       resolve(true)
     })
   },
+  removeClient({ commit }){
+    return new Promise(resolve => {
+      commit('REMOVE_USER');
+      resolve(true)
+    })
+  },
+  removeMessage({commit}, msgID){
+    return new Promise(resolve => {
+      commit('REMOVE_MESSAGE', msgID);
+      resolve(true);
+    })
+  },
   removeChat({ commit }, payload) {
     return new Promise(resolve => {
       commit('REMOVE_CHAT', payload)
@@ -112,6 +132,7 @@ const actions = {
 
     const channels = await state.client.queryChannels(filter, sort, {
       watch: false,
+      presence: true,
       state: false
     })
 

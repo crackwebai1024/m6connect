@@ -16,7 +16,15 @@
         <span class="white--text font-weight-bold">
           {{ $h.dg(currentUser, 'firstName', '') }} {{ $h.dg(currentUser, 'lastName', '') }}
         </span>
-        <img :alt="company.name" class="rounded ml-6" width="62" height="45" src="@/assets/sharp-logo.png">
+
+        <img 
+          v-if="$h.dg(currentCompany, 'logo', '')"
+          :alt="currentCompany.name" 
+          class="rounded ml-6" 
+          width="62" 
+          height="45" 
+          :src="currentCompany.logo"
+        >
       </div>
     </div>
   </div>
@@ -33,6 +41,9 @@ export default {
   computed: {
     ...mapState('Auth', {
       currentUser: 'user'
+    }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
     })
   },
   data: () => ({

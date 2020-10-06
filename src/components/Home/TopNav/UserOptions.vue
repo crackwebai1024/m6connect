@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import UserCompaniesOptions from '@/components/Home/TopNav/UserCompaniesOptions'
 import JoinCompanies from '@/components/Home/TopNav/JoinCompanies'
 import UserProfileUpdate from '@/components/user/settings/UserProfileUpdate'
@@ -112,6 +112,7 @@ export default {
         ...mapMutations('Auth', {
             logoutUser: 'logoutUser'
         }),
+        ...mapActions('GSChat', ['removeClient']),
         openJoinCompanies() {
             this.showJoinCompanies = true
             
@@ -121,6 +122,7 @@ export default {
         },
         logout(){
             this.logoutUser()
+            this.removeClient()
             this.$router.push({ name: 'auth.SignIn' })
         }
     }

@@ -8,8 +8,8 @@
                 <v-list-item-title @click="pickingComponent({ })" >My Profile</v-list-item-title>
             </v-list-item>
 
-            <v-list-item >
-                <v-list-item-title @click="pickingComponent({ })" >My Company</v-list-item-title>
+            <v-list-item class="cursor-pointer" >
+                <v-list-item-title @click="pickingComponent({ name: 'company-show' })" >My Company</v-list-item-title>
             </v-list-item>
 
             <v-list-group >
@@ -46,3 +46,9 @@ export default {
    }
 }
 </script>
+
+<style lang="scss" scoped>
+.cursor-pointer {
+    cursor: pointer;
+}
+</style>

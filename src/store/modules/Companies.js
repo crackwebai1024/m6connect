@@ -71,6 +71,21 @@ const actions = {
         reject(err)
       })
     })
+  },
+  updateCompany({ state, commit }, company) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`, { company })
+      .then(res => {
+        let currentCompany = res.data
+        currentCompany.users = state.currentCompany.users || [] 
+
+        commit('setCurrentCompany', currentCompany)
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
+    })
   }
 
 }
