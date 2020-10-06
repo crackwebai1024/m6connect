@@ -50,19 +50,6 @@
         </div>
       </div>
       <div>
-        <!-- <v-btn
-          class="btn-chat-shadow ml-2"
-          color="white"
-          fab
-          x-small
-        >
-          <v-icon
-            class="rotate-45"
-            size="15"
-          >
-            mdi-paperclip
-          </v-icon>
-        </v-btn> -->
         <v-btn
           class="btn-chat-shadow ml-2"
           color="white"
@@ -88,102 +75,107 @@
       class="messages-container ml-2 px-1 vertical-scroll white"
       :class="[minimized ? 'd-none' : '']"
     >
+      <!-- Message Bubble -->
       <div
         v-for="(message, index) in messages"
         :key="'message-'+ channel.userId + '-' + index"
-        class="d-flex"
-        :class="[currentUserId === message.authorId ? 'mr-8' : 'ml-8' ]"
       >
-        <template v-if="user.id === message.user.id">
-          <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
-          <div
-            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
-          >
-            {{ message.text }}
+        <!-- Day Divider -->
+        <div
+          class="d-flex text-caption align-center my-2 grey--text"
+        >
+          <v-divider class="blue-grey lighten-5"></v-divider>
+          1 day ago
+          <v-divider class="blue-grey lighten-5"></v-divider>
+        </div>
+        <div
+          class="d-flex"
+          :class="[currentUserId === message.authorId ? 'mr-8' : 'ml-8' ]"
+        >
+          <template v-if="user.id === message.user.id">
+            <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
             <div
-              v-if="message.images"
-              class="d-flex ml-auto w-fit"
+              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
             >
+              {{ message.text }}
               <div
-                v-for="(image, index) in message.images"
-                :key="'imagemsg-' + index"
-                class="mt-2 mx-1 relative w-fit"
+                v-if="message.images"
+                class="d-flex ml-auto w-fit"
               >
-                <img
-                  class="image-preview"
-                  :src="image"
+                <div
+                  v-for="(image, index) in message.images"
+                  :key="'imagemsg-' + index"
+                  class="mt-2 mx-1 relative w-fit"
                 >
+                  <img
+                    class="image-preview"
+                    :src="image"
+                  >
+                </div>
               </div>
             </div>
-          </div>
-          <v-icon
-            :class="[message.read ? 'blue--text' : 'grey--text']"
-            size="11"
-            @click="print(message)"
-          >
-            mdi-check-all
-          </v-icon>
-        </template>
-        <template v-else>
-          <img
-            v-if="firstCommentBeforeAnswer(message.authorId, index, channel.messages)"
-            :alt="channel.userName"
-            class="mr-3 rounded-circle"
-            height="30"
-            :src="channel.userImgSrc"
-            width="30"
-          >
-          <v-card
-            v-else
-            class="mr-3"
-            elevation="0"
-            height="30"
-            width="30"
-          >
-            <v-avatar
-              :color="users[0].user.image ? '' : 'blue'"
-              dark
-              size="36"
+            <v-icon
+              :class="[message.read ? 'blue--text' : 'grey--text']"
+              size="11"
+              @click="print(message)"
             >
-              <v-img
-                v-if="users[0].user.image"
-                :src="users[0].user.image"
-              />
-              <template v-else>
-                <span class="text-uppercase white--text">{{ users[0].user.name.charAt(0) }}</span>
-              </template>
-            </v-avatar>
-          </v-card>
-          <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
-            {{ message.text }}
-            <div
-              v-if="message.images"
-              class="d-flex mr-auto w-fit"
+              mdi-check-all
+            </v-icon>
+          </template>
+          <template v-else>
+            <img
+              v-if="firstCommentBeforeAnswer(message.authorId, index, channel.messages)"
+              :alt="channel.userName"
+              class="mr-3 rounded-circle"
+              height="30"
+              :src="channel.userImgSrc"
+              width="30"
             >
-              <div
-                v-for="(image, index) in message.images"
-                :key="'imagemsg-' + index"
-                class="mt-2 mx-1 relative w-fit"
+            <v-card
+              v-else
+              class="mr-3"
+              elevation="0"
+              height="30"
+              width="30"
+            >
+              <v-avatar
+                :color="users[0].user.image ? '' : 'blue'"
+                dark
+                size="36"
               >
-                <img
-                  class="image-preview"
-                  :src="image"
+                <v-img
+                  v-if="users[0].user.image"
+                  :src="users[0].user.image"
+                />
+                <template v-else>
+                  <span class="text-uppercase white--text">{{ users[0].user.name.charAt(0) }}</span>
+                </template>
+              </v-avatar>
+            </v-card>
+            <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
+              {{ message.text }}
+              <div
+                v-if="message.images"
+                class="d-flex mr-auto w-fit"
+              >
+                <div
+                  v-for="(image, index) in message.images"
+                  :key="'imagemsg-' + index"
+                  class="mt-2 mx-1 relative w-fit"
                 >
+                  <img
+                    class="image-preview"
+                    :src="image"
+                  >
+                </div>
               </div>
             </div>
-          </div>
-          <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
-        </template>
+            <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
+          </template>
+        </div>
       </div>
-
-      <!-- end day -->
-      <!-- <div class="d-flex text-caption align-center my-2 grey--text">
-        <v-divider class="blue-grey lighten-5"></v-divider>
-        1 day ago
-        <v-divider class="blue-grey lighten-5"></v-divider>
-      </div> -->
     </div>
-    <!-- <v-emoji-picker @select="selectEmoji" /> -->
+    <!-- Emoji Picker -->
     <div
       class="relative"
       :class="[minimized ? 'd-none' : '']"
@@ -201,7 +193,7 @@
       class="blue-grey lighten-5"
       :class="[minimized ? 'd-none' : '']"
     />
-    <!-- files -->
+    <!-- Files -->
     <template v-if="docFiles.length > 0">
       <div class="d-flex docs images-container mx-1 px-0 py-1">
         <div
@@ -227,7 +219,7 @@
         </div>
       </div>
     </template>
-    <!-- images or files ui -->
+    <!-- Images -->
     <template v-if="srcImageFiles.length > 0">
       <div class="d-flex images-container mx-1 px-0 py-3">
         <div
