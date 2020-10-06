@@ -49,16 +49,19 @@
           </p>
         </div>
       </div>
-      <div>
+      <div class="d-flex">
         <v-hover
           v-slot:default="{ hover }">
-          <div style="position: absolute; right: 5vw;">
-            <v-card v-if="hover" class="settings-message">
+          <div>
+            <v-card v-if="hover" class="absolute settings-message top-0">
               <v-icon
+                size="18"
                 @click="cleanChat">
                 mdi-delete
               </v-icon>
-              <v-icon>
+              <v-icon
+                size="18"
+              >
                 mdi-pencil
               </v-icon>
             </v-card>
@@ -92,120 +95,112 @@
       class="messages-container ml-2 px-1 vertical-scroll white"
       :class="[minimized ? 'd-none' : '']"
     >
+      <!-- Message Bubble -->
       <div
         v-for="(message, index) in messages"
         :key="'message-'+ channel.userId + '-' + index"
-        class="d-flex"
-        :class="[currentUserId === message.authorId ? 'ml-8' : 'mr-8' ]"
       >
-        <template v-if="user.id === message.user.id">
-          <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
-          <div
-            class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
-          >
-            {{ message.text }}
+        <!-- Day Divider -->
+        <div
+          v-if="dayDivider(message.created_at, index).show"
+          class="d-flex text-caption align-center my-2 grey--text"
+        >
+          <v-divider class="blue-grey lighten-5"></v-divider>
+            <span class="mx-3">{{ dayDivider(message.created_at, index).value }}</span>
+          <v-divider class="blue-grey lighten-5"></v-divider>
+        </div>
+        <div
+          class="d-flex"
+          :class="[user.id === message.user.id ? 'ml-8' : 'mr-8' ]"
+        >
+          <template v-if="user.id === message.user.id">
+            <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
             <div
-              v-if="message.images"
-              class="d-flex ml-auto w-fit"
+              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
             >
+              {{ message.text }}
               <div
-                v-for="(image, index) in message.images"
-                :key="'imagemsg-' + index"
-                class="mt-2 mx-1 relative w-fit"
+                v-if="message.images"
+                class="d-flex ml-auto w-fit"
               >
-                <img
-                  class="image-preview"
-                  :src="image"
+                <div
+                  v-for="(image, index) in message.images"
+                  :key="'imagemsg-' + index"
+                  class="mt-2 mx-1 relative w-fit"
                 >
+                  <img
+                    class="image-preview"
+                    :src="image"
+                  >
+                </div>
               </div>
             </div>
-          </div>
-          <v-icon
-            :class="[message.read ? 'blue--text' : 'grey--text']"
-            size="11"
-          >
-            mdi-check-all
-          </v-icon>
-          <v-hover
-            v-slot:default="{ hover }">
-            <div style="position: relative;">
-              <v-card v-if="hover" class="settings-message">
-                <v-icon
-                  @click="removeMessage(message.id)">
-                  mdi-delete
-                </v-icon>
-                <v-icon
-                  @click="removeMessage(message.id)">
-                  mdi-pencil
-                </v-icon>
-              </v-card>
-              <v-icon>
-                mdi-settings-helper
-              </v-icon>
-            </div>
-          </v-hover>
-
-        </template>
-        <template v-else>
-          <img
-            v-if="firstCommentBeforeAnswer(message.authorId, index, channel.messages)"
-            :alt="channel.userName"
-            class="mr-3 rounded-circle"
-            height="30"
-            :src="channel.userImgSrc"
-            width="30"
-          >
-          <v-card
-            v-else
-            class="mr-3"
-            elevation="0"
-            height="30"
-            width="30"
-          >
-            <v-avatar
-              :color="users[0].user.image ? '' : 'blue'"
-              dark
-              size="36"
+            <v-icon
+              :class="[message.read ? 'blue--text' : 'grey--text']"
+              size="11"
+              @click="print(message)"
             >
-              <v-img
-                v-if="users[0].user.image"
-                :src="users[0].user.image"
-              />
-              <template v-else>
-                <span class="text-uppercase white--text">{{ users[0].user.name.charAt(0) }}</span>
-              </template>
-            </v-avatar>
-          </v-card>
-          <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
-            {{ message.text }}
-            <div
-              v-if="message.images"
-              class="d-flex mr-auto w-fit"
+              mdi-check-all
+            </v-icon>
+            <v-hover
+              v-slot:default="{ hover }">
+              <div style="position: relative;">
+                <v-card v-if="hover" class="settings-message">
+                  <v-icon
+                    @click="removeMessage(message.id)">
+                    mdi-delete
+                  </v-icon>
+                  <v-icon
+                    @click="removeMessage(message.id)">
+                    mdi-pencil
+                  </v-icon>
+                </v-card>
+                <v-icon>
+                  mdi-settings-helper
+                </v-icon>
+              </div>
+            </v-hover>
+          </template>
+          <template v-else>
+            <img
+              v-if="firstCommentBeforeAnswer(message.user.id, index)"
+              :alt="channel.userName"
+              class="mr-3 rounded-circle"
+              height="30"
+              :src="users[0].user.image"
+              width="30"
             >
+            <v-card
+              v-else
+              class="mr-3"
+              elevation="0"
+              height="30"
+              width="30"
+            />
+            <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
+              {{ message.text }}
               <div
-                v-for="(image, index) in message.images"
-                :key="'imagemsg-' + index"
-                class="mt-2 mx-1 relative w-fit"
+                v-if="message.images"
+                class="d-flex mr-auto w-fit"
               >
-                <img
-                  class="image-preview"
-                  :src="image"
+                <div
+                  v-for="(image, index) in message.images"
+                  :key="'imagemsg-' + index"
+                  class="mt-2 mx-1 relative w-fit"
                 >
+                  <img
+                    class="image-preview"
+                    :src="image"
+                  >
+                </div>
               </div>
             </div>
-          </div>
-          <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
-        </template>
+            <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
+          </template>
+        </div>
       </div>
-
-      <!-- end day -->
-      <!-- <div class="d-flex text-caption align-center my-2 grey--text">
-        <v-divider class="blue-grey lighten-5"></v-divider>
-        1 day ago
-        <v-divider class="blue-grey lighten-5"></v-divider>
-      </div> -->
     </div>
-    <!-- <v-emoji-picker @select="selectEmoji" /> -->
+    <!-- Emoji Picker -->
     <div
       class="relative"
       :class="[minimized ? 'd-none' : '']"
@@ -223,7 +218,7 @@
       class="blue-grey lighten-5"
       :class="[minimized ? 'd-none' : '']"
     />
-    <!-- files -->
+    <!-- Files -->
     <template v-if="docFiles.length > 0">
       <div class="d-flex docs images-container mx-1 px-0 py-1">
         <div
@@ -249,7 +244,7 @@
         </div>
       </div>
     </template>
-    <!-- images or files ui -->
+    <!-- Images -->
     <template v-if="srcImageFiles.length > 0">
       <div class="d-flex images-container mx-1 px-0 py-3">
         <div
@@ -427,7 +422,8 @@ export default {
     imageFiles: [],
     docFiles: [],
     offset: true,
-    minimized: false
+    minimized: false,
+    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -472,11 +468,6 @@ export default {
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.dataReady = true
-
-    this.$nextTick(() => {
-      this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-      this.$refs.inputMessage.focus()
-    })
   },
   methods: {
     ...mapActions("GSChat", ["removeMessage"]),
@@ -520,11 +511,48 @@ export default {
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
-      // if (index === 0) {
-      //   return true
-      // } else {
-      //   return authorId === messages[index - 1].authorId ? false : true
-      // }
+      if (index === 0) {
+        return true
+      } else {
+        return authorId === this.messages[index - 1].user.id ? false : true
+      }
+    },
+    dayDivider(messageTime, index) {
+      let result = {
+        show: false,
+        value: ''
+      }
+      const currentMessageTime = new Date(messageTime)
+      const dateNow = new Date()
+      if (index !== 0) {
+        const beforeMessageTime = new Date(this.messages[index - 1].created_at)
+        if (currentMessageTime.getDate() !== beforeMessageTime.getDate()) {
+          result.show = true
+        }
+      } else {
+        result.show = true
+      }
+      if (result.show) {
+        let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 2678400000)
+        switch(dayCurrentWeekDifference) {
+          case 0:
+            result.value = 'Today'
+            break;
+          case 1:
+            result.value = 'Yesterday'
+            break;
+          case 2:
+          case 3:          
+          case 4:
+          case 5:
+          case 6:
+            result.value = this.days[currentMessageTime.getDay()]
+            break;
+          default:
+            result.value = (currentMessageTime.getMonth() + 1) + '/' + currentMessageTime.getDate() + '/' + currentMessageTime.getFullYear()
+        }
+      }
+      return result
     },
     toogleDialogEmoji() {
       this.showDialog = !this.showDialog
@@ -541,7 +569,6 @@ export default {
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
-      const date = new Date()
 
       this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,

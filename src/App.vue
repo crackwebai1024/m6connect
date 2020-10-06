@@ -1,20 +1,22 @@
 <template>
   <v-app>
-    <template v-if="loggedIn && !$route.meta.public">
-      <top-nav />
-      <v-row no-gutters class="central-content top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
-        <action-feed v-show="showSidePanels" />
-        <!-- Home / Company Profile -->
+    <div class="grey lighten-3">
+      <template v-if="loggedIn && !$route.meta.public">
+        <top-nav />
+        <v-row no-gutters class="central-content max-w-container mx-auto top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
+          <action-feed v-show="showSidePanels" />
+          <!-- Home / Company Profile -->
+          <router-view />
+          <m6-chat v-show="showSidePanels" />
+        </v-row>
+        <!-- Preview overlay -->
+        <chat-wrapper />
+        <general-overlay />
+      </template>
+      <template v-else>
         <router-view />
-        <m6-chat v-show="showSidePanels" />
-      </v-row>
-      <!-- Preview overlay -->
-      <chat-wrapper />
-      <general-overlay />
-    </template>
-    <template v-else>
-      <router-view />
-    </template>
+      </template>
+    </div>
 
     <m6-notification
       :danger="notifDanger"

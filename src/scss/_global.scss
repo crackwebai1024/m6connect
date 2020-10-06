@@ -130,6 +130,10 @@ $border-color: #dddddd;
   width: fit-content;
 }
 
+.w-side {
+  width: 440px;
+}
+
 .max-w-content {
   max-width: 820px;
 }
@@ -243,4 +247,8 @@ html {
 
 .pointer-auto {
   pointer-events: auto;
+}
+
+.leading-tight {
+  line-height: 1rem !important;
 }

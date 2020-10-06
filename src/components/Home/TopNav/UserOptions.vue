@@ -1,5 +1,5 @@
 <template>
-    <div class="text-center">
+    <div class="align-center d-flex text-center">
         <v-menu
             open-on-hover
             top
@@ -9,8 +9,10 @@
                 <img
                     v-show="Boolean($h.dg(currentUser, 'profilePic', '').length)"
                     v-on="on" 
-                    :alt="currentUser.firstName" 
-                    class="mr-1 img-size"
+                    :alt="currentUser.firstName"
+                    width="40"
+                    height="40"
+                    class="mr-3 rounded-circle"
                     :src="$h.dg(currentUser, 'profilePic', '')"
                 >
                 <v-icon 
@@ -126,11 +128,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.img-size {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-}
-</style>
