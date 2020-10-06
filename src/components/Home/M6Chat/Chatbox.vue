@@ -82,11 +82,11 @@
       >
         <!-- Day Divider -->
         <div
-          v-if="dayDivider(message.created_at, index, channel.messages).show"
+          v-if="dayDivider(message.created_at, index).show"
           class="d-flex text-caption align-center my-2 grey--text"
         >
           <v-divider class="blue-grey lighten-5"></v-divider>
-            {{ dayDivider().value }} 1 day ago
+            <span class="mx-3">{{ dayDivider(message.created_at, index).value }}</span>
           <v-divider class="blue-grey lighten-5"></v-divider>
         </div>
         <div
@@ -138,21 +138,7 @@
               elevation="0"
               height="30"
               width="30"
-            >
-              <v-avatar
-                :color="users[0].user.image ? '' : 'blue'"
-                dark
-                size="36"
-              >
-                <v-img
-                  v-if="users[0].user.image"
-                  :src="users[0].user.image"
-                />
-                <template v-else>
-                  <span class="text-uppercase white--text">{{ users[0].user.name.charAt(0) }}</span>
-                </template>
-              </v-avatar>
-            </v-card>
+            />
             <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
               {{ message.text }}
               <div
@@ -395,7 +381,8 @@ export default {
     imageFiles: [],
     docFiles: [],
     offset: true,
-    minimized: false
+    minimized: false,
+    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -450,16 +437,42 @@ export default {
         return authorId === this.messages[index - 1].user.id ? false : true
       }
     },
-    dayDivider(messageTime, index, messages) {
-      // if (index === 0) {
-      //   return true
-      // } else {
-      //   return authorId === messages[index - 1].authorId ? false : true
-      // }
-      return {
-        show: true,
-        value: '2 days ago'
+    dayDivider(messageTime, index) {
+      let result = {
+        show: false,
+        value: ''
       }
+      const currentMessageTime = new Date(messageTime)
+      const dateNow = new Date()
+      if (index !== 0) {
+        const beforeMessageTime = new Date(this.messages[index - 1].created_at)
+        if (currentMessageTime.getDate() !== beforeMessageTime.getDate()) {
+          result.show = true
+        }
+      } else {
+        result.show = true
+      }
+      if (result.show) {
+        let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 2678400000)
+        switch(dayCurrentWeekDifference) {
+          case 0:
+            result.value = 'Today'
+            break;
+          case 1:
+            result.value = 'Yesterday'
+            break;
+          case 2:
+          case 3:          
+          case 4:
+          case 5:
+          case 6:
+            result.value = this.days[currentMessageTime.getDay()]
+            break;
+          default:
+            result.value = (currentMessageTime.getMonth() + 1) + '/' + currentMessageTime.getDate() + '/' + currentMessageTime.getFullYear()
+        }
+      }
+      return result
     },
     toogleDialogEmoji() {
       this.showDialog = !this.showDialog
@@ -476,7 +489,6 @@ export default {
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
-      const date = new Date()
 
       this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
@@ -487,7 +499,7 @@ export default {
       this.imageFiles = []
       this.docFiles = []
       this.$nextTick(() => {
-        self.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
     },
