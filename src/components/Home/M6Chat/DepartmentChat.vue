@@ -36,7 +36,7 @@
         class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
         color="transparent"
         elevation="0"
-        @click="startChat(user.user.id)"
+        @click="startChat(user.user)"
       >
         <v-badge
           bottom
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'DepartmentChat',
   props: {
@@ -110,13 +110,33 @@ export default {
     }
   },
   methods: {
-    async startChat(localId) {
-      const response = await this.client.queryUsers({ id: { $in: [localId] } });
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger'
+    }),
+    async startChat(currentUser) {
+      const response = await this.client.queryUsers({ id: { $in: [currentUser.id] } });
       if(response.users.length > 0) {
-        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, localId])
+        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, currentUser.id])
+        console.log('Hey');
       } else {
+        // Start New GSChat
+        await this.makeUser(currentUser);
+        await this.makeUser(this.currentUser);
 
+        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, currentUser.id])
       }
+    },
+    async makeUser(user){
+      const cUser = {
+        id: user.id,
+        name: `${user.firstName} ${user.lastName}`,
+        image: user.profilePic
+      }
+
+      await this.client.disconnect();
+      await this.$store.dispatch('GSChat/getGSToken', user)
+      await this.$store.dispatch('GSChat/setUser', cUser)
+      return true;
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
