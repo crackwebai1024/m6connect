@@ -386,26 +386,30 @@ export default {
     data: Object
   },
   data: () => ({
-    likeIcon: 'mdi-thumb-up-outline',
     showComments: false,
     picture_items: [],
     likeState: false,
     all_images: false,
     comment_data: '',
     rotate: '',
-    user: {
-      name: 'John Doe',
-      imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'
-    }
+    user: {}
   }),
   computed: {
     ...mapGetters(['get_user_data']),
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
+    },
+    likeIcon() {
+      return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
     }
   },
   created() {
     // this.picture_items = this.data.images.slice(0, 4)
+    console.log('data')
+    if (this.data.own_reactions.like !== undefined) {
+      this.likeState = true
+    }
+    console.log(this.data.own_reactions.like)
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -428,6 +432,8 @@ export default {
       this.$nextTick(() => this.$refs.currentUserComment.focus())
     },
     likeActivity(activity) {
+      console.log('like activity')
+      console.log(activity)
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
           this.$store.dispatch('GSFeed/removeReaction', item.id)
@@ -439,12 +445,9 @@ export default {
           type: 'like'
         }
         this.likeState = true
+        console.log('like')
         this.$store.dispatch('GSFeed/addReaction', payload)
       }
-
-      this.likeIcon = this.likeState
-        ? 'mdi-thumb-up'
-        : 'mdi-thumb-up-outline'
     },
     pushComment(activity) {
       const payload = {
