@@ -117,7 +117,6 @@ export default {
       const response = await this.client.queryUsers({ id: { $in: [currentUser.id] } });
       if(response.users.length > 0) {
         this.$store.dispatch('GSChat/createChat', [this.currentUser.id, currentUser.id])
-        console.log('Hey');
       } else {
         // Start New GSChat
         await this.makeUser(currentUser);

@@ -560,9 +560,8 @@ export default {
       this.messages[index] = Object.assign(...[msgs[index], event.message]);
     },
     async closeChat() {
-      await this.channel.hide();
-      await this.channel.show();
       this.channel.off('message.new', this.addNewMessage)
+      await this.channel.markRead();
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
     },
     firstCommentBeforeAnswer(authorId, index, messages) {

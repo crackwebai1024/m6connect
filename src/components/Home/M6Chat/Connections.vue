@@ -31,53 +31,71 @@
         placeholder="Start Typing to Search"
         type="text"
       >
-      <v-btn
-        v-for="(channel, ind) in filteredChannels"
-        :key="'channel-' + channel.id"
-        class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
-        color="transparent"
-        elevation="0"
-        @click="startChat(channel)"
-      >
-        <v-badge
-          bottom
-          class="mr-3"
-          :color="channel.membersInChannel.user.online ? 'green accent-3' : 'red accent-3'"
-          dot
-          offset-x="10"
-          offset-y="10"
-        >
-          <v-avatar
-            color="blue"
-            dark
-            size="36"
+      <v-row dense v-for="(channel, ind) in filteredChannels" :key="'channel-' + channel.id">
+        <v-col cols="10">
+          <v-btn
+            class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
+            color="transparent"
+            elevation="0"
+            @click="startChat(channel)"
           >
-            <v-img
-              v-if="user.pic"
-              :src="user.pic"
-            />
-            <template v-else>
-              <span class="text-uppercase white--text">{{ channel.membersInChannel.user.name.charAt(0) }}</span>
-            </template>
-          </v-avatar>
-        </v-badge>
-        <div class="align-start d-flex flex-column">
-          <v-badge
-            :content="unread_count[ind]['unread']"
-            inline
-            :value="unread_count[ind]['unread']"
-          >
-            <p class="font-weight-bold mb-0">
-              {{ channel.membersInChannel.user.name }}
-            </p>
-          </v-badge>
+            <v-badge
+              bottom
+              class="mr-3"
+              :color="channel.membersInChannel.user.online ? 'green accent-3' : 'red accent-3'"
+              dot
+              offset-x="10"
+              offset-y="10"
+            >
+              <v-avatar
+                color="blue"
+                dark
+                size="36"
+              >
+                <v-img
+                  v-if="user.pic"
+                  :src="user.pic"
+                />
+                <template v-else>
+                  <span class="text-uppercase white--text">{{ channel.membersInChannel.user.name.charAt(0) }}</span>
+                </template>
+              </v-avatar>
+            </v-badge>
+            <div class="align-start d-flex flex-column">
+              <v-badge
+                :content="unread_count[ind]['unread']"
+                inline
+                :value="unread_count[ind]['unread']"
+              >
+                <p class="font-weight-bold mb-0">
+                  {{ channel.membersInChannel.user.name }}
+                </p>
+              </v-badge>
 
-          <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
-        </div>
-        <div v-if="whoTyping == channel.membersInChannel.user.id">
-          <span class="font-weight-light text--secondary font-italic">Typing...</span>
-        </div>
-      </v-btn>
+              <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
+            </div>
+            <div v-if="whoTyping == channel.membersInChannel.user.id">
+              <span class="font-weight-light text--secondary font-italic">Typing...</span>
+            </div>
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-hover
+            v-slot:default="{ hover }">
+            <div style="position: relative;">
+              <v-card v-if="hover" class="settings-message">
+                <v-icon
+                  @click="hiddenChannel(channel)">
+                  mdi-eye-off-outline
+                </v-icon>
+              </v-card>
+              <v-icon>
+                mdi-settings-helper
+              </v-icon>
+            </div>
+          </v-hover>
+        </v-col>
+      </v-row>
       <div v-if="filteredChannels.length === 0">
         No results found
       </div>
@@ -101,10 +119,11 @@ export default {
   },
   data: () => ({
     showSearchInput: false,
-    unread_count: [],
+    lastDepartment: false,
+    hover: false,
     whoTyping: '',
     searchInput: '',
-    lastDepartment: false
+    unread_count: []
   }),
   computed: {
     ...mapState(['layout', 'chats']),
@@ -138,6 +157,11 @@ export default {
     this.client.on('notification.message_new', r => {
       this.pushUnreadCount(r.channel)
     })
+    this.client.on('channel.hidden', r => {
+      this.department.channels.splice(this.department.channels.indexOf(
+        this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+      ), 1);
+    })
     this.client.on('channel.visible', r => {
       this.unread_count.forEach((item, ind) => {
         if (item.cid == r.cid){
@@ -158,6 +182,9 @@ export default {
     })
   },
   methods: {
+    async hiddenChannel(channel) {
+      await channel.hide();
+    },
     pushUnreadCount(channel) {
       this.unread_count.forEach((item, ind) => {
         if (item.cid == channel.cid && item.isOpen === false) {
@@ -168,8 +195,7 @@ export default {
     addNewMessage(event) {},
     async startChat(channel) {
       await this.$store.dispatch('GSChat/pushChat', channel)
-      await channel.hide();
-      await channel.show();
+      await channel.markRead();
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
