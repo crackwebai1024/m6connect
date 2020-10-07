@@ -32,8 +32,7 @@
         type="text"
       >
       <v-btn
-        v-for="user in filteredUsers"
-        :key="'user-' + department.name + user.user.id"
+        v-for="user in filteredUsers" :key="'user-' + department.name + user.user.id"
         class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
         color="transparent"
         elevation="0"
@@ -42,16 +41,13 @@
         <v-badge
           bottom
           class="mr-3"
-          color="green accent-3"
           dot
           offset-x="10"
-          offset-y="10"
-        >
+          offset-y="10">
           <v-avatar
             color="blue"
             dark
-            size="36"
-          >
+            size="36">
             <v-img
               v-if="user.pic"
               :src="user.pic"
@@ -96,10 +92,11 @@ export default {
   }),
   computed: {
     ...mapState(['layout', 'chats']),
-    ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('GSChat', { client: 'client' }),
+    ...mapGetters('Auth', { currentUser: 'getUser' }),
     filteredUsers() {
       if (this.department.users) {
-        return this.department.users.filter(user => {
+        return this.department.users.filter( user => {
           if (user.user.firstName.toLowerCase().trim().indexOf(this.searchInput.toLowerCase().trim()) !== -1) {
             return true
           }
@@ -113,8 +110,13 @@ export default {
     }
   },
   methods: {
-    startChat(id) {
-      this.$store.dispatch('GSChat/createChat', [this.user.id, id])
+    async startChat(localId) {
+      const response = await this.client.queryUsers({ id: { $in: [localId] } });
+      if(response.users.length > 0) {
+        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, localId])
+      } else {
+
+      }
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput

@@ -44,7 +44,7 @@ export default {
     ...mapGetters('Auth', { user: 'getUser' }),
     ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
     listUsers() {
-      return this.companyUsers.filter(user => user.id !== this.user.id)
+      return this.companyUsers.filter(user => user.user.id !== this.user.id)
     },
     departments() {
       return [

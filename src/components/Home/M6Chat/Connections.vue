@@ -74,7 +74,7 @@
 
           <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
         </div>
-        <div v-if="typing">
+        <div v-if="whoTyping == channel.membersInChannel.user.id">
           <span class="font-weight-light text--secondary font-italic">Typing...</span>
         </div>
       </v-btn>
@@ -102,7 +102,7 @@ export default {
   data: () => ({
     showSearchInput: false,
     unread_count: [],
-    typing: false,
+    whoTyping: '',
     searchInput: '',
     lastDepartment: false
   }),
@@ -113,8 +113,8 @@ export default {
     ...mapGetters('GSFeed', { feed: 'getFeed' }),
     filteredChannels() {
       const result = []
+      this.unread_count = [];
       this.department.channels.forEach(channel => {
-        this.unread_count = [];
         Object.keys(channel.state.members).forEach(member => {
           if (member !== this.user.id) {
             const user = channel.state.members[member]
@@ -148,12 +148,12 @@ export default {
     })
     this.client.on('typing.start', r => {
       if (r.user.id != this.user.id) {
-        this.typing = true;
+        this.whoTyping = r.user.id;
       }
     })
     this.client.on('typing.stop', r => {
       if (r.user.id != this.user.id) {
-        this.typing = false;
+        this.whoTyping = '';
       }
     })
   },

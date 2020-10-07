@@ -60,8 +60,7 @@
                 mdi-delete
               </v-icon>
               <v-icon
-                size="18"
-              >
+                size="18">
                 mdi-pencil
               </v-icon>
             </v-card>
@@ -115,7 +114,43 @@
         >
           <template v-if="user.id === message.user.id">
             <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
-            <div
+            <div v-if="messageEdit === message.id">
+              <input
+                ref="inputMessage"
+                v-model="messageEditInput"
+                class="h-full outline-none px-2 text-body-1"
+                size="8"
+                @keyup.enter="editMessage">
+              <v-btn
+                class="btn-chat-shadow grey--text mr-2"
+                fab
+                height="23"
+                width="23"
+                x-small
+                @click="toogleDialogEmoji"
+              >
+                <v-icon size="22">
+                  mdi-emoticon-happy-outline
+                </v-icon>
+              </v-btn>
+              <v-btn
+                class="btns-message white--text"
+                fab
+                height="25"
+                icon
+                width="25"
+                x-small
+                @click="editMessage"
+              >
+                <v-icon
+                  class="-rotate-45"
+                  size="13"
+                >
+                  mdi-send
+                </v-icon>
+              </v-btn>
+            </div>
+            <div v-else
               class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
             >
               {{ message.text }}
@@ -150,8 +185,7 @@
                     @click="removeMessage(message.id)">
                     mdi-delete
                   </v-icon>
-                  <v-icon
-                    @click="removeMessage(message.id)">
+                  <v-icon @click="edit(message)">
                     mdi-pencil
                   </v-icon>
                 </v-card>
@@ -274,8 +308,7 @@
     </template>
     <div
       class="align-center chat-send-section px-4"
-      :class="[minimized ? 'd-none' : 'd-flex']"
-    >
+      :class="[minimized ? 'd-none' : 'd-flex']" >
       <v-menu
         :close-on-content-click="false"
         elevation="0"
@@ -410,6 +443,8 @@ export default {
     display: true,
     // user id john doe
     currentUserId: 2,
+    messageEdit: '',
+    messageEditInput: '',
     dataReady: false,
     messages: [],
     state: {
@@ -467,17 +502,22 @@ export default {
     this.messages = this.state.messages
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
+    this.channel.on('message.updated', this.updateMsg)
     this.dataReady = true
   },
   methods: {
-    ...mapActions("GSChat", ["removeMessage"]),
-    async typing(){
-      await this.channel.keystroke();
+    ...mapActions("GSChat", ["removeMessage", "updateMessage"]),
+    edit(message){
+      this.messageEdit = message.id;
+      this.messageEditInput = message.text;
     },
     async cleanChat(){
       this.messages = [];
       await this.channel.hide(null, true);
       await this.channel.show();
+    },
+    async typing(){
+      await this.channel.keystroke();
     },
     async stopTyping(){
       await this.channel.stopTyping();
@@ -499,10 +539,25 @@ export default {
         this.$refs.inputMessage.focus()
       })
     },
+    editMessage(){
+      if(this.messageEditInput !== ''){
+        this.updateMessage({ 
+          id: this.messageEdit, 
+          text: this.messageEditInput
+        });
+        this.messageEdit = '';
+        this.messageEditInput = '';
+      }
+    },
     deleteMessage(event){
       this.messages.splice(this.messages.indexOf(
         this.messages.filter((e) => { return e.id === event.message.id; })[0]
       ), 1);
+    },
+    updateMsg(event){
+      let msgs = this.messages;
+      let index = msgs.indexOf( msgs.filter((e) => { return e.id === event.message.id; })[0] )
+      this.messages[index] = Object.assign(...[msgs[index], event.message]);
     },
     async closeChat() {
       await this.channel.hide();
@@ -558,10 +613,15 @@ export default {
       this.showDialog = !this.showDialog
     },
     onSelectEmoji(emoji) {
-      this.valueInput += emoji.data
-      // Optional
-      this.toogleDialogEmoji()
-      this.$nextTick(() => this.$refs.inputMessage.focus())
+      if(this.messageEdit === ''){
+        this.valueInput += emoji.data
+        // Optional
+        this.toogleDialogEmoji()
+        this.$nextTick(() => this.$refs.inputMessage.focus())
+      }else{
+        this.messageEditInput += emoji.data
+        this.toogleDialogEmoji()
+      }
     },
     sendMessage() {
       if (this.valueInput.trim().length === 0) {
