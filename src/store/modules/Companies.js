@@ -4,6 +4,11 @@ import { dataGet } from '@/utils/helpers'
 const state = {
   list: [],
   currentCompany: {},
+  companyInsuranceStatus: [
+    { label: "Bondable", val: "BONDABLE"},
+    { label: "Bonded",   val: "BONDED" },
+    { label: "Insured",  val: "INSURED" }
+  ]
 };
 
 const getters = {
