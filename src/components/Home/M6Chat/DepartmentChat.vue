@@ -32,26 +32,22 @@
         type="text"
       >
       <v-btn
-        v-for="user in filteredUsers"
-        :key="'user-' + department.name + user.user.id"
+        v-for="user in filteredUsers" :key="'user-' + department.name + user.user.id"
         class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
         color="transparent"
         elevation="0"
-        @click="startChat(user.user.id)"
+        @click="startChat(user.user)"
       >
         <v-badge
           bottom
           class="mr-3"
-          color="green accent-3"
           dot
           offset-x="10"
-          offset-y="10"
-        >
+          offset-y="10">
           <v-avatar
             color="blue"
             dark
-            size="36"
-          >
+            size="36">
             <v-img
               v-if="user.pic"
               :src="user.pic"
@@ -80,7 +76,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'DepartmentChat',
   props: {
@@ -96,10 +92,11 @@ export default {
   }),
   computed: {
     ...mapState(['layout', 'chats']),
-    ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('GSChat', { client: 'client' }),
+    ...mapGetters('Auth', { currentUser: 'getUser' }),
     filteredUsers() {
       if (this.department.users) {
-        return this.department.users.filter(user => {
+        return this.department.users.filter( user => {
           if (user.user.firstName.toLowerCase().trim().indexOf(this.searchInput.toLowerCase().trim()) !== -1) {
             return true
           }
@@ -113,8 +110,32 @@ export default {
     }
   },
   methods: {
-    startChat(id) {
-      this.$store.dispatch('GSChat/createChat', [this.user.id, id])
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger'
+    }),
+    async startChat(currentUser) {
+      const response = await this.client.queryUsers({ id: { $in: [currentUser.id] } });
+      if(response.users.length > 0) {
+        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, currentUser.id])
+      } else {
+        // Start New GSChat
+        await this.makeUser(currentUser);
+        await this.makeUser(this.currentUser);
+
+        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, currentUser.id])
+      }
+    },
+    async makeUser(user){
+      const cUser = {
+        id: user.id,
+        name: `${user.firstName} ${user.lastName}`,
+        image: user.profilePic
+      }
+
+      await this.client.disconnect();
+      await this.$store.dispatch('GSChat/getGSToken', user)
+      await this.$store.dispatch('GSChat/setUser', cUser)
+      return true;
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput

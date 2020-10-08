@@ -50,31 +50,38 @@
         </div>
       </div>
       <div class="d-flex">
-        <v-hover
-          v-slot:default="{ hover }">
-          <div>
-            <v-card v-if="hover" class="absolute settings-message top-0">
-              <v-icon
-                size="18"
-                @click="cleanChat">
-                mdi-delete
-              </v-icon>
-              <v-icon
-                size="18"
-              >
-                mdi-pencil
-              </v-icon>
-            </v-card>
-            <v-btn
-              class="btn-chat-shadow ml-2"
-              color="white" fab x-small >
-              <v-icon
-                size="15" >
-                mdi-cogs
-              </v-icon>
-            </v-btn>
-          </div>
-        </v-hover>
+        <v-dialog
+          v-model="deleteDialog"
+          width="500">
+          <template v-slot:activator="{ on, attrs }">
+            <v-hover
+              v-slot:default="{ hover }">
+              <div>
+                <v-card v-if="hover" class="absolute settings-message top-0">
+                  <v-icon
+                    size="18"
+                    @click="messageEdit = channel.membersInChannel.user.id + 'channel'"
+                    v-bind="attrs" v-on="on" >
+                    mdi-delete
+                  </v-icon>
+                  <v-icon
+                    size="18">
+                    mdi-pencil
+                  </v-icon>
+                </v-card>
+                <v-btn
+                  class="btn-chat-shadow ml-2"
+                  color="white" fab x-small >
+                  <v-icon
+                    size="15" >
+                    mdi-cogs
+                  </v-icon>
+                </v-btn>
+              </div>
+            </v-hover>
+          </template>
+          <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
+        </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
           color="white" fab x-small
@@ -115,7 +122,44 @@
         >
           <template v-if="user.id === message.user.id">
             <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
-            <div
+            <div v-if="messageEdit === message.id">
+              <input
+                ref="inputMessage"
+                v-model="messageEditInput"
+                class="h-full outline-none px-2 text-body-1"
+                size="8"
+                @keyup.esc="cancelMessage"
+                @keyup.enter="editMessage">
+              <v-btn
+                class="btn-chat-shadow grey--text mr-2"
+                fab
+                height="23"
+                width="23"
+                x-small
+                @click="toogleDialogEmoji"
+              >
+                <v-icon size="22">
+                  mdi-emoticon-happy-outline
+                </v-icon>
+              </v-btn>
+              <v-btn
+                class="btns-message white--text"
+                fab
+                height="25"
+                icon
+                width="25"
+                x-small
+                @click="editMessage"
+              >
+                <v-icon
+                  class="-rotate-45"
+                  size="13"
+                >
+                  mdi-send
+                </v-icon>
+              </v-btn>
+            </div>
+            <div v-else
               class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
             >
               {{ message.text }}
@@ -142,24 +186,31 @@
             >
               mdi-check-all
             </v-icon>
-            <v-hover
-              v-slot:default="{ hover }">
-              <div style="position: relative;">
-                <v-card v-if="hover" class="settings-message">
-                  <v-icon
-                    @click="removeMessage(message.id)">
-                    mdi-delete
-                  </v-icon>
-                  <v-icon
-                    @click="removeMessage(message.id)">
-                    mdi-pencil
-                  </v-icon>
-                </v-card>
-                <v-icon>
-                  mdi-settings-helper
-                </v-icon>
-              </div>
-            </v-hover>
+            <v-dialog
+              v-model="deleteDialog"
+              width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <v-hover
+                  v-slot:default="{ hover }">
+                  <div style="position: relative;">
+                    <v-card v-if="hover" class="settings-message">
+                        <v-icon
+                          @click="messageEdit = message.id+message.id"
+                          v-bind="attrs" v-on="on" >
+                          mdi-delete
+                        </v-icon>
+                      <v-icon @click="edit(message)">
+                        mdi-pencil
+                      </v-icon>
+                    </v-card>
+                    <v-icon>
+                      mdi-settings-helper
+                    </v-icon>
+                  </div>
+                </v-hover>
+              </template>
+              <delete-dialog :element="`message '${message.text}'`" v-if="messageEdit === message.id+message.id" @closeDeleteModal="beforeDelete($event, message.id)" />
+            </v-dialog>
           </template>
           <template v-else>
             <img
@@ -274,8 +325,7 @@
     </template>
     <div
       class="align-center chat-send-section px-4"
-      :class="[minimized ? 'd-none' : 'd-flex']"
-    >
+      :class="[minimized ? 'd-none' : 'd-flex']" >
       <v-menu
         :close-on-content-click="false"
         elevation="0"
@@ -392,10 +442,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
   name: 'Chatbox',
   components: {
+    DeleteDialog,
     VEmojiPicker
   },
   props: {
@@ -405,11 +457,14 @@ export default {
     }
   },
   data: () => ({
+    deleteDialog: false,
     hover: false,
     input: '',
     display: true,
     // user id john doe
     currentUserId: 2,
+    messageEdit: '',
+    messageEditInput: '',
     dataReady: false,
     messages: [],
     state: {
@@ -467,17 +522,26 @@ export default {
     this.messages = this.state.messages
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
+    this.channel.on('message.updated', this.updateMsg)
     this.dataReady = true
   },
   methods: {
-    ...mapActions("GSChat", ["removeMessage"]),
+    ...mapActions("GSChat", ["removeMessage", "updateMessage"]),
+    edit(message){
+      this.messageEdit = message.id;
+      this.messageEditInput = message.text;
+    },
+    async cleanChat(event){
+      this.deleteDialog = false;
+      this.hover = false;
+      if(event){
+        this.messages = [];
+        await this.channel.hide(null, true);
+        await this.channel.show();
+      }
+    },
     async typing(){
       await this.channel.keystroke();
-    },
-    async cleanChat(){
-      this.messages = [];
-      await this.channel.hide(null, true);
-      await this.channel.show();
     },
     async stopTyping(){
       await this.channel.stopTyping();
@@ -499,16 +563,34 @@ export default {
         this.$refs.inputMessage.focus()
       })
     },
+    cancelMessage(){
+      this.messageEdit = '';
+      this.messageEditInput = '';
+    },
+    editMessage(){
+      if(this.messageEditInput !== ''){
+        this.updateMessage({ 
+          id: this.messageEdit, 
+          text: this.messageEditInput
+        });
+        this.messageEdit = '';
+        this.messageEditInput = '';
+      }
+    },
     deleteMessage(event){
       this.messages.splice(this.messages.indexOf(
         this.messages.filter((e) => { return e.id === event.message.id; })[0]
       ), 1);
     },
+    updateMsg(event){
+      let msgs = this.messages;
+      let index = msgs.indexOf( msgs.filter((e) => { return e.id === event.message.id; })[0] )
+      this.messages[index] = Object.assign(...[msgs[index], event.message]);
+    },
     async closeChat() {
-      await this.channel.hide();
-      await this.channel.show();
       this.channel.off('message.new', this.addNewMessage)
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
+      await this.channel.markRead();
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
       if (index === 0) {
@@ -558,10 +640,15 @@ export default {
       this.showDialog = !this.showDialog
     },
     onSelectEmoji(emoji) {
-      this.valueInput += emoji.data
-      // Optional
-      this.toogleDialogEmoji()
-      this.$nextTick(() => this.$refs.inputMessage.focus())
+      if(this.messageEdit === ''){
+        this.valueInput += emoji.data
+        // Optional
+        this.toogleDialogEmoji()
+        this.$nextTick(() => this.$refs.inputMessage.focus())
+      }else{
+        this.messageEditInput += emoji.data
+        this.toogleDialogEmoji()
+      }
     },
     sendMessage() {
       if (this.valueInput.trim().length === 0) {
@@ -582,6 +669,14 @@ export default {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
+    },
+    beforeDelete(decision, messageID) {
+      this.messageEdit = '';
+      this.deleteDialog = false;
+      this.hover = false;
+      if(decision) {
+        this.removeMessage(messageID);
+      }
     },
     minimizeChatBox() {
       this.minimized = !this.minimized

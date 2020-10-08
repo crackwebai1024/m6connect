@@ -55,6 +55,9 @@ const mutations = {
   REMOVE_MESSAGE: async (state, msgId) => {
     await state.client.deleteMessage(msgId);
   },
+  EDIT_MESSAGE: async (state, data) => {
+    await state.client.updateMessage(data)
+  },
   SET_MY_CONNECTIONS: (state, payload) => {
     state.connections = payload
   },
@@ -112,6 +115,11 @@ const actions = {
     return new Promise(resolve => {
       commit('REMOVE_MESSAGE', msgID);
       resolve(true);
+    })
+  },
+  updateMessage({ commit }, info){
+    return new Promise(resolve => {
+      commit('EDIT_MESSAGE', info)
     })
   },
   removeChat({ commit }, payload) {
