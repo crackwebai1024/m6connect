@@ -50,30 +50,38 @@
         </div>
       </div>
       <div class="d-flex">
-        <v-hover
-          v-slot:default="{ hover }">
-          <div>
-            <v-card v-if="hover" class="absolute settings-message top-0">
-              <v-icon
-                size="18"
-                @click="cleanChat">
-                mdi-delete
-              </v-icon>
-              <v-icon
-                size="18">
-                mdi-pencil
-              </v-icon>
-            </v-card>
-            <v-btn
-              class="btn-chat-shadow ml-2"
-              color="white" fab x-small >
-              <v-icon
-                size="15" >
-                mdi-cogs
-              </v-icon>
-            </v-btn>
-          </div>
-        </v-hover>
+        <v-dialog
+          v-model="deleteDialog"
+          width="500">
+          <template v-slot:activator="{ on, attrs }">
+            <v-hover
+              v-slot:default="{ hover }">
+              <div>
+                <v-card v-if="hover" class="absolute settings-message top-0">
+                  <v-icon
+                    size="18"
+                    @click="messageEdit = channel.membersInChannel.user.id + 'channel'"
+                    v-bind="attrs" v-on="on" >
+                    mdi-delete
+                  </v-icon>
+                  <v-icon
+                    size="18">
+                    mdi-pencil
+                  </v-icon>
+                </v-card>
+                <v-btn
+                  class="btn-chat-shadow ml-2"
+                  color="white" fab x-small >
+                  <v-icon
+                    size="15" >
+                    mdi-cogs
+                  </v-icon>
+                </v-btn>
+              </div>
+            </v-hover>
+          </template>
+          <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
+        </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
           color="white" fab x-small
@@ -177,23 +185,31 @@
             >
               mdi-check-all
             </v-icon>
-            <v-hover
-              v-slot:default="{ hover }">
-              <div style="position: relative;">
-                <v-card v-if="hover" class="settings-message">
-                  <v-icon
-                    @click="removeMessage(message.id)">
-                    mdi-delete
-                  </v-icon>
-                  <v-icon @click="edit(message)">
-                    mdi-pencil
-                  </v-icon>
-                </v-card>
-                <v-icon>
-                  mdi-settings-helper
-                </v-icon>
-              </div>
-            </v-hover>
+            <v-dialog
+              v-model="deleteDialog"
+              width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <v-hover
+                  v-slot:default="{ hover }">
+                  <div style="position: relative;">
+                    <v-card v-if="hover" class="settings-message">
+                        <v-icon
+                          @click="messageEdit = message.id+message.id"
+                          v-bind="attrs" v-on="on" >
+                          mdi-delete
+                        </v-icon>
+                      <v-icon @click="edit(message)">
+                        mdi-pencil
+                      </v-icon>
+                    </v-card>
+                    <v-icon>
+                      mdi-settings-helper
+                    </v-icon>
+                  </div>
+                </v-hover>
+              </template>
+              <delete-dialog :element="`message '${message.text}'`" v-if="messageEdit === message.id+message.id" @closeDeleteModal="beforeDelete($event, message.id)" />
+            </v-dialog>
           </template>
           <template v-else>
             <img
@@ -425,10 +441,12 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
   name: 'Chatbox',
   components: {
+    DeleteDialog,
     VEmojiPicker
   },
   props: {
@@ -438,6 +456,7 @@ export default {
     }
   },
   data: () => ({
+    deleteDialog: false,
     hover: false,
     input: '',
     display: true,
@@ -511,10 +530,14 @@ export default {
       this.messageEdit = message.id;
       this.messageEditInput = message.text;
     },
-    async cleanChat(){
-      this.messages = [];
-      await this.channel.hide(null, true);
-      await this.channel.show();
+    async cleanChat(event){
+      this.deleteDialog = false;
+      this.hover = false;
+      if(event){
+        this.messages = [];
+        await this.channel.hide(null, true);
+        await this.channel.show();
+      }
     },
     async typing(){
       await this.channel.keystroke();
@@ -561,8 +584,8 @@ export default {
     },
     async closeChat() {
       this.channel.off('message.new', this.addNewMessage)
-      await this.channel.markRead();
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
+      await this.channel.markRead();
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
       if (index === 0) {
@@ -641,6 +664,14 @@ export default {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
+    },
+    beforeDelete(decision, messageID) {
+      this.messageEdit = '';
+      this.deleteDialog = false;
+      this.hover = false;
+      if(decision) {
+        this.removeMessage(messageID);
+      }
     },
     minimizeChatBox() {
       this.minimized = !this.minimized
