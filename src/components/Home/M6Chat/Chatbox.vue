@@ -52,12 +52,12 @@
       <div class="d-flex">
         <v-dialog
           v-model="deleteDialog"
-          width="500">
+          width="50%">
           <template v-slot:activator="{ on, attrs }">
             <v-hover
               v-slot:default="{ hover }">
               <div>
-                <v-card v-if="hover" class="absolute settings-message top-0">
+                <v-card v-if="hover" class="absolute settings-message top-0 p-2">
                   <v-icon
                     size="18"
                     @click="messageEdit = channel.membersInChannel.user.id + 'channel'"
@@ -65,8 +65,10 @@
                     mdi-delete
                   </v-icon>
                   <v-icon
-                    size="18">
-                    mdi-pencil
+                    @click="messageEdit = channel.membersInChannel.user.id + 'add-user'"
+                    size="18"
+                    v-bind="attrs" v-on="on">
+                    mdi-account-multiple-plus-outline
                   </v-icon>
                 </v-card>
                 <v-btn
@@ -81,6 +83,7 @@
             </v-hover>
           </template>
           <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
+          <add-user-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
@@ -182,7 +185,6 @@
             <v-icon
               :class="[message.read ? 'blue--text' : 'grey--text']"
               size="11"
-              @click="print(message)"
             >
               mdi-check-all
             </v-icon>
@@ -443,10 +445,12 @@
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 
 export default {
   name: 'Chatbox',
   components: {
+    AddUserDialog,
     DeleteDialog,
     VEmojiPicker
   },
@@ -526,18 +530,31 @@ export default {
     this.dataReady = true
   },
   methods: {
-    ...mapActions("GSChat", ["removeMessage", "updateMessage"]),
+    ...mapActions("GSChat", ["removeMessage", "updateMessage", "updateChat"]),
     edit(message){
       this.messageEdit = message.id;
       this.messageEditInput = message.text;
+    },
+    addUser(event){
+      this.deleteDialog = false;
+      this.hover = false;
+      if (event.length > 0) {
+        // We make the new conversation
+        this.updateChat(event);
+      }
+      // const destroy = await channel.delete();
+      console.log(event);
+      console.log(this.channel);
     },
     async cleanChat(event){
       this.deleteDialog = false;
       this.hover = false;
       if(event){
         this.messages = [];
-        await this.channel.hide(null, true);
-        await this.channel.show();
+        await this.channel.delete();
+
+        // await this.channel.hide(null, true);
+        // await this.channel.show();
       }
     },
     async typing(){

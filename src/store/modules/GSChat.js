@@ -88,6 +88,27 @@ const actions = {
       resolve(true)
     })
   },
+  updateChat({state, commit}, payload) {
+    return new Promise( async (resolve, reject) => {
+      const conversation = state.client.channel('messaging', 'channel-name', {
+        name: 'Test Chat',
+        image: 'http://bit.ly/2O35mws',
+        members: payload,
+      });
+  
+      await conversation.create();
+
+      const connection = state.connections.find(item => item.id === conversation.id)
+
+      if (connection !== undefined) {
+        commit('PUSH_CHAT', connection)
+      } else {
+        commit('PUSH_CHAT', conversation)
+        commit('PUSH_CONNECTION', conversation)
+      }
+      resolve(true)
+    })
+  },
   getGSToken({ commit }, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/getGSToken`, {
