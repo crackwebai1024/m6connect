@@ -128,6 +128,7 @@
                 v-model="messageEditInput"
                 class="h-full outline-none px-2 text-body-1"
                 size="8"
+                @keyup.esc="cancelMessage"
                 @keyup.enter="editMessage">
               <v-btn
                 class="btn-chat-shadow grey--text mr-2"
@@ -561,6 +562,10 @@ export default {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
       })
+    },
+    cancelMessage(){
+      this.messageEdit = '';
+      this.messageEditInput = '';
     },
     editMessage(){
       if(this.messageEditInput !== ''){
