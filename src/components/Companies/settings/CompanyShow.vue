@@ -13,6 +13,7 @@
                             <v-tab>General</v-tab>
                             <v-tab>Project Specs</v-tab>
                             <v-tab>Social Media</v-tab>
+                            <v-tab>Locations</v-tab>
                             <v-tab>Profile Image</v-tab>
                         </v-tabs>
                         <v-tabs-items v-model="tab" class="pt-3" >
@@ -119,6 +120,9 @@
                                 </v-row>
                             </v-tab-item>
                             <v-tab-item>
+                                <company-address-table :locations="company.locations" />
+                            </v-tab-item>
+                            <v-tab-item>
                                 <v-row>
                                     <v-col col="12" class="text-right pa-0 pr-3" >
                                         <m6-upload 
@@ -158,11 +162,13 @@
 <script>
 import { mapState, mapActions, mapMutations } from 'vuex'
 import SocialMediaCU from './CompanyShowSubComponents/SocialMediaCU'
+import CompanyAddressTable from './CompanyShowSubComponents/CompanyAddressTable'
 
 export default {
     name: "CompanyShow",
     components: {
-        SocialMediaCU
+        SocialMediaCU,
+        CompanyAddressTable
     },
     data: () => ({
         tab: null,
@@ -257,6 +263,10 @@ export default {
         if( !company.projectCapability ) company.projectCapability = { to: "0", from: "0" }
         if( !company.projectSize ) company.projectSize = { to: "0", from: "0" }
         if( !company.socialMediaLinks ) company.socialMediaLinks = []
+        if( !company.locations ) company.locations = []
+
+        console.log('company-----')
+        console.log(company)
 
         this.company = company
     }
