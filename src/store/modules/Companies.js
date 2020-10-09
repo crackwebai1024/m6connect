@@ -8,6 +8,19 @@ const state = {
     { label: "Bondable", val: "BONDABLE"},
     { label: "Bonded",   val: "BONDED" },
     { label: "Insured",  val: "INSURED" }
+  ],
+  locationTypes: [
+    { label: 'Main Location', value: 'main-location' },
+    { label: 'Headquarters', value: 'headquarters' },
+    { label: 'Branch', value: 'branch' },
+    { label: 'Division', value: 'division' },
+    { label: 'Remote Location', value: 'remote-location' },
+    { label: 'Subsidiary', value: 'subsidiary' },
+    { label: 'Region', value: 'region' },
+    { label: 'Administrative', value: 'administrative' },
+    { label: 'Trailer', value: 'trailer' },
+    { label: 'Department', value: 'department' },
+    { label: 'Field Office', value: 'field-office' }
   ]
 };
 

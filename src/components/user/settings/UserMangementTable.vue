@@ -20,12 +20,6 @@
                 @click:row="clickedUser"
                 show-expand
             >
-                <template
-                    v-if="isEnabled('top')"
-                    v-slot:top
-                >
-                    <div>This is content above the actual table</div>
-                </template>
                 <template #item.fullName="{ item }">
                     <div class="horizontal-center">
                         <img

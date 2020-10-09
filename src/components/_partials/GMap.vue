@@ -37,7 +37,7 @@
     },
     methods:{
       sendingData(place){
-        this.$emit('place-changed', place)
+        this.$emit('placeUpdate', place)
       }
     }
   }

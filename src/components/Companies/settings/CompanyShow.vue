@@ -100,9 +100,10 @@
                                                 <v-btn 
                                                     v-on="on" 
                                                     v-bind="attrs" 
-                                                    icon 
-                                                    color="green darken-2" 
+                                                    fab
                                                     dark
+                                                    x-small 
+                                                    color="primary darken-2" 
                                                     @click="socialMediaAdd"
                                                 >
                                                     <v-icon>mdi-plus</v-icon>
@@ -120,7 +121,10 @@
                                 </v-row>
                             </v-tab-item>
                             <v-tab-item>
-                                <company-address-table :locations="company.locations" />
+                                <company-address-table 
+                                    :items="company.locations" 
+                                    @deletingAddress="e => company.locations = e"
+                                />
                             </v-tab-item>
                             <v-tab-item>
                                 <v-row>
@@ -264,10 +268,7 @@ export default {
         if( !company.projectSize ) company.projectSize = { to: "0", from: "0" }
         if( !company.socialMediaLinks ) company.socialMediaLinks = []
         if( !company.locations ) company.locations = []
-
-        console.log('company-----')
-        console.log(company)
-
+        
         this.company = company
     }
 }
