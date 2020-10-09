@@ -90,10 +90,10 @@ const actions = {
   },
   updateChat({state, commit}, payload) {
     return new Promise( async (resolve, reject) => {
-      const conversation = state.client.channel('messaging', 'channel-name', {
+      const conversation = state.client.channel('messaging', null, {
         name: 'Test Chat',
-        image: 'http://bit.ly/2O35mws',
-        members: payload,
+        image: payload.image,
+        members: payload.members,
       });
   
       await conversation.create();
@@ -163,6 +163,11 @@ const actions = {
       watch: false,
       presence: true,
       state: false
+    })
+    channels.forEach(channel => {
+      if (Object.keys(channel.state.members).length > 2) {
+        console.log(channel);
+      }
     })
 
     commit('SET_MY_CONNECTIONS', channels)

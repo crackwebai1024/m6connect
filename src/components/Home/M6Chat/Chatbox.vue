@@ -540,7 +540,11 @@ export default {
       this.hover = false;
       if (event.length > 0) {
         // We make the new conversation
-        this.updateChat(event);
+        this.updateChat({
+          // image: 'http://bit.ly/2O35mws',
+          image: '',
+          members: event
+        });
       }
       // const destroy = await channel.delete();
       console.log(event);
