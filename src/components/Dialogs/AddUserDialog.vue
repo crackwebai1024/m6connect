@@ -24,6 +24,12 @@
                 <v-spacer></v-spacer>
             </v-card-title>
             <v-card-text>
+                <v-text-field
+                    v-model="roomName"
+                    label="Chat Name"
+                    outlined
+                    dense
+                ></v-text-field>
                 <div v-if="element=='company'">
                     <v-btn v-for="(user, ind) of companys" :key="ind+'-company-user-dialog'" block class="my-3 py-8 rounded-lg btn-user"
                         :color="user['selected'] ? 'green' : 'blue'"  tile x-large
@@ -45,7 +51,7 @@
                     class="mt-2"
                     color="primary"
                     outlined
-                    @click="res([])">
+                    @click="res(false)">
                     Cancel
                 </v-btn>
                 <v-btn
@@ -67,13 +73,14 @@ export default {
     name: 'AddUserDialog',
     data: () => ({
         hoverUser: false,
+        roomName: '',
         companys: [],
         resList:[],
         element: 'company'
     }),
     props: {
         currentUsers: {
-            type: Object,
+            type: [String, Object],
             default: () => {}
         }
     },
@@ -91,18 +98,40 @@ export default {
             }
         },
         res(a){
-            this.$emit('closeModal', this.resList);
+            a ? this.$emit('closeModal', {
+                name: this.roomName,
+                image: '',
+                users:this.resList
+            }) : this.$emit('closeModal', []);
         }
     },
     mounted() {
-        this.companyUsers.forEach(item => {
-            if (Object.keys(this.currentUsers).filter((e) => { return e === item.user.id; }).length === 0) {
-                item['selected'] = false;
-                this.companys.push(item);
-            }else{
-                this.resList.push(item.user.id)
-            }
-        });
+        console.log(typeof this.currentUsers)
+        console.log(this.currentUsers)
+        console.log(this.companyUsers)
+        // console.log(this.companyUsers[this.currentUsers])
+        if (typeof this.currentUsers === 'string') {
+            let cUser = this.companyUsers.filter((e) => { return e.user.id === this.currentUsers; })[0];
+            this.companyUsers.splice(this.companyUsers.indexOf(
+                cUser
+            ), 1)
+            this.companys = this.companyUsers
+            this.resList.push(cUser.user.id)
+            // if (Object.keys(this.currentUsers).filter((e) => { return e === item.user.id; }).length === 0) {
+            //     item['selected'] = false;
+            //     this.companys.push(item);
+            // }else{
+            //     this.resList.push(item.user.id)
+            // }    
+        }
+        // this.companyUsers.forEach(item => {
+        //     if (Object.keys(this.currentUsers).filter((e) => { return e === item.user.id; }).length === 0) {
+        //         item['selected'] = false;
+        //         this.companys.push(item);
+        //     }else{
+        //         this.resList.push(item.user.id)
+        //     }
+        // });
     }
 }
 </script>

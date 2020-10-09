@@ -88,10 +88,10 @@ const actions = {
       resolve(true)
     })
   },
-  updateChat({state, commit}, payload) {
+  makeGroupChat({state, commit}, payload) {
     return new Promise( async (resolve, reject) => {
       const conversation = state.client.channel('messaging', null, {
-        name: 'Test Chat',
+        name: payload.name,
         image: payload.image,
         members: payload.members,
       });

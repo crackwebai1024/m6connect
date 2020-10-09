@@ -1,6 +1,24 @@
 <template>
   <div class="mb-5 relative">
     <div class="actions-container">
+      <v-dialog
+        v-model="addUserDialog"
+        width="50%">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            color="grey darken-4"
+            icon
+            v-bind="attrs" v-on="on" 
+          >
+            <v-icon class="grey--text text--darken-2">
+              mdi-account-multiple-plus-outline
+            </v-icon>
+          </v-btn>
+        </template>
+        <add-user-dialog 
+         :currentUsers="user.id"
+          @closeModal="addUser($event)"></add-user-dialog>
+      </v-dialog>
       <v-btn
         color="grey darken-4"
         icon
@@ -122,8 +140,13 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
+import AddUserDialog from '@/components/Dialogs/AddUserDialog'
+
 export default {
+  components: {
+    AddUserDialog
+  },
   name: 'Connections',
   props: {
     department: {
@@ -132,6 +155,7 @@ export default {
     }
   },
   data: () => ({
+    addUserDialog: false,
     showSearchInput: false,
     lastDepartment: false,
     hover: false,
@@ -200,6 +224,22 @@ export default {
     })
   },
   methods: {
+    ...mapActions("GSChat", ["makeGroupChat"]),
+    print(){
+      console.log(this.department);
+      console.log(this.user);
+    },
+    addUser(event){
+      this.addUserDialog = false;
+      if (event.users.length > 1) {
+        // We make the new conversation
+        this.makeGroupChat({
+          name: event.name,
+          image: event.image,
+          members: event.users
+        });
+      }
+    },
     pushUnreadCount(channel) {
       this.unread_count.forEach((item, ind) => {
         if (item.cid == channel.cid && item.isOpen === false) {
