@@ -327,7 +327,7 @@
         class="pb-3 px-5"
       >
         <post-comments
-          v-for="(comment, index) of data.comments"
+          v-for="(comment, index) of data.latest_reactions.comment"
           :key="index"
           :comment="comment"
           :reply="true"
@@ -409,7 +409,7 @@ export default {
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
-    console.log(this.data.own_reactions.like)
+    console.log(this.data)
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
