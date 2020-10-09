@@ -18,6 +18,7 @@
                 :items-per-page="5"
                 class="elevation-0"
                 @click:row="clickedUser"
+                show-expand
             >
                 <template #item.fullName="{ item }">
                     <div class="horizontal-center">

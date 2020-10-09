@@ -4,12 +4,14 @@
             <v-col cols="3">
                 <settings-side-nav  />
             </v-col>
-            <v-col cols="6" >
+            <v-col :cols="secondColumnComponent.size || 6" >
                 <component :is="secondColumnComponent.name" />
             </v-col>
-            <v-col cols="3"  >
-                <component :is="thirdColumnComponent.name" />
-            </v-col>
+            <template v-if="!secondColumnComponent.size"  >
+                <v-col :cols="3"  >
+                    <component :is="thirdColumnComponent.name" />
+                </v-col>    
+            </template>
         </v-row>
     </v-container>
 </template>

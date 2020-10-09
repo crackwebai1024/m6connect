@@ -8,6 +8,7 @@ import lineClamp from 'vue-line-clamp'
 import Helpers from './utils/helpers'
 import { i18n } from './plugins/i18n'
 import './plugins'
+import VueTelInputVuetify from 'vue-tel-input-vuetify/lib';
 
 Vue.use(Helpers)
 
@@ -16,6 +17,24 @@ Vue.config.productionTip = false
 Vue.use(InfiniteLoading)
 
 Vue.use(lineClamp)
+
+Vue.use(VueTelInputVuetify, {
+  vuetify,
+});
+
+import * as VueGoogleMaps from 'vue2-google-maps'
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: process.env.VUE_APP_GMAPS_KEY,
+    libraries: 'places'
+  },
+  installComponents: false
+})
+
+Vue.component('google-info-window', VueGoogleMaps.InfoWindow)
+Vue.component('google-map', VueGoogleMaps.Map)
+Vue.component('google-marker', VueGoogleMaps.Marker)
+Vue.component('google-autocomplete', VueGoogleMaps.Autocomplete)
 
 new Vue({
   router,

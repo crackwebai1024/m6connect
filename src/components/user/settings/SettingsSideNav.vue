@@ -9,7 +9,7 @@
             </v-list-item>
 
             <v-list-item class="cursor-pointer" >
-                <v-list-item-title @click="pickingComponent({ name: 'company-show' })" >My Company</v-list-item-title>
+                <v-list-item-title @click="pickingComponent({ name: 'company-show', size: 9 })" >My Company</v-list-item-title>
             </v-list-item>
 
             <v-list-group >
