@@ -25,7 +25,7 @@ Vue.use(VueTelInputVuetify, {
 import * as VueGoogleMaps from 'vue2-google-maps'
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyA9g-w4eq0314Vz43V-cKu585Fi03NgiIo',
+    key: process.env.VUE_APP_GMAPS_KEY,
     libraries: 'places'
   },
   installComponents: false
