@@ -229,7 +229,7 @@
             @click="showCommentsPost"
           >
             Comments
-            <span>{{ $h.dg(data, 'comments', '').length || 0 }}</span>
+            <span>{{ data.reaction_counts.comment || 0 }}</span>
           </div>
         </v-row>
       </v-card-actions>
