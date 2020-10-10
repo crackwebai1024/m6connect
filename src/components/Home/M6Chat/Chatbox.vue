@@ -615,7 +615,7 @@ export default {
         result.show = true
       }
       if (result.show) {
-        let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 2678400000)
+        let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 86400000)
         switch(dayCurrentWeekDifference) {
           case 0:
             result.value = 'Today'
