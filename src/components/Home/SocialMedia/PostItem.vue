@@ -362,7 +362,7 @@
                 filled
                 height="35"
                 hide-details
-                placeholder="Write a reply..."
+                placeholder="Write a reply lala..."
                 rounded
               />
             </div>
@@ -392,7 +392,7 @@ export default {
     all_images: false,
     comment_data: '',
     rotate: '',
-    user: {}
+    user: {},
   }),
   computed: {
     ...mapGetters(['get_user_data']),

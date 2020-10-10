@@ -16,13 +16,13 @@
         <v-row>
           <span @click="like_state = !like_state" :class="likeClass + 'cursor-hover underline comment-btn pointer'">Like</span>
           <div class="px-1">·</div>
-          <span v-if="reply" class="cursor-hover underline comment-btn pointer">Reply</span>
+          <span v-if="reply" @click="showReplyMessage = !showReplyMessage" class="cursor-hover underline comment-btn pointer">Reply</span>
           <div v-if="reply" class="px-1">·</div>
           <span class="cursor-hover underline timestamp">1 week</span>
           <v-spacer></v-spacer>
         </v-row>
       </div>
-      <slot></slot>
+      <slot v-if="showReplyMessage"></slot>
     </v-col>
   </v-row>
 </template>
@@ -32,7 +32,8 @@ export default {
   props: {
     comment: Object,
     size: Number,
-    reply: Boolean
+    reply: Boolean,
+    showReplyMessage: false
   },
   data: () => ({
     like_state: false,
