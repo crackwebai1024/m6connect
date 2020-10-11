@@ -56,18 +56,22 @@
           <template v-slot:activator="{ on, attrs }">
             <v-hover
               v-slot:default="{ hover }">
-              <div>
-                <v-card v-if="hover" class="absolute top-0 z-20">
-                  <v-icon
-                    size="18"
+              <div class="relative">
+                <!-- <v-card v-if="hover" class="absolute top-0 z-20"> -->
+                <v-card v-if="hover" class="absolute max-w-none pa-1 bottom-0 left-0 w-fit z-20" style="margin-bottom: -64px; margin-left: -130px;">
+                  <v-btn
                     @click="messageEdit = channel.membersInChannel.user.id + 'channel'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-delete
-                  </v-icon>
-                  <v-icon
-                    size="18">
-                    mdi-pencil
-                  </v-icon>
+                    height="25"
+                    class="black--text capitalize px-3 text-caption w-full"
+                    elevation="0"
+                    v-bind="attrs" v-on="on"
+                  >Delete Conversation</v-btn>
+                  <v-btn
+                    @click="edit(message)"
+                    height="25"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                  >Chat Configuration</v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
@@ -185,7 +189,7 @@
                         @click="messageEdit = message.id+message.id"
                         height="25"
                         rounded
-                        class="black--text capitalize"
+                        class="black--text capitalize px-3 text-caption"
                         elevation="0"
                         v-bind="attrs" v-on="on"
                       >Delete</v-btn>
@@ -193,7 +197,7 @@
                         @click="edit(message)"
                         height="25"
                         rounded
-                        class="black--text capitalize ml-1"
+                        class="black--text capitalize ml-1 px-1 text-caption"
                         elevation="0"
                       >Edit</v-btn>
                     </v-card>
@@ -812,8 +816,8 @@ export default {
   padding: 0;
 }
 .message-btns {
-  margin-left: -145px;
-  margin-top: -10px;
+  margin-left: -130px;
+  margin-top: -13px;
 }
 .mdi-file-outline::before, .mdi-image::before{
   color: #fff;
