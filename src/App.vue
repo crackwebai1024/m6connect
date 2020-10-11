@@ -74,7 +74,7 @@ export default {
 
 <style>
   .max-w-none {
-    max-width: none;
+    max-width: none !important;
   }
   #app {
     font-family: 'Raleway', sans-serif;
