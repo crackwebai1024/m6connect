@@ -388,6 +388,12 @@
         </div>
       </div>
     </template>
+    <p 
+      v-if="Object.keys( whoTyping ).length > 0"
+      class="text-caption my-0 mx-5 font-italic"
+    >
+      User {{whoTyping.name}} is typing
+    </p>
     <div
       class="align-center chat-send-section px-4"
       :class="[minimized ? 'd-none' : 'd-flex']" >
@@ -530,6 +536,7 @@ export default {
     hover: false,
     input: '',
     display: true,
+    whoTyping: {},
     // user id john doe
     currentUserId: 2,
     messageEdit: '',
@@ -551,6 +558,8 @@ export default {
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('GSChat', { client: 'client' }),
+
     groupedMessages() {
       return this.messages.reduce(function (r, a) {
         r[a.date.day] = [...r[a.date.day] || [], a]
@@ -592,6 +601,18 @@ export default {
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
+    
+    this.client.on('typing.start', r => {
+      if (r.user.id != this.user.id) {
+        this.whoTyping = r.user;
+      }
+    })
+    this.client.on('typing.stop', r => {
+      if (r.user.id != this.user.id) {
+        this.whoTyping = '';
+      }
+    })
+    
     this.dataReady = true
   },
   methods: {

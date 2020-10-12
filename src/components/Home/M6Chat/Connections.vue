@@ -109,9 +109,6 @@
 
             <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
           </div>
-          <div v-if="whoTyping == channel.membersInChannel.user.id">
-            <span class="font-weight-light text--secondary font-italic">Typing...</span>
-          </div>
         </div>
         <div v-else>
           <div class="align-start d-flex flex-column">
@@ -159,7 +156,6 @@ export default {
     showSearchInput: false,
     lastDepartment: false,
     hover: false,
-    whoTyping: '',
     searchInput: '',
     unread_count: []
   }),
@@ -211,16 +207,6 @@ export default {
           this.unread_count[ind]['unread'] = 0;
         }
       })
-    })
-    this.client.on('typing.start', r => {
-      if (r.user.id != this.user.id) {
-        this.whoTyping = r.user.id;
-      }
-    })
-    this.client.on('typing.stop', r => {
-      if (r.user.id != this.user.id) {
-        this.whoTyping = '';
-      }
     })
   },
   methods: {
