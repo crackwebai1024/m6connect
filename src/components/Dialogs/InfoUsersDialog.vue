@@ -71,12 +71,6 @@ export default {
     },
     methods: {
         ...mapActions("GSChat", ["removeUserChat"]),
-        print(){
-            console.log('currentUsers', this.currentUsers);
-            console.log('user', this.user);
-            console.log('channel', this.channel);
-            console.log(this.role);
-        },
         async remove( user ){
             await this.channel.removeMembers([user.user.id]);
         }
