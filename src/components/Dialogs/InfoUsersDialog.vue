@@ -49,16 +49,6 @@
                 </div>
             </v-list>
         </v-card-text>
-        <v-card-actions>
-            <v-btn 
-                block
-                color="cyan"
-                class="white--text text-h5"
-                @click="print"
-            >
-                print
-            </v-btn>
-        </v-card-actions>
     </v-card>
 </template>
 <script>

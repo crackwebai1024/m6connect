@@ -164,11 +164,6 @@ const actions = {
       presence: true,
       state: false
     })
-    channels.forEach(channel => {
-      if (Object.keys(channel.state.members).length > 2) {
-        console.log(channel);
-      }
-    })
 
     commit('SET_MY_CONNECTIONS', channels)
   },

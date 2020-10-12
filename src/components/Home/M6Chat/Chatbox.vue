@@ -145,7 +145,7 @@
           </template>
           <delete-dialog v-if="messageEdit === channel.data.id + '-channel'" :element="`messages on '${channel.data.name}' group`" @closeDeleteModal="cleanChat($event)" />
           <add-user-dialog v-if="messageEdit === channel.data.id + '-add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
-          <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" @closeModal="removeUser"></info-users-dialog>
+          <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" ></info-users-dialog>
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
@@ -595,17 +595,26 @@ export default {
     this.dataReady = true
   },
   methods: {
-    ...mapActions("GSChat", ["removeMessage", "updateMessage", "updateChat"]),
+    ...mapActions("GSChat", ["removeMessage", "updateMessage"]),
     edit(message){
       this.messageEdit = message.id;
       this.messageEditInput = message.text;
     },
-    addUser(event){
+    async addUser(event) {
       this.deleteDialog = false;
       this.hover = false;
       if (event.users.length > 0) {
         // We make the new conversation
-        console.log(event);
+        let res = [];
+        event.users.forEach(item => {
+          if(Object.keys(this.channel.state.members).indexOf(item) < 0){
+            res.push(item);
+          }
+        });
+
+        if (res.length > 0) {
+          await this.channel.addMembers(res);
+        }
       }
     },
     removeUser(event){

@@ -122,7 +122,6 @@ export default {
             this.companyUsers.forEach(item => {
                 if (Object.keys(this.currentUsers).filter((e) => { return e === item.user.id; }).length === 0) {
                     item['selected'] = false;
-                    console.log(item);
                     this.companys.push(item);
                 }else{
                     this.resList.push(item.user.id)
