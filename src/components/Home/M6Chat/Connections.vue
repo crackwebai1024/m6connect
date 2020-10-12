@@ -225,10 +225,6 @@ export default {
   },
   methods: {
     ...mapActions("GSChat", ["makeGroupChat"]),
-    print(){
-      console.log(this.department);
-      console.log(this.user);
-    },
     addUser(event){
       this.addUserDialog = false;
       if (event.users.length > 1) {

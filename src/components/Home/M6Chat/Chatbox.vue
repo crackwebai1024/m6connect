@@ -103,7 +103,6 @@
             </v-hover>
           </template>
           <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
-          <add-user-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
         </v-dialog>
         <v-dialog
           v-else
@@ -116,12 +115,18 @@
                 <v-card v-if="hover" class="absolute settings-message top-0 p-2">
                   <v-icon
                     size="18"
-                    @click="messageEdit = channel.data.id + 'channel'"
+                    @click="messageEdit = channel.data.id + '-channel'"
                     v-bind="attrs" v-on="on" >
                     mdi-delete
                   </v-icon>
                   <v-icon
-                    @click="messageEdit = channel.data.id + 'add-user'"
+                    size="18"
+                    @click="messageEdit = channel.data.id + '-info'"
+                    v-bind="attrs" v-on="on" >
+                    mdi-information-outline
+                  </v-icon>
+                  <v-icon
+                    @click="messageEdit = channel.data.id + '-add-user'"
                     size="18"
                     v-bind="attrs" v-on="on">
                     mdi-account-multiple-plus-outline
@@ -138,8 +143,9 @@
               </div>
             </v-hover>
           </template>
-          <delete-dialog v-if="messageEdit === channel.data.id + 'channel'" :element="`messages on '${channel.data.name}' group`" @closeDeleteModal="cleanChat($event)" />
-          <add-user-dialog v-if="messageEdit === channel.data.id + 'add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
+          <delete-dialog v-if="messageEdit === channel.data.id + '-channel'" :element="`messages on '${channel.data.name}' group`" @closeDeleteModal="cleanChat($event)" />
+          <add-user-dialog v-if="messageEdit === channel.data.id + '-add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
+          <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" @closeModal="removeUser"></info-users-dialog>
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
@@ -503,10 +509,12 @@ import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
+import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
 
 export default {
   name: 'Chatbox',
   components: {
+    InfoUsersDialog,
     AddUserDialog,
     DeleteDialog,
     VEmojiPicker
@@ -588,9 +596,6 @@ export default {
   },
   methods: {
     ...mapActions("GSChat", ["removeMessage", "updateMessage", "updateChat"]),
-    print(message){
-      console.log(message);
-    },
     edit(message){
       this.messageEdit = message.id;
       this.messageEditInput = message.text;
@@ -598,22 +603,23 @@ export default {
     addUser(event){
       this.deleteDialog = false;
       this.hover = false;
-      if (event.length > 1) {
+      if (event.users.length > 0) {
         // We make the new conversation
-        this.updateChat({
-          // image: 'http://bit.ly/2O35mws',
-          image: '',
-          members: event
-        });
+        console.log(event);
       }
+    },
+    removeUser(event){
+      this.deleteDialog = false;
+      this.hover = false;
     },
     async cleanChat(event){
       this.deleteDialog = false;
       this.hover = false;
       if(event){
         this.messages = [];
-        await this.channel.hide(null, true);
-        await this.channel.show();
+        await this.channel.delete();
+        // await this.channel.hide(null, true);
+        // await this.channel.show();
       }
     },
     async typing(){

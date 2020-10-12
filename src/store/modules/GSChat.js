@@ -90,7 +90,7 @@ const actions = {
   },
   makeGroupChat({state, commit}, payload) {
     return new Promise( async (resolve, reject) => {
-      const conversation = state.client.channel('messaging', null, {
+      const conversation = state.client.channel('messaging', `${Date.now()}-group-${Math.floor(Math.random() * 999999)}`, {
         name: payload.name,
         image: payload.image,
         members: payload.members,
