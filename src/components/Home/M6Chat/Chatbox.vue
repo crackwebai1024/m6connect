@@ -126,10 +126,18 @@
                     mdi-information-outline
                   </v-icon>
                   <v-icon
+                    v-if="channel.data.created_by.id === user.id"
                     @click="messageEdit = channel.data.id + '-add-user'"
                     size="18"
                     v-bind="attrs" v-on="on">
                     mdi-account-multiple-plus-outline
+                  </v-icon>
+                  <v-icon
+                    v-if="channel.data.created_by.id === user.id"
+                    @click="messageEdit = channel.data.id + '-edit'"
+                    size="18"
+                    v-bind="attrs" v-on="on">
+                    mdi-pencil
                   </v-icon>
                 </v-card>
                 <v-btn
@@ -146,6 +154,7 @@
           <delete-dialog v-if="messageEdit === channel.data.id + '-channel'" :element="`messages on '${channel.data.name}' group`" @closeDeleteModal="cleanChat($event)" />
           <add-user-dialog v-if="messageEdit === channel.data.id + '-add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
           <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" ></info-users-dialog>
+          <settings-channel-dialog v-if="messageEdit === channel.data.id + '-edit'" :channel="channel" @closeEditeModal="closeModal()" ></settings-channel-dialog>
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
@@ -279,7 +288,6 @@
           <template v-else>
             <img
               v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              @click="print(message)"
               :alt="channel.userName"
               class="mr-3 rounded-circle"
               height="30"
@@ -516,10 +524,12 @@ import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
+import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
 
 export default {
   name: 'Chatbox',
   components: {
+    SettingsChannelDialog,
     InfoUsersDialog,
     AddUserDialog,
     DeleteDialog,
@@ -617,6 +627,9 @@ export default {
   },
   methods: {
     ...mapActions("GSChat", ["removeMessage", "updateMessage"]),
+    closeModal(){
+      this.deleteDialog = false;
+    },
     edit(message){
       this.messageEdit = message.id;
       this.messageEditInput = message.text;

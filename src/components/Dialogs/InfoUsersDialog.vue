@@ -41,7 +41,7 @@
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-icon>
-                            <v-btn v-if="role === 'owner'" icon @click="remove(currentUsers[userID])">
+                            <v-btn v-if="role === 'owner' && currentUsers[userID]['role'] !== 'owner'" icon @click="remove(currentUsers[userID])">
                                 <v-icon color="red darken-1" >mdi-delete</v-icon>
                             </v-btn>
                         </v-list-item-icon>

@@ -197,7 +197,6 @@ export default {
     }
   },
   async mounted() {
-    console.log(this.client);
     this.client.on('notification.message_new', r => {
       this.pushUnreadCount(r.channel)
     })
