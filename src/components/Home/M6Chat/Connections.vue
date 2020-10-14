@@ -197,6 +197,7 @@ export default {
     }
   },
   async mounted() {
+    console.log(this.client);
     this.client.on('notification.message_new', r => {
       this.pushUnreadCount(r.channel)
     })
@@ -207,6 +208,28 @@ export default {
           this.unread_count[ind]['unread'] = 0;
         }
       })
+    })
+    this.client.on('member.removed', r => {
+      if (this.user.id === r.user.id) {
+        this.department.channels.splice(this.department.channels.indexOf(
+          this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+        ), 1)
+        this.$store.dispatch('GSChat/removeChat', r.channel_id)
+      }
+    })
+    this.client.on('notification.removed_from_channel', r => {
+      this.department.channels.splice(this.department.channels.indexOf(
+        this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+      ), 1)
+      this.$store.dispatch('GSChat/removeChat', r.channel_id)
+    })
+    this.client.on('channel.hidden', r => {
+      if (this.user.id === r.user.id) {
+        this.$store.dispatch('GSChat/removeChat', r.channel_id)
+      }
+    })
+    this.client.on('notification.added_to_channel', r => {
+      this.$store.dispatch('GSChat/retrieveChats', this.user.id)
     })
   },
   methods: {

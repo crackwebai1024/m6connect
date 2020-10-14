@@ -603,12 +603,12 @@ export default {
     this.channel.on('message.updated', this.updateMsg)
     
     this.client.on('typing.start', r => {
-      if (r.user.id != this.user.id) {
+      if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
         this.whoTyping = r.user;
       }
     })
     this.client.on('typing.stop', r => {
-      if (r.user.id != this.user.id) {
+      if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
         this.whoTyping = '';
       }
     })
@@ -647,9 +647,8 @@ export default {
       this.hover = false;
       if(event){
         this.messages = [];
-        await this.channel.delete();
-        // await this.channel.hide(null, true);
-        // await this.channel.show();
+        await this.channel.hide(null, true);
+        await this.channel.show();
       }
     },
     async typing(){
@@ -730,7 +729,7 @@ export default {
         let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 2678400000)
         switch(dayCurrentWeekDifference) {
           case 0:
-            result.value = 'Today'
+            result.value = currentMessageTime.toString().substr(0,15)
             break;
           case 1:
             result.value = 'Yesterday'

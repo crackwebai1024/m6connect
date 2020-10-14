@@ -70,7 +70,6 @@ export default {
         }
     },
     methods: {
-        ...mapActions("GSChat", ["removeUserChat"]),
         async remove( user ){
             await this.channel.removeMembers([user.user.id]);
         }
