@@ -24,6 +24,7 @@
         </v-card-title>
         <v-card-text>
             <v-text-field
+                v-if="typeof this.currentUsers === 'string'"
                 v-model="roomName"
                 label="Chat Name"
                 outlined
@@ -41,6 +42,19 @@
                         <b class="white--text" >{{ (user.joinStatus).toLowerCase() }}</b>
                     </v-chip>
                 </v-btn>
+                <h2 
+                    v-if="companys.length === 0"
+                    class="font-weight-black text-center"
+                >
+                    No users found
+                </h2>
+            </div>
+            <div v-else>
+                <h2 
+                    class="font-weight-black text-center"
+                >
+                    No users found
+                </h2>
             </div>
         </v-card-text>
         <v-card-actions>
@@ -131,12 +145,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.btn-user:hover{
-    background-color: #90CAF9;
-}
-.btn-selected{
-    background-color: #4CAF50;
-}
-</style>

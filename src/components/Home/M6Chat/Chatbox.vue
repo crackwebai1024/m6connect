@@ -10,7 +10,30 @@
       :class="[minimized ? 'blue lighten-2' : '']"
       @click="minimizeChatBox"
     >
-      <div v-if="Object.keys( channel.state.members ).length == 2"
+      <div v-if="channel.data.name"
+        class="align-center d-flex"
+      >
+        <v-avatar size="42" class="mr-2">
+          <img
+            v-if="channel.data.image !== ''"
+            :alt="channel.data.image"
+            :src="channel.data.image"
+          >
+          <v-icon v-else>
+            mdi-account-group-outline
+          </v-icon>
+
+        </v-avatar>
+        <div class="ml-1">
+          <p
+            class="font-weight-medium ma-0 pa-0 text-body-2"
+            :class="[minimized ? 'white--text' : '']"
+          >
+            {{ channel.data.name }}
+          </p>
+        </div>
+      </div>
+      <div v-else
         class="align-center d-flex"
       >
         <v-badge
@@ -51,32 +74,61 @@
           </p>
         </div>
       </div>
-      <div v-else
-        class="align-center d-flex"
-      >
-        <v-avatar size="42" class="mr-2">
-          <img
-            v-if="channel.data.image !== ''"
-            :alt="channel.data.image"
-            :src="channel.data.image"
-          >
-          <v-icon v-else>
-            mdi-account-group-outline
-          </v-icon>
-
-        </v-avatar>
-        <div class="ml-1">
-          <p
-            class="font-weight-medium ma-0 pa-0 text-body-2"
-            :class="[minimized ? 'white--text' : '']"
-          >
-            {{ channel.data.name }}
-          </p>
-        </div>
-      </div>
       <div class="d-flex">
         <v-dialog
-          v-if="Object.keys( channel.state.members ).length == 2"
+          v-if="channel.data.name"
+          v-model="deleteDialog"
+          width="50%">
+          <template v-slot:activator="{ on, attrs }">
+            <v-hover
+              v-slot:default="{ hover }">
+              <div>
+                <v-card v-if="hover" class="absolute settings-message top-0 p-2">
+                  <v-icon
+                    size="18"
+                    @click="messageEdit = channel.data.id + '-channel'"
+                    v-bind="attrs" v-on="on" >
+                    mdi-delete
+                  </v-icon>
+                  <v-icon
+                    size="18"
+                    @click="messageEdit = channel.data.id + '-info'"
+                    v-bind="attrs" v-on="on" >
+                    mdi-information-outline
+                  </v-icon>
+                  <v-icon
+                    v-if="channel.data.created_by.id === user.id"
+                    @click="messageEdit = channel.data.id + '-add-user'"
+                    size="18"
+                    v-bind="attrs" v-on="on">
+                    mdi-account-multiple-plus-outline
+                  </v-icon>
+                  <v-icon
+                    v-if="channel.data.created_by.id === user.id"
+                    @click="messageEdit = channel.data.id + '-edit'"
+                    size="18"
+                    v-bind="attrs" v-on="on">
+                    mdi-pencil
+                  </v-icon>
+                </v-card>
+                <v-btn
+                  class="btn-chat-shadow ml-2"
+                  color="white" fab x-small >
+                  <v-icon
+                    size="15" >
+                    mdi-cogs
+                  </v-icon>
+                </v-btn>
+              </div>
+            </v-hover>
+          </template>
+          <delete-dialog v-if="messageEdit === channel.data.id + '-channel'" :element="`messages on '${channel.data.name}' group`" @closeDeleteModal="cleanChat($event)" />
+          <add-user-dialog v-if="messageEdit === channel.data.id + '-add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
+          <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" ></info-users-dialog>
+          <settings-channel-dialog v-if="messageEdit === channel.data.id + '-edit'" :channel="channel" @closeEditeModal="closeModal()" ></settings-channel-dialog>
+        </v-dialog>
+        <v-dialog
+          v-else
           v-model="deleteDialog"
           width="50%">
           <template v-slot:activator="{ on, attrs }">
@@ -103,49 +155,6 @@
             </v-hover>
           </template>
           <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
-        </v-dialog>
-        <v-dialog
-          v-else
-          v-model="deleteDialog"
-          width="50%">
-          <template v-slot:activator="{ on, attrs }">
-            <v-hover
-              v-slot:default="{ hover }">
-              <div>
-                <v-card v-if="hover" class="absolute settings-message top-0 p-2">
-                  <v-icon
-                    size="18"
-                    @click="messageEdit = channel.data.id + '-channel'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-delete
-                  </v-icon>
-                  <v-icon
-                    size="18"
-                    @click="messageEdit = channel.data.id + '-info'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-information-outline
-                  </v-icon>
-                  <v-icon
-                    @click="messageEdit = channel.data.id + '-add-user'"
-                    size="18"
-                    v-bind="attrs" v-on="on">
-                    mdi-account-multiple-plus-outline
-                  </v-icon>
-                </v-card>
-                <v-btn
-                  class="btn-chat-shadow ml-2"
-                  color="white" fab x-small >
-                  <v-icon
-                    size="15" >
-                    mdi-cogs
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-hover>
-          </template>
-          <delete-dialog v-if="messageEdit === channel.data.id + '-channel'" :element="`messages on '${channel.data.name}' group`" @closeDeleteModal="cleanChat($event)" />
-          <add-user-dialog v-if="messageEdit === channel.data.id + '-add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
-          <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" ></info-users-dialog>
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
@@ -279,7 +288,6 @@
           <template v-else>
             <img
               v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              @click="print(message)"
               :alt="channel.userName"
               class="mr-3 rounded-circle"
               height="30"
@@ -388,6 +396,12 @@
         </div>
       </div>
     </template>
+    <p 
+      v-if="Object.keys( whoTyping ).length > 0"
+      class="text-caption my-0 mx-5 font-italic"
+    >
+      User {{whoTyping.name}} is typing
+    </p>
     <div
       class="align-center chat-send-section px-4"
       :class="[minimized ? 'd-none' : 'd-flex']" >
@@ -510,10 +524,12 @@ import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
+import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
 
 export default {
   name: 'Chatbox',
   components: {
+    SettingsChannelDialog,
     InfoUsersDialog,
     AddUserDialog,
     DeleteDialog,
@@ -530,6 +546,7 @@ export default {
     hover: false,
     input: '',
     display: true,
+    whoTyping: {},
     // user id john doe
     currentUserId: 2,
     messageEdit: '',
@@ -551,6 +568,8 @@ export default {
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('GSChat', { client: 'client' }),
+
     groupedMessages() {
       return this.messages.reduce(function (r, a) {
         r[a.date.day] = [...r[a.date.day] || [], a]
@@ -592,10 +611,25 @@ export default {
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
+    
+    this.client.on('typing.start', r => {
+      if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
+        this.whoTyping = r.user;
+      }
+    })
+    this.client.on('typing.stop', r => {
+      if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
+        this.whoTyping = '';
+      }
+    })
+    
     this.dataReady = true
   },
   methods: {
     ...mapActions("GSChat", ["removeMessage", "updateMessage"]),
+    closeModal(){
+      this.deleteDialog = false;
+    },
     edit(message){
       this.messageEdit = message.id;
       this.messageEditInput = message.text;
@@ -626,9 +660,8 @@ export default {
       this.hover = false;
       if(event){
         this.messages = [];
-        await this.channel.delete();
-        // await this.channel.hide(null, true);
-        // await this.channel.show();
+        await this.channel.hide(null, true);
+        await this.channel.show();
       }
     },
     async typing(){
@@ -709,7 +742,7 @@ export default {
         let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 2678400000)
         switch(dayCurrentWeekDifference) {
           case 0:
-            result.value = 'Today'
+            result.value = currentMessageTime.toString().substr(0,15)
             break;
           case 1:
             result.value = 'Yesterday'
