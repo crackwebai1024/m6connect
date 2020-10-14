@@ -396,6 +396,10 @@ export default {
   }),
   computed: {
     ...mapGetters(['get_user_data']),
+    ...mapGetters('GSFeed', {
+      timeline: 'getTimeline',
+      feed: 'getFeed'
+    }),
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
     },
@@ -405,11 +409,9 @@ export default {
   },
   created() {
     // this.picture_items = this.data.images.slice(0, 4)
-    console.log('data')
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
-    console.log(this.data)
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -434,6 +436,7 @@ export default {
     likeActivity(activity) {
       console.log('like activity')
       console.log(activity)
+
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
           this.$store.dispatch('GSFeed/removeReaction', item.id)
@@ -449,7 +452,7 @@ export default {
         this.$store.dispatch('GSFeed/addReaction', payload)
       }
     },
-    pushComment(activity) {
+    async pushComment(activity) {
       const payload = {
         id: activity.id,
         type: 'comment',
@@ -457,8 +460,16 @@ export default {
           text: this.comment_data
         }
       }
+      let self = this
       this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
+        console.log('this is the response')
         console.log(response)
+        // Add an activity when the websocket is ready
+        this.subscription().then(function() {
+          console.log('lala')
+          self.$store.dispatch('GSFeed/pushActivity', [{actor:'eric', verb: 'tweet', object: 2, tweet: 'Cool stuff!'}])
+          // this.feed.addActivity({actor:'eric', verb: 'tweet', object: 2, tweet: 'Cool stuff!'});
+        });
       })
       if (!this.data.comments) {
         this.data.comments = []
@@ -476,7 +487,9 @@ export default {
           created: '1 min'
         }
       })
+      await this.$store.dispatch('GSFeed/setFeed')
       this.comment_data = ''
+
     },
     print() {
       // console.log(this.data.comments.nested_comments)
@@ -494,6 +507,13 @@ export default {
       })
 
       return pendingApprovals
+    },
+    async subscription() {
+      // Listen to feed changes in realtime
+      const subscription = this.feed.subscribe(function(data){
+        alert("Eric's feed was updated!");
+        console.log("Eric's feed was updated!", data);
+      });
     }
   }
 

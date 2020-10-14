@@ -35,16 +35,20 @@ export default {
     this.set_user_data()
     this.set_posts_data()
     await this.$store.dispatch('GSFeed/retrieveFeed')
+    console.log(this.feed.get({ limit: 5, offset: 5 }))
 
     this.feed.subscribe(data => {
+      console.log("here it is")
       if (data.new) {
+        console.log("new data")
         this.$store.dispatch('GSFeed/pushActivity', data.new)
       }
+      console.log("here it is")
     })
   },
   methods: {
     ...mapActions('SocialNetworkModule', ['set_posts_data']),
-    ...mapActions(['set_user_data'])
+    ...mapActions(['set_user_data']),
 
   }
 }

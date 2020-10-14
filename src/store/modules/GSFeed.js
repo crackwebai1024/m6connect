@@ -5,7 +5,9 @@ const defaultState = {
   gsToken: '',
   client: {},
   feed: {},
-  timeline: []
+  timeline: [],
+  appGsId: process.env.VUE_APP_GS_ID,
+  appId: process.env.VUE_APP_ID
 }
 const state = () => defaultState
 
