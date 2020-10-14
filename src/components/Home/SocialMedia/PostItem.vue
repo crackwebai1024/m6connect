@@ -58,20 +58,23 @@
           <v-menu
             bottom
             left
-            nudge-left
-            offset-y
           >
-            <template v-slot:activator="{ on }">
-              <v-icon :on="on">
-                mdi-dots-vertical
-              </v-icon>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
             </template>
-            <v-list>
+
+            <v-list class="grey lighten-4">
               <v-list-item @click="()=> {}">
-                Edit Post
+                <v-list-item-title>Edit Post</v-list-item-title>                
               </v-list-item>
               <v-list-item @click="()=> {}">
-                Delete Post
+                <v-list-item-title>Delete Post</v-list-item-title>                
               </v-list-item>
             </v-list>
           </v-menu>
@@ -386,6 +389,7 @@ export default {
     data: Object
   },
   data: () => ({
+    showBtnsPost: false,
     showComments: false,
     picture_items: [],
     likeState: false,
