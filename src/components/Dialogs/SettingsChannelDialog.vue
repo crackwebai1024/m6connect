@@ -15,11 +15,6 @@
                                 :alt="channelImage"
                                 :src="channelImage"
                             >
-                            <img
-                                v-else-if="channel.data.image !== ''"
-                                :alt="channel.data.image"
-                                :src="channel.data.image"
-                            >
                             <v-icon 
                                 size="130"
                                 v-else
@@ -101,7 +96,7 @@ export default {
                 this.$emit('closeEditeModal');
             }else{
                 this.channelName = this.channel.data.name;
-                this.channelImage = '';
+                this.channelImage = this.channel.data.image;
                 this.$emit('closeEditeModal');
             }
         },
@@ -115,6 +110,7 @@ export default {
     },
     mounted() {
         this.channelName = this.channel.data.name;
+        this.channelImage = this.channel.data.image;
     }
 }
 </script>

@@ -10,7 +10,30 @@
       :class="[minimized ? 'blue lighten-2' : '']"
       @click="minimizeChatBox"
     >
-      <div v-if="Object.keys( channel.state.members ).length == 2"
+      <div v-if="channel.data.name"
+        class="align-center d-flex"
+      >
+        <v-avatar size="42" class="mr-2">
+          <img
+            v-if="channel.data.image !== ''"
+            :alt="channel.data.image"
+            :src="channel.data.image"
+          >
+          <v-icon v-else>
+            mdi-account-group-outline
+          </v-icon>
+
+        </v-avatar>
+        <div class="ml-1">
+          <p
+            class="font-weight-medium ma-0 pa-0 text-body-2"
+            :class="[minimized ? 'white--text' : '']"
+          >
+            {{ channel.data.name }}
+          </p>
+        </div>
+      </div>
+      <div v-else
         class="align-center d-flex"
       >
         <v-badge
@@ -51,61 +74,9 @@
           </p>
         </div>
       </div>
-      <div v-else
-        class="align-center d-flex"
-      >
-        <v-avatar size="42" class="mr-2">
-          <img
-            v-if="channel.data.image !== ''"
-            :alt="channel.data.image"
-            :src="channel.data.image"
-          >
-          <v-icon v-else>
-            mdi-account-group-outline
-          </v-icon>
-
-        </v-avatar>
-        <div class="ml-1">
-          <p
-            class="font-weight-medium ma-0 pa-0 text-body-2"
-            :class="[minimized ? 'white--text' : '']"
-          >
-            {{ channel.data.name }}
-          </p>
-        </div>
-      </div>
       <div class="d-flex">
         <v-dialog
-          v-if="Object.keys( channel.state.members ).length == 2"
-          v-model="deleteDialog"
-          width="50%">
-          <template v-slot:activator="{ on, attrs }">
-            <v-hover
-              v-slot:default="{ hover }">
-              <div>
-                <v-card v-if="hover" class="absolute settings-message top-2 mr-6 p-2">
-                  <v-icon
-                    size="18"
-                    @click="messageEdit = channel.membersInChannel.user.id + 'channel'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-delete
-                  </v-icon>
-                </v-card>
-                <v-btn
-                  class="btn-chat-shadow ml-2"
-                  color="white" fab x-small >
-                  <v-icon
-                    size="15" >
-                    mdi-cogs
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-hover>
-          </template>
-          <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
-        </v-dialog>
-        <v-dialog
-          v-else
+          v-if="channel.data.name"
           v-model="deleteDialog"
           width="50%">
           <template v-slot:activator="{ on, attrs }">
@@ -155,6 +126,35 @@
           <add-user-dialog v-if="messageEdit === channel.data.id + '-add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
           <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" ></info-users-dialog>
           <settings-channel-dialog v-if="messageEdit === channel.data.id + '-edit'" :channel="channel" @closeEditeModal="closeModal()" ></settings-channel-dialog>
+        </v-dialog>
+        <v-dialog
+          v-else
+          v-model="deleteDialog"
+          width="50%">
+          <template v-slot:activator="{ on, attrs }">
+            <v-hover
+              v-slot:default="{ hover }">
+              <div>
+                <v-card v-if="hover" class="absolute settings-message top-2 mr-6 p-2">
+                  <v-icon
+                    size="18"
+                    @click="messageEdit = channel.membersInChannel.user.id + 'channel'"
+                    v-bind="attrs" v-on="on" >
+                    mdi-delete
+                  </v-icon>
+                </v-card>
+                <v-btn
+                  class="btn-chat-shadow ml-2"
+                  color="white" fab x-small >
+                  <v-icon
+                    size="15" >
+                    mdi-cogs
+                  </v-icon>
+                </v-btn>
+              </div>
+            </v-hover>
+          </template>
+          <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"

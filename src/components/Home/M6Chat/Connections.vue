@@ -56,8 +56,23 @@
         elevation="0"
         @click="startChat(channel)"
       >
+        <v-avatar
+          v-if="channel.data.name"
+          :color="channel.data.image ? 'transparent' : 'blue'"
+          class="mr-3"
+          dark
+          size="36"
+        >
+          <v-img
+            v-if="channel.data.image"
+            :src="channel.data.image"
+          />
+          <template v-else>
+            <span class="text-uppercase white--text"> <v-icon>mdi-account-group-outline</v-icon></span>
+          </template>
+        </v-avatar>
         <v-badge
-          v-if="Object.keys( channel.state.members ).length == 2"
+          v-else
           bottom
           class="mr-3"
           :color="channel.membersInChannel.user.online ? 'green accent-3' : 'red accent-3'"
@@ -79,23 +94,21 @@
             </template>
           </v-avatar>
         </v-badge>
-        <v-avatar
-          v-else
-          color="blue"
-          class="mr-3"
-          dark
-          size="36"
-        >
-          <v-img
-            v-if="channel.data.image"
-            :src="channel.data.image"
-          />
-          <template v-else>
-            <span class="text-uppercase white--text"> <v-icon>mdi-account-group-outline</v-icon></span>
-          </template>
-        </v-avatar>
-
-        <div v-if="Object.keys( channel.state.members ).length == 2" >
+        <div v-if="channel.data.name">
+          <div class="align-start d-flex flex-column">
+            <v-badge
+              :content="unread_count[ind]['unread']"
+              inline
+              :value="unread_count[ind]['unread']"
+            >
+              <p class="font-weight-bold mb-0">
+                {{ channel.data.name }}
+              </p>
+            </v-badge>
+            <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
+          </div>
+        </div>
+        <div v-else >
           <div class="align-start d-flex flex-column">
             <v-badge
               :content="unread_count[ind]['unread']"
@@ -107,20 +120,6 @@
               </p>
             </v-badge>
 
-            <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
-          </div>
-        </div>
-        <div v-else>
-          <div class="align-start d-flex flex-column">
-            <v-badge
-              :content="unread_count[ind]['unread']"
-              inline
-              :value="unread_count[ind]['unread']"
-            >
-              <p class="font-weight-bold mb-0">
-                {{ channel.data.name }}
-              </p>
-            </v-badge>
             <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
           </div>
         </div>
