@@ -92,7 +92,6 @@
                     v-bind="attrs" v-on="on"
                   >Delete Conversation</v-btn>
                   <v-btn
-                    @click="edit(message)"
                     height="25"
                     class="black--text capitalize mt-1 px-1 text-caption w-full"
                     elevation="0"
@@ -118,26 +117,29 @@
           <template v-slot:activator="{ on, attrs }">
             <v-hover
               v-slot:default="{ hover }">
-              <div>
-                <v-card v-if="hover" class="absolute settings-message top-0 p-2">
-                  <v-icon
-                    size="18"
+              <div class="relative">
+                <v-card v-if="hover" class="absolute max-w-none pa-1 bottom-0 left-0 w-fit z-20" style="margin-bottom: -90px; margin-left: -130px;">
+                  <v-btn
                     @click="messageEdit = channel.data.id + '-channel'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-delete
-                  </v-icon>
-                  <v-icon
-                    size="18"
+                    height="25"
+                    class="black--text capitalize px-3 text-caption w-full"
+                    elevation="0"
+                    v-bind="attrs" v-on="on"
+                  >Delete Group</v-btn>
+                  <v-btn
                     @click="messageEdit = channel.data.id + '-info'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-information-outline
-                  </v-icon>
-                  <v-icon
+                    height="25"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                    v-bind="attrs" v-on="on"
+                  >Members</v-btn>
+                  <v-btn
                     @click="messageEdit = channel.data.id + '-add-user'"
-                    size="18"
-                    v-bind="attrs" v-on="on">
-                    mdi-account-multiple-plus-outline
-                  </v-icon>
+                    height="25"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                    v-bind="attrs" v-on="on"
+                  >Add member</v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
