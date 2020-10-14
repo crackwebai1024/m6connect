@@ -83,6 +83,13 @@ const actions = {
       })
     })
   },
+  removeActivity({ state }, id) {
+    return new Promise(resolve => {
+      state.feed.removeActivity(id).then(response => {
+        resolve(response)
+      })
+    })
+  },
   removeReaction({ state }, id) {
     return new Promise(resolve => {
       state.client.reactions.delete(id).then(response => {

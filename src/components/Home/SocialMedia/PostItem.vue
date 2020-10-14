@@ -73,7 +73,7 @@
               <v-list-item @click="()=> {}">
                 <v-list-item-title>Edit Post</v-list-item-title>                
               </v-list-item>
-              <v-list-item @click="()=> {}">
+              <v-list-item @click="deletePost(data)">
                 <v-list-item-title>Delete Post</v-list-item-title>                
               </v-list-item>
             </v-list>
@@ -494,6 +494,16 @@ export default {
       await this.$store.dispatch('GSFeed/setFeed')
       this.comment_data = ''
 
+    },
+    async deletePost(activity) {
+      console.log(activity.id)
+      console.log('delete post')
+      this.$store.dispatch('GSFeed/removeActivity', activity.id)
+      console.log('removed')
+
+      // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+      //   this.activityText = ''
+      // })
     },
     print() {
       // console.log(this.data.comments.nested_comments)
