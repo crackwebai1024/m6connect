@@ -254,6 +254,33 @@
                 </v-col>
               </v-row>
             </v-tab-item>
+            <!--  IMAGE   -->
+            <v-tab-item>
+              <v-row>
+                <v-col col="12" class="text-center pa-0" >
+                  <v-avatar size="100" class="mr-2 text-center">
+                      <img
+                          v-if="channelImage !== ''"
+                          :alt="channelImage"
+                          :src="channelImage"
+                      >
+                      <v-icon 
+                          size="100"
+                          v-else
+                      >
+                          mdi-application
+                      </v-icon>
+                    </v-avatar>
+                    <m6-upload 
+                        btnButton="purple" 
+                        @response="reponseRecordImg" 
+                        @loading="loading = !loading" 
+                    >
+                        <v-icon size="33">mdi-plus-circle</v-icon>
+                    </m6-upload>
+                </v-col>
+              </v-row>
+            </v-tab-item>
             <!-- KNOWN AS -->
             <v-tab-item>
               <v-row>
@@ -350,11 +377,14 @@ export default {
   data: () => ({
     itapp_description:{},
     tabs: null,
+    channelImage: '',
+    loading: false,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     model: 'tab-2',
     itemInfo: {},
     tabTitles: [
       { name: 'General'},
+      { name: 'Image'},
       { name: 'Known As'},
       { name: 'Security'},
     ],
@@ -371,6 +401,13 @@ export default {
     ...mapActions('ITAppsModule',[
       'get_all_selects', 'get_description', 'put_itapp_description'
     ]),
+    reponseRecordImg(res) {
+      if(res.ok) {
+        this.channelImage = res.data.link;
+      } else {
+        this.notifDanger('There was an error while saving the file');
+      }
+    },
     put() {
       this.itemInfo['tags'] = this.preview_tags;
       this.itapp_description = this.itemInfo;
@@ -383,31 +420,31 @@ export default {
   },
   mounted(){
     this.get_description(this.info.id).then(
-      response => (this.itapp_description = response)
+      response => (this.itapp_description = response, response.image_info.image_url !== null ? this.channelImage = response.image_info.image_url : '')
     );
     this.get_all_selects({params:[
-      'AppInfoGeneralStatus',
-      'AppInfoGeneralFirstContactGroup',
-      'AppInfoGeneralCategory',
-      'AppInfoGeneralType',
-      'AppInfoGeneralAppManagement',
       'AppInfoGeneralServerHostingModel',
+      'AppInfoGeneralFirstContactGroup',
+      'AppInfoGeneralAppManagement',
+      'AppInfoGeneralCategory',
+      'AppInfoGeneralStatus',
+      'AppInfoGeneralType',
       'AppInfoSecuritySSN'
     ]}).then(res => (Object.keys(res.data).forEach(key => {
       let arraySettings = app_settings.toAppsSettings(res.data[key]);
       switch (key) {
-        case 'AppInfoGeneralStatus':
-          this.statusOptions = arraySettings;                   break;
         case 'AppInfoGeneralFirstContactGroup':
           this.firstContactGroupOptions = arraySettings;        break;
-        case 'AppInfoGeneralCategory':
-          this.category = arraySettings;                        break;
-        case 'AppInfoGeneralType':
-          this.type = arraySettings;                            break;
-        case 'AppInfoGeneralAppManagement':
-          this.appManagement = arraySettings;                   break;
         case 'AppInfoGeneralServerHostingModel':
           this.serverHostingModel = arraySettings;              break;
+        case 'AppInfoGeneralAppManagement':
+          this.appManagement = arraySettings;                   break;
+        case 'AppInfoGeneralCategory':
+          this.category = arraySettings;                        break;
+        case 'AppInfoGeneralStatus':
+          this.statusOptions = arraySettings;                   break;
+        case 'AppInfoGeneralType':
+          this.type = arraySettings;                            break;
         case 'AppInfoSecuritySSN':
           this.ssn = arraySettings;                             break;
       }

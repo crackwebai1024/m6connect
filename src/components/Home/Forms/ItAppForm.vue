@@ -4,6 +4,28 @@
         v-model="valid"
         lazy-validation>
         <v-row>
+            <v-col col="12" class="text-center pa-0" >
+                <v-avatar size="100" class="mr-2 text-center">
+                    <img
+                        v-if="channelImage !== ''"
+                        :alt="channelImage"
+                        :src="channelImage"
+                    >
+                    <v-icon 
+                        size="100"
+                        v-else
+                    >
+                        mdi-application
+                    </v-icon>
+                </v-avatar>
+                <m6-upload 
+                    btnButton="purple" 
+                    @response="reponseRecordImg" 
+                    @loading="loading = !loading" 
+                >
+                    <v-icon size="33">mdi-plus-circle</v-icon>
+                </m6-upload>
+            </v-col>
             <v-col cols="12" >
                 <v-text-field
                     v-model="general_ifo.vendor_id"
@@ -220,6 +242,8 @@ export default {
     name: "ItAppForm",
     data: () => ({
         valid: false,
+        channelImage: '',
+        loading: false,
         // General Info
         general_ifo:{
             app_id: undefined,
@@ -268,6 +292,13 @@ export default {
             'get_all_selects', 'post_it_apps', 'post_it_app_image', 'post_general_ifo', 'post_info_security', 
             'post_tag'
         ]),
+        reponseRecordImg(res) {
+            if(res.ok) {
+                this.channelImage = res.data.link;
+            } else {
+                this.notifDanger('There was an error while saving the file');
+            }
+        },
         postNewITApp(){ 
             let fka_aka = []
             this.chipsAKA.forEach(item => {
@@ -297,7 +328,7 @@ export default {
                 information_security: this.information_security,
                 tags: fka_aka,
                 image:{
-                    image_url: undefined
+                    image_url: this.channelImage === '' ? null : this.channelImage
                 }
             });
         },
