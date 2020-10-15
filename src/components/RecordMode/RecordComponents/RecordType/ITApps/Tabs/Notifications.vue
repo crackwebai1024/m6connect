@@ -38,10 +38,10 @@
             <template v-slot:[`item.noti_cont`]="{ item }">
               <v-chip color="blue lighten-3 mx-1" dark v-for="(who, index) in item.noti_cont" :key="'who-'+index">
                 <span v-if="who.contact_id">
-                  {{ contacts[contacts.findIndex(i => i.id === who.contact_id)]['name'] }}
+                  {{ companyUsers[companyUsers.findIndex(i => i.id === who.contact_id)]['name'] }}
                 </span>
                 <span v-if="who.name">
-                  {{ contacts[contacts.findIndex(i => i.id === who.id)]['name'] }}
+                  {{ companyUsers[companyUsers.findIndex(i => i.id === who.id)]['name'] }}
                 </span>
               </v-chip>
             </template>
@@ -121,7 +121,7 @@
 
           <v-autocomplete
             v-model="itemInfo.noti_cont"
-            :items="contacts"
+            :items="companyUsers"
             :color="baseColor"
             chips
             label="Who to notify"
@@ -166,7 +166,7 @@
 <script>
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 export default {
@@ -182,10 +182,6 @@ export default {
     deleteDialog: false,
     menu: false,
     isLoading: true,
-    contacts: [
-      {id:'asdjkl', name:'Trevor Handsen'},
-      {id:'qweryzxc', name: 'Alex Nelson'}
-    ],
     baseColor: 'deep-purple darken-3',
     itemsName: 'notifications',
     itemInfo: {
@@ -219,7 +215,7 @@ export default {
   methods:{
     ...mapActions("ITAppsModule", ["post_notification", "get_notifications", "delete_notification", "put_notification"]),
     getContact( contactId ){
-      return this.contacts[this.contacts.findIndex(i => i.id === contactId.contact_id)]['name'];
+      return this.companyUsers[this.companyUsers.findIndex(i => i.id === contactId.contact_id)]['name'];
     },
     post(){
       this.post_notification({
@@ -256,13 +252,16 @@ export default {
       this.delete_notification(this.itemInfo.id);
     }
   },
+  computed:{
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
+  },
   watch:{
       dialog:function(val){
         if( val ){
           this.dialogMode ? this.itemInfo.noti_cont = [] : null;
           this.itemInfo.noti_cont.forEach((item, ind) => {
             if(item.contact_id !== undefined){
-              this.itemInfo.noti_cont[ind] = this.contacts[this.contacts.findIndex(i => i.id === item.contact_id)]
+              this.itemInfo.noti_cont[ind] = this.companyUsers[this.companyUsers.findIndex(i => i.id === item.contact_id)]
             }
           });
           this.preview_noti_cont = this.itemInfo.noti_cont;
@@ -270,6 +269,9 @@ export default {
       }
   },
   mounted(){
+    this.companyUsers.forEach(company => {
+      company.name = `${company.user.firstName} ${company.user.lastName}`
+    });
     this.get_notifications(this.info.id).then(
       res => (this.items = res),
       this.isLoading = false

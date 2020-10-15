@@ -29,7 +29,7 @@
               <div>
                 <p class="mb-0">{{ item.type.value }}</p>
                 <p class="text-caption mb-0">Version {{ item.version }}</p>
-                <p class="text-caption mb-0">App Build {{ item.appBuild.value }}</p>
+                <p v-if="item.appBuild && item.appBuild.value" class="text-caption mb-0">App Build {{ item.appBuild.value }}</p>
               </div>
               <div class="d-flex align-center ml-auto mr-0">
                 <v-btn
