@@ -127,6 +127,11 @@ export default {
         delete_contract(cont, id){
           axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/contract/${id}`);
         },
+      // Installation
+        async get_installation({}, id){
+          return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps/get_install_info/${id}`)
+        },
+
       // GETS Selects
         async get_selects(cont, url) {
           return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps_settings/specifi/field${url}`);

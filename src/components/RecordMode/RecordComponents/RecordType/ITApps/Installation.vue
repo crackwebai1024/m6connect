@@ -115,7 +115,18 @@
                     v-for="(item, index) in itemLabels.general">
                     <v-list-item-content class="d-flex justify-space-between flex-nowrap mx-2 ">
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{information['general_info'][item.value]}}</v-list-item-subtitle>
+                        <v-list-item-subtitle 
+                            v-if="typeof information['general_info'][item.value] === 'number' && information['general_info'][item.value] > 10" 
+                            class="text-right"
+                        >
+                            {{options.general[item.value][0]['value']}}
+                        </v-list-item-subtitle>
+                        <v-list-item-subtitle 
+                            v-else 
+                            class="text-right"
+                        >
+                            {{information['general_info'][item.value]}}
+                        </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-expansion-panel-content>
@@ -137,7 +148,7 @@
                     v-for="(item, index) in itemLabels.support">
                     <v-list-item-content class="d-flex justify-space-between flex-nowrap mx-2 ">
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
-                        <v-list-item-subtitle>{{information['installation_support'][item.value]}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{information['installation_support'][item.value] ? 'Yes' : 'No'}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-expansion-panel-content>
@@ -163,6 +174,7 @@
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
 import {mapActions} from "vuex";
+const installConvert = require("@/store/models/itapp_installation");
 
 export default {
     name: "Installation",
@@ -180,10 +192,10 @@ export default {
                 path_to_executable: undefined,
                 odbc_contact_name: undefined,
                 delivery_method: undefined,
+                general_notes: undefined,
                 odbc_settings: undefined,
                 install_type: undefined,
-                priority: undefined,
-                notes: undefined
+                priority: undefined
             },
             // Support Information
             installation_support: {
@@ -255,7 +267,7 @@ export default {
                 { label: "Path to Executable",           required: true,    value: "path_to_executable",         type: 'text'   },
                 { label: "(ODBC) Settings",              required: true,    value: "odbc_settings",              type: 'text'   },
                 { label: "LDAP/AD Authentication",       required: false,   value: "ldap_ad_authentication",     type: 'select' },
-                { label: "General Notes",                required: false,   value: "notes",                      type: 'text'   }
+                { label: "General Notes",                required: false,   value: "general_notes",              type: 'text'   }
             ],
             support: [
                 { label: "Firewall Exceptions",          value: "firewall_exceptions"       },
@@ -291,39 +303,35 @@ export default {
         }
     },
     methods: {
-        ...mapActions("ITAppsModule", ["get_all_selects"]),
+        ...mapActions("ITAppsModule", ["get_all_selects", "get_installation"]),
         updateItemDescription() {
             if(this.valid) {
                 this.itemInfo.app_id = this.info.id
 
                 let info = [this.information,this.itemInfo];
                 this.information = Object.assign(...info);
-                console.log('u',this.itemInfo);
-                console.log('t',this.info);
                 this.closeDialog()
             }
         }
-    },
-    watch: {
-        dialog(){
-            if (this.dialog && this.options.general.install_type.length === 0) {
-                this.get_all_selects({params:[
-                    'InstallGeneralDeliveryMethod',
-                    'InstallGeneralType',
-                    'InstallGeneralWindowsPassedDCT'
-                ]}).then(res => (Object.keys(res.data).forEach(key => {
-                    let arraySettings = res.data[key];
-                    switch (key) {
-                        case 'InstallGeneralType':
-                            this.options.general.install_type = arraySettings;              break;
-                        case 'InstallGeneralDeliveryMethod':
-                            this.options.general.delivery_method = arraySettings;           break;
-                        case 'InstallGeneralWindowsPassedDCT':
-                            this.options.general.windows_passed_dct = arraySettings;        break;
-                    }
-                })));
+    },mounted() {
+        this.get_all_selects({params:[
+            'InstallGeneralDeliveryMethod',
+            'InstallGeneralType',
+            'InstallGeneralWindowsPassedDCT'
+        ]}).then(res => (Object.keys(res.data).forEach(key => {
+            let arraySettings = res.data[key];
+            switch (key) {
+                case 'InstallGeneralType':
+                    this.options.general.install_type = arraySettings;              break;
+                case 'InstallGeneralDeliveryMethod':
+                    this.options.general.delivery_method = arraySettings;           break;
+                case 'InstallGeneralWindowsPassedDCT':
+                    this.options.general.windows_passed_dct = arraySettings;        break;
             }
-        }
+        })));
+        this.get_installation(this.info.id).then(res => {
+            this.information = installConvert.toInstallation(res.data);
+        });
     }
 }
 </script>
