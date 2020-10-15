@@ -4,14 +4,14 @@
             <v-col cols="3">
                 <settings-side-nav  />
             </v-col>
-            <v-col cols="6" >
-                <!-- <user-mangement-table  /> -->
+            <v-col :cols="secondColumnComponent.size || 6" >
                 <component :is="secondColumnComponent.name" />
             </v-col>
-            <v-col cols="3"  >
-                <!-- <user-settings-details /> -->
-                <component :is="thirdColumnComponent.name" />
-            </v-col>
+            <template v-if="!secondColumnComponent.size"  >
+                <v-col :cols="3"  >
+                    <component :is="thirdColumnComponent.name" />
+                </v-col>    
+            </template>
         </v-row>
     </v-container>
 </template>
@@ -21,13 +21,15 @@ import { mapMutations, mapState } from 'vuex'
 import SettingsSideNav from '@/components/user/settings/SettingsSideNav'
 import UserMangementTable from '@/components/user/settings/UserMangementTable'
 import UserSettingsDetails from '@/components/user/settings/UserSettingsDetails'
+import CompanyShow from '@/components/Companies/settings/CompanyShow'
 
 export default {
     name: "UserSettings",
     components: {
         SettingsSideNav,
         UserMangementTable,
-        UserSettingsDetails
+        UserSettingsDetails,
+        CompanyShow
     },
     methods: {
         ...mapMutations('PageControl', {

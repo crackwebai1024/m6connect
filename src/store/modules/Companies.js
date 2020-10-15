@@ -1,15 +1,34 @@
-import axios from 'axios'
+import axios from 'axios';
+import { dataGet } from '@/utils/helpers'
 
 const state = {
   list: [],
-  currentCompany: []
-}
+  currentCompany: {},
+  companyInsuranceStatus: [
+    { label: "Bondable", val: "BONDABLE"},
+    { label: "Bonded",   val: "BONDED" },
+    { label: "Insured",  val: "INSURED" }
+  ],
+  locationTypes: [
+    { label: 'Main Location', value: 'main-location' },
+    { label: 'Headquarters', value: 'headquarters' },
+    { label: 'Branch', value: 'branch' },
+    { label: 'Division', value: 'division' },
+    { label: 'Remote Location', value: 'remote-location' },
+    { label: 'Subsidiary', value: 'subsidiary' },
+    { label: 'Region', value: 'region' },
+    { label: 'Administrative', value: 'administrative' },
+    { label: 'Trailer', value: 'trailer' },
+    { label: 'Department', value: 'department' },
+    { label: 'Field Office', value: 'field-office' }
+  ]
+};
 
 const getters = {
   getCurrentCompanyUsers(state) {
-    return state.currentCompany.users.items || []
+    return dataGet(state, 'currentCompany.users.items', [])
   }
-}
+};
 
 const mutations = {
   setCompanyList(state, payload) {
@@ -39,8 +58,54 @@ const actions = {
           resolve(res)
         })
         .catch(err => reject(err))
+
+    })
+  },
+  updateUserCompany(context, userCompany) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, { userCompany })
+      .then(res => {
+          resolve(res)
+      })
+      .catch(reject)
+    })
+  },
+  createUserCompany({ rootState }, data) {
+    data.userID = rootState.Auth.user.id
+    return new Promise( (resolve, reject) => {
+      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, data)
+      .then(resolve)
+      .catch(reject)
+    })
+  },
+  switchCompanies( { dispatch }, params ) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/switchCompanies`, params)
+      .then(res => {
+        dispatch('Auth/getUserData', {}, { root: true })
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
+    })
+  },
+  updateCompany({ state, commit }, company) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`, { company })
+      .then(res => {
+        let currentCompany = res.data
+        currentCompany.users = state.currentCompany.users || [] 
+
+        commit('setCurrentCompany', currentCompany)
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
     })
   }
+
 }
 
 export default {

@@ -1,5 +1,5 @@
 <template>
-  <div class="actionfeed-content transparent px-4 vertical-scroll dont-show-scroll h-full">
+  <div class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
     <div class="pl-3 mt-4 mb-1 d-flex justify-space-between align-center">
       <p class="font-weight-bold mb-0">Action Feed</p>
       <div class="d-flex align-center">
@@ -195,12 +195,6 @@ export default {
 </script>
 
 <style lang="scss">
-  .actionfeed-content {
-    width: 440px;
-  }
-  .actionfeed-content__card {
-    // min-height: 223px;
-  }
   .card-content__tag {
     z-index: 0;
     top: 0px;

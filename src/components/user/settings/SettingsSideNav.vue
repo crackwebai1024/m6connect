@@ -8,8 +8,8 @@
                 <v-list-item-title @click="pickingComponent({ })" >My Profile</v-list-item-title>
             </v-list-item>
 
-            <v-list-item >
-                <v-list-item-title @click="pickingComponent({ })" >My Company</v-list-item-title>
+            <v-list-item class="cursor-pointer" >
+                <v-list-item-title @click="pickingComponent({ name: 'company-show', size: 9 })" >My Company</v-list-item-title>
             </v-list-item>
 
             <v-list-group >
@@ -17,8 +17,7 @@
                     <v-list-item-title >User Mangement</v-list-item-title>
                 </template>
 
-                <v-list-item @click="pickingComponent({ name:'user-mangement-table', type: 'all' })" >All Users</v-list-item>
-                <v-list-item @click="pickingComponent({ name:'user-mangement-table', type: 'pending' })" >Pending Invites</v-list-item>
+                <v-list-item @click="pickingComponent({ name:'user-mangement-table' })" >All Users</v-list-item>
             </v-list-group>
 
             <div class="px-2" >
@@ -47,3 +46,9 @@ export default {
    }
 }
 </script>
+
+<style lang="scss" scoped>
+.cursor-pointer {
+    cursor: pointer;
+}
+</style>

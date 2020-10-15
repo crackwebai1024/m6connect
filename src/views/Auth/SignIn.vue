@@ -69,31 +69,19 @@
 
       <m6-loading :loading="loading" />
 
-      <m6-notification
-        :danger="notifDanger"
-        :snackbar="notifShow"
-        :success="notifSuccess"
-        :text="notifText"
-        top
-        @closing="resetNotif"
-      />
     </template>
   </auth-layout>
 </template>
 
 <script>
 import AuthLayout from '@/components/Auth/AuthLayout'
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   components: {
     AuthLayout
   },
   data: () => ({
-    notifShow: false,
-    notifText: '',
-    notifDanger: false,
-    notifSuccess: false,
     screen: {},
     customBlue: '#a4ceea',
     loading: false,
@@ -116,40 +104,50 @@ export default {
     ...mapActions('Auth', {
       userSignIn: 'signin'
     }),
-    resetNotif() {
-      this.notifShow = false
-      this.notifSuccess = false
-      this.notifDanger = false
-      this.notifText = ''
-    },
-    setNotif(success, text) {
-      this.notifShow = true
-      this.notifSuccess = success
-      this.notifDanger = !success
-      this.notifText = text
-    },
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger'
+    }),
     onPasswordClick() {
       this.showPass = !this.showPass
     },
     async SignIn() {
       this.loading = true
       if (!this.$refs.form.validate()) {
-        this.setNotif(false, 'Please fill in both fields')
+        this.notifDanger('Please fill in both fields')
         this.loading = false
         return
       } else {
         try {
           await this.userSignIn(this.user)
+          const { data: userLogged } = await this.$store.dispatch('Auth/getUserData')
+
+          // Start GSChat
+          await this.$store.dispatch('GSChat/getGSToken', userLogged)
+          const user = {
+            id: userLogged.id,
+            name: `${userLogged.firstName} ${userLogged.lastName}`,
+            image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
+          }
+          await this.$store.dispatch('GSChat/setUser', user)
+          await this.$store.dispatch('GSChat/retrieveChats', userLogged.id)
+
+          // Start GSFeed
+          await this.$store.dispatch('GSFeed/getGSFeedToken', userLogged)
+          await this.$store.dispatch('GSFeed/setUser', user)
+          await this.$store.dispatch('GSFeed/setFeed', userLogged.id)
+
+
           this.loading = false
           this.$router.push({ name: 'home' })
         } catch (error) {
-          if (error.type === 'UserNotConfirmedException') {
+          if( this.$h.dg(error, 'type', '') == "UserNotConfirmedException" ) {
+
             this.$router.push({
               name: 'auth.SignUp',
               query: { email: this.user.email }
             })
           } else {
-            this.setNotif(false, this.$t('SignIn.error.signin'))
+            this.notifDanger(this.$t('SignIn.error.signin'))
           }
           this.loading = false
         }
