@@ -9,7 +9,7 @@
                 <v-tabs v-model="tabs.current" fixed-tabs background-color="blue darken-3" slider-color="blue lighten-3" color="white" dark>
                     <v-tab :key="'tab' + index" v-for="(tab, index) in tabs.items" class="text-caption">{{tab.tab}}</v-tab>
                 </v-tabs>
-                <v-tabs-items v-model="tabs.current" class="px-16 form-labels">
+                <v-tabs-items v-model="tabs.current" class="px-16 form-labels" style="height: 60vh;">
                     <!-- Tab for General -->
                     <v-tab-item :key="0">
                         <v-container class="px-5">
@@ -19,13 +19,13 @@
                                     item-value="id"
                                     item-text="value"
                                     :items="options.general[formElement.value]"
-                                    v-model="itemInfo[formElement.value]"
-                                    :rules="selectRules"
+                                    v-model="itemInfo['general_info'][formElement.value]"
+                                    :rules="formElement.required ? selectRules : undefined"
                                 ></v-select>
                                 <v-text-field v-if="formElement.type === 'text'"
                                     :label="formElement.label" 
-                                    v-model="itemInfo[formElement.value]"
-                                    :rules="textRules"
+                                    v-model="itemInfo['general_info'][formElement.value]"
+                                    :rules="formElement.required ? textRules : undefined"
                                 ></v-text-field>
                             </v-col>
                         </v-container>
@@ -44,38 +44,39 @@
                                 <!-- All of them are checkboxes and v-text -->
                                 <v-col cols="4" class="pa-0 d-flex">
                                     <v-checkbox
-                                        v-model="itemInfo[formElement.value]"
+                                        v-model="itemInfo['installation_support'][formElement.value]"
                                         :label="formElement.label"
                                     ></v-checkbox>
                                 </v-col>
                                 <v-col cols="8" class="pa-0 d-flex">
                                     <v-text-field
                                         :label="formElement.label + ' Notes'"
-                                        v-model="itemInfo[formElement.value + 'Text']"
+                                        v-model="itemInfo['installation_support'][formElement.value + '_note']"
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
                         </v-container>
                     </v-tab-item>
+                    <!-- Tab for Aditional Build Info -->
                     <v-tab-item :key="3">
                         <v-container class="px-5">
                             <v-col>
                                 <v-textarea
-                                    v-model="itemInfo.previousSoftwareVersion"
+                                    v-model="itemInfo.aditional_build_info.previousSoftwareVersion"
                                     rows="3" 
                                     label="Previous Software Version">
                                 </v-textarea>
                             </v-col>
                             <v-col>
                                 <v-textarea
-                                    v-model="itemInfo.adGroupsMachine"
+                                    v-model="itemInfo.aditional_build_info.adGroupsMachine"
                                     rows="3" 
                                     label="AD Groups Machine">
                                 </v-textarea>
                             </v-col>
                             <v-col>
                                 <v-textarea
-                                    v-model="itemInfo.adGroupsUser"
+                                    v-model="itemInfo.aditional_build_info.adGroupsUser"
                                     rows="3" 
                                     label="AD Groups User">
                                 </v-textarea>
@@ -83,14 +84,10 @@
                         </v-container>
                     </v-tab-item>
                 </v-tabs-items>
-                <v-card-text>
-                <v-container class="">
-                </v-container>
-                </v-card-text>
                 <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn text @click="closeDialog">Close</v-btn>
-                <v-btn :disabled="!valid" color="primary" @click="updateItemDescription">Save Changes</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="closeDialog">Close</v-btn>
+                    <v-btn :disabled="!valid" color="primary" @click="updateItemDescription">Save Changes</v-btn>
                 </v-card-actions>
             </v-card>
         </v-form>
@@ -105,7 +102,7 @@
         bottom
         right
         fab
-        @click="showUpdateDialog(info)">
+        @click="showUpdateDialog(information)">
         <v-icon>mdi-pencil</v-icon>
     </v-btn>
     </v-subheader>
@@ -118,7 +115,7 @@
                     v-for="(item, index) in itemLabels.general">
                     <v-list-item-content class="d-flex justify-space-between flex-nowrap mx-2 ">
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
-                        <v-list-item-subtitle class="text-right">{{info[item.value]}}</v-list-item-subtitle>
+                        <v-list-item-subtitle class="text-right">{{information['general_info'][item.value]}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-expansion-panel-content>
@@ -140,7 +137,7 @@
                     v-for="(item, index) in itemLabels.support">
                     <v-list-item-content class="d-flex justify-space-between flex-nowrap mx-2 ">
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
-                        <v-list-item-subtitle>{{info[item.value]}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{information['installation_support'][item.value]}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-expansion-panel-content>
@@ -153,7 +150,7 @@
                     v-for="(item, index) in itemLabels.build_info">
                     <v-list-item-content class="d-flex justify-space-between flex-nowrap mx-2 ">
                         <v-list-item-title class="text-body-2">{{item.label}}</v-list-item-title>
-                        <v-list-item-subtitle>{{info[item.value]}}</v-list-item-subtitle>
+                        <v-list-item-subtitle>{{information[item.value]}}</v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
             </v-expansion-panel-content>
@@ -173,39 +170,45 @@ export default {
     data: () => ({
         isHover: false,
         // initial information
-        info: {
+        information: {
             // General Information
+            app_id: undefined,
             general_info:{
-                odbcConnection: undefined,
-                odbcSettings: undefined,
-                installType: undefined,
-                windowsDct: undefined,
-                executable: undefined,
+                odbc_connection_required: undefined,
+                ldap_ad_authentication: undefined,
+                windows_passed_dct: undefined,
+                path_to_executable: undefined,
+                odbc_contact_name: undefined,
+                delivery_method: undefined,
+                odbc_settings: undefined,
+                install_type: undefined,
                 priority: undefined,
-                delivery: undefined,
-                odbcName: undefined,
-                ldapAuth: undefined,
                 notes: undefined
             },
             // Support Information
-            firewallExceptions: true,
-            installNotes: false,
-            mappedDrives: true,
-            registryChanges: true,
-            antivirusExclusion: false,
-            iniChang: true,
-            shortcutModifications: false,
-            firewallExceptionsText: '', //text description
-            installNotesText: '',
-            mappedDrivesText: '',
-            registryChangesText: '',
-            antivirusExclusionText: '',
-            iniChangText: '',
-            shortcutModificationsText: '',
+            installation_support: {
+                shortcut_modifications_note: undefined,
+                firewall_exceptions_note: undefined,
+                antivirus_exclusion_note: undefined,
+                registry_changes_note: undefined,
+                mapped_drives_note: undefined,
+                install_notes_note: undefined,
+                ini_changes_note: undefined,
+
+                shortcut_modifications: false,
+                antivirus_exclusion: false,
+                firewall_exceptions: false,
+                registry_changes: false,
+                mapped_drives: false,
+                install_notes: false,
+                ini_changes: false,
+            },
             // Build Information
-            previousSoftwareVersion: 'Previous Software Version Description',
-            adGroupsMachine: 'AD Groups Machine',
-            adGroupsUser: 'AD Groups User',
+            aditional_build_info: {
+                previous_software_version: '',
+                groups_machine: '',
+                groups_user: ''
+            },
             // attachments
             files: []
         },
@@ -226,43 +229,47 @@ export default {
         },
         options: {
             general: {
-                installType: [],
+                install_type: [],
                 priority: [5,4,3,2,1],
-                delivery: [],
-                odbcConnection: ['Yes', 'No'],
-                windowsDct: [],
-                ldapAuth: ['first option', 'second option']
+                delivery_method: [],
+                odbc_connection_required: ['Yes', 'No'],
+                windows_passed_dct: [],
+                ldap_ad_authentication: ['first option', 'second option']
             },
         },
         // Object to update the data and not touch the real data inside this.info
-        itemInfo: {},
+        itemInfo: {
+            general_info: {},
+            installation_support: {},
+            aditional_build_info: {}
+        },
         // Labels to create the form and the boxes to show the information
         itemLabels: {
             general: [
-                { label: "Install Type", value: "installType", type: 'select' },
-                { label: "Priority", value: "priority", type: 'select' },
-                { label: "Delivery Method", value: "delivery", type: 'select' },
-                { label: "(ODBC) Connection Required", value: "odbcConnection", type: 'select' },
-                { label: "(ODBC) Contact Name", value: "odbcName", type: 'text' },
-                { label: "Windows Passed DCT", value: "windowsDct", type: 'select' },
-                { label: "Path to Executable", value: "executable", type: 'text' },
-                { label: "(ODBC) Settings", value: "odbcSettings", type: 'text' },
-                { label: "LDAP/AD Authentication", value: "ldapAuth", type: 'select' },
-                { label: "General Notes", value: "notes", type: 'text' },
+                { label: "Install Type",                 required: true,    value: "install_type",               type: 'select' },
+                { label: "Priority",                     required: true,    value: "priority",                   type: 'select' },
+                { label: "Delivery Method",              required: false,   value: "delivery_method",            type: 'select' },
+                { label: "(ODBC) Connection Required",   required: true,    value: "odbc_connection_required",   type: 'select' },
+                { label: "(ODBC) Contact Name",          required: false,   value: "odbc_contact_name",          type: 'text'   },
+                { label: "Windows Passed DCT",           required: false,   value: "windows_passed_dct",         type: 'select' },
+                { label: "Path to Executable",           required: true,    value: "path_to_executable",         type: 'text'   },
+                { label: "(ODBC) Settings",              required: true,    value: "odbc_settings",              type: 'text'   },
+                { label: "LDAP/AD Authentication",       required: false,   value: "ldap_ad_authentication",     type: 'select' },
+                { label: "General Notes",                required: false,   value: "notes",                      type: 'text'   }
             ],
             support: [
-                { label: "Firewall Exceptions", value: "firewallExceptions" },
-                { label: "Install Notes", value: "installNotes" },
-                { label: "Mapped Drives", value: "mappedDrives" },
-                { label: "Registry Changes", value: "registryChanges" },
-                { label: "Antivirus Exclusion", value: "antivirusExclusion" },
-                { label: "INI Changes", value: "iniChang" },
-                { label: "Shortcut Modifications", value: "shortcutModifications" },
+                { label: "Firewall Exceptions",          value: "firewall_exceptions"       },
+                { label: "Install Notes",                value: "install_notes"             },
+                { label: "Mapped Drives",                value: "mapped_drives"             },
+                { label: "Registry Changes",             value: "registry_changes"          },
+                { label: "Antivirus Exclusion",          value: "antivirus_exclusion"       },
+                { label: "INI Changes",                  value: "ini_changes"               },
+                { label: "Shortcut Modifications",       value: "shortcut_modifications"    }
             ],
             build_info: [
-                { label: "Previous Software Version", value: "previousSoftwareVersion" },
-                { label: "AD Groups - Machine", value: "adGroupsMachine" },
-                { label: "AD Groups - User", value: "adGroupsUser" }
+                { label: "Previous Software Version",    value: "previous_software_version" },
+                { label: "AD Groups - Machine",          value: "groups_machine"            },
+                { label: "AD Groups - User",             value: "groups_user"               }
             ],
             attachments: {
                 items: [],
@@ -277,21 +284,29 @@ export default {
             }
         }
     }),
+    props: {
+        info: {
+            type: Object,
+            default: () => {}
+        }
+    },
     methods: {
         ...mapActions("ITAppsModule", ["get_all_selects"]),
         updateItemDescription() {
             if(this.valid) {
-                let info = [this.info,this.itemInfo];
-                this.info = Object.assign(...info);
+                this.itemInfo.app_id = this.info.id
+
+                let info = [this.information,this.itemInfo];
+                this.information = Object.assign(...info);
                 console.log('u',this.itemInfo);
-                console.log('t',this.tabs.current);
+                console.log('t',this.info);
                 this.closeDialog()
             }
         }
     },
     watch: {
         dialog(){
-            if (this.dialog && this.options.general.installType.length === 0) {
+            if (this.dialog && this.options.general.install_type.length === 0) {
                 this.get_all_selects({params:[
                     'InstallGeneralDeliveryMethod',
                     'InstallGeneralType',
@@ -300,11 +315,11 @@ export default {
                     let arraySettings = res.data[key];
                     switch (key) {
                         case 'InstallGeneralType':
-                            this.options.general.installType = arraySettings;         break;
+                            this.options.general.install_type = arraySettings;              break;
                         case 'InstallGeneralDeliveryMethod':
-                            this.options.general.delivery = arraySettings;            break;
+                            this.options.general.delivery_method = arraySettings;           break;
                         case 'InstallGeneralWindowsPassedDCT':
-                            this.options.general.windowsDct = arraySettings;          break;
+                            this.options.general.windows_passed_dct = arraySettings;        break;
                     }
                 })));
             }

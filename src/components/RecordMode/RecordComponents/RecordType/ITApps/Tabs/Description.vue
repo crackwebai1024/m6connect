@@ -197,7 +197,7 @@
                 <v-col cols="12" class="py-0">
                   <v-autocomplete
                     v-model="itemInfo['general_info']['sub_category']"
-                    :items="[]"
+                    :items="category"
                     :filter="customFilter"
                     item-text="value"
                     :item-value="Object"
@@ -239,17 +239,6 @@
                     :item-value="Object"
                     color="blue darken-3"
                     label="Server Hosting Model" 
-                  ></v-autocomplete>
-                </v-col>
-                <v-col cols="12" class="py-0">
-                  <v-autocomplete
-                    v-model="itemInfo['general_info']['capability']"
-                    :items="[]"
-                    :filter="customFilter"
-                    item-text="value"
-                    :item-value="Object"
-                    color="blue darken-3"
-                    label="Capabilities" 
                   ></v-autocomplete>
                 </v-col>
               </v-row>
