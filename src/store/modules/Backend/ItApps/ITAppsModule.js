@@ -135,6 +135,19 @@ export default {
           data.general_info.odbc_connection_required = data.general_info.odbc_connection_required === 'Yes' ? true : false;
           axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/install`, data)
         },
+      // Rationalization
+        async post_ratio_cost({}, data){
+          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_costs`, data);
+        },
+        async get_ratio_cost({}, appID){
+          return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_costs/${appID}`);
+        },
+        put_ratio_cost({}, data){
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_costs/${data.id}`, data);
+        },
+        delete_ratio_cost({}, id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_costs/${id}`);
+        },
       // GETS Selects
         async get_selects({}, url) {
           return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps_settings/specifi/field${url}`);

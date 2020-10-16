@@ -19,24 +19,30 @@
                 <v-select 
                   label="Cost Category" 
                   :items="options.cost_category"
-                  v-model="itemInfo.costCategory"
+                  v-model="itemInfo.cost_category"
                   :rules="selectRules"
+                  item-value="id"
+                  item-text="value"
                 ></v-select>
               </v-row>
               <v-row>
                 <v-select 
                   label="Cost Type" 
                   :items="options.cost_type"
-                  v-model="itemInfo.costType"
+                  v-model="itemInfo.cost_type"
                   :rules="selectRules"
+                  item-value="id"
+                  item-text="value"
                 ></v-select>
               </v-row>
               <v-row>
                 <v-select 
                   label="Cost Owner" 
                   :items="options.cost_owner"
-                  v-model="itemInfo.costOwner"
+                  v-model="itemInfo.cost_owner"
                   :rules="selectRules"
+                  item-value="id"
+                  item-text="value"
                 ></v-select>
               </v-row>
               <v-row>
@@ -45,10 +51,17 @@
                   :items="options.period"
                   v-model="itemInfo.period"
                   :rules="selectRules"
+                  item-value="id"
+                  item-text="value"
                 ></v-select>
               </v-row>
               <v-row>
-                <v-input persistent-hint readonly :hint="'$ ' +  itemInfo.cost.toString()">Cost</v-input> 
+                <v-text-field
+                  label="Cost"
+                  v-model="itemInfo.cost"
+                  type="number"
+                  hide-details="auto"
+                ></v-text-field>
               </v-row>
               <v-row>
                 <v-textarea v-model="itemInfo.notes" label="Notes"></v-textarea>
@@ -85,7 +98,7 @@
         item-key="name"
         class="elevation-0"
       >
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
           <v-icon
             small
             class="mr-2"
@@ -95,71 +108,116 @@
             mdi-pencil
           </v-icon>
         </template>
+        <template v-slot:[`item.cost_category`]="{ item }">
+          <p v-if="typeof item.category === 'object'">{{item.category.value}}</p>
+          <p v-else>{{item.cost_category}}</p>
+        </template>
+        <template v-slot:[`item.cost_type`]="{ item }">
+          <p v-if="typeof item.type === 'object'">{{item.type.value}}</p>
+          <p v-else>{{item.cost_type}}</p>
+        </template>
+        <template v-slot:[`item.cost_owner`]="{ item }">
+          <p v-if="typeof item.owner === 'object'">{{item.owner.value}}</p>
+          <p v-else>{{item.cost_owner}}</p>
+        </template>
+        <template v-slot:[`item.period`]="{ item }">
+          <p v-if="typeof item.get_period === 'object'">{{item.get_period.value}}</p>
+          <p v-else>{{item.period}}</p>
+        </template>
       </v-data-table>
     </v-card>
   </v-container>
 </template>
 
 <script>
+const app_settings = require("@/store/models/apps_settings");
 import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"
+import {mapActions} from "vuex"
 
 export default {
   name: "Costs",
-  mixins: [items, validations],  
+  mixins: [items, validations],
+  props: {
+      info: {
+          type: Object,
+          default: () => {}
+      }
+  },
   data: () => ({
     isHover: false,
     itemsName: 'Costs',
+
     itemInfo: {
-      costCategory: null,
-      costType: null,
-      costOwner: null,
+      cost_category: null,
+      cost_type: null,
+      cost_owner: null,
       period: null,
       cost: 0,
       notes: null
     },
     table: {
       headers: [
-        {
-          text: 'Cost Category',
-          value: 'costCategory'
-        },
-        {
-          text: 'Cost Type',
-          value: 'costType'
-        },
-        {
-          text: 'Cost Owner',
-          value: 'costOwner'
-        },
-        {
-          text: 'Period',
-          value: 'period'
-        },
-        {
-          text: 'Cost',
-          value: 'cost'
-        },
-        {
-          text: 'Notes',
-          value: 'notes'
-        },
-        {
-          text: 'Actions',
-          value: 'actions'
-        },
+        { text: 'Cost Category',  value: 'cost_category' },
+        { text: 'Cost Type',      value: 'cost_type'     },
+        { text: 'Cost Owner',     value: 'cost_owner'    },
+        { text: 'Period',         value: 'period'       },
+        { text: 'Cost',           value: 'cost'         },
+        { text: 'Notes',          value: 'notes'        },
+        { text: 'Actions',        value: 'actions'      }
       ]
     },
     options: {
-      cost_category: ['Initial Capital', 'Initial Operating', 'One-time Capital'],
-      cost_type: ['Consulting', 'Contract Staffing'],
-      cost_owner: ['Customer', 'IT', 'Other'],
-      period: ['Annual', 'Annual pd Monthly', 'Annual pd Quarterly']
+      cost_category: [],
+      cost_owner:    [],
+      cost_type:     [],
+      period:        []
     }
-  })
+  }),
+  methods: {
+    ...mapActions('ITAppsModule',{
+      delete_ratio:   'delete_ratio_cost',
+      get_selects:    'get_all_selects',
+      post_ratio:     'post_ratio_cost',
+      put_ratio:      'put_ratio_cost',
+      get_ratio:      'get_ratio_cost'
+    }),
+    post(){
+      this.post_ratio(this.itemInfo).then(res => {
+        this.items[this.items.length - 1]['id'] = res['data']['rationalization_costs_id'];
+      });
+    },
+    put(){
+      this.put_ratio(this.itemInfo);
+    },
+    delete(){
+      this.delete_ratio(this.itemInfo.id);
+    }
+  },
+  mounted() {
+    this.itemInfo['app_id'] = this.info.id;
+
+    this.get_selects({params:[
+      'RationalizationCostsCategory',
+      'RationalizationCostsPeriod',
+      'RationalizationCostsOwner',
+      'RationalizationCostsType'
+    ]}).then(res => (Object.keys(res.data).forEach(key => {
+      let arraySettings = app_settings.toAppsSettings(res.data[key]);
+      switch (key) {
+        case 'RationalizationCostsCategory':
+          this.options.cost_category = arraySettings;   break;
+        case 'RationalizationCostsPeriod':
+          this.options.period = arraySettings;          break;
+        case 'RationalizationCostsOwner':
+          this.options.cost_owner = arraySettings;      break;
+        case 'RationalizationCostsType':
+          this.options.cost_type = arraySettings;       break;
+      }
+    })))
+    this.get_ratio(this.itemInfo['app_id']).then( res => {
+      this.items = res.data;
+    });
+  }
 }
 </script>
-
-<style>
-
-</style>
