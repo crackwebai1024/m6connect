@@ -123,6 +123,11 @@
         </v-text-field>
       </template>
     </header-component>
+    <v-skeleton-loader
+      v-if="showSkeletonPost"
+      class="my-3"
+      type="list-item-avatar-three-line, actions"
+    ></v-skeleton-loader>
     <posts-list />
   </v-container>
 </template>
@@ -169,7 +174,8 @@ export default {
     ],
     item: 'Everyone',
     imageFiles: [],
-    posts_list: [{}]
+    posts_list: [{}],
+    showSkeletonPost: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -187,15 +193,16 @@ export default {
       if (this.activityText.trim() === '') {
         return
       }
-      console.log('hola')
+      this.showSkeletonPost = true
       const activity = {
         message: this.activityText,
         verb: 'post',
         object: 1,
         images: this.imageFiles
       }
+      this.activityText = ''
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
-        this.activityText = ''
+        this.showSkeletonPost = false
       })
     },
     onImagesChange(e) {

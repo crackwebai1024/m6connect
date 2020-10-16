@@ -373,7 +373,7 @@
       </v-col>
       <v-skeleton-loader
         v-if="showComments && showSkeleton"
-        class="px-1 my-1"
+        class="post-item px-1 my-1"
         v-bind="attrs"
         type="list-item-avatar-two-line"
       ></v-skeleton-loader>
@@ -665,7 +665,7 @@ export default {
 .emoji-component.post {
   bottom: -130px;
 }
-.v-skeleton-loader__avatar {
+.post-item .v-skeleton-loader__avatar {
   width: 49px !important;
   height: 49px !important;
 }
