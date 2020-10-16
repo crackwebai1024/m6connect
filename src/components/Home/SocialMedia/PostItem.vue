@@ -117,6 +117,18 @@
                 <v-icon size="22">mdi-checkbox-marked-circle-outline</v-icon>
               </v-btn>
             </div>
+            <!-- Emoji Picker -->
+            <div
+              class="relative"
+            >
+              <v-emoji-picker
+                v-show="showDialog"
+                class="absolute bottom-0 card-custom-shadow emoji-component grey lighten-5"
+                label-search="Search"
+                lang="en"
+                @select="onSelectEmoji"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -442,11 +454,13 @@
 <script>
 import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
+import VEmojiPicker from 'v-emoji-picker'
 
 export default {
   name: 'PostItem',
   components: {
-    PostComments
+    PostComments,
+    VEmojiPicker
   },
   props: {
     data: Object
@@ -463,6 +477,8 @@ export default {
     deleteDiaLog: false,
     updatePostShow: false,
     updateMessage: '',
+    // Emoji Dialog
+    showDialog: false,
   }),
   computed: {
     ...mapGetters(['get_user_data']),
@@ -599,6 +615,13 @@ export default {
     },
     lineColor(approval) {
       return approval ? 'green accent-3 ' : 'grey '
+    },
+    toogleDialogEmoji() {
+      this.showDialog = !this.showDialog
+    },
+    onSelectEmoji(emoji) {
+      this.updateMessage += emoji.data
+      this.toogleDialogEmoji()
     },
     pendingApprovals(approvals) {
       let pendingApprovals = 0
