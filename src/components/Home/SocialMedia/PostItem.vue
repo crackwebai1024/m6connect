@@ -371,6 +371,12 @@
           @keyup.enter="pushComment(data)"
         />
       </v-col>
+      <v-skeleton-loader
+        v-if="showComments && showSkeleton"
+        class="px-1 my-1"
+        v-bind="attrs"
+        type="list-item-avatar-two-line"
+      ></v-skeleton-loader>
       <div
         v-if="showComments"
         class="pb-3 px-5"
@@ -479,6 +485,7 @@ export default {
     updateMessage: '',
     // Emoji Dialog
     showDialog: false,
+    showSkeleton: false,
   }),
   computed: {
     ...mapGetters(['get_user_data']),
@@ -522,25 +529,26 @@ export default {
       this.$nextTick(() => this.$refs.currentUserComment.focus())
     },
     likeActivity(activity) {
-      console.log('like activity')
-      console.log(activity)
-
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
-          this.$store.dispatch('GSFeed/removeReaction', item.id)
+          this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
+            await this.$store.dispatch('GSFeed/retrieveFeed')
+            this.likeState = false
+          })
         })
-        this.likeState = false
       } else {
         const payload = {
           id: activity.id,
           type: 'like'
         }
-        this.likeState = true
-        console.log('like')
-        this.$store.dispatch('GSFeed/addReaction', payload)
+        this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
+          await this.$store.dispatch('GSFeed/retrieveFeed')
+          this.likeState = true
+        })
       }
     },
     async pushComment(activity) {
+      this.showSkeleton = true
       const payload = {
         id: activity.id,
         type: 'comment',
@@ -552,6 +560,7 @@ export default {
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
         console.log(response)
         await this.$store.dispatch('GSFeed/retrieveFeed')
+        this.showSkeleton = false
       })
 
       if (!this.data.comments) {
@@ -655,5 +664,9 @@ export default {
 }
 .emoji-component.post {
   bottom: -130px;
+}
+.v-skeleton-loader__avatar {
+  width: 49px !important;
+  height: 49px !important;
 }
 </style>
