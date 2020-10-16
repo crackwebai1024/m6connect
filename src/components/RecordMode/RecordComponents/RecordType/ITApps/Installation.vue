@@ -119,7 +119,11 @@
                             v-if="typeof information['general_info'][item.value] === 'number' && information['general_info'][item.value] > 10" 
                             class="text-right"
                         >
-                            {{options.general[item.value][0]['value']}}
+                            {{
+                                options.general[item.value].filter(
+                                    (e) => { return e.id === information['general_info'][item.value] }
+                                )[0]['value']
+                            }}
                         </v-list-item-subtitle>
                         <v-list-item-subtitle 
                             v-else 
@@ -246,7 +250,7 @@ export default {
                 delivery_method: [],
                 odbc_connection_required: ['Yes', 'No'],
                 windows_passed_dct: [],
-                ldap_ad_authentication: ['first option', 'second option']
+                ldap_ad_authentication: []
             },
         },
         // Object to update the data and not touch the real data inside this.info
@@ -303,13 +307,16 @@ export default {
         }
     },
     methods: {
-        ...mapActions("ITAppsModule", ["get_all_selects", "get_installation"]),
+        ...mapActions("ITAppsModule", ["get_all_selects", "get_installation", "update_installation"]),
         updateItemDescription() {
             if(this.valid) {
-                this.itemInfo.app_id = this.info.id
-
                 let info = [this.information,this.itemInfo];
                 this.information = Object.assign(...info);
+                this.itemInfo.app_id = this.info.id;
+                
+                this.update_installation(this.itemInfo).then(() => {
+                    this.information.general_info.odbc_connection_required = this.information.general_info.odbc_connection_required === 1 ? 'Yes' : 'No';
+                });
                 this.closeDialog()
             }
         }
@@ -317,7 +324,8 @@ export default {
         this.get_all_selects({params:[
             'InstallGeneralDeliveryMethod',
             'InstallGeneralType',
-            'InstallGeneralWindowsPassedDCT'
+            'InstallGeneralWindowsPassedDCT',
+            'InstallGeneralLDAP/ADAuthentication'
         ]}).then(res => (Object.keys(res.data).forEach(key => {
             let arraySettings = res.data[key];
             switch (key) {
@@ -327,10 +335,13 @@ export default {
                     this.options.general.delivery_method = arraySettings;           break;
                 case 'InstallGeneralWindowsPassedDCT':
                     this.options.general.windows_passed_dct = arraySettings;        break;
+                case 'InstallGeneralLDAP/ADAuthentication':
+                    this.options.general.ldap_ad_authentication = arraySettings;    break;
             }
         })));
         this.get_installation(this.info.id).then(res => {
             this.information = installConvert.toInstallation(res.data);
+            this.information.general_info.odbc_connection_required = this.information.general_info.odbc_connection_required === 1 ? 'Yes' : 'No';
         });
     }
 }

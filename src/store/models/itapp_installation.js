@@ -1,16 +1,14 @@
 // To parse this data:
 //
-//   const Convert = require("./file");
+//   const Convert = require("./itapp_installation");
 //
 //   const installation = Convert.toInstallation(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-// Converts JSON strings to/from your types
-// and asserts the results of JSON.parse at runtime
 function toInstallation(json) {
-    return cast(json, r("Installation"));
+    return cast(transformNulls(json), r("Installation"));
 }
 
 function invalidValue(typ, val, key = '') {
@@ -67,6 +65,9 @@ function transform(val, typ, getProps, key = '') {
     }
 
     function transformObject(props, additional, val) {
+        if(Object.getOwnPropertyNames(props).length === 3 && val === null){
+            val = {};
+        }
         if (val === null || typeof val !== "object" || Array.isArray(val)) {
             return invalidValue("object", val);
         }
@@ -108,6 +109,24 @@ function transform(val, typ, getProps, key = '') {
     return transformPrimitive(typ, val);
 }
 
+function transformNulls(json) {
+    let mp = typeMap['Installation']['props']
+    Object.keys(json).forEach(res => {
+        if (typeof json[res] == 'object' && json[res] === null) {
+            let unionMember = mp[mp.indexOf(
+                mp.filter((e) => { return e.json === res })[0]
+            )];
+            if (unionMember.typ.unionMembers.length === 3) {
+                json[res] = {};
+                typeMap[unionMember.typ.unionMembers[2].ref].props.forEach(mapItem => {
+                    json[res][mapItem.js] = mapItem.typ.unionMembers[1] === '' ? '' : undefined;
+                })
+            }
+        }
+    });
+    return json;
+}
+
 function cast(val, typ) {
     return transform(val, typ, jsonToJSProps);
 }
@@ -135,9 +154,9 @@ const typeMap = {
         { json: "created_at",                           js: "created_at",               typ: u(undefined, Date) },
         { json: "updated_at",                           js: "updated_at",               typ: u(undefined, Date) },
         { json: "installation_attachment",              js: "installation_attachment",  typ: u(undefined, null) },
-        { json: "installation_support",                 js: "installation_support",     typ: u(undefined, 0, r("InstallationSupport")) },
-        { json: "installation_general",                 js: "general_info",             typ: u(undefined, 0, r("InstallationGeneral")) },
-        { json: "installation_aditional_information",   js: "aditional_build_info",     typ: u(undefined, 0, r("InstallationAditionalInformation")) },
+        { json: "installation_support",                 js: "installation_support",     typ: u(undefined, null, r("InstallationSupport")) },
+        { json: "installation_general",                 js: "general_info",             typ: u(undefined, null, r("InstallationGeneral")) },
+        { json: "installation_aditional_information",   js: "aditional_build_info",     typ: u(undefined, null, r("InstallationAditionalInformation")) },
     ], false),
     "InstallationAditionalInformation": o([
         { json: "id",                           js: "id",                           typ: u(undefined, 0) },
