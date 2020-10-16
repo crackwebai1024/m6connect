@@ -82,7 +82,7 @@
       </v-card-title>
 
       <div>
-        <div class="px-5 py-4">
+        <div class="px-5 pt-4">
           <template v-if="!updatePostShow">
             {{ data.message }}
           </template>
@@ -123,7 +123,7 @@
             >
               <v-emoji-picker
                 v-show="showDialog"
-                class="absolute bottom-0 card-custom-shadow emoji-component grey lighten-5"
+                class="absolute card-custom-shadow emoji-component grey lighten-5 post right-0 z-10"
                 label-search="Search"
                 lang="en"
                 @select="onSelectEmoji"
@@ -661,5 +661,11 @@ export default {
 .profile-component .v-subheader, .profile-component .v-card {
   box-shadow: none !important;
   border-radius: 0 !important;
+}
+.v-text-field__details {
+  display: none;
+}
+.emoji-component.post {
+  bottom: -130px;
 }
 </style>
