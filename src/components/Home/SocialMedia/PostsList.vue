@@ -35,15 +35,11 @@ export default {
     this.set_user_data()
     this.set_posts_data()
     await this.$store.dispatch('GSFeed/retrieveFeed')
-    this.feed.get({ limit: 5, offset: 5 }).then(res => console.log(res))
 
-    this.feed.subscribe(data => {
-      console.log("here it is")
+    this.feed.subscribe(async data => {
       if (data.new) {
-        console.log("new data")
-        this.$store.dispatch('GSFeed/pushActivity', data.new)
+        await this.$store.dispatch('GSFeed/retrieveFeed')
       }
-      console.log("here it is")
     })
   },
   methods: {
