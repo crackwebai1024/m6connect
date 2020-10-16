@@ -70,10 +70,10 @@
             </template>
 
             <v-list class="grey lighten-4">
-              <v-list-item @click="()=> {}">
+              <v-list-item @click="updatePostShow = true">
                 <v-list-item-title>Edit Post</v-list-item-title>                
               </v-list-item>
-              <v-list-item @click="deletePost(data)">
+              <v-list-item @click="deleteDiaLog = true">
                 <v-list-item-title>Delete Post</v-list-item-title>                
               </v-list-item>
             </v-list>
@@ -83,7 +83,41 @@
 
       <div>
         <div class="px-5 py-4">
-          {{ data.message }}
+          <template v-if="!updatePostShow">
+            {{ data.message }}
+          </template>
+          <div 
+            v-else
+            class="d-flex"
+          >
+            <v-textarea
+              class="mb-0"
+              outlined
+              name="input-7-4"
+              label="Edit Post Message"
+              @keyup.esc="cancelMessage"
+              @keyup.enter="editMessage('inputMessage-' + index)"
+              v-model="updateMessage"
+            ></v-textarea>
+            <div class="d-flex flex-column">
+              <v-btn
+                class="ml-2"
+                icon
+                color="grey"
+                @click="toogleDialogEmoji"
+              >
+                <v-icon size="22">
+                  mdi-emoticon-happy-outline
+                </v-icon>
+              </v-btn>
+              <v-btn @click="cancelUpdate" class="ml-2" icon color="red">
+                <v-icon size="22">mdi-close</v-icon>
+              </v-btn>
+              <v-btn @click="updatePost(data)" :disabled="data.message == updateMessage" class="ml-2" icon color="green accent-3">
+                <v-icon size="22">mdi-checkbox-marked-circle-outline</v-icon>
+              </v-btn>
+            </div>
+          </div>
         </div>
       </div>
       <!--IMAGES-->
@@ -373,6 +407,35 @@
         </post-comments>
       </div>
     </div>
+    <v-dialog
+      v-model="deleteDiaLog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Are you sure?
+        </v-card-title>
+        <v-card-text>Do you want to remove '{{ data.message }}'? </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteDiaLog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deletePost(data)"
+          >
+            Agree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -397,6 +460,9 @@ export default {
     comment_data: '',
     rotate: '',
     user: {},
+    deleteDiaLog: false,
+    updatePostShow: false,
+    updateMessage: '',
   }),
   computed: {
     ...mapGetters(['get_user_data']),
@@ -416,6 +482,8 @@ export default {
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
+    console.log(this.data)
+    this.updateMessage = this.data.message
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -500,10 +568,28 @@ export default {
       console.log('delete post')
       this.$store.dispatch('GSFeed/removeActivity', activity.id)
       console.log('removed')
+      this.deleteDiaLog = false
+      console.log(this.deleteDiaLog)
 
       // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
       //   this.activityText = ''
       // })
+    },
+    async updatePost(activity) {
+      console.log(activity.id)
+      console.log('update post')
+      // this.$store.dispatch('GSFeed/removeActivity', activity.id)
+      console.log('removed')
+
+      // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+      //   this.activityText = ''
+      // })
+      this.updatePostShow = false
+      this.updateMessage = this.data.message
+    },
+    cancelUpdate() {
+      this.updatePostShow = false
+      this.updateMessage = this.data.message
     },
     print() {
       // console.log(this.data.comments.nested_comments)

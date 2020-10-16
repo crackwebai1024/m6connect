@@ -60,7 +60,7 @@
           rounded
           single-line
           solo-inverted
-          @keyup.enter="filter_posts(['author', 1])"
+          @keyup.enter="addActivity"
         >
           <template v-slot:append>
             <v-row class="align-center d-flex">
@@ -187,6 +187,7 @@ export default {
       if (this.activityText.trim() === '') {
         return
       }
+      console.log('hola')
       const activity = {
         message: this.activityText,
         verb: 'post',
