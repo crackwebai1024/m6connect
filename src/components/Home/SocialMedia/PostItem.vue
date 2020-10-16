@@ -539,7 +539,8 @@ export default {
       } else {
         const payload = {
           id: activity.id,
-          type: 'like'
+          type: 'like',
+          whoNotify: activity.actor.id
         }
         this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
           await this.$store.dispatch('GSFeed/retrieveFeed')
@@ -558,7 +559,6 @@ export default {
       }
       let self = this
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-        console.log(response)
         await this.$store.dispatch('GSFeed/retrieveFeed')
         this.showSkeleton = false
       })
@@ -584,13 +584,9 @@ export default {
 
     },
     async deletePost(activity) {
-      console.log(activity.id)
-      console.log('delete post')
       this.$store.dispatch('GSFeed/removeActivity', activity.id)
-      console.log('removed')
       this.deleteDiaLog = false
-      console.log(this.deleteDiaLog)
-
+      
       // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
       //   this.activityText = ''
       // })
@@ -600,9 +596,9 @@ export default {
         id: activity.id,
         set: {
           'message': this.updateMessage,
-        }
+        },
+        unset: [ "message" ]
       }
-      console.log(updateProperties)
       this.$store.dispatch('GSFeed/updateActivity', updateProperties)
       this.updatePostShow = false
       this.updateMessage = this.data.message

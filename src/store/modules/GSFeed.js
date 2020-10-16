@@ -5,6 +5,7 @@ const defaultState = {
   gsToken: '',
   client: {},
   feed: {},
+  feedNotification: {},
   timeline: [],
   appGsId: process.env.VUE_APP_GS_ID,
   appId: process.env.VUE_APP_ID
@@ -12,6 +13,7 @@ const defaultState = {
 const state = () => defaultState
 
 const getters = {
+  getFeedNotification: state => state.feedNotification,
   getTimeline: state => state.timeline,
   getFeed: state => state.feed,
   getClient: state => state.client
@@ -26,6 +28,11 @@ const mutations = {
     state.client = connect(process.env.VUE_APP_GS_ID, token, process.env.VUE_APP_ID)
   },
   SET_FEED: async (state, userID) => {
+    state.feedNotification = await state.client.feed(
+      'notification',
+      userID,
+      state.gsToken
+    )
     state.feed = await state.client.feed(
       'users',
       userID,
@@ -42,9 +49,9 @@ const mutations = {
 }
 
 const actions = {
-  addReaction({ state }, { type, id, options = null }) {
+  addReaction({ state }, { type, id, whoNotify, options = null }) {
     return new Promise(resolve => {
-      state.client.reactions.add(type, id, options).then(response => {
+      state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {
         resolve(response)
       })
     })
