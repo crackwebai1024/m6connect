@@ -549,16 +549,11 @@ export default {
         }
       }
       let self = this
-      this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
-        console.log('this is the response')
+      this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
         console.log(response)
-        // Add an activity when the websocket is ready
-        this.subscription().then(function() {
-          console.log('lala')
-          self.$store.dispatch('GSFeed/pushActivity', [{actor:'eric', verb: 'tweet', object: 2, tweet: 'Cool stuff!'}])
-          // this.feed.addActivity({actor:'eric', verb: 'tweet', object: 2, tweet: 'Cool stuff!'});
-        });
+        await this.$store.dispatch('GSFeed/retrieveFeed')
       })
+
       if (!this.data.comments) {
         this.data.comments = []
       }
@@ -630,13 +625,6 @@ export default {
       })
 
       return pendingApprovals
-    },
-    async subscription() {
-      // Listen to feed changes in realtime
-      const subscription = this.feed.subscribe(function(data){
-        alert("Eric's feed was updated!");
-        console.log("Eric's feed was updated!", data);
-      });
     }
   }
 
