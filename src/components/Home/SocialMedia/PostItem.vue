@@ -576,14 +576,14 @@ export default {
       // })
     },
     async updatePost(activity) {
-      console.log(activity.id)
-      console.log('update post')
-      // this.$store.dispatch('GSFeed/removeActivity', activity.id)
-      console.log('removed')
-
-      // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
-      //   this.activityText = ''
-      // })
+      let updateProperties = {
+        id: activity.id,
+        set: {
+          'message': this.updateMessage,
+        }
+      }
+      console.log(updateProperties)
+      this.$store.dispatch('GSFeed/updateActivity', updateProperties)
       this.updatePostShow = false
       this.updateMessage = this.data.message
     },

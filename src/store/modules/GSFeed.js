@@ -90,6 +90,11 @@ const actions = {
       })
     })
   },
+  updateActivity({ state }, updateProperties) {
+    return new Promise(resolve => {
+      state.client.activityPartialUpdate(updateProperties)
+    })
+  },
   removeReaction({ state }, id) {
     return new Promise(resolve => {
       state.client.reactions.delete(id).then(response => {
