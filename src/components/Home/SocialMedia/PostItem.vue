@@ -542,9 +542,9 @@ export default {
           type: 'like',
           whoNotify: activity.actor.id
         }
-        this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-          await this.$store.dispatch('GSFeed/retrieveFeed')
+        this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
           this.likeState = true
+          this.$store.dispatch('GSFeed/retrieveFeed')
         })
       }
     },
