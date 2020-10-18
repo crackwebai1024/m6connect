@@ -380,7 +380,6 @@
       <v-skeleton-loader
         v-if="showComments && showSkeleton"
         class="post-item px-1 my-1"
-        v-bind="attrs"
         type="list-item-avatar-two-line"
       ></v-skeleton-loader>
       <div
