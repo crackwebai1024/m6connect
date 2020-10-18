@@ -271,6 +271,12 @@
             @click="likeActivity(data)"
           >
             {{ contLikes() }}
+            <v-progress-circular
+              v-show="progressLike"
+              size="10"
+              width="1"
+              indeterminate
+            ></v-progress-circular>
           </div>
           <v-spacer />
           <div
@@ -486,6 +492,7 @@ export default {
     // Emoji Dialog
     showDialog: false,
     showSkeleton: false,
+    progressLike: false
   }),
   computed: {
     ...mapGetters(['get_user_data']),
@@ -529,11 +536,13 @@ export default {
       this.$nextTick(() => this.$refs.currentUserComment.focus())
     },
     likeActivity(activity) {
+      this.progressLike = true
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
           this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
             await this.$store.dispatch('GSFeed/retrieveFeed')
             this.likeState = false
+            this.progressLike = false
           })
         })
       } else {
@@ -544,6 +553,7 @@ export default {
         }
         this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
           this.likeState = true
+          this.progressLike = false
           this.$store.dispatch('GSFeed/retrieveFeed')
         })
       }
