@@ -77,6 +77,35 @@
         <slot v-if="showReplyMessage"></slot>
       </template>
     </v-col>
+    <v-dialog
+      v-model="deleteCommentDiaLog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Are you sure?
+        </v-card-title>
+        <v-card-text>Do you want to remove '{{ comment.data.text }}'? </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteCommentDiaLog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteComment(data)"
+          >
+            Agree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 <script>
@@ -129,6 +158,9 @@ export default {
       this.updatedComment += emoji.data
       this.toogleDialogEmoji()
     },
+    deleteComment() {
+      console.log('delete comment')
+    }
   },
 };
 </script>
