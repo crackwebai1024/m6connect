@@ -513,6 +513,7 @@ export default {
     }
     console.log(this.data)
     this.updateMessage = this.data.message
+    console.log(this.data.latest_reactions)
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -532,9 +533,13 @@ export default {
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
       this.showComments = !this.showComments
-      this.$nextTick(() => this.$refs.currentUserComment.focus())
+      if (!this.$refs.currentUserComment) {
+        this.$nextTick(() => this.$refs.currentUserComment.focus())
+      }
     },
     likeActivity(activity) {
+      if (this.progressLike) return true
+      console.log('not working for duplicate')
       this.progressLike = true
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
