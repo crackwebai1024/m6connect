@@ -202,9 +202,7 @@ export default {
       });
     },
     put(){
-      console.log(this.itemInfo)
-      
-      // this.put_ratio(this.itemInfo);
+      this.put_ratio(this.itemInfo);
     },
     delete(){
       this.delete_ratio(this.itemInfo.id);
@@ -232,8 +230,6 @@ export default {
       }
     })))
     this.get_ratio(this.itemInfo['app_id']).then( res => {
-      console.log(res.data);
-      
       this.items = cost_convert.toRationalizationCost(res.data);
     });
   }

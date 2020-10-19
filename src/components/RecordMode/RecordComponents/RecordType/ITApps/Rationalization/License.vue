@@ -19,29 +19,33 @@
                 <v-select 
                   label="Purchase Type" 
                   :items="options.purchase_type"
-                  v-model="itemInfo.purchaseType"
+                  v-model="itemInfo.purchase_type"
                   :rules="selectRules"
+                  item-value="id"
+                  item-text="value"
                 ></v-select>
               </v-row>
               <v-row>
                 <v-select 
                   label="License Type" 
                   :items="options.license_type"
-                  v-model="itemInfo.licenseType"
+                  v-model="itemInfo.license_type"
                   :rules="selectRules"
+                  item-value="id"
+                  item-text="value"
                 ></v-select>
               </v-row>
               <v-row>
                 <v-text-field 
                   label="Number of Licenses"
-                  v-model="itemInfo.licenses"
+                  v-model="itemInfo.number_of_licenses"
                   type="number"
                   :rules="quantityRules"
                 ></v-text-field>
               </v-row>
               <v-row>
-                <v-input persistent-hint :hint="'$ ' + itemInfo.costLicense.toString()">Cost per License</v-input> 
-                <v-input persistent-hint :hint="'$ ' + itemInfo.totalLicenseCost.toString()">Total Licensing Costing</v-input> 
+                <v-input persistent-hint :hint="'$ ' + itemInfo.cost_per_license.toString()">Cost per License</v-input> 
+                <v-input persistent-hint :hint="'$ ' + itemInfo.total_cost.toString()">Total Licensing Costing</v-input> 
               </v-row>
               <v-row>
                 <v-textarea v-model="itemInfo.notes" label="Notes"></v-textarea>
@@ -78,7 +82,21 @@
         item-key="name"
         class="elevation-0"
       >
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.purchase_type`]="{ item }">
+          <p>{{
+            options['purchase_type'].filter(
+              (e) => { return e['id'] === item['purchase_type'] }
+            )[0]['value']
+          }}</p>
+        </template>
+        <template v-slot:[`item.license_type`]="{ item }">
+          <p>{{
+            options['license_type'].filter(
+              (e) => { return e['id'] === item['license_type'] }
+            )[0]['value']
+          }}</p>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
           <v-icon
             small
             class="mr-2"
@@ -94,63 +112,69 @@
 </template>
 
 <script>
+const licenseConvert = require("@/store/models/itapp_rationalization_license");
 import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"
+import {mapActions} from "vuex"
 
 export default {
   name: "License",
   mixins: [items, validations], 
+  props: {
+    info:{
+      type: Object,
+      default: () => {}
+    }
+  },
   data: () => ({
     isHover: false,
     itemsName: 'Licenses',
     itemInfo: {
-      purchaseType: null,
-      licenseType: null,
-      licenses: null,
-      costLicense: 0,
-      totalLicenseCost: 0,
-      notes: null,
+      number_of_licenses: null,
+      cost_per_license: 0,
+      purchase_type: null,
+      license_type: null,
+      total_cost: 0,
+      notes: null
     },
     table: {
       headers: [
-        {
-          text: 'Purchase Type',
-          value: 'purchaseType'
-        },
-        {
-          text: 'License Type',
-          value: 'licenseType'
-        },
-        {
-          text: 'Number of Licenses',
-          value: 'licenses'
-        },
-        {
-          text: 'Cost per License',
-          value: 'costLicense'
-        },
-        {
-          text: 'Total Licesing Cost',
-          value: 'totalLicenseCost'
-        },
-        {
-          text: 'Notes',
-          value: 'notes'
-        },
-        {
-          text: 'Actions',
-          value: 'actions'
-        },
+        { text: 'Purchase Type',        value: 'purchase_type'      },
+        { text: 'License Type',         value: 'license_type'       },
+        { text: 'Number of Licenses',   value: 'number_of_licenses' },
+        { text: 'Cost per License',     value: 'cost_per_license'   },
+        { text: 'Total Licesing Cost',  value: 'total_cost'         },
+        { text: 'Notes',                value: 'notes'              },
+        { text: 'Actions',              value: 'actions'            }
       ]
     },
     options: {
-      purchase_type: ['Lease', 'Other', 'Owned', 'SaaS', 'Subscription'],
-      license_type: ['Concurrent License', 'Enterprise License']
+      purchase_type: [],
+      license_type: []
     }
-  })
+  }),
+  methods: {
+    ...mapActions('ITAppsModule',{
+      get_selects:   'get_all_selects',
+      post_lic:      'post_ratio_lic',
+      get_lic:       'get_ratio_lic'
+    }),
+    post(){
+      this.post_lic(this.itemInfo);
+    }
+  },
+  mounted() {
+    this.itemInfo['app_id'] = this.info.id;
+    this.get_selects({params:[
+      'RationalizationLicensingPurchaseType',
+      'RationalizationLicensingLicenseType'
+    ]}).then(selects => {
+      this.options.purchase_type = selects['data']['RationalizationLicensingPurchaseType'];
+      this.options.license_type  = selects['data']['RationalizationLicensingLicenseType'];
+    });
+    this.get_lic(this.info.id).then(res => {
+      this.items = licenseConvert.toRationalizationLicensing(res.data);
+    });
+  }
 }
 </script>
-
-<style>
-
-</style>
