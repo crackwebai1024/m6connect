@@ -10,7 +10,7 @@
           <v-card-text class="comment-text py-0" v-line-clamp="4">{{comment.data.text}}</v-card-text>
           <v-card elevation="1" class="likes-comment absolute right-0 rounded-xl px-2" flat >
             <v-icon size="13" class="blue--text">mdi-thumb-up-outline</v-icon>
-            <span class="text-caption ml-1">3</span>
+            <span class="text-caption ml-1">{{ comment.children_counts.like || 0 }}</span>
           </v-card>
         </v-card>
         <v-menu
@@ -176,6 +176,16 @@ export default {
   methods: {
     updateComment() {
       console.log('updating')
+      console.log(this.updatedComment)
+      let data = {
+        id: this.comment.id,
+        text: this.updatedComment
+      }
+      this.$store.dispatch('GSFeed/updateReaction', data).then(async response => {
+        this.updateCommentShow = false
+        await this.$store.dispatch('GSFeed/retrieveFeed')
+      })
+      
     },
     cancelUpdate() {
       this.updatedComment = this.comment.data.text
@@ -189,11 +199,8 @@ export default {
       this.toogleDialogEmoji()
     },
     deleteComment() {
-      console.log('delete comment')
       this.deleteCommentDiaLog = false
-      // client.reactions.delete(reactionId);
       this.$store.dispatch('GSFeed/removeReaction', this.comment.id).then(async response => {
-        console.log(response)
         await this.$store.dispatch('GSFeed/retrieveFeed')
       })
     }

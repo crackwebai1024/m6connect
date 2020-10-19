@@ -118,6 +118,13 @@ const actions = {
       })
     })
   },
+  updateReaction({ state }, data) {
+    return new Promise(resolve => {
+      state.client.reactions.update(data.id, {"text": data.text}).then(response => {
+        resolve(response)
+      })
+    })
+  },
   retrieveFeed({ state, commit }) {
     return new Promise((resolve, reject) => {
       state.feed.get({
