@@ -52,6 +52,15 @@ const actions = {
   addReaction({ state }, { type, id, whoNotify, options = null }) {
     return new Promise(resolve => {
       state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {
+        // let comment = client.reactions.add(
+        //   "comment",
+        //   activity_id,
+        //   user_id="mike",
+        //   data={"text": "@thierry great post!"},
+        //   target_feeds=["notification:thierry"],
+        // )
+        let comment = response
+        state.client.reactions.addChild("like", comment, state.client.id)
         resolve(response)
       })
     })
@@ -117,6 +126,24 @@ const actions = {
         commit('SET_TIMELINE', results)
         resolve(true)
       }).catch(e => reject(e))
+    })
+  },
+  retrieveActivityReactions({ state }, id) {
+    return new Promise(async (resolve, reject) => {
+      const reactions = await state.client.reactions.filter({
+        'activity_id': id,
+        'kind': 'comment'
+      });
+      resolve(reactions)
+    })
+  },
+  retrieveChildReactions({ state }, reaction_id) {
+    return new Promise(async (resolve, reject) => {
+      const reactions = await state.client.reactions.filter({
+        'reaction_id': reaction_id,
+        'kind': 'like',
+      });
+      resolve(reactions)
     })
   },
   followUser({ state }, { type, id }) {

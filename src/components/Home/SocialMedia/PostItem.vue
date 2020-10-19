@@ -539,7 +539,6 @@ export default {
     },
     likeActivity(activity) {
       if (this.progressLike) return true
-      console.log('not working for duplicate')
       this.progressLike = true
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {

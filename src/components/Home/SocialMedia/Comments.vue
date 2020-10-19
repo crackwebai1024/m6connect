@@ -99,7 +99,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="deleteComment(data)"
+            @click="deleteComment"
           >
             Agree
           </v-btn>
@@ -142,6 +142,36 @@ export default {
   },
   created() {
     this.updatedComment = this.comment.data.text
+    console.log(this.comment)
+    console.log('data from id')
+    this.$store.dispatch('GSFeed/retrieveActivityReactions', this.comment.activity_id).then(response => {
+      console.log(response)
+      console.log('that was the comment response')
+    })
+    this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.activity_id).then(response => {
+      console.log(response)
+      console.log('that was the child response')
+    })
+    // likeActivity(activity) {
+    //   if (this.data.own_reactions.like) {
+    //     this.data.own_reactions.like.forEach(item => {
+    //       this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
+    //         await this.$store.dispatch('GSFeed/retrieveFeed')
+    //         this.likeState = false
+    //       })
+    //     })
+    //   } else {
+    //     const payload = {
+    //       id: activity.id,
+    //       type: 'like',
+    //       whoNotify: activity.actor.id
+    //     }
+    //     this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
+    //       this.likeState = true
+    //       this.$store.dispatch('GSFeed/retrieveFeed')
+    //     })
+    //   }
+    // },
   },
   methods: {
     updateComment() {
@@ -160,6 +190,12 @@ export default {
     },
     deleteComment() {
       console.log('delete comment')
+      this.deleteCommentDiaLog = false
+      // client.reactions.delete(reactionId);
+      this.$store.dispatch('GSFeed/removeReaction', this.comment.id).then(async response => {
+        console.log(response)
+        await this.$store.dispatch('GSFeed/retrieveFeed')
+      })
     }
   },
 };
