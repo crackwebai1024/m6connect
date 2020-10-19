@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   const Convert = require("./itapp_installation");
+//   const Convert = require("@/store/models/itapp_installation");
 //
 //   const installation = Convert.toInstallation(json);
 //

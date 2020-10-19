@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   const Dependencies = require("./itapp_dependencies");
+//   const Dependencies = require("@/store/models/itapp_dependencies");
 //
 //   const dependencies = Dependencies.toDependencies(json);
 //

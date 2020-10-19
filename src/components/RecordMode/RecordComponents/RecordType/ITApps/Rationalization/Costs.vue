@@ -109,20 +109,32 @@
           </v-icon>
         </template>
         <template v-slot:[`item.cost_category`]="{ item }">
-          <p v-if="typeof item.category === 'object'">{{item.category.value}}</p>
-          <p v-else>{{item.cost_category}}</p>
+          <p>{{
+              options['cost_category'].filter(
+                  (e) => { return e['id'] === item['cost_category'] }
+              )[0]['value']
+          }}</p>
         </template>
         <template v-slot:[`item.cost_type`]="{ item }">
-          <p v-if="typeof item.type === 'object'">{{item.type.value}}</p>
-          <p v-else>{{item.cost_type}}</p>
+          <p>{{
+              options['cost_type'].filter(
+                  (e) => { return e['id'] === item['cost_type'] }
+              )[0]['value']
+          }}</p>
         </template>
         <template v-slot:[`item.cost_owner`]="{ item }">
-          <p v-if="typeof item.owner === 'object'">{{item.owner.value}}</p>
-          <p v-else>{{item.cost_owner}}</p>
+          <p>{{
+              options['cost_owner'].filter(
+                  (e) => { return e['id'] === item['cost_owner'] }
+              )[0]['value']
+          }}</p>
         </template>
         <template v-slot:[`item.period`]="{ item }">
-          <p v-if="typeof item.get_period === 'object'">{{item.get_period.value}}</p>
-          <p v-else>{{item.period}}</p>
+          <p>{{
+              options['period'].filter(
+                  (e) => { return e['id'] === item['period'] }
+              )[0]['value']
+          }}</p>
         </template>
       </v-data-table>
     </v-card>
@@ -131,6 +143,8 @@
 
 <script>
 const app_settings = require("@/store/models/apps_settings");
+const cost_convert = require("@/store/models/itapp_rationalization_cost");
+
 import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"
 import {mapActions} from "vuex"
@@ -154,7 +168,7 @@ export default {
       cost_owner: null,
       period: null,
       cost: 0,
-      notes: null
+      notes: ''
     },
     table: {
       headers: [
@@ -188,7 +202,9 @@ export default {
       });
     },
     put(){
-      this.put_ratio(this.itemInfo);
+      console.log(this.itemInfo)
+      
+      // this.put_ratio(this.itemInfo);
     },
     delete(){
       this.delete_ratio(this.itemInfo.id);
@@ -216,7 +232,9 @@ export default {
       }
     })))
     this.get_ratio(this.itemInfo['app_id']).then( res => {
-      this.items = res.data;
+      console.log(res.data);
+      
+      this.items = cost_convert.toRationalizationCost(res.data);
     });
   }
 }

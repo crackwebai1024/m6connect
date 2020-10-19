@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   const Convert = require("./itapp_description");
+//   const Convert = require("@/store/models/itapp_description");
 //
 //   const itappsDescription = Convert.toItappsDescription(json);
 //
