@@ -70,6 +70,7 @@
                   label="Cost"
                   v-model="itemInfo.cost"
                   type="number"
+                  :rules="quantityRules"
                   hide-details="auto"
                 ></v-text-field>
               </v-row>

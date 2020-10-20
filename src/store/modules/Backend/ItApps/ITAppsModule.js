@@ -161,6 +161,19 @@ export default {
         delete_ratio_lic({}, id){
           axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_licensing/${id}`)
         },
+      // Rationalization License
+        async get_ratio_fte({}, appID) {
+          return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_fte/${appID}`);
+        },
+        async post_ratio_fte({}, data) {
+          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_fte`, data);
+        },
+        put_ratio_fte({}, data) {
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_fte/${data.id}`, data);
+        },
+        delete_ratio_fte({}, id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_fte/${id}`)
+        },
       // GETS Selects
         async get_selects({}, url) {
           return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps_settings/specifi/field${url}`);
