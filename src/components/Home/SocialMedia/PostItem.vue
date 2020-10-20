@@ -271,6 +271,12 @@
             @click="likeActivity(data)"
           >
             {{ contLikes() }}
+            <v-progress-circular
+              v-show="progressLike"
+              size="10"
+              width="1"
+              indeterminate
+            ></v-progress-circular>
           </div>
           <v-spacer />
           <div
@@ -374,7 +380,6 @@
       <v-skeleton-loader
         v-if="showComments && showSkeleton"
         class="post-item px-1 my-1"
-        v-bind="attrs"
         type="list-item-avatar-two-line"
       ></v-skeleton-loader>
       <div
@@ -387,42 +392,7 @@
           :comment="comment"
           :reply="true"
           :size="48"
-        >
-          <div>
-            <post-comments
-              v-for="(nested_comment, index2) of comment.nested_comments"
-              :key="index2"
-              :comment="nested_comment"
-              :reply="false"
-              :size="36"
-            />
-            <div class="d-flex">
-              <v-badge
-                bottom
-                class="mr-3"
-                color="green accent-3"
-                dot
-                offset-x="10"
-                offset-y="10"
-              >
-                <v-avatar size="37">
-                  <img
-                    :alt="user.name"
-                    :src="user.imgSrc"
-                  >
-                </v-avatar>
-              </v-badge>
-              <v-text-field
-                dense
-                filled
-                height="35"
-                hide-details
-                placeholder="Write a reply lala..."
-                rounded
-              />
-            </div>
-          </div>
-        </post-comments>
+        />
       </div>
     </div>
     <v-dialog
@@ -489,6 +459,7 @@ export default {
     // Emoji Dialog
     showDialog: false,
     showSkeleton: false,
+    progressLike: false
   }),
   computed: {
     ...mapGetters(['get_user_data']),
@@ -512,6 +483,7 @@ export default {
       this.data.actor = JSON.parse(this.data.actor);
     }
     this.updateMessage = this.data.message
+    console.log(this.data.latest_reactions)
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -531,14 +503,19 @@ export default {
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
       this.showComments = !this.showComments
-      this.$nextTick(() => this.$refs.currentUserComment.focus())
+      if (!this.$refs.currentUserComment) {
+        this.$nextTick(() => this.$refs.currentUserComment.focus())
+      }
     },
     likeActivity(activity) {
+      if (this.progressLike) return true
+      this.progressLike = true
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
           this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
             await this.$store.dispatch('GSFeed/retrieveFeed')
             this.likeState = false
+            this.progressLike = false
           })
         })
       } else {
@@ -549,6 +526,7 @@ export default {
         }
         this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
           this.likeState = true
+          this.progressLike = false
           this.$store.dispatch('GSFeed/retrieveFeed')
         })
       }
