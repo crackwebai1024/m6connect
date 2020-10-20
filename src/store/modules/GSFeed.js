@@ -99,7 +99,10 @@ const actions = {
   },
   updateActivity({ state }, updateProperties) {
     return new Promise(resolve => {
-      state.client.activityPartialUpdate(updateProperties)
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, updateProperties).then(res => {
+        console.log(res.data);
+        resolve(true);
+      });
     })
   },
   removeReaction({ state }, id) {

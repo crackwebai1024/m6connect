@@ -469,7 +469,10 @@ export default {
     VEmojiPicker
   },
   props: {
-    data: Object
+    data: {
+      type: [String, Object],
+      default: () => {}
+    }
   },
   data: () => ({
     showBtnsPost: false,
@@ -505,7 +508,9 @@ export default {
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
-    console.log(this.data)
+    if(typeof this.data.actor === 'string'){
+      this.data.actor = JSON.parse(this.data.actor);
+    }
     this.updateMessage = this.data.message
   },
   methods: {
@@ -592,14 +597,9 @@ export default {
       // })
     },
     async updatePost(activity) {
-      let updateProperties = {
-        id: activity.id,
-        set: {
-          'message': this.updateMessage,
-        },
-        unset: [ "message" ]
-      }
-      this.$store.dispatch('GSFeed/updateActivity', updateProperties)
+      activity.message = this.updateMessage;
+      
+      this.$store.dispatch('GSFeed/updateActivity', activity)
       this.updatePostShow = false
       this.updateMessage = this.data.message
     },

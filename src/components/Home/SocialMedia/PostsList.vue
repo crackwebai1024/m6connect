@@ -55,7 +55,7 @@ export default {
     }
   },
   mounted() {
-    this.feedNotification.get().then(res => {console.log(res);});
+    this.feedNotification.get().then(res => {});
     this.feedNotification.subscribe(data => {
       if (data.new.length > 0) {
         // Aqui se agrega una reaccion :DD

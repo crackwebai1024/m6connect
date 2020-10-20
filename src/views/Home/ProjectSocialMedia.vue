@@ -196,7 +196,9 @@ export default {
       this.showSkeletonPost = true
       const activity = {
         message: this.activityText,
+        foreign_id: `post-${this.activityText.length}-${Date.now()}`,
         verb: 'post',
+        time: new Date(),
         object: 1,
         images: this.imageFiles
       }
