@@ -128,8 +128,8 @@
         >
           <v-avatar size="37">
             <img
-              :alt="$h.dg(currentUser, 'firstName', '') + ' ' + $h.dg(currentUser, 'lastName', '')"
-              :src="$h.dg(currentUser, 'profilePic', '')"
+              :alt="userData.name"
+              :src="userData.image"
             >
           </v-avatar>
         </v-badge>
@@ -166,6 +166,7 @@ export default {
     comment: Object,
     size: Number,
     reply: Boolean,
+    userData: Object
   },
   data: () => ({
     like_state: false,
@@ -185,45 +186,17 @@ export default {
     likeQuantity() {
       let quantity = this.like_state ? this.comment.reactions.likes + 1 : this.comment.reactions.likes
       return quantity
-    },
+    }
   },
   created() {
-    console.log('data from id')
-    console.log(this.comment)
-    // this.$store.dispatch('GSFeed/retrieveActivityReactions', this.comment.activity_id).then(response => {
-    //   console.log(response)
-    //   console.log('that was the comment response')
-    // })
-    // this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
-    //   console.log(response)
-    //   console.log('that was the child response')
-    // })
-    this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
-      console.log(response.results)
-      this.childComments = response.results
-    })
-    // likeActivity(activity) {
-    //   if (this.data.own_reactions.like) {
-    //     this.data.own_reactions.like.forEach(item => {
-    //       this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
-    //         await this.$store.dispatch('GSFeed/retrieveFeed')
-    //         this.likeState = false
-    //       })
-    //     })
-    //   } else {
-    //     const payload = {
-    //       id: activity.id,
-    //       type: 'like',
-    //       whoNotify: activity.actor.id
-    //     }
-    //     this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
-    //       this.likeState = true
-    //       this.$store.dispatch('GSFeed/retrieveFeed')
-    //     })
-    //   }
-    // },
+    this.retrieveChildReactions()
   },
   methods: {
+    retrieveChildReactions() {
+      this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
+        this.childComments = response.results
+      })
+    },
     updateComment() {
       console.log('updating')
       console.log(this.updatedComment)
@@ -231,11 +204,11 @@ export default {
         id: this.comment.id,
         text: this.updatedComment
       }
+      let self = this
       this.$store.dispatch('GSFeed/updateReaction', data).then(async response => {
         this.updateCommentShow = false
-        await this.$store.dispatch('GSFeed/retrieveFeed')
+        self.retrieveChildReactions()
       })
-      
     },
     cancelUpdate() {
       this.updatedComment = this.comment.data.text
