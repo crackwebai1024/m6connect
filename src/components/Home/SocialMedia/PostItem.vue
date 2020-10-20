@@ -359,8 +359,8 @@
         >
           <v-avatar size="48">
             <img
-              :alt="user.name"
-              :src="user.imgSrc"
+              :alt="client.currentUser.data.name"
+              :src="client.currentUser.data.image"
             >
           </v-avatar>
         </v-badge>
@@ -392,6 +392,7 @@
           :comment="comment"
           :reply="true"
           :size="48"
+          :userData="client.currentUser.data"
         />
       </div>
     </div>
@@ -462,7 +463,8 @@ export default {
     ...mapGetters(['get_user_data']),
     ...mapGetters('GSFeed', {
       timeline: 'getTimeline',
-      feed: 'getFeed'
+      feed: 'getFeed',
+      client: 'getClient'
     }),
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'

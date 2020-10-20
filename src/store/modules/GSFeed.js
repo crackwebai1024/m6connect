@@ -20,9 +20,6 @@ const getters = {
 }
 
 const mutations = {
-  PUSH_ACTIVITY: (state, payload) => {
-    state.timeline.unshift(payload)
-  },
   SET_GS_TOKEN: (state, payload) => state.gsToken = payload,
   SET_CLIENT: (state, token) => {
     state.client = connect(process.env.VUE_APP_GS_ID, token, process.env.VUE_APP_ID)
@@ -39,7 +36,7 @@ const mutations = {
       state.gsToken
     )
   },
-  SET_TIMELINE: (state, paylaod) => state.timeline = paylaod,
+  SET_TIMELINE: (state, payload) => state.timeline = payload,
   SET_USER: async (state, payload) => {
     await state.client.setUser(
       payload,
@@ -106,14 +103,6 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
-  pushActivity({ commit }, activities) {
-    return new Promise(resolve => {
-      activities.forEach(item => {
-        commit('PUSH_ACTIVITY', item)
-        resolve(true)
-      })
-    })
-  },
   removeActivity({ state }, id) {
     return new Promise(resolve => {
       state.feed.removeActivity(id).then(response => {
@@ -148,15 +137,6 @@ const actions = {
         commit('SET_TIMELINE', results)
         resolve(true)
       }).catch(e => reject(e))
-    })
-  },
-  retrieveActivityReactions({ state }, id) {
-    return new Promise(async (resolve, reject) => {
-      const reactions = await state.client.reactions.filter({
-        'activity_id': id,
-        'kind': 'comment'
-      });
-      resolve(reactions)
     })
   },
   retrieveChildReactions({ state }, reaction_id) {
