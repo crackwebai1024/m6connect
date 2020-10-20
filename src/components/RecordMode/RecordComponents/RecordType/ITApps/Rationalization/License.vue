@@ -9,9 +9,19 @@
         <v-card>
           <v-card-title class="blue darken-3 white--text d-flex justify-space-between">
             <span class="headline white--text">{{ titleDialog }}</span>
-            <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            <v-dialog
+              v-if="!dialogMode"
+              v-model="deleteDialog"
+              width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn 
+                  v-bind="attrs" v-on="on" icon
+                  color="white" >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </template>
+              <delete-dialog :element="'rationalization license'" @closeDeleteModal="beforeDelete" />
+            </v-dialog>
           </v-card-title>
           <v-card-text class="form-labels px-16">
             <v-container>
@@ -113,6 +123,7 @@
 
 <script>
 const licenseConvert = require("@/store/models/itapp_rationalization_license");
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"
 import {mapActions} from "vuex"
@@ -120,6 +131,9 @@ import {mapActions} from "vuex"
 export default {
   name: "License",
   mixins: [items, validations], 
+  components: {
+    DeleteDialog
+  },
   props: {
     info:{
       type: Object,
@@ -127,6 +141,8 @@ export default {
     }
   },
   data: () => ({
+    deleteDialog: false,
+    dialogMode: false,
     isHover: false,
     itemsName: 'Licenses',
     itemInfo: {
@@ -156,12 +172,26 @@ export default {
   methods: {
     ...mapActions('ITAppsModule',{
       get_selects:   'get_all_selects',
+      delete_lic:    'delete_ratio_lic',
       post_lic:      'post_ratio_lic',
+      put_lic:       'put_ratio_list',
       get_lic:       'get_ratio_lic'
     }),
     post(){
-      this.post_lic(this.itemInfo);
-    }
+      this.post_lic(this.itemInfo).then(res => {
+        this.items[this.items.length - 1]['id'] = res.data.rationalization_licensing_id;
+      });
+    },
+    put(){
+      this.put_lic(this.itemInfo);
+    },
+    delete(){
+      this.deleteDialog = false;
+      this.delete_lic(this.itemInfo.id);
+    },
+    beforeDelete(decision){
+      decision ? this.deleteItem() : this.deleteDialog = false;
+    },
   },
   mounted() {
     this.itemInfo['app_id'] = this.info.id;

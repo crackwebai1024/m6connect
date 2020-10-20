@@ -155,6 +155,12 @@ export default {
         async post_ratio_lic({}, data) {
           return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_licensing`, data);
         },
+        put_ratio_list({}, data) {
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_licensing/${data.id}`, data);
+        },
+        delete_ratio_lic({}, id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_licensing/${id}`)
+        },
       // GETS Selects
         async get_selects({}, url) {
           return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps_settings/specifi/field${url}`);

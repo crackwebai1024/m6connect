@@ -9,9 +9,19 @@
         <v-card>
           <v-card-title class="blue darken-3 white--text d-flex justify-space-between">
             <span class="headline white--text">{{ titleDialog }}</span>
-            <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            <v-dialog
+              v-if="!dialogMode"
+              v-model="deleteDialog"
+              width="500">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn 
+                  v-bind="attrs" v-on="on" icon
+                  color="white" >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </template>
+              <delete-dialog :element="'rationalization cost'" @closeDeleteModal="beforeDelete" />
+            </v-dialog>
           </v-card-title>
           <v-card-text class="form-labels px-16">
             <v-container>
@@ -148,10 +158,14 @@ const cost_convert = require("@/store/models/itapp_rationalization_cost");
 import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"
 import {mapActions} from "vuex"
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 export default {
   name: "Costs",
   mixins: [items, validations],
+  components: {
+    DeleteDialog
+  },
   props: {
       info: {
           type: Object,
@@ -159,6 +173,8 @@ export default {
       }
   },
   data: () => ({
+    deleteDialog: false,
+    dialogMode: false,
     isHover: false,
     itemsName: 'Costs',
 
@@ -205,8 +221,12 @@ export default {
       this.put_ratio(this.itemInfo);
     },
     delete(){
+      this.deleteDialog = false;
       this.delete_ratio(this.itemInfo.id);
-    }
+    },
+    beforeDelete(decision){
+      decision ? this.deleteItem() : this.deleteDialog = false;
+    },
   },
   mounted() {
     this.itemInfo['app_id'] = this.info.id;
