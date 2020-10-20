@@ -392,42 +392,7 @@
           :comment="comment"
           :reply="true"
           :size="48"
-        >
-          <div>
-            <post-comments
-              v-for="(nested_comment, index2) of comment.nested_comments"
-              :key="index2"
-              :comment="nested_comment"
-              :reply="false"
-              :size="36"
-            />
-            <div class="d-flex">
-              <v-badge
-                bottom
-                class="mr-3"
-                color="green accent-3"
-                dot
-                offset-x="10"
-                offset-y="10"
-              >
-                <v-avatar size="37">
-                  <img
-                    :alt="user.name"
-                    :src="user.imgSrc"
-                  >
-                </v-avatar>
-              </v-badge>
-              <v-text-field
-                dense
-                filled
-                height="35"
-                hide-details
-                placeholder="Write a reply lala..."
-                rounded
-              />
-            </div>
-          </div>
-        </post-comments>
+        />
       </div>
     </div>
     <v-dialog
