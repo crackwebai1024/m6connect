@@ -62,19 +62,19 @@ const actions = {
         // this is just to prove it works to add child reactions like and comment
         let comment = response
         state.client.reactions.addChild("like", comment, state.client.id)
-        state.client.reactions.addChild(
-          "comment", 
-           comment, 
-           state.client.id
-        ).then((response) => {
-          state.client.reactions.update(response.id, {"text":"Thanks @mike"} ).then(response => {
-            console.log('updated')
-            console.log(response)
-          })
-        }).then((response) => {
-          console.log(response)
-        })
-        .catch(e => console.log(e))
+        // state.client.reactions.addChild(
+        //   "comment", 
+        //    comment, 
+        //    state.client.id
+        // ).then((response) => {
+        //   state.client.reactions.update(response.id, {"text":"Thanks @mike"} ).then(response => {
+        //     console.log('updated')
+        //     console.log(response)
+        //   })
+        // }).then((response) => {
+        //   console.log(response)
+        // })
+        // .catch(e => console.log(e))
 
         resolve(response)
       })

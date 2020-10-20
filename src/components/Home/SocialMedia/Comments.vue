@@ -75,7 +75,6 @@
               <v-spacer></v-spacer>
             </v-row>
           </div>
-          <slot v-if="showReplyMessage"></slot>
         </template>
       </v-col>
       <v-dialog
@@ -108,7 +107,7 @@
         </v-card>
       </v-dialog>
     </v-row>
-    <div v-if="reply" class="mr-3 ml-16">
+    <div v-if="reply && showReplyMessage" class="mb-3 mr-3 ml-16">
       <component 
         v-bind:is="'PostComments'"
         v-for="(childComment, index2) of childComments"
@@ -120,29 +119,36 @@
       </component>
 
       <div class="d-flex">
-        <!-- <v-badge
+        <v-badge
           bottom
           color="green accent-3"
           dot
           offset-x="10"
           offset-y="10"
-        > -->
-          <!-- <v-avatar size="37">
+        >
+          <v-avatar size="37">
             <img
-              :alt="user.name"
-              :src="user.imgSrc"
+              :alt="$h.dg(currentUser, 'firstName', '') + ' ' + $h.dg(currentUser, 'lastName', '')"
+              :src="$h.dg(currentUser, 'profilePic', '')"
             >
-          </v-avatar> -->
-        <!-- </v-badge> -->
+          </v-avatar>
+        </v-badge>
         <v-text-field
+          class="ml-3"
           dense
           filled
           height="35"
           hide-details
-          placeholder="Write a reply lala..."
+          placeholder="Write a reply..."
           rounded
+          @keyup.enter="pushChildComment"
         />
       </div>
+    </div>
+    <div v-else @click="showReplyMessage = !showReplyMessage" class="mr-3 ml-16 mb-3 text-caption cursor-hover underline comment-btn pointer">
+      <template v-if="reply">
+        {{ childComments.length !== 0 ? childComments.length + ' replies' : '' }}
+      </template>
     </div>
   </div>
 </template>
@@ -247,7 +253,43 @@ export default {
       this.$store.dispatch('GSFeed/removeReaction', this.comment.id).then(async response => {
         await this.$store.dispatch('GSFeed/retrieveFeed')
       })
-    }
+    },
+    async pushChildComment() {
+      console.log('wait to upload child comment')
+      // this.showSkeleton = true
+      // const payload = {
+      //   id: activity.id,
+      //   type: 'comment',
+      //   options: {
+      //     text: this.comment_data
+      //   }
+      // }
+      // let self = this
+      // this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
+      //   await this.$store.dispatch('GSFeed/retrieveFeed')
+      //   this.showSkeleton = false
+      // })
+
+      // if (!this.data.comments) {
+      //   this.data.comments = []
+      // }
+      // this.data.comments.push({
+      //   name: `${this.user.firstName} ${this.user.lastName}`,
+      //   imageUrl: this.get_user_data().imageUrl,
+      //   message: this.comment_data,
+      //   reactions: {
+      //     likes: 0,
+      //     enchants: 0,
+      //     unlikes: 0
+      //   },
+      //   timestamps: {
+      //     created: '1 min'
+      //   }
+      // })
+      // await this.$store.dispatch('GSFeed/setFeed')
+      // this.comment_data = ''
+
+    },
   },
 };
 </script>
