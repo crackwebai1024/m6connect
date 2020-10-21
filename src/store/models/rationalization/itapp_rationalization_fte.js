@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   const Convert = require("@/store/models/itapp_rationalization_fte");
+//   const Convert = require("@/store/models/rationalization/itapp_rationalization_fte");
 //
 //   const rationalizationFte = Convert.toRationalizationFte(json);
 //

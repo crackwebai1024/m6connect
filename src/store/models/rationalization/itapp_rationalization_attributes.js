@@ -1,14 +1,17 @@
+
 // To parse this data:
 //
-//   const Convert = require("@/store/models/rationalization/itapp_rationalization_license");
+//   const Convert = require("@/store/models/rationalization/itapp_rationalization_attributes");
 //
-//   const rationalizationLicensing = Convert.toRationalizationLicensing(json);
+//   const rationalizationAttributes = Convert.toRationalizationAttributes(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-function toRationalizationLicensing(json) {
-    return cast(json, a(r("RationalizationLicensing")));
+// Converts JSON strings to/from your types
+// and asserts the results of JSON.parse at runtime
+function toRationalizationAttributes(json) {
+    return cast(json, r("RationalizationAttributes"));
 }
 
 function invalidValue(typ, val, key = '') {
@@ -62,10 +65,7 @@ function transform(val, typ, getProps, key = '') {
         if (val === null) {
             return null;
         }
-        const d = new Date(val);
-        if (isNaN(d.valueOf())) {
-            return invalidValue("Date", val);
-        }
+        const d = new Date(val).toISOString().split('T')[0];
         return d;
     }
 
@@ -84,8 +84,10 @@ function transform(val, typ, getProps, key = '') {
                 result[key] = transform(val[key], additional, getProps, key);
             }
         });
-        if (Object.keys(result).length === 3){
-            return result.id;
+        if (Object.keys(result).length === 3) {
+            return result['id'];
+        }else if (Object.keys(result).length === 6) {
+            return parseInt(result['value']);
         }
         return result;
     }
@@ -132,25 +134,37 @@ function r(name) {
 }
 
 const typeMap = {
-    "RationalizationLicensing": o([
-        { json: "id",                 js: "id",                 typ: u(undefined, 0)           },
-        { json: "app_id",             js: "app_id",             typ: u(undefined, 0)           },
-        { json: "number_of_licenses", js: "number_of_licenses", typ: u(undefined, 0)           },
-        { json: "cost_per_license",   js: "cost_per_license",   typ: u(undefined, 0)           },
-        { json: "total_cost",         js: "total_cost",         typ: u(undefined, 0)           },
-        { json: "notes",              js: "notes",              typ: u(undefined, "")          },
-        { json: "created_at",         js: "created_at",         typ: u(undefined, Date)        },
-        { json: "updated_at",         js: "updated_at",         typ: u(undefined, Date)        },
-        { json: "license_type",       js: "license_type",       typ: u(undefined, r("ItAppSetting")) },
-        { json: "purchase_type",      js: "purchase_type",      typ: u(undefined, r("ItAppSetting")) }
+    "RationalizationAttributes": o([
+        { json: "if_no_need",             js: "if_no_need",            typ: u(null, "") },
+        { json: "rationalization_kind",   js: "rationalization_kind",  typ: u(null, r("RationalizationKind")) },
+        { json: "id",                     js: "id",                    typ: u(undefined, 0) },
+        { json: "app_id",                 js: "app_id",                typ: u(undefined, 0) },
+        { json: "is_needs",               js: "is_needs",              typ: u(undefined, 0) },
+        { json: "estimated_users",        js: "estimated_users",       typ: u(undefined, 0) },
+        { json: "total_annual_cost",      js: "total_annual_cost",     typ: u(undefined, 0) },
+        { json: "ratio_of_cost_to_user",  js: "ratio_of_cost_to_user", typ: u(undefined, 0) },
+        { json: "created_at",             js: "created_at",            typ: u(undefined, Date) },
+        { json: "updated_at",             js: "updated_at",            typ: u(undefined, Date) },
+        { json: "retirement_date",        js: "retirement_date",       typ: u(undefined, Date) },
+        { json: "capability",             js: "capability",            typ: u(undefined, null) },
+        { json: "application_value",      js: "application_value",     typ: u(undefined, a(r("ApplicationValue"))) },
     ], false),
-    "ItAppSetting": o([
-        { json: "id",                 js: "id",                 typ: u(undefined, 0)           },
-        { json: "value",              js: "value",              typ: u(undefined, "")          },
-        { json: "field",              js: "field",              typ: u(undefined, "")          }
+    "ApplicationValue": o([
+        { json: "id",                     js: "id",                    typ: u(undefined, 0) },
+        { json: "foreign_id",             js: "foreign_id",            typ: u(undefined, 0) },
+        { json: "field",                  js: "field",                 typ: u(undefined, "") },
+        { json: "value",                  js: "value",                 typ: u(undefined, "") },
+        { json: "created_at",             js: "created_at",            typ: u(undefined, Date) },
+        { json: "updated_at",             js: "updated_at",            typ: u(undefined, Date) },
+    ], false),
+    "RationalizationKind": o([
+        { json: "id",                     js: "id",                    typ: u(undefined, 0) },
+        { json: "value",                  js: "value",                 typ: u(undefined, "") },
+        { json: "field",                  js: "field",                 typ: u(undefined, "") },
     ], false),
 };
 
 module.exports = {
-    "toRationalizationLicensing": toRationalizationLicensing,
+    "toRationalizationAttributes": toRationalizationAttributes,
 };
+

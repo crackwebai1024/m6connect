@@ -200,6 +200,13 @@ export default {
         delete_ratio_gov({}, id){
           axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_governance/${id}`)
         },
+      // Rationalization Attribute
+        async get_ratio_att({}, appID) {
+          return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_attribute/${appID}`);
+        },
+        put_ratio_att({}, data) {
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_attribute/${data.id}`, data);
+        },
       // GETS Selects
         async get_selects({}, url) {
           return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps_settings/specifi/field${url}`);

@@ -123,7 +123,7 @@ export default {
     itemInfo: {
       user_type: null,
       users: null,
-      notes: null
+      notes: ''
     },   
     table: {
       headers: [

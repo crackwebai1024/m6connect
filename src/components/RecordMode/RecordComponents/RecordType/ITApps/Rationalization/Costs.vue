@@ -66,13 +66,7 @@
                 ></v-select>
               </v-row>
               <v-row>
-                <v-text-field
-                  label="Cost"
-                  v-model="itemInfo.cost"
-                  type="number"
-                  :rules="quantityRules"
-                  hide-details="auto"
-                ></v-text-field>
+                <v-input persistent-hint readonly :hint="'$ ' + itemInfo.cost.toString()">FTE Costs</v-input>
               </v-row>
               <v-row>
                 <v-textarea v-model="itemInfo.notes" label="Notes"></v-textarea>

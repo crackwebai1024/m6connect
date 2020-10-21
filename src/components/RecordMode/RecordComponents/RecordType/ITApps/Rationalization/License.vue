@@ -151,7 +151,7 @@ export default {
       purchase_type: null,
       license_type: null,
       total_cost: 0,
-      notes: null
+      notes: ''
     },
     table: {
       headers: [
