@@ -81,12 +81,12 @@
         item-key="name"
         class="elevation-0"
       >
-        <template v-slot:item.fte_type="{ item }">
+        <template v-slot:[`item.fte_type`]="{ item }">
           <p>{{types.filter(
             (e) => { return e['id'] === item['fte_type'] }
           )[0]['value']}}</p>
         </template>
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.actions`]="{ item }">
           <v-icon
             small
             class="mr-2"
@@ -109,7 +109,7 @@
 </template>
 
 <script>
-const fteConvert = require("@/store/models/itapp_rationalization_fte");
+const fteConvert = require("@/store/models/rationalization/itapp_rationalization_fte");
 import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 import {validations} from "@/mixins/form-validations"

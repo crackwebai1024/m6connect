@@ -187,6 +187,19 @@ export default {
         delete_ratio_usr({}, id){
           axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_user/${id}`)
         },
+      // Rationalization Governance
+        async get_ratio_gov({}, appID) {
+          return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_governance/${appID}`);
+        },
+        async post_ratio_gov({}, data) {
+          return await axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_governance`, data);
+        },
+        put_ratio_gov({}, data) {
+          axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_governance/${data.id}`, data);
+        },
+        delete_ratio_gov({}, id){
+          axios.delete(`http://${process.env.VUE_APP_ENDPOINT}/api/rationalization_governance/${id}`)
+        },
       // GETS Selects
         async get_selects({}, url) {
           return await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps_settings/specifi/field${url}`);

@@ -78,7 +78,14 @@
         item-key="name"
         class="elevation-0"
       >
-        <template v-slot:item.actions="{ item }">
+        <template v-slot:[`item.user_type`]="{ item }">
+          <p>{{
+            types.filter(
+              (e) => { return e['id'] === item['user_type'] }
+            )[0]['value']
+          }}</p>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
           <v-icon
             small
             class="mr-2"
@@ -94,7 +101,7 @@
 </template>
 
 <script>
-const ratioUserConvert = require("@/store/models/itapp_rationalization_users");
+const ratioUserConvert = require("@/store/models/rationalization/itapp_rationalization_users");
 import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 import {mapActions}   from "vuex"
@@ -161,7 +168,6 @@ export default {
     this.itemInfo['app_id'] = this.info['id'];
     this.select('/RationalizationUserType').then(res => {
       this.types = res.data;
-      console.log(res)
     });
     this.get_usr(this.itemInfo['app_id']).then(usrs => {
       this.items = ratioUserConvert.toRationalizationUser(usrs.data);

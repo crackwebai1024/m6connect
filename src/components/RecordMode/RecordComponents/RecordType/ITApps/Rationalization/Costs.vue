@@ -154,7 +154,7 @@
 
 <script>
 const app_settings = require("@/store/models/apps_settings");
-const cost_convert = require("@/store/models/itapp_rationalization_cost");
+const cost_convert = require("@/store/models/rationalization/itapp_rationalization_cost");
 
 import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"

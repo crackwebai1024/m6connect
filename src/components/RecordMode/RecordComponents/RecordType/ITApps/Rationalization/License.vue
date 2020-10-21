@@ -122,7 +122,7 @@
 </template>
 
 <script>
-const licenseConvert = require("@/store/models/itapp_rationalization_license");
+const licenseConvert = require("@/store/models/rationalization/itapp_rationalization_license");
 import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 import {items} from "@/mixins/items"
 import {validations} from "@/mixins/form-validations"
