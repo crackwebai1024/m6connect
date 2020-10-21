@@ -30,7 +30,7 @@
                         <v-icon>{{action.icon}}</v-icon>
                     </v-avatar>
                 </template>
-                <span>{{action.name}}</span>
+                <span class="white--text">{{action.name}}</span>
             </v-tooltip>
         </v-speed-dial>
         </v-card>
@@ -60,7 +60,7 @@ export default {
         async moveComponent(index){
             await this.orderComponents(index);
             const cont = this.currentState;
-            if(document.getElementById(this.getName()+'-'+index).className == 'container' ){
+            if(document.getElementById(this.getName()+'-'+index).classList.contains('container')){
                 this.scrolling(document.getElementById(this.getName()+'-'+index));
             }else{
                 this.scrolling(document.getElementById(this.getName()+'-'+cont));

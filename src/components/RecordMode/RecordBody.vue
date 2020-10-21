@@ -1,9 +1,15 @@
 <template>
     <v-container class="vertical-scroll dont-show-scroll px-0 max-w-none h-full">
         <!-- That ID is used to scrolling the component -->
-        <component class="max-w-none" :class="index !== 0 ? 'px-2' : 'px-0'" v-for="(item, index) of items" :key="index+'-widget'" :id="name+'-'+index" v-bind:is="item.component" :info="component" ></component>
-        <infinite-loading 
-            force-use-infinite-wrapper=".el-table__body-wrapper"
+        <component 
+            v-for="(item, index) of items" :key="index+'-widget'"
+            class="max-w-none" :class="index !== 0 ? 'px-2' : 'px-0'" 
+            v-bind:is="item.component" 
+            :id="name+'-'+index" 
+            :info="component" 
+        />
+        <infinite-loading
+            infinite-scroll-disabled="busy"
             @infinite="infiniteHandler" :identifier="NavCommp">
             <div slot="no-more"></div>
         </infinite-loading>
@@ -19,6 +25,7 @@ export default {
         items:[],
         emptyItems: [],
         currentIndex: 0,
+        busy: false
     }),
     props: {
         component: Object,
@@ -28,15 +35,19 @@ export default {
     },methods: {
         // Functionality on the infinite scroll
         infiniteHandler($state) {
-            if(this.currentIndex < this.NavCommp.length){
-                this.items.push(this.sortArray[this.currentIndex]);
-                this.emptyItems.shift();
-                this.refactorWidgets();
-                this.currentIndex ++;
-                $state.loaded();
-            }else{
-                $state.complete();
-            }
+            this.busy = true;
+            setTimeout(() => {
+                if(this.currentIndex < this.NavCommp.length){
+                    this.items.push(this.sortArray[this.currentIndex]);
+                    this.emptyItems.shift();
+                    this.refactorWidgets();
+                    this.currentIndex ++;
+                    $state.loaded();
+                }else{
+                    $state.complete();
+                }
+                this.busy = false;
+            }, 100);
         },
         // On change in the widgets index
         refactorWidgets(){

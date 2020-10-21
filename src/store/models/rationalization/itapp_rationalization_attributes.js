@@ -1,24 +1,17 @@
+
 // To parse this data:
 //
-//   const Convert = require("@/store/models/file");
+//   const Convert = require("@/store/models/rationalization/itapp_rationalization_attributes");
 //
-//   const appsSettings = Convert.toAppsSettings(json);
+//   const rationalizationAttributes = Convert.toRationalizationAttributes(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
-function toAppsSettings(json) {
-    let settingArray = cast(json, a(r("AppsSettings")));
-    settingArray.forEach(((item, index) => {
-        settingArray[index] = {id:item.id, value:item.value, field:item.field}
-    }))
-    return settingArray;
-}
-
-function appsSettingsToJson(value) {
-    return JSON.stringify(uncast(value, a(r("AppsSettings"))), null, 2);
+function toRationalizationAttributes(json) {
+    return cast(json, r("RationalizationAttributes"));
 }
 
 function invalidValue(typ, val, key = '') {
@@ -35,15 +28,6 @@ function jsonToJSProps(typ) {
         typ.jsonToJS = map;
     }
     return typ.jsonToJS;
-}
-
-function jsToJSONProps(typ) {
-    if (typ.jsToJSON === undefined) {
-        const map = {};
-        typ.props.forEach((p) => map[p.js] = { key: p.json, typ: p.typ });
-        typ.jsToJSON = map;
-    }
-    return typ.jsToJSON;
 }
 
 function transform(val, typ, getProps, key = '') {
@@ -81,10 +65,7 @@ function transform(val, typ, getProps, key = '') {
         if (val === null) {
             return null;
         }
-        const d = new Date(val);
-        if (isNaN(d.valueOf())) {
-            return invalidValue("Date", val);
-        }
+        const d = new Date(val).toISOString().split('T')[0];
         return d;
     }
 
@@ -103,6 +84,11 @@ function transform(val, typ, getProps, key = '') {
                 result[key] = transform(val[key], additional, getProps, key);
             }
         });
+        if (Object.keys(result).length === 3) {
+            return result['id'];
+        }else if (Object.keys(result).length === 6) {
+            return parseInt(result['value']);
+        }
         return result;
     }
 
@@ -131,10 +117,6 @@ function cast(val, typ) {
     return transform(val, typ, jsonToJSProps);
 }
 
-function uncast(val, typ) {
-    return transform(val, typ, jsToJSONProps);
-}
-
 function a(typ) {
     return { arrayItems: typ };
 }
@@ -152,17 +134,37 @@ function r(name) {
 }
 
 const typeMap = {
-    "AppsSettings": o([
-        { json: "id", js: "id", typ: u(undefined, 0) },
-        { json: "field", js: "field", typ: u(undefined, "") },
-        { json: "value", js: "value", typ: u(undefined, "") },
-        { json: "app_type", js: "app_type", typ: u(undefined, "") },
-        { json: "created_at", js: "created_at", typ: u(undefined, Date) },
-        { json: "updated_at", js: "updated_at", typ: u(undefined, Date) },
+    "RationalizationAttributes": o([
+        { json: "if_no_need",             js: "if_no_need",            typ: u(null, "") },
+        { json: "rationalization_kind",   js: "rationalization_kind",  typ: u(null, r("RationalizationKind")) },
+        { json: "id",                     js: "id",                    typ: u(undefined, 0) },
+        { json: "app_id",                 js: "app_id",                typ: u(undefined, 0) },
+        { json: "is_needs",               js: "is_needs",              typ: u(undefined, 0) },
+        { json: "estimated_users",        js: "estimated_users",       typ: u(undefined, 0) },
+        { json: "total_annual_cost",      js: "total_annual_cost",     typ: u(undefined, 0) },
+        { json: "ratio_of_cost_to_user",  js: "ratio_of_cost_to_user", typ: u(undefined, 0) },
+        { json: "created_at",             js: "created_at",            typ: u(undefined, Date) },
+        { json: "updated_at",             js: "updated_at",            typ: u(undefined, Date) },
+        { json: "retirement_date",        js: "retirement_date",       typ: u(undefined, Date) },
+        { json: "capability",             js: "capability",            typ: u(undefined, null) },
+        { json: "application_value",      js: "application_value",     typ: u(undefined, a(r("ApplicationValue"))) },
+    ], false),
+    "ApplicationValue": o([
+        { json: "id",                     js: "id",                    typ: u(undefined, 0) },
+        { json: "foreign_id",             js: "foreign_id",            typ: u(undefined, 0) },
+        { json: "field",                  js: "field",                 typ: u(undefined, "") },
+        { json: "value",                  js: "value",                 typ: u(undefined, "") },
+        { json: "created_at",             js: "created_at",            typ: u(undefined, Date) },
+        { json: "updated_at",             js: "updated_at",            typ: u(undefined, Date) },
+    ], false),
+    "RationalizationKind": o([
+        { json: "id",                     js: "id",                    typ: u(undefined, 0) },
+        { json: "value",                  js: "value",                 typ: u(undefined, "") },
+        { json: "field",                  js: "field",                 typ: u(undefined, "") },
     ], false),
 };
 
 module.exports = {
-    "appsSettingsToJson": appsSettingsToJson,
-    "toAppsSettings": toAppsSettings,
+    "toRationalizationAttributes": toRationalizationAttributes,
 };
+

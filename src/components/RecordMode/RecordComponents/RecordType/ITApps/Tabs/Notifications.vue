@@ -38,10 +38,10 @@
             <template v-slot:[`item.noti_cont`]="{ item }">
               <v-chip color="blue lighten-3 mx-1" dark v-for="(who, index) in item.noti_cont" :key="'who-'+index">
                 <span v-if="who.contact_id">
-                  {{ contacts[contacts.findIndex(i => i.id === who.contact_id)]['name'] }}
+                  {{ companyUsers[companyUsers.findIndex(i => i.id === who.contact_id)]['name'] }}
                 </span>
                 <span v-if="who.name">
-                  {{ contacts[contacts.findIndex(i => i.id === who.id)]['name'] }}
+                  {{ companyUsers[companyUsers.findIndex(i => i.id === who.id)]['name'] }}
                 </span>
               </v-chip>
             </template>
@@ -67,9 +67,19 @@
       <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline capitalize white--text">{{ titleDialog }}</span>
-          <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-dialog
+            v-if="!dialogMode"
+            v-model="deleteDialog"
+            width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs" v-on="on" icon
+                color="white" >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <delete-dialog :element="itemInfo.name+' notification'" @closeDeleteModal="beforeDelete" />
+          </v-dialog>
         </v-card-title>
         <v-card-text class="px-16 py-10 form-labels">
           <v-text-field
@@ -111,7 +121,7 @@
 
           <v-autocomplete
             v-model="itemInfo.noti_cont"
-            :items="contacts"
+            :items="companyUsers"
             :color="baseColor"
             chips
             label="Who to notify"
@@ -156,21 +166,22 @@
 <script>
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 export default {
   name: "Notifications",
+  components: {
+    DeleteDialog
+  },
   mixins: [items, validations],
   props:{
     info: Object
   },
   data: () => ({
+    deleteDialog: false,
     menu: false,
     isLoading: true,
-    contacts: [
-      {id:'asdjkl', name:'Trevor Handsen'},
-      {id:'qweryzxc', name: 'Alex Nelson'}
-    ],
     baseColor: 'deep-purple darken-3',
     itemsName: 'notifications',
     itemInfo: {
@@ -204,7 +215,7 @@ export default {
   methods:{
     ...mapActions("ITAppsModule", ["post_notification", "get_notifications", "delete_notification", "put_notification"]),
     getContact( contactId ){
-      return this.contacts[this.contacts.findIndex(i => i.id === contactId.contact_id)]['name'];
+      return this.companyUsers[this.companyUsers.findIndex(i => i.id === contactId.contact_id)]['name'];
     },
     post(){
       this.post_notification({
@@ -234,22 +245,33 @@ export default {
         preview_noti_cont: this.preview_noti_cont
       });
     },
+    beforeDelete(decision){
+      decision ? this.deleteItem() : this.deleteDialog = false;
+    },
     delete(){
       this.delete_notification(this.itemInfo.id);
     }
+  },
+  computed:{
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
   },
   watch:{
       dialog:function(val){
         if( val ){
           this.dialogMode ? this.itemInfo.noti_cont = [] : null;
           this.itemInfo.noti_cont.forEach((item, ind) => {
-            this.itemInfo.noti_cont[ind] = this.contacts[this.contacts.findIndex(i => i.id === item.contact_id)]
+            if(item.contact_id !== undefined){
+              this.itemInfo.noti_cont[ind] = this.companyUsers[this.companyUsers.findIndex(i => i.id === item.contact_id)]
+            }
           });
           this.preview_noti_cont = this.itemInfo.noti_cont;
         }
       }
   },
   mounted(){
+    this.companyUsers.forEach(company => {
+      company.name = `${company.user.firstName} ${company.user.lastName}`
+    });
     this.get_notifications(this.info.id).then(
       res => (this.items = res),
       this.isLoading = false

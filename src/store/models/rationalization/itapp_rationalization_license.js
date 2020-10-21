@@ -1,24 +1,14 @@
 // To parse this data:
 //
-//   const Convert = require("@/store/models/file");
+//   const Convert = require("@/store/models/rationalization/itapp_rationalization_license");
 //
-//   const appsSettings = Convert.toAppsSettings(json);
+//   const rationalizationLicensing = Convert.toRationalizationLicensing(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-// Converts JSON strings to/from your types
-// and asserts the results of JSON.parse at runtime
-function toAppsSettings(json) {
-    let settingArray = cast(json, a(r("AppsSettings")));
-    settingArray.forEach(((item, index) => {
-        settingArray[index] = {id:item.id, value:item.value, field:item.field}
-    }))
-    return settingArray;
-}
-
-function appsSettingsToJson(value) {
-    return JSON.stringify(uncast(value, a(r("AppsSettings"))), null, 2);
+function toRationalizationLicensing(json) {
+    return cast(json, a(r("RationalizationLicensing")));
 }
 
 function invalidValue(typ, val, key = '') {
@@ -35,15 +25,6 @@ function jsonToJSProps(typ) {
         typ.jsonToJS = map;
     }
     return typ.jsonToJS;
-}
-
-function jsToJSONProps(typ) {
-    if (typ.jsToJSON === undefined) {
-        const map = {};
-        typ.props.forEach((p) => map[p.js] = { key: p.json, typ: p.typ });
-        typ.jsToJSON = map;
-    }
-    return typ.jsToJSON;
 }
 
 function transform(val, typ, getProps, key = '') {
@@ -103,6 +84,9 @@ function transform(val, typ, getProps, key = '') {
                 result[key] = transform(val[key], additional, getProps, key);
             }
         });
+        if (Object.keys(result).length === 3){
+            return result.id;
+        }
         return result;
     }
 
@@ -131,10 +115,6 @@ function cast(val, typ) {
     return transform(val, typ, jsonToJSProps);
 }
 
-function uncast(val, typ) {
-    return transform(val, typ, jsToJSONProps);
-}
-
 function a(typ) {
     return { arrayItems: typ };
 }
@@ -152,17 +132,25 @@ function r(name) {
 }
 
 const typeMap = {
-    "AppsSettings": o([
-        { json: "id", js: "id", typ: u(undefined, 0) },
-        { json: "field", js: "field", typ: u(undefined, "") },
-        { json: "value", js: "value", typ: u(undefined, "") },
-        { json: "app_type", js: "app_type", typ: u(undefined, "") },
-        { json: "created_at", js: "created_at", typ: u(undefined, Date) },
-        { json: "updated_at", js: "updated_at", typ: u(undefined, Date) },
+    "RationalizationLicensing": o([
+        { json: "id",                 js: "id",                 typ: u(undefined, 0)           },
+        { json: "app_id",             js: "app_id",             typ: u(undefined, 0)           },
+        { json: "number_of_licenses", js: "number_of_licenses", typ: u(undefined, 0)           },
+        { json: "cost_per_license",   js: "cost_per_license",   typ: u(undefined, 0)           },
+        { json: "total_cost",         js: "total_cost",         typ: u(undefined, 0)           },
+        { json: "notes",              js: "notes",              typ: u(undefined, "")          },
+        { json: "created_at",         js: "created_at",         typ: u(undefined, Date)        },
+        { json: "updated_at",         js: "updated_at",         typ: u(undefined, Date)        },
+        { json: "license_type",       js: "license_type",       typ: u(undefined, r("ItAppSetting")) },
+        { json: "purchase_type",      js: "purchase_type",      typ: u(undefined, r("ItAppSetting")) }
+    ], false),
+    "ItAppSetting": o([
+        { json: "id",                 js: "id",                 typ: u(undefined, 0)           },
+        { json: "value",              js: "value",              typ: u(undefined, "")          },
+        { json: "field",              js: "field",              typ: u(undefined, "")          }
     ], false),
 };
 
 module.exports = {
-    "appsSettingsToJson": appsSettingsToJson,
-    "toAppsSettings": toAppsSettings,
+    "toRationalizationLicensing": toRationalizationLicensing,
 };
