@@ -53,6 +53,20 @@ const actions = {
       })
     })
   },
+  addChildReactionComment({ state }, {comment, text} ) {
+    return new Promise(resolve => {
+      state.client.reactions.addChild(
+        "comment", 
+        comment, 
+        state.client.id
+      ).then((response) => {
+        state.client.reactions.update(response.id, {"text":text} ).then(response => {
+          console.log('updated')
+          console.log(response)
+        })
+      })
+    })
+  },
   addReaction({ state }, { type, id, whoNotify, options = null }) {
     return new Promise(resolve => {
       state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {

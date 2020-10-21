@@ -110,7 +110,7 @@
     <div v-if="reply && showReplyMessage" class="mb-3 mr-3 ml-16">
       <component 
         v-bind:is="'PostComments'"
-        v-for="(childComment, index2) of childComments"
+        v-for="(childComment, index2) of comment.latest_children.comment"
         :key="index2"
         :comment="childComment"
         :reply="false"
@@ -134,6 +134,7 @@
           </v-avatar>
         </v-badge>
         <v-text-field
+          v-model="reply_data"
           class="ml-3"
           dense
           filled
@@ -145,9 +146,9 @@
         />
       </div>
     </div>
-    <div v-else @click="showReplyMessage = !showReplyMessage" class="mr-3 ml-16 mb-3 text-caption cursor-hover underline comment-btn pointer">
+    <div v-else @click="showReplyMessage = !showReplyMessage" class="mr-3 ml-16 mb-1 text-caption cursor-hover underline comment-btn pointer">
       <template v-if="reply">
-        {{ childComments.length !== 0 ? childComments.length + ' replies' : '' }}
+        {{ comment.latest_children.comment.length !== 0 ? comment.latest_children.comment.length + ' replies' : '' }}
       </template>
     </div>
   </div>
@@ -177,7 +178,8 @@ export default {
     deleteCommentDiaLog: false,
     updatedComment: '',
     showDialog: false,
-    childComments: []
+    childComments: [],
+    reply_data: ''
   }),
   computed: {
     ...mapGetters('GSFeed', {
@@ -194,8 +196,9 @@ export default {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
     },
   },
-  created() {
-    this.retrieveChildReactions()
+  async created() {
+    console.log(this.comment)
+    await this.$store.dispatch('GSFeed/retrieveFeed')
     if(this.comment.latest_children.like !== undefined) {
       let filteredLikesByCurrentUser = this.comment.latest_children.like.filter((element) => {
         return this.client.userId == element.user_id
@@ -204,21 +207,11 @@ export default {
         this.likeState = true
       }
     }
-
-    // console.log(this.comment)
-    // this.$store.dispatch('GSFeed/retrieveActivityReactions', this.comment.activity_id).then(response => {
-    //   console.log(response)
-    //   console.log('that was the comment response')
-    // })
-
-    // this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
-    //   console.log(response)
-    //   console.log('that was the child response')
-    // })
   },
   methods: {
-    retrieveChildReactions() {
-      this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
+    async retrieveChildReactions() {
+      await this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
+        console.log(response.results)
         this.childComments = response.results
         this.updateCommentShow = false
       })
@@ -228,9 +221,8 @@ export default {
         id: this.comment.id,
         text: this.updatedComment
       }
-      let self = this
       this.$store.dispatch('GSFeed/updateReaction', data).then(async response => {
-        self.retrieveChildReactions()
+        await this.$store.dispatch('GSFeed/retrieveFeed')
       })
     },
     cancelUpdate() {
@@ -252,39 +244,12 @@ export default {
     },
     async pushChildComment() {
       console.log('wait to upload child comment')
-      // this.showSkeleton = true
-      // const payload = {
-      //   id: activity.id,
-      //   type: 'comment',
-      //   options: {
-      //     text: this.comment_data
-      //   }
-      // }
-      // let self = this
-      // this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-      //   await this.$store.dispatch('GSFeed/retrieveFeed')
-      //   this.showSkeleton = false
-      // })
-
-      // if (!this.data.comments) {
-      //   this.data.comments = []
-      // }
-      // this.data.comments.push({
-      //   name: `${this.user.firstName} ${this.user.lastName}`,
-      //   imageUrl: this.get_user_data().imageUrl,
-      //   message: this.comment_data,
-      //   reactions: {
-      //     likes: 0,
-      //     enchants: 0,
-      //     unlikes: 0
-      //   },
-      //   timestamps: {
-      //     created: '1 min'
-      //   }
-      // })
-      // await this.$store.dispatch('GSFeed/setFeed')
-      // this.comment_data = ''
-
+      if(this.reply_data.trim() == '') return true
+      this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: this.reply_data}).then(async response => {
+        console.log(response)
+        await this.$store.dispatch('GSFeed/retrieveFeed')
+        this.showReplyMessage = true
+      })
     },
     likeReaction() {
       let addLike = false
