@@ -46,35 +46,46 @@ const mutations = {
 }
 
 const actions = {
+  addChildReaction({ state }, comment ) {
+    return new Promise(resolve => {
+      state.client.reactions.addChild("like", comment, state.client.id).then(response => {
+        resolve(response)
+      })
+    })
+  },
   addReaction({ state }, { type, id, whoNotify, options = null }) {
     return new Promise(resolve => {
       state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {
-        // let comment = client.reactions.add(
-        //   "comment",
-        //   activity_id,
-        //   user_id="mike",
-        //   data={"text": "@thierry great post!"},
-        //   target_feeds=["notification:thierry"],
-        // )
-        // this is just to prove it works to add child reactions like and comment
-        let comment = response
-        state.client.reactions.addChild("like", comment, state.client.id)
-        // state.client.reactions.addChild(
-        //   "comment", 
-        //    comment, 
-        //    state.client.id
-        // ).then((response) => {
-        //   state.client.reactions.update(response.id, {"text":"Thanks @mike"} ).then(response => {
-        //     console.log('updated')
-        //     console.log(response)
-        //   })
-        // }).then((response) => {
-        //   console.log(response)
-        // })
-        // .catch(e => console.log(e))
-
         resolve(response)
       })
+    //   state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {
+    //     // let comment = client.reactions.add(
+    //     //   "comment",
+    //     //   activity_id,
+    //     //   user_id="mike",
+    //     //   data={"text": "@thierry great post!"},
+    //     //   target_feeds=["notification:thierry"],
+    //     // )
+    //     // this is just to prove it works to add child reactions like and comment
+    //     let comment = response
+    //     state.client.reactions.addChild("like", comment, state.client.id)
+    //     // state.client.reactions.addChild(
+    //     //   "comment", 
+    //     //    comment, 
+    //     //    state.client.id
+    //     // ).then((response) => {
+    //     //   state.client.reactions.update(response.id, {"text":"Thanks @mike"} ).then(response => {
+    //     //     console.log('updated')
+    //     //     console.log(response)
+    //     //   })
+    //     // }).then((response) => {
+    //     //   console.log(response)
+    //     // })
+    //     // .catch(e => console.log(e))
+
+    //   state.client.reactions.addChild("like", comment, state.client.userId).then(response => {
+    //     resolve(response)
+    //   })
     })
   },
   addActivity({ state }, payload) {
@@ -140,6 +151,15 @@ const actions = {
         commit('SET_TIMELINE', results)
         resolve(true)
       }).catch(e => reject(e))
+    })
+  },
+  retrieveActivityReactions({ state }, id) {
+    return new Promise(async (resolve, reject) => {
+      const reactions = await state.client.reactions.filter({
+        'activity_id': id,
+        'kind': 'comment'
+      });
+      resolve(reactions)
     })
   },
   retrieveChildReactions({ state }, reaction_id) {

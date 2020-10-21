@@ -384,7 +384,7 @@
       ></v-skeleton-loader>
       <div
         v-if="showComments"
-        class="pb-3 px-5"
+        class="pb-1 px-5"
       >
         <post-comments
           v-for="(comment, index) of data.latest_reactions.comment"
@@ -478,7 +478,6 @@ export default {
     authorPostItem() {
       let authorPostData = this.data.actor
       if(typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
-      console.log(authorPostData)
       return authorPostData
     }
   },
@@ -491,7 +490,6 @@ export default {
       this.data.actor = JSON.parse(this.data.actor);
     }
     this.updateMessage = this.data.message
-    console.log(this.data.latest_reactions)
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -645,7 +643,7 @@ export default {
   display: none;
 }
 .emoji-component.post {
-  bottom: -130px;
+  bottom: -240px;
 }
 .post-item .v-skeleton-loader__avatar {
   width: 49px !important;

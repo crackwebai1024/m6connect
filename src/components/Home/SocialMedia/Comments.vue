@@ -10,7 +10,7 @@
             <v-card-subtitle class="py-0 comment-user-text mb-1">{{comment.user.data.name}}</v-card-subtitle>
             <v-card-text class="comment-text py-0" v-line-clamp="4">{{comment.data.text}}</v-card-text>
             <v-card elevation="1" class="likes-comment absolute right-0 rounded-xl px-2" flat >
-              <v-icon size="13" class="blue--text">mdi-thumb-up-outline</v-icon>
+              <v-icon size="13" class="blue--text">{{ likeIcon }}</v-icon>
               <span class="text-caption ml-1">{{ comment.children_counts.like || 0 }}</span>
             </v-card>
           </v-card>
@@ -30,7 +30,7 @@
             </template>
 
             <v-list class="d-flex grey lighten-3 py-0 top-0">
-              <v-list-item class="px-2" @click="updateCommentShow = true">
+              <v-list-item class="px-2" @click="showUpdateInputs">
                 <v-list-item-title class="text-caption px-0">Edit</v-list-item-title>                
               </v-list-item>
               <v-list-item class="px-2" @click="deleteCommentDiaLog = true">
@@ -41,7 +41,7 @@
         </div>
         <template v-else>
           <v-text-field
-            v-model="updatedComment"
+            v-model="comment.data.text"
             append-icon="mdi-emoticon-happy-outline"
             filled
             label="Edit Comment"
@@ -67,7 +67,7 @@
         <template v-if="!updateCommentShow">
           <div class="px-3 py-1">
             <v-row>
-              <span @click="like_state = !like_state" :class="likeClass + 'cursor-hover underline comment-btn pointer'">Like</span>
+              <span @click="likeReaction" :class="likeClass + 'cursor-hover underline comment-btn pointer'">Like</span>
               <div class="px-1">·</div>
               <span v-if="reply" @click="showReplyMessage = !showReplyMessage" class="cursor-hover underline comment-btn pointer">Reply</span>
               <div v-if="reply" class="px-1">·</div>
@@ -155,6 +155,7 @@
 <script>
 import VEmojiPicker from 'v-emoji-picker'
 import PostComments from './Comments'
+import { mapGetters } from 'vuex'
 
 export default {
   name: "PostComments",
@@ -169,9 +170,8 @@ export default {
     userData: Object
   },
   data: () => ({
-    like_state: false,
+    likeState: false,
     toggle_exclusive: 2,
-    like_icon: "mdi-thumb-up-outline",
     showReplyMessage: false,
     updateCommentShow: false,
     deleteCommentDiaLog: false,
@@ -180,33 +180,56 @@ export default {
     childComments: []
   }),
   computed: {
+    ...mapGetters('GSFeed', {
+      client: 'getClient'
+    }),
     likeClass() {
-      return this.like_state ? 'blue--text ' : ''
+      return this.likeState ? 'blue--text ' : ''
     },
     likeQuantity() {
-      let quantity = this.like_state ? this.comment.reactions.likes + 1 : this.comment.reactions.likes
+      let quantity = this.likeState ? this.comment.reactions.likes + 1 : this.comment.reactions.likes
       return quantity
-    }
+    },
+    likeIcon() {
+      return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
+    },
   },
   created() {
     this.retrieveChildReactions()
+    if(this.comment.latest_children.like !== undefined) {
+      let filteredLikesByCurrentUser = this.comment.latest_children.like.filter((element) => {
+        return this.client.userId == element.user_id
+      })
+      if(filteredLikesByCurrentUser.lenght !== 0) {
+        this.likeState = true
+      }
+    }
+
+    // console.log(this.comment)
+    // this.$store.dispatch('GSFeed/retrieveActivityReactions', this.comment.activity_id).then(response => {
+    //   console.log(response)
+    //   console.log('that was the comment response')
+    // })
+
+    // this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
+    //   console.log(response)
+    //   console.log('that was the child response')
+    // })
   },
   methods: {
     retrieveChildReactions() {
       this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
         this.childComments = response.results
+        this.updateCommentShow = false
       })
     },
     updateComment() {
-      console.log('updating')
-      console.log(this.updatedComment)
       let data = {
         id: this.comment.id,
         text: this.updatedComment
       }
       let self = this
       this.$store.dispatch('GSFeed/updateReaction', data).then(async response => {
-        this.updateCommentShow = false
         self.retrieveChildReactions()
       })
     },
@@ -222,9 +245,9 @@ export default {
       this.toogleDialogEmoji()
     },
     deleteComment() {
-      this.deleteCommentDiaLog = false
       this.$store.dispatch('GSFeed/removeReaction', this.comment.id).then(async response => {
         await this.$store.dispatch('GSFeed/retrieveFeed')
+        this.deleteCommentDiaLog = false
       })
     },
     async pushChildComment() {
@@ -263,6 +286,37 @@ export default {
       // this.comment_data = ''
 
     },
+    likeReaction() {
+      let addLike = false
+      if(this.comment.latest_children.like !== undefined) {
+        let filteredLikesByCurrentUser = this.comment.latest_children.like.filter((element) => {
+          return this.client.userId == element.user_id
+        })
+        if(filteredLikesByCurrentUser.lenght !== 0) {
+          filteredLikesByCurrentUser.forEach(item => {
+            this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
+              await this.$store.dispatch('GSFeed/retrieveFeed')
+              this.likeState = false
+            })
+          })
+        } else {
+          addLike = true
+        }
+      } else {
+        addLike = true
+      }
+
+      if(addLike) {
+        this.$store.dispatch('GSFeed/addChildReaction', this.comment).then(async response => {
+          await this.$store.dispatch('GSFeed/retrieveFeed')
+          this.likeState = true
+        })
+      }
+    },
+    showUpdateInputs() {
+      this.updatedComment = this.comment.data.text
+      this.updateCommentShow = true
+    }
   },
 };
 </script>
