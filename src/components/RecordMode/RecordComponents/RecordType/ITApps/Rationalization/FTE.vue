@@ -20,7 +20,7 @@
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </template>
-              <delete-dialog :element="'rationalization cost'" @closeDeleteModal="beforeDelete" />
+              <delete-dialog :element="'rationalization FTE'" @closeDeleteModal="beforeDelete" />
             </v-dialog>
           </v-card-title>
           <v-card-text class="form-labels px-16">
