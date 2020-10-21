@@ -24,7 +24,7 @@
                 :src="user.pic"
               />
               <template v-else>
-                <span class="text-uppercase white--text">{{ data.actor.data.name.charAt(0) }}</span>
+                <span class="text-uppercase white--text">{{ authorPostItem.data.name.charAt(0) }}</span>
               </template>
             </v-avatar>
 
@@ -39,7 +39,7 @@
                 class="cursor-hover font-weight-bold line-height-1 size-15 underline"
                 style="margin-bottom: 2px;"
               >
-                {{ data.actor.data.name }}
+                {{ authorPostItem.data.name }}
               </div>
               <div class="d-flex grey--text line-height-1 text-caption">
                 <!--                <div class="grey&#45;&#45;text text&#45;&#45;darken-1">-->
@@ -474,6 +474,12 @@ export default {
     },
     likeIcon() {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
+    },
+    authorPostItem() {
+      let authorPostData = this.data.actor
+      if(typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
+      console.log(authorPostData)
+      return authorPostData
     }
   },
   created() {
