@@ -148,7 +148,7 @@
     </div>
     <div v-else @click="showReplyMessage = !showReplyMessage" class="mr-3 ml-16 mb-1 text-caption cursor-hover underline comment-btn pointer">
       <template v-if="reply">
-        {{ comment.latest_children.comment.length !== 0 ? comment.latest_children.comment.length + ' replies' : '' }}
+        {{ replyLinkMessage }}
       </template>
     </div>
   </div>
@@ -195,6 +195,9 @@ export default {
     likeIcon() {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
     },
+    replyLinkMessage() {
+      return this.comment.children_counts.comment != 0 && this.comment.children_counts.comment != undefined ? this.comment.children_counts.comment + ' replies' : ''
+    }
   },
   async created() {
     console.log(this.comment)
