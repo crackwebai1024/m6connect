@@ -24,7 +24,7 @@
                 :src="user.pic"
               />
               <template v-else>
-                <span class="text-uppercase white--text">{{ data.actor.data.name.charAt(0) }}</span>
+                <span class="text-uppercase white--text">{{ authorPostItem.data.name.charAt(0) }}</span>
               </template>
             </v-avatar>
 
@@ -39,7 +39,7 @@
                 class="cursor-hover font-weight-bold line-height-1 size-15 underline"
                 style="margin-bottom: 2px;"
               >
-                {{ data.actor.data.name }}
+                {{ authorPostItem.data.name }}
               </div>
               <div class="d-flex grey--text line-height-1 text-caption">
                 <!--                <div class="grey&#45;&#45;text text&#45;&#45;darken-1">-->
@@ -58,20 +58,23 @@
           <v-menu
             bottom
             left
-            nudge-left
-            offset-y
           >
-            <template v-slot:activator="{ on }">
-              <v-icon :on="on">
-                mdi-dots-vertical
-              </v-icon>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                icon
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
             </template>
-            <v-list>
-              <v-list-item @click="()=> {}">
-                Edit Post
+
+            <v-list class="grey lighten-4">
+              <v-list-item @click="updatePostShow = true">
+                <v-list-item-title>Edit Post</v-list-item-title>                
               </v-list-item>
-              <v-list-item @click="()=> {}">
-                Delete Post
+              <v-list-item @click="deleteDiaLog = true">
+                <v-list-item-title>Delete Post</v-list-item-title>                
               </v-list-item>
             </v-list>
           </v-menu>
@@ -79,8 +82,54 @@
       </v-card-title>
 
       <div>
-        <div class="px-5 py-4">
-          {{ data.message }}
+        <div class="px-5 pt-4">
+          <template v-if="!updatePostShow">
+            {{ data.message }}
+          </template>
+          <div 
+            v-else
+            class="d-flex"
+          >
+            <v-textarea
+              class="mb-0"
+              outlined
+              name="input-7-4"
+              label="Edit Post Message"
+              @keyup.esc="cancelMessage"
+              @keyup.enter="editMessage('inputMessage-' + index)"
+              v-model="updateMessage"
+            ></v-textarea>
+            <div class="d-flex flex-column">
+              <v-btn
+                class="ml-2"
+                icon
+                color="grey"
+                @click="toogleDialogEmoji"
+              >
+                <v-icon size="22">
+                  mdi-emoticon-happy-outline
+                </v-icon>
+              </v-btn>
+              <v-btn @click="cancelUpdate" class="ml-2" icon color="red">
+                <v-icon size="22">mdi-close</v-icon>
+              </v-btn>
+              <v-btn @click="updatePost(data)" :disabled="data.message == updateMessage" class="ml-2" icon color="green accent-3">
+                <v-icon size="22">mdi-checkbox-marked-circle-outline</v-icon>
+              </v-btn>
+            </div>
+            <!-- Emoji Picker -->
+            <div
+              class="relative"
+            >
+              <v-emoji-picker
+                v-show="showDialog"
+                class="absolute card-custom-shadow emoji-component grey lighten-5 post right-0 z-10"
+                label-search="Search"
+                lang="en"
+                @select="onSelectEmoji"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <!--IMAGES-->
@@ -222,6 +271,12 @@
             @click="likeActivity(data)"
           >
             {{ contLikes() }}
+            <v-progress-circular
+              v-show="progressLike"
+              size="10"
+              width="1"
+              indeterminate
+            ></v-progress-circular>
           </div>
           <v-spacer />
           <div
@@ -229,7 +284,7 @@
             @click="showCommentsPost"
           >
             Comments
-            <span>{{ $h.dg(data, 'comments', '').length || 0 }}</span>
+            <span>{{ data.reaction_counts.comment || 0 }}</span>
           </div>
         </v-row>
       </v-card-actions>
@@ -304,8 +359,8 @@
         >
           <v-avatar size="48">
             <img
-              :alt="user.name"
-              :src="user.imgSrc"
+              :alt="client.currentUser.data.name"
+              :src="client.currentUser.data.image"
             >
           </v-avatar>
         </v-badge>
@@ -322,90 +377,119 @@
           @keyup.enter="pushComment(data)"
         />
       </v-col>
+      <v-skeleton-loader
+        v-if="showComments && showSkeleton"
+        class="post-item px-1 my-1"
+        type="list-item-avatar-two-line"
+      ></v-skeleton-loader>
       <div
         v-if="showComments"
-        class="pb-3 px-5"
+        class="pb-1 px-5"
       >
         <post-comments
-          v-for="(comment, index) of data.comments"
+          v-for="(comment, index) of data.latest_reactions.comment"
           :key="index"
           :comment="comment"
           :reply="true"
           :size="48"
-        >
-          <div>
-            <post-comments
-              v-for="(nested_comment, index2) of comment.nested_comments"
-              :key="index2"
-              :comment="nested_comment"
-              :reply="false"
-              :size="36"
-            />
-            <div class="d-flex">
-              <v-badge
-                bottom
-                class="mr-3"
-                color="green accent-3"
-                dot
-                offset-x="10"
-                offset-y="10"
-              >
-                <v-avatar size="37">
-                  <img
-                    :alt="user.name"
-                    :src="user.imgSrc"
-                  >
-                </v-avatar>
-              </v-badge>
-              <v-text-field
-                dense
-                filled
-                height="35"
-                hide-details
-                placeholder="Write a reply..."
-                rounded
-              />
-            </div>
-          </div>
-        </post-comments>
+          :userData="client.currentUser.data"
+        />
       </div>
     </div>
+    <v-dialog
+      v-model="deleteDiaLog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Are you sure?
+        </v-card-title>
+        <v-card-text>Do you want to remove '{{ data.message }}'? </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deleteDiaLog = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="deletePost(data)"
+          >
+            Agree
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
+import VEmojiPicker from 'v-emoji-picker'
 
 export default {
   name: 'PostItem',
   components: {
-    PostComments
+    PostComments,
+    VEmojiPicker
   },
   props: {
-    data: Object
+    data: {
+      type: [String, Object],
+      default: () => {}
+    }
   },
   data: () => ({
-    likeIcon: 'mdi-thumb-up-outline',
+    showBtnsPost: false,
     showComments: false,
     picture_items: [],
     likeState: false,
     all_images: false,
     comment_data: '',
     rotate: '',
-    user: {
-      name: 'John Doe',
-      imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'
-    }
+    user: {},
+    deleteDiaLog: false,
+    updatePostShow: false,
+    updateMessage: '',
+    // Emoji Dialog
+    showDialog: false,
+    showSkeleton: false,
+    progressLike: false
   }),
   computed: {
     ...mapGetters(['get_user_data']),
+    ...mapGetters('GSFeed', {
+      timeline: 'getTimeline',
+      feed: 'getFeed',
+      client: 'getClient'
+    }),
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
+    },
+    likeIcon() {
+      return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
+    },
+    authorPostItem() {
+      let authorPostData = this.data.actor
+      if(typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
+      return authorPostData
     }
   },
   created() {
     // this.picture_items = this.data.images.slice(0, 4)
+    if (this.data.own_reactions.like !== undefined) {
+      this.likeState = true
+    }
+    if(typeof this.data.actor === 'string'){
+      this.data.actor = JSON.parse(this.data.actor);
+    }
+    this.updateMessage = this.data.message
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
@@ -425,28 +509,36 @@ export default {
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
       this.showComments = !this.showComments
-      this.$nextTick(() => this.$refs.currentUserComment.focus())
+      if (!this.$refs.currentUserComment) {
+        this.$nextTick(() => this.$refs.currentUserComment.focus())
+      }
     },
     likeActivity(activity) {
+      if (this.progressLike) return true
+      this.progressLike = true
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
-          this.$store.dispatch('GSFeed/removeReaction', item.id)
+          this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
+            await this.$store.dispatch('GSFeed/retrieveFeed')
+            this.likeState = false
+            this.progressLike = false
+          })
         })
-        this.likeState = false
       } else {
         const payload = {
           id: activity.id,
-          type: 'like'
+          type: 'like',
+          whoNotify: activity.actor.id
         }
-        this.likeState = true
-        this.$store.dispatch('GSFeed/addReaction', payload)
+        this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
+          this.likeState = true
+          this.progressLike = false
+          this.$store.dispatch('GSFeed/retrieveFeed')
+        })
       }
-
-      this.likeIcon = this.likeState
-        ? 'mdi-thumb-up'
-        : 'mdi-thumb-up-outline'
     },
-    pushComment(activity) {
+    async pushComment(activity) {
+      this.showSkeleton = true
       const payload = {
         id: activity.id,
         type: 'comment',
@@ -454,9 +546,12 @@ export default {
           text: this.comment_data
         }
       }
-      this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
-        console.log(response)
+      let self = this
+      this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
+        await this.$store.dispatch('GSFeed/retrieveFeed')
+        this.showSkeleton = false
       })
+
       if (!this.data.comments) {
         this.data.comments = []
       }
@@ -473,7 +568,28 @@ export default {
           created: '1 min'
         }
       })
+      await this.$store.dispatch('GSFeed/setFeed')
       this.comment_data = ''
+
+    },
+    async deletePost(activity) {
+      this.$store.dispatch('GSFeed/removeActivity', activity.id)
+      this.deleteDiaLog = false
+      
+      // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+      //   this.activityText = ''
+      // })
+    },
+    async updatePost(activity) {
+      activity.message = this.updateMessage;
+      
+      this.$store.dispatch('GSFeed/updateActivity', activity)
+      this.updatePostShow = false
+      this.updateMessage = this.data.message
+    },
+    cancelUpdate() {
+      this.updatePostShow = false
+      this.updateMessage = this.data.message
     },
     print() {
       // console.log(this.data.comments.nested_comments)
@@ -483,6 +599,13 @@ export default {
     },
     lineColor(approval) {
       return approval ? 'green accent-3 ' : 'grey '
+    },
+    toogleDialogEmoji() {
+      this.showDialog = !this.showDialog
+    },
+    onSelectEmoji(emoji) {
+      this.updateMessage += emoji.data
+      this.toogleDialogEmoji()
     },
     pendingApprovals(approvals) {
       let pendingApprovals = 0
@@ -515,5 +638,15 @@ export default {
 .profile-component .v-subheader, .profile-component .v-card {
   box-shadow: none !important;
   border-radius: 0 !important;
+}
+.v-text-field__details {
+  display: none;
+}
+.emoji-component.post {
+  bottom: -240px;
+}
+.post-item .v-skeleton-loader__avatar {
+  width: 49px !important;
+  height: 49px !important;
 }
 </style>

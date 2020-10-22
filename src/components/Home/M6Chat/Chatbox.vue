@@ -6,7 +6,7 @@
     elevation="3"
   >
     <div
-      class="align-center chat-title d-flex justify-space-between px-4"
+      class="align-center chat-title d-flex justify-space-between px-3"
       :class="[minimized ? 'blue lighten-2' : '']"
       @click="minimizeChatBox"
     >
@@ -51,7 +51,7 @@
             >
           </v-avatar>
         </v-badge>
-        <div class="ml-1">
+        <div>
           <p
             class="font-weight-medium ma-0 pa-0 text-body-2"
             :class="[minimized ? 'white--text' : '']"
@@ -82,34 +82,35 @@
           <template v-slot:activator="{ on, attrs }">
             <v-hover
               v-slot:default="{ hover }">
-              <div>
-                <v-card v-if="hover" class="absolute settings-message top-0 p-2">
-                  <v-icon
-                    size="18"
+              <div class="relative">
+                <v-card v-if="hover" class="absolute max-w-none pa-1 bottom-0 left-0 w-fit z-20" style="margin-bottom: -64px; margin-left: -130px;">
+                  <v-btn
                     @click="messageEdit = channel.data.id + '-channel'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-delete
-                  </v-icon>
-                  <v-icon
-                    size="18"
+                    height="25"
+                    class="black--text capitalize px-3 text-caption w-full"
+                    elevation="0"
+                    v-bind="attrs" v-on="on"
+                  >Delete Conversation</v-btn>
+                  <v-btn
                     @click="messageEdit = channel.data.id + '-info'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-information-outline
-                  </v-icon>
-                  <v-icon
+                    height="25"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                  >Information</v-btn>
+                  <v-btn
                     v-if="channel.data.created_by.id === user.id"
                     @click="messageEdit = channel.data.id + '-add-user'"
-                    size="18"
-                    v-bind="attrs" v-on="on">
-                    mdi-account-multiple-plus-outline
-                  </v-icon>
-                  <v-icon
+                    height="25"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                  >Add Users</v-btn>
+                  <v-btn
                     v-if="channel.data.created_by.id === user.id"
                     @click="messageEdit = channel.data.id + '-edit'"
-                    size="18"
-                    v-bind="attrs" v-on="on">
-                    mdi-pencil
-                  </v-icon>
+                    height="25"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                  >Edit Configuration</v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
@@ -134,14 +135,15 @@
           <template v-slot:activator="{ on, attrs }">
             <v-hover
               v-slot:default="{ hover }">
-              <div>
-                <v-card v-if="hover" class="absolute settings-message top-2 mr-6 p-2">
-                  <v-icon
-                    size="18"
-                    @click="messageEdit = channel.membersInChannel.user.id + 'channel'"
-                    v-bind="attrs" v-on="on" >
-                    mdi-delete
-                  </v-icon>
+              <div class="relative">
+                <v-card v-if="hover" class="absolute max-w-none pa-1 bottom-0 left-0 w-fit z-20" style="margin-bottom: -90px; margin-left: -130px;">
+                  <v-btn
+                    @click="messageEdit = channel.data.id + '-channel'"
+                    height="25"
+                    class="black--text capitalize px-3 text-caption w-full"
+                    elevation="0"
+                    v-bind="attrs" v-on="on"
+                  >Delete Group</v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
@@ -196,16 +198,19 @@
         >
           <template v-if="user.id === message.user.id">
             <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
-            <div v-if="messageEdit === message.id">
+            <div 
+              v-if="messageEdit === message.id"
+              class="mb-3 ml-2"
+            >
               <input
-                ref="inputMessage"
+                :ref="'inputMessage-' + index"
                 v-model="messageEditInput"
-                class="h-full outline-none px-2 text-body-1"
+                class="h-full mr-2 px-2 text-body-1"
                 size="8"
                 @keyup.esc="cancelMessage"
-                @keyup.enter="editMessage">
+                @keyup.enter="editMessage('inputMessage-' + index)">
               <v-btn
-                class="btn-chat-shadow grey--text mr-2"
+                class="btn-chat-shadow grey--text mb-3 mr-2"
                 fab
                 height="23"
                 width="23"
@@ -214,22 +219,6 @@
               >
                 <v-icon size="22">
                   mdi-emoticon-happy-outline
-                </v-icon>
-              </v-btn>
-              <v-btn
-                class="btns-message white--text"
-                fab
-                height="25"
-                icon
-                width="25"
-                x-small
-                @click="editMessage"
-              >
-                <v-icon
-                  class="-rotate-45"
-                  size="13"
-                >
-                  mdi-send
                 </v-icon>
               </v-btn>
             </div>
@@ -265,16 +254,23 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-hover
                   v-slot:default="{ hover }">
-                  <div style="position: relative;">
-                    <v-card v-if="hover" class="settings-message">
-                        <v-icon
-                          @click="messageEdit = message.id+message.id"
-                          v-bind="attrs" v-on="on" >
-                          mdi-delete
-                        </v-icon>
-                      <v-icon @click="edit(message)">
-                        mdi-pencil
-                      </v-icon>
+                  <div class="pointer relative">
+                    <v-card v-if="hover" class="absolute d-flex max-w-none message-btns pa-1 rounded-pill top-0 left-0 w-fit mb-1 z-20">
+                      <v-btn
+                        @click="messageEdit = message.id+message.id"
+                        height="25"
+                        rounded
+                        class="black--text capitalize px-3 text-caption"
+                        elevation="0"
+                        v-bind="attrs" v-on="on"
+                      >Delete</v-btn>
+                      <v-btn
+                        @click="edit(message)"
+                        height="25"
+                        rounded
+                        class="black--text capitalize ml-1 px-1 text-caption"
+                        elevation="0"
+                      >Edit</v-btn>
                     </v-card>
                     <v-icon>
                       mdi-settings-helper
@@ -691,7 +687,7 @@ export default {
       this.messageEdit = '';
       this.messageEditInput = '';
     },
-    editMessage(){
+    editMessage(nameReference){
       if(this.messageEditInput !== ''){
         this.updateMessage({ 
           id: this.messageEdit, 
@@ -739,7 +735,7 @@ export default {
         result.show = true
       }
       if (result.show) {
-        let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 2678400000)
+        let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 86400000)
         switch(dayCurrentWeekDifference) {
           case 0:
             result.value = currentMessageTime.toString().substr(0,15)
@@ -940,12 +936,9 @@ export default {
   background: transparent !important;
   padding: 0;
 }
-.settings-message {
-  position: absolute; 
-  padding: 1px; 
-  right: 1.5vw; 
-  top: 1vh; 
-  z-index: 1;
+.message-btns {
+  margin-left: -130px;
+  margin-top: -13px;
 }
 .mdi-file-outline::before, .mdi-image::before{
   color: #fff;

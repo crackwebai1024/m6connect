@@ -60,7 +60,7 @@
           rounded
           single-line
           solo-inverted
-          @keyup.enter="filter_posts(['author', 1])"
+          @keyup.enter="addActivity"
         >
           <template v-slot:append>
             <v-row class="align-center d-flex">
@@ -123,6 +123,11 @@
         </v-text-field>
       </template>
     </header-component>
+    <v-skeleton-loader
+      v-if="showSkeletonPost"
+      class="my-3"
+      type="list-item-avatar-three-line, actions"
+    ></v-skeleton-loader>
     <posts-list />
   </v-container>
 </template>
@@ -169,7 +174,8 @@ export default {
     ],
     item: 'Everyone',
     imageFiles: [],
-    posts_list: [{}]
+    posts_list: [{}],
+    showSkeletonPost: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -187,14 +193,18 @@ export default {
       if (this.activityText.trim() === '') {
         return
       }
+      this.showSkeletonPost = true
       const activity = {
         message: this.activityText,
+        foreign_id: `post-${this.activityText.length}-${Date.now()}`,
         verb: 'post',
+        time: new Date(),
         object: 1,
         images: this.imageFiles
       }
+      this.activityText = ''
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
-        this.activityText = ''
+        this.showSkeletonPost = false
       })
     },
     onImagesChange(e) {

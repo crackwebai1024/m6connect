@@ -5,32 +5,38 @@ const defaultState = {
   gsToken: '',
   client: {},
   feed: {},
-  timeline: []
+  feedNotification: {},
+  timeline: [],
+  appGsId: process.env.VUE_APP_GS_ID,
+  appId: process.env.VUE_APP_ID
 }
 const state = () => defaultState
 
 const getters = {
+  getFeedNotification: state => state.feedNotification,
   getTimeline: state => state.timeline,
   getFeed: state => state.feed,
   getClient: state => state.client
 }
 
 const mutations = {
-  PUSH_ACTIVITY: (state, payload) => {
-    state.timeline.unshift(payload)
-  },
   SET_GS_TOKEN: (state, payload) => state.gsToken = payload,
   SET_CLIENT: (state, token) => {
     state.client = connect(process.env.VUE_APP_GS_ID, token, process.env.VUE_APP_ID)
   },
   SET_FEED: async (state, userID) => {
+    state.feedNotification = await state.client.feed(
+      'notification',
+      userID,
+      state.gsToken
+    )
     state.feed = await state.client.feed(
       'users',
       userID,
       state.gsToken
     )
   },
-  SET_TIMELINE: (state, paylaod) => state.timeline = paylaod,
+  SET_TIMELINE: (state, payload) => state.timeline = payload,
   SET_USER: async (state, payload) => {
     await state.client.setUser(
       payload,
@@ -40,9 +46,29 @@ const mutations = {
 }
 
 const actions = {
-  addReaction({ state }, { type, id, options = null }) {
+  addChildReaction({ state }, comment ) {
     return new Promise(resolve => {
-      state.client.reactions.add(type, id, options).then(response => {
+      state.client.reactions.addChild("like", comment, state.client.id).then(response => {
+        resolve(response)
+      })
+    })
+  },
+  addChildReactionComment({ state }, {comment, text} ) {
+    return new Promise(resolve => {
+      state.client.reactions.addChild(
+        "comment", 
+        comment, 
+        state.client.id
+      ).then((response) => {
+        state.client.reactions.update(response.id, {"text":text} ).then(response => {
+          resolve(response)
+        })
+      })
+    })
+  },
+  addReaction({ state }, { type, id, whoNotify, options = null }) {
+    return new Promise(resolve => {
+      state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {
         resolve(response)
       })
     })
@@ -73,17 +99,30 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
-  pushActivity({ commit }, activities) {
+  removeActivity({ state }, id) {
     return new Promise(resolve => {
-      activities.forEach(item => {
-        commit('PUSH_ACTIVITY', item)
-        resolve(true)
+      state.feed.removeActivity(id).then(response => {
+        resolve(response)
       })
+    })
+  },
+  updateActivity({ state }, updateProperties) {
+    return new Promise(resolve => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, updateProperties).then(res => {
+        resolve(true);
+      });
     })
   },
   removeReaction({ state }, id) {
     return new Promise(resolve => {
       state.client.reactions.delete(id).then(response => {
+        resolve(response)
+      })
+    })
+  },
+  updateReaction({ state }, {id, text}) {
+    return new Promise(resolve => {
+      state.client.reactions.update(id, {"text": text}).then(response => {
         resolve(response)
       })
     })
@@ -96,6 +135,24 @@ const actions = {
         commit('SET_TIMELINE', results)
         resolve(true)
       }).catch(e => reject(e))
+    })
+  },
+  retrieveActivityReactions({ state }, id) {
+    return new Promise(async (resolve, reject) => {
+      const reactions = await state.client.reactions.filter({
+        'activity_id': id,
+        'kind': 'comment'
+      });
+      resolve(reactions)
+    })
+  },
+  retrieveChildReactions({ state }, reaction_id) {
+    return new Promise(async (resolve, reject) => {
+      const reactions = await state.client.reactions.filter({
+        'reaction_id': reaction_id,
+        'kind': 'comment',
+      });
+      resolve(reactions)
     })
   },
   followUser({ state }, { type, id }) {
