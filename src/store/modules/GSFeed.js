@@ -60,8 +60,8 @@ const actions = {
         comment, 
         state.client.id
       ).then((response) => {
-        state.client.reactions.update(response.id, {"text":text} ).then(response => {
-          resolve(response)
+        state.client.reactions.update(response.id, {"text":text} ).then(res => {
+          resolve(res)
         })
       })
     })

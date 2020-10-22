@@ -65,13 +65,14 @@
           <p @click="cancelUpdate" class="text-caption cursor-hover underline comment-btn pointer">Cancel</p>
         </template>
         <template v-if="!updateCommentShow">
-          <div class="px-3 py-1">
+          <div class="px-3 py-3">
             <v-row>
               <span @click="likeReaction" :class="likeClass + 'cursor-hover underline comment-btn pointer'">Like</span>
               <div class="px-1">·</div>
               <span v-if="reply" @click="showReplyMessage = !showReplyMessage" class="cursor-hover underline comment-btn pointer">Reply</span>
               <div v-if="reply" class="px-1">·</div>
-              <span class="cursor-hover underline timestamp">1 week</span>
+              <span class="cursor-hover underline timestamp">
+              {{new Date(comment.created_at).toString().substr(16,5)}} - {{new Date(comment.created_at).toString().substr(0,10)}}</span>
               <v-spacer></v-spacer>
             </v-row>
           </div>

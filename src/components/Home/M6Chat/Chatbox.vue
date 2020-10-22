@@ -47,8 +47,12 @@
           <v-avatar size="42">
             <img
               :alt="channel.name"
+              v-if="users[0].user.image"
               :src="users[0].user.image"
             >
+            <template v-else>
+              <span class="text-uppercase white--text">{{ channel.membersInChannel.user.name.charAt(0) }}</span>
+            </template>
           </v-avatar>
         </v-badge>
         <div>

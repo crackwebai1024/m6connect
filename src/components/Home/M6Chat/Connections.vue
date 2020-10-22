@@ -86,8 +86,8 @@
             size="36"
           >
             <v-img
-              v-if="user.pic"
-              :src="user.pic"
+              v-if="channel.membersInChannel.user.image"
+              :src="channel.membersInChannel.user.image"
             />
             <template v-else>
               <span class="text-uppercase white--text">{{ channel.membersInChannel.user.name.charAt(0) }}</span>
