@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   const Convert = require("./itapp_description");
+//   const Convert = require("@/store/models/itapp_description");
 //
 //   const itappsDescription = Convert.toItappsDescription(json);
 //
@@ -193,6 +193,7 @@ const typeMap = {
         { json: "information_security", js: "information_security", typ: u(undefined, r("InformationSecurity")) },
         { json: "image_info", js: "image_info", typ: u(undefined, r("ImageInfo")) },
         { json: "also_known", js: "also_known", typ: u(undefined, "", a(r("Known"))) },
+        { json: "tags", js: "tags", typ: u(undefined, a(r("Known"))) },
         { json: "formerly_known", js: "formerly_known", typ: u(undefined, "", a(r("Known"))) },
     ], false),
     "abc": o([

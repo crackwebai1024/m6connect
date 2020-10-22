@@ -47,9 +47,19 @@
       >
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline capitalize white--text">{{ titleDialog }}</span>
-          <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-dialog
+            v-if="!dialogMode"
+            v-model="deleteDialog"
+            width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs" v-on="on" icon
+                color="white" >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <delete-dialog :element="'lisense'" @closeDeleteModal="beforeDelete" />
+          </v-dialog>
         </v-card-title>
         <v-card-text class="px-16 py-10 form-labels">
           <v-select
@@ -125,11 +135,16 @@
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
 import {mapActions} from "vuex";
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 export default {
   name: "Licenses",
+  components: {
+    DeleteDialog
+  },
   mixins: [items, validations],
   data: () => ({
+    deleteDialog: false,
     baseColor: 'teal lighten-1',
     itemsName: 'licenses',
     itemInfo: {
@@ -170,6 +185,9 @@ export default {
         details: this.items[0]['details'],
         id: this.items[0]['id']
       });
+    },
+    beforeDelete(decision){
+      decision ? this.deleteItem() : this.deleteDialog = false;
     },
     delete(){
       this.delete_licensing(this.itemInfo.id);

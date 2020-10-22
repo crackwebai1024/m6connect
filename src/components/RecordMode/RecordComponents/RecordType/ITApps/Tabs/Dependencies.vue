@@ -29,7 +29,7 @@
               <div>
                 <p class="mb-0">{{ item.type.value }}</p>
                 <p class="text-caption mb-0">Version {{ item.version }}</p>
-                <p class="text-caption mb-0">App Build {{ item.appBuild.value }}</p>
+                <p v-if="item.appBuild && item.appBuild.value" class="text-caption mb-0">App Build {{ item.appBuild.value }}</p>
               </div>
               <div class="d-flex align-center ml-auto mr-0">
                 <v-btn
@@ -52,9 +52,19 @@
       <v-form ref="form" v-model="valid" class="white">
         <v-card-title :class="baseColor + ' white--text d-flex justify-space-between'">
           <span class="headline capitalize white--text">{{ titleDialog }}</span>
-          <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-dialog
+            v-if="!dialogMode"
+            v-model="deleteDialog"
+            width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs" v-on="on" icon
+                color="white" >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <delete-dialog :element="'dependency'" @closeDeleteModal="beforeDelete" />
+          </v-dialog>
         </v-card-title>
         <v-card-text class="px-16 py-10 form-labels">
           <v-select
@@ -67,6 +77,7 @@
           ></v-select>
           <v-text-field 
             v-model="itemInfo.version"
+            :rules="nameRules"
             label="Version" 
           ></v-text-field>
           <v-select
@@ -132,6 +143,7 @@
                 v-model="itemInfo.remDate"
                 label="Remeditation Date"
                 readonly
+                :rules="textRules"
                 v-bind="attrs"
                 v-on="on"
               ></v-text-field>
@@ -167,6 +179,7 @@
 <script>
 const ItAppDependencies = require("@/store/models/itapp_dependencies");
 const app_settings = require("@/store/models/apps_settings");
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
 import {mapActions} from "vuex";
@@ -177,8 +190,12 @@ export default {
   props:{
     info: Object
   },
+  components: {
+    DeleteDialog
+  },
   data: () => ({
     menu: false,
+    deleteDialog: false,
     loading: true,
     baseColor: 'red darken-2',
     itemsName: 'dependencies',
@@ -214,17 +231,20 @@ export default {
       let data = ItAppDependencies.dependenciesToJson(this.itemInfo);
       data['app_id'] = this.info.id;
       this.post_dependency( data ).then(res => (
-        this.items[this.items.length - 1]['id'] = res.data.dependencie_id
+        this.items[this.items.length - 1]['id'] = res.data.dependency_id
       ));
     },
     put(){
       this.put_dependencies(this.itemInfo);
     },
+    beforeDelete(decision){
+      decision ? this.deleteItem() : this.deleteDialog = false;
+    },
     delete(){
       this.delete_dependency(this.itemInfo.id);
     }
   },
-  created(){
+  mounted(){
     this.get_dependencies(this.info.id).then(
       res => (
         this.items = ItAppDependencies.fromAPI(res.data),

@@ -83,9 +83,19 @@
               @change="onFileChanged"
             >
           </template>
-          <v-btn icon color="white" @click="deleteItem" v-if="!dialogMode">
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-dialog
+            v-if="!dialogMode"
+            v-model="deleteDialog"
+            width="500">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs" v-on="on" icon
+                color="white" >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <delete-dialog :element="itemInfo.contract_name+' contract'" @closeDeleteModal="beforeDelete" />
+          </v-dialog>
         </v-card-title>
         <v-card-text class="px-16 py-10 form-labels">
           <v-container>
@@ -264,14 +274,19 @@
 import {items} from "@/mixins/items";
 import {validations} from "@/mixins/form-validations";
 import {mapActions} from "vuex";
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 export default {
   name: "Contracts",
+  components: {
+    DeleteDialog
+  },
   mixins: [items, validations],
   props:{
     info: Object
   },
   data: () => ({
+    deleteDialog: false,
     menu: false,
     menu1: false,
     menu2: false,
@@ -324,6 +339,9 @@ export default {
     },
     put(){
       this.put_contract(this.itemInfo);
+    },
+    beforeDelete(decision){
+      decision ? this.deleteItem() : this.deleteDialog = false;
     },
     delete(){
       this.delete_contract(this.itemInfo.id);
