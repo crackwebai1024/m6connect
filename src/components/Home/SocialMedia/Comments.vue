@@ -41,7 +41,7 @@
         </div>
         <template v-else>
           <v-text-field
-            v-model="comment.data.text"
+            v-model="updatedComment"
             append-icon="mdi-emoticon-happy-outline"
             filled
             label="Edit Comment"
@@ -200,7 +200,7 @@ export default {
     }
   },
   async created() {
-    console.log(this.comment)
+    this.updatedComment = this.comment.data.text
     await this.$store.dispatch('GSFeed/retrieveFeed')
     if(this.comment.latest_children.like !== undefined) {
       let filteredLikesByCurrentUser = this.comment.latest_children.like.filter((element) => {
@@ -214,18 +214,17 @@ export default {
   methods: {
     async retrieveChildReactions() {
       await this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
-        console.log(response.results)
         this.childComments = response.results
         this.updateCommentShow = false
       })
     },
     updateComment() {
-      let data = {
+      this.$store.dispatch('GSFeed/updateReaction', {
         id: this.comment.id,
         text: this.updatedComment
-      }
-      this.$store.dispatch('GSFeed/updateReaction', data).then(async response => {
+      }).then(async response => {
         await this.$store.dispatch('GSFeed/retrieveFeed')
+        this.updateCommentShow = false
       })
     },
     cancelUpdate() {

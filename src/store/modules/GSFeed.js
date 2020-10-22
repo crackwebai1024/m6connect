@@ -150,9 +150,9 @@ const actions = {
       })
     })
   },
-  updateReaction({ state }, data) {
+  updateReaction({ state }, {id, text}) {
     return new Promise(resolve => {
-      state.client.reactions.update(data.id, {"text": data.text}).then(response => {
+      state.client.reactions.update(id, {"text": text}).then(response => {
         resolve(response)
       })
     })
