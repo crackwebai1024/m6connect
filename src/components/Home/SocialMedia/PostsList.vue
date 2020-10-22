@@ -58,7 +58,6 @@ export default {
     this.feedNotification.get().then(res => {});
     this.feedNotification.subscribe(data => {
       if (data.new.length > 0) {
-        // Aqui se agrega una reaccion :DD
         let newReaction = data.new[0]['object'];
         let objectIndex = this.timeline.indexOf( this.timeline.filter((e) => { return e.id === newReaction['id']})[0] );
 
@@ -69,7 +68,6 @@ export default {
         this.timeline[objectIndex].reaction_counts.like ++;
       }
       if (data.deleted.length > 0) {
-        // Aqui se elimina una reaccion :DD
       }
     });
   }
