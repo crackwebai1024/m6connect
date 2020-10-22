@@ -246,13 +246,13 @@ export default {
       })
     },
     async pushChildComment() {
-      console.log('wait to upload child comment')
-      if(this.reply_data.trim() == '') return true
-      this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: this.reply_data}).then(async response => {
-        console.log(response)
-        await this.$store.dispatch('GSFeed/retrieveFeed')
+      let replyData = this.reply_data
+      this.reply_data = ''
+      if(replyData.trim() == '') return true
+      this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: replyData}).then(async response => {
         this.showReplyMessage = true
       })
+      await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     likeReaction() {
       let addLike = false
