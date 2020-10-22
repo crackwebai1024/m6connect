@@ -61,8 +61,7 @@ const actions = {
         state.client.id
       ).then((response) => {
         state.client.reactions.update(response.id, {"text":text} ).then(response => {
-          console.log('updated')
-          console.log(response)
+          resolve(response)
         })
       })
     })
@@ -72,34 +71,6 @@ const actions = {
       state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {
         resolve(response)
       })
-    //   state.client.reactions.add(type, id, options,  { targetFeeds:  [`notification:${whoNotify}`] }).then(response => {
-    //     // let comment = client.reactions.add(
-    //     //   "comment",
-    //     //   activity_id,
-    //     //   user_id="mike",
-    //     //   data={"text": "@thierry great post!"},
-    //     //   target_feeds=["notification:thierry"],
-    //     // )
-    //     // this is just to prove it works to add child reactions like and comment
-    //     let comment = response
-    //     state.client.reactions.addChild("like", comment, state.client.id)
-    //     // state.client.reactions.addChild(
-    //     //   "comment", 
-    //     //    comment, 
-    //     //    state.client.id
-    //     // ).then((response) => {
-    //     //   state.client.reactions.update(response.id, {"text":"Thanks @mike"} ).then(response => {
-    //     //     console.log('updated')
-    //     //     console.log(response)
-    //     //   })
-    //     // }).then((response) => {
-    //     //   console.log(response)
-    //     // })
-    //     // .catch(e => console.log(e))
-
-    //   state.client.reactions.addChild("like", comment, state.client.userId).then(response => {
-    //     resolve(response)
-    //   })
     })
   },
   addActivity({ state }, payload) {
