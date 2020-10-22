@@ -41,11 +41,15 @@
         </v-menu>
       </template>
       <template v-slot:input>
+        <v-icon size="40" color="primary" v-if="user.profilePic === ''">
+          mdi-account-outline
+        </v-icon>
         <img
+          v-else
           :alt="user.firstName"
           class="mr-1 rounded-circle"
           height="40"
-          :src="user.imgSrc"
+          :src="user.profilePic"
           width="40"
         >
 
