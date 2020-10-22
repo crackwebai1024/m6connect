@@ -393,6 +393,7 @@ export default {
     reponseRecordImg(res) {
       if(res.ok) {
         this.channelImage = res.data.link;
+        this.itemInfo['image_info']['image_url'] = res.data.link;
       } else {
         this.notifDanger('There was an error while saving the file');
       }

@@ -2,6 +2,7 @@
   <v-container>
     <v-subheader class="primary rounded-t white--text">Rationalization Attributes</v-subheader>
     <v-card class="px-3">
+      <v-form v-model="valid">
       <v-row>
         <v-col cols="6">
           <v-select 
@@ -83,9 +84,10 @@
             <v-date-picker v-model="itemInfo.retirement_date" @input="menu = false"></v-date-picker>
           </v-menu>
           <v-spacer></v-spacer>
-          <v-btn :disabled="valid" color="primary" @click="updateItemDescription">Save Changes</v-btn>
+          <v-btn :disabled="!valid" color="primary" @click="updateItemDescription">Save Changes</v-btn>
         </v-col>
       </v-row>
+      </v-form>
     </v-card>
   </v-container>
 </template>
