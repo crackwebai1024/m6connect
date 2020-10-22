@@ -47,11 +47,10 @@ export default {
     ...mapActions('SocialNetworkModule', ['set_posts_data']),
     ...mapActions(['set_user_data']),
     successCallback: () => {
-      console.log('now listening to changes in realtime');
+      return true
     },
     failCallback: data => {
-      alert('something went wrong, check the console logs');
-      console.log(data);
+      return false
     }
   },
   mounted() {

@@ -688,7 +688,6 @@ export default {
       this.messageEditInput = '';
     },
     editMessage(nameReference){
-      console.log(nameReference)
       if(this.messageEditInput !== ''){
         this.updateMessage({ 
           id: this.messageEdit, 
