@@ -109,15 +109,17 @@
       </v-dialog>
     </v-row>
     <div v-if="reply && showReplyMessage" class="mb-3 mr-3 ml-16">
-      <component 
-        v-bind:is="'PostComments'"
-        v-for="(childComment, index2) of comment.latest_children.comment"
-        :key="index2"
-        :comment="childComment"
-        :reply="false"
-        :size="36"
-      >
-      </component>
+      <div>
+        <component 
+          v-bind:is="'PostComments'"
+          v-for="(childComment, index2) of comment.latest_children.comment.slice().reverse()"
+          :key="index2"
+          :comment="childComment"
+          :reply="false"
+          :size="36"
+        >
+        </component>
+      </div>
 
       <div class="d-flex">
         <v-badge

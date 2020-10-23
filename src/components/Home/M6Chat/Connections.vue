@@ -81,7 +81,7 @@
           offset-y="10"
         >
           <v-avatar
-            color="blue"
+            :color="channel.membersInChannel.user.image ? 'transparent' : 'blue'"
             dark
             size="36"
           >

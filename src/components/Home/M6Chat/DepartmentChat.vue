@@ -45,7 +45,7 @@
           offset-x="10"
           offset-y="10">
           <v-avatar
-            color="blue"
+            :color="user.user.profilePic ? 'transparent' : 'blue'"
             dark
             size="36">
             <v-img

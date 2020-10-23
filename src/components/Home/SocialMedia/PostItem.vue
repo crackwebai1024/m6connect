@@ -20,8 +20,8 @@
               size="36"
             >
               <v-img
-                v-if="user.pic"
-                :src="user.pic"
+                v-if="authorPostItem.data.image"
+                :src="authorPostItem.data.image"
               />
               <template v-else>
                 <span class="text-uppercase white--text">{{ authorPostItem.data.name.charAt(0) }}</span>
@@ -377,17 +377,12 @@
           @keyup.enter="pushComment(data)"
         />
       </v-col>
-      <v-skeleton-loader
-        v-if="showComments && showSkeleton"
-        class="post-item px-1 my-1"
-        type="list-item-avatar-two-line"
-      ></v-skeleton-loader>
       <div
-        v-if="showComments"
+        v-if="showComments && data.latest_reactions.comment"
         class="pb-1 px-5"
       >
         <post-comments
-          v-for="(comment, index) of data.latest_reactions.comment"
+          v-for="(comment, index) of data.latest_reactions.comment.slice().reverse()"
           :key="index"
           :comment="comment"
           :reply="true"
@@ -395,6 +390,11 @@
           :userData="client.currentUser.data"
         />
       </div>
+      <v-skeleton-loader
+        v-if="showComments && showSkeleton"
+        class="post-item px-1 my-1"
+        type="list-item-avatar-two-line"
+      ></v-skeleton-loader>
     </div>
     <v-dialog
       v-model="deleteDiaLog"
@@ -476,6 +476,8 @@ export default {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
     },
     authorPostItem() {
+      console.log(this.data)
+      
       let authorPostData = this.data.actor
       if(typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
       return authorPostData
@@ -590,9 +592,6 @@ export default {
     cancelUpdate() {
       this.updatePostShow = false
       this.updateMessage = this.data.message
-    },
-    print() {
-      // console.log(this.data.comments.nested_comments)
     },
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected])
