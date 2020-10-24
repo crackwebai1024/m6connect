@@ -149,32 +149,22 @@ export default {
   },
   data: () => ({
     areas: [
-      { text: 'Everyone', type: 'subtitle' },
-      { text: 'My company', type: 'subtitle' },
-      { text: 'Teams', type: 'title' },
-      { text: 'All my teams', type: 'subtitle' },
-      { text: 'IT Team XY', type: 'subtitle' },
-      { text: 'CPM Team Z', type: 'subtitle' },
-      { text: 'Departments', type: 'title' },
+      { text: 'Everyone',           type: 'subtitle' },
+      { text: 'My company',         type: 'subtitle' },
+      { text: 'Teams',              type: 'title'    },
+      { text: 'All my teams',       type: 'subtitle' },
+      { text: 'IT Team XY',         type: 'subtitle' },
+      { text: 'CPM Team Z',         type: 'subtitle' },
+      { text: 'Departments',        type: 'title'    },
       { text: 'All my departments', type: 'subtitle' },
-      { text: 'Finances', type: 'subtitle' },
-      { text: 'Operations', type: 'subtitle' }
+      { text: 'Finances',           type: 'subtitle' },
+      { text: 'Operations',         type: 'subtitle' }
     ],
     activityText: '',
-    // items:['Everyone', 'My Company', 'All My Teams', 'IT Team XY', 'CPM TeamZ', 'All My Departments', 'Finances', 'Operations'],
     items: [
-      {
-        text: 'Everyone',
-        value: 'Everyone'
-      },
-      {
-        text: 'My posts',
-        value: 'author'
-      },
-      {
-        text: 'My Company',
-        value: 'company'
-      }
+      { text: 'Everyone',   value: 'Everyone' },
+      { text: 'My posts',   value: 'author'   },
+      { text: 'My Company', value: 'company'  }
     ],
     item: 'Everyone',
     imageFiles: [],
@@ -202,10 +192,12 @@ export default {
         message: this.activityText,
         foreign_id: `post-${this.activityText.length}-${Date.now()}`,
         verb: 'post',
+        userID: this.user.id,
         time: new Date(),
         object: 1,
         images: this.imageFiles
       }
+
       this.activityText = ''
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
         this.showSkeletonPost = false

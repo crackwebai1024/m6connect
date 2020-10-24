@@ -15,7 +15,7 @@
           <div class="align-center d-flex">
             <v-avatar
               class="mr-2"
-              color="blue"
+              :color="authorPostItem.data.image ? 'transparent' : 'blue'"
               dark
               size="36"
             >
@@ -450,6 +450,7 @@ export default {
     showComments: false,
     picture_items: [],
     likeState: false,
+    profileImaga: '',
     all_images: false,
     comment_data: '',
     rotate: '',
@@ -463,7 +464,7 @@ export default {
     progressLike: false
   }),
   computed: {
-    ...mapGetters(['get_user_data']),
+    ...mapGetters('Auth', { currentUser: 'getUser' }),
     ...mapGetters('GSFeed', {
       timeline: 'getTimeline',
       feed: 'getFeed',
@@ -476,15 +477,14 @@ export default {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
     },
     authorPostItem() {
-      console.log(this.data)
-      
       let authorPostData = this.data.actor
       if(typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
       return authorPostData
     }
   },
-  created() {
+  mounted() {
     // this.picture_items = this.data.images.slice(0, 4)
+    this.user = this.currentUser;
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
@@ -548,7 +548,7 @@ export default {
           text: this.comment_data
         }
       }
-      let self = this
+
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
         await this.$store.dispatch('GSFeed/retrieveFeed')
         this.showSkeleton = false
@@ -557,19 +557,7 @@ export default {
       if (!this.data.comments) {
         this.data.comments = []
       }
-      this.data.comments.push({
-        name: `${this.user.firstName} ${this.user.lastName}`,
-        imageUrl: this.get_user_data().imageUrl,
-        message: this.comment_data,
-        reactions: {
-          likes: 0,
-          enchants: 0,
-          unlikes: 0
-        },
-        timestamps: {
-          created: '1 min'
-        }
-      })
+      
       await this.$store.dispatch('GSFeed/setFeed')
       this.comment_data = ''
 
@@ -583,6 +571,8 @@ export default {
       // })
     },
     async updatePost(activity) {
+      activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
+      activity['actor']['data']['image'] = this.user.profilePic
       activity.message = this.updateMessage;
       
       this.$store.dispatch('GSFeed/updateActivity', activity)
@@ -615,8 +605,6 @@ export default {
       return pendingApprovals
     }
   }
-
-
 }
 </script>
 

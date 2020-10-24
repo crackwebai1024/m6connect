@@ -49,7 +49,7 @@
             type="text"
             @keyup.enter="updateComment"
             @click:append="toogleDialogEmoji"
-          ></v-text-field>
+          />
           <!-- Emoji Picker -->
           <div
             class="relative"
@@ -109,7 +109,7 @@
       </v-dialog>
     </v-row>
     <div v-if="reply && showReplyMessage" class="mb-3 mr-3 ml-16">
-      <div>
+      <div v-if="comment.latest_children.comment">
         <component 
           v-bind:is="'PostComments'"
           v-for="(childComment, index2) of comment.latest_children.comment.slice().reverse()"

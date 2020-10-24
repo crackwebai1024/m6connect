@@ -42,6 +42,9 @@ const mutations = {
       payload,
       state.gsToken
     )
+  },
+  UPDATE_USER: (state, payload) => {
+    state.client.user(payload['id']).update(payload);
   }
 }
 
@@ -76,14 +79,8 @@ const actions = {
   addActivity({ state }, payload) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
-      // const attachments = await Promise.all(payload.images.map(async image => {
-      //   console.log(image)
-      //   await state.client.images.upload(image)
-      // }))
-      // console.log(attachments)
       const activity = await state.feed.addActivity({
-        ...payload,
-        actor: state.client.currentUser
+        ...payload
       })
       resolve(activity)
     })
@@ -172,7 +169,15 @@ const actions = {
       commit('SET_USER', payload)
       resolve(true)
     })
+  },
+  updateUser({ commit }, payload){
+    return new Promise(resolve => {
+      commit('UPDATE_USER', payload)
+      resolve(true)
+    })
   }
+
+
 }
 
 export default {
