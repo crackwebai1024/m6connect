@@ -70,7 +70,8 @@ export default {
                 const res = await this.getUnspcCodes(id)
                 this.levels = this.levels.filter( l => l.index <= index ) 
                 index++
-                if( res.length ) this.levels.push({ value: {}, id, index })
+                if( res.length ) this.levels.push({ value: { }, id, index })
+                console.log(this.levels)
             } catch(err) {
                 console.log('err---')
                 console.log(err)
@@ -85,19 +86,23 @@ export default {
             const currentCompany = {...this.currentCompany}
             if(!currentCompany.unspcs) currentCompany.unspcs = [] 
             currentCompany.unspcs.push( this.levels )
+            // console.log('levels------')
+            // console.log(this.levels)
+            // console.log('currentCompany')
 
             console.log(currentCompany)
-            // this.loading = true 
-            // // this.updateCompany(currentCompany)
-            // .then( res => {
-            //     console.log(res)
-            //     this.loading = false
-            // })
-            // .catch( err => {
-            //     console.log('err---update')
-            //     console.log(err)
-            //     this.loading = false
-            // })
+            this.loading = true 
+            this.updateCompany(currentCompany)
+            .then( res => {
+                console.log('res-------')
+                console.log(res)
+                this.loading = false
+            })
+            .catch( err => {
+                console.log('err---update')
+                console.log(err)
+                this.loading = false
+            })
         },
 
         closing() {
