@@ -124,7 +124,7 @@ const actions = {
       })
     })
   },
-  retrieveFeed({ state, commit }) {
+  privateRetrieveFeed({ state, commit }) {
     return new Promise((resolve, reject) => {
       state.feed.get({
         reactions: { own: true, recent: true, counts: true }

@@ -521,7 +521,7 @@ export default {
       if (this.data.own_reactions.like) {
         this.data.own_reactions.like.forEach(item => {
           this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
-            await this.$store.dispatch('GSFeed/retrieveFeed')
+            await this.$store.dispatch('GSFeed/privateRetrieveFeed')
             this.likeState = false
             this.progressLike = false
           })
@@ -535,7 +535,7 @@ export default {
         this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
           this.likeState = true
           this.progressLike = false
-          this.$store.dispatch('GSFeed/retrieveFeed')
+          this.$store.dispatch('GSFeed/privateRetrieveFeed')
         })
       }
     },
@@ -550,7 +550,7 @@ export default {
       }
 
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-        await this.$store.dispatch('GSFeed/retrieveFeed')
+        await this.$store.dispatch('GSFeed/privateRetrieveFeed')
         this.showSkeleton = false
       })
 
