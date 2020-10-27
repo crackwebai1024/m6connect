@@ -36,6 +36,18 @@ const mutations = {
       state.gsToken
     )
   },
+  SET_COMPANIES_FEED: async (state, feedID) => {
+    state.feedNotification = await state.client.feed(
+      'notification',
+      feedID,
+      state.gsToken
+    )
+    state.feed = await state.client.feed(
+      'companies',
+      feedID,
+      state.gsToken
+    )
+  },
   SET_TIMELINE: (state, payload) => state.timeline = payload,
   SET_USER: async (state, payload) => {
     await state.client.setUser(
@@ -124,7 +136,7 @@ const actions = {
       })
     })
   },
-  privateRetrieveFeed({ state, commit }) {
+  retrieveFeed({ state, commit }) {
     return new Promise((resolve, reject) => {
       state.feed.get({
         reactions: { own: true, recent: true, counts: true }
@@ -164,6 +176,12 @@ const actions = {
       resolve(true)
     })
   },
+  setCompanyFeed({ commit }, payload) {
+    return new Promise(resolve => {
+      commit('SET_COMPANIES_FEED', payload)
+      resolve(true)
+    })
+  },
   setUser({ commit }, payload) {
     return new Promise(resolve => {
       commit('SET_USER', payload)
@@ -176,8 +194,6 @@ const actions = {
       resolve(true)
     })
   }
-
-
 }
 
 export default {

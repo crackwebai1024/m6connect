@@ -70,7 +70,7 @@
             </template>
 
             <v-list class="grey lighten-4">
-              <v-list-item @click="updatePostShow = true">
+              <v-list-item @click="openPostEdit()">
                 <v-list-item-title>Edit Post</v-list-item-title>                
               </v-list-item>
               <v-list-item @click="deleteDiaLog = true">
@@ -515,29 +515,26 @@ export default {
         this.$nextTick(() => this.$refs.currentUserComment.focus())
       }
     },
-    likeActivity(activity) {
+    async likeActivity(activity) {
       if (this.progressLike) return true
       this.progressLike = true
       if (this.data.own_reactions.like) {
-        this.data.own_reactions.like.forEach(item => {
-          this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
-            await this.$store.dispatch('GSFeed/privateRetrieveFeed')
-            this.likeState = false
-            this.progressLike = false
-          })
-        })
+        let activ = this.data.own_reactions.like.find( i =>  i.user_id === this.user.id )
+        if( activ ){
+          await this.$store.dispatch('GSFeed/removeReaction', activ.id)
+          this.likeState = false
+        }
       } else {
         const payload = {
           id: activity.id,
           type: 'like',
           whoNotify: activity.actor.id
         }
-        this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
-          this.likeState = true
-          this.progressLike = false
-          this.$store.dispatch('GSFeed/privateRetrieveFeed')
-        })
+        await this.$store.dispatch('GSFeed/addReaction', payload)
+        this.likeState = true
       }
+      await this.$store.dispatch('GSFeed/retrieveFeed')
+      this.progressLike = false
     },
     async pushComment(activity) {
       this.showSkeleton = true
@@ -550,25 +547,19 @@ export default {
       }
 
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-        await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+        await this.$store.dispatch('GSFeed/retrieveFeed')
         this.showSkeleton = false
       })
 
       if (!this.data.comments) {
         this.data.comments = []
       }
-      
-      await this.$store.dispatch('GSFeed/setFeed')
       this.comment_data = ''
-
     },
     async deletePost(activity) {
-      this.$store.dispatch('GSFeed/removeActivity', activity.id)
+      await this.$store.dispatch('GSFeed/removeActivity', activity.id)
       this.deleteDiaLog = false
-      
-      // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
-      //   this.activityText = ''
-      // })
+      await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     async updatePost(activity) {
       activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
@@ -577,6 +568,10 @@ export default {
       
       this.$store.dispatch('GSFeed/updateActivity', activity)
       this.updatePostShow = false
+      this.updateMessage = this.data.message
+    },
+    openPostEdit() {
+      this.updatePostShow = true
       this.updateMessage = this.data.message
     },
     cancelUpdate() {

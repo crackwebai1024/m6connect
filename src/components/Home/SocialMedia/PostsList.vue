@@ -35,11 +35,11 @@ export default {
   async created() {
     this.set_user_data()
     this.set_posts_data()
-    await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+    await this.$store.dispatch('GSFeed/retrieveFeed')
 
     this.feed.subscribe(async data => {
       if (data.new) {
-        await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+        await this.$store.dispatch('GSFeed/retrieveFeed')
       }
     })
   },

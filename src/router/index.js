@@ -115,7 +115,7 @@ router.beforeEach(async (to, from, next) => {
       // Start GSFeed
       await store.dispatch('GSFeed/getGSFeedToken', userLogged)
       await store.dispatch('GSFeed/setUser', user)
-      await store.dispatch('GSFeed/setFeed', userLogged.id)
+      await store.dispatch('GSFeed/setCompanyFeed', userLogged.id)
     }
   }
 

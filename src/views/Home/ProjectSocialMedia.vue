@@ -20,7 +20,7 @@
               elevation="0"
               v-on="on"
             >
-              Public
+              {{titlePage}}
               <v-icon class="blue--text text--darken-3">
                 mdi-chevron-down
               </v-icon>
@@ -32,7 +32,8 @@
               :key="i"
             >
               <v-list-item-title
-                :class="item.type === 'title' ? 'grey--text' : 'black--text'"
+                @click="item.function"
+                :class="item.type === 'title' ? 'grey--text' : 'black--text pointer' "
               >
                 {{ item.text }}
               </v-list-item-title>
@@ -148,25 +149,8 @@ export default {
     PostsList
   },
   data: () => ({
-    areas: [
-      { text: 'Everyone',           type: 'subtitle' },
-      { text: 'My company',         type: 'subtitle' },
-      { text: 'Teams',              type: 'title'    },
-      { text: 'All my teams',       type: 'subtitle' },
-      { text: 'IT Team XY',         type: 'subtitle' },
-      { text: 'CPM Team Z',         type: 'subtitle' },
-      { text: 'Departments',        type: 'title'    },
-      { text: 'All my departments', type: 'subtitle' },
-      { text: 'Finances',           type: 'subtitle' },
-      { text: 'Operations',         type: 'subtitle' }
-    ],
+    titlePage: '',
     activityText: '',
-    items: [
-      { text: 'Everyone',   value: 'Everyone' },
-      { text: 'My posts',   value: 'author'   },
-      { text: 'My Company', value: 'company'  }
-    ],
-    item: 'Everyone',
     imageFiles: [],
     posts_list: [{}],
     showSkeletonPost: false
@@ -179,10 +163,39 @@ export default {
         srcImages.push(URL.createObjectURL(imageFile))
       })
       return srcImages
-    }
+    },
+    areas(){
+      return [
+        { text: 'Private',            type: 'subtitle', function: () => { this.privateState()   }},
+        { text: 'Everyone',           type: 'subtitle', function: () => { this.printSc('a')     }},
+        { text: 'My company',         type: 'subtitle', function: () => { this.companyState()   }},
+        { text: 'Teams',              type: 'title',    function  ()    {                       }},
+        { text: 'All my teams',       type: 'subtitle', function: () => { this.printSc('d')     }},
+        { text: 'IT Team XY',         type: 'subtitle', function: () => { this.printSc('e')     }},
+        { text: 'CPM Team Z',         type: 'subtitle', function: () => { this.printSc('f')     }},
+        { text: 'Departments',        type: 'title',    function  ()    {                       }},
+        { text: 'All my departments', type: 'subtitle', function: () => { this.printSc('h')     }},
+        { text: 'Finances',           type: 'subtitle', function: () => { this.printSc('i')     }},
+        { text: 'Operations',         type: 'subtitle', function: () => { this.printSc('j')     }}
+      ]
+    },
   },
   methods: {
     ...mapActions('SocialNetworkModule', ['filter_posts']),
+    printSc(msg) {
+      this.titlePage = `Alooo ${msg}`;
+      console.log(`alooo ${msg}`)
+    },
+    async privateState() {
+      this.titlePage = 'Private';
+      await this.$store.dispatch('GSFeed/setFeed', this.user.id);
+      this.reloadFeed();
+    },
+    async companyState() {
+      this.titlePage = 'My Company';
+      await this.$store.dispatch('GSFeed/setCompanyFeed', this.user.id);
+      this.reloadFeed();
+    },
     addActivity() {
       if (this.activityText.trim() === '') {
         return
@@ -200,8 +213,12 @@ export default {
 
       this.activityText = ''
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+        this.reloadFeed();
         this.showSkeletonPost = false
       })
+    },
+    async reloadFeed(){
+      await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     onImagesChange(e) {
       this.imageFiles = e
@@ -209,6 +226,9 @@ export default {
     removeImage(index) {
       this.imageFiles.splice(index, 1)
     }
+  },
+  mounted() {
+    this.companyState();
   }
 }
 </script>

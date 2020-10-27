@@ -204,7 +204,7 @@ export default {
   },
   async mounted() {
     this.updatedComment = this.comment.data.text
-    await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+    await this.$store.dispatch('GSFeed/retrieveFeed')
 
     if(this.comment.latest_children.like !== undefined) {
       let filteredLikesByCurrentUser = this.comment.latest_children.like.filter((element) => {
@@ -227,7 +227,7 @@ export default {
         id: this.comment.id,
         text: this.updatedComment
       });
-      await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+      await this.$store.dispatch('GSFeed/retrieveFeed')
 
       this.updateCommentShow = false
     },
@@ -244,7 +244,7 @@ export default {
     },
     async deleteComment() {
       await this.$store.dispatch('GSFeed/removeReaction', this.comment.id);
-      await this.$store.dispatch('GSFeed/privateRetrieveFeed');
+      await this.$store.dispatch('GSFeed/retrieveFeed');
       
       this.deleteCommentDiaLog = false;
     },
@@ -253,7 +253,7 @@ export default {
       this.reply_data = ''
       if(replyData.trim() == '') return true
       await this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: replyData});
-      await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+      await this.$store.dispatch('GSFeed/retrieveFeed')
       
       this.showReplyMessage = true
     },
@@ -266,7 +266,7 @@ export default {
         if(filteredLikesByCurrentUser.lenght !== 0) {
           filteredLikesByCurrentUser.forEach(async item => {
             await this.$store.dispatch('GSFeed/removeReaction', item.id);
-            await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+            await this.$store.dispatch('GSFeed/retrieveFeed')
             
             this.likeState = false
           });
@@ -279,7 +279,7 @@ export default {
 
       if(addLike) {
         this.$store.dispatch('GSFeed/addChildReaction', this.comment).then(async () => {
-          await this.$store.dispatch('GSFeed/privateRetrieveFeed')
+          await this.$store.dispatch('GSFeed/retrieveFeed')
           this.likeState = true
         })
       }

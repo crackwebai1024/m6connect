@@ -135,7 +135,6 @@ export default {
           // Start GSFeed
           await this.$store.dispatch('GSFeed/getGSFeedToken', userLogged)
           await this.$store.dispatch('GSFeed/setUser', user)
-          await this.$store.dispatch('GSFeed/setFeed', userLogged.id)
 
 
           this.loading = false
