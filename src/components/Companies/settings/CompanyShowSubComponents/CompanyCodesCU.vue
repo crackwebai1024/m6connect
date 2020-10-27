@@ -47,6 +47,14 @@ export default {
         dialog: {
             type: Boolean, 
             default: false
+        },
+        indexToEdit: {
+            type: Number,
+            default: -1 
+        },
+        codesToEdit: {
+            type: Array,
+            default: () => []
         }
     },
     data: () => ({
@@ -59,7 +67,8 @@ export default {
 
     methods: {
         ...mapActions('M6Codes', {
-            getUnspcCodes: 'getUnspcCodes'
+            getUnspcCodes: 'getUnspcCodes',
+            getUnspcCodesByIds: 'getUnspcCodesByIds'
         }),
         ...mapActions('Companies', {
             updateCompany: 'updateCompany'
@@ -85,7 +94,7 @@ export default {
         saveCode() {
             const currentCompany = {...this.currentCompany}
             if(!currentCompany.unspcs) currentCompany.unspcs = [] 
-            currentCompany.unspcs.push( this.levels )
+            currentCompany.unspcs.push( JSON.stringify(this.levels)  )
             // console.log('levels------')
             // console.log(this.levels)
             // console.log('currentCompany')
@@ -127,6 +136,22 @@ export default {
 
     mounted() {
         this.getUnspcCodes()
+    },
+
+    watch: {
+        codesToEdit(val) {
+            console.log('val------')
+            console.log(val)
+            this.levels = val
+       
+            this.loading = true 
+            this.getUnspcCodesByIds( val.map( v => v.id ) )
+            .then( () => this.loading = false )
+            .catch( () => {
+                this.loading = false 
+                console.log('there was an error')
+            })
+        }
     }
 }
 </script>

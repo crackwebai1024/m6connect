@@ -19,8 +19,17 @@
                     <v-btn dark fab x-small color="green" @click="( addingNewCode( enumForCodes.unpsc ) )" >
                        <v-icon>mdi-plus</v-icon> 
                     </v-btn>
-                    <div>
-                        data goes here
+                    <div 
+                        v-for="( u, index ) in $h.dg(currentCompany, 'unspcs', [])" 
+                        :key="`unspsc-${index}`"
+                    >
+                        <v-chip 
+                            color="blue darken-2" 
+                            v-for="( item, i ) in JSON.parse(u)" :key="`u-item-${i}`" 
+                            @click=" addingNewCode( enumForCodes.unpsc, u, i ) " 
+                        >
+                            <span class="white--text" >{{ item.value.name }}</span>
+                        </v-chip>
                     </div>
                 </v-tab-item>
 
@@ -39,13 +48,20 @@
                 </v-tab-item>
             </v-tabs>
         </v-container>
-        <CompanyCodesCU :dialog="dialogShow" @close="dialogShow = false" />
+        <CompanyCodesCU 
+            :dialog="dialogShow" 
+            :index-to-edit="indexToEdit" 
+            :codes-to-edit="codesToEdit" 
+            @close="closing" 
+        />
 
     </div>
 </template>
 
 <script>
+
 import CompanyCodesCU from './CompanyCodesCU'
+import { mapState } from 'vuex'
 export default {
 
     components: {
@@ -59,14 +75,33 @@ export default {
            naics: "naics",
            companyTypes: 'companyTypes'
         },
-        dialogShow: false
+        dialogShow: false,
+        codesToEdit: [],
+        indexToEdit: -1
     }),
     
     methods: {
-       addingNewCode(code) {
-           console.log(code)
-           this.dialogShow = true
+        closing() {
+            this.dialogShow = false
+            this.codesToEdit = [] 
+            this.indexToEdit = -1
+        },
+        addingNewCode(code, items = null, index = null) {
+            if(items && index > -1) {
+                this.codesToEdit = JSON.parse(items)
+                this.indexToEdit = index
+            }
+
+            this.$nextTick( () => {
+                this.dialogShow = true
+            })
        }
+    },
+
+    computed: {
+        ...mapState('Companies', {
+            currentCompany: 'currentCompany'
+        })
     }
 
 }
