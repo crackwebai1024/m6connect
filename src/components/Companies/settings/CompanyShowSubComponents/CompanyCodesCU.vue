@@ -7,7 +7,7 @@
         >
             <v-card>
                 <v-card-title class="headline blue darken-2 white--text mb-2" >
-                    Add a Unspc Codes
+                    {{ indexToEdit > -1 ? 'Edit' : 'Add' }} a Unspc Code
                 </v-card-title>
                 <v-card-text class="card-text-custom" >
                     <v-autocomplete 
@@ -21,6 +21,8 @@
                         @input=" e => generateMoreLevels(e, i) "
                         label="Unspc Codes"
                     />
+
+                    <m6-loading :loading="loading" />
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer />
@@ -34,12 +36,11 @@
             </v-card>
         </v-dialog>
 
-        <m6-loading :loading="loading" />
     </div>
 </template>
 
 <script>
-import { mapActions, mapState, mapGetters } from 'vuex'
+import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
     name: "CompanyCodesCU",
@@ -73,17 +74,21 @@ export default {
         ...mapActions('Companies', {
             updateCompany: 'updateCompany'
         }),
+        ...mapMutations('SnackBarNotif', {
+            notifDanger: 'notifDanger',
+            notifSuccess: 'notifSuccess'
+        }),
 
         async generateMoreLevels({ id }, index) {
+            this.loading = true
             try{
                 const res = await this.getUnspcCodes(id)
+                this.loading = false 
                 this.levels = this.levels.filter( l => l.index <= index ) 
                 index++
                 if( res.length ) this.levels.push({ value: { }, id, index })
-                console.log(this.levels)
             } catch(err) {
-                console.log('err---')
-                console.log(err)
+                this.loading = false 
             }
         },
 
@@ -94,12 +99,13 @@ export default {
         saveCode() {
             const currentCompany = {...this.currentCompany}
             if(!currentCompany.unspcs) currentCompany.unspcs = [] 
-            currentCompany.unspcs.push( JSON.stringify(this.levels)  )
-            // console.log('levels------')
-            // console.log(this.levels)
-            // console.log('currentCompany')
+            
+            if( this.indexToEdit > -1 ) {
+                currentCompany.unspcs[this.indexToEdit] = JSON.stringify(this.levels)
+            } else {
+                currentCompany.unspcs.push( JSON.stringify(this.levels)  )
+            }
 
-            console.log(currentCompany)
             this.loading = true 
             this.updateCompany(currentCompany)
             .then( res => {
@@ -115,8 +121,10 @@ export default {
         },
 
         closing() {
-            this.levels = [ { value: "", id: '0', index: 0 } ]
-            this.$emit('close')
+            this.levels = [ { value: {}, id: '0', index: 0 } ]
+            this.$nextTick( () => {
+                this.$emit('close')
+            })
         }
     },
 
@@ -135,21 +143,22 @@ export default {
     },
 
     mounted() {
-        this.getUnspcCodes()
+        if(!this.codesToEdit.length) this.getUnspcCodes()
     },
 
     watch: {
         codesToEdit(val) {
-            console.log('val------')
-            console.log(val)
+            if( !val.length ) return 
+
             this.levels = val
-       
+
             this.loading = true 
             this.getUnspcCodesByIds( val.map( v => v.id ) )
-            .then( () => this.loading = false )
+            .then( () => {
+                this.loading = false 
+            })
             .catch( () => {
                 this.loading = false 
-                console.log('there was an error')
             })
         }
     }
