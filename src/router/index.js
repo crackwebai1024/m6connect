@@ -107,7 +107,7 @@ router.beforeEach(async (to, from, next) => {
       const user = {
         id: userLogged.id,
         name: `${userLogged.firstName} ${userLogged.lastName}`,
-        image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
+        image: userLogged.profilePic
       }
       await store.dispatch('GSChat/setUser', user)
       await store.dispatch('GSChat/retrieveChats', userLogged.id)
@@ -115,7 +115,7 @@ router.beforeEach(async (to, from, next) => {
       // Start GSFeed
       await store.dispatch('GSFeed/getGSFeedToken', userLogged)
       await store.dispatch('GSFeed/setUser', user)
-      await store.dispatch('GSFeed/setFeed', userLogged.id)
+      await store.dispatch('GSFeed/setCompanyFeed', userLogged.id)
     }
   }
 

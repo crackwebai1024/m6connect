@@ -94,6 +94,9 @@ export default {
     ...mapActions('Auth', {
       updateUserData: 'updateUserData'
     }),
+    ...mapActions('GSFeed', {
+      updUser: 'updateUser'
+    }),
     async reponseProfileImg(res) {
       if(res.ok) {
         const user = {...this.user}
@@ -124,6 +127,11 @@ export default {
       try{
         this.loading = true
         await this.updateUserData(this.user)
+        await this.updUser({
+          id: this.user.id,
+          name: `${this.user.firstName} ${this.user.lastName}`,
+          image: this.user.profilePic
+        })
         this.loading = false
         this.notifSuccess('The user was saved')
         this.$emit('close')
