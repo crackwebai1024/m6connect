@@ -523,6 +523,14 @@ export default {
         if( activ ){
           await this.$store.dispatch('GSFeed/removeReaction', activ.id)
           this.likeState = false
+        } else {
+          const payload = {
+            id: activity.id,
+            type: 'like',
+            whoNotify: activity.actor.id
+          }
+          await this.$store.dispatch('GSFeed/addReaction', payload)
+          this.likeState = true
         }
       } else {
         const payload = {
