@@ -54,8 +54,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/company/${companyID}`)
         .then(res => {
-          console.log('res-----')
-          console.log(res)
           commit('setCurrentCompany', res.data)
           resolve(res)
         })

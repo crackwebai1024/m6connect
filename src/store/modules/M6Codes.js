@@ -29,13 +29,27 @@ const mutations = {
 
     setRegions(state, payload) {
         state.regions[payload.id] = payload.data
-        console.log('setRegions------------------------')
-        console.log(state.regions)
     },
 
-    mutliSetRegions(state, payload) {
+    multiSetRegions(state, payload) {
         state.regions = {...state.regions, ...payload}
     },
+
+    setNaics(state, payload) {
+        state.naics[payload.id] = payload.data
+    },
+    
+    multiSetNaics(state, payload) {
+        state.naics = {...state.naics, ...payload }
+    },
+
+    setCompanyTypes(state, payload) {
+        state.companyTypes[payload.id] = payload.data
+    },
+
+    multiSetTypes(state, payload) {
+        state.companyTypes ={...payload}
+    }
 }
 
 const actions = {
@@ -67,9 +81,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/search/companyTypes`, { parents })
                 .then(res => {
-                    console.log('getCompanyTypes')
-                    console.log(res)
-                    commit('setUnspc', { data: res.data, id: parents})
+                    commit('setCompanyTypes', { data: res.data, id: parents})
                     resolve(res.data)
                 })
                 .catch(reject)
@@ -80,8 +92,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/search/companyTypes/ids`, { ids })
                 .then(res => {
-                    console.log('res============')
-                    console.log(res)
+                    commit('multiSetTypes', res.data)
                     resolve(res.data)
                 })
                 .catch(reject)
@@ -93,8 +104,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/search/regions`, { parents })
                 .then(res => {
-                    console.log('regions')
-                    console.log(res)
                     commit('setRegions', { data: res.data, id: parents})
                     resolve(res.data)
                 })
@@ -106,8 +115,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/search/regions/ids`, { ids })
                 .then(res => {
-                    console.log('res - regions')
-                    console.log(res)
+                    commit('multiSetRegions', res.data)
                     resolve(res.data)
                 })
                 .catch(reject)
@@ -120,9 +128,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/search/naicsCodes`, { parents })
                 .then(res => {
-                    console.log('naics')
-                    console.log(res)
-                    commit('setUnspc', { data: res.data, id: parents})
+                    commit('setNaics', { data: res.data, id: parents})
                     resolve(res.data)
                 })
                 .catch(reject)
@@ -133,8 +139,9 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/search/naicsCodes/ids`, { ids })
                 .then(res => {
-                    console.log('ids---naics')
+                    console.log('naics======res')
                     console.log(res)
+                    commit('multiSetNaics', res.data)
                     resolve(res.data)
                 })
                 .catch(reject)

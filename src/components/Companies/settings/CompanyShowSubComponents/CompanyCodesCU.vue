@@ -19,7 +19,10 @@
                         :items="getItems(l.id)"
                         return-object
                         @input=" e => generateMoreLevels(e, i) "
-                        label="Unspc Codes"
+                        :label="`${ 
+                            $h.dg(codeCat, 'name', '').charAt(0).toUpperCase() + 
+                            $h.dg(codeCat, 'name', '').slice(1) 
+                        } Codes`"
                     />
                     <!-- :items="getSpecificUNSPC(l.id)" -->
                     <m6-loading :loading="loading" />
@@ -91,6 +94,9 @@ export default {
         ...mapActions('Companies', {
             updateCompany: 'updateCompany'
         }),
+        ...mapMutations('Companies', {
+            setCurrentCompany: 'setCurrentCompany'
+        }),
         ...mapMutations('SnackBarNotif', {
             notifDanger: 'notifDanger',
             notifSuccess: 'notifSuccess'
@@ -140,23 +146,18 @@ export default {
                 currentCompany[this.codeCat.pathInCompany].push( JSON.stringify(this.levels)  )
             }
 
-            console.log('currentCompany--------')
-            console.log(currentCompany)
-
-            console.log('this.levels-------------')
-            console.log(this.levels)
-
-            // regions done
-            // check if unspsc still works, and the other ones and done
-
-            // this.loading = true 
-            // this.updateCompany(currentCompany)
-            // .then( res => {
-            //     this.loading = false
-            // })
-            // .catch( err => {
-            //     this.loading = false
-            // })
+            this.loading = true 
+            this.updateCompany(currentCompany)
+            .then( res => {
+                this.loading = false
+                this.setCurrentCompany(currentCompany)
+                this.$nextTick( () => {
+                    this.closing()
+                })
+            })
+            .catch( err => {
+                this.loading = false
+            })
         },
 
         closing() {
@@ -205,8 +206,8 @@ export default {
     },
 
     watch: {
-        codesToEdit(val) {
-            if( !val.length ) return 
+        async codesToEdit(val) {
+            // if( !val.length ) return 
 
             this.levels = val
 
@@ -218,30 +219,37 @@ export default {
             // .catch( () => {
             //     this.loading = false 
             // })
-
-            const pathInCompany = this.$h.dg(this.codeCat, 'pathInCompany', '')
-            const ids = val.map( v => v.id )
-            
-            switch (true) {
-                case this.$h.dg(this.enumForCodes, 'unspsc.pathInCompany', 'none') == pathInCompany:
-                    this.getUnspcCodes(ids)
-                    break;
-                case this.$h.dg( this.enumForCodes, 'regions.pathInCompany', 'none' ) == pathInCompany:
-                    this.getRegions(ids)
-                    break;
-                case this.$h.dg( this.enumForCodes, 'naics.pathInCompany' ) == pathInCompany:
-                    this.getNaics(ids)
-                    break;
-                case this.$h.dg( this.enumForCodes, 'companyTypes.pathInCompany' ) == pathInCompany:
-                    this.getCompanyTypes(ids)
-                    break;
+            try{
+                this.loading = true 
+                const pathInCompany = this.$h.dg(this.codeCat, 'pathInCompany', '')
+                const ids = val.map( v => v.id )
+                
+                switch (true) {
+                    case this.$h.dg(this.enumForCodes, 'unspsc.pathInCompany', 'none') == pathInCompany:
+                        await this.getUnspcCodesByIds(ids)
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'regions.pathInCompany', 'none' ) == pathInCompany:
+                        await this.getRegionsByIds(ids)
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'naics.pathInCompany' ) == pathInCompany:
+                        await this.getNaicsByIds(ids)
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'companyTypes.pathInCompany' ) == pathInCompany:
+                        await this.getCompanyTypesByIds(ids)
+                        break;
+                }
+                this.loading = false 
+            } catch(e) {
+                this.loading = false 
             }
 
         },
-        async dialog(val) {
-            // if(!val) return 
+        async dialog(newVal, oldVal) {
+            // if(newVal) return 
+
             const pathInCompany = this.$h.dg(this.codeCat, 'pathInCompany', '')
             this.loading = true 
+
             try{ 
                 switch (true) {
                     case this.$h.dg(this.enumForCodes, 'unspsc.pathInCompany', 'none') == pathInCompany:
@@ -258,6 +266,7 @@ export default {
                         break;
                 }
                 this.loading = false 
+
             } catch(e) {
                 this.loading = false
             }
