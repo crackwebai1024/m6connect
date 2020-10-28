@@ -16,7 +16,7 @@
                 </v-tab>
 
                 <v-tab-item class="text-right" >
-                    <v-btn dark fab x-small color="green" @click="( addingNewCode( enumForCodes.unpsc ) )" >
+                    <v-btn dark fab x-small color="green" @click="( addingNewCode( enumForCodes.unspsc ) )" >
                        <v-icon>mdi-plus</v-icon> 
                     </v-btn>
                     <div 
@@ -26,7 +26,7 @@
                         <v-chip 
                             color="blue darken-2" 
                             v-for="( item, i ) in JSON.parse(u)" :key="`u-item-${i}`" 
-                            @click=" addingNewCode( enumForCodes.unpsc, u, i ) " 
+                            @click=" addingNewCode( enumForCodes.unspsc, u, i ) " 
                         >
                             <span class="white--text" >{{ item.value.name }}</span>
                         </v-chip>
@@ -34,24 +34,33 @@
                 </v-tab-item>
 
                 <v-tab-item>
-                    iufwbeifbiwef
+                    <v-btn dark fab x-small color="green" @click="( addingNewCode( enumForCodes.regions ) )" >
+                       <v-icon>mdi-plus</v-icon> 
+                    </v-btn>
                 </v-tab-item>
 
 
                 <v-tab-item>
-                    fibwefubweif
+                    <v-btn dark fab x-small color="green" @click="( addingNewCode( enumForCodes.naics ) )" >
+                       <v-icon>mdi-plus</v-icon> 
+                    </v-btn>
                 </v-tab-item>
 
 
                 <v-tab-item>
-                    ifbuiweubfiwe
+                    <v-btn dark fab x-small color="green" @click="( addingNewCode( enumForCodes.companyTypes ) )" >
+                       <v-icon>mdi-plus</v-icon> 
+                    </v-btn>
                 </v-tab-item>
             </v-tabs>
         </v-container>
+
         <CompanyCodesCU 
             :dialog="dialogShow" 
             :index-to-edit="indexToEdit" 
             :codes-to-edit="codesToEdit" 
+            :code-cat="codeCat"
+            :enum-for-codes="enumForCodes"
             @close="closing" 
         />
 
@@ -70,14 +79,15 @@ export default {
 
     data: () => ({
         enumForCodes: {
-           unpsc: "unspc",
-           regions: "regions",
-           naics: "naics",
-           companyTypes: 'companyTypes'
+           unspsc: { name: "Unspc", pathInCompany: "unspcs" },
+           regions: { name: "regions", pathInCompany: "regions" },
+           naics: { name: "Naics", pathInCompany: "naics" },
+           companyTypes: { name: 'companyTypes', pathInCompany: "types" }
         },
         dialogShow: false,
         codesToEdit: [],
-        indexToEdit: -1
+        indexToEdit: -1,
+        codeCat: {}
     }),
     
     methods: {
@@ -85,12 +95,15 @@ export default {
             this.dialogShow = false
             this.codesToEdit = [] 
             this.indexToEdit = -1
+            this.codeCat = {}
         },
         addingNewCode(code, items = null, index = null) {
             if(items && index > -1) {
                 this.codesToEdit = JSON.parse(items)
                 this.indexToEdit = index
             }
+
+            this.codeCat = code
 
             this.$nextTick( () => {
                 this.dialogShow = true

@@ -7,21 +7,21 @@
         >
             <v-card>
                 <v-card-title class="headline blue darken-2 white--text mb-2" >
-                    {{ indexToEdit > -1 ? 'Edit' : 'Add' }} a Unspc Code
+                    {{ indexToEdit > -1 ? 'Edit' : 'Add' }} a {{ codeCat.name }} Code
                 </v-card-title>
                 <v-card-text class="card-text-custom" >
                     <v-autocomplete 
                         v-for="(l, i) in levels"
                         :key="`level-${i}`"
                         v-model="l.value"
-                        :items="getSpecificUNSPC(l.id)"
                         item-value="id"
                         item-text="name"
+                        :items="getItems(l.id)"
                         return-object
                         @input=" e => generateMoreLevels(e, i) "
                         label="Unspc Codes"
                     />
-
+                    <!-- :items="getSpecificUNSPC(l.id)" -->
                     <m6-loading :loading="loading" />
                 </v-card-text>
                 <v-card-actions>
@@ -56,6 +56,14 @@ export default {
         codesToEdit: {
             type: Array,
             default: () => []
+        },
+        codeCat: {
+            type: Object,
+            default: () => {}
+        },
+        enumForCodes: {
+            type: Object,
+            default: () => {}
         }
     },
     data: () => ({
@@ -69,7 +77,16 @@ export default {
     methods: {
         ...mapActions('M6Codes', {
             getUnspcCodes: 'getUnspcCodes',
-            getUnspcCodesByIds: 'getUnspcCodesByIds'
+            getUnspcCodesByIds: 'getUnspcCodesByIds',
+            
+            getCompanyTypes: 'getCompanyTypes',
+            getCompanyTypesByIds: 'getCompanyTypesByIds',
+
+            getRegions: 'getRegions',
+            getRegionsByIds: 'getRegionsByIds',
+
+            getNaics: 'getNaics',
+            getNaicsByIds: 'getNaicsByIds'
         }),
         ...mapActions('Companies', {
             updateCompany: 'updateCompany'
@@ -82,7 +99,24 @@ export default {
         async generateMoreLevels({ id }, index) {
             this.loading = true
             try{
-                const res = await this.getUnspcCodes(id)
+                const pathInCompany = this.$h.dg(this.codeCat, 'pathInCompany', '')
+
+                let res = {}
+                switch (true) {
+                    case this.$h.dg(this.enumForCodes, 'unspsc.pathInCompany', 'none') == pathInCompany:
+                        res = await this.getUnspcCodes(id)
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'regions.pathInCompany', 'none' ) == pathInCompany:
+                        res = await this.getRegions(id)
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'naics.pathInCompany' ) == pathInCompany:
+                        res = await this.getNaics(id)
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'companyTypes.pathInCompany' ) == pathInCompany:
+                        res = await this.getCompanyTypes(id)
+                        break;
+                }
+                
                 this.loading = false 
                 this.levels = this.levels.filter( l => l.index <= index ) 
                 index++
@@ -98,26 +132,31 @@ export default {
 
         saveCode() {
             const currentCompany = {...this.currentCompany}
-            if(!currentCompany.unspcs) currentCompany.unspcs = [] 
+            if(!currentCompany[this.codeCat.pathInCompany]) currentCompany[this.codeCat.pathInCompany] = [] 
             
             if( this.indexToEdit > -1 ) {
-                currentCompany.unspcs[this.indexToEdit] = JSON.stringify(this.levels)
+                currentCompany[this.codeCat.pathInCompany][this.indexToEdit] = JSON.stringify(this.levels)
             } else {
-                currentCompany.unspcs.push( JSON.stringify(this.levels)  )
+                currentCompany[this.codeCat.pathInCompany].push( JSON.stringify(this.levels)  )
             }
 
-            this.loading = true 
-            this.updateCompany(currentCompany)
-            .then( res => {
-                console.log('res-------')
-                console.log(res)
-                this.loading = false
-            })
-            .catch( err => {
-                console.log('err---update')
-                console.log(err)
-                this.loading = false
-            })
+            console.log('currentCompany--------')
+            console.log(currentCompany)
+
+            console.log('this.levels-------------')
+            console.log(this.levels)
+
+            // regions done
+            // check if unspsc still works, and the other ones and done
+
+            // this.loading = true 
+            // this.updateCompany(currentCompany)
+            // .then( res => {
+            //     this.loading = false
+            // })
+            // .catch( err => {
+            //     this.loading = false
+            // })
         },
 
         closing() {
@@ -133,17 +172,36 @@ export default {
             currentCompany: 'currentCompany'
         }),
         ...mapState('M6Codes', {
-            unspcItems: 'unspc'
+            unspcItems: 'unspc',
+            companyTypesItems: 'companyTypes',
+            regionsItems: 'regions',
+            naicsTypes: 'naics'
         }),
         getSpecificUNSPC() {
             return id => {
                 return this.unspcItems[id]
             }
-        }
-    },
+        },
+        getItems() {
+            return id => {
+                const pathInCompany = this.$h.dg(this.codeCat, 'pathInCompany', '')
 
-    mounted() {
-        if(!this.codesToEdit.length) this.getUnspcCodes()
+                switch (true) {
+                    case this.$h.dg(this.enumForCodes, 'unspsc.pathInCompany', 'none') == pathInCompany:
+                        return this.unspcItems[id] || []        
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'regions.pathInCompany', 'none' ) == pathInCompany:
+                        return this.regionsItems[id] || []
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'naics.pathInCompany', 'none' ) == pathInCompany:
+                        return this.naicsTypes[id] || []
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'companyTypes.pathInCompany', 'none' ) == pathInCompany:
+                        return this.companyTypesItems[id] || []
+                        break;
+                }
+            }
+        }
     },
 
     watch: {
@@ -152,14 +210,57 @@ export default {
 
             this.levels = val
 
+            // this.loading = true 
+            // this.getUnspcCodesByIds( val.map( v => v.id ) )
+            // .then( res => {
+            //     this.loading = false 
+            // })
+            // .catch( () => {
+            //     this.loading = false 
+            // })
+
+            const pathInCompany = this.$h.dg(this.codeCat, 'pathInCompany', '')
+            const ids = val.map( v => v.id )
+            
+            switch (true) {
+                case this.$h.dg(this.enumForCodes, 'unspsc.pathInCompany', 'none') == pathInCompany:
+                    this.getUnspcCodes(ids)
+                    break;
+                case this.$h.dg( this.enumForCodes, 'regions.pathInCompany', 'none' ) == pathInCompany:
+                    this.getRegions(ids)
+                    break;
+                case this.$h.dg( this.enumForCodes, 'naics.pathInCompany' ) == pathInCompany:
+                    this.getNaics(ids)
+                    break;
+                case this.$h.dg( this.enumForCodes, 'companyTypes.pathInCompany' ) == pathInCompany:
+                    this.getCompanyTypes(ids)
+                    break;
+            }
+
+        },
+        async dialog(val) {
+            // if(!val) return 
+            const pathInCompany = this.$h.dg(this.codeCat, 'pathInCompany', '')
             this.loading = true 
-            this.getUnspcCodesByIds( val.map( v => v.id ) )
-            .then( () => {
+            try{ 
+                switch (true) {
+                    case this.$h.dg(this.enumForCodes, 'unspsc.pathInCompany', 'none') == pathInCompany:
+                        await this.getUnspcCodes()
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'regions.pathInCompany', 'none' ) == pathInCompany:
+                        await this.getRegions()
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'naics.pathInCompany' ) == pathInCompany:
+                        await this.getNaics()
+                        break;
+                    case this.$h.dg( this.enumForCodes, 'companyTypes.pathInCompany' ) == pathInCompany:
+                        await this.getCompanyTypes()
+                        break;
+                }
                 this.loading = false 
-            })
-            .catch( () => {
-                this.loading = false 
-            })
+            } catch(e) {
+                this.loading = false
+            }
         }
     }
 }
