@@ -103,7 +103,7 @@
 
 <script>
 import {mapGetters} from 'vuex'
-import PostProfile from './Wall/PostProfile'
+import PostProfile from '@/components/Profile/Wall/PostProfile'
 import ProfileInfo from './Wall/ProfileInfo'
 import ChartCard from './Wall/ChartCard'
 import Employees from './People/Employees'

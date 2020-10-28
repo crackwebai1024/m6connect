@@ -188,11 +188,13 @@ export default {
     },
     async privateState() {
       this.titlePage = 'Private';
+      await this.$store.dispatch('GSFeed/setRoom', 'users');
       await this.$store.dispatch('GSFeed/setFeed', this.user.id);
       this.reloadFeed();
     },
     async companyState() {
       this.titlePage = 'My Company';
+      await this.$store.dispatch('GSFeed/setRoom', 'companies');
       await this.$store.dispatch('GSFeed/setCompanyFeed', this.user.id);
       this.reloadFeed();
     },
@@ -202,15 +204,24 @@ export default {
       }
       this.showSkeletonPost = true
       const activity = {
-        message: this.activityText,
-        foreign_id: `post-${this.activityText.length}-${Date.now()}`,
-        verb: 'post',
-        userID: this.user.id,
-        time: new Date(),
-        object: 1,
-        images: this.imageFiles
-      }
 
+        userID: this.user.id,
+        data: {
+          actor: JSON.stringify({
+            created_at:new Date(),
+            updated_at:new Date(),
+            id: this.user.id,
+            data:{
+                image:this.user.profilePic,
+                name:`${this.user.firstName} ${this.user.lastName}`
+            }
+          }),
+          message: this.activityText,
+          verb: 'post',
+          object: 1,
+          images: this.imageFiles
+        }
+      }
       this.activityText = ''
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
         this.reloadFeed();

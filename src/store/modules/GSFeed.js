@@ -2,6 +2,7 @@ import { connect } from 'getstream'
 import axios from 'axios'
 
 const defaultState = {
+  room: '',
   gsToken: '',
   client: {},
   feed: {},
@@ -48,6 +49,7 @@ const mutations = {
       state.gsToken
     )
   },
+  SET_ROOM: (state, payload) => state.room = payload,
   SET_TIMELINE: (state, payload) => state.timeline = payload,
   SET_USER: async (state, payload) => {
     await state.client.setUser(
@@ -91,9 +93,15 @@ const actions = {
   addActivity({ state }, payload) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
-      const activity = await state.feed.addActivity({
+      payload['room'] = state.room;
+
+      if (state.room === 'companies') {
+        payload['data']['to'] = ['companies:global']
+      }
+      
+      const activity = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, {
         ...payload
-      })
+      });
       resolve(activity)
     })
   },
@@ -138,12 +146,19 @@ const actions = {
   },
   retrieveFeed({ state, commit }) {
     return new Promise((resolve, reject) => {
-      state.feed.get({
-        reactions: { own: true, recent: true, counts: true }
-      }).then(({ results }) => {
-        commit('SET_TIMELINE', results)
-        resolve(true)
-      }).catch(e => reject(e))
+      if (state.room === 'companies') {
+        axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/${state.room}`).then(res => {
+          commit('SET_TIMELINE', res.data.results)
+          resolve(true)
+        }).catch(e => reject(e));
+      }else{
+        state.feed.get({
+          reactions: { own: true, recent: true, counts: true }
+        }).then(({ results }) => {
+          commit('SET_TIMELINE', results)
+          resolve(true)
+        }).catch(e => reject(e))
+      }
     })
   },
   retrieveActivityReactions({ state }, id) {
@@ -187,6 +202,9 @@ const actions = {
       commit('SET_USER', payload)
       resolve(true)
     })
+  },
+  setRoom({ commit }, slugRoom) {
+    commit('SET_ROOM', slugRoom)
   },
   updateUser({ commit }, payload){
     return new Promise(resolve => {
