@@ -166,25 +166,24 @@ export default {
     },
     areas(){
       return [
-        { text: 'Private',            type: 'subtitle', function: () => { this.privateState()   }},
-        { text: 'Everyone',           type: 'subtitle', function: () => { this.printSc('a')     }},
-        { text: 'My company',         type: 'subtitle', function: () => { this.companyState()   }},
-        { text: 'Teams',              type: 'title',    function  ()    {                       }},
-        { text: 'All my teams',       type: 'subtitle', function: () => { this.printSc('d')     }},
-        { text: 'IT Team XY',         type: 'subtitle', function: () => { this.printSc('e')     }},
-        { text: 'CPM Team Z',         type: 'subtitle', function: () => { this.printSc('f')     }},
-        { text: 'Departments',        type: 'title',    function  ()    {                       }},
-        { text: 'All my departments', type: 'subtitle', function: () => { this.printSc('h')     }},
-        { text: 'Finances',           type: 'subtitle', function: () => { this.printSc('i')     }},
-        { text: 'Operations',         type: 'subtitle', function: () => { this.printSc('j')     }}
+        { text: 'Private',            type: 'subtitle', function: () => { this.privateState()                }},
+        { text: 'Everyone',           type: 'subtitle', function: () => { this.printSc('Everyone')           }},
+        { text: 'My company',         type: 'subtitle', function: () => { this.companyState()                }},
+        { text: 'Teams',              type: 'title',    function  ()    {                                    }},
+        { text: 'All my teams',       type: 'subtitle', function: () => { this.printSc('All my teams')       }},
+        { text: 'IT Team XY',         type: 'subtitle', function: () => { this.printSc('IT Team XY')         }},
+        { text: 'CPM Team Z',         type: 'subtitle', function: () => { this.printSc('CPM Team Z')         }},
+        { text: 'Departments',        type: 'title',    function  ()    {                                    }},
+        { text: 'All my departments', type: 'subtitle', function: () => { this.printSc('All my departments') }},
+        { text: 'Finances',           type: 'subtitle', function: () => { this.printSc('Finances')           }},
+        { text: 'Operations',         type: 'subtitle', function: () => { this.printSc('Operations')         }}
       ]
     },
   },
   methods: {
     ...mapActions('SocialNetworkModule', ['filter_posts']),
     printSc(msg) {
-      this.titlePage = `Alooo ${msg}`;
-      console.log(`alooo ${msg}`)
+      this.titlePage = `${msg}`;
     },
     async privateState() {
       this.titlePage = 'Private';
