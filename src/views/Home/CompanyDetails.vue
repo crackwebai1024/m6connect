@@ -11,22 +11,14 @@
         >
         <template>
             <v-dialog
+                class="vertical-scroll dont-show-scroll"
                 v-model="dialog"
                 fullscreen
                 hide-overlay
                 transition="dialog-bottom-transition"
                 scrollable
             >
-            <v-card class="relative vertical-scroll dont-show-scroll" tile>
-                <v-btn
-                    class="absolute top-0 left-0 ml-3 mt-1"
-                    icon
-                    light
-                    @click="dialog = false"
-                >
-                    <v-icon>mdi-close</v-icon>
-                </v-btn>
-
+            <v-card class="relative" tile>
                 <div class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
                     <div class="d-flex align-center">
                         <img
@@ -89,7 +81,7 @@
                         </v-btn>
                     </div>
                 </div>
-                <div class="grey lighten-3 h-full pt-2">
+                <div class="grey lighten-3 h-fit min-h-full pt-2">
                     <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
                         <v-col cols="5" class="pa-0 pr-1">
                             <div class="white py-3 px-4">
@@ -134,27 +126,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <v-row class="mt-4 d-block ma-0 py-4 px-5 white width-100 vertical-scroll dont-show-scroll">
-                                <p class="black--text font-weight-medium text-h6 mb-2">Sharp Healthcare</p>
-                                <v-row class="d-flex ma-0">
-                                    <v-col cols="6" class="pa-0">
-                                        <div class="d-flex align-center mb-2">
-                                            <v-icon class="black--text">mdi-email-outline</v-icon>
-                                            <p class="mb-0 ml-2 body-2">contact@sharp.com</p>
-                                        </div>
-                                        <div class="d-flex align-center mb-2">
-                                            <v-icon class="black--text">mdi-earth</v-icon>
-                                            <p class="mb-0 ml-2 body-2">www.sharphealthcare.com</p>
-                                        </div>
-                                    </v-col>
-                                    <v-col cols="6" class="pa-0">
-                                        <div class="d-flex align-center justify-end mb-2">
-                                            <v-icon class="black--text">mdi-phone</v-icon>
-                                            <p class="mb-0 ml-2 body-2">(915) 445 - 1234</p>
-                                        </div>
-                                    </v-col>
-                                </v-row>
-                            </v-row>
+                            <panel-details v-for="i in 3" :key="i"/>
                             <div class="white d-flex align-center mb-2">
                                 hola
                             </div>
@@ -173,23 +145,16 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import ProjectSocialMedia from './ProjectSocialMedia'
+import PanelDetails from './PanelDetails'
 
 export default {
   components: {
-    ProjectSocialMedia
+    ProjectSocialMedia,
+    PanelDetails
   },
   data: () => ({
     dialog: false,
     showLinks: false,
-    departmentsLinks: [
-      { url: "", icon: "chart-pie", title: "Information Technology" },
-      { url: "", icon: "cookie", title: "Supply Chain" },
-      { url: "", icon: "shield-half-full", title: "Capital Projects" },
-      { url: "", icon: "earth", title: "Request for Proposal" },
-      { url: "", icon: "alert", title: "Contracts" },
-      { url: "", icon: "asterisk", title: "Forensics" },
-      { url: "", icon: "biohazard", title: "BioMed" }
-    ]
   }),
   name: "CompanyDetails",
   computed: {
@@ -199,11 +164,8 @@ export default {
     showLinksMessage: function() {
       return this.showLinks ? "Less" : "More";
     },
-    iconShowLinks: function() {
-      return this.showLinks ? "up" : "down";
-    },
     heightShowLinksDiv: function() {
-      return this.departmentsLinks.length * 37 + "px";
+      return 7 * 37 + "px";
     }
   },
   methods: {
@@ -239,5 +201,11 @@ export default {
   position: absolute;
   top: 60px;
   height: calc(100vh - 60px) !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+.v-dialog--scrollable::-webkit-scrollbar {
+  width: 0px;
 }
 </style>
