@@ -9,7 +9,7 @@ import Helpers from './utils/helpers'
 import { i18n } from './plugins/i18n'
 import './plugins'
 import VueTelInputVuetify from 'vue-tel-input-vuetify/lib';
-
+import VueKonva from 'vue-konva'
 Vue.use(Helpers)
 
 Vue.config.productionTip = false
@@ -21,6 +21,8 @@ Vue.use(lineClamp)
 Vue.use(VueTelInputVuetify, {
   vuetify,
 });
+
+Vue.use(VueKonva)
 
 import * as VueGoogleMaps from 'vue2-google-maps'
 Vue.use(VueGoogleMaps, {

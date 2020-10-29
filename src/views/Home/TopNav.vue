@@ -4,12 +4,16 @@
       <div class="align-center d-flex w-side">
         <img alt="M6Connect" src="@/assets/m6-home-logo.png" height="36px">
       </div>
+
       <v-tabs height="60" :value="3" active-class="blue darken-4" background-color="transparent" color="white" :hide-slider="true" class="max-w-content d-flex justify-center align-center">
         <v-tab v-for="(link,i) in quickAccessLinks" :key="'link' + i" :to="link.url" class="px-13 mb-0">
             <v-icon color="white" :large="true">mdi-{{ link.icon }}</v-icon>
         </v-tab>
       </v-tabs>
+
       <div class="align-center d-flex justify-end w-side">
+
+        <snap-shot-nav /> 
 
         <user-options />
 
@@ -25,6 +29,7 @@
           height="45" 
           :src="currentCompany.logo"
         >
+
       </div>
     </div>
   </div>
@@ -33,11 +38,15 @@
 <script>
 import UserOptions from '@/components/Home/TopNav/UserOptions'
 import { mapState, mapActions } from 'vuex'
+import SnapShotNav from '@/components/Home/TopNav/SnapShotNav'
+
 export default {
   name: "TopNav",
   components: {
-    UserOptions
+    UserOptions,
+    SnapShotNav
   },
+
   computed: {
     ...mapState('Auth', {
       currentUser: 'user'
@@ -46,6 +55,7 @@ export default {
       currentCompany: 'currentCompany'
     })
   },
+
   data: () => ({
     user: {
       name: 'John Doe',
@@ -60,8 +70,8 @@ export default {
       { url:'/companies', icon:'office-building' },
       { url:'/store', icon:'storefront' },
       { url:'/user/settings', icon:'cog' }
-    ]
-  })
+    ],
+  }),  
 };
 </script>
 
@@ -74,4 +84,5 @@ export default {
     height: 60px;
     max-width: 1800px;
 }
+
 </style>

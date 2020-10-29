@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="complete-app" >
     <div class="grey lighten-3">
       <template v-if="loggedIn && !$route.meta.public">
         <top-nav />
