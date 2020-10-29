@@ -139,8 +139,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/search/naicsCodes/ids`, { ids })
                 .then(res => {
-                    console.log('naics======res')
-                    console.log(res)
                     commit('multiSetNaics', res.data)
                     resolve(res.data)
                 })
