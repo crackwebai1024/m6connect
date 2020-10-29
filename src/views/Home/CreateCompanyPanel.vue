@@ -19,57 +19,38 @@
             <v-card class="relative" tile>
                 <div class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
                     <div class="d-flex align-center">
-                        <img
-                            v-if="currentCompany.logo"
-                            :alt="currentCompany.name" 
-                            class="rounded pointer" 
-                            width="180" 
-                            height="150" 
-                            :src="currentCompany.logo"
-                        >
-                        <div class="ml-8">
-                            <p class="font-weight-regular text-h5 mb-1">{{ currentCompany.name }}</p>
-                            <p>{{ currentCompany.legalCompanyName }}</p>
+                        <div class="grey lighten-3 pa-16">
+                            <v-icon class="grey--text text--lighten-1" size="38">mdi-image-filter-hdr</v-icon>
                         </div>
-                    </div>
-                    <div>
-                        <v-btn
-                            class="blue left-0 ml-3 mt-1 px-8 py-6 white--text font-weight-black"
-                            text
-                            light
-                        >
-                            Connect
-                        </v-btn>
+                        <div class="ml-8">
+                            <v-text-field class="font-weight-regular add-field grey lighten-3 pt-1 px-4 rounded-xl mb-1" label="Title">
+                            </v-text-field>
+                            <v-btn
+                                elevation="0"
+                                color="transparent"
+                                class="blue--text capitalize px-1"
+                            >
+                                Add field
+                            </v-btn>
+                        </div>
                     </div>
                 </div>
                 <v-divider class="max-w-lg w-full mx-auto blue-grey lighten-5"></v-divider>
-                <div class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-center">
-                    <template>
+                <div class="max-w-lg w-full mx-auto d-flex justify-space-between align-center">
+                    <div class="d-flex align-center">
                         <v-tabs
-                        :hide-slider="true"
                             active-class="font-weight-black blue--text active-tab-company" 
                         >
                             <v-tab class="capitalize blue--text">Home</v-tab>
-                            <v-tab class="capitalize blue--text">People</v-tab>
-                            <v-tab class="capitalize blue--text">Topics</v-tab>
-                            <v-tab class="capitalize blue--text">Store</v-tab>
                         </v-tabs>
-                    </template>
+                        <v-btn
+                            icon
+                            class="green lighten-2 pa-0 white--text ml-6"
+                        >
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
+                    </div>
                     <div class="d-flex align-center">
-                        <v-btn
-                            class="grey capitalize lighten-2 grey--text text--darken-3 left-0 ml-3 pa-3 font-weight-black"
-                            text
-                            light
-                        >
-                            Follow
-                        </v-btn>
-                        <v-btn
-                            class="grey capitalize lighten-2 grey--text text--darken-3 left-0 ml-3 pa-3 font-weight-black"
-                            text
-                            light
-                        >
-                            Message
-                        </v-btn>
                         <v-btn
                             elevation="0"
                             class="grey capitalize lighten-2 grey--text text--darken-3 left-0 ml-3 pa-1 font-weight-black"
@@ -168,31 +149,11 @@ export default {
 </script>
 
 <style lang="scss">
-.spacing-tight {
-  letter-spacing: 1px;
+.add-field .v-input input {
+    border-bottom: 1px solid #F8F3EC;
+    margin-bottom: -1px;
 }
-
-.links {
-  transition: height 5s;
-  height: 150px;
-  overflow: hidden;
-  -webkit-transition: height 0.5s ease;
-  -moz-transition: height 0.5s ease;
-  -o-transition: height 0.5s ease;
-  transition: height 0.5s ease;
-}
-.active-tab-company {
-  border-bottom: 2px solid rgb(49, 174, 220);
-}
-.v-dialog--scrollable {
-  position: absolute;
-  top: 60px;
-  height: calc(100vh - 60px) !important;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  overflow-y: scroll;
-}
-.v-dialog--scrollable::-webkit-scrollbar {
-  width: 0px;
+.theme--light.v-text-field > .v-input__control > .v-input__slot:before {
+    border: none;
 }
 </style>
