@@ -40,6 +40,7 @@
         </v-text-field>
       </template>
     </header-component>
+    <create-company-panel></create-company-panel>
     <div
       :key="index + 'company'"
       v-for="(item, index) of filteredCompanies"
@@ -54,11 +55,13 @@
 import { mapGetters, mapActions } from "vuex";
 import CompanyItem from "@/components/Companies/CompanyItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
+import CreateCompanyPanel from '@/views/Home/CreateCompanyPanel'
 
 export default {
   components: {
     CompanyItem,
     HeaderComponent,
+    CreateCompanyPanel
   },
   name: "CompaniesList",
   data: () => ({
