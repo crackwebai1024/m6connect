@@ -84,37 +84,29 @@
                 <div class="grey lighten-3 h-fit min-h-full pt-2">
                     <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
                         <v-col cols="5" class="pa-0 pr-1">
-                            <div class="white py-3 px-4">
+                            <div class="white py-3 px-4 mb-3">
                                 <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
                                 <div>
                                     <div class="overflow-hidden links" ref="showLinksDiv">
                                         <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
+                                            <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
                                             <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
                                         </div>
                                         <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
+                                            <v-icon class="grey--text text--darken-3" size="22">mdi-email-outline</v-icon>
                                             <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.email }}</p>
                                         </div>
                                         <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
+                                            <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
                                             <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.name }}</p>
                                         </div>
                                         <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
+                                            <v-icon class="grey--text text--darken-3" size="22">mdi-phone</v-icon>
                                             <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.phone }}</p>
                                         </div>
                                         <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
+                                            <v-icon class="grey--text text--darken-3" size="22">mdi-earth</v-icon>
                                             <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.website }}</p>
-                                        </div>
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.location }}</p>
-                                        </div>
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.socialMediaLinks[0].link }}</p>
                                         </div>
                                         <div class="d-flex align-center my-3">
                                             <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
@@ -127,9 +119,6 @@
                                 </div>
                             </div>
                             <panel-details v-for="i in 3" :key="i"/>
-                            <div class="white d-flex align-center mb-2">
-                                hola
-                            </div>
                         </v-col>
                         <v-col cols="7" class="pa-0 pl-1">
                             <project-social-media class="main-content px-0" />
@@ -165,7 +154,7 @@ export default {
       return this.showLinks ? "Less" : "More";
     },
     heightShowLinksDiv: function() {
-      return 7 * 37 + "px";
+      return 7 * 35 + "px";
     }
   },
   methods: {
@@ -174,7 +163,7 @@ export default {
       let linksdiv = this.$refs.showLinksDiv;
       this.showLinks
         ? (linksdiv.style.height = this.heightShowLinksDiv)
-        : (linksdiv.style.height = "150px");
+        : (linksdiv.style.height = "130px");
     }
   }
 };
