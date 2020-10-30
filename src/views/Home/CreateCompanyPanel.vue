@@ -47,7 +47,7 @@
                             icon
                             class="green lighten-2 pa-0 white--text ml-6"
                         >
-                            <v-icon>mdi-plus</v-icon>
+                            <v-icon size="23">mdi-plus</v-icon>
                         </v-btn>
                     </div>
                     <div class="d-flex align-center">
@@ -105,7 +105,6 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
 import ProjectSocialMedia from './ProjectSocialMedia'
 
 export default {
@@ -115,12 +114,7 @@ export default {
   data: () => ({
     dialog: false,
   }),
-  name: "CompanyDetails",
-  computed: {
-    ...mapState('Companies', {
-      currentCompany: 'currentCompany'
-    })
-  },
+  name: "CreateCompanyPanel",
   methods: {
   }
 };
