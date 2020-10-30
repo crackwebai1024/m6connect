@@ -45,12 +45,12 @@
           offset-x="10"
           offset-y="10">
           <v-avatar
-            color="blue"
+            :color="user.user.profilePic ? 'transparent' : 'blue'"
             dark
             size="36">
             <v-img
-              v-if="user.pic"
-              :src="user.pic"
+              v-if="user.user.profilePic"
+              :src="user.user.profilePic"
             />
             <template v-else>
               <span class="text-uppercase white--text">{{ user.user.firstName.charAt(0) }}{{ user.user.lastName.charAt(0) }}</span>

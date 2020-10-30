@@ -11,7 +11,7 @@
     </template>
     <template v-else>
       <!-- Social Network -->
-      <project-social-media class="main-content" />
+      <project-social-media class="main-content px-3" />
       <image-caroussel-overlay
         :images="imageArray"
         :selected="selectedImage"

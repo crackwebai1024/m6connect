@@ -15,13 +15,13 @@
           <div class="align-center d-flex">
             <v-avatar
               class="mr-2"
-              color="blue"
+              :color="authorPostItem.data.image ? 'transparent' : 'blue'"
               dark
               size="36"
             >
               <v-img
-                v-if="user.pic"
-                :src="user.pic"
+                v-if="authorPostItem.data.image"
+                :src="authorPostItem.data.image"
               />
               <template v-else>
                 <span class="text-uppercase white--text">{{ authorPostItem.data.name.charAt(0) }}</span>
@@ -70,7 +70,7 @@
             </template>
 
             <v-list class="grey lighten-4">
-              <v-list-item @click="updatePostShow = true">
+              <v-list-item @click="openPostEdit()">
                 <v-list-item-title>Edit Post</v-list-item-title>                
               </v-list-item>
               <v-list-item @click="deleteDiaLog = true">
@@ -377,17 +377,12 @@
           @keyup.enter="pushComment(data)"
         />
       </v-col>
-      <v-skeleton-loader
-        v-if="showComments && showSkeleton"
-        class="post-item px-1 my-1"
-        type="list-item-avatar-two-line"
-      ></v-skeleton-loader>
       <div
-        v-if="showComments"
+        v-if="showComments && data.latest_reactions.comment"
         class="pb-1 px-5"
       >
         <post-comments
-          v-for="(comment, index) of data.latest_reactions.comment"
+          v-for="(comment, index) of data.latest_reactions.comment.slice().reverse()"
           :key="index"
           :comment="comment"
           :reply="true"
@@ -395,6 +390,11 @@
           :userData="client.currentUser.data"
         />
       </div>
+      <v-skeleton-loader
+        v-if="showComments && showSkeleton"
+        class="post-item px-1 my-1"
+        type="list-item-avatar-two-line"
+      ></v-skeleton-loader>
     </div>
     <v-dialog
       v-model="deleteDiaLog"
@@ -450,6 +450,7 @@ export default {
     showComments: false,
     picture_items: [],
     likeState: false,
+    profileImaga: '',
     all_images: false,
     comment_data: '',
     rotate: '',
@@ -463,7 +464,7 @@ export default {
     progressLike: false
   }),
   computed: {
-    ...mapGetters(['get_user_data']),
+    ...mapGetters('Auth', { currentUser: 'getUser' }),
     ...mapGetters('GSFeed', {
       timeline: 'getTimeline',
       feed: 'getFeed',
@@ -481,8 +482,9 @@ export default {
       return authorPostData
     }
   },
-  created() {
+  mounted() {
     // this.picture_items = this.data.images.slice(0, 4)
+    this.user = this.currentUser;
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
@@ -513,29 +515,34 @@ export default {
         this.$nextTick(() => this.$refs.currentUserComment.focus())
       }
     },
-    likeActivity(activity) {
+    async likeActivity(activity) {
       if (this.progressLike) return true
       this.progressLike = true
       if (this.data.own_reactions.like) {
-        this.data.own_reactions.like.forEach(item => {
-          this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
-            await this.$store.dispatch('GSFeed/retrieveFeed')
-            this.likeState = false
-            this.progressLike = false
-          })
-        })
+        let activ = this.data.own_reactions.like.find( i =>  i.user_id === this.user.id )
+        if( activ ){
+          await this.$store.dispatch('GSFeed/removeReaction', activ.id)
+          this.likeState = false
+        } else {
+          const payload = {
+            id: activity.id,
+            type: 'like',
+            whoNotify: activity.actor.id
+          }
+          await this.$store.dispatch('GSFeed/addReaction', payload)
+          this.likeState = true
+        }
       } else {
         const payload = {
           id: activity.id,
           type: 'like',
           whoNotify: activity.actor.id
         }
-        this.$store.dispatch('GSFeed/addReaction', payload).then(response => {
-          this.likeState = true
-          this.progressLike = false
-          this.$store.dispatch('GSFeed/retrieveFeed')
-        })
+        await this.$store.dispatch('GSFeed/addReaction', payload)
+        this.likeState = true
       }
+      await this.$store.dispatch('GSFeed/retrieveFeed')
+      this.progressLike = false
     },
     async pushComment(activity) {
       this.showSkeleton = true
@@ -546,7 +553,7 @@ export default {
           text: this.comment_data
         }
       }
-      let self = this
+
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
         await this.$store.dispatch('GSFeed/retrieveFeed')
         this.showSkeleton = false
@@ -555,44 +562,29 @@ export default {
       if (!this.data.comments) {
         this.data.comments = []
       }
-      this.data.comments.push({
-        name: `${this.user.firstName} ${this.user.lastName}`,
-        imageUrl: this.get_user_data().imageUrl,
-        message: this.comment_data,
-        reactions: {
-          likes: 0,
-          enchants: 0,
-          unlikes: 0
-        },
-        timestamps: {
-          created: '1 min'
-        }
-      })
-      await this.$store.dispatch('GSFeed/setFeed')
       this.comment_data = ''
-
     },
     async deletePost(activity) {
-      this.$store.dispatch('GSFeed/removeActivity', activity.id)
+      await this.$store.dispatch('GSFeed/removeActivity', activity.id)
       this.deleteDiaLog = false
-      
-      // this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
-      //   this.activityText = ''
-      // })
+      await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     async updatePost(activity) {
+      activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
+      activity['actor']['data']['image'] = this.user.profilePic
       activity.message = this.updateMessage;
       
       this.$store.dispatch('GSFeed/updateActivity', activity)
       this.updatePostShow = false
       this.updateMessage = this.data.message
     },
+    openPostEdit() {
+      this.updatePostShow = true
+      this.updateMessage = this.data.message
+    },
     cancelUpdate() {
       this.updatePostShow = false
       this.updateMessage = this.data.message
-    },
-    print() {
-      // console.log(this.data.comments.nested_comments)
     },
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected])
@@ -616,8 +608,6 @@ export default {
       return pendingApprovals
     }
   }
-
-
 }
 </script>
 

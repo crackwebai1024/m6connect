@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="h-full px-3 py-0"
+    class="h-full py-0"
   >
     <header-component
       class="card-custom-shadow h-auto mb-3 rounded"
@@ -20,7 +20,7 @@
               elevation="0"
               v-on="on"
             >
-              Public
+              {{titlePage}}
               <v-icon class="blue--text text--darken-3">
                 mdi-chevron-down
               </v-icon>
@@ -32,7 +32,8 @@
               :key="i"
             >
               <v-list-item-title
-                :class="item.type === 'title' ? 'grey--text' : 'black--text'"
+                @click="item.function"
+                :class="item.type === 'title' ? 'grey--text' : 'black--text pointer' "
               >
                 {{ item.text }}
               </v-list-item-title>
@@ -41,11 +42,15 @@
         </v-menu>
       </template>
       <template v-slot:input>
+        <v-icon size="40" color="primary" v-if="user.profilePic === ''">
+          mdi-account-outline
+        </v-icon>
         <img
+          v-else
           :alt="user.firstName"
           class="mr-1 rounded-circle"
           height="40"
-          :src="user.imgSrc"
+          :src="user.profilePic"
           width="40"
         >
 
@@ -144,35 +149,8 @@ export default {
     PostsList
   },
   data: () => ({
-    areas: [
-      { text: 'Everyone', type: 'subtitle' },
-      { text: 'My company', type: 'subtitle' },
-      { text: 'Teams', type: 'title' },
-      { text: 'All my teams', type: 'subtitle' },
-      { text: 'IT Team XY', type: 'subtitle' },
-      { text: 'CPM Team Z', type: 'subtitle' },
-      { text: 'Departments', type: 'title' },
-      { text: 'All my departments', type: 'subtitle' },
-      { text: 'Finances', type: 'subtitle' },
-      { text: 'Operations', type: 'subtitle' }
-    ],
+    titlePage: '',
     activityText: '',
-    // items:['Everyone', 'My Company', 'All My Teams', 'IT Team XY', 'CPM TeamZ', 'All My Departments', 'Finances', 'Operations'],
-    items: [
-      {
-        text: 'Everyone',
-        value: 'Everyone'
-      },
-      {
-        text: 'My posts',
-        value: 'author'
-      },
-      {
-        text: 'My Company',
-        value: 'company'
-      }
-    ],
-    item: 'Everyone',
     imageFiles: [],
     posts_list: [{}],
     showSkeletonPost: false
@@ -185,27 +163,72 @@ export default {
         srcImages.push(URL.createObjectURL(imageFile))
       })
       return srcImages
-    }
+    },
+    areas(){
+      return [
+        { text: 'Private',            type: 'subtitle', function: () => { this.privateState()                }},
+        { text: 'Everyone',           type: 'subtitle', function: () => { this.printSc('Everyone')           }},
+        { text: 'My company',         type: 'subtitle', function: () => { this.companyState()                }},
+        { text: 'Teams',              type: 'title',    function  ()    {                                    }},
+        { text: 'All my teams',       type: 'subtitle', function: () => { this.printSc('All my teams')       }},
+        { text: 'IT Team XY',         type: 'subtitle', function: () => { this.printSc('IT Team XY')         }},
+        { text: 'CPM Team Z',         type: 'subtitle', function: () => { this.printSc('CPM Team Z')         }},
+        { text: 'Departments',        type: 'title',    function  ()    {                                    }},
+        { text: 'All my departments', type: 'subtitle', function: () => { this.printSc('All my departments') }},
+        { text: 'Finances',           type: 'subtitle', function: () => { this.printSc('Finances')           }},
+        { text: 'Operations',         type: 'subtitle', function: () => { this.printSc('Operations')         }}
+      ]
+    },
   },
   methods: {
     ...mapActions('SocialNetworkModule', ['filter_posts']),
+    printSc(msg) {
+      this.titlePage = `${msg}`;
+    },
+    async privateState() {
+      this.titlePage = 'Private';
+      await this.$store.dispatch('GSFeed/setRoom', 'users');
+      await this.$store.dispatch('GSFeed/setFeed', this.user.id);
+      this.reloadFeed();
+    },
+    async companyState() {
+      this.titlePage = 'My Company';
+      await this.$store.dispatch('GSFeed/setRoom', 'companies');
+      await this.$store.dispatch('GSFeed/setCompanyFeed', this.user.id);
+      this.reloadFeed();
+    },
     addActivity() {
       if (this.activityText.trim() === '') {
         return
       }
       this.showSkeletonPost = true
       const activity = {
-        message: this.activityText,
-        foreign_id: `post-${this.activityText.length}-${Date.now()}`,
-        verb: 'post',
-        time: new Date(),
-        object: 1,
-        images: this.imageFiles
+
+        userID: this.user.id,
+        data: {
+          actor: JSON.stringify({
+            created_at:new Date(),
+            updated_at:new Date(),
+            id: this.user.id,
+            data:{
+                image:this.user.profilePic,
+                name:`${this.user.firstName} ${this.user.lastName}`
+            }
+          }),
+          message: this.activityText,
+          verb: 'post',
+          object: 1,
+          images: this.imageFiles
+        }
       }
       this.activityText = ''
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+        this.reloadFeed();
         this.showSkeletonPost = false
       })
+    },
+    async reloadFeed(){
+      await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     onImagesChange(e) {
       this.imageFiles = e
@@ -213,6 +236,9 @@ export default {
     removeImage(index) {
       this.imageFiles.splice(index, 1)
     }
+  },
+  mounted() {
+    this.companyState();
   }
 }
 </script>

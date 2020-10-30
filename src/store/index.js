@@ -16,6 +16,7 @@ import UserSettingsControl from './modules/UserSettingsControl'
 import SnackBarNotif from './modules/SnackBarNotif'
 import File from './modules/File'
 import AppBuilder from './modules/AppBuilder'
+import M6Codes from './modules/M6Codes'
 
 Vue.use(Vuex)
 
@@ -135,6 +136,7 @@ export default new Vuex.Store({
     PageControl,
     UserSettingsControl,
     SnackBarNotif,
+    M6Codes,
     File,
     AppBuilder
   }
