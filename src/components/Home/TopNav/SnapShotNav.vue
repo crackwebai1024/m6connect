@@ -10,6 +10,7 @@
             :imageTest="imageTest"
         />
 
+        <m6-loading :loading="loading" />
     </div>
 </template>
 
@@ -26,15 +27,18 @@ export default {
 
     data: () => ({
         imageTest: "",
-        showDialog: false
+        showDialog: false,
+        loading: false
     }),
 
     methods: {
 
         executeHtml2Canvas(){
+            this.loading = true 
             html2canvas(document.body).then((canvas) => {
                 this.imageTest = canvas.toDataURL()
                 this.showDialog = true 
+                this.loading = false 
             })
         }
 
