@@ -17,14 +17,7 @@
           {{ $h.dg(currentUser, 'firstName', '') }} {{ $h.dg(currentUser, 'lastName', '') }}
         </span>
 
-        <img 
-          v-if="$h.dg(currentCompany, 'logo', '')"
-          :alt="currentCompany.name" 
-          class="rounded ml-6" 
-          width="62" 
-          height="45" 
-          :src="currentCompany.logo"
-        >
+        <company-details />
       </div>
     </div>
   </div>
@@ -32,11 +25,13 @@
 
 <script>
 import UserOptions from '@/components/Home/TopNav/UserOptions'
+import CompanyDetails from '@/views/Home/CompanyDetails'
 import { mapState, mapActions } from 'vuex'
 export default {
   name: "TopNav",
   components: {
-    UserOptions
+    UserOptions,
+    CompanyDetails
   },
   computed: {
     ...mapState('Auth', {
@@ -60,7 +55,7 @@ export default {
       { url:'/companies', icon:'office-building' },
       { url:'/store', icon:'storefront' },
       { url:'/user/settings', icon:'cog' }
-    ]
+    ],
   })
 };
 </script>
