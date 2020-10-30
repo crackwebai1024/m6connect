@@ -43,7 +43,6 @@
       <div v-if="notification.notificationType !== 'message'" class="d-flex feed-btns absolute pa-3 text-caption align-center">
         <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> {{ notification.likes }}</p>
         <p class="mb-0 mr-2"><v-icon size="17">mdi-message-outline</v-icon> {{ notification.comments }}</p>
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-share</v-icon> {{ notification.shared }}</p>
       </div>
       <div v-if="showActionBtns" class="d-flex action-btns absolute pa-3 text-caption align-center">
         <v-btn icon color="grey">
@@ -59,7 +58,10 @@
 <script>
 export default {
   props: {
-    notification: Object,
+    notification: {
+      type: Object,
+      default: () => {}
+    },
   },
   data: () => ({
     showActionBtns: false,

@@ -24,6 +24,8 @@
       </div>
     </div>
     <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
+    <v-btn block :color="showInput ? 'red darken-1': 'blue darken-1'" class="white--text text-xl font-weight-bold" @click="showInput = !showInput" >{{showInput? 'Cancel' : 'Add Feed'}}</v-btn>
+    <add-feed v-if="showInput" />
     <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
     <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
@@ -31,22 +33,23 @@
 
 <script>
 import ActionFeedItem from './ActionFeedItem'
+import { mapActions } from 'vuex'
+import AddFeed from './AddFeed'
+
 export default {
   components: {
     ActionFeedItem,
+    AddFeed
   },
   data: () => ({
+    showInput: false,
     showSearchInput: false,
     searchInput: '',
     showActionBtns: false,
     // action feed data 
     notifications: [
       {
-        userFrom: {
-          name: 'Username M. Johnson',
-          title: 'Project Manager',
-          imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-        },
+        userFrom: { name: 'Username M. Johnson', title: 'Project Manager', imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg', },
         typeContent: 'CPM',
         colorTag: 'blue',
         textContent: 'This is the budget for next year. Please Review.',
@@ -58,26 +61,15 @@ export default {
         shared: 4,
         reviewed: true,
         followers: [
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          },
-          {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', },
+          { review: false,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
+          { review: false, imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', },
         ],
       },
       {
-        userFrom: {
-          name: 'John X. Smith',
-          title: 'IT Manager',
-          imgSrc: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
-        },
+        userFrom: { name: 'John X. Smith', title: 'IT Manager', imgSrc: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460', },
         typeContent: 'PPL',
         colorTag: 'yellow darken-2',
         textContent: 'John X. Smith wants to connect with you!',
@@ -89,11 +81,7 @@ export default {
         shared: 4,
       },
       {
-        userFrom: {
-          name: 'Sally Ackerman',
-          title: 'IT Analyst',
-          imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-        },
+        userFrom: { name: 'Sally Ackerman', title: 'IT Analyst', imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', },
         typeContent: 'ITA',
         colorTag: 'red',
         textContent: 'We are doing rationalization and need your approval.',
@@ -105,34 +93,17 @@ export default {
         shared: 2,
         reviewed: true,
         followers: [
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          },
-          {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          },
-          {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', },
+          { review: false, imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', },
+          { review: false, imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', },
         ],
       },
       {
-        userFrom: {
-          name: 'Robert Perez',
-          title: 'HR Manager',
-          imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-        },
+        userFrom: { name: 'Robert Perez', title: 'HR Manager', imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg', },
         typeContent: 'CPM',
         colorTag: 'cyan',
         textContent: 'Please read the September company announcement. Reading acknowledgement is required for all employees.',
@@ -144,36 +115,24 @@ export default {
         shared: 18,
         reviewed: true,
         followers: [
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'    },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
+          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
         ],
       },
     ],
     areas: [
-      { text: "Everyone", type: "subtitle" },
-      { text: "My company", type: "subtitle" },
-      { text: "Teams", type: "title" },
-      { text: "All my teams", type: "subtitle" },
-      { text: "IT Team XY", type: "subtitle" },
-      { text: "CPM Team Z", type: "subtitle" },
-      { text: "Departments", type: "title" },
+      { text: "Everyone",           type: "subtitle" },
+      { text: "My company",         type: "subtitle" },
+      { text: "Teams",              type: "title"    },
+      { text: "All my teams",       type: "subtitle" },
+      { text: "IT Team XY",         type: "subtitle" },
+      { text: "CPM Team Z",         type: "subtitle" },
+      { text: "Departments",        type: "title"    },
       { text: "All my departments", type: "subtitle" },
-      { text: "Finances", type: "subtitle" },
-      { text: "Operations", type: "subtitle" },
+      { text: "Finances",           type: "subtitle" },
+      { text: "Operations",         type: "subtitle" },
     ],
   }),
   name: "ActionFeed",
@@ -186,10 +145,16 @@ export default {
     },
   },
   methods: {
+    ...mapActions( 'WorkOrderModule' , {
+      workOrder: 'getWorkOrder'
+    }),
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
     },
+  },
+  mounted(){
+    this.workOrder();
   }
 };
 </script>

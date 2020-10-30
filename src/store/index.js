@@ -16,6 +16,7 @@ import UserSettingsControl from './modules/UserSettingsControl'
 import SnackBarNotif from './modules/SnackBarNotif'
 import File from './modules/File'
 import M6Codes from './modules/M6Codes'
+import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
 
 Vue.use(Vuex)
 
@@ -125,6 +126,7 @@ export default new Vuex.Store({
     SocialNetworkModule,
     GeneralListModule,
     NavigationStack,
+    WorkOrderModule,
     ITAppsModule,
     TablesModule,
     InfoModule,
