@@ -24,7 +24,7 @@
       </div>
     </div>
     <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
-    <v-btn block :color="showInput ? 'red darken-1': 'blue darken-1'" class="white--text text-xl font-weight-bold" @click="showInput = !showInput" >{{showInput? 'Cancel' : 'Add Feed'}}</v-btn>
+    <v-btn block :color="showInput ? 'red darken-1': 'blue darken-1'" class="white--text text-xl font-weight-bold" @click="showInput = !showInput" >{{showInput? 'Cancel' : 'New Action'}}</v-btn>
     <add-feed v-if="showInput" />
     <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
     <div v-if="filteredNotifications.length === 0">No results found</div>

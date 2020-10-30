@@ -14,8 +14,11 @@ export default {
       console.log(res['data']);
       return res['data'];
     },
-    async getRecords(){
-      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/records`);
+    async getRecords({}, type){
+      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/records/${type}`);
+    },
+    postAction({}, data) {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order`, data)
     }
   }
 };

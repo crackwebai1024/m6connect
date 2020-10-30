@@ -1,29 +1,23 @@
 <template>
   <v-container class="px-0 py-0">
     <v-form @submit.prevent ref="form" v-model="valid">
-      
-      
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" class="py-0">
           <v-text-field
-            dense
-            rounded
             ref="inputFeed"
             :rules="textRules"
             v-model="itemInfo.title"
-            class="h-full outline-none px-2 text-body-1 w-full"
+            class="h-full outline-none text-body-1"
             placeholder="Title"
           />
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" class="py-0">
           <v-text-field
-            dense
-            rounded
             ref="inputFeed"
             :rules="textRules"
             v-model="itemInfo.description"
-            class="h-full outline-none px-2 text-body-1 w-full"
-            placeholder="Type your notification here..."
+            class="h-full outline-none text-body-1"
+            placeholder="Summary"
           />
         </v-col>
         <v-col cols="12" class="py-0">
@@ -53,10 +47,10 @@
         </v-col>
         <v-col cols="6" class="py-0">
           <v-select
-            v-model="itemInfo.requestType"
+            v-model="itemInfo.type"
             :rules="selectRules"
             label="Request Type"
-            :items="options.RequestType"
+            :items="options.type"
             item-value="id"
             item-text="value"
           ></v-select>
@@ -71,8 +65,18 @@
             item-text="value"
           ></v-select>
         </v-col>
-        <v-col cols="12" class="py-0">
+        <v-col cols="4" class="py-0">
           <v-select
+            v-on:change="changeRecord($event)"
+            v-model="record_type"
+            label="Record Type"
+            :items="records_type"
+          >
+          </v-select>
+        </v-col>
+        <v-col cols="8" class="py-0">
+          <v-select
+            :class="{ disabled: record_type === null }"
             v-model="itemInfo.record_id"
             label="Record"
             :items="options.records"
@@ -94,7 +98,7 @@
             v-model="itemInfo.assignment_list"
             color="green"
             chips
-            label="Who to notify"
+            label="People"
             item-value="user.id"
             hide-details
             deletable-chips
@@ -132,25 +136,25 @@ export default {
   mixins: [validations],
   data: () => ({
     itemInfo: {
-      start_date: null,
-      end_date: null,
+      author: null,
       due_date: null,
       assignment_list: null,
       description: null,
       title: null,
-      requestType: null,
+      type: null,
       record_id: null,
       status: null,
     },
     res: {
-      start_date: false,
       due_date: false,
     },
     options: {
       Status: [],
       records: [],
-      RequestType: [],
+      type: [],
     },
+    record_type: null,
+    records_type: ['ITApps'],
     imageFiles: [],
     docFiles: [],
     minimized: false,
@@ -158,7 +162,14 @@ export default {
   }),
   methods: {
     ...mapActions("ITAppsModule", { selects: "get_all_selects" }),
-    ...mapActions("WorkOrderModule", { records: "getRecords" }),
+    ...mapActions("WorkOrderModule", { records: "getRecords", postAction: "postAction"}),
+    changeRecord(event){
+      switch( event ){
+        case 'ITApps':
+          this.records('itapps').then(res => { this.options['records'] = res['data']; });
+          break;
+      }
+    },
     onImagesChange(e) {
       this.imageFiles = e;
       this.$refs.inputFeed.focus();
@@ -168,21 +179,49 @@ export default {
       this.$refs.inputFeed.focus();
     },
     post() {
-      console.log(this.itemInfo);
+      this.itemInfo['activity'] = {
+        userID: this.user.id,
+        data: {
+          actor: JSON.stringify({
+            created_at:new Date(),
+            updated_at:new Date(),
+            id: this.user.id,
+            data:{
+              image:this.user.profilePic,
+              name:`${this.user.firstName} ${this.user.lastName}`
+            }
+          }),
+          message: this.itemInfo.description,
+          verb: 'action',
+          object: 1
+        }
+      };
+      this.itemInfo['start_date']     = new Date().toISOString().slice(0,10);
+      this.itemInfo['requested_date'] = new Date().toISOString().slice(0,10);
+      
+      this.postAction(this.itemInfo).then(() =>{
+    });
     },
   },
   computed: {
     ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
+    ...mapGetters('Auth',      { user:         'getUser'                }),
   },
   mounted() {
+    this.itemInfo['author'] = this.user.id;
     this.selects({ params: ["wo_status", "wo_request_type"] }).then((res) => {
-      this.options["RequestType"] = res["data"]["wo_request_type"];
+      this.options["type"] = res["data"]["wo_request_type"];
       this.options["Status"] = res["data"]["wo_status"];
-    });
-
-    this.records().then(res => {
-        this.options['records'] = res['data'];
     });
   },
 };
 </script>
+
+<style>
+  .disabled {
+    pointer-events:none;
+    color: #B6B6B6;
+    cursor: not-allowed;
+    background-image: none;
+  }
+</style>
