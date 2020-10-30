@@ -81,40 +81,35 @@
                         </v-btn>
                     </div>
                 </div>
-                <div class="grey lighten-3 h-fit min-h-full pt-2">
+                <div class="details-content grey lighten-3 h-fit min-h-full pt-2">
                     <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
                         <v-col cols="5" class="pa-0 pr-1">
                             <div class="white py-3 px-4 mb-3">
                                 <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
-                                <div>
-                                    <div class="overflow-hidden links" ref="showLinksDiv">
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
-                                        </div>
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="22">mdi-email-outline</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.email }}</p>
-                                        </div>
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.name }}</p>
-                                        </div>
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="22">mdi-phone</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.phone }}</p>
-                                        </div>
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="22">mdi-earth</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.website }}</p>
-                                        </div>
-                                        <div class="d-flex align-center my-3">
-                                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
-                                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
-                                        </div>
+                                <div class="overflow-hidden">
+                                    <div class="d-flex align-center my-3">
+                                        <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
+                                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
                                     </div>
-                                    <div @click="toogleLinks" class="pointer d-flex align-center pt-2">
-                                        <p class="ml-9 blue--text text-body-2 mb-0">{{ showLinksMessage }}</p>
+                                    <div class="d-flex align-center my-3">
+                                        <v-icon class="grey--text text--darken-3" size="22">mdi-email-outline</v-icon>
+                                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.email }}</p>
+                                    </div>
+                                    <div class="d-flex align-center my-3">
+                                        <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
+                                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.name }}</p>
+                                    </div>
+                                    <div class="d-flex align-center my-3">
+                                        <v-icon class="grey--text text--darken-3" size="22">mdi-phone</v-icon>
+                                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.phone }}</p>
+                                    </div>
+                                    <div class="d-flex align-center my-3">
+                                        <v-icon class="grey--text text--darken-3" size="22">mdi-earth</v-icon>
+                                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.website }}</p>
+                                    </div>
+                                    <div class="d-flex align-center my-3">
+                                        <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
+                                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +179,7 @@ export default {
   transition: height 0.5s ease;
 }
 .active-tab-company {
-  border-bottom: 2px solid rgb(49, 174, 220);
+  border-bottom: 3px solid rgb(49, 174, 220);
 }
 .v-dialog--scrollable {
   position: absolute;
@@ -196,5 +191,8 @@ export default {
 }
 .v-dialog--scrollable::-webkit-scrollbar {
   width: 0px;
+}
+.details-content {
+  min-height: 100%;
 }
 </style>
