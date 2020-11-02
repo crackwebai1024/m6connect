@@ -199,8 +199,7 @@ export default {
       this.itemInfo['start_date']     = new Date().toISOString().slice(0,10);
       this.itemInfo['requested_date'] = new Date().toISOString().slice(0,10);
       
-      this.postAction(this.itemInfo).then(() =>{
-    });
+      this.postAction(this.itemInfo).then(this.$emit('closeCreateActivity'));
     },
   },
   computed: {

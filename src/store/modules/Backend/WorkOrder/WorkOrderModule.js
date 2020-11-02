@@ -11,8 +11,10 @@ export default {
   actions: {
     async getWorkOrder(){
       let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/deleted_at/null`);
-      console.log(res['data']);
       return res['data'];
+    },
+    async getUsersList({}, data) {
+      return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/user/list`, {userIds: data})
     },
     async getRecords({}, type){
       return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/records/${type}`);

@@ -25,7 +25,7 @@
     </div>
     <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
     <v-btn block :color="showInput ? 'red darken-1': 'blue darken-1'" class="white--text text-xl font-weight-bold" @click="showInput = !showInput" >{{showInput? 'Cancel' : 'New Action'}}</v-btn>
-    <add-feed v-if="showInput" />
+    <add-feed v-if="showInput" @closeCreateActivity="beforeClose" />
     <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
     <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
@@ -47,81 +47,7 @@ export default {
     searchInput: '',
     showActionBtns: false,
     // action feed data 
-    notifications: [
-      {
-        userFrom: { name: 'Username M. Johnson', title: 'Project Manager', imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg', },
-        typeContent: 'CPM',
-        colorTag: 'blue',
-        textContent: 'This is the budget for next year. Please Review.',
-        message: 'Elevator Modernization All Hospital.cpm.bdg',
-        date: 1600475840821,
-        notificationType: 'document',
-        likes: 157,
-        comments: 14,
-        shared: 4,
-        reviewed: true,
-        followers: [
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', },
-          { review: false,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
-          { review: false, imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', },
-        ],
-      },
-      {
-        userFrom: { name: 'John X. Smith', title: 'IT Manager', imgSrc: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460', },
-        typeContent: 'PPL',
-        colorTag: 'yellow darken-2',
-        textContent: 'John X. Smith wants to connect with you!',
-        message: "Hey! it's John from IT, how's it going? Let's chat and discuss this new awesome platform!",
-        date: 1600747932248,
-        notificationType: 'message',
-        likes: 157,
-        comments: 14,
-        shared: 4,
-      },
-      {
-        userFrom: { name: 'Sally Ackerman', title: 'IT Analyst', imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', },
-        typeContent: 'ITA',
-        colorTag: 'red',
-        textContent: 'We are doing rationalization and need your approval.',
-        message: 'Awesome IT Application.ita',
-        date: 1600475840821,
-        notificationType: 'document',
-        likes: 97,
-        comments: 1,
-        shared: 2,
-        reviewed: true,
-        followers: [
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg', },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',    },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', },
-          { review: false, imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', },
-          { review: false, imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', },
-        ],
-      },
-      {
-        userFrom: { name: 'Robert Perez', title: 'HR Manager', imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg', },
-        typeContent: 'CPM',
-        colorTag: 'cyan',
-        textContent: 'Please read the September company announcement. Reading acknowledgement is required for all employees.',
-        message: 'Company Announcement September.ann',
-        date: 1600475840821,
-        notificationType: 'document',
-        likes: 2498,
-        comments: 29,
-        shared: 18,
-        reviewed: true,
-        followers: [
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'    },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
-          { review: true,  imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
-        ],
-      },
-    ],
+    notifications: [ ],
     areas: [
       { text: "Everyone",           type: "subtitle" },
       { text: "My company",         type: "subtitle" },
@@ -138,10 +64,11 @@ export default {
   name: "ActionFeed",
   computed: {
     filteredNotifications() {
-        return this.notifications.filter((notification) => {
-            return notification.userFrom.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
-              || notification.textContent.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
-        })
+      return this.notifications
+        // return this.notifications.filter((notification) => {
+            // return notification.userFrom.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+            //   || notification.textContent.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+        // })
     },
   },
   methods: {
@@ -152,10 +79,18 @@ export default {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
     },
+    beforeClose(){
+      this.showInput  = false;
+      this.workOrder().then(res => {
+        this.notifications = res;
+      });
+    }
   },
   mounted(){
-    this.workOrder();
-  }
+    this.workOrder().then(res => {
+      this.notifications = res;
+    });
+  },
 };
 </script>
 
