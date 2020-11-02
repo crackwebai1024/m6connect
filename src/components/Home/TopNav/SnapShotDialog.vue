@@ -73,24 +73,23 @@
                             
                             <div 
                                 v-for="(n, i) in notes" :key="`notes-${n.id}`" 
-                                :style="`background-color: ${ n.selected ? '#f2f2f2' : null }; border-radius: 10%;`"
                                 class="pa-2"
                             >
 
                                 <div class="inline" >
                                     <v-avatar
-                                        color="blue darken-2"
+                                        :color=" n.selected ? 'green darken-2' : 'blue darken-2'"
                                         size="30"
                                         class="mr-2"
                                     >
                                         <span class="white--text headline">{{ i + 1 }}</span>
                                     </v-avatar>
-                                    <v-text-field class="ma-0 pa-0" label="Title" v-model="notes[i].title" />
-                                    <v-btn color="red darken-2" icon @click="removeNote(n)" >
+                                    <v-text-field outlined class="ma-0 pa-0" label="Title" v-model="notes[i].title" />
+                                    <v-btn color="red darken-2" icon @click="removeNote(n)" v-show="i != 0" >
                                         <v-icon>mdi-close</v-icon>
                                     </v-btn>
                                 </div>
-                                <v-textarea label="Description" v-model="notes[i].text" />
+                                <v-textarea outlined  label="Description" v-model="notes[i].text" />
 
                             </div>
 
@@ -155,6 +154,7 @@ export default {
 
     methods: {
         saving() {
+            console.log(this.notes)
         },
 
         removeNote(n) {
@@ -170,19 +170,23 @@ export default {
 
         handleDragstart(e) {
             // save drag element:
-            this.dragItemId = e.target.id();
-            // move current element to the top:
-            
-            this.notes = this.notes.map(n => ({...n, selected: false}))
+            this.dragItemId = e.target.id()
+            this.notes = this.notes.map( n => ({...n, selected: false}) )
             const item = this.notes.find(i => i.id === this.dragItemId);
-            
             item.selected = true
-
-            this.notes = this.notes.map( n => n.id !== item.id ? n : item  )
         },
 
         handleDragend(e) {
-            this.dragItemId = null;
+            this.notes = this.notes.map(n => ({...n, selected: false}))
+            const item = this.notes.find(i => i.id === this.dragItemId);
+            
+            item.x = e.target.attrs.x
+            item.y = e.target.attrs.y
+            item.selected = true
+
+            this.notes = this.notes.map( n => n.id !== item.id ? n : item  )
+
+            this.dragItemId = null
         },
 
         getRandCoordinates() {
