@@ -13,6 +13,7 @@ const UserSettings = () => import(/* webpackChunkName: 'UserSettings' */ "@/view
 const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components/Companies')
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
 const StoreFront = () => import(/* webpackChunkName: 'Store' */ '@/components/Store')
+const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 
 import store from '../store/';
 Vue.use(VueRouter);
@@ -86,7 +87,15 @@ const router = new VueRouter({
       path: "/user/settings",
       name: "user.settings",
       component: UserSettings
-    }
+    },
+    {
+      path: "/dev",
+      name: "dev",
+      component: Dev,
+      meta: {
+        public: true
+      }
+    },
   ],
 });
 
