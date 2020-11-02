@@ -21,7 +21,7 @@
           {{ $h.dg(currentUser, 'firstName', '') }} {{ $h.dg(currentUser, 'lastName', '') }}
         </span>
 
-        <panel-details-template>
+        <app-template>
           <img
             slot="actionbtn"
             v-if="currentCompany.logo"
@@ -122,7 +122,7 @@
           <div slot="rightPanel">
               <project-social-media class="main-content px-0" />
           </div>
-        </panel-details-template>
+        </app-template>
       </div>
     </div>
   </div>
@@ -132,7 +132,7 @@
 import { mapState, mapActions } from 'vuex'
 import SnapShotNav from '@/components/Home/TopNav/SnapShotNav'
 import UserOptions from '@/components/Home/TopNav/UserOptions'
-import PanelDetailsTemplate from '@/views/Home/PanelDetailsTemplate'
+import AppTemplate from '@/views/Home/AppTemplate'
 import ProjectSocialMedia from './ProjectSocialMedia'
 
 export default {
@@ -140,7 +140,7 @@ export default {
   components: {
     UserOptions,
     SnapShotNav,
-    PanelDetailsTemplate,
+    AppTemplate,
     ProjectSocialMedia,
   },
 

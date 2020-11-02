@@ -40,7 +40,7 @@
         </v-text-field>
       </template>
     </header-component>
-    <panel-details-template
+    <app-template
       :editPanel="true"
     >
       <v-btn
@@ -123,7 +123,7 @@
             </div>
         </div>
       </div>
-    </panel-details-template>
+    </app-template>
     <div
       :key="index + 'company'"
       v-for="(item, index) of filteredCompanies"
@@ -138,13 +138,13 @@
 import { mapGetters, mapActions } from "vuex";
 import CompanyItem from "@/components/Companies/CompanyItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
-import PanelDetailsTemplate from '@/views/Home/PanelDetailsTemplate'
+import AppTemplate from '@/views/Home/AppTemplate'
 
 export default {
   components: {
     CompanyItem,
     HeaderComponent,
-    PanelDetailsTemplate
+    AppTemplate
   },
   name: "CompaniesList",
   data: () => ({

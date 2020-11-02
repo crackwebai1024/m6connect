@@ -97,7 +97,7 @@ import Panel from '@/components/AppBuilder/Panel'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
-  name: "PanelDetailsTemplate",
+  name: "AppTemplate",
   components: {
     DeleteDialog,
     AddPanel,
