@@ -1,123 +1,225 @@
 <template>
-    <div>
-        <v-btn
-            class="white"
-            text
-            @click="dialog = true"
-        >
-            Add Company
-        </v-btn>
-        <template>
-            <v-dialog
-                class="vertical-scroll dont-show-scroll"
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-                scrollable
-            >
-            <v-card class="relative" tile>
-                <div class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
-                    <div class="d-flex align-center">
-                        <div class="grey lighten-3 pa-16">
-                            <v-icon class="grey--text text--lighten-1" size="38">mdi-image-filter-hdr</v-icon>
-                        </div>
-                        <div class="ml-8">
-                            <v-text-field class="font-weight-regular add-field grey lighten-3 pt-1 px-4 rounded-xl mb-1" label="Title">
-                            </v-text-field>
-                            <v-btn
-                                elevation="0"
-                                color="transparent"
-                                class="blue--text capitalize px-1"
-                            >
-                                Add field
-                            </v-btn>
-                        </div>
-                    </div>
-                </div>
-                <v-divider class="max-w-lg w-full mx-auto blue-grey lighten-5"></v-divider>
-                <div class="max-w-lg w-full mx-auto d-flex justify-space-between align-center">
-                    <div class="d-flex align-center">
-                        <v-tabs
-                            active-class="font-weight-black blue--text active-tab-company" 
-                        >
-                            <v-tab class="capitalize blue--text">Home</v-tab>
-                        </v-tabs>
-                        <v-btn
-                            icon
-                            class="green lighten-2 pa-0 white--text ml-6"
-                        >
-                            <v-icon size="23">mdi-plus</v-icon>
-                        </v-btn>
-                    </div>
-                    <div class="d-flex align-center">
-                        <v-btn
-                            elevation="0"
-                            class="grey capitalize lighten-2 grey--text text--darken-3 left-0 ml-3 pa-1 font-weight-black"
-                            light
-                        >
-                            <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                    </div>
-                </div>
-                <div class="details-content grey lighten-3 h-fit min-h-full pt-2">
-                    <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
-                        <v-col cols="5" class="pa-0 pr-1 d-flex flex-column justify-center">
-                            <div class="white py-3 px-4 mb-3 panel">
-                                <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
-                                <div class="d-flex align-start">
-                                    <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
-                                    <div class="overflow-hidden w-full">
-                                        <v-textarea
-                                            class="grey lighten-3 px-4 pt-1"
-                                            color="grey lighten-3"
-                                        >
-                                            <template v-slot:label>
-                                                Description
-                                            </template>
-                                        </v-textarea>
-                                        <v-btn
-                                            elevation="0"
-                                            color="transparent"
-                                            class="blue--text capitalize px-1"
-                                        >
-                                            Add field
-                                        </v-btn>
-                                    </div>
-                                </div>
-                            </div>
-                            <v-btn
-                                class="green lighten-2 capitalize white--text mx-auto px-8 py-6"
-                                text
-                            >
-                                Add Panel
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="7" class="pa-0 pl-1">
-                            <project-social-media class="main-content px-0" />
-                        </v-col>
-                    </v-row>
-                </div>
-            </v-card>
-            </v-dialog>
-        </template>
+  <v-card
+    class="relative"
+    tile
+  >
+    <div
+      class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
+    >
+      <div class="align-center d-flex">
+        <div class="grey lighten-3 pa-16">
+          <v-icon
+            class="grey--text text--lighten-1"
+            size="38"
+          >
+            mdi-image-filter-hdr
+          </v-icon>
+        </div>
+        <div class="ml-8">
+          <v-text-field
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            label="Title"
+          />
+          <v-btn
+            class="blue--text capitalize px-1"
+            color="transparent"
+            elevation="0"
+          >
+            Add field
+          </v-btn>
+        </div>
+      </div>
     </div>
+    <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
+    <div class="align-center d-flex justify-space-between max-w-lg mx-auto w-full">
+      <div class="align-center d-flex">
+        <v-tabs
+          v-if="appLoaded"
+          v-model="activeTab"
+          active-class="font-weight-black blue--text active-tab-company"
+        >
+          <v-tab
+            v-for="tab in app.tabs"
+            :key="tab.id"
+            class="blue--text capitalize"
+          >
+            {{ tab.title }}
+          </v-tab>
+        </v-tabs>
+        <add-tab @addNewTab="addNewTab" />
+      </div>
+      <div class="align-center d-flex">
+        <v-btn
+          class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
+          elevation="0"
+          light
+        >
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+      </div>
+    </div>
+    <div
+      v-if="appLoaded"
+      class="details-content grey h-fit lighten-3 min-h-full pt-2"
+    >
+      <v-row
+        v-if="app.tabs.length > 1"
+        class="align-start d-flex justify-center max-w-lg mb-2 mx-auto pt-1 w-full"
+      >
+        <v-btn
+          color="red"
+          dark
+          @click="deleteTab"
+        >
+          Delete Tab
+        </v-btn>
+      </v-row>
+      <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
+        <v-col
+          class="d-flex flex-column justify-center pa-0 pr-1"
+          cols="5"
+        >
+          <!--                <div class="mb-3 panel px-4 py-3 white">-->
+          <!--                  <h3 class="font-weight-bold grey&#45;&#45;text spacing-tight text&#45;&#45;darken-1">-->
+          <!--                    Information-->
+          <!--                  </h3>-->
+          <!--                  <div class="align-start d-flex">-->
+          <!--                    <v-icon class="border mr-2 pt-2 rounded">-->
+          <!--                      mdi-alert-circle-->
+          <!--                    </v-icon>-->
+          <!--                    <div class="overflow-hidden w-full">-->
+          <!--                      <v-textarea-->
+          <!--                        class="grey lighten-3 pt-1 px-4"-->
+          <!--                        color="grey lighten-3"-->
+          <!--                      >-->
+          <!--                        <template v-slot:label>-->
+          <!--                          Description-->
+          <!--                        </template>-->
+          <!--                      </v-textarea>-->
+          <!--                      <v-btn-->
+          <!--                        class="blue&#45;&#45;text capitalize px-1"-->
+          <!--                        color="transparent"-->
+          <!--                        elevation="0"-->
+          <!--                      >-->
+          <!--                        Add field-->
+          <!--                      </v-btn>-->
+          <!--                    </div>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <panel
+            v-for="panel in leftPanels"
+            :key="panel.id"
+            :panel="panel"
+            @deletePanel="deletePanel"
+          />
+          <add-panel @addNewPanel="addNewPanel(0)" />
+        </v-col>
+        <v-col
+          class="pa-0 pl-1"
+          cols="7"
+        >
+          <panel
+            v-for="panel in rightPanels"
+            :key="panel.id"
+            :panel="panel"
+            @deletePanel="deletePanel"
+          />
+          <add-panel @addNewPanel="addNewPanel(1)" />
+        </v-col>
+      </v-row>
+    </div>
+
+    <v-dialog
+      v-model="showDeleteModal"
+      width="500"
+    >
+      <delete-dialog
+        element="Tab"
+        @closeDeleteModal="confirmDelete"
+      />
+    </v-dialog>
+  </v-card>
 </template>
 
 <script>
-import ProjectSocialMedia from './ProjectSocialMedia'
+
+import AddPanel from '@/components/AppBuilder/Buttons/AddPanel'
+import AddTab from '@/components/AppBuilder/Buttons/AddTab'
+import Panel from '@/components/AppBuilder/Panel'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
+  name: 'CreateCompanyPanel',
   components: {
-    ProjectSocialMedia,
+    DeleteDialog,
+    AddPanel,
+    AddTab,
+    Panel
   },
   data: () => ({
-    dialog: false,
+    app: {},
+    appLoaded: false,
+    showDeleteModal: false,
+    tabToDelete: null,
+    activeTab: 0
   }),
-  name: "CreateCompanyPanel",
+  computed: {
+    leftPanels() {
+      return this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
+    },
+    rightPanels() {
+      return this.app.tabs[this.activeTab].panels.filter(item => item.column === 1)
+    }
+  },
+  async mounted() {
+    this.app = await this.$store.dispatch('AppBuilder/getApp', 1)
+    this.appLoaded = true
+  },
   methods: {
+    addNewTab() {
+      const newTab = {
+        appID: this.app.id,
+        weight: 0,
+        title: 'New Tab'
+      }
+      this.$store.dispatch('AppBuilder/saveTab', newTab).then(result => {
+        this.app.tabs.push(result)
+        this.activeTab = this.app.tabs.map(item => item.id).indexOf(result.id)
+      })
+    },
+    addNewPanel(side) {
+      const newPanel = {
+        tabID: this.app.tabs[this.activeTab].id,
+        weight: 0,
+        column: side,
+        title: 'New Panel',
+        description: ''
+      }
+      this.$store.dispatch('AppBuilder/savePanel', newPanel).then(result => {
+        this.app.tabs[this.activeTab].panels.push(result)
+      })
+    },
+    deletePanel(id) {
+      const index = this.app.tabs[this.activeTab].panels.map(item => item.id).indexOf(id)
+      this.app.tabs[this.activeTab].panels.splice(index, 1)
+    },
+    deleteTab() {
+      this.showDeleteModal = true
+      this.tabToDelete = this.app.tabs[this.activeTab].id
+    },
+    async confirmDelete(result) {
+      if (result) {
+        await this.$store.dispatch('AppBuilder/deleteTab', this.tabToDelete)
+        const index = this.app.tabs.map(item => item.id).indexOf(this.tabToDelete)
+        this.app.tabs.splice(index, 1)
+        this.activeTab = 0
+      }
+      this.tabToDelete = null
+      this.showDeleteModal = false
+    }
   }
-};
+}
 </script>
 
 <style lang="scss">
