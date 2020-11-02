@@ -17,7 +17,7 @@
       <p v-else class="message-box text-caption black--text pl-3 ml-1 mb-0 d-flex align-center">
         {{ notification.post.message }}
       </p>
-      <p v-if="notification.record" :class="notification.colorTag + '--text ' + 'text-body-2 ml-1 mb-0 d-flex align-center'">
+      <p v-if="notification.record" @click="setRecord(notification.record)" :class="notification.colorTag + '--text ' + 'text-body-2 pointer ml-1 mb-0 d-flex align-center'">
         <v-icon :class="notification.colorTag + '--text ' + 'mr-1'">mdi-file-document-outline</v-icon>
         {{ notification.record.title }}
       </p>
@@ -89,6 +89,10 @@ export default {
     ...mapActions("WorkOrderModule", {
       getUsers: "getUsersList"
     }),
+    ...mapActions("InfoModule", {
+      changeDrawer: "change_preview_navigation_drawer",
+    }),
+    ...mapActions("GeneralListModule", {recordData: "push_data_to_active"}),
     diffNow(date) {
       let dateNow = new Date();
       let dateNotification = new Date(date);
@@ -101,6 +105,10 @@ export default {
       diff = (diff - hours) / 24;
       let days = Math.abs(Math.floor(diff % 30));
       return days + ' days, ' + hours + ' hours, ' + minutes +' minutes, ' + seconds + ' seconds';
+    },
+    setRecord(record){
+      this.recordData(record);
+      this.changeDrawer(true);
     },
     pendingApprovals(approvals) {
       let pendingApprovals = 0 ;
