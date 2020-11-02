@@ -1,19 +1,78 @@
 <template>
   <div class="mb-3 panel px-4 py-3 relative white">
-    <v-btn
-      absolute
-      icon
-      right
-      top
-      @click="deletePanel"
+    <div class="d-flex">
+      <v-spacer />
+      <v-btn
+        icon
+        right
+        top
+        @click="deletePanel"
+      >
+        <v-icon color="red lighten-3">
+          mdi-delete
+        </v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        right
+        top
+        @click="editPanel"
+      >
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+    </div>
+    <p
+      v-if="!panelEdit"
+      class="mb-0 v-card__title"
     >
-      <v-icon color="red lighten-3">
-        mdi-delete
-      </v-icon>
-    </v-btn>
-    <p class="mb-0 v-card__title">
       {{ panel.title }}
     </p>
+    <template
+      v-else
+    >
+      <div class="mb-3">
+        <div class="d-flex">
+          <v-text-field
+            v-model="clonePanel.title"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            label="Panel Name"
+          />
+        </div>
+        <div class="d-flex mt-2">
+          <v-text-field
+            v-model="clonePanel.description"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            label="Description"
+          />
+        </div>
+        <div class="d-flex mt-2">
+          <v-select
+            v-model="clonePanel.column"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            item-text="label"
+            item-value="value"
+            :items="[ { label: 'Left', value: 0}, { label: 'Right', value: 1}]"
+            label="Description"
+          />
+        </div>
+        <div class="d-flex mt-2">
+          <v-btn
+            color="red"
+            dark
+          >
+            Cancel
+          </v-btn>
+          <v-spacer />
+          <v-btn
+            color="green"
+            dark
+          >
+            Save
+          </v-btn>
+        </div>
+      </div>
+    </template>
+
     <v-list>
       <v-list-item
         v-for="field in panel.fields"
@@ -82,6 +141,8 @@ export default {
       showFieldModal: false,
       showDeleteModal: false,
       editing: false,
+      panelEdit: false,
+      clonePanel: {},
       fieldToDelete: null,
       panelToDelete: null,
       activeField: {},
@@ -126,6 +187,10 @@ export default {
       this.fieldToDelete = null
       this.panelToDelete = null
       this.showDeleteModal = false
+    },
+    editPanel() {
+      this.panelEdit = !this.panelEdit
+      this.clonePanel = { ...this.panel }
     },
     deletePanel() {
       this.showDeleteModal = true

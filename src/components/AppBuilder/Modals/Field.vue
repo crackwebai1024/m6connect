@@ -22,6 +22,7 @@
             item-value="value"
             :items="types"
             label="Field Type"
+            y
           />
 
           <v-divider class="my-2" />
