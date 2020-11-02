@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="h-full px-3 py-0"
+    class="h-full py-0"
   >
     <header-component
       class="card-custom-shadow h-auto mb-3 rounded"
