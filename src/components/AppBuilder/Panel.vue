@@ -59,6 +59,7 @@
           <v-btn
             color="red"
             dark
+            @click="panelEdit = false"
           >
             Cancel
           </v-btn>
