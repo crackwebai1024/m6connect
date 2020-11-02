@@ -3,10 +3,10 @@
         <img
             @click="dialog = true"
             v-if="currentCompany.logo"
-            :alt="currentCompany.name" 
-            class="rounded ml-6 pointer" 
-            width="62" 
-            height="45" 
+            :alt="currentCompany.name"
+            class="rounded ml-6 pointer"
+            width="62"
+            height="45"
             :src="currentCompany.logo"
         >
         <template>
@@ -191,8 +191,5 @@ export default {
 }
 .v-dialog--scrollable::-webkit-scrollbar {
   width: 0px;
-}
-.details-content {
-  min-height: 100%;
 }
 </style>

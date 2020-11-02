@@ -16,54 +16,24 @@
                 transition="dialog-bottom-transition"
                 scrollable
             >
-            <v-card class="relative" tile>
-                <div class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
-                    <div class="d-flex align-center">
-                        <div class="grey lighten-3 pa-16">
-                            <v-icon class="grey--text text--lighten-1" size="38">mdi-image-filter-hdr</v-icon>
-                        </div>
-                        <div class="ml-8">
-                            <v-text-field class="font-weight-regular add-field grey lighten-3 pt-1 px-4 rounded-xl mb-1" label="Title">
-                            </v-text-field>
-                            <v-btn
-                                elevation="0"
-                                color="transparent"
-                                class="blue--text capitalize px-1"
-                            >
-                                Add field
-                            </v-btn>
-                        </div>
+            <v-card class="relative grey lighten-3" tile>
+                <div class="w-full white">
+                    <slot name="header"/>
+                    <v-divider class="max-w-lg w-full mx-auto blue-grey lighten-5"></v-divider>
+                    <div class="max-w-lg w-full mx-auto d-flex justify-space-between align-center">
+                        <slot name="tabs"/>
+                        <slot name="btns"/>
                     </div>
                 </div>
-                <v-divider class="max-w-lg w-full mx-auto blue-grey lighten-5"></v-divider>
-                <div class="max-w-lg w-full mx-auto d-flex justify-space-between align-center">
-                    <div class="d-flex align-center">
-                        <v-tabs
-                            active-class="font-weight-black blue--text active-tab-company" 
-                        >
-                            <v-tab class="capitalize blue--text">Home</v-tab>
-                        </v-tabs>
-                        <v-btn
-                            icon
-                            class="green lighten-2 pa-0 white--text ml-6"
-                        >
-                            <v-icon size="23">mdi-plus</v-icon>
-                        </v-btn>
-                    </div>
-                    <div class="d-flex align-center">
-                        <v-btn
-                            elevation="0"
-                            class="grey capitalize lighten-2 grey--text text--darken-3 left-0 ml-3 pa-1 font-weight-black"
-                            light
-                        >
-                            <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                    </div>
-                </div>
+
                 <div class="details-content grey lighten-3 h-fit min-h-full pt-2">
                     <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
                         <v-col cols="5" class="pa-0 pr-1 d-flex flex-column justify-center">
-                            <div class="white py-3 px-4 mb-3 panel">
+                            <div
+                                v-for="(leftPanel, index) in leftPanels"
+                                :key="'leftpanel-' + index"
+                                class="white py-3 px-4 mb-3 panel"
+                            >
                                 <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
                                 <div class="d-flex align-start">
                                     <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
@@ -87,6 +57,8 @@
                                 </div>
                             </div>
                             <v-btn
+                                v-if="editPanel"
+                                @click="leftPanels++"
                                 class="green lighten-2 capitalize white--text mx-auto px-8 py-6"
                                 text
                             >
@@ -94,7 +66,41 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="7" class="pa-0 pl-1">
-                            <project-social-media class="main-content px-0" />
+                            <div
+                                v-for="(rightPanel, index) in rightPanels"
+                                :key="'rightpanel-' + index"
+                                class="white py-3 px-4 mb-3 panel"
+                            >
+                                <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
+                                <div class="d-flex align-start">
+                                    <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
+                                    <div class="overflow-hidden w-full">
+                                        <v-textarea
+                                            class="grey lighten-3 px-4 pt-1"
+                                            color="grey lighten-3"
+                                        >
+                                            <template v-slot:label>
+                                                Description
+                                            </template>
+                                        </v-textarea>
+                                        <v-btn
+                                            elevation="0"
+                                            color="transparent"
+                                            class="blue--text capitalize px-1"
+                                        >
+                                            Add field
+                                        </v-btn>
+                                    </div>
+                                </div>
+                            </div>
+                            <v-btn
+                                v-if="editPanel"
+                                @click="rightPanels++"
+                                class="green lighten-2 capitalize white--text mx-auto px-8 py-6"
+                                text
+                            >
+                                Add Panel
+                            </v-btn>
                         </v-col>
                     </v-row>
                 </div>
@@ -105,14 +111,19 @@
 </template>
 
 <script>
-import ProjectSocialMedia from './ProjectSocialMedia'
-
 export default {
   components: {
-    ProjectSocialMedia,
+  },
+  props: {
+    editPanel: {
+      type: Boolean,
+      default: false
+    },
   },
   data: () => ({
     dialog: false,
+    leftPanels: 1,
+    rightPanels: 1,
   }),
   name: "CreateCompanyPanel",
   methods: {
@@ -129,6 +140,6 @@ export default {
     border: none;
 }
 .panel {
-    min-height: 350px;
+    min-height: 300px;
 }
 </style>
