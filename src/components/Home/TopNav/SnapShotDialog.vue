@@ -72,7 +72,7 @@
                         <v-col sm="3" class="sidebar-custom" >
                             
                             <div 
-                                v-for="(n, i) in notes" :key="`notes-${i}`" 
+                                v-for="(n, i) in notes" :key="`notes-${n.id}`" 
                                 :style="`background-color: ${ n.selected ? '#f2f2f2' : null }; border-radius: 10%;`"
                                 class="pa-2"
                             >
@@ -122,7 +122,6 @@
 const width = window.innerWidth * .7;
 const height = window.innerHeight * .7;
 const noteModel = { 
-    id: + new Date(), 
     title: "", 
     text: "", 
     x: Math.floor(width/2), 
@@ -145,19 +144,8 @@ export default {
 
     data: () => ({
         defaultNote: noteModel,
-        // notes: [ noteModel ],
-        notes: [
-  {
-    "id": 1604082821306,
-    "title": "woeufe",
-    "text": "oinweofinweoifn",
-    "x": 478,
-    "y": 388.9644544749277,
-    "rotation": 180,
-    "selected": true
-  }
-],
         list: [],
+        notes: [],
         dragItemId: null,
         configKonva: {
             width: width,
@@ -167,41 +155,30 @@ export default {
 
     methods: {
         saving() {
-            console.log('notes-----------')
-            console.log(this.notes)
         },
 
         removeNote(n) {
-            console.log('n------')
-            console.log(n)
             this.notes = this.notes.filter( note => note.id !== n.id )
         },
         
         addNotes() {
-            const id = Math.floor(+ new Date + ( Math.rand() * 1000 ))
-            const coords = getRandCoordinates()
-            console.log('coords')
-            console.log(coords)
-            this.notes.push({ id, ...this.defaultNote, ...coords})
+            const id = Math.floor(+ new Date + ( Math.random() * 1000 ))
+            const coords = this.getRandCoordinates()
+            const note = { id, ...this.defaultNote, ...coords}
+            this.notes.push(note)
         },
 
         handleDragstart(e) {
-            console.log('e')
-            console.log(e.target)
             // save drag element:
             this.dragItemId = e.target.id();
             // move current element to the top:
+            
+            this.notes = this.notes.map(n => ({...n, selected: false}))
             const item = this.notes.find(i => i.id === this.dragItemId);
-            // const index = this.notes.indexOf(item);
-            // this.notes.splice(index, 1);
-            // this.notes.push(item);
-            // item.x = e.target.attrs.x
-            console.log('e.target.attrs.x')
-            console.log(e.target.attrs.x)
-            item.y = e.target.attrs.y
-            console.log('this.notes-----')
-            console.log(this.notes)
+            
             item.selected = true
+
+            this.notes = this.notes.map( n => n.id !== item.id ? n : item  )
         },
 
         handleDragend(e) {
@@ -210,32 +187,16 @@ export default {
 
         getRandCoordinates() {
             return {
-                x: Math.floor(Math.random() * (width/2 - width/3) + width/3),
-                y: Math.floor(Math.random() * (width/2 - width/3) + width/3)
+                x: Math.floor(Math.random() * (width/2.3 - width/3) + width/3),
+                y: Math.floor(Math.random() * (width/2.3 - width/3) + width/3)
             }
         }
     },
 
     mounted() {
-        // for (let n = 0; n < 30; n++) {
-        //     this.list.push({
-        //         id: Math.round(Math.random() * 10000).toString(),
-        //         x: Math.floor(Math.random() * (width/2 - width/3) + width/3), //Math.random() * width/10,
-        //         y: Math.floor(Math.random() * (width/2 - width/3) + width/3), //Math.random() * height/10,
-        //         rotation: Math.random() * 180,
-        //         scale: Math.random()
-        //     });
-        // }
-
-        console.log('this.notes')
-        console.log(this.notes)
+        this.addNotes()
     },
 
-    watch: {
-        imageTest(val) {
-
-        }
-    }
 }
 </script>
 
