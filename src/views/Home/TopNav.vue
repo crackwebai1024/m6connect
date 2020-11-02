@@ -4,12 +4,16 @@
       <div class="align-center d-flex w-side">
         <img alt="M6Connect" src="@/assets/m6-home-logo.png" height="36px">
       </div>
+
       <v-tabs height="60" :value="3" active-class="blue darken-4" background-color="transparent" color="white" :hide-slider="true" class="max-w-content d-flex justify-center align-center">
         <v-tab v-for="(link,i) in quickAccessLinks" :key="'link' + i" :to="link.url" class="px-13 mb-0">
             <v-icon color="white" :large="true">mdi-{{ link.icon }}</v-icon>
         </v-tab>
       </v-tabs>
+
       <div class="align-center d-flex justify-end w-side">
+
+        <snap-shot-nav /> 
 
         <user-options />
 
@@ -126,6 +130,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import SnapShotNav from '@/components/Home/TopNav/SnapShotNav'
 import UserOptions from '@/components/Home/TopNav/UserOptions'
 import PanelDetailsTemplate from '@/views/Home/PanelDetailsTemplate'
 import ProjectSocialMedia from './ProjectSocialMedia'
@@ -134,9 +139,11 @@ export default {
   name: "TopNav",
   components: {
     UserOptions,
+    SnapShotNav,
     PanelDetailsTemplate,
     ProjectSocialMedia,
   },
+
   computed: {
     ...mapState('Auth', {
       currentUser: 'user'
@@ -151,6 +158,7 @@ export default {
       return 7 * 35 + "px";
     }
   },
+
   data: () => ({
     user: {
       name: 'John Doe',
@@ -166,7 +174,7 @@ export default {
       { url:'/store', icon:'storefront' },
       { url:'/user/settings', icon:'cog' }
     ],
-  }),
+  }),  
   methods: {
     toogleLinks() {
       this.showLinks = !this.showLinks;
@@ -188,4 +196,5 @@ export default {
     height: 60px;
     max-width: 1800px;
 }
+
 </style>
