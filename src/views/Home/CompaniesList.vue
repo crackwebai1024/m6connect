@@ -68,19 +68,6 @@
               </div>
           </div>
       </div>
-      <div slot="tabs" class="d-flex align-center">
-          <v-tabs
-              active-class="font-weight-black blue--text active-tab-company" 
-          >
-              <v-tab class="capitalize blue--text" v-for="(tab, index) in tabs" :key="'tabs-' + index">{{ tab }}</v-tab>
-          </v-tabs>
-          <v-btn
-              icon
-              class="green lighten-2 pa-0 white--text ml-6"
-          >
-              <v-icon size="23">mdi-plus</v-icon>
-          </v-btn>
-      </div>
       <div slot="btns" class="d-flex align-center">
           <v-btn
               elevation="0"
