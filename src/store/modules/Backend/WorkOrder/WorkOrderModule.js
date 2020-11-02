@@ -9,8 +9,8 @@ export default {
   mutations: {
   },
   actions: {
-    async getWorkOrder(){
-      let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/deleted_at/null`);
+    async getWorkOrder({}, userID){
+      let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${userID}`);
       return res['data'];
     },
     async getUsersList({}, data) {

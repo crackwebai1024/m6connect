@@ -1,7 +1,7 @@
 <template>
-  <div @mouseover="showActionBtns = true"
+  <div v-if="this.notification['post']['actor']['data']" @mouseover="showActionBtns = true"
     @mouseleave="showActionBtns = false" class="actionfeed-content__card relative card-custom-shadow rounded white mb-4 pt-4 px-3 pb-12">
-      <div v-if="notification.record" :class="'blue' +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
+      <div v-if="notification.record" :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
         {{ notification.record.app_type }}
       </div>
       <div class="d-flex">
@@ -13,32 +13,35 @@
           <span class="leading-tight text-caption grey--text text--darken-1">{{ diffNow(notification.post.actor.created_at) }}</span>
         </div>
       </div>
-      <p class="text-body-2 mt-2 mb-3 ml-2 grey--text text--darken-4">{{ notification.post.message }}</p>
+      <p v-if="notification.record" class="text-body-2 mt-2 mb-3 ml-2 grey--text text--darken-4">{{ notification.post.message }}</p>
+      <p v-else class="message-box text-caption black--text pl-3 ml-1 mb-0 d-flex align-center">
+        {{ notification.post.message }}
+      </p>
       <p v-if="notification.record" :class="notification.colorTag + '--text ' + 'text-body-2 ml-1 mb-0 d-flex align-center'">
         <v-icon :class="notification.colorTag + '--text ' + 'mr-1'">mdi-file-document-outline</v-icon>
         {{ notification.record.title }}
       </p>
       <div v-if="users.length > 0" class="d-flex mt-4 ml-2 align-center">
-      <v-badge
-        v-for="(follower, index) in users" :key="index + 'follower'" style="margin-left:-5px"
-        :bordered="follower.review ? false : true"
-        :dark="follower.review ? false : true"
-        top
-        :color="follower.review ? 'green accent-3' : 'white black--text'"
-        :icon="follower.review ? 'mdi-check' : 'mdi-help'"
-        offset-x="12"
-        offset-y="12"
-      > 
-        <v-tooltip top>
+        <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
+            <v-badge
+              v-for="(follower, index) in users" :key="index + 'follower'" style="margin-left:-5px"
+              :bordered="follower.review ? false : true"
+              :dark="follower.review ? false : true"
+              top
+              :color="follower.review ? 'green accent-3' : 'white black--text'"
+              :icon="follower.review ? 'mdi-check' : 'mdi-help'"
+              offset-x="12"
+              offset-y="12"
+            > 
             <v-avatar size="28">
               <v-img v-if="follower.profilePic !== ''" :src="follower.profilePic"></v-img>
               <v-icon v-else color="light-blue lighten-3">mdi-account</v-icon>
             </v-avatar>
-          </template>
-          <span>Aooo</span>
-        </v-tooltip>
-      </v-badge>
+          </v-badge>
+        </template>
+        <span>Aooo</span>
+      </v-tooltip>
       <p v-if="pendingApprovals(users) > 0" class="ml-2 mb-0 text-caption grey--text text--darken-1">
         {{ pendingApprovals(users) }} pending
       </p>
@@ -56,6 +59,13 @@
         </v-btn>
       </div>
   </div>
+  <v-container v-else>
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 
 <script>
@@ -69,6 +79,7 @@ export default {
   },
   data: () => ({
     showActionBtns: false,
+    colors: ['green', 'blue', 'red', 'purple', 'orange', 'pink', 'brown', 'light-blue', 'cyan', 'teal', 'amber'],
     users: [],
   }),
   name: "ActionFeed",
@@ -102,11 +113,29 @@ export default {
     cont(item) {
       return this.$h.dg(this.notification.post, `reaction_counts.${ item }`, '0');
     },
+    getColorTag() {
+      return this.colors[ Math.floor(Math.random() * 10) ];
+    }
+  },
+  watch: {
+    notification: function (val) {
+      if(!this.notification['post']['actor']['data']){
+        this.notification['post']['actor'] = JSON.parse(this.notification['post']['actor']);
+      }
+      this.notification['colorTag'] = this.getColorTag();
+    },
   },
   created() {
-    this.notification['post']['actor'] = JSON.parse(this.notification['post']['actor']);
+    if(!this.notification['post']['actor']['data']){
+      this.notification['post']['actor'] = JSON.parse(this.notification['post']['actor']);
+    }
+    this.notification['colorTag'] = this.getColorTag();
   },
   mounted() {
+    if(!this.notification['post']['actor']['data']){
+      this.notification['post']['actor'] = JSON.parse(this.notification['post']['actor']);
+    }
+
     if (this.notification.wo_assignments && this.notification.wo_assignments.length > 0) {
       let localUsers = [];
       this.notification.wo_assignments.forEach(assign => {

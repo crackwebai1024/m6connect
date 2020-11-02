@@ -1,5 +1,5 @@
 <template>
-  <div class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
+  <div v-if="!loading" class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
     <div class="pl-3 mt-4 mb-1 d-flex justify-space-between align-center">
       <p class="font-weight-bold mb-0">Action Feed</p>
       <div class="d-flex align-center">
@@ -29,11 +29,18 @@
     <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
     <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
+  <v-container v-else class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 
 <script>
 import ActionFeedItem from './ActionFeedItem'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import AddFeed from './AddFeed'
 
 export default {
@@ -42,6 +49,8 @@ export default {
     AddFeed
   },
   data: () => ({
+    loading: true,
+    user:{},
     showInput: false,
     showSearchInput: false,
     searchInput: '',
@@ -63,8 +72,16 @@ export default {
   }),
   name: "ActionFeed",
   computed: {
+    ...mapGetters('Auth', { cUser: 'getUser' }),
     filteredNotifications() {
-      return this.notifications
+      return this.notifications.filter( notification => {
+        if (typeof notification.post.actor.data === 'object') {
+          return notification.post.actor.data.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+          || notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+        }
+        
+        return notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+      });
         // return this.notifications.filter((notification) => {
             // return notification.userFrom.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
             //   || notification.textContent.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
@@ -81,14 +98,25 @@ export default {
     },
     beforeClose(){
       this.showInput  = false;
-      this.workOrder().then(res => {
+      this.workOrder(this.user.id).then(res => {
         this.notifications = res;
       });
     }
   },
+  watch: {
+    cUser: function (val) {
+      this.user = val;
+      this.workOrder(this.user.id).then(res => {
+        this.notifications = res;
+        this.loading = false;
+      });
+    },
+  },
   mounted(){
-    this.workOrder().then(res => {
+    this.user = this.cUser;
+    this.workOrder(this.user.id).then(res => {
       this.notifications = res;
+      this.loading = false;
     });
   },
 };
