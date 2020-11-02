@@ -1,12 +1,8 @@
 <template>
     <div>
-        <v-btn
-            class="white"
-            text
-            @click="dialog = true"
-        >
-            Add Company
-        </v-btn>
+        <div @click="dialog = true">
+            <slot name="actionbtn"></slot>
+        </div>
         <template>
             <v-dialog
                 class="vertical-scroll dont-show-scroll"
@@ -34,27 +30,7 @@
                                 :key="'leftpanel-' + index"
                                 class="white py-3 px-4 mb-3 panel"
                             >
-                                <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
-                                <div class="d-flex align-start">
-                                    <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
-                                    <div class="overflow-hidden w-full">
-                                        <v-textarea
-                                            class="grey lighten-3 px-4 pt-1"
-                                            color="grey lighten-3"
-                                        >
-                                            <template v-slot:label>
-                                                Description
-                                            </template>
-                                        </v-textarea>
-                                        <v-btn
-                                            elevation="0"
-                                            color="transparent"
-                                            class="blue--text capitalize px-1"
-                                        >
-                                            Add field
-                                        </v-btn>
-                                    </div>
-                                </div>
+                                <slot name="leftPanel"></slot>
                             </div>
                             <v-btn
                                 v-if="editPanel"
@@ -69,29 +45,8 @@
                             <div
                                 v-for="(rightPanel, index) in rightPanels"
                                 :key="'rightpanel-' + index"
-                                class="white py-3 px-4 mb-3 panel"
                             >
-                                <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
-                                <div class="d-flex align-start">
-                                    <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
-                                    <div class="overflow-hidden w-full">
-                                        <v-textarea
-                                            class="grey lighten-3 px-4 pt-1"
-                                            color="grey lighten-3"
-                                        >
-                                            <template v-slot:label>
-                                                Description
-                                            </template>
-                                        </v-textarea>
-                                        <v-btn
-                                            elevation="0"
-                                            color="transparent"
-                                            class="blue--text capitalize px-1"
-                                        >
-                                            Add field
-                                        </v-btn>
-                                    </div>
-                                </div>
+                                <slot name="rightPanel"></slot>
                             </div>
                             <v-btn
                                 v-if="editPanel"
@@ -132,6 +87,33 @@ export default {
 </script>
 
 <style lang="scss">
+.spacing-tight {
+  letter-spacing: 1px;
+}
+
+.links {
+  transition: height 5s;
+  height: 150px;
+  overflow: hidden;
+  -webkit-transition: height 0.5s ease;
+  -moz-transition: height 0.5s ease;
+  -o-transition: height 0.5s ease;
+  transition: height 0.5s ease;
+}
+.active-tab-company {
+  border-bottom: 3px solid rgb(49, 174, 220);
+}
+.v-dialog--scrollable {
+  position: absolute;
+  top: 60px;
+  height: calc(100vh - 60px) !important;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+.v-dialog--scrollable::-webkit-scrollbar {
+  width: 0px;
+}
 .add-field .v-input input {
     border-bottom: 1px solid #F8F3EC;
     margin-bottom: -1px;
