@@ -82,10 +82,6 @@ export default {
         
         return notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
       });
-        // return this.notifications.filter((notification) => {
-            // return notification.userFrom.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
-            //   || notification.textContent.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
-        // })
     },
   },
   methods: {
