@@ -33,6 +33,8 @@ export default {
     ...mapGetters('Auth', { user: 'getUser' })
   },
   async created() {
+    console.log(this.timeline);
+    
     this.set_user_data()
     this.set_posts_data()
     await this.$store.dispatch('GSFeed/retrieveFeed')

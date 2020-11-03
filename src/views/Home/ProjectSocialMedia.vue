@@ -202,25 +202,30 @@ export default {
         return
       }
       this.showSkeletonPost = true
-      const activity = {
+      let comp = this.user.companies.items.find(item => item.active === true);
 
-        userID: this.user.id,
-        data: {
-          actor: JSON.stringify({
-            created_at:new Date(),
-            updated_at:new Date(),
-            id: this.user.id,
-            data:{
-                image:this.user.profilePic,
-                name:`${this.user.firstName} ${this.user.lastName}`
-            }
-          }),
-          message: this.activityText,
-          verb: 'post',
-          object: 1,
-          images: this.imageFiles
-        }
+      const activity = {
+        req:{
+          userID: this.user.id,
+          data: {
+            actor: JSON.stringify({
+              created_at:new Date(),
+              updated_at:new Date(),
+              id: this.user.id,
+              data:{
+                  image:this.user.profilePic,
+                  name:`${this.user.firstName} ${this.user.lastName}`
+              }
+            }),
+            message: this.activityText,
+            verb: 'post',
+            object: 1,
+            images: this.imageFiles
+          }
+        },
+        compID: comp.company.id
       }
+      
       this.activityText = ''
       this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
         this.reloadFeed();
