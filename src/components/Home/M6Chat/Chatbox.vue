@@ -609,8 +609,6 @@ export default {
     }
   },
   async mounted() {
-    console.log(this.channel.data)
-    
     this.state = await this.channel.watch()
     this.messages = this.state.messages
     this.channel.on('message.new', this.addNewMessage)
