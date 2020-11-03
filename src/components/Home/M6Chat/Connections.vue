@@ -57,7 +57,7 @@
         @click="startChat(channel)"
       >
         <v-avatar
-          v-if="channel.data.name"
+          v-if="channel.id.substr(14, 5) === 'group'"
           :color="channel.data.image ? 'transparent' : 'blue'"
           class="mr-3"
           dark
@@ -94,7 +94,7 @@
             </template>
           </v-avatar>
         </v-badge>
-        <div v-if="channel.data.name">
+        <div v-if="channel.id.substr(14, 5) === 'group'">
           <div class="align-start d-flex flex-column">
             <v-badge
               :content="unread_count[ind]['unread']"

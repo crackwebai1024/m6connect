@@ -10,7 +10,7 @@
       :class="[minimized ? 'blue lighten-2' : '']"
       @click="minimizeChatBox"
     >
-      <div v-if="channel.data.name"
+      <div v-if="channel.id.substr(14, 5) === 'group'"
         class="align-center d-flex"
       >
         <v-avatar size="42" class="mr-2">
@@ -80,7 +80,7 @@
       </div>
       <div class="d-flex">
         <v-dialog
-          v-if="channel.data.name"
+          v-if="channel.id.substr(14, 5) === 'group'"
           v-model="deleteDialog"
           width="50%">
           <template v-slot:activator="{ on, attrs }">
@@ -100,6 +100,7 @@
                     height="25"
                     class="black--text capitalize mt-1 px-1 text-caption w-full"
                     elevation="0"
+                    v-bind="attrs" v-on="on"
                   >Information</v-btn>
                   <v-btn
                     v-if="channel.data.created_by.id === user.id"
@@ -107,6 +108,7 @@
                     height="25"
                     class="black--text capitalize mt-1 px-1 text-caption w-full"
                     elevation="0"
+                    v-bind="attrs" v-on="on"
                   >Add Users</v-btn>
                   <v-btn
                     v-if="channel.data.created_by.id === user.id"
@@ -114,6 +116,7 @@
                     height="25"
                     class="black--text capitalize mt-1 px-1 text-caption w-full"
                     elevation="0"
+                    v-bind="attrs" v-on="on"
                   >Edit Configuration</v-btn>
                 </v-card>
                 <v-btn
