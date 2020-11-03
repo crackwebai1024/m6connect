@@ -1,7 +1,7 @@
 <template>
-  <v-container class="px-0 py-0">
+  <v-container class="px-0 py-0 mt-2 white">
     <v-form @submit.prevent ref="form" v-model="valid">
-      <v-row>
+      <v-row class="w-full ma-0">
         <v-col cols="12" class="py-0">
           <v-text-field
             ref="inputFeed"
@@ -115,14 +115,16 @@
           </v-autocomplete>
         </v-col>
       </v-row>
-      <v-btn
-        color="green darken-2"
-        class="white--text text-xl font-weight-bold"
-        @click="post()"
-        :disabled="!valid"
-        block
-        >Submit</v-btn
-      >
+      <v-row class="w-full ma-0 px-3 py-2">
+        <v-btn
+          color="green darken-2"
+          class="white--text text-xl font-weight-bold"
+          @click="post()"
+          :disabled="!valid"
+          block
+          >Submit</v-btn
+        >
+      </v-row>
     </v-form>
   </v-container>
 </template>

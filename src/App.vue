@@ -1,6 +1,6 @@
 <template>
   <v-app id="complete-app" >
-    <div class="grey lighten-3">
+    <div class="grey lighten-3 h-viewport">
       <template v-if="loggedIn && !$route.meta.public">
         <top-nav />
         <v-row no-gutters class="central-content max-w-container mx-auto top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
