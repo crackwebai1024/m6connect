@@ -18,10 +18,12 @@ import File from './modules/File'
 import AppBuilder from './modules/AppBuilder'
 import M6Codes from './modules/M6Codes'
 import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
+import RapidTicket from './modules/RapidTicket'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+
   state: {
     chats: [],
     departments: {
@@ -39,6 +41,7 @@ export default new Vuex.Store({
         users: [8, 9, 10, 11, 12]
       }
     },
+
     projects: [],
     workers: [],
     info_carousel: [],
@@ -51,6 +54,7 @@ export default new Vuex.Store({
     preview_images_array: [],
     preview_images_selected: {}
   },
+
   getters: {
     // View Home Getters
     layout: state => state.layout,
@@ -65,6 +69,7 @@ export default new Vuex.Store({
       state.preview_images_selected
     ]
   },
+
   mutations: {
     setAllWorkers(state, work) {
       state.workers = work
@@ -84,6 +89,7 @@ export default new Vuex.Store({
       state.preview_images_selected = {}
     }
   },
+
   actions: {
     set_workers({ commit }) {
       const data = [
@@ -123,6 +129,7 @@ export default new Vuex.Store({
       commit('reset_image_overlay')
     }
   },
+
   modules: {
     SocialNetworkModule,
     GeneralListModule,
@@ -140,6 +147,7 @@ export default new Vuex.Store({
     SnackBarNotif,
     M6Codes,
     File,
-    AppBuilder
+    AppBuilder,
+    RapidTicket
   }
 })

@@ -51,7 +51,7 @@
                                             }"
                                         /> -->
                                         <v-circle 
-                                            v-for="item in notes"
+                                            v-for="item in rapidItem.notes"
                                             :key="item.id"
                                             :config=" {
                                                 x: item.x,
@@ -72,7 +72,7 @@
                         <v-col sm="3" class="sidebar-custom" >
                             
                             <div 
-                                v-for="(n, i) in notes" :key="`notes-${n.id}`" 
+                                v-for="(n, i) in rapidItem.notes" :key="`notes-${n.id}`" 
                                 class="pa-2"
                             >
 
@@ -84,12 +84,12 @@
                                     >
                                         <span class="white--text headline">{{ i + 1 }}</span>
                                     </v-avatar>
-                                    <v-text-field outlined class="ma-0 pa-0" label="Title" v-model="notes[i].title" />
-                                    <v-btn color="red darken-2" icon @click="removeNote(n)" v-show="i != 0" >
+                                    <v-text-field outlined class="ma-0 pa-0" label="Title" v-model="rapidItem.notes[i].title" />
+                                    <v-btn color="red darken-2" icon @click="removeNote(n)" v-show="rapidItem.notes.length > 1" >
                                         <v-icon>mdi-close</v-icon>
                                     </v-btn>
                                 </div>
-                                <v-textarea outlined  label="Description" v-model="notes[i].text" />
+                                <v-textarea outlined  label="Description" v-model="rapidItem.notes[i].text" />
 
                             </div>
 
@@ -118,6 +118,8 @@
 </template>
 
 <script>
+
+import { mapState, mapActions } from 'vuex'
 const width = window.innerWidth * .7;
 const height = window.innerHeight * .7;
 const noteModel = { 
@@ -130,6 +132,7 @@ const noteModel = {
 }
 
 export default {
+
     props: {
         showDialog: {
             type: Boolean,
@@ -143,7 +146,7 @@ export default {
 
     data: () => ({
         defaultNote: noteModel,
-        list: [],
+        rapidItem: { notes: [], company: {}, user: {} },
         notes: [],
         dragItemId: null,
         configKonva: {
@@ -153,38 +156,68 @@ export default {
     }),
 
     methods: {
-        saving() {
-            console.log(this.notes)
+        ...mapActions('RapidTicket', {
+            createRapidTicket: 'createRapidTicket'
+        }),
+        async saving() {
+            this.rapidItem.user = {
+                id: this.currentUser.id,
+                email: this.currentUser.email,
+                firstName: this.currentUser.firstName,
+                lastName: this.currentUser.lastName
+            }
+
+            this.rapidItem.company = {
+                id: this.currentCompany.id,
+                email: this.currentCompany.email,
+                legalCompanyName: this.currentCompany.legalCompanyName,
+                name: this.currentCompany.name,
+                phone: this.currentCompany.phone
+            }
+            
+            try {
+                const res = await this.createRapidTicket(this.rapidItem)
+                console.log('res------')
+                console.log(res)
+            } catch(e) {
+                console.log('e------')
+                console.log(e)
+            }
+
+            console.log('this.rapidItem')
+            console.log(this.rapidItem)
         },
 
         removeNote(n) {
-            this.notes = this.notes.filter( note => note.id !== n.id )
+            this.rapidItem.notes = this.rapidItem.notes.filter( note => note.id !== n.id )
         },
         
         addNotes() {
             const id = Math.floor(+ new Date + ( Math.random() * 1000 ))
             const coords = this.getRandCoordinates()
             const note = { id, ...this.defaultNote, ...coords}
-            this.notes.push(note)
+            this.rapidItem.notes.push(note)
+            console.log('this.rapidItem------')
+            console.log(this.rapidItem)
         },
 
         handleDragstart(e) {
             // save drag element:
             this.dragItemId = e.target.id()
-            this.notes = this.notes.map( n => ({...n, selected: false}) )
-            const item = this.notes.find(i => i.id === this.dragItemId);
+            this.rapidItem.notes = this.rapidItem.notes.map( n => ({...n, selected: false}) )
+            const item = this.rapidItem.notes.find(i => i.id === this.dragItemId);
             item.selected = true
         },
 
         handleDragend(e) {
-            this.notes = this.notes.map(n => ({...n, selected: false}))
-            const item = this.notes.find(i => i.id === this.dragItemId);
+            this.rapidItem.notes = this.rapidItem.notes.map(n => ({...n, selected: false}))
+            const item = this.rapidItem.notes.find(i => i.id === this.dragItemId);
             
             item.x = e.target.attrs.x
             item.y = e.target.attrs.y
             item.selected = true
 
-            this.notes = this.notes.map( n => n.id !== item.id ? n : item  )
+            this.notes = this.rapidItem.notes.map( n => n.id !== item.id ? n : item  )
 
             this.dragItemId = null
         },
@@ -195,6 +228,15 @@ export default {
                 y: Math.floor(Math.random() * (width/2.3 - width/3) + width/3)
             }
         }
+    },
+
+    computed: {
+        ...mapState('Companies', {
+            currentCompany: 'currentCompany'
+        }),
+        ...mapState('Auth', {
+            currentUser: 'user'
+        })
     },
 
     mounted() {
