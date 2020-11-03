@@ -77,7 +77,7 @@
               <v-icon>mdi-magnify</v-icon>
           </v-btn>
       </div>
-      <div slot="leftPanel">
+      <div slot="leftPanel" class="white py-3 px-4 mb-3 panel">
         <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
         <div class="d-flex align-start">
             <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>

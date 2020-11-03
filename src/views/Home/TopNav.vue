@@ -90,7 +90,7 @@
                   <v-icon>mdi-magnify</v-icon>
               </v-btn>
           </div>
-          <div slot="leftPanel">
+          <div slot="leftPanel" class="white py-3 px-4 mb-3 panel">
               <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
               <div class="overflow-hidden">
                   <div class="d-flex align-center my-3">
