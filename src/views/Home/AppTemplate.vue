@@ -30,6 +30,7 @@
                         <v-col cols="5" class="pa-0 pr-1 d-flex flex-column justify-center">
                             <slot name="leftPanel"/>
                             <v-btn
+                                v-if="editPanel"
                                 class="capitalize green lighten-2 mx-auto px-8 py-6 white--text"
                                 text
                             >
@@ -39,6 +40,7 @@
                         <v-col cols="7" class="pa-0 pl-1">
                             <slot name="rightPanel"/>
                             <v-btn
+                                v-if="editPanel"
                                 class="capitalize green lighten-2 mx-auto px-8 py-6 white--text"
                                 text
                             >
