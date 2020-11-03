@@ -1,0 +1,212 @@
+<template>
+  <div class="mb-3 panel px-4 py-3 relative white">
+    <div class="d-flex">
+      <v-spacer />
+      <v-btn
+        icon
+        right
+        top
+        @click="deletePanel"
+      >
+        <v-icon color="red lighten-3">
+          mdi-delete
+        </v-icon>
+      </v-btn>
+      <v-btn
+        icon
+        right
+        top
+        @click="editPanel"
+      >
+        <v-icon>mdi-pencil</v-icon>
+      </v-btn>
+    </div>
+    <p
+      v-if="!panelEdit"
+      class="mb-0 v-card__title"
+    >
+      {{ panel.title }}
+    </p>
+    <template
+      v-else
+    >
+      <div class="mb-3">
+        <div class="d-flex">
+          <v-text-field
+            v-model="clonePanel.title"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            label="Panel Name"
+          />
+        </div>
+        <div class="d-flex mt-2">
+          <v-text-field
+            v-model="clonePanel.description"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            label="Description"
+          />
+        </div>
+        <div class="d-flex mt-2">
+          <v-select
+            v-model="clonePanel.column"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            item-text="label"
+            item-value="value"
+            :items="[ { label: 'Left', value: 0}, { label: 'Right', value: 1}]"
+            label="Description"
+          />
+        </div>
+        <div class="d-flex mt-2">
+          <v-btn
+            color="red"
+            dark
+            @click="panelEdit = false"
+          >
+            Cancel
+          </v-btn>
+          <v-spacer />
+          <v-btn
+            color="green"
+            dark
+          >
+            Save
+          </v-btn>
+        </div>
+      </div>
+    </template>
+
+    <v-list>
+      <v-list-item
+        v-for="field in panel.fields"
+        :key="field.id"
+      >
+        <v-list-item-content @click="editField(field)">
+          <v-list-item-title>{{ field.label }}</v-list-item-title>
+        </v-list-item-content>
+        <v-list-item-action>
+          <v-btn
+            icon
+            @click="showDelete(field)"
+          >
+            <v-icon color="red lighten-3">
+              mdi-delete
+            </v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+    <div class="align-start d-flex">
+      <div class="overflow-hidden w-full">
+        <add-field @addNewField="addNewField" />
+      </div>
+    </div>
+    <field
+      v-if="showFieldModal"
+      :editing="editing"
+      :field="activeField"
+      :show="showFieldModal"
+      @close="showFieldModal = false"
+      @result="pushField"
+    />
+    <v-dialog
+      v-model="showDeleteModal"
+      width="500"
+    >
+      <delete-dialog
+        :element="fieldToDelete ? 'Field' : 'Panel'"
+        @closeDeleteModal="confirmDelete"
+      />
+    </v-dialog>
+  </div>
+</template>
+
+<script>
+import AddField from '@/components/AppBuilder/Buttons/AddField'
+import Field from '@/components/AppBuilder/Modals/Field'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+export default {
+  name: 'Panel',
+  components: {
+    DeleteDialog,
+    AddField,
+    Field
+  },
+  props: {
+    panel: {
+      default: () => ({}),
+      required: false,
+      type: Object
+    }
+  },
+  data() {
+    return {
+      showFieldModal: false,
+      showDeleteModal: false,
+      editing: false,
+      panelEdit: false,
+      clonePanel: {},
+      fieldToDelete: null,
+      panelToDelete: null,
+      activeField: {},
+      defaultField: {
+        panelID: this.panel.id,
+        label: 'New Field',
+        type: 'text',
+        weight: 0,
+        metadata: {
+          options: [],
+          required: false
+        }
+      }
+    }
+  },
+  methods: {
+    addNewField() {
+      this.activeField = { ...this.defaultField }
+      this.editing = false
+      this.showFieldModal = true
+    },
+    editField(field) {
+      this.activeField = { ...field }
+      this.editing = true
+      this.showFieldModal = true
+    },
+    showDelete(field) {
+      this.showDeleteModal = true
+      this.fieldToDelete = field.id
+    },
+    async confirmDelete(result) {
+      if (result) {
+        if (this.fieldToDelete) {
+          await this.$store.dispatch('AppBuilder/deleteField', this.fieldToDelete)
+          const index = this.panel.fields.map(item => item.id).indexOf(this.fieldToDelete)
+          this.panel.fields.splice(index, 1)
+        } else if (this.panelToDelete) {
+          await this.$store.dispatch('AppBuilder/deletePanel', this.panelToDelete)
+          this.$emit('deletePanel', this.panelToDelete)
+        }
+      }
+      this.fieldToDelete = null
+      this.panelToDelete = null
+      this.showDeleteModal = false
+    },
+    editPanel() {
+      this.panelEdit = !this.panelEdit
+      this.clonePanel = { ...this.panel }
+    },
+    deletePanel() {
+      this.showDeleteModal = true
+      this.panelToDelete = this.panel.id
+    },
+    pushField(pushField) {
+      if (this.editing) {
+        const index = this.panel.fields.map(item => item.id).indexOf(pushField.id)
+        this.panel.fields[index] = { ...pushField }
+      } else {
+        this.panel.fields.push(pushField)
+      }
+      this.showFieldModal = false
+      this.editing = false
+    }
+  }
+}
+</script>

@@ -57,7 +57,7 @@
         @click="startChat(channel)"
       >
         <v-avatar
-          v-if="channel.data.name"
+          v-if="channel.id.substr(14, 5) === 'group'"
           :color="channel.data.image ? 'transparent' : 'blue'"
           class="mr-3"
           dark
@@ -81,20 +81,20 @@
           offset-y="10"
         >
           <v-avatar
-            color="blue"
+            :color="channel.membersInChannel.user.image ? 'transparent' : 'blue'"
             dark
             size="36"
           >
             <v-img
-              v-if="user.pic"
-              :src="user.pic"
+              v-if="channel.membersInChannel.user.image"
+              :src="channel.membersInChannel.user.image"
             />
             <template v-else>
               <span class="text-uppercase white--text">{{ channel.membersInChannel.user.name.charAt(0) }}</span>
             </template>
           </v-avatar>
         </v-badge>
-        <div v-if="channel.data.name">
+        <div v-if="channel.id.substr(14, 5) === 'group'">
           <div class="align-start d-flex flex-column">
             <v-badge
               :content="unread_count[ind]['unread']"

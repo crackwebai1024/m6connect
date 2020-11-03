@@ -49,7 +49,7 @@
             type="text"
             @keyup.enter="updateComment"
             @click:append="toogleDialogEmoji"
-          ></v-text-field>
+          />
           <!-- Emoji Picker -->
           <div
             class="relative"
@@ -65,13 +65,14 @@
           <p @click="cancelUpdate" class="text-caption cursor-hover underline comment-btn pointer">Cancel</p>
         </template>
         <template v-if="!updateCommentShow">
-          <div class="px-3 py-1">
+          <div class="px-3 py-3">
             <v-row>
               <span @click="likeReaction" :class="likeClass + 'cursor-hover underline comment-btn pointer'">Like</span>
               <div class="px-1">·</div>
               <span v-if="reply" @click="showReplyMessage = !showReplyMessage" class="cursor-hover underline comment-btn pointer">Reply</span>
               <div v-if="reply" class="px-1">·</div>
-              <span class="cursor-hover underline timestamp">1 week</span>
+              <span class="cursor-hover underline timestamp">
+              {{new Date(comment.created_at).toString().substr(16,5)}} - {{new Date(comment.created_at).toString().substr(0,10)}}</span>
               <v-spacer></v-spacer>
             </v-row>
           </div>
@@ -108,15 +109,17 @@
       </v-dialog>
     </v-row>
     <div v-if="reply && showReplyMessage" class="mb-3 mr-3 ml-16">
-      <component 
-        v-bind:is="'PostComments'"
-        v-for="(childComment, index2) of comment.latest_children.comment"
-        :key="index2"
-        :comment="childComment"
-        :reply="false"
-        :size="36"
-      >
-      </component>
+      <div v-if="comment.latest_children.comment">
+        <component 
+          v-bind:is="'PostComments'"
+          v-for="(childComment, index2) of comment.latest_children.comment.slice().reverse()"
+          :key="index2"
+          :comment="childComment"
+          :reply="false"
+          :size="36"
+        >
+        </component>
+      </div>
 
       <div class="d-flex">
         <v-badge
@@ -199,9 +202,10 @@ export default {
       return this.comment.children_counts.comment != 0 && this.comment.children_counts.comment != undefined ? this.comment.children_counts.comment + ' replies' : ''
     }
   },
-  async created() {
+  async mounted() {
     this.updatedComment = this.comment.data.text
     await this.$store.dispatch('GSFeed/retrieveFeed')
+
     if(this.comment.latest_children.like !== undefined) {
       let filteredLikesByCurrentUser = this.comment.latest_children.like.filter((element) => {
         return this.client.userId == element.user_id
@@ -213,19 +217,19 @@ export default {
   },
   methods: {
     async retrieveChildReactions() {
-      await this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id).then(response => {
-        this.childComments = response.results
-        this.updateCommentShow = false
-      })
+      let res = await this.$store.dispatch('GSFeed/retrieveChildReactions', this.comment.id);
+
+      this.childComments = res.results;
+      this.updateCommentShow = false;
     },
-    updateComment() {
-      this.$store.dispatch('GSFeed/updateReaction', {
+    async updateComment() {
+      await this.$store.dispatch('GSFeed/updateReaction', {
         id: this.comment.id,
         text: this.updatedComment
-      }).then(async response => {
-        await this.$store.dispatch('GSFeed/retrieveFeed')
-        this.updateCommentShow = false
-      })
+      });
+      await this.$store.dispatch('GSFeed/retrieveFeed')
+
+      this.updateCommentShow = false
     },
     cancelUpdate() {
       this.updatedComment = this.comment.data.text
@@ -238,20 +242,20 @@ export default {
       this.updatedComment += emoji.data
       this.toogleDialogEmoji()
     },
-    deleteComment() {
-      this.$store.dispatch('GSFeed/removeReaction', this.comment.id).then(async response => {
-        await this.$store.dispatch('GSFeed/retrieveFeed')
-        this.deleteCommentDiaLog = false
-      })
+    async deleteComment() {
+      await this.$store.dispatch('GSFeed/removeReaction', this.comment.id);
+      await this.$store.dispatch('GSFeed/retrieveFeed');
+      
+      this.deleteCommentDiaLog = false;
     },
     async pushChildComment() {
       let replyData = this.reply_data
       this.reply_data = ''
       if(replyData.trim() == '') return true
-      this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: replyData}).then(async response => {
-        this.showReplyMessage = true
-      })
+      await this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: replyData});
       await this.$store.dispatch('GSFeed/retrieveFeed')
+      
+      this.showReplyMessage = true
     },
     likeReaction() {
       let addLike = false
@@ -260,12 +264,12 @@ export default {
           return this.client.userId == element.user_id
         })
         if(filteredLikesByCurrentUser.lenght !== 0) {
-          filteredLikesByCurrentUser.forEach(item => {
-            this.$store.dispatch('GSFeed/removeReaction', item.id).then(async response => {
-              await this.$store.dispatch('GSFeed/retrieveFeed')
-              this.likeState = false
-            })
-          })
+          filteredLikesByCurrentUser.forEach(async item => {
+            await this.$store.dispatch('GSFeed/removeReaction', item.id);
+            await this.$store.dispatch('GSFeed/retrieveFeed')
+            
+            this.likeState = false
+          });
         } else {
           addLike = true
         }
@@ -274,7 +278,7 @@ export default {
       }
 
       if(addLike) {
-        this.$store.dispatch('GSFeed/addChildReaction', this.comment).then(async response => {
+        this.$store.dispatch('GSFeed/addChildReaction', this.comment).then(async () => {
           await this.$store.dispatch('GSFeed/retrieveFeed')
           this.likeState = true
         })

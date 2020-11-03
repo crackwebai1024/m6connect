@@ -1,5 +1,5 @@
 <template>
-  <div class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
+  <div v-if="!loading" class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
     <div class="pl-3 mt-4 mb-1 d-flex justify-space-between align-center">
       <p class="font-weight-bold mb-0">Action Feed</p>
       <div class="d-flex align-center">
@@ -24,173 +24,97 @@
       </div>
     </div>
     <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
+    <v-btn block :color="showInput ? 'red darken-1': 'blue darken-1'" class="white--text text-xl font-weight-bold" @click="showInput = !showInput" >{{showInput? 'Cancel' : 'New Action'}}</v-btn>
+    <add-feed v-if="showInput" @closeCreateActivity="beforeClose" />
     <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
     <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
+  <v-container v-else class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
+    <v-progress-circular
+      style="margin-left: 45%;"
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
+  </v-container>
 </template>
 
 <script>
 import ActionFeedItem from './ActionFeedItem'
+import { mapActions, mapGetters } from 'vuex'
+import AddFeed from './AddFeed'
+
 export default {
   components: {
     ActionFeedItem,
+    AddFeed
   },
   data: () => ({
+    loading: true,
+    user:{},
+    showInput: false,
     showSearchInput: false,
     searchInput: '',
     showActionBtns: false,
     // action feed data 
-    notifications: [
-      {
-        userFrom: {
-          name: 'Username M. Johnson',
-          title: 'Project Manager',
-          imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-        },
-        typeContent: 'CPM',
-        colorTag: 'blue',
-        textContent: 'This is the budget for next year. Please Review.',
-        message: 'Elevator Modernization All Hospital.cpm.bdg',
-        date: 1600475840821,
-        notificationType: 'document',
-        likes: 157,
-        comments: 14,
-        shared: 4,
-        reviewed: true,
-        followers: [
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          },
-          {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          },
-        ],
-      },
-      {
-        userFrom: {
-          name: 'John X. Smith',
-          title: 'IT Manager',
-          imgSrc: 'https://avatars0.githubusercontent.com/u/9064066?v=4&s=460',
-        },
-        typeContent: 'PPL',
-        colorTag: 'yellow darken-2',
-        textContent: 'John X. Smith wants to connect with you!',
-        message: "Hey! it's John from IT, how's it going? Let's chat and discuss this new awesome platform!",
-        date: 1600747932248,
-        notificationType: 'message',
-        likes: 157,
-        comments: 14,
-        shared: 4,
-      },
-      {
-        userFrom: {
-          name: 'Sally Ackerman',
-          title: 'IT Analyst',
-          imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-        },
-        typeContent: 'ITA',
-        colorTag: 'red',
-        textContent: 'We are doing rationalization and need your approval.',
-        message: 'Awesome IT Application.ita',
-        date: 1600475840821,
-        notificationType: 'document',
-        likes: 97,
-        comments: 1,
-        shared: 2,
-        reviewed: true,
-        followers: [
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          },
-          {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          },
-          {
-            review: false,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          },
-        ],
-      },
-      {
-        userFrom: {
-          name: 'Robert Perez',
-          title: 'HR Manager',
-          imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-        },
-        typeContent: 'CPM',
-        colorTag: 'cyan',
-        textContent: 'Please read the September company announcement. Reading acknowledgement is required for all employees.',
-        message: 'Company Announcement September.ann',
-        date: 1600475840821,
-        notificationType: 'document',
-        likes: 2498,
-        comments: 29,
-        shared: 18,
-        reviewed: true,
-        followers: [
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          },
-          {
-            review: true,
-            imgSrc: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          },
-        ],
-      },
-    ],
+    notifications: [ ],
     areas: [
-      { text: "Everyone", type: "subtitle" },
-      { text: "My company", type: "subtitle" },
-      { text: "Teams", type: "title" },
-      { text: "All my teams", type: "subtitle" },
-      { text: "IT Team XY", type: "subtitle" },
-      { text: "CPM Team Z", type: "subtitle" },
-      { text: "Departments", type: "title" },
+      { text: "Everyone",           type: "subtitle" },
+      { text: "My company",         type: "subtitle" },
+      { text: "Teams",              type: "title"    },
+      { text: "All my teams",       type: "subtitle" },
+      { text: "IT Team XY",         type: "subtitle" },
+      { text: "CPM Team Z",         type: "subtitle" },
+      { text: "Departments",        type: "title"    },
       { text: "All my departments", type: "subtitle" },
-      { text: "Finances", type: "subtitle" },
-      { text: "Operations", type: "subtitle" },
+      { text: "Finances",           type: "subtitle" },
+      { text: "Operations",         type: "subtitle" },
     ],
   }),
   name: "ActionFeed",
   computed: {
+    ...mapGetters('Auth', { cUser: 'getUser' }),
     filteredNotifications() {
-        return this.notifications.filter((notification) => {
-            return notification.userFrom.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
-              || notification.textContent.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
-        })
+      return this.notifications.filter( notification => {
+        if (typeof notification.post.actor.data === 'object') {
+          return notification.post.actor.data.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+          || notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+        }
+        
+        return notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
+      });
     },
   },
   methods: {
+    ...mapActions( 'WorkOrderModule' , {
+      workOrder: 'getWorkOrder'
+    }),
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
     },
-  }
+    beforeClose(){
+      this.showInput  = false;
+      this.workOrder(this.user.id).then(res => {
+        this.notifications = res;
+      });
+    }
+  },
+  watch: {
+    cUser: function (val) {
+      this.user = val;
+      this.workOrder(this.user.id).then(res => {
+        this.notifications = res;
+        this.loading = false;
+      });
+    },
+  },
+  mounted(){
+    this.user = this.cUser;
+    this.workOrder(this.user.id).then(res => {
+      this.notifications = res;
+      this.loading = false;
+    });
+  },
 };
 </script>
 

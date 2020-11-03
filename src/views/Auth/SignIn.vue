@@ -123,10 +123,11 @@ export default {
 
           // Start GSChat
           await this.$store.dispatch('GSChat/getGSToken', userLogged)
+          
           const user = {
             id: userLogged.id,
             name: `${userLogged.firstName} ${userLogged.lastName}`,
-            image: 'https://getstream.io/random_svg/?id=broken-waterfall-5&amp;name=Broken+waterfall'
+            image: userLogged.profilePic
           }
           await this.$store.dispatch('GSChat/setUser', user)
           await this.$store.dispatch('GSChat/retrieveChats', userLogged.id)
@@ -134,7 +135,6 @@ export default {
           // Start GSFeed
           await this.$store.dispatch('GSFeed/getGSFeedToken', userLogged)
           await this.$store.dispatch('GSFeed/setUser', user)
-          await this.$store.dispatch('GSFeed/setFeed', userLogged.id)
 
 
           this.loading = false

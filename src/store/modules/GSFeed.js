@@ -1,7 +1,9 @@
 import { connect } from 'getstream'
 import axios from 'axios'
+import auth from './Auth'
 
 const defaultState = {
+  room: '',
   gsToken: '',
   client: {},
   feed: {},
@@ -36,12 +38,28 @@ const mutations = {
       state.gsToken
     )
   },
+  SET_COMPANIES_FEED: async (state, feedID) => {
+    state.feedNotification = await state.client.feed(
+      'notification',
+      feedID,
+      state.gsToken
+    )
+    state.feed = await state.client.feed(
+      'companies',
+      feedID,
+      state.gsToken
+    )
+  },
+  SET_ROOM: (state, payload) => state.room = payload,
   SET_TIMELINE: (state, payload) => state.timeline = payload,
   SET_USER: async (state, payload) => {
     await state.client.setUser(
       payload,
       state.gsToken
     )
+  },
+  UPDATE_USER: (state, payload) => {
+    state.client.user(payload['id']).update(payload);
   }
 }
 
@@ -60,8 +78,8 @@ const actions = {
         comment, 
         state.client.id
       ).then((response) => {
-        state.client.reactions.update(response.id, {"text":text} ).then(response => {
-          resolve(response)
+        state.client.reactions.update(response.id, {"text":text} ).then(res => {
+          resolve(res)
         })
       })
     })
@@ -76,15 +94,16 @@ const actions = {
   addActivity({ state }, payload) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
-      // const attachments = await Promise.all(payload.images.map(async image => {
-      //   console.log(image)
-      //   await state.client.images.upload(image)
-      // }))
-      // console.log(attachments)
-      const activity = await state.feed.addActivity({
-        ...payload,
-        actor: state.client.currentUser
-      })
+      payload['req']['room'] = state.room;
+
+      if (state.room === 'companies') {
+        payload['req']['data']['to'] = ['companies:global']
+        payload['req']['data']['company'] = payload['compID']
+      }
+      
+      const activity = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, {
+        ...payload['req']
+      });
       resolve(activity)
     })
   },
@@ -129,12 +148,21 @@ const actions = {
   },
   retrieveFeed({ state, commit }) {
     return new Promise((resolve, reject) => {
-      state.feed.get({
-        reactions: { own: true, recent: true, counts: true }
-      }).then(({ results }) => {
-        commit('SET_TIMELINE', results)
-        resolve(true)
-      }).catch(e => reject(e))
+      if (state.room === 'companies') {
+        let comp = auth.state.user.companies.items.find(res => res.active === true);
+
+        axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/${state.room}/${comp.company.id}`).then(res => {
+          commit('SET_TIMELINE', res.data)
+          resolve(true)
+        }).catch(e => reject(e));
+      }else{
+        state.feed.get({
+          reactions: { own: true, recent: true, counts: true }
+        }).then(({ results }) => {
+          commit('SET_TIMELINE', results)
+          resolve(true)
+        }).catch(e => reject(e))
+      }
     })
   },
   retrieveActivityReactions({ state }, id) {
@@ -167,9 +195,24 @@ const actions = {
       resolve(true)
     })
   },
+  setCompanyFeed({ commit }, payload) {
+    return new Promise(resolve => {
+      commit('SET_COMPANIES_FEED', payload)
+      resolve(true)
+    })
+  },
   setUser({ commit }, payload) {
     return new Promise(resolve => {
       commit('SET_USER', payload)
+      resolve(true)
+    })
+  },
+  setRoom({ commit }, slugRoom) {
+    commit('SET_ROOM', slugRoom)
+  },
+  updateUser({ commit }, payload){
+    return new Promise(resolve => {
+      commit('UPDATE_USER', payload)
       resolve(true)
     })
   }

@@ -6,10 +6,6 @@ $border-color: #dddddd;
   border-style: solid;
 }
 
-.height-100-vh {
-  height: 100vh;
-}
-
 .vertical-scroll {
   overflow-y: scroll;
 }
@@ -136,6 +132,10 @@ $border-color: #dddddd;
 
 .max-w-content {
   max-width: 820px;
+}
+
+.max-w-lg {
+  max-width: 1024px;
 }
 
 .max-w-container {

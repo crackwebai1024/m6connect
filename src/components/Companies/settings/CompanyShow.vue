@@ -14,6 +14,7 @@
                             <v-tab>Project Specs</v-tab>
                             <v-tab>Social Media</v-tab>
                             <v-tab>Locations</v-tab>
+                            <v-tab>Codes</v-tab>
                             <v-tab>Profile Image</v-tab>
                         </v-tabs>
                         <v-tabs-items v-model="tab" class="pt-3" >
@@ -127,6 +128,10 @@
                                 />
                             </v-tab-item>
                             <v-tab-item>
+                                <!-- <CompanyCodesCU /> -->
+                                <CompanyCodesDisplay />
+                            </v-tab-item>
+                            <v-tab-item>
                                 <v-row>
                                     <v-col col="12" class="text-right pa-0 pr-3" >
                                         <m6-upload 
@@ -151,14 +156,14 @@
                     </v-container>
                 </v-form>
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions v-if="tab !== 4 " >
                 <v-spacer />
                 <v-btn class="green darken-2 white--text" @click="updating" >
                     Save
                 </v-btn>
             </v-card-actions>
         </v-card>
-
+ 
         <m6-loading :loading="loading" />
     </div>
 </template>
@@ -167,15 +172,19 @@
 import { mapState, mapActions, mapMutations } from 'vuex'
 import SocialMediaCU from './CompanyShowSubComponents/SocialMediaCU'
 import CompanyAddressTable from './CompanyShowSubComponents/CompanyAddressTable'
+import CompanyCodesCU from './CompanyShowSubComponents/CompanyCodesCU' 
+import CompanyCodesDisplay from './CompanyShowSubComponents/CompanyCodesDisplay' 
 
 export default {
     name: "CompanyShow",
     components: {
         SocialMediaCU,
-        CompanyAddressTable
+        CompanyAddressTable,
+        CompanyCodesCU,
+        CompanyCodesDisplay
     },
     data: () => ({
-        tab: null,
+        tab: 0, 
         defaultSocialMediaLink: { icon: "", name: "", link: "" },
         value: "",
         options: {
