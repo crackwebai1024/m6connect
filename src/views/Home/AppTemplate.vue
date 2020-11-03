@@ -27,26 +27,7 @@
                     class="details-content grey lighten-3 h-fit min-h-full pt-2"
                 >
                     <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
-                        <v-col cols="5" class="pa-0 pr-1 d-flex flex-column justify-center">
-                            <slot name="leftPanel"/>
-                            <v-btn
-                                v-if="editPanel"
-                                class="capitalize green lighten-2 mx-auto px-8 py-6 white--text"
-                                text
-                            >
-                                Add Panel
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="7" class="pa-0 pl-1">
-                            <slot name="rightPanel"/>
-                            <v-btn
-                                v-if="editPanel"
-                                class="capitalize green lighten-2 mx-auto px-8 py-6 white--text"
-                                text
-                            >
-                                Add Panel
-                            </v-btn>
-                        </v-col>
+                        <slot name="content"></slot>
                     </v-row>
                 </div>
             </v-card>
@@ -61,10 +42,6 @@ export default {
   components: {
   },
   props: {
-    editPanel: {
-      type: Boolean,
-      default: false
-    },
   },
   data: () => ({
     dialog: false

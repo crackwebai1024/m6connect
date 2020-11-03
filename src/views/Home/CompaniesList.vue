@@ -77,51 +77,55 @@
               <v-icon>mdi-magnify</v-icon>
           </v-btn>
       </div>
-      <div slot="leftPanel" class="white py-3 px-4 mb-3 panel">
-        <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
-        <div class="d-flex align-start">
-            <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
-            <div class="overflow-hidden w-full">
-                <v-textarea
-                    class="grey lighten-3 px-4 pt-1"
-                    color="grey lighten-3"
-                >
-                    <template v-slot:label>
-                        Description
-                    </template>
-                </v-textarea>
-                <v-btn
-                    elevation="0"
-                    color="transparent"
-                    class="blue--text capitalize px-1"
-                >
-                    Add field
-                </v-btn>
+      <div slot="content" class="w-full">
+        <panel-two-columns>
+          <div slot="leftPanel" class="white py-3 px-4 mb-3 panel">
+            <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
+            <div class="d-flex align-start">
+                <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
+                <div class="overflow-hidden w-full">
+                    <v-textarea
+                        class="grey lighten-3 px-4 pt-1"
+                        color="grey lighten-3"
+                    >
+                        <template v-slot:label>
+                            Description
+                        </template>
+                    </v-textarea>
+                    <v-btn
+                        elevation="0"
+                        color="transparent"
+                        class="blue--text capitalize px-1"
+                    >
+                        Add field
+                    </v-btn>
+                </div>
             </div>
-        </div>
-      </div>
-      <div slot="rightPanel" class="white py-3 px-4 mb-3 panel">
-        <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
-        <div class="d-flex align-start">
-            <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
-            <div class="overflow-hidden w-full">
-                <v-textarea
-                    class="grey lighten-3 px-4 pt-1"
-                    color="grey lighten-3"
-                >
-                    <template v-slot:label>
-                        Description
-                    </template>
-                </v-textarea>
-                <v-btn
-                    elevation="0"
-                    color="transparent"
-                    class="blue--text capitalize px-1"
-                >
-                    Add field
-                </v-btn>
+          </div>
+          <div slot="rightPanel" class="white py-3 px-4 mb-3 panel">
+            <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
+            <div class="d-flex align-start">
+                <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
+                <div class="overflow-hidden w-full">
+                    <v-textarea
+                        class="grey lighten-3 px-4 pt-1"
+                        color="grey lighten-3"
+                    >
+                        <template v-slot:label>
+                            Description
+                        </template>
+                    </v-textarea>
+                    <v-btn
+                        elevation="0"
+                        color="transparent"
+                        class="blue--text capitalize px-1"
+                    >
+                        Add field
+                    </v-btn>
+                </div>
             </div>
-        </div>
+          </div>
+        </panel-two-columns>
       </div>
     </app-template>
     <div
@@ -139,12 +143,16 @@ import { mapGetters, mapActions } from "vuex";
 import CompanyItem from "@/components/Companies/CompanyItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
 import AppTemplate from '@/views/Home/AppTemplate'
+import PanelFull from '@/components/AppBuilder/Content/PanelFull';
+import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns';
 
 export default {
   components: {
     CompanyItem,
     HeaderComponent,
-    AppTemplate
+    AppTemplate,
+    PanelFull,
+    PanelTwoColumns
   },
   name: "CompaniesList",
   data: () => ({
