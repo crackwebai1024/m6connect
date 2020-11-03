@@ -130,6 +130,8 @@
               />
             </div>
           </div>
+          <slot name="record"></slot>
+          <slot name="assignments"></slot>
         </div>
       </div>
       <!--IMAGES-->

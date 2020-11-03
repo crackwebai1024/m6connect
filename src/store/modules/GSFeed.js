@@ -7,6 +7,7 @@ const defaultState = {
   gsToken: '',
   client: {},
   feed: {},
+  actionPost: {},
   feedNotification: {},
   timeline: [],
   appGsId: process.env.VUE_APP_GS_ID,
@@ -17,6 +18,7 @@ const state = () => defaultState
 const getters = {
   getFeedNotification: state => state.feedNotification,
   getTimeline: state => state.timeline,
+  getActionPost: state => state.actionPost,
   getFeed: state => state.feed,
   getClient: state => state.client
 }
@@ -60,6 +62,12 @@ const mutations = {
   },
   UPDATE_USER: (state, payload) => {
     state.client.user(payload['id']).update(payload);
+  },
+  SET_ACTION_POST: (state, payload) => {
+    axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/${payload.room}/${payload.id}`).then( res => {
+      state.actionPost = res.data;
+      state.actionPost['props'] = payload['props'];
+    })
   }
 }
 
@@ -213,6 +221,12 @@ const actions = {
   updateUser({ commit }, payload){
     return new Promise(resolve => {
       commit('UPDATE_USER', payload)
+      resolve(true)
+    })
+  },
+  setActionPost({ commit }, payload){
+    return new Promise(resolve => {
+      commit('SET_ACTION_POST', payload)
       resolve(true)
     })
   }
