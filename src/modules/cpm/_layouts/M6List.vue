@@ -1,0 +1,70 @@
+<template>
+  <v-container>
+    <v-layout align-center>
+      <!-- Must be v-flex -->
+      <slot name="before:search" />
+
+      <v-spacer />
+      <v-flex
+        id="step3"
+        xs3
+      >
+        <v-text-field
+          id="search"
+          append-icon="search"
+          clearable
+          :label="label"
+          :value="search"
+          @input="onInputSearch"
+        />
+      </v-flex>
+
+      <!-- Must be v-flex -->
+      <slot name="after:search" />
+      <slot name="after:search:btn" />
+    </v-layout>
+
+    <v-layout>
+      <template v-if="!withoutResults">
+        <slot />
+      </template>
+
+      <m6-no-results v-else-if="!loading" />
+    </v-layout>
+
+    <m6-loading :loading="loading" />
+  </v-container>
+</template>
+
+<script>
+export default {
+  name: 'M6List',
+
+  props: {
+    label: {
+      type: String,
+      default: 'Search'
+    },
+
+    loading: {
+      type: Boolean,
+      default: false
+    },
+
+    onInputSearch: {
+      type: Function,
+      default: () => null
+    },
+
+    search: {
+      type: [String, Number],
+      default: ''
+    },
+
+    withoutResults: {
+      type: Boolean,
+      default: true
+    }
+  }
+}
+</script>
