@@ -92,45 +92,48 @@
             </div>
             <div slot="content" class="w-full">
                 <panel-full>
-                    <div slot="content" class="w-full">
-                        
-                    </div>
+                    <v-card slot="content">
+                        <div class="green lighten-1 py-2 px-4 white--text">Cost Summary</div>
+                        <v-container fluid>
+                        <v-data-table></v-data-table>
+                        </v-container>
+                    </v-card>
                 </panel-full>
                 <panel-two-columns>
-                <div slot="leftPanel" class="white py-3 px-4 mb-3 panel">
-                    <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
-                    <div class="overflow-hidden">
-                        <div class="d-flex align-center my-3">
-                            <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
-                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
-                        </div>
-                        <div class="d-flex align-center my-3">
-                            <v-icon class="grey--text text--darken-3" size="22">mdi-email-outline</v-icon>
-                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.email }}</p>
-                        </div>
-                        <div class="d-flex align-center my-3">
-                            <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
-                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.name }}</p>
-                        </div>
-                        <div class="d-flex align-center my-3">
-                            <v-icon class="grey--text text--darken-3" size="22">mdi-phone</v-icon>
-                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.phone }}</p>
-                        </div>
-                        <div class="d-flex align-center my-3">
-                            <v-icon class="grey--text text--darken-3" size="22">mdi-earth</v-icon>
-                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.website }}</p>
-                        </div>
-                        <div class="d-flex align-center my-3">
-                            <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
-                            <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
+                    <div slot="leftPanel" class="white py-3 px-4 mb-3 panel">
+                        <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
+                        <div class="overflow-hidden">
+                            <div class="d-flex align-center my-3">
+                                <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
+                                <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
+                            </div>
+                            <div class="d-flex align-center my-3">
+                                <v-icon class="grey--text text--darken-3" size="22">mdi-email-outline</v-icon>
+                                <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.email }}</p>
+                            </div>
+                            <div class="d-flex align-center my-3">
+                                <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
+                                <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.name }}</p>
+                            </div>
+                            <div class="d-flex align-center my-3">
+                                <v-icon class="grey--text text--darken-3" size="22">mdi-phone</v-icon>
+                                <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.phone }}</p>
+                            </div>
+                            <div class="d-flex align-center my-3">
+                                <v-icon class="grey--text text--darken-3" size="22">mdi-earth</v-icon>
+                                <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.website }}</p>
+                            </div>
+                            <div class="d-flex align-center my-3">
+                                <v-icon class="grey--text text--darken-3" size="24">mdi-heart</v-icon>
+                                <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">{{ currentCompany.legalCompanyName }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div slot="rightPanel">
-                    <project-social-media class="main-content px-0" />
-                </div>
-              </panel-two-columns>
-          </div>
+                    <div slot="rightPanel">
+                        <project-social-media class="main-content px-0" />
+                    </div>
+                </panel-two-columns>
+            </div>
         </app-template>
       </div>
     </div>

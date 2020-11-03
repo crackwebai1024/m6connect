@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-0 ma-0 d-flex flex-column justify-center">
+  <v-row class="pa-0 ma-0 mb-2 d-flex flex-column justify-center">
     <slot name="content"/>
   </v-row>
 </template>

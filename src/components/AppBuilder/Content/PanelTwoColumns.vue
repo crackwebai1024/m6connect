@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-0 ma-0 d-flex justify-center w-full">
+  <v-row class="pa-0 ma-0 mb-2 d-flex justify-center w-full">
     <v-col cols="5" class="pa-0 pr-1 d-flex flex-column justify-center">
       <slot name="leftPanel"/>
     </v-col>
