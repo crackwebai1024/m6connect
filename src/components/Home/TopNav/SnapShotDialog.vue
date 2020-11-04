@@ -51,7 +51,7 @@
                                             }"
                                         /> -->
                                         <v-circle 
-                                            v-for="item in rapidItem.notes"
+                                            v-for="item in rapidItem.items"
                                             :key="item.id"
                                             :config=" {
                                                 x: item.x,
@@ -72,7 +72,7 @@
                         <v-col sm="3" class="sidebar-custom" >
                             
                             <div 
-                                v-for="(n, i) in rapidItem.notes" :key="`notes-${n.id}`" 
+                                v-for="(n, i) in rapidItem.items" :key="`notes-${n.id}`" 
                                 class="pa-2"
                             >
 
@@ -84,12 +84,12 @@
                                     >
                                         <span class="white--text headline">{{ i + 1 }}</span>
                                     </v-avatar>
-                                    <v-text-field outlined class="ma-0 pa-0" label="Title" v-model="rapidItem.notes[i].title" />
-                                    <v-btn color="red darken-2" icon @click="removeNote(n)" v-show="rapidItem.notes.length > 1" >
+                                    <v-text-field outlined class="ma-0 pa-0" label="Title" v-model="rapidItem.items[i].title" />
+                                    <v-btn color="red darken-2" icon @click="removeNote(n)" v-show="rapidItem.items.length > 1" >
                                         <v-icon>mdi-close</v-icon>
                                     </v-btn>
                                 </div>
-                                <v-textarea outlined  label="Description" v-model="rapidItem.notes[i].text" />
+                                <v-textarea outlined  label="Description" v-model="rapidItem.items[i].text" />
 
                             </div>
 
@@ -97,13 +97,15 @@
                     </v-row>
 
                 </v-container>
+
+                <m6-loading :loading="loading" />
             </v-card-text>
             
             <v-card-actions>
 
                 <v-spacer />
 
-                <v-btn color="red" text > 
+                <v-btn color="red" text @click="closing" > 
                     close
                 </v-btn>
 
@@ -130,6 +132,7 @@ const noteModel = {
     rotation: 180,
     selected: false
 }
+const rapidItemDefault = { items: [], company: {}, user: {}, imgLink: "" }
 
 export default {
 
@@ -146,13 +149,15 @@ export default {
 
     data: () => ({
         defaultNote: noteModel,
-        rapidItem: { notes: [], company: {}, user: {} },
+        rapidItem: {...rapidItemDefault},
+        rapidItemDefault: rapidItemDefault,
         notes: [],
         dragItemId: null,
         configKonva: {
             width: width,
             height: height
-        }
+        },
+        loading: false
     }),
 
     methods: {
@@ -160,6 +165,7 @@ export default {
             createRapidTicket: 'createRapidTicket'
         }),
         async saving() {
+
             this.rapidItem.user = {
                 id: this.currentUser.id,
                 email: this.currentUser.email,
@@ -174,50 +180,49 @@ export default {
                 name: this.currentCompany.name,
                 phone: this.currentCompany.phone
             }
-            
+
+            this.loading = true 
             try {
                 const res = await this.createRapidTicket(this.rapidItem)
-                console.log('res------')
-                console.log(res)
+                this.loading = false
             } catch(e) {
-                console.log('e------')
-                console.log(e)
+                this.loading = false
             }
+        },
 
-            console.log('this.rapidItem')
-            console.log(this.rapidItem)
+        closing(){
+            this.rapidItem = this.rapidItemDefault
+            this.$emit('closing')
         },
 
         removeNote(n) {
-            this.rapidItem.notes = this.rapidItem.notes.filter( note => note.id !== n.id )
+            this.rapidItem.items = this.rapidItem.items.filter( note => note.id !== n.id )
         },
         
         addNotes() {
             const id = Math.floor(+ new Date + ( Math.random() * 1000 ))
             const coords = this.getRandCoordinates()
             const note = { id, ...this.defaultNote, ...coords}
-            this.rapidItem.notes.push(note)
-            console.log('this.rapidItem------')
-            console.log(this.rapidItem)
+            this.rapidItem.items.push(note)
         },
 
         handleDragstart(e) {
             // save drag element:
             this.dragItemId = e.target.id()
-            this.rapidItem.notes = this.rapidItem.notes.map( n => ({...n, selected: false}) )
-            const item = this.rapidItem.notes.find(i => i.id === this.dragItemId);
+            this.rapidItem.items = this.rapidItem.items.map( n => ({...n, selected: false}) )
+            const item = this.rapidItem.items.find(i => i.id === this.dragItemId);
             item.selected = true
         },
 
         handleDragend(e) {
-            this.rapidItem.notes = this.rapidItem.notes.map(n => ({...n, selected: false}))
-            const item = this.rapidItem.notes.find(i => i.id === this.dragItemId);
+            this.rapidItem.items = this.rapidItem.items.map(n => ({...n, selected: false}))
+            const item = this.rapidItem.items.find(i => i.id === this.dragItemId);
             
             item.x = e.target.attrs.x
             item.y = e.target.attrs.y
             item.selected = true
 
-            this.notes = this.rapidItem.notes.map( n => n.id !== item.id ? n : item  )
+            this.notes = this.rapidItem.items.map( n => n.id !== item.id ? n : item  )
 
             this.dragItemId = null
         },
@@ -227,7 +232,42 @@ export default {
                 x: Math.floor(Math.random() * (width/2.3 - width/3) + width/3),
                 y: Math.floor(Math.random() * (width/2.3 - width/3) + width/3)
             }
+        },
+
+        processingB64(ImageURL){
+            const block = ImageURL.split(";");
+            // Get the content type of the image
+            const contentType = block[0].split(":")[1];// In this case "image/gif"
+            // get the real base64 content of the file
+            const realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
+
+            return { data, contentType}
+        },
+
+        b64toBlob(b64Data, contentType, sliceSize) {
+                contentType = contentType || '';
+                sliceSize = sliceSize || 512;
+
+                const byteCharacters = atob(b64Data);
+                const byteArrays = [];
+
+                for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                    let slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                    let byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+
+                    let byteArray = new Uint8Array(byteNumbers);
+
+                    byteArrays.push(byteArray);
+                }
+
+              const blob = new Blob(byteArrays, {type: contentType});
+              return blob;
         }
+        
     },
 
     computed: {
