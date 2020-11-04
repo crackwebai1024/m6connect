@@ -1,5 +1,6 @@
 import { connect } from 'getstream'
 import axios from 'axios'
+import auth from './Auth'
 
 const defaultState = {
   room: '',
@@ -93,14 +94,15 @@ const actions = {
   addActivity({ state }, payload) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
-      payload['room'] = state.room;
+      payload['req']['room'] = state.room;
 
       if (state.room === 'companies') {
-        payload['data']['to'] = ['companies:global']
+        payload['req']['data']['to'] = ['companies:global']
+        payload['req']['data']['company'] = payload['compID']
       }
       
       const activity = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, {
-        ...payload
+        ...payload['req']
       });
       resolve(activity)
     })
@@ -147,8 +149,10 @@ const actions = {
   retrieveFeed({ state, commit }) {
     return new Promise((resolve, reject) => {
       if (state.room === 'companies') {
-        axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/${state.room}`).then(res => {
-          commit('SET_TIMELINE', res.data.results)
+        let comp = auth.state.user.companies.items.find(res => res.active === true);
+
+        axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/${state.room}/${comp.company.id}`).then(res => {
+          commit('SET_TIMELINE', res.data)
           resolve(true)
         }).catch(e => reject(e));
       }else{

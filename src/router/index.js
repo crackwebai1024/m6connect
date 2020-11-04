@@ -13,7 +13,7 @@ const UserSettings = () => import(/* webpackChunkName: 'UserSettings' */ "@/view
 const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components/Companies')
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
 const StoreFront = () => import(/* webpackChunkName: 'Store' */ '@/components/Store')
-const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/PanelDetailsTemplate')
+const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/AppTemplate')
 
 import store from '../store/';
 Vue.use(VueRouter);
