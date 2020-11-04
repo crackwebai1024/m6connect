@@ -187,11 +187,16 @@
     >
       <div
         v-if="messages.length === 0"
-        class="d-flex text-caption align-center my-2 grey--text h-full px-3"
+        class="d-flex flex-column justify-center text-caption align-center grey--text h-full px-3"
       >
-        <v-divider class="blue-grey lighten-5"></v-divider>
-          <span class="mx-3">No messages yet</span>
-        <v-divider class="blue-grey lighten-5"></v-divider>
+        <div class="w-full d-flex justify-center">
+          <v-icon size="40" class="grey--text text--lighten-1">mdi-message-settings-outline</v-icon>
+        </div>
+        <div class="d-flex text-caption align-center mt-3 w-full">
+          <v-divider class="blue-grey lighten-5"></v-divider>
+            <span class="mx-3 grey--text text--lighten-1">No messages yet</span>
+          <v-divider class="blue-grey lighten-5"></v-divider>
+        </div>
       </div>
       <!-- Message Bubble -->
       <div
