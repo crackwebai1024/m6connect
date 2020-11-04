@@ -2,7 +2,7 @@
   <v-card
     v-if="dataReady"
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
-    :class="[minimized ? 'minimized' : '']"
+    :class="[minimized ? 'minimized' : 'h-full']"
     elevation="3"
   >
     <div
@@ -183,8 +183,16 @@
     <div
       ref="messages"
       class="messages-container ml-2 px-1 vertical-scroll white"
-      :class="[minimized ? 'd-none' : '']"
+      :class="[minimized ? 'd-none' : 'h-full']"
     >
+      <div
+        v-if="messages.length === 0"
+        class="d-flex text-caption align-center my-2 grey--text h-full px-3"
+      >
+        <v-divider class="blue-grey lighten-5"></v-divider>
+          <span class="mx-3">No messages yet</span>
+        <v-divider class="blue-grey lighten-5"></v-divider>
+      </div>
       <!-- Message Bubble -->
       <div
         v-for="(message, index) in messages"
