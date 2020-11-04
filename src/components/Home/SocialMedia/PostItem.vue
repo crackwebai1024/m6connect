@@ -572,6 +572,10 @@ export default {
       await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     async updatePost(activity) {
+      if( typeof activity['actor'] === 'string'){
+        activity['actor'] = JSON.parse(activity['actor'])
+      }
+      
       activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
       activity['actor']['data']['image'] = this.user.profilePic
       activity.message = this.updateMessage;

@@ -191,6 +191,8 @@ export default {
               name:`${this.user.firstName} ${this.user.lastName}`
             }
           }),
+          foreign_id: `${Date.now()}-post-${Math.floor(Math.random() * 9999999)}`,
+          time: new Date().toISOString(),
           message: this.itemInfo.description,
           verb: 'action',
           object: 1

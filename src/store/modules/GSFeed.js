@@ -103,7 +103,8 @@ const actions = {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
       payload['req']['room'] = state.room;
-
+      payload['req']['data']['time'] = new Date().toISOString();
+      payload['req']['data']['foreign_id'] = `${Date.now()}-post-${Math.floor(Math.random() * 9999999)}`;
       if (state.room === 'companies') {
         payload['req']['data']['to'] = ['companies:global']
         payload['req']['data']['company'] = payload['compID']
@@ -133,9 +134,9 @@ const actions = {
       })
     })
   },
-  updateActivity({ state }, updateProperties) {
+  updateActivity({}, updateProperties) {
     return new Promise(resolve => {
-      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, updateProperties).then(res => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity/${auth.state.user.id}`, updateProperties).then(res => {
         resolve(true);
       });
     })
