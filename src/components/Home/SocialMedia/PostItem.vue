@@ -388,6 +388,7 @@
           :key="index"
           :comment="comment"
           :reply="true"
+          :feedActivity="data.props ? true : false"
           :size="48"
           :userData="client.currentUser.data"
         />
@@ -520,30 +521,28 @@ export default {
     async likeActivity(activity) {
       if (this.progressLike) return true
       this.progressLike = true
+      const payload = {
+        id: activity.id,
+        type: 'like',
+        whoNotify: activity.actor.id
+      };
+
       if (this.data.own_reactions.like) {
         let activ = this.data.own_reactions.like.find( i =>  i.user_id === this.user.id )
         if( activ ){
           await this.$store.dispatch('GSFeed/removeReaction', activ.id)
           this.likeState = false
         } else {
-          const payload = {
-            id: activity.id,
-            type: 'like',
-            whoNotify: activity.actor.id
-          }
           await this.$store.dispatch('GSFeed/addReaction', payload)
           this.likeState = true
         }
       } else {
-        const payload = {
-          id: activity.id,
-          type: 'like',
-          whoNotify: activity.actor.id
-        }
         await this.$store.dispatch('GSFeed/addReaction', payload)
         this.likeState = true
       }
-      await this.$store.dispatch('GSFeed/retrieveFeed')
+      activity.props ? await this.$store.dispatch('GSFeed/setActionPost')
+        : await this.$store.dispatch('GSFeed/retrieveFeed');
+        
       this.progressLike = false
     },
     async pushComment(activity) {
@@ -557,7 +556,9 @@ export default {
       }
 
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-        await this.$store.dispatch('GSFeed/retrieveFeed')
+        activity.props ? await this.$store.dispatch('GSFeed/setActionPost')
+          : await this.$store.dispatch('GSFeed/retrieveFeed');
+
         this.showSkeleton = false
       })
 

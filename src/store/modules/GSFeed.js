@@ -64,6 +64,13 @@ const mutations = {
     state.client.user(payload['id']).update(payload);
   },
   SET_ACTION_POST: (state, payload) => {
+    if(!payload){
+      payload = {
+        room: 'work_order',
+        id: state.actionPost.id,
+        props: state.actionPost.props
+      };
+    }
     axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/${payload.room}/${payload.id}`).then( res => {
       state.actionPost = res.data;
       state.actionPost['props'] = payload['props'];
