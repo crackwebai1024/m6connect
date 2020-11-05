@@ -40,7 +40,6 @@
 <script>
 import ActionFeedItem from './ActionFeedItem'
 import { mapActions, mapGetters } from 'vuex'
-
 export default {
   components: {
     ActionFeedItem
@@ -70,6 +69,7 @@ export default {
   computed: {
     ...mapGetters('Auth',            { cUser:   'getUser'       }),
     ...mapGetters('WorkOrderModule', { actFeed: 'getActionFeed' }),
+
     filteredNotifications() {
       return this.actFeed.filter( notification => {
         if (typeof notification.post.actor.data === 'object') {
@@ -88,10 +88,6 @@ export default {
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
-    },
-    beforeClose(){
-      this.showInput  = false;
-      this.workOrder();
     }
   },
   watch: {
