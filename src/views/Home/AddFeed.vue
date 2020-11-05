@@ -186,7 +186,7 @@ export default {
   }),
   methods: {
     ...mapActions("ITAppsModule", { selects: "get_all_selects" }),
-    ...mapActions("WorkOrderModule", { records: "getRecords", postAction: "postAction"}),
+    ...mapActions("WorkOrderModule", { records: "getRecords", postAction: "postAction", workOrder: "setWorkOrder"}),
     changeRecord(event){
       switch( event ){
         case 'ITApps':
@@ -215,6 +215,8 @@ export default {
               name:`${this.user.firstName} ${this.user.lastName}`
             }
           }),
+          foreign_id: `${Date.now()}-post-${Math.floor(Math.random() * 9999999)}`,
+          time: new Date().toISOString(),
           message: this.itemInfo.description,
           verb: 'action',
           object: 1
@@ -223,8 +225,8 @@ export default {
       this.itemInfo['start_date']     = new Date().toISOString().slice(0,10);
       this.itemInfo['requested_date'] = new Date().toISOString().slice(0,10);
       this.showInput  = false;
-      this.workOrder(this.user.id).then(res => {
-        this.notifications = res;
+      this.postAction(this.itemInfo).then(() => {
+        this.workOrder();
       });
     },
   },

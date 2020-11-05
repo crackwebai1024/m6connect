@@ -168,10 +168,11 @@ export default {
     PostComments
   },
   props: {
-    comment: Object,
-    size: Number,
-    reply: Boolean,
-    userData: Object
+    feedActivity:   Boolean,
+    reply:          Boolean,
+    userData:       Object,
+    comment:        Object,
+    size:           Number
   },
   data: () => ({
     likeState: false,
@@ -251,9 +252,11 @@ export default {
     async pushChildComment() {
       let replyData = this.reply_data
       this.reply_data = ''
+      
       if(replyData.trim() == '') return true
       await this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: replyData});
-      await this.$store.dispatch('GSFeed/retrieveFeed')
+      this.feedActivity ? await this.$store.dispatch('GSFeed/setActionPost') 
+        : await this.$store.dispatch('GSFeed/retrieveFeed')
       
       this.showReplyMessage = true
     },

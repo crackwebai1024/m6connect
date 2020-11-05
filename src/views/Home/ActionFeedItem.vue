@@ -1,6 +1,7 @@
 <template>
-  <div v-if="this.notification['post']['actor']['data']" @mouseover="showActionBtns = true"
-    @mouseleave="showActionBtns = false" class="actionfeed-content__card relative card-custom-shadow rounded white mb-4 pt-4 px-3 pb-12">
+  <div v-if="notification['post']['actor']['data']" @mouseover="showActionBtns = true"
+    @click="setPost()"
+    @mouseleave="showActionBtns = false" class="actionfeed-content__card relative pointer card-custom-shadow rounded white mb-4 pt-4 px-3 pb-12">
       <div v-if="notification.record" :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
         {{ notification.record.app_type }}
       </div>
@@ -17,7 +18,7 @@
       <p v-else class="message-box text-caption black--text pl-3 ml-1 mb-0 d-flex align-center">
         {{ notification.post.message }}
       </p>
-      <p v-if="notification.record" @click="setRecord(notification.record)" :class="notification.colorTag + '--text ' + 'text-body-2 pointer ml-1 mb-0 d-flex align-center'">
+      <p v-if="notification.record" :class="notification.colorTag + '--text ' + 'text-body-2 ml-1 mb-0 d-flex align-center'">
         <v-icon :class="notification.colorTag + '--text ' + 'mr-1'">mdi-file-document-outline</v-icon>
         {{ notification.record.title }}
       </p>
@@ -47,7 +48,7 @@
       </p>
       </div>
       <div class="d-flex feed-btns absolute pa-3 text-caption align-center">
-        <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> {{ cont('likes') }}</p>
+        <p class="mb-0 mr-2"><v-icon size="17">mdi-thumb-up-outline</v-icon> {{ cont('like') }}</p>
         <p class="mb-0 mr-2"><v-icon size="17">mdi-message-outline</v-icon> {{ cont('comment') }}</p>
       </div>
       <div v-if="showActionBtns" class="d-flex action-btns absolute pa-3 text-caption align-center">
@@ -92,7 +93,24 @@ export default {
     ...mapActions("InfoModule", {
       changeDrawer: "change_preview_navigation_drawer",
     }),
+    ...mapActions("GSFeed", {
+      setActPost: "setActionPost"
+    }),
     ...mapActions("GeneralListModule", {recordData: "push_data_to_active"}),
+    setPost() {
+      let { record, colorTag, id } = this.notification;
+      
+      this.setActPost({
+        room: 'work_order',
+        id: this.notification.post_id,
+        props: {
+          id: id,
+          record: record,
+          colorTag: colorTag,
+          wo_assignments: this.users
+        }
+      });
+    },
     diffNow(date) {
       let dateNow = new Date();
       let dateNotification = new Date(date);
@@ -105,10 +123,6 @@ export default {
       diff = (diff - hours) / 24;
       let days = Math.abs(Math.floor(diff % 30));
       return days + ' days, ' + hours + ' hours, ' + minutes +' minutes, ' + seconds + ' seconds';
-    },
-    setRecord(record){
-      this.recordData(record);
-      this.changeDrawer(true);
     },
     pendingApprovals(approvals) {
       let pendingApprovals = 0 ;
@@ -131,7 +145,18 @@ export default {
         this.notification['post']['actor'] = JSON.parse(this.notification['post']['actor']);
       }
       this.notification['colorTag'] = this.getColorTag();
-    },
+      
+      if (val.wo_assignments && val.wo_assignments.length > 0) {
+        let localUsers = [];
+        val.wo_assignments.forEach(assign => {
+          localUsers.push(assign.assignee)
+        });
+        
+        this.getUsers(localUsers).then(res => {
+          this.users = res.data
+        });
+      }
+    }
   },
   created() {
     if(!this.notification['post']['actor']['data']){

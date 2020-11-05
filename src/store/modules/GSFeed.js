@@ -7,6 +7,7 @@ const defaultState = {
   gsToken: '',
   client: {},
   feed: {},
+  actionPost: {},
   feedNotification: {},
   timeline: [],
   appGsId: process.env.VUE_APP_GS_ID,
@@ -17,6 +18,7 @@ const state = () => defaultState
 const getters = {
   getFeedNotification: state => state.feedNotification,
   getTimeline: state => state.timeline,
+  getActionPost: state => state.actionPost,
   getFeed: state => state.feed,
   getClient: state => state.client
 }
@@ -60,6 +62,22 @@ const mutations = {
   },
   UPDATE_USER: (state, payload) => {
     state.client.user(payload['id']).update(payload);
+  },
+  SET_EMPTY_ACTION_POST: (state) => {
+    state.actionPost = {};
+  },
+  SET_ACTION_POST: (state, payload) => {
+    if(!payload){
+      payload = {
+        room: 'work_order',
+        id: state.actionPost.id,
+        props: state.actionPost.props
+      };
+    }
+    axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/${payload.room}/${payload.id}`).then( res => {
+      state.actionPost = res.data;
+      state.actionPost['props'] = payload['props'];
+    })
   }
 }
 
@@ -95,7 +113,8 @@ const actions = {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
       payload['req']['room'] = state.room;
-
+      payload['req']['data']['time'] = new Date().toISOString();
+      payload['req']['data']['foreign_id'] = `${Date.now()}-post-${Math.floor(Math.random() * 9999999)}`;
       if (state.room === 'companies') {
         payload['req']['data']['to'] = ['companies:global']
         payload['req']['data']['company'] = payload['compID']
@@ -125,9 +144,9 @@ const actions = {
       })
     })
   },
-  updateActivity({ state }, updateProperties) {
+  updateActivity({}, updateProperties) {
     return new Promise(resolve => {
-      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, updateProperties).then(res => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity/${auth.state.user.id}`, updateProperties).then(res => {
         resolve(true);
       });
     })
@@ -213,6 +232,15 @@ const actions = {
   updateUser({ commit }, payload){
     return new Promise(resolve => {
       commit('UPDATE_USER', payload)
+      resolve(true)
+    })
+  },
+  setEmptyActionPost({ commit }){
+    commit('SET_EMPTY_ACTION_POST');
+  },
+  setActionPost({ commit }, payload){
+    return new Promise(resolve => {
+      commit('SET_ACTION_POST', payload)
       resolve(true)
     })
   }
