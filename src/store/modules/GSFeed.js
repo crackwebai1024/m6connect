@@ -63,6 +63,9 @@ const mutations = {
   UPDATE_USER: (state, payload) => {
     state.client.user(payload['id']).update(payload);
   },
+  SET_EMPTY_ACTION_POST: (state) => {
+    state.actionPost = {};
+  },
   SET_ACTION_POST: (state, payload) => {
     if(!payload){
       payload = {
@@ -231,6 +234,9 @@ const actions = {
       commit('UPDATE_USER', payload)
       resolve(true)
     })
+  },
+  setEmptyActionPost({ commit }){
+    commit('SET_EMPTY_ACTION_POST');
   },
   setActionPost({ commit }, payload){
     return new Promise(resolve => {

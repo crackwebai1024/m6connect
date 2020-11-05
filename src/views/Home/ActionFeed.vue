@@ -72,9 +72,10 @@ export default {
   }),
   name: "ActionFeed",
   computed: {
-    ...mapGetters('Auth', { cUser: 'getUser' }),
+    ...mapGetters('Auth',            { cUser:   'getUser'       }),
+    ...mapGetters('WorkOrderModule', { actFeed: 'getActionFeed' }),
     filteredNotifications() {
-      return this.notifications.filter( notification => {
+      return this.actFeed.filter( notification => {
         if (typeof notification.post.actor.data === 'object') {
           return notification.post.actor.data.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
           || notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1;
@@ -86,7 +87,7 @@ export default {
   },
   methods: {
     ...mapActions( 'WorkOrderModule' , {
-      workOrder: 'getWorkOrder'
+      workOrder: 'setWorkOrder'
     }),
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
@@ -94,24 +95,20 @@ export default {
     },
     beforeClose(){
       this.showInput  = false;
-      this.workOrder(this.user.id).then(res => {
-        this.notifications = res;
-      });
+      this.workOrder();
     }
   },
   watch: {
     cUser: function (val) {
       this.user = val;
-      this.workOrder(this.user.id).then(res => {
-        this.notifications = res;
+      this.workOrder().then(() => {
         this.loading = false;
       });
     },
   },
   mounted(){
     this.user = this.cUser;
-    this.workOrder(this.user.id).then(res => {
-      this.notifications = res;
+    this.workOrder().then(() => {
       this.loading = false;
     });
   },

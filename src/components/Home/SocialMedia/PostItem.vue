@@ -73,6 +73,9 @@
             </v-list>
           </v-menu>
         </v-row>
+        <v-btn v-if="data.props" @click="closeAction()" class="ml-2" icon color="red">
+          <v-icon size="22">mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
 
       <div>
@@ -570,7 +573,7 @@ export default {
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
-    ...mapActions("WorkOrderModule", { records: "getRecords",putAct: "putAction"}),
+    ...mapActions("WorkOrderModule", { records: "getRecords", putAct: "putAction", deleteAct: "deleteAction" }),
 
     changeRecord(event){
       switch( event ){
@@ -587,7 +590,9 @@ export default {
         query: this.updateInfo
       }).then(() =>{
         this.updateInfo['preview_list'] = this.updateInfo['assignment_list'];
-        this.updatePost(activity);
+        this.updatePost(activity).then(() => {
+          this.$store.dispatch('WorkOrderModule/setWorkOrder');
+        });
         this.cancelUpdate();
       })
     },
@@ -632,8 +637,13 @@ export default {
         await this.$store.dispatch('GSFeed/addReaction', payload)
         this.likeState = true
       }
-      activity.props ? await this.$store.dispatch('GSFeed/setActionPost')
-        : await this.$store.dispatch('GSFeed/retrieveFeed');
+      if( activity.props ){
+        await this.$store.dispatch('GSFeed/setActionPost')
+        await this.$store.dispatch('WorkOrderModule/setWorkOrder');
+      } else{
+        await this.$store.dispatch('GSFeed/retrieveFeed');
+      }
+
       this.progressLike = false
     },
     async pushComment(activity) {
@@ -647,9 +657,12 @@ export default {
       }
 
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-        activity.props ? await this.$store.dispatch('GSFeed/setActionPost')
-          : await this.$store.dispatch('GSFeed/retrieveFeed');
-
+        if( activity.props ){
+          await this.$store.dispatch('GSFeed/setActionPost')
+          await this.$store.dispatch('WorkOrderModule/setWorkOrder');
+        }else{
+          await this.$store.dispatch('GSFeed/retrieveFeed');
+        }
         this.showSkeleton = false
       })
 
@@ -660,8 +673,17 @@ export default {
     },
     async deletePost(activity) {
       await this.$store.dispatch('GSFeed/removeActivity', activity.id)
+      if(activity.props){
+        await this.deleteAct(activity.props.id);
+
+        this.$store.dispatch('GSFeed/setEmptyActionPost');
+        this.$store.dispatch('WorkOrderModule/setWorkOrder');
+      }
       this.deleteDiaLog = false
       await this.$store.dispatch('GSFeed/retrieveFeed')
+    },
+    closeAction(){
+      this.$store.dispatch('GSFeed/setEmptyActionPost');
     },
     async updatePost(activity) {
       if( typeof activity['actor'] === 'string'){

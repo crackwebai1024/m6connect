@@ -145,7 +145,18 @@ export default {
         this.notification['post']['actor'] = JSON.parse(this.notification['post']['actor']);
       }
       this.notification['colorTag'] = this.getColorTag();
-    },
+      
+      if (val.wo_assignments && val.wo_assignments.length > 0) {
+        let localUsers = [];
+        val.wo_assignments.forEach(assign => {
+          localUsers.push(assign.assignee)
+        });
+        
+        this.getUsers(localUsers).then(res => {
+          this.users = res.data
+        });
+      }
+    }
   },
   created() {
     if(!this.notification['post']['actor']['data']){
