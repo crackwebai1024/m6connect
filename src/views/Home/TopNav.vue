@@ -13,6 +13,19 @@
 
       <div class="align-center d-flex justify-end w-side">
 
+        <v-btn
+            block
+            :color="showInput ? 'red darken-1': 'blue darken-1'"
+            class="white--text text-xl font-weight-bold"
+            @click="showInput = !showInput"
+        >
+            {{showInput? 'Cancel' : 'New Action'}}
+        </v-btn>
+        <add-feed
+            v-if="showInput"
+            @closeCreateActivity="beforeClose"
+        />
+
         <snap-shot-nav /> 
 
         <user-options />
@@ -148,6 +161,7 @@ import AppTemplate from "@/views/Home/AppTemplate";
 import ProjectSocialMedia from "./ProjectSocialMedia";
 import PanelFull from "@/components/AppBuilder/Content/PanelFull";
 import PanelTwoColumns from "@/components/AppBuilder/Content/PanelTwoColumns";
+import AddFeed from './AddFeed';
 
 export default {
   name: "TopNav",
@@ -157,7 +171,8 @@ export default {
     AppTemplate,
     ProjectSocialMedia,
     PanelFull,
-    PanelTwoColumns
+    PanelTwoColumns,
+    AddFeed
   },
 
   computed: {
@@ -189,15 +204,15 @@ export default {
       { url: "/companies", icon: "office-building" },
       { url: "/store", icon: "storefront" },
       { url: "/user/settings", icon: "cog" }
-    ]
+    ],
+    showInput: false
   }),
   methods: {
-    toogleLinks() {
-      this.showLinks = !this.showLinks;
-      let linksdiv = this.$refs.showLinksDiv;
-      this.showLinks
-        ? (linksdiv.style.height = this.heightShowLinksDiv)
-        : (linksdiv.style.height = "130px");
+    beforeClose(){
+      this.showInput  = false;
+      this.workOrder(this.user.id).then(res => {
+        this.notifications = res;
+      });
     }
   }
 };
