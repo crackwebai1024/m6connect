@@ -1,132 +1,153 @@
 <template>
-  <v-container class="px-0 py-0 mt-2 white">
-    <v-form @submit.prevent ref="form" v-model="valid">
-      <v-row class="w-full ma-0">
-        <v-col cols="12" class="py-0">
-          <v-text-field
-            ref="inputFeed"
-            :rules="textRules"
-            v-model="itemInfo.title"
-            class="h-full outline-none text-body-1"
-            placeholder="Title"
-          />
-        </v-col>
-        <v-col cols="12" class="py-0">
-          <v-text-field
-            ref="inputFeed"
-            :rules="textRules"
-            v-model="itemInfo.description"
-            class="h-full outline-none text-body-1"
-            placeholder="Summary"
-          />
-        </v-col>
-        <v-col cols="12" class="py-0">
-          <v-menu
-            v-model="res.due_date"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="itemInfo.due_date"
-                :rules="textRules"
-                label="Due Date"
-                readonly
-                v-bind="attrs"
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="itemInfo.due_date"
-              @input="res.due_date = false"
-            ></v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-select
-            v-model="itemInfo.type"
-            :rules="selectRules"
-            label="Request Type"
-            :items="options.type"
-            item-value="id"
-            item-text="value"
-          ></v-select>
-        </v-col>
-        <v-col cols="6" class="py-0">
-          <v-select
-            v-model="itemInfo.status"
-            :rules="selectRules"
-            label="Status"
-            :items="options.Status"
-            item-value="id"
-            item-text="value"
-          ></v-select>
-        </v-col>
-        <v-col cols="4" class="py-0">
-          <v-select
-            v-on:change="changeRecord($event)"
-            v-model="record_type"
-            label="Record Type"
-            :items="records_type"
-          >
-          </v-select>
-        </v-col>
-        <v-col cols="8" class="py-0">
-          <v-select
-            :class="{ disabled: record_type === null }"
-            v-model="itemInfo.record_id"
-            label="Record"
-            :items="options.records"
-            item-value="id"
-          >
-            <template slot="selection" slot-scope="data">
-              <!-- HTML that describe how select should render selected items -->
-              {{ data.item.app_type }} - {{ data.item.title }}
-            </template>
-            <template slot="item" slot-scope="data">
-              <!-- HTML that describe how select should render items when the select is open -->
-              {{ data.item.app_type }} - {{ data.item.title }}
-            </template>
-          </v-select>
-        </v-col>
-        <v-col cols="0" class="py-0">
-          <v-autocomplete
-            :items="companyUsers"
-            v-model="itemInfo.assignment_list"
-            color="green"
-            chips
-            label="People"
-            item-value="user.id"
-            hide-details
-            deletable-chips
-            hide-no-data
-            item-text="user.firstName"
-            hide-selected
-            multiple
-            single-line
-          >
-            <template slot="item" slot-scope="data">
-              <!-- HTML that describe how select should render items when the select is open -->
-              <span> {{ data.item.user.firstName }} {{ data.item.user.lastName }} </span>
-            </template>
-          </v-autocomplete>
-        </v-col>
-      </v-row>
-      <v-row class="w-full ma-0 px-3 py-2">
-        <v-btn
-          color="green darken-2"
-          class="white--text text-xl font-weight-bold"
-          @click="post()"
-          :disabled="!valid"
-          block
-          >Submit</v-btn
-        >
-      </v-row>
-    </v-form>
-  </v-container>
+  <div>
+    <div
+      v-if="!showInput"
+      @click="showInput = !showInput"
+      class="pointer"
+    >
+      <slot name="btn"/>
+    </div>
+    <v-dialog
+        v-model="showInput"
+        max-width="500"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          New Action
+        </v-card-title>
+        <v-card-text>
+          <v-container class="px-0 py-0 mt-2 white">
+            <v-form @submit.prevent ref="form" v-model="valid">
+              <v-row class="w-full ma-0">
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    ref="inputFeed"
+                    :rules="textRules"
+                    v-model="itemInfo.title"
+                    class="h-full outline-none text-body-1"
+                    placeholder="Title"
+                  />
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-text-field
+                    ref="inputFeed"
+                    :rules="textRules"
+                    v-model="itemInfo.description"
+                    class="h-full outline-none text-body-1"
+                    placeholder="Summary"
+                  />
+                </v-col>
+                <v-col cols="12" class="py-0">
+                  <v-menu
+                    v-model="res.due_date"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="itemInfo.due_date"
+                        :rules="textRules"
+                        label="Due Date"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="itemInfo.due_date"
+                      @input="res.due_date = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="6" class="py-0">
+                  <v-select
+                    v-model="itemInfo.type"
+                    :rules="selectRules"
+                    label="Request Type"
+                    :items="options.type"
+                    item-value="id"
+                    item-text="value"
+                  ></v-select>
+                </v-col>
+                <v-col cols="6" class="py-0">
+                  <v-select
+                    v-model="itemInfo.status"
+                    :rules="selectRules"
+                    label="Status"
+                    :items="options.Status"
+                    item-value="id"
+                    item-text="value"
+                  ></v-select>
+                </v-col>
+                <v-col cols="4" class="py-0">
+                  <v-select
+                    v-on:change="changeRecord($event)"
+                    v-model="record_type"
+                    label="Record Type"
+                    :items="records_type"
+                  >
+                  </v-select>
+                </v-col>
+                <v-col cols="8" class="py-0">
+                  <v-select
+                    :class="{ disabled: record_type === null }"
+                    v-model="itemInfo.record_id"
+                    label="Record"
+                    :items="options.records"
+                    item-value="id"
+                  >
+                    <template slot="selection" slot-scope="data">
+                      <!-- HTML that describe how select should render selected items -->
+                      {{ data.item.app_type }} - {{ data.item.title }}
+                    </template>
+                    <template slot="item" slot-scope="data">
+                      <!-- HTML that describe how select should render items when the select is open -->
+                      {{ data.item.app_type }} - {{ data.item.title }}
+                    </template>
+                  </v-select>
+                </v-col>
+                <v-col cols="0" class="py-0">
+                  <v-autocomplete
+                    :items="companyUsers"
+                    v-model="itemInfo.assignment_list"
+                    color="green"
+                    chips
+                    label="People"
+                    item-value="user.id"
+                    hide-details
+                    deletable-chips
+                    hide-no-data
+                    item-text="user.firstName"
+                    hide-selected
+                    multiple
+                    single-line
+                  >
+                    <template slot="item" slot-scope="data">
+                      <!-- HTML that describe how select should render items when the select is open -->
+                      <span> {{ data.item.user.firstName }} {{ data.item.user.lastName }} </span>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
+              <v-row class="w-full ma-0 px-3 py-2">
+                <v-btn
+                  color="green darken-2"
+                  class="white--text text-xl font-weight-bold"
+                  @click="post()"
+                  :disabled="!valid"
+                  block
+                  >Submit</v-btn
+                >
+              </v-row>
+            </v-form>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -137,6 +158,7 @@ export default {
   name: "AddFeed",
   mixins: [validations],
   data: () => ({
+    showInput: false,
     itemInfo: {
       author: null,
       due_date: null,
@@ -200,8 +222,10 @@ export default {
       };
       this.itemInfo['start_date']     = new Date().toISOString().slice(0,10);
       this.itemInfo['requested_date'] = new Date().toISOString().slice(0,10);
-      
-      this.postAction(this.itemInfo).then(this.$emit('closeCreateActivity'));
+      this.showInput  = false;
+      this.workOrder(this.user.id).then(res => {
+        this.notifications = res;
+      });
     },
   },
   computed: {
