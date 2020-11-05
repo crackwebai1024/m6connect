@@ -175,13 +175,13 @@ const actions = {
     })
   },
 
-  async getProjectsTasksAndLinks({ commit }, { projectIds = [] } = {}) {
+  async getProjectsTasksAndLinks({ rootState } { commit }, { projectIds = [] } = {}) {
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
 
       const response = await axios
         .post(`${constfirebaseUrl}/api/planned/projects/cash-flow/`, {
-          companyId: window.Drupal.settings.m6_platform.company_nid,
+          companyId: rootState.Companies.currentCompany.id,
           projectIds
         })
       const data = dataGet(response, 'data.tasks', [])
@@ -250,7 +250,7 @@ const actions = {
     return id
   },
 
-  async updateTask({ dispatch }, { task = {}, projectId }) {
+  async updateTask({ rootState }, { dispatch }, { task = {}, projectId }) {
     if (task.type === 'project' || !projectId) return Promise.reject('bad request updating task')
 
     return new Promise((resolve, reject) => {
@@ -276,7 +276,7 @@ const actions = {
           // Update task forecast data
           const response = await axios
             .post(`${constfirebaseUrl}/api/planned/${projectId}/forecast-tasks/${task.id}/`, {
-              companyId: window.Drupal.settings.m6_platform.company_nid
+              companyId: rootState.Companies.currentCompany.id
             })
 
           // Update project forecast data
@@ -289,7 +289,7 @@ const actions = {
     })
   },
 
-  updateProjectForecastData: debounce(async ({ dispatch }, projectId) => {
+  updateProjectForecastData: debounce(async ({ rootState },{ dispatch }, projectId) => {
     const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
     await axios
       .post(`${constfirebaseUrl}/api/planned/${projectId}/forecast-tasks/`, {
@@ -303,7 +303,7 @@ const actions = {
     const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
     const response = await axios
       .post(`${constfirebaseUrl}/api/planned/projects/cash-flow/cumulative-tasks/`, {
-        companyId: window.Drupal.settings.m6_platform.company_nid,
+        companyId: rootState.Companies.currentCompany.id,
         projectIds: getters.projectIds
       })
 
