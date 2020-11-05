@@ -252,7 +252,6 @@ export default {
     async pushChildComment() {
       let replyData = this.reply_data
       this.reply_data = ''
-      console.log()
       
       if(replyData.trim() == '') return true
       await this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: replyData});
