@@ -39,11 +39,19 @@
           active-class="font-weight-black blue--text active-tab-company"
         >
           <v-tab
-            v-for="tab in app.tabs"
+            v-for="(tab, index) in app.tabs"
             :key="tab.id"
             class="blue--text capitalize"
           >
-            {{ tab.title }}
+            <span >{{ tab.title }}</span>
+            <template v-if="activeTab === index" >
+              <v-btn  color="green darken-2" icon dark @click="editingTab(tab)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn color="red darken-2" icon dark @click="deleteTab" >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
           </v-tab>
         </v-tabs>
         <add-tab @addNewTab="addNewTab" />
@@ -68,13 +76,13 @@
         class="align-start d-flex justify-center max-w-lg mb-2 mx-auto pt-1 w-full"
         style="height:100%;"
       >
-        <v-btn
+        <!-- <v-btn
           color="red"
           dark
           @click="deleteTab"
         >
           Delete Tab
-        </v-btn>
+        </v-btn> -->
       </v-row>
       <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
         <v-col
@@ -141,6 +149,13 @@
         @closeDeleteModal="confirmDelete"
       />
     </v-dialog>
+
+    <tab-updates 
+      :tab-to-edit="tabToEdit"
+      :dialog="showTabEditDialog"
+      @updateTab="updatingTab"
+      @closing="closingTabUpdates"
+    />
   </v-card>
 </template>
 
@@ -150,6 +165,7 @@ import AddPanel from '@/components/AppBuilder/Buttons/AddPanel'
 import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 
 export default {
   name: 'CreateCompanyPanel',
@@ -157,15 +173,20 @@ export default {
     DeleteDialog,
     AddPanel,
     AddTab,
-    Panel
+    Panel,
+    TabUpdates
   },
+
   data: () => ({
     app: {},
     appLoaded: false,
     showDeleteModal: false,
     tabToDelete: null,
-    activeTab: 0
+    activeTab: 0,
+    showTabEditDialog: false,
+    tabToEdit: {}
   }),
+
   computed: {
     leftPanels() {
       return this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
@@ -174,13 +195,30 @@ export default {
       return this.app.tabs[this.activeTab].panels.filter(item => item.column === 1)
     }
   },
+
   async mounted() {
     this.app = await this.$store.dispatch('AppBuilder/getApp', 1)
-    console.log('this.app-------')
-    console.log(this.app)
     this.appLoaded = true
   },
+
   methods: {
+    editingTab(tab) {
+      this.showTabEditDialog = true 
+      this.$nextTick( () => {
+        this.tabToEdit = tab
+      })
+    },
+
+    updatingTab(payload) {
+      this.app.tabs[this.activeTab] = { ...this.app.tabs[this.activeTab], ...payload.tab }
+    },
+
+    closingTabUpdates() {
+      this.showTabEditDialog = false
+      this.$nextTick( () => {
+        this.tabToDelete = {}
+      })
+    },
     addNewTab() {
       const newTab = {
         appID: this.app.id,
@@ -192,6 +230,7 @@ export default {
         this.activeTab = this.app.tabs.map(item => item.id).indexOf(result.id)
       })
     },
+
     addNewPanel(side) {
       const newPanel = {
         tabID: this.app.tabs[this.activeTab].id,
@@ -204,14 +243,17 @@ export default {
         this.app.tabs[this.activeTab].panels.push(result)
       })
     },
+
     deletePanel(id) {
       const index = this.app.tabs[this.activeTab].panels.map(item => item.id).indexOf(id)
       this.app.tabs[this.activeTab].panels.splice(index, 1)
     },
+
     deleteTab() {
       this.showDeleteModal = true
       this.tabToDelete = this.app.tabs[this.activeTab].id
     },
+
     async confirmDelete(result) {
       if (result) {
         await this.$store.dispatch('AppBuilder/deleteTab', this.tabToDelete)
@@ -223,6 +265,7 @@ export default {
       this.showDeleteModal = false
     }
   }
+
 }
 </script>
 
