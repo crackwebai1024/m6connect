@@ -304,10 +304,10 @@
           <template v-else>
             <img
               v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              :alt="channel.userName"
+              :alt="channel.name"
               class="mr-3 rounded-circle"
               height="30"
-              :src="message.user.image"
+              :src="users[0].user.image"
               width="30"
             >
             <v-card
@@ -384,6 +384,10 @@
         </div>
       </div>
     </template>
+    <v-divider
+      class="blue-grey lighten-5"
+      :class="[minimized ? 'd-none' : '']"
+    />
     <!-- Images -->
     <template v-if="srcImageFiles.length > 0">
       <div class="d-flex images-container mx-1 px-0 py-3">
