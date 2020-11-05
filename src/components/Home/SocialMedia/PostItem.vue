@@ -27,13 +27,6 @@
                 <span class="text-uppercase white--text">{{ authorPostItem.data.name.charAt(0) }}</span>
               </template>
             </v-avatar>
-
-            <!--            <v-avatar-->
-            <!--              class="mr-2"-->
-            <!--              size="40"-->
-            <!--            >-->
-            <!--              <img :src="data.actor.data.image">-->
-            <!--            </v-avatar>-->
             <div class="d-flex flex-column">
               <div
                 class="cursor-hover font-weight-bold line-height-1 size-15 underline"
@@ -61,6 +54,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
+                v-if="author"
                 icon
                 v-bind="attrs"
                 v-on="on"
@@ -85,6 +79,8 @@
         <div class="px-5 pt-4">
           <template v-if="!updatePostShow">
             {{ data.message }}
+            <slot name="record"></slot>
+            <slot name="assignments"></slot>
           </template>
           <div 
             v-else
@@ -99,7 +95,7 @@
               @keyup.enter="editMessage('inputMessage-' + index)"
               v-model="updateMessage"
             ></v-textarea>
-            <div class="d-flex flex-column">
+            <div v-if="!data['props']" class="d-flex flex-column">
               <v-btn
                 class="ml-2"
                 icon
@@ -130,8 +126,65 @@
               />
             </div>
           </div>
-          <slot name="record"></slot>
-          <slot name="assignments"></slot>
+          <v-row v-if="updatePostShow && data['props']">
+            <v-col cols="4" class="py-0">
+              <v-select
+                v-on:change="changeRecord($event)"
+                v-model="record_type"
+                item-value="value"
+                item-text="label"
+                label="Record Type"
+                :items="records_type"
+              >
+              </v-select>
+            </v-col>
+            <v-col cols="8" class="py-0">
+              <v-select
+                :class="{ disabled: record_type === null }"
+                v-model="updateInfo.record_id"
+                label="Record"
+                :items="options.records"
+                item-value="id"
+              >
+                <template slot="selection" slot-scope="data">
+                  <!-- HTML that describe how select should render selected items -->
+                  {{ data.item.app_type }} - {{ data.item.title }}
+                </template>
+                <template slot="item" slot-scope="data">
+                  <!-- HTML that describe how select should render items when the select is open -->
+                  {{ data.item.app_type }} - {{ data.item.title }}
+                </template>
+              </v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-autocomplete
+                :items="companyUsers"
+                v-model="updateInfo.assignment_list"
+                chips
+                label="People"
+                item-value="user.id"
+                hide-details
+                deletable-chips
+                hide-no-data
+                item-text="user.firstName"
+                hide-selected
+                multiple
+                single-line
+              >
+                <template slot="item" slot-scope="data">
+                  <v-avatar size="25" class="mr-3">
+                    <v-img :src="data.item.user.profilePic"></v-img>
+                  </v-avatar>
+                  <span> {{ data.item.user.firstName }} {{ data.item.user.lastName }} </span>
+                </template>
+              </v-autocomplete>
+            </v-col>
+            <v-col width="2%"></v-col>
+            <v-btn @click="cancelUpdate" class="red darken-1 white--text"  rounded elevation="5" width="45%">Cancel</v-btn>
+            <v-col width="6%"></v-col>
+            <v-btn class="green darken-1 white--text"  rounded elevation="5" width="45%">Continue</v-btn>
+            <v-col width="2%"></v-col>
+          </v-row>
         </div>
       </div>
       <!--IMAGES-->
@@ -449,6 +502,18 @@ export default {
     }
   },
   data: () => ({
+    records_type: [
+      { label: 'ITApps', value:'itapps' }
+    ],
+    record_type: null,
+    options: {
+      records: [],
+    },
+    updateInfo: {
+      record_id: null,
+      assignment_list: []
+    },
+
     showBtnsPost: false,
     showComments: false,
     picture_items: [],
@@ -467,7 +532,8 @@ export default {
     progressLike: false
   }),
   computed: {
-    ...mapGetters('Auth', { currentUser: 'getUser' }),
+    ...mapGetters('Companies',  { companyUsers: 'getCurrentCompanyUsers' }),
+    ...mapGetters('Auth',       { currentUser: 'getUser' }),
     ...mapGetters('GSFeed', {
       timeline: 'getTimeline',
       feed: 'getFeed',
@@ -475,6 +541,10 @@ export default {
     }),
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
+    },
+    author(){
+      return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
+        : this.data.actor.id === this.user.id;
     },
     likeIcon() {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
@@ -499,6 +569,15 @@ export default {
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
+    ...mapActions("WorkOrderModule", { records: "getRecords"}),
+
+    changeRecord(event){
+      switch( event ){
+        case 'itapps':
+          this.records(event).then(res => { this.options['records'] = res['data']; });
+          break;
+      }
+    },
     widthCols() {
       return this.data.images.length === 1 ? 12 : 6
     },
@@ -542,7 +621,6 @@ export default {
       }
       activity.props ? await this.$store.dispatch('GSFeed/setActionPost')
         : await this.$store.dispatch('GSFeed/retrieveFeed');
-        
       this.progressLike = false
     },
     async pushComment(activity) {
@@ -588,10 +666,26 @@ export default {
     openPostEdit() {
       this.updatePostShow = true
       this.updateMessage = this.data.message
+      if(this.data.props){
+        if(this.data.props.record) {
+          this.records(this.data.props.record.app_type).then(res => {
+            this.options['records'] = res['data'];
+
+            this.record_type = this.data.props.record.app_type
+            this.updateInfo['record_id'] = this.data.props.record.id
+          });
+        }
+        if(this.data.props.wo_assignments.length > 0) {
+          this.data.props.wo_assignments.forEach(user => {
+            this.updateInfo.assignment_list.push(user.id);
+          });
+        }
+      }
     },
     cancelUpdate() {
       this.updatePostShow = false
       this.updateMessage = this.data.message
+      this.updateInfo.assignment_list = [];
     },
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected])
