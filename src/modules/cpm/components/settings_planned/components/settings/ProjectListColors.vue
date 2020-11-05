@@ -75,7 +75,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { Chrome } from 'vue-color'
 import ComponentTemplate from '../ComponentTemplate'
 
@@ -116,7 +116,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   watch: {
     settings(newVal) {
@@ -145,7 +148,7 @@ export default {
       try {
         await db
           .collection('settings')
-          .doc(Drupal.settings.m6_platform_header.company_nid)
+          .doc(this.currentCompany.id)
           .collection('planned_settings')
           .doc(this.appLabel.settingsCollection)
           .set(
@@ -172,7 +175,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection)
     }

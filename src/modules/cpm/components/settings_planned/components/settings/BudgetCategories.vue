@@ -272,6 +272,8 @@
 import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
 import * as easings from 'vuetify/es5/util/easing-patterns'
+import { mapState } from 'vuex'
+
 export default {
   components: {
     ComponentTemplate
@@ -281,6 +283,11 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   data() {
     return {
@@ -320,14 +327,14 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc('budgets')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('budgets')
             .set({
@@ -453,7 +460,7 @@ export default {
     },
     updateData(msg) {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('budgets')
         .update({
@@ -479,7 +486,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('budgets')
     }

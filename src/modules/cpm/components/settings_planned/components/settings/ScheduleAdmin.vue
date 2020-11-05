@@ -273,6 +273,7 @@
 import { db } from '@/utils/Firebase.js'
 import draggable from 'vuedraggable'
 import ComponentTemplate from '../ComponentTemplate'
+import { mapState } from 'vuex'
 
 const dateScheduleOriginal = {
   type: 'add',
@@ -290,6 +291,11 @@ export default {
   components: {
     ComponentTemplate,
     draggable
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   data() {
     return {
@@ -339,7 +345,7 @@ export default {
         this.loading = true
 
         db.collection('settings')
-          .doc(Drupal.settings.m6_platform_header.company_nid)
+          .doc(this.currentCompany.id)
           .collection('planned_settings')
           .doc('rfp')
           .collection('schedules')
@@ -375,7 +381,7 @@ export default {
           }
 
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('rfp')
             .collection('scheduleDates')
@@ -403,7 +409,7 @@ export default {
       }
 
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('rfp')
         .collection('schedules')
@@ -441,7 +447,7 @@ export default {
       aux.created_at = createdAt.getTime()
 
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('rfp')
         .collection('schedules')
@@ -465,7 +471,7 @@ export default {
     },
     submitDelete(item) {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('rfp')
         .collection('scheduleDates')
@@ -507,7 +513,7 @@ export default {
       }
 
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('rfp')
         .collection('scheduleDates')
@@ -534,7 +540,7 @@ export default {
       })
 
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('rfp')
         .collection('scheduleDates')
@@ -571,7 +577,7 @@ export default {
     saveOrder() {
       try {
         db.collection('settings')
-          .doc(Drupal.settings.m6_platform_header.company_nid)
+          .doc(this.currentCompany.id)
           .collection('planned_settings')
           .doc('rfp')
           .collection('scheduleDates')
@@ -586,7 +592,7 @@ export default {
       const aux = new Promise((resolve, reject) => {
         try {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('rfp')
             .collection('scheduleDates')
@@ -612,7 +618,7 @@ export default {
       const aux = new Promise((resolve, reject) => {
         try {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('rfp')
             .collection('schedules')

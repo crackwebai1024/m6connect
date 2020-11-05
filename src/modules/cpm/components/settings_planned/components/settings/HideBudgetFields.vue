@@ -30,9 +30,15 @@
 <script>
 import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
+import { mapState } from 'vuex'
 export default {
   components: {
     ComponentTemplate
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   data() {
     return {
@@ -47,14 +53,14 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc('fields')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('fields')
             .update(
@@ -77,7 +83,7 @@ export default {
   methods: {
     save() {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('fields')
         .update({

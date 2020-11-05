@@ -377,7 +377,7 @@
 <script>
 import { db } from '@/utils/Firebase'
 import CPMEdit from './modals/CPMEdit'
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapState, mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Sidebar',
@@ -421,7 +421,7 @@ export default {
         .doc('roles'),
       hideFields: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('fields')
     }
@@ -429,6 +429,9 @@ export default {
   computed: {
     ...mapGetters('tickets', {
       constructionData: 'constructionData'
+    }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
     }),
     ...mapState({
       selectedGantt: state => state.tickets.selectedGantt

@@ -18,7 +18,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -42,7 +42,7 @@ export default {
   methods: {
     getList() {
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.scheduleCollection)
         .get()
@@ -72,6 +72,9 @@ export default {
   },
   computed: {
     ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     this.values = this.options

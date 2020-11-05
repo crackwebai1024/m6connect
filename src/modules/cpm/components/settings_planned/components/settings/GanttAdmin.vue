@@ -325,7 +325,7 @@
 <script>
 import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 const milestoneDefault = {
   name: '',
@@ -378,18 +378,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc(this.appLabel.settingsCollection)
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc(this.appLabel.settingsCollection)
             .set({
@@ -489,7 +492,7 @@ export default {
       }
 
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection)
         .update({
@@ -509,7 +512,7 @@ export default {
     submitDelete(id, gantt) {
       this.settings.gantts.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection)
         .update({
@@ -547,12 +550,12 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection),
       milestones: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.milestonesCollection)
     }

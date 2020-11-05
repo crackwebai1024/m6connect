@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import _ from 'lodash'
 export default {
   name: 'BudgetCategorySelect',
@@ -82,6 +83,11 @@ export default {
       default: false
     }
   },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   data() {
     return {
       categories: [],
@@ -103,8 +109,9 @@ export default {
   },
   methods: {
     fetchBudgetCategories() {
+      let self = this
       this.axios.get(
-        `${process.env.VUE_APP_FIREBASE_APIURL}/api/company/${window.Drupal.settings.m6_platform_header.company_nid}/budget-categories`
+        `${process.env.VUE_APP_FIREBASE_APIURL}/api/company/${self.currentCompany.id}/budget-categories`
       )
         .then(response => {
           const categories = response.data

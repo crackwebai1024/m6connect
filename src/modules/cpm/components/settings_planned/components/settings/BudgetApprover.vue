@@ -143,6 +143,7 @@
 import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
 import vSelect from 'vue-select'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -154,6 +155,11 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   data() {
     return {
@@ -184,14 +190,14 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc('users')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('users')
             .set({
@@ -236,7 +242,7 @@ export default {
         )
       }
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('users')
         .update({
@@ -257,7 +263,7 @@ export default {
       const id = this.deleteInfo.id
       this.settings.budgetApprover.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('users')
         .update({
@@ -281,7 +287,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('users')
     }

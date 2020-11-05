@@ -583,7 +583,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { Money } from 'v-money'
 import { DateTime } from 'luxon'
 import BudgetCategorySelect from '../_partials/BudgetCategorySelect'
@@ -659,6 +659,9 @@ export default {
   },
   computed: {
     ...mapGetters('companies/cpmProjects/roles', ['roles', 'roleNames']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     preparedUsers() {
       let users = []
       if (this.$h.dg(this.change, 'preparedTitle', []).length) {
@@ -1228,7 +1231,7 @@ export default {
         .doc('changes'),
       reasons: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('changes')
         .collection('reasons'),

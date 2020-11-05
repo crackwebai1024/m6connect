@@ -462,6 +462,7 @@ import multiSelect from 'vue-multi-select'
 import EmojiPicker from 'vue-emoji-picker'
 import VueSocketio from 'vue-socket.io'
 import { db } from '@/utils/Firebase'
+import { mapState } from 'vuex'
 Vue.use(VueSocketio, 'https://www.m6thread.com/')
 
 import 'vue-multi-select/dist/lib/vue-multi-select.min.css'
@@ -480,6 +481,11 @@ export default {
 		  }
   },
   props: ['id', 'number', 'title'],
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   data() {
     let taskRef = {}
 		    if (this.$route.name === 'tasks' || this.$route.name === 'schedule') {
@@ -584,7 +590,7 @@ export default {
   firestore() {
 	      return {
 	        task: this.taskRef,
-	        settings: db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects')
+	        settings: db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects')
 	      }
 	    },
   sockets: {

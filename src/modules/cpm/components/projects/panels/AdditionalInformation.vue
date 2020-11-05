@@ -96,6 +96,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { db } from '@/utils/Firebase'
 
 import CPMEdit from '../modals/CPMEdit'
@@ -116,6 +117,9 @@ export default {
   }),
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     proposedSpend() {
       return !this.project.proposedSpend || isNaN(this.project.proposedSpend)
         ? 0
@@ -140,7 +144,7 @@ export default {
         })
 
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('fields')
         .get()

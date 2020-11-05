@@ -637,6 +637,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { db, storage } from '@/utils/Firebase'
 import { Money } from 'v-money'
 
@@ -681,6 +682,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     dialog: {
       get() {
         return this.value
@@ -694,7 +698,7 @@ export default {
   firestore() {
     return {
       project: this.projectRef,
-      budgetSettings: db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('budgets')
+      budgetSettings: db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets')
     }
   },
 

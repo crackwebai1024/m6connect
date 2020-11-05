@@ -159,6 +159,7 @@
 <script>
 import { db } from '@/utils/Firebase'
 import draggable from 'vuedraggable'
+import { mapState } from 'vuex'
 
 export default {
   name: 'TimelineAdmin',
@@ -177,7 +178,7 @@ export default {
     return {
       timelineDefaultRef: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('rfp')
         .collection('timeline_default'),
@@ -197,6 +198,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     timelineDefault: {
       get() {
         return this.settings

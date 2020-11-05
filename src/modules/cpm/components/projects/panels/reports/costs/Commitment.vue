@@ -609,7 +609,7 @@
 <script>
 import { db, storage } from '@/utils/Firebase'
 import { Money } from 'v-money'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { DateTime } from 'luxon'
 
 export default {
@@ -667,6 +667,9 @@ export default {
 
   computed: {
     ...mapGetters(['vendors']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     startDate: {
       get: function () {
         if (this.lineItem.startDate && this.lineItem.startDate > 0) {
@@ -702,8 +705,8 @@ export default {
       lineItem: this.projectRef.collection('commitments').doc(this.commitmentId + '').collection('line_items').doc(this.lineItemId + ''),
       changes: this.projectRef.collection('changes'),
       // vendors: db.collection('vendors'),
-      settings: db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('commitments'),
-      budgetSettings: db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('budgets')
+      settings: db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('commitments'),
+      budgetSettings: db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets')
     }
   },
   watch: {

@@ -578,7 +578,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import axios from 'axios'
 import CostSummary from './costs/CostSummary'
 import Commitments from './costs/Commitments'
@@ -695,6 +695,9 @@ export default {
   },
   computed: {
     ...mapGetters(['appLabel', 'axiosSettings']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     showWebReport() {
       return (
         this.previewOptions.checkAllProjects ||
@@ -809,12 +812,12 @@ export default {
     return {
       users: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('users'),
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('projects')
     }
@@ -868,7 +871,7 @@ export default {
             : {}
         return (
           project.company_nid ==
-            Drupal.settings.m6_platform_header.company_nid || isCollaborator
+            this.currentCompany.id || isCollaborator
         )
       } else if (
         project.manager &&
@@ -982,7 +985,7 @@ export default {
         .where(
           'company_nid',
           '==',
-          Drupal.settings.m6_platform_header.company_nid
+          this.currentCompany.id
         )
         .orderBy('number')
         .get()
@@ -1369,7 +1372,7 @@ export default {
     },
     loadDefaultTasks() {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('default_schedule')
         .get()
@@ -1390,7 +1393,7 @@ export default {
     },
     loadGantts() {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('projects')
         .get()

@@ -104,6 +104,8 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
+import { mapState } from 'vuex'
+
 export default {
   name: 'ProjectCoordinator',
   data() {
@@ -118,10 +120,15 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   mounted() {
-    db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('users').get().then(settings => {
+    db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('users').get().then(settings => {
       if (!settings.exists) {
-        db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('users').set(
+        db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('users').set(
           {
             projectCoordinator: []
           }
@@ -156,7 +163,7 @@ export default {
       } else {
         this.$set(this.settings.projectCoordinator, this.currentElement, this.element)
       }
-      db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('users').update(
+      db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('users').update(
         {
           projectCoordinator: this.settings.projectCoordinator
         }
@@ -173,7 +180,7 @@ export default {
     },
     submitDelete(id) {
       this.settings.projectCoordinator.splice(id, 1)
-      db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('users').update(
+      db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('users').update(
         {
           projectCoordinator: this.settings.projectCoordinator
         }
@@ -191,7 +198,7 @@ export default {
   },
   firestore() {
     return {
-      settings: db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('users')
+      settings: db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('users')
     }
   }
 }

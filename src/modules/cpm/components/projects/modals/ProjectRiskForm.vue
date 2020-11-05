@@ -110,7 +110,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   name: 'ProjectRiskForm',
 
@@ -135,6 +135,9 @@ export default {
   computed: {
     ...mapGetters('companies/cpmProjects/settings', {
       covidRiskStatus: 'getCovidRiskStatus'
+    }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
     }),
     actionButton() {
       if (this.$h.dg(this.risk, 'id')) {
@@ -212,7 +215,7 @@ export default {
       if (!statusID) return ''
 
       return db.collection('settings')
-        .doc(this.$h.dg(window, 'Drupal.settings.m6_platform_header.company_nid'))
+        .doc(this.currentCompany.id)
         .collection('covidRiskStatus')
         .doc(statusID)
     },

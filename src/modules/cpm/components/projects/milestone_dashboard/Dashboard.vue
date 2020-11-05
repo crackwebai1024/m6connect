@@ -562,10 +562,14 @@
 </template>
 
 <script>
-
 import { db } from '@/utils/Firebase'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   data() {
     return {
       headers: [
@@ -591,7 +595,7 @@ export default {
       projectStatus: [],
       milestoneStatus: [],
       users: [],
-      company_id: window.Drupal.settings.m6_platform_header.company_nid.toString(),
+      company_id: this.currentCompany.id.toString(),
       settings: {},
       loading: false,
       loadingExport: false,
@@ -1181,7 +1185,7 @@ export default {
     },
     getMilestones() {
        db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.milestonesCollection)
         .get()

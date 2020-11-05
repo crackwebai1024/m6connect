@@ -971,7 +971,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { Money } from 'v-money'
 import Msg from './Msg'
 
@@ -1065,7 +1065,9 @@ export default {
       covidRiskStatus: 'getCovidRiskStatus'
     }),
     ...mapGetters('itApplications', ['usersByCompany']),
-
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     itemsCreators() {
       return this.users.filter(
         user =>
@@ -1343,7 +1345,7 @@ export default {
         .doc('roles'),
       company_settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('company_types')
     }

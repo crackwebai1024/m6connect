@@ -294,7 +294,7 @@
 <script>
 import { db } from '@/utils/Firebase.js'
 import { Chrome } from 'vue-color'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 import LinkMilestonesToTasks from './LinkMilestonesToTasks'
 export default {
@@ -349,6 +349,9 @@ export default {
   },
   computed: {
     ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     validDateError() {
       if (
         !this.$moment(this.validDateUsa, 'MM/DD/YYYY', true).isValid() &&
@@ -360,14 +363,14 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc(this.appLabel.milestonesCollection)
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc(this.appLabel.milestonesCollection)
             .set({
@@ -412,7 +415,7 @@ export default {
         try {
           const names = this.settings.names || []
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc(this.appLabel.milestonesCollection)
             .update({
@@ -460,7 +463,7 @@ export default {
       }
       
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.milestonesCollection)
         .update({
@@ -481,7 +484,7 @@ export default {
     submitDelete(id) {
       this.settings.names.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.milestonesCollection)
         .update({
@@ -516,7 +519,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.milestonesCollection)
     }

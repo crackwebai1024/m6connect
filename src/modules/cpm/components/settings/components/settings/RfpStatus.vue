@@ -152,7 +152,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 export default {
   components: {
@@ -176,18 +176,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     db.collection('settings')
-      .doc(window.Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc('rfp')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('rfp')
             .set({
@@ -199,7 +202,7 @@ export default {
   methods: {
     saveOrder() {
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('rfp')
         .update({
@@ -232,7 +235,7 @@ export default {
         this.$set(this.settings.rfpStatus, this.currentRfpStatus, status)
       }
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('rfp')
         .update({
@@ -285,7 +288,7 @@ export default {
     submitDelete() {
       this.settings.rfpStatus.splice(this.currentRfpStatus, 1)
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('rfp')
         .update({
@@ -315,7 +318,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('rfp')
     }
