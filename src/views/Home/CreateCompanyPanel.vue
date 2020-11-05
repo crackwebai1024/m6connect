@@ -60,11 +60,13 @@
     </div>
     <div
       v-if="appLoaded"
-      class="details-content grey h-fit lighten-3 min-h-full pt-2"
+      class="details-content grey h-fit lighten-3  pt-2"
     >
+    <!-- min-h-full -->
       <v-row
         v-if="app.tabs.length > 1"
         class="align-start d-flex justify-center max-w-lg mb-2 mx-auto pt-1 w-full"
+        style="height:100%;"
       >
         <v-btn
           color="red"
@@ -174,6 +176,8 @@ export default {
   },
   async mounted() {
     this.app = await this.$store.dispatch('AppBuilder/getApp', 1)
+    console.log('this.app-------')
+    console.log(this.app)
     this.appLoaded = true
   },
   methods: {
@@ -234,3 +238,4 @@ export default {
     min-height: 350px;
 }
 </style>
+

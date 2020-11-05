@@ -53,6 +53,8 @@ const actions = {
   saveTab(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/tab`, payload).then(({ data }) => {
+        console.log('saveTab============')
+        console.log(data)
         resolve(data)
       }).catch(e => reject(e))
     })
@@ -60,6 +62,8 @@ const actions = {
   savePanel(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel`, payload).then(({ data }) => {
+        console.log('savePanel---------------')
+        console.log(data)
         resolve(data)
       }).catch(e => reject(e))
     })
@@ -95,6 +99,8 @@ const actions = {
   updatePanel(_, payload) {
     return new Promise((resolve, reject) => {
       axios.patch(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload.id}`, payload).then(({ data }) => {
+        console.log('data:-------')
+        console.log(data)
         resolve(data)
       }).catch(e => reject(e))
     })
