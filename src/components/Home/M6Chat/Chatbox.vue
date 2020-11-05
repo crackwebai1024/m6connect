@@ -859,9 +859,6 @@ export default {
   min-height: 60px;
   background: #F7FCFF;
 }
-/* .rotate-45 {
-  transform: rotate(45deg);
-} */
 .-rotate-45 {
   transform: rotate(-45deg);
 }

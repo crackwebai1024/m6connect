@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div @click="showInput = !showInput">
+    <div
+      v-if="!showInput"
+      @click="showInput = !showInput"
+      class="pointer"
+    >
       <slot name="btn"/>
     </div>
     <v-dialog
