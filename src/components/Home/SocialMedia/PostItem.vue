@@ -182,11 +182,13 @@
                 </template>
               </v-autocomplete>
             </v-col>
-            <v-col width="2%"></v-col>
-            <v-btn @click="cancelUpdate"   class="red darken-1 white--text"    rounded elevation="5" width="45%">Cancel</v-btn>
-            <v-col width="6%"></v-col>
-            <v-btn @click="updateActivity(data)" class="green darken-1 white--text"  rounded elevation="5" width="45%">Continue</v-btn>
-            <v-col width="2%"></v-col>
+          </v-row>
+          <v-row v-if="updatePostShow && data['props']">
+            <v-spacer></v-spacer>
+            <v-btn @click="cancelUpdate"   class="white grey--text" width="120px" elevation="0">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn @click="updateActivity(data)" color="green darken-1" outlined width="120px" elevation="0">Save</v-btn>
+            <v-spacer></v-spacer>
           </v-row>
         </div>
       </div>
