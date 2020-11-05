@@ -2,7 +2,7 @@
   <v-card
     v-if="dataReady"
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
-    :class="[minimized ? 'minimized' : '']"
+    :class="[minimized ? 'minimized' : 'h-full']"
     elevation="3"
   >
     <div
@@ -183,8 +183,21 @@
     <div
       ref="messages"
       class="messages-container ml-2 px-1 vertical-scroll white"
-      :class="[minimized ? 'd-none' : '']"
+      :class="[minimized ? 'd-none' : 'h-full']"
     >
+      <div
+        v-if="messages.length === 0"
+        class="d-flex flex-column justify-center text-caption align-center grey--text h-full px-3"
+      >
+        <div class="w-full d-flex justify-center">
+          <v-icon size="40" class="grey--text text--lighten-1">mdi-message-settings-outline</v-icon>
+        </div>
+        <div class="d-flex text-caption align-center mt-3 w-full">
+          <v-divider class="blue-grey lighten-5"></v-divider>
+            <span class="mx-3 grey--text text--lighten-1">No messages yet</span>
+          <v-divider class="blue-grey lighten-5"></v-divider>
+        </div>
+      </div>
       <!-- Message Bubble -->
       <div
         v-for="(message, index) in messages"
@@ -291,10 +304,10 @@
           <template v-else>
             <img
               v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              :alt="channel.userName"
+              :alt="channel.name"
               class="mr-3 rounded-circle"
               height="30"
-              :src="message.user.image"
+              :src="users[0].user.image"
               width="30"
             >
             <v-card
@@ -371,6 +384,10 @@
         </div>
       </div>
     </template>
+    <v-divider
+      class="blue-grey lighten-5"
+      :class="[minimized ? 'd-none' : '']"
+    />
     <!-- Images -->
     <template v-if="srcImageFiles.length > 0">
       <div class="d-flex images-container mx-1 px-0 py-3">
@@ -842,9 +859,6 @@ export default {
   min-height: 60px;
   background: #F7FCFF;
 }
-/* .rotate-45 {
-  transform: rotate(45deg);
-} */
 .-rotate-45 {
   transform: rotate(-45deg);
 }

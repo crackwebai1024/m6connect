@@ -24,8 +24,7 @@
       </div>
     </div>
     <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
-    <v-btn block :color="showInput ? 'red darken-1': 'blue darken-1'" class="white--text text-xl font-weight-bold" @click="showInput = !showInput" >{{showInput? 'Cancel' : 'New Action'}}</v-btn>
-    <add-feed v-if="showInput" @closeCreateActivity="beforeClose" />
+    
     <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
     <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
@@ -41,17 +40,14 @@
 <script>
 import ActionFeedItem from './ActionFeedItem'
 import { mapActions, mapGetters } from 'vuex'
-import AddFeed from './AddFeed'
 
 export default {
   components: {
-    ActionFeedItem,
-    AddFeed
+    ActionFeedItem
   },
   data: () => ({
     loading: true,
     user:{},
-    showInput: false,
     showSearchInput: false,
     searchInput: '',
     showActionBtns: false,
