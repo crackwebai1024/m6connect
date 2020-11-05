@@ -901,7 +901,7 @@ export default {
       
       return db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets')
         .collection('budget_categories')

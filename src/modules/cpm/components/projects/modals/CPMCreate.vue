@@ -689,7 +689,7 @@ export default {
         try {
           const snap = await db
             .collection('settings')
-            .doc(window.Drupal.settings.m6_platform.company_nid)
+            .doc(this.currentCompany.id)
             .collection(`${this.settingCollectionName}`)
             .doc('projects')
             .get()
@@ -1028,7 +1028,7 @@ export default {
         const project = {
           campus: this.project.campus || '',
           category: this.project.category || '',
-          company_nid: window.Drupal.settings.m6_platform.company_nid || '',
+          company_nid: this.currentCompany.id || '',
           contractor: this.project.contractor || '',
           createdAt: new Date(),
           description: this.project.description || '',
@@ -1151,12 +1151,12 @@ export default {
     return {
       users: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('users'),
       roles: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('roles')
     }

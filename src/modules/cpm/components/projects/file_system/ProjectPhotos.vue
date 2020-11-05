@@ -214,6 +214,8 @@
 import { db, storage } from '@/utils/Firebase'
 import DestinationModal from './DestinationModal'
 import EventBus from '@/Eventbus'
+import { mapState } from 'vuex'
+
 export default {
   components: {
     'destination-modal': DestinationModal
@@ -229,12 +231,17 @@ export default {
       destinationFolder: []
     }
   },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   firestore() {
     return {
       project: db.collection('cpm_projects').doc(this.$route.params.id),
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('projects')
     }

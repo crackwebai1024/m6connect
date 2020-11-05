@@ -1008,7 +1008,7 @@ export default {
           window.innerHeight || 0
         ) * 0.6,
       showLoading: false,
-      company_nid: window.Drupal.settings.m6_platform.company_nid,
+      company_nid: this.currentCompany.id,
       settings: {},
       project: {},
       budgetTotal: 0,
@@ -1330,7 +1330,7 @@ export default {
         .collection('comments'),
       hideFields: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('fields'),
       companyUsers: db
@@ -1340,7 +1340,7 @@ export default {
         .doc(this.appLabel.usersCollection),
       roles: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('roles'),
       company_settings: db
@@ -1416,7 +1416,7 @@ export default {
 
     getSettings() {
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('projects')
         .get()
@@ -1623,7 +1623,7 @@ export default {
        const now = this.$moment()
        let actual = false
        db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('projects')
         .get()

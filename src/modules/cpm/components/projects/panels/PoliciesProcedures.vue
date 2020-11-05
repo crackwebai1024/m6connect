@@ -173,6 +173,8 @@
 
 <script>
 import { db } from '@/utils/Firebase'
+import { mapState } from 'vuex'
+
 const defaultSelectedPolicy = {
   tree: [],
   files: [],
@@ -192,12 +194,15 @@ export default {
     return {
       policyStandards: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('policy_and_standards')
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     availableStandardsInType() {
       if (this.policyStandards.length <= 0 || !this.policyStandards['cpm']) {
         return []

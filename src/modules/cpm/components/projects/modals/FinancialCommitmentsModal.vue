@@ -456,6 +456,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     processedChanges() {
       return this.changes.map(c => ({
         ...c,
@@ -508,12 +511,12 @@ export default {
       changes: this.projectRef.collection('changes'),
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('commitments'),
       budgetSettings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets')
     }
@@ -941,7 +944,7 @@ export default {
       if(!budgetCategoryId) return 
       
       return db.collection('settings')
-          .doc(window.Drupal.settings.m6_platform.company_nid)
+          .doc(this.currentCompany.id)
           .collection('settings')
           .doc('budgets')
           .collection('budget_categories')

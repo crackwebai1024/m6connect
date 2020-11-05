@@ -475,7 +475,7 @@ import Reconciliation from './panels/Reconciliation'
 import ChangeOrders from './panels/ChangeOrders'
 import Forecasts from './panels/Forecasts/ForecastsPanel'
 import BuyOut from './panels/BuyOut'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import EventBus from '@/Eventbus'
 
 
@@ -537,7 +537,7 @@ export default {
     return {
       roles: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('roles')
     }
@@ -546,6 +546,9 @@ export default {
   computed: {
     ...mapGetters({
       panelSettings: 'hideCpmPanels/getPanelSettings'
+    }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
     }),
     disableFavBtn() {
       return this.favProjects.indexOf(this.$route.params.id) > -1

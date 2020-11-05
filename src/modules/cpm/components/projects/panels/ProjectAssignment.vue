@@ -217,7 +217,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 import { db } from '@/utils/Firebase'
 
@@ -242,7 +242,7 @@ export default {
       isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
       showSettings: false,
       submitLoading: false,
-      company_nid: window.Drupal.settings.m6_platform.company_nid,
+      company_nid: this.currentCompany.id,
       roles: [],
       users: [],
       createModal: false,
@@ -259,7 +259,9 @@ export default {
 
   computed: {
     ...mapGetters(['appLabel']),
-
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     sortedProjectManager() {
       let aux = []
         .concat(

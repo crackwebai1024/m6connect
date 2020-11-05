@@ -132,6 +132,7 @@ import CashFlow from './Helpers/CashFlow'
 import { getPeriods } from './Helpers/Helpers'
 import moment from 'moment'
 import Eventbus from '../../../../Eventbus'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -164,13 +165,13 @@ export default {
     return {
       projectAccess: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('users'),
 
       projectRoles: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('roles'),
 
@@ -178,18 +179,21 @@ export default {
 
       settingsProject: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('projects'),
 
       settingsUsers: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('users')
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     filteredProjects() {
       if (this.capitalPlan.projects && this.capitalPlan.projects.length <= 0) {
         return this.allProjects

@@ -106,7 +106,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import BudgetCategorySelect from '../_partials/BudgetCategorySelect'
 
 export default {
@@ -142,6 +142,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     budgetCategoryErrors() {
       if (
         this.formWasValidated &&
@@ -222,7 +225,7 @@ export default {
       if (this.$h.dg(budgetCategory, 'id')) {
         this.spending.budget_category.ref = db
           .collection('settings')
-          .doc(window.Drupal.settings.m6_platform.company_nid)
+          .doc(this.currentCompany.id)
           .collection('settings')
           .doc('budgets')
           .collection('budget_categories')
