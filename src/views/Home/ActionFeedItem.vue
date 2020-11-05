@@ -98,12 +98,13 @@ export default {
     }),
     ...mapActions("GeneralListModule", {recordData: "push_data_to_active"}),
     setPost() {
-      let { record, colorTag } = this.notification;
+      let { record, colorTag, id } = this.notification;
       
       this.setActPost({
         room: 'work_order',
         id: this.notification.post_id,
         props: {
+          id: id,
           record: record,
           colorTag: colorTag,
           wo_assignments: this.users

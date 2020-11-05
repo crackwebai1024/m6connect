@@ -21,6 +21,9 @@ export default {
     },
     postAction({}, data) {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order`, data)
+    },
+    putAction({}, data){
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${data['id']}`, data['query']);
     }
   }
 };

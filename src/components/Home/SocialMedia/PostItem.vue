@@ -180,9 +180,9 @@
               </v-autocomplete>
             </v-col>
             <v-col width="2%"></v-col>
-            <v-btn @click="cancelUpdate" class="red darken-1 white--text"  rounded elevation="5" width="45%">Cancel</v-btn>
+            <v-btn @click="cancelUpdate"   class="red darken-1 white--text"    rounded elevation="5" width="45%">Cancel</v-btn>
             <v-col width="6%"></v-col>
-            <v-btn class="green darken-1 white--text"  rounded elevation="5" width="45%">Continue</v-btn>
+            <v-btn @click="updateActivity(data)" class="green darken-1 white--text"  rounded elevation="5" width="45%">Continue</v-btn>
             <v-col width="2%"></v-col>
           </v-row>
         </div>
@@ -511,7 +511,8 @@ export default {
     },
     updateInfo: {
       record_id: null,
-      assignment_list: []
+      assignment_list: [],
+      preview_list:[]
     },
 
     showBtnsPost: false,
@@ -569,7 +570,7 @@ export default {
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
-    ...mapActions("WorkOrderModule", { records: "getRecords"}),
+    ...mapActions("WorkOrderModule", { records: "getRecords",putAct: "putAction"}),
 
     changeRecord(event){
       switch( event ){
@@ -577,6 +578,18 @@ export default {
           this.records(event).then(res => { this.options['records'] = res['data']; });
           break;
       }
+    },
+    updateActivity(activity){
+      this.updateInfo['description'] = this.updateMessage;
+      this.activity = activity;
+      this.putAct({
+        id: activity['props']['id'],
+        query: this.updateInfo
+      }).then(() =>{
+        this.updateInfo['preview_list'] = this.updateInfo['assignment_list'];
+        this.updatePost(activity);
+        this.cancelUpdate();
+      })
     },
     widthCols() {
       return this.data.images.length === 1 ? 12 : 6
@@ -671,14 +684,15 @@ export default {
           this.records(this.data.props.record.app_type).then(res => {
             this.options['records'] = res['data'];
 
-            this.record_type = this.data.props.record.app_type
-            this.updateInfo['record_id'] = this.data.props.record.id
+            this.record_type = this.data['props']['record']['app_type']
+            this.updateInfo['record_id'] = this.data['props']['record']['id']
           });
         }
-        if(this.data.props.wo_assignments.length > 0) {
-          this.data.props.wo_assignments.forEach(user => {
-            this.updateInfo.assignment_list.push(user.id);
+        if(this.data['props']['wo_assignments'].length > 0) {
+          this.data['props']['wo_assignments'].forEach(user => {
+            this.updateInfo['assignment_list'].push(user.id);
           });
+          this.updateInfo['preview_list'] = this.updateInfo['assignment_list'];
         }
       }
     },
