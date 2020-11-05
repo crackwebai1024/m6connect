@@ -51,7 +51,7 @@
                                             }"
                                         /> -->
                                         <v-circle 
-                                            v-for="item in notes"
+                                            v-for="item in rapidItem.items"
                                             :key="item.id"
                                             :config=" {
                                                 x: item.x,
@@ -72,25 +72,24 @@
                         <v-col sm="3" class="sidebar-custom" >
                             
                             <div 
-                                v-for="(n, i) in notes" :key="`notes-${n.id}`" 
-                                :style="`background-color: ${ n.selected ? '#f2f2f2' : null }; border-radius: 10%;`"
+                                v-for="(n, i) in rapidItem.items" :key="`notes-${n.id}`" 
                                 class="pa-2"
                             >
 
                                 <div class="inline" >
                                     <v-avatar
-                                        color="blue darken-2"
+                                        :color=" n.selected ? 'green darken-2' : 'blue darken-2'"
                                         size="30"
                                         class="mr-2"
                                     >
                                         <span class="white--text headline">{{ i + 1 }}</span>
                                     </v-avatar>
-                                    <v-text-field class="ma-0 pa-0" label="Title" v-model="notes[i].title" />
-                                    <v-btn color="red darken-2" icon @click="removeNote(n)" >
+                                    <v-text-field outlined class="ma-0 pa-0" label="Title" v-model="rapidItem.items[i].title" />
+                                    <v-btn color="red darken-2" icon @click="removeNote(n)" v-show="rapidItem.items.length > 1" >
                                         <v-icon>mdi-close</v-icon>
                                     </v-btn>
                                 </div>
-                                <v-textarea label="Description" v-model="notes[i].text" />
+                                <v-textarea outlined  label="Description" v-model="rapidItem.items[i].text" />
 
                             </div>
 
@@ -98,13 +97,15 @@
                     </v-row>
 
                 </v-container>
+
+                <m6-loading :loading="loading" />
             </v-card-text>
             
             <v-card-actions>
 
                 <v-spacer />
 
-                <v-btn color="red" text > 
+                <v-btn color="red" text @click="closing" > 
                     close
                 </v-btn>
 
@@ -119,6 +120,8 @@
 </template>
 
 <script>
+
+import { mapState, mapActions } from 'vuex'
 const width = window.innerWidth * .7;
 const height = window.innerHeight * .7;
 const noteModel = { 
@@ -129,8 +132,10 @@ const noteModel = {
     rotation: 180,
     selected: false
 }
+const rapidItemDefault = { items: [], company: {}, user: {}, imgLink: "" }
 
 export default {
+
     props: {
         showDialog: {
             type: Boolean,
@@ -144,45 +149,82 @@ export default {
 
     data: () => ({
         defaultNote: noteModel,
-        list: [],
+        rapidItem: {...rapidItemDefault},
+        rapidItemDefault: rapidItemDefault,
         notes: [],
         dragItemId: null,
         configKonva: {
             width: width,
             height: height
-        }
+        },
+        loading: false
     }),
 
     methods: {
-        saving() {
+        ...mapActions('RapidTicket', {
+            createRapidTicket: 'createRapidTicket'
+        }),
+        async saving() {
+
+            this.rapidItem.user = {
+                id: this.currentUser.id,
+                email: this.currentUser.email,
+                firstName: this.currentUser.firstName,
+                lastName: this.currentUser.lastName
+            }
+
+            this.rapidItem.company = {
+                id: this.currentCompany.id,
+                email: this.currentCompany.email,
+                legalCompanyName: this.currentCompany.legalCompanyName,
+                name: this.currentCompany.name,
+                phone: this.currentCompany.phone
+            }
+
+            this.loading = true 
+            try {
+                const res = await this.createRapidTicket(this.rapidItem)
+                this.loading = false
+            } catch(e) {
+                this.loading = false
+            }
+        },
+
+        closing(){
+            this.rapidItem = this.rapidItemDefault
+            this.$emit('closing')
         },
 
         removeNote(n) {
-            this.notes = this.notes.filter( note => note.id !== n.id )
+            this.rapidItem.items = this.rapidItem.items.filter( note => note.id !== n.id )
         },
         
         addNotes() {
             const id = Math.floor(+ new Date + ( Math.random() * 1000 ))
             const coords = this.getRandCoordinates()
             const note = { id, ...this.defaultNote, ...coords}
-            this.notes.push(note)
+            this.rapidItem.items.push(note)
         },
 
         handleDragstart(e) {
             // save drag element:
-            this.dragItemId = e.target.id();
-            // move current element to the top:
-            
-            this.notes = this.notes.map(n => ({...n, selected: false}))
-            const item = this.notes.find(i => i.id === this.dragItemId);
-            
+            this.dragItemId = e.target.id()
+            this.rapidItem.items = this.rapidItem.items.map( n => ({...n, selected: false}) )
+            const item = this.rapidItem.items.find(i => i.id === this.dragItemId);
             item.selected = true
-
-            this.notes = this.notes.map( n => n.id !== item.id ? n : item  )
         },
 
         handleDragend(e) {
-            this.dragItemId = null;
+            this.rapidItem.items = this.rapidItem.items.map(n => ({...n, selected: false}))
+            const item = this.rapidItem.items.find(i => i.id === this.dragItemId);
+            
+            item.x = e.target.attrs.x
+            item.y = e.target.attrs.y
+            item.selected = true
+
+            this.notes = this.rapidItem.items.map( n => n.id !== item.id ? n : item  )
+
+            this.dragItemId = null
         },
 
         getRandCoordinates() {
@@ -190,7 +232,51 @@ export default {
                 x: Math.floor(Math.random() * (width/2.3 - width/3) + width/3),
                 y: Math.floor(Math.random() * (width/2.3 - width/3) + width/3)
             }
+        },
+
+        processingB64(ImageURL){
+            const block = ImageURL.split(";");
+            // Get the content type of the image
+            const contentType = block[0].split(":")[1];// In this case "image/gif"
+            // get the real base64 content of the file
+            const realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
+
+            return { data, contentType}
+        },
+
+        b64toBlob(b64Data, contentType, sliceSize) {
+                contentType = contentType || '';
+                sliceSize = sliceSize || 512;
+
+                const byteCharacters = atob(b64Data);
+                const byteArrays = [];
+
+                for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                    let slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                    let byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+
+                    let byteArray = new Uint8Array(byteNumbers);
+
+                    byteArrays.push(byteArray);
+                }
+
+              const blob = new Blob(byteArrays, {type: contentType});
+              return blob;
         }
+        
+    },
+
+    computed: {
+        ...mapState('Companies', {
+            currentCompany: 'currentCompany'
+        }),
+        ...mapState('Auth', {
+            currentUser: 'user'
+        })
     },
 
     mounted() {
