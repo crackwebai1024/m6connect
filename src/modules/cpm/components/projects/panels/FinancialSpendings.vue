@@ -1771,7 +1771,7 @@ export default {
     )
 
     axios.post(
-      `${window.Drupal.settings.m6_platform.f_base.functions.api_url}/api/projects/${this.projectId}/update-spendings`
+      `${process.env.VUE_APP_FIREBASE_APIURL}/api/projects/${this.projectId}/update-spendings`
     )
   },
 
@@ -1918,7 +1918,7 @@ export default {
         try {
           await axios.post(
             `${
-              window.Drupal.settings.m6_platform.f_base.functions.api_url
+              process.env.VUE_APP_FIREBASE_APIURL
             }/api/projects/${this.projectId}/update-spendings?spendingId=${id ||
               this.dialogProperties.id ||
               this.spendingToShow.id ||

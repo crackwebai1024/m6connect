@@ -104,7 +104,7 @@ export default {
   methods: {
     fetchBudgetCategories() {
       this.axios.get(
-        `${window.Drupal.settings.m6_platform.f_base.functions.api_url}/api/company/${window.Drupal.settings.m6_platform_header.company_nid}/budget-categories`
+        `${process.env.VUE_APP_FIREBASE_APIURL}/api/company/${window.Drupal.settings.m6_platform_header.company_nid}/budget-categories`
       )
         .then(response => {
           const categories = response.data

@@ -2,7 +2,7 @@
 export default {
   data() {
     return {
-      firebaseUrl: window.Drupal.settings.m6_platform.f_base.functions.api_url
+      firebaseUrl: process.env.VUE_APP_FIREBASE_APIURL
     }
   },
   computed: {

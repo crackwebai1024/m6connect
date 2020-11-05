@@ -22,7 +22,7 @@ const mutations = {
 const actions = {
   async checkUserRole({ commit }, { role }) {
     try {
-      const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+      const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const userId = dataGet(window, 'window.Drupal.settings.m6_platform.uid')
       const companyId = dataGet(window, 'Drupal.settings.m6_platform.company_nid')
       

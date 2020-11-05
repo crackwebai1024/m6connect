@@ -692,7 +692,7 @@ export default {
       return new Promise(async (resolve, reject) => {
         try {
           await axios.post(
-            `${window.Drupal.settings.m6_platform.f_base.functions.api_url}/api/projects/${this.projectId}/update-commitments`
+            `${process.env.VUE_APP_FIREBASE_APIURL}/api/projects/${this.projectId}/update-commitments`
           )
           resolve(true)
         } catch (error) {

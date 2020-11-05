@@ -227,7 +227,7 @@ export default {
       return new Promise(async (resolve, reject) => {
         try {
           await this.axios.post(
-            `${window.Drupal.settings.m6_platform.f_base.functions.api_url}/api/projects/${this.$route.params.id}/update-budgets`
+            `${process.env.VUE_APP_FIREBASE_APIURL}/api/projects/${this.$route.params.id}/update-budgets`
           )
           resolve(true)
         } catch (error) {

@@ -4,7 +4,7 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/auth'
 import 'firebase/storage'
-import { API } from 'aws-amplify'
+import axios from 'axios'
 
 Vue.use(firestorePlugin)
 const config = {
@@ -22,24 +22,6 @@ let firebaseInitiated = false
 let firebaseCPMApp = null
 const getToken = true
 
-// const init = () => {
-//   if (!firebaseInitiated) {
-//     firebaseCPMApp = firebase.initializeApp(config)
-//     Object.freeze(firebase)
-//     db = firebase.firestore()
-//     storage = firebase.storage()
-//     firebaseInitiated = true
-
-//     // eslint-disable-next-line no-console
-//     console.log('Firebase Ready')
-//   } else {
-//     // eslint-disable-next-line no-console
-//     console.log('Firebase is running')
-//   }
-// }
-
-// export default init
-
 export const destroyFirebase = () => {
   if (firebaseInitiated) {
     firebaseCPMApp.delete()
@@ -52,20 +34,26 @@ export const destroyFirebase = () => {
   }
 }
 
+// eslint-disable-next-line no-async-promise-executor
 export const doFirebaseAuth = () => new Promise(async (resolve, reject) => {
   // eslint-disable-next-line no-console
   console.log('Starting Firebase Auth')
 
-  const token = await API.get('rest', '/firebase/getToken')
+  const { data: { token } } = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/firebase/getToken`)
   firebase
     .auth()
-    .signInWithCustomToken(token.token)
+    .signInWithCustomToken(token)
     .then(() => {
       resolve(true)
       // eslint-disable-next-line no-console
       console.log('Firebase Auth Done')
-    }).catch(e => reject(e))
+    }).catch(e => {
+    // eslint-disable-next-line no-console
+      console.log(e)
+      reject(e)
+    })
 })
+
 
 export const newFirebaseInit = () => new Promise(async (resolve, reject) => {
   try {
@@ -75,10 +63,11 @@ export const newFirebaseInit = () => new Promise(async (resolve, reject) => {
       db = firebase.firestore()
       storage = firebase.storage()
     }
+    console.log('Firebase Init')
 
     resolve(true)
   } catch (e) {
-    console.log('Firebase init')
+    console.log(e)
     reject(e)
   }
 })

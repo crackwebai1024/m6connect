@@ -190,7 +190,7 @@ function getMonthsBetweenTwoDate(startDate, endDate) {
   return timeValues
 }
 
-const firebaseURL = window.Drupal.settings.m6_platform.f_base.functions.api_url
+const firebaseURL = process.env.VUE_APP_FIREBASE_APIURL
 
 export default {
   state,

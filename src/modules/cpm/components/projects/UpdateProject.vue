@@ -6,7 +6,7 @@ export default {
   data() {
     return {
       axiosSettings: {
-        baseUrl: window.Drupal.settings.m6_platform.f_base.functions.api_url,
+        baseUrl: process.env.VUE_APP_FIREBASE_APIURL,
         config: {
           headers: {
             'Access-Control-Allow-Origin': '*',

@@ -8,12 +8,14 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:vue/recommended',
-    'plugin:es-beautifier/standard'
+    'plugin:es-beautifier/standard',
+    'plugin:vue/base'
   ],
 
-  plugins: ['es-beautifier'],
+  plugins: ['es-beautifier', 'vuetify'],
 
   rules: {
+    'vuetify/no-deprecated-classes': 'error',
     'arrow-parens': [2, 'as-needed'],
     'block-spacing': ['error', 'always'],
     'comma-dangle': ['error', 'never'],

@@ -46,7 +46,7 @@ const actions = {
     if(!projectId) return Promise.reject('missing projectId getProjectTasksAndLinks')
     
     try {
-      const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+      const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const companyId = window.Drupal.settings.m6_platform.company_nid
       
       const response = await axios
@@ -89,7 +89,7 @@ const actions = {
     if(!projectId) return Promise.reject('missing projectId generateProjectTaskLinks')
     
     try {
-      const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+      const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const companyId = window.Drupal.settings.m6_platform.company_nid
       
       await axios

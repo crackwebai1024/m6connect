@@ -519,7 +519,7 @@ export default {
     loading: false,
     favProjects: [],
     dialogSoon: false,
-    firebaseUrl: window.Drupal.settings.m6_platform.f_base.functions.api_url,
+    firebaseUrl: process.env.VUE_APP_FIREBASE_APIURL,
     fullScreenModalOpen: false,
     componentToOpenFullScreen: '',
     showingGroup: 'financials',

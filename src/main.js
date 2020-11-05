@@ -1,4 +1,4 @@
-import InfiniteLoading from 'vue-infinite-loading';
+import InfiniteLoading from 'vue-infinite-loading'
 import vuetify from './plugins/vuetify'
 import router from './router'
 import store from './store'
@@ -8,7 +8,8 @@ import lineClamp from 'vue-line-clamp'
 import Helpers from './utils/helpers'
 import { i18n } from './plugins/i18n'
 import './plugins'
-import VueTelInputVuetify from 'vue-tel-input-vuetify/lib';
+import './modules/cpm/plugins'
+import VueTelInputVuetify from 'vue-tel-input-vuetify/lib'
 import VueKonva from 'vue-konva'
 Vue.use(Helpers)
 
@@ -19,8 +20,8 @@ Vue.use(InfiniteLoading)
 Vue.use(lineClamp)
 
 Vue.use(VueTelInputVuetify, {
-  vuetify,
-});
+  vuetify
+})
 
 Vue.use(VueKonva)
 

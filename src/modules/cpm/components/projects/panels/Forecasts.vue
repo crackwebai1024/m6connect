@@ -43,7 +43,7 @@
     methods: {
       async getCapitalPlans() {
         const projectId = this.$route.params.id
-        await this.axios.post(`${window.Drupal.settings.m6_platform.f_base.functions.api_url}/api/projects/${projectId}/capital-plans/`)
+        await this.axios.post(`${process.env.VUE_APP_FIREBASE_APIURL}/api/projects/${projectId}/capital-plans/`)
         .then(response => {
           this.capitalPlans = this.$h.dg(response, 'data', [])
         })

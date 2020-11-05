@@ -177,7 +177,7 @@ const actions = {
 
   async getProjectsTasksAndLinks({ commit }, { projectIds = [] } = {}) {
     try {
-      const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+      const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
 
       const response = await axios
         .post(`${constfirebaseUrl}/api/planned/projects/cash-flow/`, {
@@ -271,7 +271,7 @@ const actions = {
           budgetPercentage
         })
         .then(async () => {
-          const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+          const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
 
           // Update task forecast data
           const response = await axios
@@ -290,7 +290,7 @@ const actions = {
   },
 
   updateProjectForecastData: debounce(async ({ dispatch }, projectId) => {
-    const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+    const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
     await axios
       .post(`${constfirebaseUrl}/api/planned/${projectId}/forecast-tasks/`, {
         companyId: window.Drupal.settings.m6_platform.company_nid
@@ -300,7 +300,7 @@ const actions = {
   }, 1000),
 
   async getBudgetAndCumulativeTasks({ commit, getters }) {
-    const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+    const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
     const response = await axios
       .post(`${constfirebaseUrl}/api/planned/projects/cash-flow/cumulative-tasks/`, {
         companyId: window.Drupal.settings.m6_platform.company_nid,

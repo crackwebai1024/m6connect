@@ -1,13 +1,14 @@
+/* eslint-disable padded-blocks */
 class Helpers {
 
-    /**
-      * @desc Method for checking if the item time is available within time parameters
-      * @param Date time - Item time date
-      * @param object payload - example { month:"febrary", year:2019 } - filter in the project
-      * @return bool - success or failure
-    */
+  /**
+     * @desc Method for checking if the item time is available within time parameters
+     * @return bool - success or failure
+     * @param itemTime
+     * @param payload
+     */
   static skipIterationForItems(itemTime, payload) {
-    if (payload.month != '' && payload.year != '') {
+    if (payload.month !== '' && payload.year !== '') {
       const firstDay = new Date(payload.year, parseInt(payload.month.id), 1)
       const lastDay = new Date(payload.year, parseInt(payload.month.id) + 1, 0)
       lastDay.setHours(23, 59, 59)

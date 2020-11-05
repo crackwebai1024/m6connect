@@ -113,7 +113,7 @@ const actions = {
     if (!projectId) return Promise.reject('Bad request, missing projectId createForecastTasks')
 
     try {
-      const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+      const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
 
       await axios
         .post(`${constfirebaseUrl}/api/planned/${projectId}/forecast-tasks/`, {
@@ -130,7 +130,7 @@ const actions = {
     if (!projectId) return Promise.reject('Bad request, missing projectId createForecastTasks')
     
     try {
-      const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+      const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
 
       const response = await axios
         .get(`${constfirebaseUrl}/api/planned/${projectId}/forecast-tasks/`)
@@ -186,7 +186,7 @@ const actions = {
     if (!projectId) return new Promise.reject('Bad request, missing projectID')
 
     try {
-      const constfirebaseUrl = window.Drupal.settings.m6_platform.f_base.functions.api_url
+      const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const response = await axios
         .get(`${constfirebaseUrl}/api/project/${projectId}/get-budgets-by-fiscal-year/`)
 
