@@ -13,18 +13,17 @@
 
       <div class="align-center d-flex justify-end w-side">
 
-        <v-btn
-            block
-            :color="showInput ? 'red darken-1': 'blue darken-1'"
-            class="white--text text-xl font-weight-bold"
-            @click="showInput = !showInput"
-        >
-            {{showInput? 'Cancel' : 'New Action'}}
-        </v-btn>
-        <add-feed
-            v-if="showInput"
-            @closeCreateActivity="beforeClose"
-        />
+        <add-feed>
+            <v-btn
+                slot="btn"
+                block
+                color="yellow darken-1"
+                class="white--text text-xl font-weight-bold"
+                
+            >
+                New Action
+            </v-btn>
+        </add-feed>
 
         <snap-shot-nav /> 
 
@@ -204,16 +203,9 @@ export default {
       { url: "/companies", icon: "office-building" },
       { url: "/store", icon: "storefront" },
       { url: "/user/settings", icon: "cog" }
-    ],
-    showInput: false
+    ]
   }),
   methods: {
-    beforeClose(){
-      this.showInput  = false;
-      this.workOrder(this.user.id).then(res => {
-        this.notifications = res;
-      });
-    }
   }
 };
 </script>
