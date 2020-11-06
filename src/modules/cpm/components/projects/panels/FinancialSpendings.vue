@@ -9,11 +9,12 @@
   >
     <template v-slot:after:title>
       <v-icon
-        dark
+        class="grey--text text--darken-2"
+        light
         flat
-        @click="$refs.cardDialog.doubleClick"
+        @click="cardDialogClick"
       >
-        launch
+        mdi-launch
       </v-icon>
 
 
@@ -26,11 +27,12 @@
         <template v-slot:activator="{ on }">
           <div class="blob white">
             <v-icon
+              class="grey--text text--darken-2"
               dark
               v-on="on"
               @click="showSearchingModal = true"
             >
-              search
+              mdi-magnify-scan
             </v-icon>
           </div>
         </template>
@@ -50,12 +52,12 @@
         <template v-slot:activator="{ on }">
           <div class="blob white">
             <v-icon
-              class="search"
+              class="search grey--text text--darken-2"
               dark
               v-on="on"
               @click="showSearchingModal = true"
             >
-              search
+              mdi-magnify-scan
             </v-icon>
           </div>
         </template>
@@ -71,7 +73,7 @@
               v-on="on"
               @click="clearSearch"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
 
@@ -80,11 +82,11 @@
       </template>
 
       <v-icon
-        class="cursor"
+        class="cursor grey--text text--darken-2"
         dark
         @click="openModal"
       >
-        add
+        mdi-plus-circle
       </v-icon>
     </template>
 
@@ -117,9 +119,8 @@
       :expand="false"
       :headers="headersSpendings"
       :items="resources"
-      :pagination.sync="pagination"
-      :rows-per-page-items="rowsPerPage"
-      :total-items="pagination.totalItems"
+      :options.sync="pagination"
+      :server-items-length="pagination.totalItems"
       @update:pagination="debounceSearch(search, false)"
     >
       <template v-slot:items="props">
@@ -228,7 +229,7 @@
                       style="cursor: pointer"
                       @click="openEditLineItem(props.item)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
 
                     <v-icon
@@ -238,7 +239,7 @@
                       style="cursor: pointer"
                       @click="deleteLineItem(props.item)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </v-col>
                 </td>
@@ -545,7 +546,7 @@
                         @click.native.stop="selectFileAdd"
                       >
                         <v-icon small>
-                          add
+                          mdi-plus-circle
                         </v-icon>
                       </v-btn>
                     </v-col>
@@ -1203,7 +1204,7 @@
                     :items="spendingToShow.lineItems"
                   >
                     <template
-                      slot="items"
+                      slot="item"
                       slot-scope="props"
                     >
                       <td class="text-center">
@@ -1274,6 +1275,7 @@
     <!-- show line items modal -->
 
     <searching
+      v-if="showSearchingModal"
       :previous-search="search"
       :show="showSearchingModal"
       where="spendings"
@@ -1320,7 +1322,7 @@
 
 <script>
 import axios from 'axios'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 import { db, storage } from '@/utils/Firebase'
 import EventBus from '@/Eventbus'
@@ -1488,7 +1490,7 @@ export default {
       ],
       isFullScreen: false,
       pagination: {
-        sortBy: 'number',
+        sortBy: ['number'],
         descending: true,
         rowsPerPage: 10,
         totalItems: 0,
@@ -1758,7 +1760,9 @@ export default {
       updateLineItem: 'updateLineItem',
       submitDeleteLineItem: 'deleteLineItem'
     }),
-
+    cardDialogClick() {
+      this.$refs.cardDialog.doubleClick()
+    },
     removeDuplicates(array = []) {
       const unique = new Set(array)
       return [...unique]

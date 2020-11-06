@@ -8,11 +8,14 @@
   >
     <template v-slot:after:title>
       <v-icon
-        dark
+        class="grey--text mx-2 text--darken-2"
+        color="grey"
         flat
+        light
+        size="25"
         @click="cardDialogClick"
       >
-        launch
+        mdi-launch
       </v-icon>
 
       <v-menu
@@ -23,11 +26,13 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            dark
+            class="grey--text mx-2 text--darken-2"
+            light
+            size="25"
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify
           </v-icon>
         </template>
 
@@ -45,11 +50,13 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="search"
+            class="grey--text mx-2 search text--darken-2"
+            light
+            size="25"
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify-scan
           </v-icon>
         </template>
         <span>{{ $t('general.search') }}</span>
@@ -59,11 +66,13 @@
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon
-              class="close-search"
+              class="close-search grey--text mx-2 text--darken-2"
+              light
+              size="25"
               v-on="on"
               @click="clearSearch"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
           <span>{{ $t('general.clearSearch') }}</span>
@@ -71,23 +80,22 @@
       </template>
 
       <v-icon
-        class="cursor"
-        dark
+        class="cursor grey--text mx-2 text--darken-2"
+        light
         @click="createShowModal = true"
       >
-        add
+        mdi-plus-circle
       </v-icon>
 
       <v-tooltip left>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
-            color="white"
+            class="cursor grey--text ml-1 text--darken-2"
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>{{ $t('general.settings') }}</span>
@@ -687,7 +695,7 @@ export default {
         }
       ],
       pagination: {
-
+        sortBy: ['number'],
         descending: false,
         rowsPerPage: 10,
         totalItems: 0,
@@ -1385,7 +1393,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cpm-panel {
   margin-bottom: 10px;
 }
@@ -1436,5 +1444,17 @@ export default {
 }
 .td-actions {
   display: inline-flex;
+}
+.v-application .error--text {
+    font-size: 19px !important;
+    background: #ddd;
+    border-radius: 100%;
+    padding: 6px;
+}
+.td-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
 </style>
