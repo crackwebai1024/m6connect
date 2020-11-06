@@ -289,17 +289,17 @@ const actions = {
     })
   },
 
-  updateProjectForecastData: debounce(async ({ rootState },{ dispatch }, projectId) => {
+  updateProjectForecastData: debounce(async ({ rootState }, { dispatch }, projectId) => {
     const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
     await axios
       .post(`${constfirebaseUrl}/api/planned/${projectId}/forecast-tasks/`, {
-        companyId: window.Drupal.settings.m6_platform.company_nid
+        companyId: rootState.Companies.currentCompany.id
       })
 
     dispatch('getBudgetAndCumulativeTasks')
   }, 1000),
 
-  async getBudgetAndCumulativeTasks({ commit, getters }) {
+  async getBudgetAndCumulativeTasks({ rootState }, { commit, getters }) {
     const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
     const response = await axios
       .post(`${constfirebaseUrl}/api/planned/projects/cash-flow/cumulative-tasks/`, {

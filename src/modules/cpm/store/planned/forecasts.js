@@ -109,7 +109,7 @@ const mutations = {
 }
 
 const actions = {
-  async setForecastTasksData({ dispatch }, { projectId }) {
+  async setForecastTasksData({ rootState }, { dispatch }, { projectId }) {
     if (!projectId) return Promise.reject('Bad request, missing projectId createForecastTasks')
 
     try {
@@ -117,7 +117,7 @@ const actions = {
 
       await axios
         .post(`${constfirebaseUrl}/api/planned/${projectId}/forecast-tasks/`, {
-          companyId: window.Drupal.settings.m6_platform.company_nid
+          companyId: rootState.Companies.currentCompany.id
         })
 
       dispatch('getTaksFromSelectedGantt', { projectId })
@@ -197,10 +197,10 @@ const actions = {
     }
   },
   // Fiscals years that starts after the selected fiscal year (Fiscar year is selected in the schedule panel)
-  async getAllFiscalYears({ commit }) {
+  async getAllFiscalYears({ rootState }, { commit }) {
     try {
       const projectSnap = await db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(rootState.Companies.currentCompany.id)
         .collection('planned_settings')
         .doc('projects')
         .get()
@@ -221,12 +221,12 @@ const actions = {
     }
   },
 
-  async getDefaultTasks({ commit }) {
+  async getDefaultTasks({ rootState }, { commit }) {
     try {
       const defaultTasks = []
 
       await db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(rootState.Companies.currentCompany.id)
         .collection('planned_settings')
         .doc('default_schedule')
         .get().then(doc => {
