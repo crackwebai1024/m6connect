@@ -1,7 +1,7 @@
 <template>
   <component
     :is="rootComponent"
-    class="m6-card-dialog"
+    class="m6-card-dialog mb-2 card-custom-shadow white rounded"
     :class="{ 'ma-0': !dialog }"
     column
     fill-height
@@ -11,10 +11,11 @@
     @keydown.27="dialog = false"
   >
     <v-toolbar
-      class="step3"
-      :color="toolbarColor"
+      elevation="0"
+      class="step3 font-weight-medium rounded-t"
+      :color="'white'"
       dark
-      :height="toolbarHeight"
+      :height="50"
       @dblclick="doubleClick"
     >
       <v-icon
@@ -53,8 +54,10 @@
 
       <slot name="after:title" />
     </v-toolbar>
+    <v-divider class="grey lighten-3" />
 
     <v-card
+      elevation="0"
       :style="{
         height: cardHeight
       }"

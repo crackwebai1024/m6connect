@@ -8,11 +8,13 @@
   >
     <template v-slot:after:title>
       <v-icon
-        dark
+        class="mx-2"
+        size="25"
+        light
         flat
         @click="cardDialogClick"
       >
-        launch
+        mdi-launch
       </v-icon>
 
       <v-menu
@@ -23,11 +25,13 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            dark
+            class="mx-2"
+            size="25"
+            light
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify
           </v-icon>
         </template>
 
@@ -45,11 +49,13 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="search"
+            light
+            size="25"
+            class="search mx-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify-scan
           </v-icon>
         </template>
         <span>{{ $t('general.search') }}</span>
@@ -59,11 +65,13 @@
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon
-              class="close-search"
+              size="25"
+              light
+              class="close-search mx-2"
               v-on="on"
               @click="clearSearch"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
           <span>{{ $t('general.clearSearch') }}</span>
@@ -71,23 +79,23 @@
       </template>
 
       <v-icon
-        class="cursor"
-        dark
+        class="cursor mx-2"
+        light
         @click="createShowModal = true"
       >
-        add
+        mdi-plus-circle
       </v-icon>
 
       <v-tooltip left>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
+            class="cursor ml-1"
             color="white"
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>{{ $t('general.settings') }}</span>
@@ -1436,5 +1444,8 @@ export default {
 }
 .td-actions {
   display: inline-flex;
+}
+.mdi:before {
+  color: #444;
 }
 </style>
