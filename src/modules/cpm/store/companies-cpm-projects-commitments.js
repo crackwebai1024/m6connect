@@ -7,7 +7,6 @@ import graphqlClient from '@/utils/graphql'
 import axiosConfig from '@/modules/cpm/config/axios'
 
 import Common from './_common'
-
 const getTotals = new Common('/api/project', {
   host: axiosConfig.firestoreApiUrl
 })

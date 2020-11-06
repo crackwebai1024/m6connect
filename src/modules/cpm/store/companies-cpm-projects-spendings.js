@@ -1,7 +1,7 @@
 import * as gqlBuilder from 'gql-query-builder'
 import gql from 'graphql-tag'
 
-import {db} from '@/utils/Firebase'
+import { db } from '@/utils/Firebase'
 import graphqlClient from '@/utils/graphql'
 
 const actions = {
@@ -127,9 +127,9 @@ const actions = {
 
               await Promise.all(promises)
               i.vendors = promises.map(li => {
-                if (li.line_number === "1" || li.line_number === 1) {
+                if (li.line_number === '1' || li.line_number === 1) {
                   if (i.dateOpenedText !== li.dateText) {
-                    ref.update({dateOpenedText: li.dateText})
+                    ref.update({ dateOpenedText: li.dateText })
                     i.dateOpenedText = li.dateText
                   }
                 }

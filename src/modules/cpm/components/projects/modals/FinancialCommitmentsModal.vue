@@ -383,7 +383,7 @@
 
 <script>
 import { db, storage } from '@/utils/Firebase'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { DateTime } from 'luxon'
 import BudgetCategorySelect from '../_partials/BudgetCategorySelect'
 

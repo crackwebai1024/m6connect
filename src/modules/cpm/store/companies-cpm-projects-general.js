@@ -74,9 +74,9 @@ const actions = {
         .catch(reject)
     })
   },
-  fetchBidManagers({ commit }) {
+  fetchBidManagers({ commit, rootState }) {
     return new Promise((resolve, reject) => {
-      const cid = dataGet(window, 'Drupal.settings.m6_platform.company_nid')
+      const cid = rootState.Companies.currentCompany.id
       db.collection('settings')
         .doc(cid)
         .collection('settings')
@@ -108,9 +108,9 @@ const actions = {
         .catch(reject)
     })
   },
-  fetchProjectManagers({ commit }) {
+  fetchProjectManagers({ commit, rootState }) {
     return new Promise((resolve, reject) => {
-      const cid = dataGet(window, 'Drupal.settings.m6_platform.company_nid')
+      const cid = rootState.Companies.currentCompany.id
       db.collection('settings')
         .doc(cid)
         .collection('settings')

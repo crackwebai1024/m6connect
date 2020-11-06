@@ -1,4 +1,4 @@
-const fBase = process.env.VUE_APP_FIRESTORE_API
+const fBase = process.env.VUE_APP_FIREBASE_APIURL
 
 import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
