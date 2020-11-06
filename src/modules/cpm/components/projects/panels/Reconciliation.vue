@@ -129,7 +129,7 @@
       :items="resources"
       :options="pagination"
       :server-items-length="pagination.totalItems"
-      @update:pagination="debounceSearch(search, false)"
+      @update:options="debounceSearch(search, false)"
     >
       <template v-slot:item="props">
         <tr
@@ -612,7 +612,7 @@ export default {
           value: 'POMissing',
           text: this.$t('cpm.projects.reconciliationPanel.noPOReceived'),
           color: 'error',
-          icon: 'help'
+          icon: 'mdi-help'
         },
         {
           value: 'POReceived',
