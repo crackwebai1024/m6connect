@@ -46,14 +46,15 @@
                   <v-checkbox
                     @click="pushUser(ind)"
                     class="mt-0 ml-2"
+                    v-model="user['selected']"
+                    :value="user['selected']"
                     color="success"
-                    value="isSelectedUser(ind)"
                     hide-details
                   ></v-checkbox>
                 </div>
                 <h2 
                     v-if="companys.length === 0"
-                    class="font-weight-black text-center"
+                    class="font-weight-black text-center mt-2"
                 >
                     No users found
                 </h2>
@@ -110,7 +111,7 @@ export default {
     },
     methods: {
         pushUser(userIndex) {
-            if (! this.companys[userIndex]['selected']) {
+            if (!this.companys[userIndex]['selected']) {
                 this.companys[userIndex]['selected'] = true;
                 this.resList.push(this.companys[userIndex]['user']['id'])
             }else{
@@ -129,9 +130,6 @@ export default {
                 users: []
             });
         },
-        isSelectedUser(userIndex) {
-          return true
-        } 
     },
     mounted() {
         if (typeof this.currentUsers === 'string') {
