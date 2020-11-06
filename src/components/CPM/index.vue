@@ -82,7 +82,7 @@
             <panel-two-columns>
               <div
                 slot="leftPanel"
-                class="mb-3 panel px-4 py-3 white card-custom-shadow rounded"
+                class="mb-3 px-6 py-5 white card-custom-shadow rounded"
               >
                 <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
                 <div class="overflow-hidden">
@@ -133,14 +133,14 @@
             <panel-two-columns>
               <div
                 slot="leftPanel"
-                class="mb-3 panel px-4 py-3 white"
+                class="mb-3 panel px-4 py-3 white card-custom-shadow rounded"
               >
                 l
               </div>
 
               <div
                 slot="rightPanel"
-                class="mb-3 panel px-4 py-3 white"
+                class="mb-3 panel px-4 py-3 white card-custom-shadow rounded"
               >
                 r
               </div>

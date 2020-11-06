@@ -1,6 +1,6 @@
 <template>
   <v-container class="px-0 py-0 relative">
-    <div class="card-custom-shadow mb-3 rounded white">
+    <div class="card-custom-shadow mb-4 rounded white">
       <div
         v-if="data['postTagTitle']"
         :class="tagColor + ' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'"
@@ -402,7 +402,7 @@
           </v-col>
         </v-row>
       </v-card-actions>
-      <v-divider class="mx-4" />
+      <v-divider v-if="showComments" class="mx-4" />
 
       <v-col
         v-if="showComments"

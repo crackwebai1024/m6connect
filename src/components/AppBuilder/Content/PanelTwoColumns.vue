@@ -4,7 +4,7 @@
       class="d-flex flex-column pa-0 pr-2"
       cols="5"
     >
-      <slot name="leftPanel" />
+      <slot name="leftPanel"/>
     </v-col>
     <v-col
       class="pa-0 pl-2"
