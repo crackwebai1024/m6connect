@@ -9,11 +9,12 @@
   >
     <template v-slot:after:title>
       <v-icon
-        dark
+        class="grey--text text--darken-2"
+        light
         flat
         @click="cardDialogClick"
       >
-        launch
+        mdi-launch
       </v-icon>
 
 
@@ -26,11 +27,12 @@
         <template v-slot:activator="{ on }">
           <div class="blob white">
             <v-icon
+              class="grey--text text--darken-2"
               dark
               v-on="on"
               @click="showSearchingModal = true"
             >
-              search
+              mdi-magnify-scan
             </v-icon>
           </div>
         </template>
@@ -50,12 +52,12 @@
         <template v-slot:activator="{ on }">
           <div class="blob white">
             <v-icon
-              class="search"
+              class="search grey--text text--darken-2"
               dark
               v-on="on"
               @click="showSearchingModal = true"
             >
-              search
+              mdi-magnify-scan
             </v-icon>
           </div>
         </template>
@@ -71,7 +73,7 @@
               v-on="on"
               @click="clearSearch"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
 
@@ -80,11 +82,11 @@
       </template>
 
       <v-icon
-        class="cursor"
+        class="cursor grey--text text--darken-2"
         dark
         @click="openModal"
       >
-        add
+        mdi-plus-circle
       </v-icon>
     </template>
 
@@ -227,7 +229,7 @@
                       style="cursor: pointer"
                       @click="openEditLineItem(props.item)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
 
                     <v-icon
@@ -237,7 +239,7 @@
                       style="cursor: pointer"
                       @click="deleteLineItem(props.item)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </v-col>
                 </td>
@@ -544,7 +546,7 @@
                         @click.native.stop="selectFileAdd"
                       >
                         <v-icon small>
-                          add
+                          mdi-plus-circle
                         </v-icon>
                       </v-btn>
                     </v-col>

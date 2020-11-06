@@ -14,11 +14,11 @@
         <template v-slot:activator="{ on }">
           <!-- THIS CHANGE WAS BECAUSE THE SPENDINGS DIALOG WAS NOT WORKING IN ANOTHER TAB FULLSCREEN -->
           <v-icon
-            dark
+            light
             flat
             @click="cardDialogClick"
           >
-            launch
+            mdi-launch
           </v-icon>
         </template>
         <span>{{ $t('general.openNewTab') }}</span>
@@ -32,11 +32,11 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            dark
+            light
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify-scan
           </v-icon>
         </template>
 
@@ -54,11 +54,11 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="search"
+            class="search grey--text text--darken-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify-scan
           </v-icon>
         </template>
         <span>{{ $t('general.search') }}</span>
@@ -80,23 +80,23 @@
       </template>
 
       <v-icon
-        class="cursor"
-        dark
+        class="cursor grey--text text--darken-2 ml-2"
+        light
         @click="createShowModal = true"
       >
-        add
+        mdi-plus-circle
       </v-icon>
 
       <v-tooltip left>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
+            class="cursor grey--text text--darken-2 ml-2"
             color="white"
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>{{ $t('general.settings') }}</span>

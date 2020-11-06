@@ -8,7 +8,8 @@
   >
     <template v-slot:after:title>
       <v-icon
-        class="mx-2"
+        class="mx-2 grey--text text--darken-2"
+        color="grey"
         size="25"
         light
         flat
@@ -25,7 +26,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="mx-2"
+            class="mx-2 grey--text text--darken-2"
             size="25"
             light
             v-on="on"
@@ -51,7 +52,7 @@
           <v-icon
             light
             size="25"
-            class="search mx-2"
+            class="search mx-2 grey--text text--darken-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
@@ -67,7 +68,7 @@
             <v-icon
               size="25"
               light
-              class="close-search mx-2"
+              class="close-search mx-2 grey--text text--darken-2"
               v-on="on"
               @click="clearSearch"
             >
@@ -79,7 +80,7 @@
       </template>
 
       <v-icon
-        class="cursor mx-2"
+        class="cursor mx-2 grey--text text--darken-2"
         light
         @click="createShowModal = true"
       >
@@ -90,8 +91,7 @@
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor ml-1"
-            color="white"
+            class="cursor ml-1 grey--text text--darken-2"
             v-on="on"
             @click="showSettings = true"
           >
@@ -1444,8 +1444,5 @@ export default {
 }
 .td-actions {
   display: inline-flex;
-}
-.mdi:before {
-  color: #444;
 }
 </style>
