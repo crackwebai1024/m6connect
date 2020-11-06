@@ -18,7 +18,7 @@
         <div class="ml-8">
           <v-text-field
             class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
-            label="Title"
+            label="Record Title"
           />
           <v-btn
             class="blue--text capitalize px-1"
@@ -29,10 +29,30 @@
           </v-btn>
         </div>
       </div>
+      <div style="" class="flex-space-between">
+        <img class="app-icon-link pr-2" :src="app.iconLink" alt="">
+        <v-form ref="formApp" >
+          <v-text-field label="App Title" :rules="rules.generic" v-model="app.title" class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl" />
+          <v-text-field label="App Prefix" :rules="rules.generic" v-model="app.prefix" maxlength="3" class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl" />
+          <m6-upload 
+            btnButton="purple" 
+            @response="responseAppLogo" 
+            @loading="loading = !loading" 
+          >
+            <v-icon>mdi-cloud-upload</v-icon>
+          </m6-upload>
+          <v-btn color="green darken-2" style="float: right;" class="white--text" @click="updatingApp" >
+            save
+          </v-btn> 
+        </v-form>
+      </div>
     </div>
+
     <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
+
     <div class="align-center d-flex justify-space-between max-w-lg mx-auto w-full">
       <div class="align-center d-flex">
+        activeTab {{activeTab}}
         <v-tabs
           v-if="appLoaded"
           v-model="activeTab"
@@ -40,16 +60,26 @@
         >
           <v-tab
             v-for="(tab, index) in app.tabs"
-            :key="tab.id"
+            :key="index"
             class="blue--text capitalize"
           >
-            <span >{{ tab.title }}</span>
             <template v-if="activeTab === index" >
-              <v-btn  color="green darken-2" icon dark @click="editingTab(tab)">
+              <v-btn  color="green darken-2" icon dark @click="editingTab(tab)" >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
-              <v-btn color="red darken-2" icon dark @click="deleteTab" >
+              <v-btn color="red darken-2" icon dark @click="deleteTab"  >
                 <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+
+            <span >{{ tab.title }}</span>
+
+            <template v-if="activeTab === index" >
+              <v-btn color="blue darken-2" icon class="white--text" :disabled="index === 0" @click="moveTabs(app.tabs[index], app.tabs[index-1])">
+                <v-icon>mdi-arrow-left-thick</v-icon>
+              </v-btn>
+              <v-btn color="blue darken-2" icon class="white--text" :disabled="$h.dg(app, 'tabs', []).length - 1 === index" @click="moveTabs(app.tabs[index], app.tabs[index+1])" >
+                <v-icon>mdi-arrow-right-thick</v-icon>
               </v-btn>
             </template>
           </v-tab>
@@ -70,20 +100,6 @@
       v-if="appLoaded"
       class="details-content grey h-fit lighten-3  pt-2"
     >
-    <!-- min-h-full -->
-      <v-row
-        v-if="app.tabs.length > 1"
-        class="align-start d-flex justify-center max-w-lg mb-2 mx-auto pt-1 w-full"
-        style="height:100%;"
-      >
-        <!-- <v-btn
-          color="red"
-          dark
-          @click="deleteTab"
-        >
-          Delete Tab
-        </v-btn> -->
-      </v-row>
       <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
         <v-col
           class="d-flex flex-column justify-center pa-0 pr-1"
@@ -122,6 +138,7 @@
             :key="panel.id"
             :panel="panel"
             @deletePanel="deletePanel"
+            @updatePanel="updatePanel"
           />
           <add-panel @addNewPanel="addNewPanel(0)" />
         </v-col>
@@ -134,6 +151,7 @@
             :key="panel.id"
             :panel="panel"
             @deletePanel="deletePanel"
+            @updatePanel="updatePanel"
           />
           <add-panel @addNewPanel="addNewPanel(1)" />
         </v-col>
@@ -156,6 +174,10 @@
       @updateTab="updatingTab"
       @closing="closingTabUpdates"
     />
+
+    <m6-loading 
+      :loading="loading"
+    />
   </v-card>
 </template>
 
@@ -166,6 +188,7 @@ import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'CreateCompanyPanel',
@@ -184,7 +207,11 @@ export default {
     tabToDelete: null,
     activeTab: 0,
     showTabEditDialog: false,
-    tabToEdit: {}
+    tabToEdit: {},
+    loading: false,
+    rules: {
+      generic: [ v => !!v || 'This field is required', ]
+    }
   }),
 
   computed: {
@@ -202,6 +229,82 @@ export default {
   },
 
   methods: {
+    ...mapActions('AppBuilder', {
+      switchOrderTabs: 'switchOrderTabs',
+      updateApp: 'updateApp'
+    }),
+
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess' 
+    }),
+
+    updatePanel(data) {
+      this.app.tabs[this.activeTab].panels = this.app.tabs[this.activeTab].panels.map( p => p.id == data.id ? data: p )
+    },
+
+    async responseAppLogo(data) {
+      this.loading = true 
+      if( data.ok ) {
+        this.app.iconLink = data.data.link
+        await this.updateApp({ params: this.app })
+        this.notifSuccess('The image was uploaded')
+        this.loading = false
+      } else {
+        this.loading = false
+        // just console log data, that will have the error in case you need to see it
+        this.notifDanger('There was an error while uploading')
+      }
+    },
+
+    async updatingApp() {
+      this.loading = true 
+      
+      if(!this.$refs.formApp.validate()) {
+        this.notifDanger('Please fill in all required fields')
+        this.loading = false
+        return
+      }
+
+      try {
+        const res = await this.updateApp({ params: this.app })
+        this.loading = false
+        this.notifSuccess('Updated!')
+      } catch(e) {
+        this.loading = false
+        this.notifDanger('There was an error while updating')
+        return e
+      }
+    },
+
+    async moveTabs(current, tabToSwitchWith) {
+      const idsAndOrders = [
+        { id: tabToSwitchWith.id, order: current.order },
+        { id: current.id, order: tabToSwitchWith.order }
+      ]
+
+      this.loading = true 
+
+      try {
+        await this.switchOrderTabs({ idsAndOrders })
+        this.notifSuccess('Tabs were updated')
+
+        // const tabs = [...this.app.tabs]
+
+        // tabs.find( t => t.id == current.id ).order = tabToSwitchWith.order
+        // tabs.find( t => t.id == tabToSwitchWith.id ).order = current.order
+        // const res = [...tabs].sort(function(a, b){return b.order - a.order})
+        // this.app.tabs = [...res]
+
+        // this.activeTab = 0
+
+        this.loading = false 
+      } catch(e) {
+        this.notifDanger('There was an error while updating the tabs')
+        this.loading = false
+      }
+    },
+
     editingTab(tab) {
       this.showTabEditDialog = true 
       this.$nextTick( () => {
@@ -279,6 +382,15 @@ export default {
 }
 .panel {
     min-height: 350px;
+}
+.app-icon-link {
+  height: 3rem;
+  width: auto; 
+  border-radius: 20%;
+}
+.flex-space-between {
+  display: flex; 
+  justify-content: space-between;
 }
 </style>
 

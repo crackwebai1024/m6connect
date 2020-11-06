@@ -41,7 +41,7 @@ export default {
                 for (let x = 0; x < files.length; x++) {
                     await this.prepareUpload(files[x])
                 }
-                this.$emit('loading')
+                // this.$emit('loading')
             }
         },
         prepareUpload(obj) {
@@ -56,7 +56,6 @@ export default {
 
                     const response = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/upload`, data)
                     const url = response.data.url
-
 
                     let objectUploaded = null
 

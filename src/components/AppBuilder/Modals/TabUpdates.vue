@@ -17,10 +17,8 @@
                         <v-text-field 
                             label="Tab Name"
                             v-model="tab.title"
+                            outlined
                         />
-                    </v-col>
-                    <v-col cols="6">
-                        order goes here
                     </v-col>
                 </v-row>
             </v-container>            
@@ -104,7 +102,6 @@ export default {
             delete this.tab["updated_at"]
             delete this.tab["id"]
             delete this.tab["panels"]
-            console.log(this.tab)
         }
     }
 }

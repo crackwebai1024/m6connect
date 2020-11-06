@@ -12,6 +12,15 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
+  
+  updateApp(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app`, payload)
+      .then(resolve)
+      .catch(reject)
+    })
+  },
+
   listTabs(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/tab/list`, payload).then(({ data }) => {
@@ -66,6 +75,14 @@ const actions = {
     })
   },
 
+  switchOrderTabs(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/tab/switch-order`, payload)
+      .then(resolve)
+      .catch(reject)
+    })
+  },
+
   savePanel(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel`, payload).then(({ data }) => {
@@ -97,7 +114,7 @@ const actions = {
 
   updatePanel(_, payload) {
     return new Promise((resolve, reject) => {
-      axios.patch(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload.id}`, payload).then(({ data }) => {
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload.id}`, payload).then(({ data }) => {
         resolve(data)
       }).catch(e => reject(e))
     })
