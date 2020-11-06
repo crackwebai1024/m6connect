@@ -83,28 +83,65 @@
                 slot="leftPanel"
                 class="mb-3 panel px-4 py-3 white"
               >
-                <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
+                <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
+                  Information
+                </h3>
                 <div class="overflow-hidden">
-                    <div class="d-flex align-center my-3">
-                        <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
-                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">Company Name</p>
-                    </div>
-                    <div class="d-flex align-center my-3">
-                        <v-icon class="grey--text text--darken-3" size="22">mdi-email-outline</v-icon>
-                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">company@gmail.com</p>
-                    </div>
-                    <div class="d-flex align-center my-3">
-                        <v-icon class="grey--text text--darken-3" size="22">mdi-clipboard-file-outline</v-icon>
-                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">Company Last Name</p>
-                    </div>
-                    <div class="d-flex align-center my-3">
-                        <v-icon class="grey--text text--darken-3" size="22">mdi-phone</v-icon>
-                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">(+51) 9874363722</p>
-                    </div>
-                    <div class="d-flex align-center my-3">
-                        <v-icon class="grey--text text--darken-3" size="22">mdi-earth</v-icon>
-                        <p class="ml-3 w-4/5 text-body-2 font-weight-ligshten black--text mb-0">www.company.com</p>
-                    </div>
+                  <div class="align-center d-flex my-3">
+                    <v-icon
+                      class="grey--text text--darken-3"
+                      size="22"
+                    >
+                      mdi-clipboard-file-outline
+                    </v-icon>
+                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                      Company Name
+                    </p>
+                  </div>
+                  <div class="align-center d-flex my-3">
+                    <v-icon
+                      class="grey--text text--darken-3"
+                      size="22"
+                    >
+                      mdi-email-outline
+                    </v-icon>
+                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                      company@gmail.com
+                    </p>
+                  </div>
+                  <div class="align-center d-flex my-3">
+                    <v-icon
+                      class="grey--text text--darken-3"
+                      size="22"
+                    >
+                      mdi-clipboard-file-outline
+                    </v-icon>
+                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                      Company Last Name
+                    </p>
+                  </div>
+                  <div class="align-center d-flex my-3">
+                    <v-icon
+                      class="grey--text text--darken-3"
+                      size="22"
+                    >
+                      mdi-phone
+                    </v-icon>
+                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                      (+51) 9874363722
+                    </p>
+                  </div>
+                  <div class="align-center d-flex my-3">
+                    <v-icon
+                      class="grey--text text--darken-3"
+                      size="22"
+                    >
+                      mdi-earth
+                    </v-icon>
+                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                      www.company.com
+                    </p>
+                  </div>
                 </div>
               </div>
 
@@ -134,14 +171,14 @@
                 slot="leftPanel"
                 class="mb-3 panel px-4 py-3 white"
               >
-                l
+                <financial-commitments />
               </div>
 
               <div
                 slot="rightPanel"
                 class="mb-3 panel px-4 py-3 white"
               >
-                r
+                <financial-spendings />
               </div>
             </panel-two-columns>
           </template>
@@ -162,6 +199,8 @@ import M6Show from '@/modules/cpm/_layouts/M6Show.vue'
 
 import FinancialCostSummary from '@/modules/cpm/components/projects/panels/FinancialCostSummary'
 import Reconciliation from '@/modules/cpm/components/projects/panels/Reconciliation'
+import FinancialCommitments from '@/modules/cpm/components/projects/panels/FinancialCommitments'
+import FinancialSpendings from '@/modules/cpm/components/projects/panels/FinancialSpendings'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia'
 
 import {
@@ -181,6 +220,8 @@ export default {
     FinancialCostSummary,
     Reconciliation,
     ProjectSocialMedia,
+    FinancialCommitments,
+    FinancialSpendings,
     M6Show
   },
   data: () => ({

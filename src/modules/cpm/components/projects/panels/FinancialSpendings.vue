@@ -1320,7 +1320,7 @@
 
 <script>
 import axios from 'axios'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 import { db, storage } from '@/utils/Firebase'
 import EventBus from '@/Eventbus'
