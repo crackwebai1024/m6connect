@@ -5,20 +5,18 @@
         fluid
         grid-list-md
       >
-        <v-layout
+        <v-row
           v-for="(project, indexProject) in projectGroup.projects"
           :key="indexProject"
-          row
-          wrap
         >
-          <v-flex md12>
+          <v-col md="12">
             <preview-project
               :preview-options="previewOptions"
               :project="project"
               :project-group="projectGroup"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-text>
   </v-card>

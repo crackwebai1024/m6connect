@@ -8,8 +8,8 @@
   >
     <v-card>
       <v-card-title class="card-title display-1 primary white--text">
-        <v-layout wrap>
-          <v-flex xs12>
+        <v-row>
+          <v-col cols="12">
             <v-icon
               class="icon-close"
               dark
@@ -18,18 +18,18 @@
             >
               close
             </v-icon>
-          </v-flex>
-          <v-flex
-            class="text-xs-center"
-            xs12
+          </v-col>
+          <v-col
+            class="text-center"
+            cols="12"
           >
             {{ $t('cpm.projects.createSpending') }}
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-card-text>
-        <v-layout>
-          <v-flex xs12>
+        <v-row>
+          <v-col cols="12">
             <v-text-field
               v-model="spending.number"
               :loading="!spending.number"
@@ -84,8 +84,8 @@
               outline
               :rows="3"
             />
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-text>
       <v-card-actions>
         <v-btn

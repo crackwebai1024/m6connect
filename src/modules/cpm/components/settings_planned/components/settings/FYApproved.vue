@@ -12,7 +12,7 @@
       </v-btn>
     </template>
 
-    <v-container pt-0>
+    <v-container class="pt-0">
       <v-checkbox
         v-model="settings.fyProposedSpend20"
         hide-details
@@ -26,7 +26,7 @@
       >
         <template v-slot:items="props">
           <td>{{ props.item }}</td>
-          <td class="text-xs-right">
+          <td class="text-right">
             <v-btn
               flat
               icon

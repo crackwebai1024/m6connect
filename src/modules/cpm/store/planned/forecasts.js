@@ -128,7 +128,7 @@ const actions = {
   },
   async getTaksFromSelectedGantt({ commit }, { projectId }) {
     if (!projectId) return Promise.reject('Bad request, missing projectId createForecastTasks')
-    
+
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
 

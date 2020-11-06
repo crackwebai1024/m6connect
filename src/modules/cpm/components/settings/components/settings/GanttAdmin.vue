@@ -7,12 +7,12 @@
     >
       <v-card>
         <v-card-title primary-title>
-          <v-flex
+          <v-col
             class="title"
-            md12
+            md="12"
           >
             Milestone
-          </v-flex>
+          </v-col>
         </v-card-title>
         <v-card-text>
           <v-container
@@ -20,11 +20,8 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-autocomplete
                   v-model="milestone.name"
                   clearable
@@ -32,42 +29,36 @@
                   :items="milestones.names"
                   label="Name"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md8>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="8">
                 <v-text-field
                   v-model="milestone.days"
                   label="Days"
                 />
-              </v-flex>
-              <v-flex md4>
+              </v-col>
+              <v-col md="4">
                 <v-switch
                   v-model="milestone.after"
                   :label="getLabelMilestone()"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="12">
                 <v-checkbox
                   v-model="milestone.inReport"
                   label="In schedule"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-divider />
         <v-card-actions>
           <v-spacer />
-          <v-flex md2>
+          <v-col md="2">
             <v-btn
               color="blue"
               outline
@@ -75,8 +66,8 @@
             >
               Cancel
             </v-btn>
-          </v-flex>
-          <v-flex md2>
+          </v-col>
+          <v-col md="2">
             <v-btn
               color="blue"
               dark
@@ -84,7 +75,7 @@
             >
               Save
             </v-btn>
-          </v-flex>
+          </v-col>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -173,44 +164,36 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
+            <v-row>
+              <v-col
                 v-if="currentType.name"
                 class="indigo--text"
-                md12
+                md="12"
               >
                 <h6>Editing:</h6>
-              </v-flex>
-              <v-flex md12>
+              </v-col>
+              <v-col md="12">
                 <v-text-field
                   v-model="name"
                   color="blue"
                   :label="`Schedule type`"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-checkbox
                   v-model="hasCalculatedDates"
                   label="This Schedule Type has milestones"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-show="hasCalculatedDates"
-              row
-              wrap
             >
-              <v-flex md12>
+              <v-col md="12">
                 <v-autocomplete
                   v-model="milestoneName"
                   clearable
@@ -218,56 +201,49 @@
                   :items="milestones.names"
                   label="Initial Milestone Name"
                 />
-              </v-flex>
-            </v-layout>
-            
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col md="12">
                 <v-textarea
                   v-model="description"
                   color="blue"
                   label="Description"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-show="hasCalculatedDates"
-              row
-              wrap
             >
-              <v-flex
+              <v-col
                 class="pt-4"
-                md5
+                md="5"
               >
                 Project Start Date is
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-text-field
                   v-model="projectStartDateDays"
                   color="blue"
                   label=""
                   single-line
                 />
-              </v-flex>
-              <v-flex
+              </v-col>
+              <v-col
                 class="pt-4"
-                md4
+                md="4"
               >
                 days before this date.
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-show="hasCalculatedDates"
-              row
-              wrap
             >
               <v-spacer />
-              <v-flex md2>
+              <v-col md="2">
                 <v-btn
                   color="blue"
                   dark
@@ -276,15 +252,13 @@
                 >
                   <v-icon>add</v-icon>
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-show="hasCalculatedDates"
-              row
-              wrap
             >
-              <v-flex md12>
+              <v-col md="12">
                 <v-data-table
                   :headers="headersMilestones"
                   hide-actions
@@ -321,15 +295,12 @@
                     </td>
                   </template>
                 </v-data-table>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              row
-              wrap
-            >
+            <v-row>
               <v-spacer />
-              <v-flex md4>
+              <v-col md="4">
                 <v-btn
                   color="blue"
                   outline
@@ -337,8 +308,8 @@
                 >
                   Cancel
                 </v-btn>
-              </v-flex>
-              <v-flex md4>
+              </v-col>
+              <v-col md="4">
                 <v-btn
                   color="blue"
                   dark
@@ -346,8 +317,8 @@
                 >
                   {{ submitLoading ? 'Saving...' : 'Save' }}
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-form>
       </v-card-text>
@@ -495,7 +466,7 @@ export default {
         this.$snotify.error('Gantt name is required', 'Error')
         return
       }
-      
+
       if (!this.currentType.name) {
         const data = {
           name: this.name,

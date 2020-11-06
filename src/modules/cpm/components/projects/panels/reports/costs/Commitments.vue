@@ -29,7 +29,7 @@
             <v-spacer />
             <v-toolbar-title class="heading">
               <v-chip
-                class="headling text-xs-center"
+                class="headling text-center"
                 color="blue darken-2"
                 dark
                 style="height: 100px"
@@ -39,7 +39,7 @@
             </v-toolbar-title>
             <v-toolbar-title class="heading">
               <v-chip
-                class="headling text-xs-center"
+                class="headling text-center"
                 color="blue"
                 dark
                 style="height: 100px"

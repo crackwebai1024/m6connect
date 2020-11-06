@@ -11,7 +11,7 @@
       <v-icon
         dark
         flat
-        @click="$refs.cardDialog.doubleClick()"
+        @click="$refs.cardDialog.doubleClick"
       >
         launch
       </v-icon>
@@ -88,9 +88,8 @@
       </v-icon>
     </template>
 
-    <v-layout
-      justify-center
-      row
+    <v-row
+      justify="center"
     >
       <v-chip
         color="transparent"
@@ -102,9 +101,9 @@
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
-    </v-layout>
+    </v-row>
 
-    <div class="text-xs-center">
+    <div class="text-center">
       <v-progress-circular
         v-show="loading"
         color="primary"
@@ -126,10 +125,10 @@
       <template v-slot:items="props">
         <tr @click="fetchLineItems(props)">
           <td>
-            <v-layout v-if="$h.dg(props.item, 'budget_category.code')">
+            <v-row v-if="$h.dg(props.item, 'budget_category.code')">
               {{ props.item.budget_category.code }} -
               {{ $h.dg(props.item, 'budget_category.name', '') }}
-            </v-layout>
+            </v-row>
           </td>
 
           <td v-if="isFullScreen">
@@ -150,22 +149,22 @@
             {{ props.item.description }}
           </td>
 
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ getDateFromText(props.item.dateOpenedText) | monthDayYear }}
           </td>
 
           <td
             v-if="isFullScreen"
-            class="text-xs-center"
+            class="text-center"
           >
             {{ props.item.paidDateText }}
           </td>
 
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ (props.item.amount || 0) | currency }}
           </td>
 
-          <td class="text-xs-center">
+          <td class="text-center">
             <m6-dropdown-actions
               :options="dropdownOptions"
               @delete="openDeleteSpending(props.item)"
@@ -180,8 +179,8 @@
         v-if="isFullScreen"
         v-slot:expand="props"
       >
-        <v-layout justify-center>
-          <v-flex xs11>
+        <v-row justify="center">
+          <v-col cols="11">
             <v-progress-circular
               v-show="loadingExpandedSpendingLineItems"
               color="primary"
@@ -198,30 +197,30 @@
                 slot="items"
                 slot-scope="props"
               >
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ props.item.number }}
                 </td>
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ props.item.vendor ? props.item.vendor.title : '' }}
                 </td>
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ props.item.account_category }}
                   {{ props.item.category }}
                 </td>
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ props.item.dateText }}
                 </td>
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ props.item.line_number }}
                 </td>
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ props.item.line_description }}
                 </td>
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ props.item.amount | currency }}
                 </td>
-                <td class="pa-0 text-xs-center">
-                  <v-flex>
+                <td class="pa-0 text-center">
+                  <v-col>
                     <v-icon
                       class="ml-0 mr-2"
                       color="#757575"
@@ -241,12 +240,12 @@
                     >
                       delete
                     </v-icon>
-                  </v-flex>
+                  </v-col>
                 </td>
               </template>
             </v-data-table>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </template>
     </m6-data-table>
 
@@ -279,49 +278,47 @@
               class="pa-0"
               fluid
             >
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         {{ $t('general.invoiceNumber') }}
-                      </v-flex>
-                      <v-flex shrink>
+                      </v-col>
+                      <v-col class="shrink">
                         <span style="color: red;">*</span>
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-text-field
                     ref="number"
                     v-model="dialogProperties.number"
                     :label="$t('general.invoiceNumber')"
                     :rules="[rules.required]"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         {{ $tc('cpm.projects.commitment', 2) }}
-                      </v-flex>
-                      <v-flex shrink />
-                    </v-layout>
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-select
                     ref="commitment"
                     v-model="dialogProperties.commitment"
@@ -341,50 +338,48 @@
                       {{ item.vendor ? `- ${item.vendor.title}` : '' }}
                     </template>
                   </v-select>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         {{ $t('cpm.projects.budgetCategory') }}
-                      </v-flex>
-                      <v-flex shrink>
+                      </v-col>
+                      <v-col class="shrink">
                         <span style="color:red;">*</span>
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <budget-category-select
                     :category="dialogProperties.budget_category"
                     :errors="budgetCategoryErrors"
                     @newCategory="setBudgetCategory"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         {{ $t('general.dateOpened') }}
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-dialog
                     ref="dialogSpendingDateOpenedText"
                     v-model="dialogSpendingDateOpenedText"
@@ -434,27 +429,26 @@
                       </v-btn>
                     </v-date-picker>
                   </v-dialog>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         {{ $t('general.datePaid') }}
-                      </v-flex>
-                      <v-flex shrink>
+                      </v-col>
+                      <v-col class="shrink">
                         <span style="color:red;">*</span>
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-dialog
                     ref="dialogSpendingPaidDateText"
                     v-model="dialogSpendingPaidDateText"
@@ -503,27 +497,26 @@
                       </v-btn>
                     </v-date-picker>
                   </v-dialog>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         {{ $t('general.description') }}
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-textarea v-model="dialogProperties.description" />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
           </v-form>
 
@@ -532,18 +525,17 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('general.attachments') }}
-                    </v-flex>
-                    <v-flex shrink>
+                    </v-col>
+                    <v-col class="shrink">
                       <v-btn
                         class="mt-0"
                         color="blue"
@@ -556,12 +548,12 @@
                           add
                         </v-icon>
                       </v-btn>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-treeview
                   v-model="tree"
                   activatable
@@ -622,25 +614,24 @@
                     </template>
                   </template>
                 </v-treeview>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-show="filesToAdd.length"
-              align-center
-              justify-center
-              row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('general.filesToAdd') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <input
                   v-show="false"
                   id="files"
@@ -701,8 +692,8 @@
                     </template>
                   </template>
                 </v-treeview>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-divider />
@@ -766,10 +757,10 @@
               fluid
               grid-list-md
             >
-              <v-layout wrap>
-                <v-flex
-                  md6
-                  sm12
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.number"
@@ -777,10 +768,10 @@
                     :label="`${$tc('general.invoice', 1)} #`"
                     :rules="[rules.required]"
                   />
-                </v-flex>
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.po_number"
@@ -788,15 +779,12 @@
                     :label="$t('cpm.projects.poNumber')"
                     :rules="[rules.required]"
                   />
-                </v-flex>
-              </v-layout>
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.project_name"
@@ -804,10 +792,10 @@
                     :label="$t('general.projectName')"
                     :rules="[rules.required]"
                   />
-                </v-flex>
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.line_number"
@@ -815,24 +803,21 @@
                     :label="`${$t('general.line')} #`"
                     :rules="[rules.required]"
                   />
-                </v-flex>
-              </v-layout>
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <label class="money-fix v-input v-label">{{
                     $t('general.amount')
                   }}</label>
                   <money v-model="dialogLineItemProperties.amount" />
-                </v-flex>
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.category"
@@ -840,15 +825,12 @@
                     :label="$tc('general.category', 1)"
                     :rules="[rules.required]"
                   />
-                </v-flex>
-              </v-layout>
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-autocomplete
                     v-model="dialogLineItemProperties.vendor"
@@ -859,24 +841,21 @@
                     return-object
                     :rules="[rules.required]"
                   />
-                </v-flex>
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.status"
                     :label="$t('general.status')"
                   />
-                </v-flex>
-              </v-layout>
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-dialog
                     ref="dialogLineItemDateText"
@@ -925,10 +904,10 @@
                       </v-btn>
                     </v-date-picker>
                   </v-dialog>
-                </v-flex>
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-dialog
                     ref="dialogLineItemPaidDateText"
@@ -979,15 +958,12 @@
                       </v-btn>
                     </v-date-picker>
                   </v-dialog>
-                </v-flex>
-              </v-layout>
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.account"
@@ -995,11 +971,11 @@
                     :label="$t('general.account')"
                     :rules="[rules.required]"
                   />
-                </v-flex>
+                </v-col>
 
-                <v-flex
-                  md6
-                  sm12
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.account_category"
@@ -1009,15 +985,12 @@
                     "
                     :rules="[rules.required]"
                   />
-                </v-flex>
-              </v-layout>
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.aoc_code"
@@ -1025,26 +998,23 @@
                     :label="$t('general.aocCode')"
                     :rules="[rules.required]"
                   />
-                </v-flex>
+                </v-col>
 
-                <v-flex
-                  md6
-                  sm12
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-checkbox
                     v-model="dialogLineItemProperties.reconciled"
                     color="blue"
                     :label="$t('general.reconciled')"
                   />
-                </v-flex>
-              </v-layout>
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md6
-                  sm12
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
                 >
                   <v-text-field
                     v-model="dialogLineItemProperties.client_capital_id"
@@ -1052,7 +1022,7 @@
                     :label="$t('general.clientCapitalId')"
                     :rules="[rules.required]"
                   />
-                </v-flex>
+                </v-col>
 
                 <!--<v-flex
                   md6
@@ -1065,7 +1035,7 @@
                     :rules="[rules.required]"
                   />
                 </v-flex>-->
-              </v-layout>
+              </v-row>
 
               <!--<v-layout
                 row
@@ -1123,21 +1093,18 @@
                 </v-flex>
               </v-layout>-->
 
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md12
-                  sm12
+              <v-row>
+                <v-col
+                  md="12"
+                  sm="12"
                 >
                   <v-textarea
                     v-model="dialogLineItemProperties.line_description"
                     color="blue"
                     :label="$t('general.lineItemDescr')"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
           </v-form>
         </v-card-text>
@@ -1191,7 +1158,7 @@
             {{ $tc('cpm.projects.lineItem', 1) }}
 
             <v-chip
-              class="headling pa-1 text-xs-center"
+              class="headling pa-1 text-center"
               color="blue darken-4"
               dark
               style="position: absolute; left: 43%;"
@@ -1228,11 +1195,8 @@
               fluid
               grid-list-md
             >
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex md12>
+              <v-row>
+                <v-col md="12">
                   <v-data-table
                     :headers="headersLineItems"
                     hide-actions
@@ -1242,30 +1206,30 @@
                       slot="items"
                       slot-scope="props"
                     >
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.number }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.vendor ? props.item.vendor.title : '' }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.account_category }}
                         {{ props.item.category }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.dateText }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.line_number }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.line_description }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.amount | currency }}
                       </td>
-                      <td class="pa-0 text-xs-center">
-                        <v-flex>
+                      <td class="pa-0 text-center">
+                        <v-col>
                           <v-icon
                             class="ml-0 mr-2"
                             color="#757575"
@@ -1285,12 +1249,12 @@
                           >
                             delete
                           </v-icon>
-                        </v-flex>
+                        </v-col>
                       </td>
                     </template>
                   </v-data-table>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
           </v-card-text>
 
@@ -1361,7 +1325,7 @@ import { mapActions, mapGetters } from 'vuex'
 import { db, storage } from '@/utils/Firebase'
 import EventBus from '@/Eventbus'
 
-import mixins from '@/components/_mixins/index'
+import mixins from '@/modules/cpm/_mixins/index'
 
 import FirebaseReportComponent from './FirebaseReportComponent.vue'
 import SearchingModal from '../modals/SearchingModal'

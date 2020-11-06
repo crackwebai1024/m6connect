@@ -5,22 +5,28 @@
     toolbar-color="#2196f3"
   >
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
-          <a 
+          <a
             class="pointer pr-1"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/financials-budgets'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat dark>
+            <v-icon
+              dark
+              flat
+            >
               launch
             </v-icon>
           </a>
         </template>
         <span>{{ $t('general.openNewTab') }}</span>
       </v-tooltip>
-      
+
       <v-icon
         class="cursor"
         dark
@@ -45,10 +51,9 @@
       </v-tooltip>
     </template>
 
-    <v-layout
+    <v-row
       v-if="false"
-      justify-end
-      row
+      justify="end"
     >
       <v-chip color="transparent">
         {{ $t('cpm.projects.budgetPanel.budget') }} {{ totalBudget | currency }}
@@ -57,7 +62,7 @@
       <v-chip color="transparent">
         {{ $t('cpm.projects.budgetPanel.planBudget') }} {{ planBudget | currency }}
       </v-chip>
-    </v-layout>
+    </v-row>
 
     <v-data-table
       :headers="headers"
@@ -69,20 +74,18 @@
         <td>{{ props.item.active ? $t('general.yes') : $t('general.no') }}</td>
         <td>{{ props.item.status }}</td>
         <td>{{ props.item.type }}</td>
-        <td class="text-xs-right">
+        <td class="text-right">
           {{ !props.item.plan ? 0 : props.item.plan | currency }}
         </td>
-        <td class="text-xs-right">
+        <td class="text-right">
           {{ !props.item.total ? 0 : props.item.total | currency }}
         </td>
-        <td class="text-xs-center">
-        
-          <m6-dropdown-actions 
+        <td class="text-center">
+          <m6-dropdown-actions
             :options="dropdownOptions"
-            @edit="editBudget(props.item)"
             @delete="deleteBudget(props.item)"
-          ></m6-dropdown-actions>
-        
+            @edit="editBudget(props.item)"
+          />
         </td>
       </template>
     </v-data-table>
@@ -205,18 +208,18 @@ export default {
         .filter(p => p)
         .reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
     },
-    
+
     dropdownOptions() {
       return [
         {
           icon: 'remove_red_eye',
           title: this.$t('general.show'),
-          event: 'edit',
+          event: 'edit'
         },
         {
           icon: 'delete',
           title: this.$t('general.delete'),
-          event: 'delete',
+          event: 'delete'
         }
       ]
     }

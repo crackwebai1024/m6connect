@@ -1,22 +1,28 @@
 <template>
   <m6-card-dialog title="Budget/Schedule Comments">
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
-          <a 
+          <a
             class="pointer pr-1"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/budget-comment'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat dark>
+            <v-icon
+              dark
+              flat
+            >
               launch
             </v-icon>
           </a>
         </template>
         <span>{{ $t('general.openNewTab') }}</span>
       </v-tooltip>
-      
+
       <v-icon
         class="cursor"
         dark
@@ -28,7 +34,7 @@
 
     <div
       v-if="loading"
-      class="text-xs-center"
+      class="text-center"
     >
       <v-progress-circular
         color="primary"
@@ -42,12 +48,12 @@
       :key="index"
       style="padding: 7px 0px 7px 0px;"
     >
-      <v-layout
-        align-center
+      <v-row
+        align="center"
         @mouseleave="budgetIndex = null"
         @mouseover="budgetIndex = index"
       >
-        <v-flex xs10>
+        <v-col cols="10">
           <span class="dependency-details">
             <p
               class="mb-0"
@@ -67,9 +73,9 @@
               }}
             </p>
           </span>
-        </v-flex>
+        </v-col>
 
-        <td class="text-xs-right">
+        <td class="text-right">
           <v-icon
             class="ml-0 mr-1"
             color="#757575"
@@ -90,7 +96,7 @@
             delete
           </v-icon>
         </td>
-      </v-layout>
+      </v-row>
       <v-divider />
     </div>
 

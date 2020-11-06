@@ -12,7 +12,7 @@
 
     <div
       v-if="loading"
-      class="text-xs-center"
+      class="text-center"
     >
       <v-progress-circular
         color="primary"
@@ -45,7 +45,7 @@
           {{ props.item.approvedBy }}
         </td>
 
-        <td class="text-xs-center">
+        <td class="text-center">
           <m6-dropdown-actions
             :options="dropdownOptions"
             @delete="showDeleteModal(props.item)"

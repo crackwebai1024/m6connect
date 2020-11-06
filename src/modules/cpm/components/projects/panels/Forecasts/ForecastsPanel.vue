@@ -1,24 +1,24 @@
 <template>
   <m6-card-dialog title="Forecasts">
-    <v-layout wrap>
-      <v-flex xs12>
+    <v-row>
+      <v-col cols="12">
         <forecasts-table
           :tasks="tasks"
         />
-      </v-flex>
-      <v-flex xs12>
+      </v-col>
+      <v-col cols="12">
         <forecasts-chart-budgets-by-month
           v-if="tasks.length"
           :tasks="tasks"
         />
-      </v-flex>
-      <v-flex xs12>
+      </v-col>
+      <v-col cols="12">
         <forecasts-chart-gantt
           v-if="tasks.length"
           :tasks="tasks"
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </m6-card-dialog>
 </template>
 

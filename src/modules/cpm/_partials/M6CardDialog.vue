@@ -6,6 +6,7 @@
     column
     fill-height
     fullscreen
+    name="row"
     :value="dialog"
     @keydown.27="dialog = false"
   >
@@ -134,7 +135,7 @@ export default {
   }),
   computed: {
     rootComponent() {
-      return this.dialog ? 'v-dialog' : 'v-layout'
+      return this.dialog ? 'v-dialog' : 'div'
     }
   },
   watch: {

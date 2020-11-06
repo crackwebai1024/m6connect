@@ -1,8 +1,8 @@
 <template>
-  <v-flex
+  <v-col
     class="mt-3"
+    cols="12"
     style="min-height: 300px"
-    xs12
   >
     <v-card
       class="elevation-0"
@@ -19,7 +19,7 @@
         />
       </v-card-text>
     </v-card>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>

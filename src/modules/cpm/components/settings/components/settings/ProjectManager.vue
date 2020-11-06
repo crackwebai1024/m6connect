@@ -43,7 +43,7 @@
           >
             <template v-slot:items="props">
               <td>{{ props.item.label }}</td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 <!--<v-btn-->
                 <!--  flat-->
                 <!--  small-->
@@ -79,7 +79,7 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             <label
               v-if="currentElement !== ''"
               class="white--text"
@@ -92,7 +92,7 @@
             >
               Add New {{ appLabel.singular }} Manager
             </label>
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">

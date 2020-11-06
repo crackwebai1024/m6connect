@@ -35,10 +35,10 @@
           <td>
             {{ props.item.comment }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ getDate(props.item.date) }}
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             <v-icon
               class="action-icon action-icon__edit pointer"
               @click="editRisk(props.item)"
@@ -116,7 +116,7 @@ export default {
 
   created() {
     this.projectId = this.$h.dg(this.$route, 'params.id', '')
-    if(!this.riskAssessments.length) {
+    if (!this.riskAssessments.length) {
       this.fetchRiskAssessments({
         projectId: this.$h.dg(this.$route, 'params.id', '')
       })

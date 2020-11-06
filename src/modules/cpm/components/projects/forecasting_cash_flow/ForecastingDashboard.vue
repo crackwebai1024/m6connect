@@ -3,16 +3,16 @@
     id="dashboard-container"
     class="dashboard"
   >
-    <v-layout class="mb-5">
-      <v-flex xs12>
+    <v-row class="mb-5">
+      <v-col cols="12">
         <forecasting-gantt />
-      </v-flex>
-    </v-layout>
-    <v-layout justify-center>
-      <v-flex xs11>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col cols="11">
         <forecasting-chart />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </div>
 </template>
 

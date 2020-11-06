@@ -8,8 +8,8 @@
   >
     <v-card>
       <v-card-title class="display-1 primary white--text">
-        <v-layout wrap>
-          <v-flex xs12>
+        <v-row>
+          <v-col cols="12">
             <v-icon
               class="icon-close"
               dark
@@ -18,14 +18,14 @@
             >
               close
             </v-icon>
-          </v-flex>
-          <v-flex
-            class="text-xs-center"
-            xs12
+          </v-col>
+          <v-col
+            class="text-center"
+            cols="12"
           >
             {{ $t('cpm.projects.reconciliationPanel.reconciliationStatus') }}
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-card-text>
         <v-autocomplete
@@ -39,8 +39,8 @@
           outline
         >
           <template v-slot:selection="data">
-            <v-layout align-center>
-              <v-flex shrink>
+            <v-row align="center">
+              <v-col class="shrink">
                 <v-btn
                   :color="data.item.color"
                   fab
@@ -48,15 +48,15 @@
                   :size="25"
                   small
                 />
-              </v-flex>
-              <v-flex grow>
+              </v-col>
+              <v-col class="grow">
                 {{ data.item.text }}
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </template>
           <template v-slot:item="data">
-            <v-layout align-center>
-              <v-flex shrink>
+            <v-row align="center">
+              <v-col class="shrink">
                 <v-btn
                   :color="data.item.color"
                   fab
@@ -64,11 +64,11 @@
                   :size="25"
                   small
                 />
-              </v-flex>
-              <v-flex grow>
+              </v-col>
+              <v-col class="grow">
                 {{ data.item.text }}
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </template>
         </v-autocomplete>
         <v-btn
@@ -88,8 +88,8 @@
             outline
             :rows="3"
           />
-          <v-layout class="justify-end">
-            <v-flex shrink>
+          <v-row class="justify-end">
+            <v-col class="shrink">
               <v-btn
                 color="primary"
                 small
@@ -97,8 +97,8 @@
               >
                 {{ noteAction === 'editing' ? 'Update note' : 'Add note' }}
               </v-btn>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </template>
         <v-data-table
           v-if="!showNoteInput"

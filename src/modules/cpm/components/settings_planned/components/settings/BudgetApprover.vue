@@ -39,7 +39,7 @@
       >
         <template v-slot:items="props">
           <td>{{ props.item.label }}</td>
-          <td class="text-xs-right">
+          <td class="text-right">
             <v-icon
               class="ml-0 mr-0"
               color="#f44336"
@@ -66,7 +66,7 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             <label
               v-if="currentElement !== ''"
               class="white--text"
@@ -77,7 +77,7 @@
               v-else
               class="white--text"
             >Add New Budget Approver</label>
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">

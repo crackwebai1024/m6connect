@@ -1,7 +1,7 @@
 <template>
-  <v-flex
-    pa-3
-    xs12
+  <v-col
+    class="pa-3"
+    cols="12"
   >
     <v-card
       class="elevation-0 white--text"
@@ -22,11 +22,11 @@
         />
       </v-card-text>
 
-      <v-layout
+      <v-row
         v-for="(label, index) in dataCollection.labels"
         :key="index"
         class="font-weight-bold labels my-2 px-3 py-2 subheading text-truncate white--text"
-        row
+
         :style="{ 'background-color': $h.dg(dataCollection, `datasets.0.backgroundColor.${index}`) }"
       >
         <span class="mr-1">
@@ -42,9 +42,9 @@
         <span>
           {{ $h.dg(dataCollection, `datasets.0.data.${index}`) | currency }}
         </span>
-      </v-layout>
+      </v-row>
     </v-card>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>

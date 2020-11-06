@@ -11,8 +11,8 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-          <v-layout justify-space-between>
-            <v-flex>
+          <v-row justify="space-between">
+            <v-col>
               <v-treeview
                 activatable
                 hoverable
@@ -58,14 +58,14 @@
                   </v-icon>
                 </template>
               </v-treeview>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-layout>
-          <v-flex xs8 />
-          <v-flex xs6>
+        <v-row>
+          <v-col cols="8" />
+          <v-col cols="6">
             <v-btn
               flat
               text
@@ -80,8 +80,8 @@
             >
               {{ $t('general.selectFolder') }}
             </v-btn>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-actions>
     </v-card>
   </v-dialog>

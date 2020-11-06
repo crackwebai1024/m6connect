@@ -25,7 +25,7 @@
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 <v-btn
                   flat
                   icon

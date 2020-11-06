@@ -24,11 +24,11 @@
       </v-btn>
     </template>
 
-    <v-layout
+    <v-row
       class="pa-3 white"
       column
     >
-      <v-layout row>
+      <v-row>
         <v-btn
           v-show="filtering"
           class="ma-0 mb-2"
@@ -48,9 +48,9 @@
         >
           Apply
         </v-btn>
-      </v-layout>
+      </v-row>
 
-      <v-flex>
+      <v-col>
         <v-select
           v-model="campusOption"
           clearable
@@ -59,9 +59,9 @@
           label="Campus"
           return-object
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <v-select
           v-model="pmOption"
           clearable
@@ -70,9 +70,9 @@
           label="Project Manager"
           return-object
         />
-      </v-flex>
+      </v-col>
 
-      <v-flex v-if="!isPlanned">
+      <v-col v-if="!isPlanned">
         <v-select
           v-model="searchOption"
           chips
@@ -82,8 +82,8 @@
           label="Status"
           multiple
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-menu>
 </template>
 

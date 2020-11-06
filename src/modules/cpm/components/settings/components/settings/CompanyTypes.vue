@@ -1,14 +1,14 @@
 <template>
   <v-container
+    class="pa-0"
     fluid
     grid-list-xs
-    pa-0
   >
-    <v-layout>
-      <v-flex
+    <v-row>
+      <v-col
         v-if="!showForm"
         class="list-container"
-        xs12
+        cols="12"
       >
         <v-toolbar
           class="mb-4"
@@ -242,10 +242,10 @@
             </v-expansion-panel-content>
           </draggable>
         </v-expansion-panel>
-      </v-flex>
-      <v-flex
+      </v-col>
+      <v-col
         v-show="showForm"
-        xs12
+        cols="12"
       >
         <v-form>
           <v-toolbar
@@ -279,8 +279,8 @@
             Save
           </v-btn>
         </v-form>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

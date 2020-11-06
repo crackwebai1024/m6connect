@@ -89,7 +89,6 @@ export default {
             .collection('settings')
             .doc('cpmPanels')
             .set({ panels })
-            
         } else {
           this.panelData = settings.data()
         }
@@ -199,7 +198,7 @@ export default {
           panelName: this.$t('cpmSettings.hidePanels.panels.buyOut'),
           key: 'finBuyOut',
           hide: false
-        },
+        }
       ]
     },
     save() {

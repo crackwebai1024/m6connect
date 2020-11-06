@@ -7,23 +7,23 @@
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">
-        <v-layout
-          align-center
-          justify-space-between
+        <v-row
+          align="center"
+          justify="space-between"
         >
-          <v-flex shrink>
+          <v-col class="shrink">
             Line Items
-          </v-flex>
-          <v-flex shrink>
+          </v-col>
+          <v-col class="shrink">
             <v-chip
-              class="text-xs-center"
+              class="text-center"
               color="blue darken-4"
               dark
             >
               PO Number: {{ commitment.number }}
             </v-chip>
-          </v-flex>
-          <v-flex shrink>
+          </v-col>
+          <v-col class="shrink">
             <v-tooltip left>
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -41,8 +41,8 @@
               </template>
               <span>Create new Line Item</span>
             </v-tooltip>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-title>
 
       <v-card-text :style="{ height: getViewPortHeight }">
@@ -82,7 +82,7 @@
                   </td>
 
                   <td class="justify-center layout pr-0 pt-2">
-                    <v-flex>
+                    <v-col>
                       <v-icon
                         class="mr-2"
                         color="#757575"
@@ -102,7 +102,7 @@
                       >
                         delete
                       </v-icon>
-                    </v-flex>
+                    </v-col>
                   </td>
                 </template>
               </v-data-table>

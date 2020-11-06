@@ -9,7 +9,7 @@
       :without-results="allProjects && !allProjects.length"
     >
       <template v-slot:before:search>
-        <v-flex shrink>
+        <v-col class="shrink">
           <v-btn
             color="#0277BD"
             dark
@@ -21,24 +21,23 @@
               add
             </v-icon>
           </v-btn>
-        </v-flex>
+        </v-col>
       </template>
 
       <template v-slot:after:search>
-        <v-flex
-          align-center
-          shrink
+        <v-col
+          class="align-center shrink"
         >
           <list-filtering
             :default-filters-values="{}"
             :items="{ campusOptions, pmOptions, searchOptions }"
             @filtered="onFiltered"
           />
-        </v-flex>
+        </v-col>
       </template>
 
       <template v-slot:after:search:btn>
-        <v-flex shrink>
+        <v-col class="shrink">
           <v-select
             v-model="view"
             :items="views"
@@ -60,22 +59,20 @@
               {{ item.label }}
             </template>
           </v-select>
-        </v-flex>
+        </v-col>
       </template>
 
       <!--GRID VIEW-->
-      <v-layout
+      <v-row
         v-if="view.val == 'grid_view'"
-        row
-        wrap
       >
-        <v-flex
+        <v-col
           v-for="(proj, indexR) in projectsPaginated"
           :key="indexR"
-          lg3
-          md4
-          sm6
-          xs12
+          cols="12"
+          lg="3"
+          md="4"
+          sm="6"
         >
           <v-card
             class="cpmCard"
@@ -124,12 +121,12 @@
               <span>Open in new tab</span>
             </v-tooltip>
 
-            <v-flex
-              text-xs-center
-              xs12
+            <v-col
+              class="text-center"
+              cols="12"
               @click="goToProject(proj, false)"
             >
-              <v-layout class="justify-center pt-3">
+              <v-row class="justify-center pt-3">
                 <v-badge>
                   <v-avatar
                     color="grey lighten-4"
@@ -147,11 +144,11 @@
                     </v-icon>
                   </v-avatar>
                 </v-badge>
-              </v-layout>
-            </v-flex>
+              </v-row>
+            </v-col>
 
             <v-card-text @click="goToProject(proj, false)">
-              <div class="mb-2 text-xs-center">
+              <div class="mb-2 text-center">
                 <p
                   class="font-weight-bold headline"
                   v-text="proj.title"
@@ -181,11 +178,11 @@
                 </div>
               </div>
             </v-card-text>
-            <v-card-actions class="overflow-hidden text-xs-center">
-              <v-layout row>
-                <v-flex
-                  pa-0
-                  xs6
+            <v-card-actions class="overflow-hidden text-center">
+              <v-row>
+                <v-col
+                  class="pa-0"
+                  cols="6"
                 >
                   <small>Project Status</small>
                   <v-card
@@ -197,11 +194,11 @@
                       <span style="color: white;">{{ proj.status }}</span>
                     </v-card-text>
                   </v-card>
-                </v-flex>
+                </v-col>
 
-                <v-flex
-                  pa-0
-                  xs6
+                <v-col
+                  class="pa-0"
+                  cols="6"
                 >
                   <small>Start Date</small>
                   <v-card
@@ -219,21 +216,19 @@
                       <span v-else>&nbsp;</span>
                     </v-card-text>
                   </v-card>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-card-actions>
           </v-card>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-layout
+      <v-row
         v-if="
           view.val == 'view_list' || (view.val == 'favorites_view' && favorites)
         "
-        row
-        wrap
       >
-        <v-flex xs12>
+        <v-col cols="12">
           <v-data-table
             :headers="isPlanned ? headersCpmPlanned : headers"
             :items="allProjects"
@@ -244,7 +239,7 @@
               slot="items"
               slot-scope="props"
             >
-              <td class="pa-1 text-xs-center">
+              <td class="pa-1 text-center">
                 <v-avatar :color="props.item.projectImage ? '' : 'indigo'">
                   <img
                     v-if="props.item.projectImage"
@@ -360,18 +355,18 @@
               Your search for "{{ search }}" found no results.
             </v-alert>
           </v-data-table>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </m6-list>
 
     <!--PAGINATION-->
-    <v-layout
+    <v-row
       v-if="view.val == 'grid_view'"
-      justify-center
+      justify="center"
     >
-      <v-flex
-        class="text-xs-center"
-        xs8
+      <v-col
+        class="text-center"
+        cols="8"
       >
         <v-pagination
           v-model="page"
@@ -389,8 +384,8 @@
             {{ listLenght }}
           </strong>
         </p>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <cpm-create
       :show="showCreateModal"

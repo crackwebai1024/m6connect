@@ -1,13 +1,13 @@
 <template>
-  <v-layout>
-    <v-flex xs-12>
+  <v-row>
+    <v-col class="xs-12">
       <v-btn @click="dialog = true">
         {{ $t('cpm.projects.forecast') }}
       </v-btn>
       <v-btn @click="dialogCategory = true">
         {{ $t('cpm.projects.budgetCategory') }}
       </v-btn>
-    </v-flex>
+    </v-col>
 
     <v-dialog
       v-model="dialogCategory"
@@ -24,12 +24,11 @@
           {{ $t('cpm.projects.budgetCategory') }}
         </v-card-title>
         <v-card-text>
-          <v-layout
-            align-center
-            justify-center
-            row
+          <v-row
+            align="center"
+            justify="center"
           >
-            <v-flex xs>
+            <v-col class="xs">
               <v-data-table
                 v-if="items.length && spendingByPeriod.length"
                 :headers="spendingByPeriod"
@@ -53,8 +52,8 @@
                   </td>
                 </template>
               </v-data-table>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -84,21 +83,20 @@
           {{ $t('cpm.projects.forecast') }}
         </v-card-title>
         <v-card-text>
-          <v-layout
-            align-center
-            justify-center
-            row
+          <v-row
+            align="center"
+            justify="center"
           >
-            <v-flex xs3>
+            <v-col cols="3">
               <div class="font-weight-black subheading">
-                <v-layout>
-                  <v-flex shrink>
+                <v-row>
+                  <v-col class="shrink">
                     {{ $t('cpm.projects.type') }}
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </div>
-            </v-flex>
-            <v-flex xs7>
+            </v-col>
+            <v-col cols="7">
               <v-select
                 v-model="forecast.type"
                 item-text="label"
@@ -107,8 +105,8 @@
                 persistent-hint
                 return-object
               />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -129,7 +127,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-layout>
+  </v-row>
 </template>
 
 <script>

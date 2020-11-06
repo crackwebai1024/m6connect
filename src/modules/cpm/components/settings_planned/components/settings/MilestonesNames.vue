@@ -104,14 +104,14 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             Milestone Names
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
-            <v-layout>
-              <v-flex sm6>
+            <v-row>
+              <v-col sm="6">
                 <v-text-field
                   v-model="element"
                   color="blue"
@@ -121,13 +121,13 @@
                   v-model="currentElement"
                   type="hidden"
                 >
-                
+
                 <chrome-picker v-model="color" />
-              </v-flex>
-              <v-flex sm6>
+              </v-col>
+              <v-col sm="6">
                 <v-list dense>
-                
-                  <v-subheader>Valid Dates 
+                  <v-subheader>
+                    Valid Dates
                     <v-btn
                       absolute
                       color="white"
@@ -151,26 +151,32 @@
                       <v-list-tile-content>
                         <v-list-tile-title>{{ $moment(item).format('MM/DD/YYYY') }}</v-list-tile-title>
                       </v-list-tile-content>
-                      
+
                       <v-list-tile-action>
-                        <v-icon @click="editValidDate(item, index)">edit</v-icon>
+                        <v-icon @click="editValidDate(item, index)">
+                          edit
+                        </v-icon>
                       </v-list-tile-action>
                       <v-list-tile-action>
-                        <v-icon @click.prevent="deleteValidDate(key, item)">delete</v-icon>
+                        <v-icon @click.prevent="deleteValidDate(key, item)">
+                          delete
+                        </v-icon>
                       </v-list-tile-action>
                     </v-list-tile>
                   </div>
                 </v-list>
-                
-                <link-milestones-to-tasks :options="links" @updateLinks="updateLinks" />
+
+                <link-milestones-to-tasks
+                  :options="links"
+                  @updateLinks="updateLinks"
+                />
                 <v-checkbox
                   v-model="linkedToTaskEndDate"
                   label="Linked to task end date?"
                 />
-                
-              </v-flex>
-            </v-layout>
-                  
+              </v-col>
+            </v-row>
+
             <v-btn
               color="blue"
               outline
@@ -190,68 +196,68 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    
-    <v-dialog
-        v-model="showValidForm"
-        max-width="400px"
-      >
-        <v-card>
-          <v-card-title
-            class="title"
-            primary-title
-          >
-            Valid Date
-          </v-card-title>
-          <v-card-text>
-            <v-menu
-              v-model="validDatePicker"
-              :close-on-content-click="false"
-              full-width
-              lazy
-              max-width="290px"
-              min-width="290px"
-              :nudge-right="120"
-              offset-y
-              transition="scale-transition"
-            >
-              <template v-slot:activator="{ on }">
-                <v-text-field
-                  v-model="validDateUsa"
-                  :error-messages="validDateError"
-                  hint="MM/DD/YYYY format"
-                  label="Date"
-                  persistent-hint
-                  prepend-inner-icon="event"
-                  v-on="on"
-                />
-              </template>
 
-              <v-date-picker
-                v-model="validDateForPicker"
-                no-title
-                @input="validDatePicker = false"
+    <v-dialog
+      v-model="showValidForm"
+      max-width="400px"
+    >
+      <v-card>
+        <v-card-title
+          class="title"
+          primary-title
+        >
+          Valid Date
+        </v-card-title>
+        <v-card-text>
+          <v-menu
+            v-model="validDatePicker"
+            :close-on-content-click="false"
+            full-width
+            lazy
+            max-width="290px"
+            min-width="290px"
+            :nudge-right="120"
+            offset-y
+            transition="scale-transition"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                v-model="validDateUsa"
+                :error-messages="validDateError"
+                hint="MM/DD/YYYY format"
+                label="Date"
+                persistent-hint
+                prepend-inner-icon="event"
+                v-on="on"
               />
-            </v-menu>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              color="blue"
-              outline
-              @click.prevent="showValidForm = false"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="blue darken-3"
-              dark
-              @click.prevent="saveValidDate"
-            >
-              Save
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+            </template>
+
+            <v-date-picker
+              v-model="validDateForPicker"
+              no-title
+              @input="validDatePicker = false"
+            />
+          </v-menu>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn
+            color="blue"
+            outline
+            @click.prevent="showValidForm = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="blue darken-3"
+            dark
+            @click.prevent="saveValidDate"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -262,16 +268,16 @@ import { mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 import LinkMilestonesToTasks from './LinkMilestonesToTasks'
 export default {
+  components: {
+    'chrome-picker': Chrome,
+    draggable,
+    LinkMilestonesToTasks
+  },
   props: {
     included: {
       default: Boolean,
       type: false
     }
-  },
-  components: {
-    'chrome-picker': Chrome,
-    draggable,
-    LinkMilestonesToTasks
   },
   data() {
     return {
@@ -320,7 +326,12 @@ export default {
       ) {
         return 'Invalid Date MM/DD/YYYY'
       } else return []
-    },
+    }
+  },
+  watch: {
+    validDateForPicker(value) {
+      this.validDateUsa = this.$moment(value).format('MM/DD/YYYY')
+    }
   },
   mounted() {
     db.collection('settings')
@@ -357,16 +368,16 @@ export default {
       this.showValidForm = true
     },
     saveValidDate() {
-      if(!this.validDateUsa) {
+      if (!this.validDateUsa) {
         this.$snotify.error('A date is required', 'Error')
         return ''
       }
-      if(this.currentIndex != -1) {
+      if (this.currentIndex != -1) {
         this.validDates[this.currentIndex] = this.$moment(this.validDateUsa).toISOString()
       } else {
-        this.validDates.push(this.$moment(this.validDateUsa).toISOString())  
+        this.validDates.push(this.$moment(this.validDateUsa).toISOString())
       }
-      
+
       this.showValidForm = false
       this.validDateUsa = ''
       this.validDatePicker = ''
@@ -402,11 +413,10 @@ export default {
         }
         this.settings.names.push(this.element)
       } else {
-        
         this.$set(this.settings.names, this.currentElement, this.element)
       }
-      let find = this.milestones.find(row => row.name == this.element)
-      if(find) {
+      const find = this.milestones.find(row => row.name == this.element)
+      if (find) {
         find.displayOnDashboard = this.displayOnDashboard
         find.linkedToTaskEndDate = this.linkedToTaskEndDate
         find.color = this.color || {}
@@ -414,7 +424,7 @@ export default {
         find.links = this.links
       } else {
         this.milestones.push({
-          name: this.element, 
+          name: this.element,
           displayOnDashboard: this.displayOnDashboard,
           linkedToTaskEndDate: this.linkedToTaskEndDate,
           color: this.color || {},
@@ -422,7 +432,7 @@ export default {
           links: this.links
         })
       }
-      
+
       db.collection('settings')
         .doc(Drupal.settings.m6_platform_header.company_nid)
         .collection('planned_settings')
@@ -459,15 +469,15 @@ export default {
       this.linkedToTaskEndDate = false
       this.element = name
       this.currentElement = id
-      let find = this.milestones.find(row => row.name == name)
-      if(find) {
+      const find = this.milestones.find(row => row.name == name)
+      if (find) {
         this.displayOnDashboard = find.displayOnDashboard
         this.linkedToTaskEndDate = find.linkedToTaskEndDate
         this.color = find.color || {}
         this.validDates = find.validDates || []
         this.links = find.links || []
       }
-      
+
       this.showForm = true
     },
     cancel() {
@@ -484,11 +494,6 @@ export default {
         .collection('planned_settings')
         .doc(this.appLabel.milestonesCollection)
     }
-  },
-  watch: {
-    validDateForPicker(value) {
-      this.validDateUsa = this.$moment(value).format('MM/DD/YYYY')
-    }
   }
 }
 </script>
@@ -499,14 +504,14 @@ export default {
     overflow-y: scroll;
   }
   .mainList {
-    
+
     .myList {
-      
+
       .xs-btn {
           width: 20px;
           height: 20px;
       }
-      
+
       .v-list__tile__action {
         i {
             font-size: 16px;
@@ -515,8 +520,8 @@ export default {
           margin: 0;
         }
       }
-      
+
     }
   }
-  
+
 </style>

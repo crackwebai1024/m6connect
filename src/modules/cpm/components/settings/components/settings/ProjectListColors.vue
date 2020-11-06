@@ -42,9 +42,9 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             Change the color for projects {{ changeColor.label }}
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <chrome-picker v-model="changeColor.color" />

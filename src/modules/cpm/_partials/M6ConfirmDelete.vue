@@ -9,7 +9,6 @@
       </v-card-title>
 
       <v-card-text v-html="message">
-
         <div>
           <div
             v-for="(item, indexD) in details"

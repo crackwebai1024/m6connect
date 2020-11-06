@@ -24,21 +24,21 @@
           class="list-item"
         >
           <v-list-tile-title @click="emitEvent(option.event)">
-            <v-layout class="align-center list-item">
-              <v-flex shrink>
+            <v-row class="align-center list-item">
+              <v-col class="shrink">
                 <v-icon
                   v-if="option.icon"
                   class="mr-2"
                 >
                   {{ option.icon }}
                 </v-icon>
-              </v-flex>
-              <v-flex grow>
+              </v-col>
+              <v-col class="grow">
                 <span class="line-item-text">
                   {{ option.title }}
                 </span>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-list-tile-title>
         </v-list-tile>
       </template>

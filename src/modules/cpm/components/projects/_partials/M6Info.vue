@@ -1,43 +1,48 @@
 <template>
   <v-dialog
-    :value="true"
     persistent
+    :value="true"
     :width="600"
   >
     <v-card>
-      <v-card-title class="info white--text title">
-        <v-layout align-center>
-          <v-flex shrink>
+      <v-card-title class="info title white--text">
+        <v-row align="center">
+          <v-col class="shrink">
             {{ title }}
-          </v-flex>
-          <v-spacer></v-spacer>
-          <v-flex shrink>
-            <v-icon @click="close" dark>close</v-icon>
-          </v-flex>
-        </v-layout>
+          </v-col>
+          <v-spacer />
+          <v-col class="shrink">
+            <v-icon
+              dark
+              @click="close"
+            >
+              close
+            </v-icon>
+          </v-col>
+        </v-row>
       </v-card-title>
       <v-card-text>
-        <slot></slot>
+        <slot />
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-  export default {
-    name: 'M6Info',
-    
-    props: {
-      title: {
-        type: String,
-        required: true
-      }
-    },
-    
-    methods: {
-      close() {
-        this.$emit('close')
-      }
+export default {
+  name: 'M6Info',
+
+  props: {
+    title: {
+      type: String,
+      required: true
+    }
+  },
+
+  methods: {
+    close() {
+      this.$emit('close')
     }
   }
+}
 </script>

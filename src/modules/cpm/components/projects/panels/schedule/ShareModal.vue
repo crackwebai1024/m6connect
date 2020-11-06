@@ -11,23 +11,22 @@
       </v-card-title>
       <v-card-text>
         <v-container>
-          <v-layout
+          <v-row
             v-if="!previewShow"
+            class="fill-height fluid"
             column
-            fill-height
-            fluid
           >
-            <v-flex>
+            <v-col>
               <label id="step18">{{ $t('cpm.projects.shareWith') }}</label>
               <v-text-field
                 v-model="mail"
                 :placeholder="$t('cpm.projects.customMail')"
               />
-            </v-flex>
+            </v-col>
             <br><br>
             <v-divider />
             <br><br>
-            <v-flex>
+            <v-col>
               <label>{{ $t('cpm.projects.expiryDate') }}</label>
               <v-menu
                 v-model="fromDateMenu"
@@ -41,8 +40,8 @@
                 transition="scale-transition"
               >
                 <template v-slot:activator="{ on }">
-                  <v-layout row>
-                    <v-flex xs10>
+                  <v-row>
+                    <v-col cols="10">
                       <v-btn
                         id="step19"
                         class="ma-2"
@@ -56,16 +55,16 @@
                         </v-icon>
                         {{ expireDate.formated }}
                       </v-btn>
-                    </v-flex>
-                    <v-flex xs2>
+                    </v-col>
+                    <v-col cols="2">
                       <v-switch
                         v-model="expire"
                         :label="
                           `${expire ? $t('general.on') : $t('general.off')}`
                         "
                       />
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </template>
                 <v-date-picker
                   v-model="fromDateVal"
@@ -75,30 +74,29 @@
                   @input="fromDateMenu = false"
                 />
               </v-menu>
-            </v-flex>
-            <v-flex>
+            </v-col>
+            <v-col>
               <vue-editor
                 id="step20"
                 v-model="custom"
                 :placeholder="$t('cpm.projects.customMessage')"
               />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-if="previewShow"
+            class="fill-height fluid"
             column
-            fill-height
-            fluid
           >
             <div v-html="cardEmailText" />
-          </v-layout>
+          </v-row>
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-layout>
-          <v-flex xs8 />
-          <v-flex xs6>
+        <v-row>
+          <v-col cols="8" />
+          <v-col cols="6">
             <v-btn
               flat
               text
@@ -123,8 +121,8 @@
             >
               {{ $t('general.send') }}
             </v-btn>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-actions>
     </v-card>
     <m6-loading :loading="showLoading" />

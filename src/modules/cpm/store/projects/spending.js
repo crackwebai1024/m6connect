@@ -41,7 +41,11 @@ const actions = {
               'x-api-key': elkConfig.key
             }
           })
-          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', { projectId }, { root: true })
+          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
+            projectId
+          }, {
+            root: true
+          })
           resolve(doc)
         })
         .catch(reject)
@@ -73,7 +77,11 @@ const actions = {
               'x-api-key': elkConfig.key
             }
           })
-          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', { projectId }, { root: true })
+          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
+            projectId
+          }, {
+            root: true
+          })
           resolve(doc)
         })
         .catch(reject)
@@ -107,7 +115,11 @@ const actions = {
         .doc(spendingId)
         .delete()
         .then(() => {
-          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', { projectId }, { root: true })
+          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
+            projectId
+          }, {
+            root: true
+          })
           resolve()
         })
         .catch(reject)
@@ -122,7 +134,11 @@ const actions = {
         .collection('line_items')
         .add(lineItem)
         .then(() => {
-          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', { projectId }, { root: true })
+          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
+            projectId
+          }, {
+            root: true
+          })
           resolve()
         })
         .catch(reject)
@@ -138,7 +154,11 @@ const actions = {
         .doc(lineItemId)
         .update(lineItem)
         .then(() => {
-          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', { projectId }, { root: true })
+          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
+            projectId
+          }, {
+            root: true
+          })
           resolve()
         })
         .catch(reject)
@@ -157,7 +177,11 @@ const actions = {
         .doc(lineItemId)
         .delete()
         .then(() => {
-          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', { projectId }, { root: true })
+          dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
+            projectId
+          }, {
+            root: true
+          })
           resolve()
         })
         .catch(reject)

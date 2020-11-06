@@ -79,20 +79,18 @@
       grid-list-md
       style="overflow:hidden;"
     >
-      <v-layout
+      <v-row
         class="mb-4"
-        row
-        wrap
       >
-        <v-flex md12>
+        <v-col md="12">
           <gantt
             :key="ganttKey"
             ref="ganttSchedule"
             :type="type"
             @showShareModal="shareModal($event)"
           />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
     <share-modal

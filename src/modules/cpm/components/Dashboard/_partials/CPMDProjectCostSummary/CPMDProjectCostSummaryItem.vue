@@ -17,34 +17,34 @@
     <td v-text="formatDate(item.startDate)" />
     <td v-text="formatDate(item.endDate)" />
     <td
-      class="text-xs-right"
+      class="text-right"
       v-text="totalBudgets"
     />
     <td
-      class="text-xs-right"
+      class="text-right"
       v-text="totalCommitments"
     />
     <td
-      class="text-xs-right"
+      class="text-right"
       v-text="totalSpendings"
     />
     <td
-      class="text-xs-right"
+      class="text-right"
       v-text="totalAllocated"
     />
     <td
-      class="text-xs-right"
+      class="text-right"
       v-text="totalCost"
     />
     <td
-      class="text-xs-right"
+      class="text-right"
       v-text="variance"
     />
     <td>
-      <v-layout
-        align-center
-        fill-height
-        row
+      <v-row
+        align="center"
+        class="fill-height"
+
         style="width: 85px"
       >
         <v-icon
@@ -57,7 +57,7 @@
         <span>
           {{ item.status || 'N/A' }}
         </span>
-      </v-layout>
+      </v-row>
     </td>
   </tr>
 </template>

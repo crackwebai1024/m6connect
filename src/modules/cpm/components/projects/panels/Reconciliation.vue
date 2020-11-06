@@ -1,16 +1,16 @@
 <template>
   <m6-card-dialog
+    ref="cardDialogReconciliation"
     min-height="0"
     :title="$t('cpm.projects.reconciliationPanel.title')"
     :title-tooltip="$t('general.doubleClickSeeMore')"
     @fullscreen="checkFullScreen"
-    ref="cardDialogReconciliation"
   >
     <template v-slot:after:title>
       <v-icon
         dark
         flat
-        @click="$refs.cardDialogReconciliation.doubleClick()"
+        @click="cardDialogClick"
       >
         launch
       </v-icon>
@@ -94,9 +94,8 @@
       </v-tooltip>
     </template>
 
-    <v-layout
-      justify-center
-      row
+    <v-row
+      justify="center"
     >
       <v-chip
         color="transparent"
@@ -119,93 +118,94 @@
       >
         <strong>{{ $t('cpm.projects.reconciliationPanel.spent') }} {{ (poSpend || 0) | currency }}</strong>
       </v-chip>
-    </v-layout>
+    </v-row>
 
     <m6-data-table
       :align-actions="alignActions"
       class="elevation-0"
       :expand="false"
+      fixed-header
       :headers="headers"
       :items="resources"
-      :pagination.sync="pagination"
-      :rows-per-page-items="rowsPerPage"
-      :total-items="pagination.totalItems"
+      :options="pagination"
+      :server-items-length="pagination.totalItems"
       @update:pagination="debounceSearch(search, false)"
-      fixed-header
     >
-      <template v-slot:items="props">
+      <template v-slot:item="props">
         <tr
           class="step6"
           @click="fetchSpending(props)"
         >
           <td
             v-if="isFullScreen || isFullScreenPage"
-            class="pl-20 text-xs-left"
+            class="pl-20 text-left"
           >
-            <v-layout v-if="$h.dg(props.item, 'budget_category.code')">
+            <v-row v-if="$h.dg(props.item, 'budget_category.code')">
               {{ props.item.budget_category.code }} -
               {{ $h.dg(props.item, 'budget_category.name', '') }}
-            </v-layout>
+            </v-row>
           </td>
-          <td class="pl-20 text-xs-left">
-            <v-layout>{{ props.item.number }}</v-layout>
+          <td class="pl-20 text-left">
+            <v-row>{{ props.item.number }}</v-row>
           </td>
           <td
             v-if="isFullScreen || isFullScreenPage"
             class="pl-20"
           >
-              <template v-for="vendor in removeDuplicates(props.item.vendors)">
-                {{ vendor }}
-              </template>
+            <template v-for="vendor in removeDuplicates(props.item.vendors)">
+              {{ vendor }}
+            </template>
           </td>
 
           <td
             v-if="isFullScreen || isFullScreenPage"
             class="pl-20"
           >
-            <v-layout justify-center>{{ $h.dg(props.item, 'notes', '') }}</v-layout>
+            <v-row justify="center">
+              {{ $h.dg(props.item, 'notes', '') }}
+            </v-row>
           </td>
           <td
             v-if="isFullScreen || isFullScreenPage"
-            class="pl-20 text-xs-center"
+            class="pl-20 text-center"
           >
-            <v-layout justify-center>
-              <v-flex shrink>
+            <v-row justify="center">
+              <v-col class="shrink">
                 {{ formatDateToText(props.item.completionDate) || '' }}
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </td>
-          <td class="text-xs-right">
-            <v-layout justify-end>
+          <td class="text-right">
+            <v-row justify="end">
               {{ (props.item.amount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
           <td
             v-if="!isFullScreen || isFullScreenPage"
-            class="text-xs-right"
+            class="text-right"
           >
-            <v-layout justify-end>
+            <v-row justify="end">
               {{ (props.item.openAmount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
           <td
             v-else
-            class="text-xs-right"
+            class="text-right"
           >
-            <v-layout justify-end>
+            <v-row justify="end">
               {{ (props.item.spendingAmount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
           <td
             v-if="isFullScreen || isFullScreenPage"
-            class="text-xs-right"
+            class="text-right"
           >
-            <v-layout justify-end>
+            <v-row justify="end">
               {{ (props.item.openAmount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
 
-          <td class="text-xs-center">
+          <td class="text-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -231,7 +231,7 @@
             </v-tooltip>
           </td>
 
-          <td class="text-xs-center">
+          <td class="text-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-icon
@@ -255,7 +255,7 @@
             </v-tooltip>
           </td>
 
-          <td class="td-actions text-xs-center">
+          <td class="td-actions text-center">
             <m6-dropdown-actions
               :options="dropdownOptions"
               @attach="openModalSpendings(props.item)"
@@ -277,14 +277,14 @@
         v-if="isFullScreen || isFullScreenPage"
         v-slot:expand="props"
       >
-        <v-layout justify-center>
-          <v-flex xs11>
+        <v-row justify="center">
+          <v-col cols="11">
             <v-data-table
               class="elevation-1"
+              :expand="false"
               :headers="subheaders"
               hide-actions
               :items="props.item.spending"
-              :expand="false"
             >
               <template v-slot:headers="headerProps">
                 <tr>
@@ -296,11 +296,11 @@
                     <template
                       v-if="header.text === $t('general.invoiceAmount')"
                     >
-                      <v-layout
-                        align-center
-                        justify-end
+                      <v-row
+                        align="center"
+                        justify="end"
                       >
-                        <v-flex shrink>
+                        <v-col class="shrink">
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
                               <v-icon
@@ -314,11 +314,11 @@
                             </template>
                             <span>Add Invoice</span>
                           </v-tooltip>
-                        </v-flex>
-                        <v-flex shrink>
+                        </v-col>
+                        <v-col class="shrink">
                           {{ header.text }}
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
                     </template>
                     <template v-else>
                       {{ header.text }}
@@ -327,37 +327,37 @@
                 </tr>
               </template>
               <template v-slot:items="props">
-                <tr 
+                <tr
                   class="step6"
                   @click="fetchSpendingLineItems(props)"
                 >
-                  <td class="text-xs-left">
+                  <td class="text-left">
                     {{ props.item.number }}
                   </td>
-                  <td class="text-xs-left">
-                    <v-layout v-if="$h.dg(props.item, 'budget_category.code')">
+                  <td class="text-left">
+                    <v-row v-if="$h.dg(props.item, 'budget_category.code')">
                       {{ props.item.budget_category.code }} -
                       {{ $h.dg(props.item, 'budget_category.name') }}
-                    </v-layout>
+                    </v-row>
                   </td>
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     {{ formatDateToText(props.item.date) }}
                   </td>
-                  <td class="text-xs-right">
+                  <td class="text-right">
                     {{ props.item.amount | currency }}
                   </td>
                 </tr>
               </template>
-              
+
               <template v-slot:expand="props">
-              <v-card flat>
-                <v-progress-circular
-                  v-show="loadingExpandedSpendingLineItems"
-                  color="primary"
-                  indeterminate
-                  :size="32"
-                />
-                <v-data-table
+                <v-card flat>
+                  <v-progress-circular
+                    v-show="loadingExpandedSpendingLineItems"
+                    color="primary"
+                    indeterminate
+                    :size="32"
+                  />
+                  <v-data-table
                     v-show="!loadingExpandedSpendingLineItems"
                     :headers="headersLineItems"
                     hide-actions
@@ -367,30 +367,30 @@
                       slot="items"
                       slot-scope="props"
                     >
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.number }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.vendor ? props.item.vendor.title : '' }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.account_category }}
                         {{ props.item.category }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.dateText }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.line_number }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.line_description }}
                       </td>
-                      <td class="text-xs-center">
+                      <td class="text-center">
                         {{ props.item.amount | currency }}
                       </td>
-                      <td class="pa-0 text-xs-center">
-                        <v-flex>
+                      <td class="pa-0 text-center">
+                        <v-col>
                           <v-icon
                             class="ml-0 mr-2"
                             color="#757575"
@@ -410,19 +410,20 @@
                           >
                             delete
                           </v-icon>
-                        </v-flex>
+                        </v-col>
                       </td>
                     </template>
                   </v-data-table>
-              </v-card>
-            </template>
+                </v-card>
+              </template>
             </v-data-table>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </template>
     </m6-data-table>
 
     <financial-commit-modal
+      v-if="createShowModal"
       is-create
       :project-id="projectId"
       :show="createShowModal"
@@ -505,16 +506,15 @@
       @close="showSpendingForm = false"
       @refresh="refreshSpendingFromCommitment"
     />
-    
+
     <spending-lineitem-modal
-      :show="showExpandedSpendingLineItems"
-      :spending-id="commitmentSpendingExpanded.id"
       :line-item="expandedSpendingLineItem"
       :project-id="projectId"
+      :show="showExpandedSpendingLineItems"
+      :spending-id="commitmentSpendingExpanded.id"
       @close="closeExpandedSpendingLineItems"
-    >
-    </spending-lineitem-modal>
-    
+    />
+
     <m6-confirm-delete
       :message="
         $t('general.sureDeleteResource', {
@@ -539,7 +539,7 @@ import { DateTime } from 'luxon'
 import { mapActions, mapGetters } from 'vuex'
 import { db } from '@/utils/Firebase'
 import EventBus from '@/Eventbus'
-import mixins from '@/components/_mixins/index'
+import mixins from '@/modules/cpm/_mixins/index'
 import FinancialCommitmentsModal from '../modals/FinancialCommitmentsModal'
 import LineItemsShow from '../modals/LineItemsShow'
 import SearchingModal from '../modals/SearchingModal'
@@ -622,7 +622,8 @@ export default {
         }
       ],
       selectedCommitment: null,
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      // TODO remove this
+      isAdmin: true,
       showSettings: false,
       projectId,
       showSearchingModal: false,
@@ -686,7 +687,7 @@ export default {
         }
       ],
       pagination: {
-        sortBy: this.$t('general.number'),
+
         descending: false,
         rowsPerPage: 10,
         totalItems: 0,
@@ -918,6 +919,9 @@ export default {
     EventBus.$on('reload-reconciliation-commitments', this.fetchResources)
   },
   methods: {
+    cardDialogClick() {
+      this.$refs.cardDialogReconciliation.doubleClick()
+    },
     removeDuplicates(array = []) {
       const unique = new Set(array)
       return [...unique]
@@ -929,7 +933,7 @@ export default {
       'fetchBidManagers',
       'fetchProjectManagers'
     ]),
-    
+
     ...mapActions('cpm/projects/spending', {
       submitDeleteLineItem: 'deleteLineItem'
     }),
@@ -995,7 +999,7 @@ export default {
       this.commitmentSpendingId = ''
       this.commitmentTitle = ''
     },
-    
+
     closeExpandedSpendingLineItems() {
       this.showExpandedSpendingLineItems = false
       this.fetchSpendingLineItems(this.commitmentSpendingExpanded)
@@ -1240,20 +1244,22 @@ export default {
         props.expanded = !props.expanded
       }
     },
-    
+
     fetchSpendingLineItems(props) {
-      this.commitmentSpendingExpanded = props.item ? { ...props.item } : { ...props }
+      this.commitmentSpendingExpanded = props.item ? {
+        ...props.item
+      } : {
+        ...props
+      }
       props.expanded = !props.expanded
       this.getExpandedSpendingLineItems()
     },
-    
+
     getExpandedSpendingLineItems() {
       return new Promise((resolve, reject) => {
-        
-        if(this.commitmentSpendingExpanded.id && this.commitmentListExpanded.id) {
-          
-          this.loadingExpandedSpendingLineItems = true;
-        
+        if (this.commitmentSpendingExpanded.id && this.commitmentListExpanded.id) {
+          this.loadingExpandedSpendingLineItems = true
+
           try {
             db.collection('cpm_projects')
               .doc(this.projectId)
@@ -1265,14 +1271,14 @@ export default {
                 if (!snap.empty) {
                   resolve(true)
                 }
-  
+
                 this.commitmentSpendingExpanded.lineItems = snap.docs.map(doc => {
                   const lineItem = doc.data()
                   lineItem.id = doc.id
-  
+
                   return lineItem
                 })
-                
+
                 this.loadingExpandedSpendingLineItems = false
               })
           } catch (error) {
@@ -1280,7 +1286,6 @@ export default {
             this.loadingExpandedSpendingLineItems = false
           }
         }
-        
       })
     },
     getVerifiedStatusProperty(status = 'noValidated', property) {
@@ -1329,38 +1334,38 @@ export default {
       this.expandedSpendingLineItem = lineItem
       this.showExpandedSpendingLineItems = true
     },
-    
+
     deleteExpandedSpendingLineItem(item) {
       // Line item added into the collection
       this.expandedSpendingLineItemDeleteModal = true
       this.expandedSpendingLineItemToDelete = item
     },
-    
+
     cancelExpandedSpendingLineItemDelete() {
       this.expandedSpendingLineItemToDelete = {}
       this.lineItemDeleteModal = false
       this.fetchSpendingLineItems(this.commitmentSpendingExpanded)
     },
-    
+
     confirmDelete() {
       const item = this.expandedSpendingLineItemToDelete
       if (item.id && this.commitmentSpendingExpanded.id) {
         this.showLoading = true
-        
+
         this.submitDeleteLineItem({
-          projectId: this.$route.params.id, 
-          spendingId: this.commitmentSpendingExpanded.id, 
+          projectId: this.$route.params.id,
+          spendingId: this.commitmentSpendingExpanded.id,
           lineItemId: item.id
         }).then(() => {
-            // Delete from the lineitems
-            this.showLoading = false
-            this.$snotify.success(
-              this.$t('general.lineItemDeleted'),
-              this.$t('alerts.success')
-            )
-            
-            this.cancelExpandedSpendingLineItemDelete()
-          })
+          // Delete from the lineitems
+          this.showLoading = false
+          this.$snotify.success(
+            this.$t('general.lineItemDeleted'),
+            this.$t('alerts.success')
+          )
+
+          this.cancelExpandedSpendingLineItemDelete()
+        })
           .catch(() => {
             this.showLoading = false
             this.$snotify.error(
@@ -1370,7 +1375,7 @@ export default {
             this.cancelExpandedSpendingLineItemDelete()
           })
       }
-    },
+    }
   },
   firestore() {
     return {

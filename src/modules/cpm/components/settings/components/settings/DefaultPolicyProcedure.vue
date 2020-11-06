@@ -1,20 +1,14 @@
 <template>
   <v-card>
     <v-card-text>
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex md12>
+      <v-row>
+        <v-col md="12">
           <v-container
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-select
                   v-model="settings.defaultStandard"
                   clearable
@@ -26,14 +20,11 @@
                     type to search for policies and procedures
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-btn
                   color="blue"
                   outline
@@ -50,11 +41,11 @@
                 >
                   Save
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
-        </v-flex>
-        <v-flex md12>
+        </v-col>
+        <v-col md="12">
           <v-treeview
             v-if="settings.defaultStandard && settings.defaultStandard.files"
             activatable
@@ -109,8 +100,8 @@
           >
             No files found
           </div>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-card>
 </template>

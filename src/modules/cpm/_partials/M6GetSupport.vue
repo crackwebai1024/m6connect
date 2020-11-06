@@ -19,9 +19,9 @@
         class="headline"
         style="background: #006699; color:#fff"
       >
-        <v-layout align-center>
+        <v-row align="center">
           Support Tickets
-        </v-layout>
+        </v-row>
       </v-card-title>
       <v-tabs
         v-model="tab"
@@ -59,8 +59,8 @@
               type="file"
               @change="onFilePicked"
             >
-            <v-layout row>
-              <v-flex xs10>
+            <v-row>
+              <v-col cols="10">
                 <label>Attachments</label>
                 <br>
                 <v-btn
@@ -93,8 +93,8 @@
                     <span>{{ f.name }}</span>
                   </v-chip>
                 </template>
-              </v-flex>
-              <v-flex xs2>
+              </v-col>
+              <v-col cols="2">
                 <template v-if="screenshotTemp === ''">
                   <label>Take a Screenshot</label>
                   <br>
@@ -121,8 +121,8 @@
                     <v-icon>remove_circle</v-icon>
                   </v-btn>
                 </template>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-form>
         </div>
         <div v-show="tab === 1">
@@ -283,7 +283,7 @@ export default {
               }
               this.formData.append('action', 'upload_file')
               this.formData.append('ticket_id', data.data.result.id)
-              
+
               this.axios
                 .post('/ticket/edit/files', this.formData)
                 .then(() => {

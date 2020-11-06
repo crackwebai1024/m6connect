@@ -30,18 +30,14 @@
       </v-card>
     </v-dialog>
     <v-container
+      class="mb-4 pa-0"
       fluid
       grid-list-xs
-      mb-4
-      pa-0
     >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex
+      <v-row>
+        <v-col
           class="list-container"
-          xs12
+          cols="12"
         >
           <v-toolbar
             class="mb-4"
@@ -280,18 +276,15 @@
             v-show="showForm"
             class="list-overlay-cover"
           />
-        </v-flex>
-        <v-flex
+        </v-col>
+        <v-col
           v-show="showForm"
-          xs12
+          cols="12"
         >
           <v-container fluid>
             <v-form on-submit="return false;">
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex md12>
+              <v-row>
+                <v-col md="12">
                   <v-toolbar
                     id="campus-form"
                     class="mb-4"
@@ -301,25 +294,25 @@
                   >
                     <h5>{{ formTitle }}</h5>
                   </v-toolbar>
-                </v-flex>
+                </v-col>
 
-                <v-flex md12>
+                <v-col md="12">
                   <v-text-field
                     v-model="name"
                     color="blue"
                     label="Campus Name"
                   />
-                </v-flex>
+                </v-col>
 
-                <v-flex md12>
+                <v-col md="12">
                   <v-text-field
                     v-model="abbr"
                     color="blue"
                     label="Abbreviation"
                   />
-                </v-flex>
+                </v-col>
 
-                <v-flex md12>
+                <v-col md="12">
                   <div
                     class="theme--light v-input v-input--is-dirty v-input--is-label-active v-text-field"
                   >
@@ -350,23 +343,21 @@
                       </div>
                     </div>
                   </div>
-                </v-flex>
+                </v-col>
 
-                <v-flex md12>
+                <v-col md="12">
                   <v-text-field
                     v-model="entityName"
                     color="blue"
                     label="Entity Name"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="logo.url != ''"
-                row
-                wrap
               >
-                <v-flex md6>
+                <v-col md="6">
                   <v-img
                     aspect-ratio="1"
                     contain
@@ -374,10 +365,10 @@
                     :src="logo.url != '' ? logo.url : ''"
                     width="200px"
                   />
-                </v-flex>
+                </v-col>
 
-                <v-flex
-                  md6
+                <v-col
+                  md="6"
                   style="align-self: center;"
                 >
                   <v-btn
@@ -390,15 +381,13 @@
                       delete
                     </v-icon>
                   </v-btn>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="logo.url == ''"
-                row
-                wrap
               >
-                <v-flex md12>
+                <v-col md="12">
                   <v-btn
                     color="blue"
                     dark
@@ -409,17 +398,14 @@
                       cloud_upload
                     </v-icon>
                   </v-btn>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                row
-                wrap
-              >
+              <v-row>
                 <v-spacer />
-                <v-flex
-                  md3
-                  sm3
+                <v-col
+                  md="3"
+                  sm="3"
                   style="text-align: right;"
                 >
                   <v-btn
@@ -428,10 +414,10 @@
                   >
                     Cancel
                   </v-btn>
-                </v-flex>
-                <v-flex
-                  md3
-                  sm3
+                </v-col>
+                <v-col
+                  md="3"
+                  sm="3"
                   style="text-align: right;"
                 >
                   <v-btn
@@ -444,12 +430,12 @@
                   >
                     Save
                   </v-btn>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-form>
           </v-container>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>

@@ -7,106 +7,102 @@
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">
-        <v-layout
+        <v-row
           v-if="isCreate"
-          align-center
+          align="center"
         >
           Create Commitment Information
-        </v-layout>
-        <v-layout
+        </v-row>
+        <v-row
           v-else
-          align-center
+          align="center"
         >
           Edit Commitment Information
-        </v-layout>
+        </v-row>
       </v-card-title>
 
       <v-card-text :style="{ height: getViewPortHeight }">
         <v-container fluid>
           <v-form ref="form">
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Commitment Number
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-text-field
                   v-model="commitment.number"
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Budget Category
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <budget-category-select
                   :category="$h.dg(commitment, 'budget_category.ref')"
                   :errors="budgetCategoryErrors"
                   @newCategory="setBudgetCategory"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Commitment Type
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-autocomplete
                   v-model="commitment.commit"
                   clearable
                   :items="settings.types"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       From Changes
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-select
                   v-model="commitment.change"
                   clearable
@@ -134,47 +130,45 @@
                     </v-chip>
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Status
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-select
                   v-model="commitment.status"
                   clearable
                   :items="settings.status"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Completion Date
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-menu
                   v-model="dateMenu"
                   :close-on-content-click="false"
@@ -200,44 +194,42 @@
                     @change="dateMenu = false"
                   />
                 </v-menu>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Notes
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-textarea
                   v-model="commitment.notes"
                   color="blue"
                   rows="6"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Files
-                    </v-flex>
-                    <v-flex shrink>
+                    </v-col>
+                    <v-col class="shrink">
                       <v-btn
                         class="mt-0"
                         color="blue"
@@ -259,11 +251,11 @@
                         type="file"
                         @change="detectFiles($event)"
                       >
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-treeview
                   v-model="tree"
                   activatable
@@ -324,8 +316,8 @@
                     </template>
                   </template>
                 </v-treeview>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-form>
         </v-container>
       </v-card-text>
@@ -787,7 +779,7 @@ export default {
         this.lineItem.amount += parseFloat(change.amount)
       })
     },
-    
+
     validateForm() {
       this.formWasValidated = true
       if (!this.$h.dg(this.commitment, 'budget_category.ref')) {
@@ -799,25 +791,25 @@ export default {
         this.$snotify.error('Please fill in all required fields', 'Error')
         return false
       }
-      
+
       return true
     },
-    
+
     save(action) {
       const formIsValid = this.validateForm()
-      if(!formIsValid) {
+      if (!formIsValid) {
         return
       }
-      
+
       if (this.$h.dg(this.commitment, 'budget_category.ref.id')) {
         this.commitment.budget_category.ref = this.getBudgetCategoryRef(this.commitment.budget_category.ref.id)
       } else {
         delete this.commitment.budget_category
       }
-      
-      if(action === 'create') {
+
+      if (action === 'create') {
         this.create()
-      } else if(action === 'udpate') {
+      } else if (action === 'udpate') {
         this.update()
       }
     },
@@ -893,9 +885,9 @@ export default {
         this.submitLoading = true
         this.showLoading = true
 
-        let commitment = this.removeNullAndUndefined(this.commitment)
+        const commitment = this.removeNullAndUndefined(this.commitment)
         commitment.id = this.commitmentId
-        
+
         this.updateCommitment({
           projectId: this.projectId,
           commitment
@@ -938,14 +930,14 @@ export default {
       this.setCodes(category)
     },
     getBudgetCategoryRef(budgetCategoryId) {
-      if(!budgetCategoryId) return 
-      
+      if (!budgetCategoryId) return
+
       return db.collection('settings')
-          .doc(window.Drupal.settings.m6_platform.company_nid)
-          .collection('settings')
-          .doc('budgets')
-          .collection('budget_categories')
-          .doc(budgetCategoryId)
+        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .collection('settings')
+        .doc('budgets')
+        .collection('budget_categories')
+        .doc(budgetCategoryId)
     }
   }
 }

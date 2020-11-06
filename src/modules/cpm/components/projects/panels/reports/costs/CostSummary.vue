@@ -3,25 +3,25 @@
     <div class="summary-table">
       <table class="theme--light v-table">
         <tr>
-          <th class="text-xs-left">
+          <th class="text-left">
             Budget Category
           </th>
-          <th class="text-xs-center">
+          <th class="text-center">
             Budget
           </th>
-          <th class="text-xs-center">
+          <th class="text-center">
             Commitments
           </th>
-          <th class="text-xs-center">
+          <th class="text-center">
             Spending
           </th>
-          <th class="text-xs-center">
+          <th class="text-center">
             Total Allocated
           </th>
-          <th class="text-xs-center">
+          <th class="text-center">
             Changes
           </th>
-          <th class="text-xs-center">
+          <th class="text-center">
             Projected Final Cost
           </th>
           <th class="text-right">
@@ -33,29 +33,29 @@
           v-show="parseFloat(category.budget) > 0 || parseFloat(category.commitmentsTotal) > 0 || parseFloat(category.spendingTotal) > 0 || parseFloat(category.changesTotal) > 0"
           :key="index"
         >
-          <td class="text-xs-left">
+          <td class="text-left">
             {{ category.code ? category.code + ' -' : '' }} {{ category.title }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(category.budget).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(category.commitmentsTotal).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(category.spendingTotal).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
           <td
-            class="text-xs-center"
+            class="text-center"
             :class="{overdraft: category.totalAllocated > category.budget}"
           >
             {{ parseFloat(category.totalAllocated).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(category.changesTotal).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
           <td
-            class="text-xs-center"
+            class="text-center"
             :class="{overdraft: (category.totalAllocated + category.changesTotal) > category.budget}"
           >
             {{ parseFloat(category.totalAllocated + category.changesTotal).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
@@ -65,26 +65,26 @@
           </td>
         </tr>
         <tr style="background: #eee">
-          <td class="text-xs-left">
+          <td class="text-left">
             <strong>Totals</strong>
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(totals.budget).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(totals.commitments).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(totals.spending).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(totals.allocated).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
-          <td class="text-xs-center">
+          <td class="text-center">
             {{ parseFloat(totals.changes).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}
           </td>
           <td
-            class="text-xs-center"
+            class="text-center"
             :class="{overdraft: (totals.allocated + totals.changes) > totals.budget}"
           >
             {{ parseFloat(totals.allocated + totals.changes).toLocaleString('en-US', {style: 'currency', currency: 'USD'}) }}

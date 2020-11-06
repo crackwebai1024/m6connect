@@ -1,9 +1,9 @@
 <template>
-  <v-layout ref="fullscreen">
+  <v-row ref="fullscreen">
     <component
       :is="$route.params.panel"
     />
-  </v-layout>
+  </v-row>
 </template>
 
 <script>

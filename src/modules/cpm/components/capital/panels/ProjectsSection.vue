@@ -6,40 +6,31 @@
         fluid
         grid-list-md
       >
-        <v-layout
-          row
-          wrap
-        >
+        <v-row>
           <v-spacer />
-          <v-flex md3>
+          <v-col md="3">
             <v-text-field
               v-model="search"
               append-icon="search"
               label="Search project"
             />
-          </v-flex>
-        </v-layout>
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex
-            md6
-            sm12
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col
+            md="6"
+            sm="12"
           >
             <v-container
               class="pa-0"
               fluid
               grid-list-md
             >
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex md12>
+              <v-row>
+                <v-col md="12">
                   Projects Added
-                </v-flex>
-                <v-flex md12>
+                </v-col>
+                <v-col md="12">
                   <v-data-table
                     :headers="headers"
                     :items="capitalPlan.projects"
@@ -62,28 +53,25 @@
                       </td>
                     </template>
                   </v-data-table>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
-          </v-flex>
+          </v-col>
 
-          <v-flex
-            md6
-            sm12
+          <v-col
+            md="6"
+            sm="12"
           >
             <v-container
               class="pa-0"
               fluid
               grid-list-md
             >
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex md12>
+              <v-row>
+                <v-col md="12">
                   Projects
-                </v-flex>
-                <v-flex md12>
+                </v-col>
+                <v-col md="12">
                   <v-data-table
                     :headers="headers"
                     :items="filteredProjects"
@@ -106,11 +94,11 @@
                       </td>
                     </template>
                   </v-data-table>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-text>
     <v-card-actions>

@@ -1,10 +1,9 @@
 <template>
   <div>
-    <v-layout
+    <v-row
       class="ma-1"
-      wrap
     >
-      <v-flex shrink>
+      <v-col class="shrink">
         <v-checkbox
           v-model="showPreviewsFY"
           class="ma-1 pa-0"
@@ -12,8 +11,8 @@
           hide-details
           :label="$t('cpm.forecasting.previousFiscalYears')"
         />
-      </v-flex>
-      <v-flex shrink>
+      </v-col>
+      <v-col class="shrink">
         <v-checkbox
           v-model="showFuturesFY"
           class="ma-1 pa-0"
@@ -21,8 +20,8 @@
           hide-details
           :label="$t('cpm.forecasting.futureFiscalYears')"
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <m6-data-table
       v-if="budgetFiscalYear"
       disable-initial-sort
@@ -74,7 +73,7 @@
             <td
               v-for="({ value: previousFiscalYearValue }, index) in previousFiscalYears"
               :key="index + 'previousFiscalYear'"
-              class="text-xs-right"
+              class="text-right"
             >
               <v-tooltip
                 color="white"
@@ -93,29 +92,29 @@
             </td>
           </template>
           <td>
-            <v-layout>
-              <v-flex
+            <v-row>
+              <v-col
                 class="mr-4"
-                xs1
+                cols="1"
               >
                 {{ props.item.index }}
-              </v-flex>
-              <v-flex>
+              </v-col>
+              <v-col>
                 {{ props.item.title }}
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ Math.round(props.item.budgetPercentage) }}%
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ getTaskBudget(props.item) | currency }}
           </td>
 
           <td
             v-for="(month, index) in monthsForForecastsTable"
             :key="index"
-            class="text-xs-right"
+            class="text-right"
           >
             <v-tooltip
               color="white"
@@ -137,7 +136,7 @@
             <td
               v-for="({ value: futureFiscalYearValue }, index) in futureFiscalYears"
               :key="index + 'futureFiscalYear'"
-              class="text-xs-right"
+              class="text-right"
             >
               <v-tooltip
                 color="white"
@@ -166,7 +165,7 @@
             <td
               v-for="(previousFiscalYear, index) in previousFiscalYears"
               :key="index + 'previousFiscalYearFooter'"
-              class="text-xs-right"
+              class="text-right"
             >
               {{ budgets[$h.dg(previousFiscalYear, 'value', '')] | currency }}
             </td>
@@ -175,17 +174,17 @@
           <td class="font-weight-bold">
             {{ $tc('general.total', 2) }}
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ Math.round($h.dg(budgetTotals, 'allTasksPercentage', 0)) }}%
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ budgets[currentFiscalYearValue] | currency }}
           </td>
 
           <td
             v-for="(month, index) in monthsForForecastsTable"
             :key="index + 'monthsForForecastsTable'"
-            class="text-xs-right"
+            class="text-right"
           >
             <v-tooltip
               color="white"
@@ -207,7 +206,7 @@
             <td
               v-for="(futureFiscalYear, index) in futureFiscalYears"
               :key="index + 'futureFiscalYearFooter'"
-              class="text-xs-right"
+              class="text-right"
             >
               {{ budgets[$h.dg(futureFiscalYear, 'value', '')] | currency }}
             </td>

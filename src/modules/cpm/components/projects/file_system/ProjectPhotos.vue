@@ -1,5 +1,5 @@
 <template>
-  <v-layout style="background: #FFF">
+  <v-row style="background: #FFF">
     <input
       v-show="false"
       id="files"
@@ -46,7 +46,7 @@
         cloud_upload
       </v-icon>
     </v-btn>
-    <v-flex xs12>
+    <v-col cols="12">
       <v-card
         class="elevation-0"
         color="white"
@@ -56,20 +56,18 @@
           fluid
           grid-list-sm
         >
-          <v-layout
+          <v-row
             v-if="$h.dg(project, 'files', false)"
-            row
-            wrap
           >
-            <v-flex
+            <v-col
               v-for="(item, index) in $h
                 .dg(project, 'files.4.children.5.children', [])
                 .filter(
                   ({ file }) => file === 'image/png' || file === 'image/jpeg'
                 )"
               :key="index"
-              d-flex
-              xs6
+              class="d-flex"
+              cols="6"
             >
               <v-card
                 class="d-flex"
@@ -82,28 +80,25 @@
                   :lazy-src="item.url"
                   :src="item.url"
                 >
-                  <v-layout
+                  <v-row
                     slot="placeholder"
-                    align-center
-                    fill-height
-                    justify-center
-                    ma-0
+                    align="center"
+                    class="fill-height ma-0"
+                    justify="center"
                   >
                     <v-progress-circular
                       color="grey lighten-5"
                       indeterminate
                     />
-                  </v-layout>
-                  <v-layout
+                  </v-row>
+                  <v-row
                     v-if="selectedImages.indexOf(item) > -1"
-                    class="lightbox white--text"
+                    class="fill-height lightbox pa-2 white--text"
                     column
-                    fill-height
-                    pa-2
                     style="background: rgba(0,0,0,.5)"
                   >
                     <v-spacer />
-                    <v-flex shrink>
+                    <v-col class="shrink">
                       <v-checkbox
                         v-for="(tag, indexT) in settings.tags"
                         :key="indexT"
@@ -126,16 +121,14 @@
                           check
                         </v-icon>
                       </v-btn>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout
+                    </v-col>
+                  </v-row>
+                  <v-row
                     v-else
-                    class="lightbox white--text"
+                    class="fill-height lightbox pa-2 white--text"
                     column
-                    fill-height
-                    pa-2
                   >
-                    <div class="text-xs-left">
+                    <div class="text-left">
                       <v-btn
                         color="red"
                         dark
@@ -160,7 +153,7 @@
                       </v-chip>
                     </div>
                     <v-spacer />
-                    <v-flex shrink>
+                    <v-col class="shrink">
                       <v-chip
                         v-for="(tag, indexT) in item.tags"
                         :key="indexT"
@@ -181,15 +174,15 @@
                           label
                         </v-icon>
                       </v-btn>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </v-img>
               </v-card>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-card>
-    </v-flex>
+    </v-col>
 
     <m6-confirm-delete
       :message="
@@ -207,7 +200,7 @@
       @close="modalDestination=false"
       @onDestinationSelected="closeDestination"
     />
-  </v-layout>
+  </v-row>
 </template>
 
 <script>

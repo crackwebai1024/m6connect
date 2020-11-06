@@ -1,12 +1,12 @@
 <template>
   <div>
-    <v-flex xs12>
+    <v-col cols="12">
       <v-checkbox
         v-model="settings.fyProposedSpend20"
         label="Proposed Spend FY 20"
         @change="saveFYApproved"
       />
-    </v-flex>
+    </v-col>
 
     <v-card>
       <v-card-title style="position:relative">
@@ -32,7 +32,7 @@
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 <v-btn
                   flat
                   icon

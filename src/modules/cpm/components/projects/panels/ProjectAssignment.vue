@@ -4,22 +4,28 @@
     toolbar-color="#02a7f0"
   >
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
-          <a 
+          <a
             class="pointer pr-1"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/project-assignment'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat dark>
+            <v-icon
+              dark
+              flat
+            >
               launch
             </v-icon>
           </a>
         </template>
         <span>{{ $t('general.openNewTab') }}</span>
       </v-tooltip>
-      
+
       <v-icon
         class="cursor"
         dark
@@ -51,39 +57,34 @@
       grid-list-md
     >
       <template v-for="(teamMember, index) in teamMembers">
-        <v-layout
+        <v-row
           :key="teamMember.value + 'data' + index"
-          align-center
-          row
-          wrap
+          align="center"
         >
-          <v-flex md1>
+          <v-col md="1">
             <v-avatar size="30">
               <img :src="getAvatar(teamMember)">
             </v-avatar>
-          </v-flex>
-          <v-flex md6>
+          </v-col>
+          <v-col md="6">
             <v-container
               class="pa-0"
               fluid
               grid-list-md
             >
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex md12>
+              <v-row>
+                <v-col md="12">
                   {{ teamMember.user }}
-                </v-flex>
-                <v-flex md12>
+                </v-col>
+                <v-col md="12">
                   {{ teamMember.email }}
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
-          </v-flex>
-          <v-flex
+          </v-col>
+          <v-col
             v-if="teamMember.type === 'manager'"
-            md5
+            md="5"
           >
             <v-chip
               color="primary"
@@ -91,10 +92,10 @@
             >
               Project Manager
             </v-chip>
-          </v-flex>
-          <v-flex
+          </v-col>
+          <v-col
             v-else
-            md5
+            md="5"
           >
             <v-chip
               :style="getStyleColor(teamMember)"
@@ -102,8 +103,8 @@
             >
               Team Member
             </v-chip>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </template>
     </v-container>
 
@@ -126,11 +127,8 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-autocomplete
                   v-if="roles && projectManager"
                   v-model="editDraft.manager"
@@ -147,8 +145,8 @@
                     type to search users..
                   </template>
                 </v-autocomplete>
-              </v-flex>
-              <v-flex md12>
+              </v-col>
+              <v-col md="12">
                 <v-autocomplete
                   id="teamMembers"
                   clearable
@@ -178,8 +176,8 @@
                     </div>
                   </template>
                 </v-autocomplete>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
@@ -349,7 +347,7 @@ export default {
   },
 
   watch: {
-    project: function(newVal) {
+    project: function (newVal) {
       this.editDraft = { ...newVal }
     },
     roleUsers: function () {

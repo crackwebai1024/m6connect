@@ -24,7 +24,7 @@
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 <v-icon
                   class="ml-0 mr-2 pointer"
                   color="#757575"
@@ -57,9 +57,9 @@
     >
       <v-card class="mt-2">
         <v-card-title class="customBackground headline">
-          <v-layout align-center>
+          <v-row align="center">
             Changes Status
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">

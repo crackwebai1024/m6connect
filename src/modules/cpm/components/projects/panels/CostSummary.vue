@@ -1,7 +1,7 @@
 <template>
-  <v-flex
+  <v-col
     class="cpm-panel"
-    xs12
+    cols="12"
   >
     <v-card class="elevation-0">
       <v-card-text>
@@ -80,7 +80,7 @@
         </div>
       </v-card-text>
     </v-card>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>

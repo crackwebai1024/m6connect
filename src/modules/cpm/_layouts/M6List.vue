@@ -1,13 +1,13 @@
 <template>
   <v-container>
-    <v-layout align-center>
+    <v-row align="center">
       <!-- Must be v-flex -->
       <slot name="before:search" />
 
       <v-spacer />
-      <v-flex
+      <v-col
         id="step3"
-        xs3
+        cols="3"
       >
         <v-text-field
           id="search"
@@ -17,20 +17,20 @@
           :value="search"
           @input="onInputSearch"
         />
-      </v-flex>
+      </v-col>
 
       <!-- Must be v-flex -->
       <slot name="after:search" />
       <slot name="after:search:btn" />
-    </v-layout>
+    </v-row>
 
-    <v-layout>
+    <v-row>
       <template v-if="!withoutResults">
         <slot />
       </template>
 
       <m6-no-results v-else-if="!loading" />
-    </v-layout>
+    </v-row>
 
     <m6-loading :loading="loading" />
   </v-container>

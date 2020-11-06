@@ -7,61 +7,59 @@
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">
-        <v-layout
+        <v-row
           v-if="isCreate"
-          align-center
+          align="center"
         >
           Create Commitment Line Item
-        </v-layout>
-        <v-layout
+        </v-row>
+        <v-row
           v-else
-          align-center
+          align="center"
         >
           Edit Commitment Line Item
-        </v-layout>
+        </v-row>
       </v-card-title>
 
       <v-card-text>
         <v-container fluid>
           <v-form ref="form">
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Title
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-text-field
                   v-model="lineItem.title"
                   color="blue"
                   :rules="titleRules"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Vendor
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-autocomplete
                   v-model="lineItem.vendor"
                   clearable
@@ -84,282 +82,269 @@
                     {{ item.title }}
                   </template>
                 </v-autocomplete>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Commitment Account
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-text-field v-model="lineItem.account" />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Line number
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-text-field
                   v-model="lineItem.line_number"
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Fiscal year
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-text-field
                   v-model="lineItem.fiscal_year"
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Amount
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money
                   v-model="lineItem.amount"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Cost per item
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money
                   v-model="lineItem.cost_per_item"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Invoice total
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money
                   v-model="lineItem.invoiceTotal"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Quantity
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money v-model="lineItem.quantity" />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Quantity amount
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money
                   v-model="lineItem.quantity_amount"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Tax amount
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money
                   v-model="lineItem.tax_amount"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Total open amount with tax
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money
                   v-model="lineItem.total_open_amount_w_tax"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Total PO line amount
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <money
                   v-model="lineItem.total_po_line_amount"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Description
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-textarea
                   v-model="lineItem.description"
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Start Date
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-menu
                   v-model="startDateMenu"
                   :close-on-content-click="false"
@@ -385,24 +370,23 @@
                     @change="setStartDate"
                   />
                 </v-menu>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Delivery Date
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
+              </v-col>
+              <v-col cols="7">
                 <v-menu
                   v-model="deliveryDateMenu"
                   :close-on-content-click="false"
@@ -428,8 +412,8 @@
                     @change="setDeliveryDate"
                   />
                 </v-menu>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-form>
         </v-container>
       </v-card-text>
@@ -534,8 +518,8 @@ export default {
       }
     },
     commitmentRef() {
-      if(!this.projectRef || !this.commitmentId) return 
-      
+      if (!this.projectRef || !this.commitmentId) return
+
       return this.projectRef
         .collection('commitments')
         .doc(this.commitmentId + '')
@@ -580,7 +564,7 @@ export default {
         return
       }
       this.showLoading = true
-      
+
       this.createLineItem({
         projectRef: this.projectRef,
         commitmentRef: this.commitmentRef,

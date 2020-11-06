@@ -1,23 +1,23 @@
 <template>
   <div v-if="$h.dg(selectedFiscalYear, 'value') && tasksWithPositiveAmount.length">
-    <v-layout wrap>
-      <v-flex shrink>
+    <v-row>
+      <v-col class="shrink">
         <v-checkbox
           v-model="showPreviewsFY"
           color="blue-grey darken-1"
           hide-details
           :label="$t('cpm.forecasting.previousFiscalYears')"
         />
-      </v-flex>
-      <v-flex shrink>
+      </v-col>
+      <v-col class="shrink">
         <v-checkbox
           v-model="showFuturesFY"
           color="light-blue darken-2"
           hide-details
           :label="$t('cpm.forecasting.futureFiscalYears')"
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <m6-data-table
       disable-initial-sort
       :expand="true"
@@ -81,19 +81,19 @@
             <td
               v-for="({ value: previousFiscalYearValue }, index) in previousFiscalYears"
               :key="index + 'previousFiscalYear'"
-              class="text-xs-right"
+              class="text-right"
             >
               {{ $h.dg(props.item, `forecast.totals.${previousFiscalYearValue}.${props.item.fyValue}`, 0) | currency }}
             </td>
           </template>
-          <td class="text-xs-left">
+          <td class="text-left">
             <span class="font-weight-bold">{{ props.item.title }}</span><br>
             <span class="caption">{{ $t('cpm.projects.budgetCategories') }}: {{ objectArrayToString(props.item.budgetCategories, 'code') }}</span>
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ Math.round(props.item.budgetPercentage) }}%
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ $h.dg(props.item, 'budget') | currency }}
           </td>
 
@@ -134,7 +134,7 @@
             <td
               v-for="({ value: futureFiscalYearValue }, index) in futureFiscalYears"
               :key="index + 'futureFiscalYear'"
-              class="text-xs-right"
+              class="text-right"
             >
               {{ $h.dg(props.item, `forecast.totals.${futureFiscalYearValue}.${props.item.fyValue}`, 0) | currency }}
             </td>
@@ -150,7 +150,7 @@
             <td
               v-for="(previousFiscalYear, index) in previousFiscalYears"
               :key="index + 'previousFiscalYearFooter'"
-              class="text-xs-right"
+              class="text-right"
             >
               {{ budgetsByFiscalYear[$h.dg(previousFiscalYear, 'value', '')] | currency }}
             </td>
@@ -159,10 +159,10 @@
           <td class="font-weight-bold">
             {{ $tc('general.total', 2) }}
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ Math.round($h.dg(budgetTaskTotals, 'allTasksPercentage', 0)) }}%
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ getTotalBudgetAmount() | currency }}
           </td>
 
@@ -193,7 +193,7 @@
             <td
               v-for="(futureFiscalYear, index) in futureFiscalYears"
               :key="index + 'futureFiscalYearFooter'"
-              class="text-xs-right"
+              class="text-right"
             >
               {{ budgetsByFiscalYear[$h.dg(futureFiscalYear, 'value', '')] | currency }}
             </td>

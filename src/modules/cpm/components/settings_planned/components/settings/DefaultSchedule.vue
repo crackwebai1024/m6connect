@@ -32,10 +32,10 @@
     </template>
 
     <v-container class="pt-0">
-      <v-layout>
-        <v-flex
+      <v-row>
+        <v-col
           class="list-container"
-          xs12
+          cols="12"
         >
           <v-toolbar
             class="mb-4"
@@ -165,7 +165,7 @@
               </v-expansion-panel-content>
             </draggable>
           </v-expansion-panel>
-        </v-flex>
+        </v-col>
 
         <v-dialog
           v-model="showForm"
@@ -175,16 +175,13 @@
         >
           <v-card class="pb-2">
             <v-card-text>
-              <v-flex xs12>
+              <v-col cols="12">
                 <v-container
                   fluid
                   grid-list-md
                 >
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex md12>
+                  <v-row>
+                    <v-col md="12">
                       <v-toolbar
                         id="budget-cost-duration-form"
                         class="mb-4"
@@ -195,27 +192,21 @@
                       >
                         <h5>{{ formTitle }}</h5>
                       </v-toolbar>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
 
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex md12>
+                  <v-row>
+                    <v-col md="12">
                       <v-text-field
                         v-model="name"
                         color="blue"
                         label="Task Name"
                       />
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
 
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex md4>
+                  <v-row>
+                    <v-col md="4">
                       <v-btn
                         outline
                         @click="showColor = !showColor"
@@ -229,47 +220,42 @@
                           brightness_1
                         </v-icon>
                       </v-btn>
-                    </v-flex>
+                    </v-col>
 
-                    <v-flex
+                    <v-col
                       v-show="showColor"
-                      md4
+                      md="4"
                     >
                       <chrome-picker v-model="color" />
-                    </v-flex>
-                    <v-flex md4>
+                    </v-col>
+                    <v-col md="4">
                       <v-checkbox
                         v-model="displaySubTasks"
                         label="Display Sub Tasks on Forecasts"
                       />
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
 
-                  <v-layout
+                  <v-row
                     v-show="action !== 'new' && action !== 'add'"
-                    row
-                    wrap
                   >
-                    <v-flex md12>
+                    <v-col md="12">
                       <v-container
                         class="pa-0"
                         fluid
                         grid-list-md
                       >
-                        <v-layout
-                          row
-                          wrap
-                        >
-                          <v-flex
+                        <v-row>
+                          <v-col
                             class="title"
-                            md4
-                            sm12
+                            md="4"
+                            sm="12"
                           >
                             Schedule Types
-                          </v-flex>
-                          <v-flex
-                            md4
-                            sm12
+                          </v-col>
+                          <v-col
+                            md="4"
+                            sm="12"
                           >
                             <v-btn
                               color="blue"
@@ -279,36 +265,28 @@
                             >
                               <v-icon>add</v-icon>
                             </v-btn>
-                          </v-flex>
-                        </v-layout>
+                          </v-col>
+                        </v-row>
 
-                        <v-layout
+                        <v-row
                           v-show="ganttDialog"
                           class="modal-gantt"
-                          row
-                          wrap
                         >
-                          <v-flex md12>
+                          <v-col md="12">
                             <v-container
                               fluid
                               grid-list-md
                             >
-                              <v-layout
-                                row
-                                wrap
-                              >
-                                <v-flex
+                              <v-row>
+                                <v-col
                                   class="title"
-                                  md12
+                                  md="12"
                                 >
                                   {{ ganttModal.title }}
-                                </v-flex>
-                              </v-layout>
-                              <v-layout
-                                row
-                                wrap
-                              >
-                                <v-flex md12>
+                                </v-col>
+                              </v-row>
+                              <v-row>
+                                <v-col md="12">
                                   Select a Schedule Type
                                   <v-select
                                     v-model="ganttModal.gantt"
@@ -317,36 +295,27 @@
                                     label="name"
                                     return-object
                                   />
-                                </v-flex>
-                              </v-layout>
-                              <v-layout
-                                row
-                                wrap
-                              >
+                                </v-col>
+                              </v-row>
+                              <v-row>
                                 <v-text-field
                                   v-model="ganttModal.duration"
                                   label="Duration"
                                 />
-                              </v-layout>
-                              <v-layout
-                                row
-                                wrap
-                              >
-                                <v-flex md12>
+                              </v-row>
+                              <v-row>
+                                <v-col md="12">
                                   Fiscal Year
                                   <v-select
                                     v-model="ganttModal.budgetFiscalYear"
                                     label="name"
                                     :options="fiscalYears"
                                   />
-                                </v-flex>
-                              </v-layout>
+                                </v-col>
+                              </v-row>
 
-                              <v-layout
-                                row
-                                wrap
-                              >
-                                <v-flex md12>
+                              <v-row>
+                                <v-col md="12">
                                   <budget-category-select
                                     :category="
                                       $h.dg(ganttModal, 'budgetCategories', [])
@@ -354,25 +323,19 @@
                                     multiple
                                     @newCategory="setBudgetCategory"
                                   />
-                                </v-flex>
-                              </v-layout>
+                                </v-col>
+                              </v-row>
 
-                              <v-layout
-                                row
-                                wrap
-                              >
+                              <v-row>
                                 <v-text-field
                                   v-model="ganttModal.budgetPercentage"
                                   label="Budget Percentage %"
                                 />
-                              </v-layout>
-                              <v-layout
-                                row
-                                wrap
-                              >
-                                <v-flex
-                                  md4
-                                  sm12
+                              </v-row>
+                              <v-row>
+                                <v-col
+                                  md="4"
+                                  sm="12"
                                 >
                                   <v-btn
                                     color="blue"
@@ -381,10 +344,10 @@
                                   >
                                     Cancel
                                   </v-btn>
-                                </v-flex>
-                                <v-flex
-                                  md5
-                                  sm12
+                                </v-col>
+                                <v-col
+                                  md="5"
+                                  sm="12"
                                 >
                                   <v-btn
                                     color="blue"
@@ -393,18 +356,16 @@
                                   >
                                     Save Gantt
                                   </v-btn>
-                                </v-flex>
-                              </v-layout>
+                                </v-col>
+                              </v-row>
                             </v-container>
-                          </v-flex>
-                        </v-layout>
+                          </v-col>
+                        </v-row>
 
-                        <v-layout
+                        <v-row
                           v-show="!ganttDialog"
-                          row
-                          wrap
                         >
-                          <v-flex md12>
+                          <v-col md="12">
                             <v-data-table
                               :headers="headers"
                               hide-actions
@@ -435,26 +396,24 @@
                                 </td>
                               </template>
                             </v-data-table>
-                          </v-flex>
-                        </v-layout>
+                          </v-col>
+                        </v-row>
                       </v-container>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
 
-                  <v-layout
+                  <v-row
                     v-show="!ganttDialog"
-                    row
-                    wrap
                   >
-                    <v-flex md4>
+                    <v-col md="4">
                       <v-btn
                         :disabled="loading"
                         @click="cancel"
                       >
                         Cancel
                       </v-btn>
-                    </v-flex>
-                    <v-flex md4>
+                    </v-col>
+                    <v-col md="4">
                       <v-btn
                         color="blue"
                         dark
@@ -464,14 +423,14 @@
                       >
                         Save
                       </v-btn>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </v-container>
-              </v-flex>
+              </v-col>
             </v-card-text>
           </v-card>
         </v-dialog>
-      </v-layout>
+      </v-row>
     </v-container>
   </component-template>
 </template>
@@ -882,20 +841,18 @@ export default {
     },
 
     setBudgetCategory(categories) {
-      const formattedCategories = categories.map(category => {
-        return {
-          id: this.$h.dg(category, 'id'),
-          name: this.$h.dg(category, 'name', 'Undefined'),
-          contingency: this.$h.dg(category, 'contingency', false),
-          ref: this.getBudgetCategoryRef(category.id),
-          code: this.$h.dg(category, 'code', 'Undefined')
-        }
-      })
+      const formattedCategories = categories.map(category => ({
+        id: this.$h.dg(category, 'id'),
+        name: this.$h.dg(category, 'name', 'Undefined'),
+        contingency: this.$h.dg(category, 'contingency', false),
+        ref: this.getBudgetCategoryRef(category.id),
+        code: this.$h.dg(category, 'code', 'Undefined')
+      }))
       this.ganttModal.budgetCategories = formattedCategories
     },
     getBudgetCategoryRef(id) {
-      if(!id) return ''
-      
+      if (!id) return ''
+
       return db
         .collection('settings')
         .doc(window.Drupal.settings.m6_platform.company_nid)

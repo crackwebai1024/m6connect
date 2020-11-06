@@ -16,7 +16,7 @@
     </v-card-title>
 
     <v-card-text class="card-container">
-      <div class="text-xs-center">
+      <div class="text-center">
         <v-progress-circular
           v-show="loading"
           color="primary"
@@ -31,8 +31,8 @@
           :key="index"
           style="padding: 7px 0px 7px 0px;"
         >
-          <v-layout align-center>
-            <v-flex xs11>
+          <v-row align="center">
+            <v-col cols="11">
               <span class="dependency-details">
                 <p
                   class="mb-0"
@@ -43,11 +43,11 @@
                   style="font-size: 12px;"
                 >{{ standard.exhibit }}</p>
               </span>
-            </v-flex>
+            </v-col>
 
-            <v-flex
+            <v-col
               class="justify-end"
-              md1
+              md="1"
               style="height: 45px;"
             >
               <v-btn
@@ -58,8 +58,8 @@
               >
                 <v-icon>folder</v-icon>
               </v-btn>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
           <v-divider />
         </div>
       </template>
@@ -89,19 +89,16 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
+            <v-row>
+              <v-col
                 v-if="!selectedPolicy.files || (selectedPolicy.files && selectedPolicy.files.length <= 0)"
-                md12
+                md="12"
               >
                 No files
-              </v-flex>
-              <v-flex
+              </v-col>
+              <v-col
                 v-if="selectedPolicy.files && selectedPolicy.files.length > 0"
-                md12
+                md="12"
               >
                 <v-treeview
                   v-model="selectedPolicy.tree"
@@ -149,8 +146,8 @@
                     </template>
                   </template>
                 </v-treeview>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
 

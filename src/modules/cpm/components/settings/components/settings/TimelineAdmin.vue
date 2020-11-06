@@ -107,7 +107,7 @@
             />
           </v-card-text>
 
-          
+
           <v-checkbox
             v-model="type"
             :false-value="''"

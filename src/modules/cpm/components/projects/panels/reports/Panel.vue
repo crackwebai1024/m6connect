@@ -18,23 +18,20 @@
 
     <v-card-text class="pa-0">
       <v-container
-        class="check-options-container"
+        class="check-options-container pa-0"
         grid-list-xs
-        pa-0
         style="width: 100%;"
       >
-        <v-layout
-          justify-space-between
-          row
-          wrap
+        <v-row
+          justify="space-between"
         >
-          <v-flex
+          <v-col
             class="steps-label"
-            md3
+            md="3"
           >
             1. Select a project
-          </v-flex>
-          <v-flex md9>
+          </v-col>
+          <v-col md="9">
             <v-card flat>
               <v-card-text>
                 <label>Choose Project(s)</label>
@@ -78,20 +75,17 @@
                 </v-btn>
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex
+        <v-row>
+          <v-col
             class="steps-label"
-            md3
+            md="3"
           >
             2. Select attributes
-          </v-flex>
-          <v-flex md4>
+          </v-col>
+          <v-col md="4">
             <v-card flat>
               <v-card-text>
                 <label>{{ appLabel.singular }} Manager</label>
@@ -131,8 +125,8 @@
                 </v-btn>
               </v-card-text>
             </v-card>
-          </v-flex>
-          <v-flex md5>
+          </v-col>
+          <v-col md="5">
             <v-card flat>
               <v-card-text>
                 <label>Campus</label>
@@ -172,14 +166,11 @@
                 </v-btn>
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
-        <v-layout
-          row
-          wrap
-        >
+          </v-col>
+        </v-row>
+        <v-row>
           <v-spacer md3 />
-          <v-flex md4>
+          <v-col md="4">
             <v-card flat>
               <v-card-text>
                 <label>Project Types</label>
@@ -214,8 +205,8 @@
                 </v-btn>
               </v-card-text>
             </v-card>
-          </v-flex>
-          <v-flex md5>
+          </v-col>
+          <v-col md="5">
             <v-card flat>
               <v-card-text>
                 <label>Project Status</label>
@@ -243,30 +234,28 @@
                 </v-btn>
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-layout
-          align-center
-          row
-          wrap
+        <v-row
+          align="center"
         >
           <v-spacer />
-          <v-flex
+          <v-col
             class="pl-3"
-            md3
+            md="3"
           >
             <v-checkbox
               v-model="selectAMonth"
               label="Filter Comments by Month"
             />
-          </v-flex>
+          </v-col>
           <v-spacer v-show="!selectAMonth" />
           <v-spacer v-show="!selectAMonth" />
 
-          <v-flex
+          <v-col
             v-show="selectAMonth"
-            md3
+            md="3"
           >
             <v-card flat>
               <v-card-text>
@@ -279,10 +268,10 @@
                 />
               </v-card-text>
             </v-card>
-          </v-flex>
-          <v-flex
+          </v-col>
+          <v-col
             v-show="selectAMonth"
-            md3
+            md="3"
           >
             <v-card flat>
               <v-card-text>
@@ -293,25 +282,23 @@
                 />
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
-        <v-layout
-          align-center
-          row
-          wrap
+        <v-row
+          align="center"
         >
-          <v-flex md3 />
-          <v-flex
+          <v-col md="3" />
+          <v-col
             class="pl-3"
-            md3
+            md="3"
           >
             <v-checkbox
               v-model="selectFiscalYear"
               label="Filter by Fiscal Year"
             />
-          </v-flex>
-          <v-flex
+          </v-col>
+          <v-col
             v-show="selectFiscalYear"
             class="md3"
           >
@@ -333,22 +320,20 @@
                 type to search users..
               </template>
             </v-select>
-          </v-flex>
+          </v-col>
           <v-spacer />
-        </v-layout>
-        <v-layout
-          align-center
-          row
-          wrap
+        </v-row>
+        <v-row
+          align="center"
         >
-          <v-flex
+          <v-col
             class="steps-label"
-            md3
+            md="3"
           >
             3. Choose a report type
-          </v-flex>
+          </v-col>
 
-          <v-flex md3>
+          <v-col md="3">
             <v-card flat>
               <v-card-text>
                 <label>Choose Report</label>
@@ -361,9 +346,9 @@
                 />
               </v-card-text>
             </v-card>
-          </v-flex>
+          </v-col>
 
-          <v-flex md1>
+          <v-col md="1">
             <v-btn
               class="mt-4"
               color="blue lighten-2"
@@ -376,22 +361,19 @@
                 edit
               </v-icon>
             </v-btn>
-          </v-flex>
-          <v-flex md3>
+          </v-col>
+          <v-col md="3">
             <v-switch
               v-model="showSchedule"
               color="blue lighten-2"
               label="Show Schedule Table"
             />
-          </v-flex>
-        </v-layout>
-        <v-layout
-          row
-          wrap
-        >
+          </v-col>
+        </v-row>
+        <v-row>
           <template v-if="showSectionOptions">
             <v-spacer />
-            <v-flex md3>
+            <v-col md="3">
               <v-card
                 flat
                 style="border-left: 1px solid #808080"
@@ -420,8 +402,8 @@
                   />
                 </v-card-text>
               </v-card>
-            </v-flex>
-            <v-flex md3>
+            </v-col>
+            <v-col md="3">
               <v-card
                 class="mt-5"
                 flat
@@ -444,8 +426,8 @@
                   />
                 </v-card-text>
               </v-card>
-            </v-flex>
-            <v-flex md3>
+            </v-col>
+            <v-col md="3">
               <v-card
                 class="mt-5"
                 flat
@@ -468,20 +450,17 @@
                   />
                 </v-card-text>
               </v-card>
-            </v-flex>
+            </v-col>
           </template>
-        </v-layout>
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex
+        </v-row>
+        <v-row>
+          <v-col
             class="steps-label"
-            md3
+            md="3"
           >
             4. Export
-          </v-flex>
-          <v-flex md9>
+          </v-col>
+          <v-col md="9">
             <v-btn
               color="blue"
               dark
@@ -499,8 +478,8 @@
             >
               Preview Report
             </v-btn>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-text>
 
@@ -547,28 +526,22 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
+            <v-row>
+              <v-col
                 class="title"
-                md12
+                md="12"
               >
                 Schedule
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="12">
                 <div
                   ref="forecastedGantt"
                   style="height:500px;"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card>
       </v-dialog>

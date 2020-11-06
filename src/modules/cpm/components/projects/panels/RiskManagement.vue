@@ -10,7 +10,7 @@
       </v-icon>
     </template>
 
-    <div class="text-xs-center">
+    <div class="text-center">
       <v-progress-circular
         v-show="loading"
         color="primary"
@@ -25,8 +25,8 @@
         :key="index"
         style="padding: 7px 0px 7px 0px;"
       >
-        <v-layout align-center>
-          <v-flex xs10>
+        <v-row align="center">
+          <v-col cols="10">
             <span class="dependency-details">
               <p
                 class="mb-0"
@@ -41,9 +41,9 @@
                 Score: {{ risk.riskScore }}
               </p>
             </span>
-          </v-flex>
+          </v-col>
 
-          <td class="text-xs-right">
+          <td class="text-right">
             <v-icon
               class="ml-0 mr-1"
               color="#757575"
@@ -65,7 +65,7 @@
               delete
             </v-icon>
           </td>
-        </v-layout>
+        </v-row>
         <v-divider />
       </div>
     </template>
@@ -96,41 +96,35 @@
             fluid
             grid-list-md
           >
-            <v-layout wrap>
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-textarea
                   v-model="dialogProperties.issue"
                   label="Issue"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="12">
                 <v-textarea
                   v-model="dialogProperties.factors"
                   label="Factors"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="dialogProperties.riskScore"
                   label="Risk Score"
                 />
-              </v-flex>
-              <v-flex
-                md6
-                sm12
+              </v-col>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-select
                   v-model="dialogProperties.color"
@@ -157,20 +151,17 @@
                     </v-icon>
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="12"
                 style="min-height:140px;"
               >
                 <span class="label-select">Sharp's Mitigation</span>
                 <tiptap ref="tiptap" />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-divider />

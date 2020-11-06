@@ -6,11 +6,11 @@
   >
     <v-card class="contract-create-modal">
       <v-card-title class="headline">
-        <v-layout class="ml-2">
+        <v-row class="ml-2">
           Create Project
-        </v-layout>
+        </v-row>
       </v-card-title>
-      <v-layout
+      <v-row
         class="elevation-0"
         style="background-color: #0277BD;"
       >
@@ -33,48 +33,46 @@
             <v-divider />
           </v-stepper-header>
         </v-stepper>
-      </v-layout>
+      </v-row>
       <v-card-text style="height: 60vh;overflow: auto;">
         <v-container fluid>
           <v-form ref="cpmCreationFrom">
             <div v-if="step === 1">
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Project Title
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-text-field
                     v-model="project.title"
                     color="blue"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Campus
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-select
                     v-model="project.campus"
                     clearable
@@ -83,25 +81,24 @@
                     return-object
                     :rules="campusRules"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="users && users.projectManager"
-                align-center
-                justify-center
-                row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Project Manager
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-select
                     v-model="project.manager"
                     clearable
@@ -113,80 +110,77 @@
                       type to search users..
                     </template>
                   </v-select>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Capital Type
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-select
                     v-model="project.capitalType"
                     clearable
                     :items="settings.capitalType"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Budget Status
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-select
                     v-model="project.status"
                     clearable
                     :items="settings.status"
-                    @input="validateBudget"
                     :rules="statusRules"
+                    @input="validateBudget"
                   >
                     <template slot="no-data">
                       type to search status..
                     </template>
                   </v-select>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="
                   project.status === 'Forecasted' ||
                     project.status === 'Fully Funded'
                 "
-                align-center
-                justify-center
-                row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shink>
+                    <v-row>
+                      <v-col class="shink">
                         Fiscal Year
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-select
                     v-model="project.fiscalYear"
                     clearable
@@ -195,25 +189,24 @@
                     return-object
                     @input="validateBudget"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="project.fiscalYear"
-                align-center
-                justify-center
-                row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Start Date
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-menu
                     ref="menu1"
                     v-model="startDatePicker"
@@ -243,25 +236,24 @@
                     />
                     <!-- finish the edit modal and hook it up -->
                   </v-menu>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="project.fiscalYear"
-                align-center
-                justify-center
-                row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         End Date
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-menu
                     ref="menu2"
                     v-model="endDatePicker"
@@ -290,16 +282,15 @@
                       @input="endDatePicker = false"
                     />
                   </v-menu>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="project.fiscalYear"
-                align-center
-                justify-center
-                row
+                align="center"
+                justify="center"
               >
-                <v-flex xs10>
+                <v-col cols="10">
                   <h3>Budgets</h3>
                   <v-data-table
                     class="elevation-1"
@@ -332,40 +323,39 @@
                   </v-data-table>
 
                   <span />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
+              <v-row
                 v-if="project.fiscalYear"
-                align-center
-                justify-center
-                row
+                align="center"
+                justify="center"
               >
-                <v-flex xs3>
+                <v-col cols="3">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Total Plan Budget
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <money
                     v-model="totalPlanBudget"
                     v-bind="money"
                     color="blue"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </div>
           </v-form>
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-layout>
-          <v-flex xs8 />
-          <v-flex xs4>
+        <v-row>
+          <v-col cols="8" />
+          <v-col cols="4">
             <v-btn
               flat
               @click="$emit('close')"
@@ -378,8 +368,8 @@
             >
               create
             </v-btn>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-actions>
     </v-card>
     <m6-loading :loading="showLoading" />

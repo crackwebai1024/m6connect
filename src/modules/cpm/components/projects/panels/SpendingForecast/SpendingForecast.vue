@@ -61,7 +61,7 @@
       v-if="budget && startDate && endDate"
       @generateForecast="generateForecast"
     />
-    <forecasting-table></forecasting-table>
+    <forecasting-table />
   </m6-card-dialog>
 </template>
 
@@ -374,7 +374,7 @@ export default {
               ...item.data(),
               id: item.id
             }
-            
+
             let paidDate = 'date-not-found'
             if (spending.paidDateText) {
               paidDate = this.$moment(spending.paidDateText).format('YYYY-MM')

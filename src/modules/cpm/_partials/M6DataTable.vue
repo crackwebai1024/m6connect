@@ -1,5 +1,5 @@
 <script>
-  import { debounce } from 'lodash'
+import { debounce } from 'lodash'
 
 import { getObjectValueByPath } from 'vuetify/lib/util/helpers'
 
@@ -63,25 +63,25 @@ export default {
 
   methods: {
     setHeadersSize: debounce(function () {
-        if (this.hasMounted) {
-          const nodes = this.$el.querySelectorAll('thead tr:not(.v-datatable__progress)')
-          const row = nodes[nodes.length - 1]
+      if (this.hasMounted) {
+        const nodes = this.$el.querySelectorAll('thead tr:not(.v-datatable__progress)')
+        const row = nodes[nodes.length - 1]
 
-          this.headers.map((item, index) => {
-            if (item.fixed) {
-              const th = row.children[index]
-              this.headersWidth[index] = th.offsetWidth
+        this.headers.map((item, index) => {
+          if (item.fixed) {
+            const th = row.children[index]
+            this.headersWidth[index] = th.offsetWidth
 
-              if (!th.hasAttribute('column-header')) {
-                this.$nextTick(() => this.setColumnHeaderMissedProps(th, index))
-              }
-
-              if (this.hasFooter) {
-                this.$nextTick(() => this.setColumnHeaderMissedProps(this.tFooter.children[index], index))
-              }
+            if (!th.hasAttribute('column-header')) {
+              this.$nextTick(() => this.setColumnHeaderMissedProps(th, index))
             }
-          })
-        }
+
+            if (this.hasFooter) {
+              this.$nextTick(() => this.setColumnHeaderMissedProps(this.tFooter.children[index], index))
+            }
+          }
+        })
+      }
     }, 1000),
 
     setColumnHeaderMissedProps(th, index) {

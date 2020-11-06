@@ -1,6 +1,6 @@
 <template>
-  <v-layout wrap>
-    <v-flex xs12>
+  <v-row>
+    <v-col cols="12">
       <v-autocomplete
         ref="budgetCategoryInput"
         v-model="selectedCategory"
@@ -48,8 +48,8 @@
           {{ $h.dg(item, 'code', 'N/A') }} - {{ $h.dg(item, 'name', 'Undefined') }}
         </template>
       </v-autocomplete>
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

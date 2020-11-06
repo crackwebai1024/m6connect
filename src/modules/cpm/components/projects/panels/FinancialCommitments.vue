@@ -1,10 +1,10 @@
 <template>
   <m6-card-dialog
+    ref="cardDialog"
     min-height="0"
     :title="$tc('cpm.projects.commitment', 2)"
     :title-tooltip="$t('general.doubleClickSeeMore')"
     @fullscreen="checkFullScreen"
-    ref="cardDialog"
   >
     <template v-slot:after:title>
       <v-tooltip
@@ -16,7 +16,7 @@
           <v-icon
             dark
             flat
-            @click="$refs.cardDialog.doubleClick()"
+            @click="$refs.cardDialog.doubleClick"
           >
             launch
           </v-icon>
@@ -103,9 +103,8 @@
       </v-tooltip>
     </template>
 
-    <v-layout
-      justify-center
-      row
+    <v-row
+      justify="center"
     >
       <v-chip
         color="transparent"
@@ -121,7 +120,7 @@
       >
         <strong>{{ $t('cpm.projects.open') }} {{ (poTax || 0) | currency }}</strong>
       </v-chip>
-    </v-layout>
+    </v-row>
 
     <m6-data-table
       v-if="dataTable"
@@ -140,11 +139,11 @@
           class="step6"
           @click="fetchSpending(props)"
         >
-          <td class="pl-20 text-xs-left">
-            <v-layout>{{ props.item.number }}</v-layout>
+          <td class="pl-20 text-left">
+            <v-row>{{ props.item.number }}</v-row>
           </td>
           <td
-            class="pl-20 text-xs-left"
+            class="pl-20 text-left"
           >
             <template v-for="vendor in props.item.vendors">
               {{ vendor }}
@@ -153,60 +152,60 @@
 
           <td
             v-if="isFullScreen || isFullScreenPage"
-            class="pl-20 text-xs-left"
+            class="pl-20 text-left"
           >
-            <v-layout v-if="$h.dg(props.item, 'budget_category.code')">
+            <v-row v-if="$h.dg(props.item, 'budget_category.code')">
               {{ props.item.budget_category.code }} -
               {{ $h.dg(props.item, 'budget_category.name', '') }}
-            </v-layout>
+            </v-row>
           </td>
           <td
             v-if="isFullScreen || isFullScreenPage"
-            class="pl-20 text-xs-left"
+            class="pl-20 text-left"
           >
-            <v-layout>{{ props.item.notes }}</v-layout>
+            <v-row>{{ props.item.notes }}</v-row>
           </td>
-          <td class="text-xs-right">
-            <v-layout justify-end>
+          <td class="text-right">
+            <v-row justify="end">
               {{ (props.item.amount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
           <td
             v-if="!isFullScreen || isFullScreenPage"
-            class="text-xs-right"
+            class="text-right"
           >
-            <v-layout justify-end>
+            <v-row justify="end">
               {{ (props.item.openAmount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
           <td
             v-else
-            class="text-xs-right"
+            class="text-right"
           >
-            <v-layout justify-end>
+            <v-row justify="end">
               {{ (props.item.spendingAmount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
           <td
             v-if="isFullScreen || isFullScreenPage"
-            class="text-xs-right"
+            class="text-right"
           >
-            <v-layout justify-end>
+            <v-row justify="end">
               {{ (props.item.openAmount || 0) | currency }}
-            </v-layout>
+            </v-row>
           </td>
 
           <td
-            class="pl-20 text-xs-center"
+            class="pl-20 text-center"
           >
-            <v-layout justify-center>
-              <v-flex shrink>
+            <v-row justify="center">
+              <v-col class="shrink">
                 {{ formatDateToText(props.item.completionDate) }}
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </td>
 
-          <td class="text-xs-center">
+          <td class="text-center">
             <m6-dropdown-actions
               :options="dropdownOptions"
               @attach="openModalSpendings(props.item)"
@@ -228,8 +227,8 @@
         v-if="isFullScreen || isFullScreenPage"
         v-slot:expand="props"
       >
-        <v-layout justify-center>
-          <v-flex xs11>
+        <v-row justify="center">
+          <v-col cols="11">
             <v-data-table
               class="elevation-1"
               :headers="subheaders"
@@ -237,25 +236,25 @@
               :items="props.item.spending"
             >
               <template v-slot:items="props">
-                <td class="text-xs-left">
+                <td class="text-left">
                   {{ props.item.number }}
                 </td>
-                <td class="text-xs-left">
-                  <v-layout v-if="$h.dg(props.item, 'budget_category.code')">
+                <td class="text-left">
+                  <v-row v-if="$h.dg(props.item, 'budget_category.code')">
                     {{ props.item.budget_category.code }} -
                     {{ $h.dg(props.item, 'budget_category.name') }}
-                  </v-layout>
+                  </v-row>
                 </td>
-                <td class="text-xs-center">
+                <td class="text-center">
                   {{ formatDateToText(props.item.date) }}
                 </td>
-                <td class="text-xs-right">
+                <td class="text-right">
                   {{ props.item.amount | currency }}
                 </td>
               </template>
             </v-data-table>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </template>
     </m6-data-table>
 
@@ -335,7 +334,10 @@
     >
       This commitment has associated spending
       <ul>
-        <li v-for="(spendingName, index) in associatedSpending" :key="spendingName">
+        <li
+          v-for="(spendingName, index) in associatedSpending"
+          :key="spendingName"
+        >
           {{ spendingName }}
         </li>
       </ul>
@@ -351,7 +353,7 @@ import { mapActions } from 'vuex'
 import { db } from '@/utils/Firebase'
 import EventBus from '@/Eventbus'
 
-import mixins from '@/components/_mixins/index'
+import mixins from '@/modules/cpm/_mixins/index'
 
 import FinancialCommitmentsModal from '../modals/FinancialCommitmentsModal'
 import LineItemsShow from '../modals/LineItemsShow'
@@ -780,12 +782,10 @@ export default {
         .where('commitment', '==', commitmentRef)
         .get()
 
-      if(!spendingSnap.empty) {
+      if (!spendingSnap.empty) {
         this.infoTitle = 'Commitment can\'t be deleted'
         this.showInfo = true
-        this.associatedSpending = await spendingSnap.docs.map(doc => {
-          return doc.data().number
-        })
+        this.associatedSpending = await spendingSnap.docs.map(doc => doc.data().number)
         return
       }
 

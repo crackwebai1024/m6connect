@@ -1,18 +1,17 @@
 <template>
   <div class="linkMilestonesToLink">
     <h3>Link to tasks</h3>
-    <treeselect 
+    <treeselect
       v-model="values"
       clearable
-      :options="list"
-      :multiple="true"
-      :flat="true"
       :default-expand-level="1"
+      :flat="true"
+      :multiple="true"
+      :options="list"
       placeholder="Link to Tasks"
-      valueFormat="object"
+      value-format="object"
       @input="updateValue"
-    >
-    </treeselect>
+    />
   </div>
 </template>
 
@@ -24,11 +23,8 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
-  data() {
-    return {
-      values: [],
-      list: []
-    }
+  components: {
+    Treeselect
   },
   props: {
     options: {
@@ -36,8 +32,11 @@ export default {
       type: Array
     }
   },
-  components: {
-    Treeselect 
+  data() {
+    return {
+      values: [],
+      list: []
+    }
   },
   methods: {
     getList() {
@@ -46,24 +45,20 @@ export default {
         .collection('planned_settings')
         .doc(this.appLabel.scheduleCollection)
         .get()
-        .then( settings => {
+        .then(settings => {
           const data = settings.data()
           const list = data.tasks ? data.tasks : []
-          this.list = list.map( row => {
-            return {
-              id: row.name.toLowerCase(),
-              label: row.name,
-              level: 1,
-              children: row.cat_1.map( cat1 => {
-                return {
-                  id: row.name.toLowerCase() + '-' + cat1.name.toLowerCase(),
-                  label: cat1.name,
-                  level: 2,
-                  parent: row.name,
-                }
-              })
-            }
-          })
+          this.list = list.map(row => ({
+            id: row.name.toLowerCase(),
+            label: row.name,
+            level: 1,
+            children: row.cat_1.map(cat1 => ({
+              id: row.name.toLowerCase() + '-' + cat1.name.toLowerCase(),
+              label: cat1.name,
+              level: 2,
+              parent: row.name
+            }))
+          }))
         })
     },
     updateValue() {
@@ -71,16 +66,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel']),
-  },
-  mounted() {
-    this.values = this.options
-    this.getList()
+    ...mapGetters(['appLabel'])
   },
   watch: {
     options(value) {
       this.values = value
     }
+  },
+  mounted() {
+    this.values = this.options
+    this.getList()
   }
 }
 </script>

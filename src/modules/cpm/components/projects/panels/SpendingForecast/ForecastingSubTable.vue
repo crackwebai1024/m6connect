@@ -26,19 +26,19 @@
         <td
           class="cell-solid-border cell-title-width font-weight-bold subheading"
         >
-          <v-layout>
-            <v-flex shrink>
+          <v-row>
+            <v-col class="shrink">
               {{ getTitle(props.item) }} <br>
               <span class="caption">
                 {{ arrayToString($h.dg(props.item, 'vendors', [])) }}
               </span>
-            </v-flex>
-            <v-flex class="text-xs-right">
+            </v-col>
+            <v-col class="text-right">
               <span class="caption">
                 {{ props.item.paidDate }}
               </span>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </td>
 
         <template
@@ -50,7 +50,7 @@
           />
           <td
             :key="'months-sub2' + index + deep"
-            class="cell-default-width cell-solid-border text-xs-right"
+            class="cell-default-width cell-solid-border text-right"
           >
             {{ $h.dg(props.item, `months.${month}.amount`, 0) | currency }}
           </td>
@@ -64,8 +64,7 @@
           v-if="showFuturesFY && futureFiscalYearsColspan"
           class="cell-default-width cell-solid-border"
           :colspan="futureFiscalYearsColspan"
-        >
-        </td>
+        />
       </tr>
     </template>
 
@@ -132,13 +131,13 @@ export default {
         'blue lighten-4'
     }
   },
-  
+
   methods: {
     getTitle(item) {
-      if(this.deep === 0) {
-        return `${ item.name } - ${ item.code }`
+      if (this.deep === 0) {
+        return `${item.name} - ${item.code}`
       } else {
-        return `${ item.number }`
+        return `${item.number}`
       }
     },
     arrayToString(array = [], separator = ', ') {

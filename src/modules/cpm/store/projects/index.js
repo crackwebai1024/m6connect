@@ -18,16 +18,16 @@ const mutations = {
 }
 
 const actions = {
-  // WIP - The idea is to have the project information centralized 
+  // WIP - The idea is to have the project information centralized
   getProject({ commit }, { projectId }) {
-    if(!projectId) return Promise.reject('getProject - Missing project id')
-    
+    if (!projectId) return Promise.reject('getProject - Missing project id')
+
     return new Promise((resolve, reject) => {
       db.collection('cpm_projects')
         .doc(projectId)
         .get()
         .then(projectSnap => {
-          if(!projectSnap.exists) return resolve({})
+          if (!projectSnap.exists) return resolve({})
           const {
             title = '',
             lockMilestoneDates = false
@@ -37,7 +37,7 @@ const actions = {
             lockMilestoneDates,
             id: projectSnap.id
           }
-          
+
           commit('setProject', project)
           resolve(project)
         })

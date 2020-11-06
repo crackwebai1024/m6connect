@@ -11,15 +11,12 @@
         fluid
         grid-list-md
       >
-        <v-layout
-          row
-          wrap
-        >
+        <v-row>
           <template v-for="(fileObj, index) in files">
-            <v-flex
+            <v-col
               v-if="fileObj.inReport && (fileObj.file === 'image/jpeg' || fileObj.file === 'image/png')"
               :key="index"
-              md3
+              md="3"
             >
               <v-img
                 v-if="fileObj.url"
@@ -27,27 +24,24 @@
                 :src="fileObj.url"
               >
                 <template v-slot:placeholder>
-                  <v-layout
-                    align-center
-                    fill-height
-                    justify-center
-                    ma-0
+                  <v-row
+                    align="center"
+                    class="fill-height ma-0"
+                    justify="center"
                   >
                     <v-progress-circular
                       color="blue lighten-2"
                       indeterminate
                     />
-                  </v-layout>
+                  </v-row>
                 </template>
 
-                <v-layout
-                  class="lightbox white--text"
+                <v-row
+                  class="fill-height lightbox pa-2 white--text"
                   column
-                  fill-height
-                  pa-2
                 >
                   <v-spacer />
-                  <v-flex shrink>
+                  <v-col class="shrink">
                     <v-chip
                       v-for="(tag, index) in fileObj.tags"
                       :key="index"
@@ -56,12 +50,12 @@
                     >
                       {{ tag }}
                     </v-chip>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </v-img>
-            </v-flex>
+            </v-col>
           </template>
-        </v-layout>
+        </v-row>
       </v-container>
     </v-card-text>
   </v-card>

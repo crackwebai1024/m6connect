@@ -68,6 +68,14 @@
               <financial-cost-summary />
             </template>
           </panel-full>
+
+          <v-spacer />
+          <panel-full>
+            <template slot="content">
+              <reconciliation />
+            </template>
+          </panel-full>
+          <v-spacer />
           <panel-two-columns>
             <div
               slot="leftPanel"
@@ -99,6 +107,7 @@ import Error403 from '@/modules/cpm/_layouts/Error403'
 import M6Show from '@/modules/cpm/_layouts/M6Show.vue'
 
 import FinancialCostSummary from '@/modules/cpm/components/projects/panels/FinancialCostSummary'
+import Reconciliation from '@/modules/cpm/components/projects/panels/Reconciliation'
 
 import {
   db,
@@ -106,7 +115,6 @@ import {
   doFirebaseAuth,
   destroyFirebase
 } from '@/utils/Firebase'
-
 export default {
   name: 'Apps',
   components: {
@@ -116,6 +124,7 @@ export default {
     PanelTwoColumns,
     Error403,
     FinancialCostSummary,
+    Reconciliation,
     M6Show
   },
   data: () => ({

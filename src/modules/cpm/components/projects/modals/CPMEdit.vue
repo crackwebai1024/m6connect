@@ -20,23 +20,22 @@
           fluid
           grid-list-md
         >
-          <v-layout
-            align-center
-            row
+          <v-row
+            align="center"
           >
-            <v-flex
+            <v-col
               v-show="tab === 0"
-              md12
+              md="12"
             >
               {{ $t('cpm.projects.editProjectInfo') }}
-            </v-flex>
-            <v-flex
+            </v-col>
+            <v-col
               v-show="tab === 1"
-              md12
+              md="12"
             >
               {{ $t('cpm.projects.editProjectDetails') }}
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-card-title>
 
@@ -61,15 +60,14 @@
         <v-tabs-items v-model="tab">
           <!-- Project info -->
           <v-tab-item>
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       <label
                         v-if="!project.projectImage"
                         class="btn_add_file"
@@ -87,12 +85,12 @@
                         <i class="fa fa-plus" />
                         {{ $t('cpm.projects.changeProjectImage') }}
                       </label>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-avatar
                   v-if="project.projectImage"
                   size="60"
@@ -117,70 +115,67 @@
                 >
                   {{ $t('cpm.projects.deletePhoto') }}
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $tc('general.project', 1) }}
                       {{ $t('general.number') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-text-field v-model="project.number" />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $tc('general.project', 1) }}
                       {{ $tc('general.title', 1) }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-text-field
                   v-model="project.title"
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.editProjectTeam') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-autocomplete
                   v-model="project.manager"
                   clearable
@@ -196,17 +191,16 @@
                     {{ $t('cpm.projects.typeSearchUsers') }}
                   </template>
                 </v-autocomplete>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3 />
+              <v-col cols="3" />
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-autocomplete
                   id="teamMembers"
                   clearable
@@ -235,17 +229,16 @@
                     </div>
                   </template>
                 </v-autocomplete>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3 />
+              <v-col cols="3" />
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-autocomplete
                   v-model="project.sponsor"
                   clearable
@@ -265,49 +258,47 @@
                     />
                   </template>
                 </v-autocomplete>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $tc('general.project', 1) }}
                       {{ $t('general.description') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-textarea
                   v-model="project.description"
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.budget') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <money
                   v-bind="money"
                   color="blue"
@@ -318,26 +309,25 @@
                 <span class="edit-budget-button">
                   {{ $t('cpm.projects.editBudgetTab') }}
                 </span>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.budget') }}
                       {{ $t('general.status') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.status"
                   clearable
@@ -347,8 +337,8 @@
                     {{ $t('cpm.projects.typeSearchStatus') }}
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
             <!--
             <v-layout
               align-center
@@ -373,46 +363,46 @@
               </v-flex>
             </v-layout>
             -->
-            <v-layout
-              align-center
-              justify-center
-              row
-              v-for="(fy, index) in fiscalYears" v-if="fy.show"
-            >
-              <v-flex xs3>
-                <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
-                      {{ $t('cpm.projects.proposedSpend') }} {{ fy.name }}
-                    </v-flex>
-                  </v-layout>
-                </div>
-              </v-flex>
+            <v-row
+              v-for="(fy, index) in fiscalYears"
+              v-if="fy.show"
 
-              <v-flex xs7>
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      {{ $t('cpm.projects.proposedSpend') }} {{ fy.name }}
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+
+              <v-col cols="7">
                 <money
                   v-model="fy.amount"
                   v-bind="money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.generalContractor') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-autocomplete
                   v-model="selectedContractor"
                   append-outer-icon="add"
@@ -425,104 +415,97 @@
                   :items="vendorOptions"
                   return-object
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-if="selectedContractors.length > 0"
-              align-center
-              justify-center
-              row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       Contractor List
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
-              <v-flex xs7>
-                <v-layout
-                  align-center
-                  row
-                  wrap
+              </v-col>
+              <v-col cols="7">
+                <v-row
+                  align="center"
                 >
-                  <v-flex xs6>
+                  <v-col cols="6">
                     Company Name
-                  </v-flex>
-                  <v-flex xs6>
+                  </v-col>
+                  <v-col cols="6">
                     Company Type
-                  </v-flex>
-                </v-layout>
-                <v-layout
+                  </v-col>
+                </v-row>
+                <v-row
                   v-for="(item, index) in selectedContractors"
-                  align-center
-                  row
-                  wrap
+                  align="center"
                 >
-                  <v-flex xs6>
+                  <v-col cols="6">
                     {{ item.title }}
-                  </v-flex>
-                  <v-flex xs6>
+                  </v-col>
+                  <v-col cols="6">
                     <v-autocomplete
                       v-model="item.companyType"
-                      :items="companyTypes"
                       clearable
                       item-text="name"
-                      @click:clear="$nextTick(() => item.companyType=null)"
+                      :items="companyTypes"
                       return-object
+                      @click:clear="$nextTick(() => item.companyType=null)"
                     />
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       % {{ $t('general.complete') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-slider
                   v-model="project.completion"
                   color="blue"
                   thumb-label="always"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-tab-item>
           <!-- End project info -->
 
           <!-- Project details -->
           <v-tab-item>
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.phase') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.phase"
                   clearable
@@ -532,25 +515,24 @@
                     {{ $t('cpm.projects.typeSearchPhase') }}
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.phaseTargetDate') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-menu
                   ref="menu2"
                   v-model="phaseDatePicker"
@@ -582,26 +564,25 @@
                     @input="phaseDatePicker = false"
                   />
                 </v-menu>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-if="!$h.dg(hideFields, 'projectDetails.projectType.hide')"
-              align-center
-              justify-center
-              row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.projectType') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.projectType"
                   clearable
@@ -614,25 +595,24 @@
                     {{ option.label }}
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('general.campus') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.campus"
                   clearable
@@ -640,48 +620,46 @@
                   :items="lodash.sortBy(campusOptions)"
                   return-object
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs7>
+              <v-col cols="7">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.addressSamecampus') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs3>
+              <v-col cols="3">
                 <v-checkbox
                   v-model="project.sameAsCampusAddress"
                   :disabled="!typeof project.campus === 'object'"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $tc('general.category', 1) }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.category"
                   clearable
@@ -691,74 +669,71 @@
                     {{ $t('cpm.projects.typeSearchCategories') }}
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.squareFootage') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-text-field
                   v-model="project.squareFootage"
                   clearable
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('general.regulatory') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.license"
                   clearable
                   :items="lodash.sortBy(settings.licenses)"
                   multiple
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.fyApproved') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.fyApproved"
                   clearable
@@ -770,50 +745,48 @@
                     {{ $t('cpm.projects.typeSearchFyApproved') }}
                   </template>
                 </v-select>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('general.risk') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-select
                   v-model="project.priority"
                   clearable
                   item-value="value"
                   :items="priorities"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpmSettings.settings.projOptions.covid19Risk') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-autocomplete
                   v-model="project.covidRiskStatus"
                   clearable
@@ -850,25 +823,24 @@
                     </v-list-tile-content>
                   </template>
                 </v-autocomplete>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              align-center
-              justify-center
-              row
+            <v-row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.projectAddress') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs7>
+              <v-col cols="7">
                 <v-text-field
                   v-if="
                     typeof project.address === 'object' &&
@@ -885,35 +857,34 @@
                   v-model="project.address"
                   color="blue"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               v-if="!$h.dg(hideFields, 'projectDetails.projectCreator.hide')"
-              align-center
-              justify-center
-              row
+              align="center"
+              justify="center"
             >
-              <v-flex xs3>
+              <v-col cols="3">
                 <div class="font-weight-black subheading">
-                  <v-layout>
-                    <v-flex shrink>
+                  <v-row>
+                    <v-col class="shrink">
                       {{ $t('cpm.projects.projectCreator') }}
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex
+              <v-col
                 v-show="!editCreator"
-                xs4
+                cols="4"
               >
                 {{ $h.dg(project, 'creator.label', '') }}
-              </v-flex>
+              </v-col>
 
-              <v-flex
+              <v-col
                 v-show="editCreator"
-                xs4
+                cols="4"
               >
                 <v-autocomplete
                   v-model="project.creator"
@@ -925,15 +896,15 @@
                   return-object
                   :search-input.sync="searchCreators"
                 />
-              </v-flex>
+              </v-col>
 
-              <v-flex xs3>
+              <v-col cols="3">
                 <v-checkbox
                   v-model="editCreator"
                   label="Edit creator"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-tab-item>
           <!-- End project details -->
         </v-tabs-items>
@@ -1073,25 +1044,24 @@ export default {
           user.email.includes(this.searchCreators)
       )
     },
-    companyTypes(){
-      if (this.$h.dg(this.company_settings, 'company_types')){
-        let companies = this.company_settings.company_types;
+    companyTypes() {
+      if (this.$h.dg(this.company_settings, 'company_types')) {
+        const companies = this.company_settings.company_types
 
-        companies.sort((a,b)=>{
+        companies.sort((a, b) => {
           if (a.name > b.name) {
-            return 1;
+            return 1
           }
           if (a.name < b.name) {
-            return -1;
+            return -1
           }
           // a must be equal to b
-          return 0;
-        });
+          return 0
+        })
 
-        return companies;
-
+        return companies
       }
-      return [];
+      return []
     },
     settingCollectionName() {
       if (this.type === 'forecasted') {
@@ -1305,15 +1275,15 @@ export default {
       }
     },
     selectedContractors: {
-      deep:true,
-      handler (newVal, oldVal) {
+      deep: true,
+      handler(newVal, oldVal) {
         if (newVal !== oldVal) {
           this.project.contractor = newVal
         }
       }
     }
-    
-    
+
+
   },
 
   created() {
@@ -1616,11 +1586,11 @@ export default {
           this.selectedContractors = [...this.project.contractor]
         })
     },
-    
+
     getFiscalYears() {
-       const now = this.$moment()
-       let actual = false
-       db.collection('settings')
+      const now = this.$moment()
+      let actual = false
+      db.collection('settings')
         .doc(window.Drupal.settings.m6_platform.company_nid)
         .collection('settings')
         .doc('projects')
@@ -1629,22 +1599,22 @@ export default {
           const data = fy.data()
           let count = 1
           const fiscalYears = data.fiscalYears.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
-          this.fiscalYears = fiscalYears.map( fiscalY => {
+          this.fiscalYears = fiscalYears.map(fiscalY => {
             fiscalY.actualFY = false
             fiscalY.show = false
             fiscalY.amount = 0
-            if(actual && count <= 2) {
+            if (actual && count <= 2) {
               fiscalY.show = true
               count++
             }
-            if(this.$moment(fiscalY.startDate) <= now && this.$moment(fiscalY.endDate) >= now) {
+            if (this.$moment(fiscalY.startDate) <= now && this.$moment(fiscalY.endDate) >= now) {
               fiscalY.actualFY = true
               fiscalY.show = true
               actual = true
             }
-            if(this.project.proposedFY) {
+            if (this.project.proposedFY) {
               const find = this.project.proposedFY.find(f => f.value === fiscalY.value)
-              if(find) {
+              if (find) {
                 fiscalY.amount = find.amount
               }
             }
@@ -1652,8 +1622,8 @@ export default {
           })
         })
     }
-    
-    
+
+
   }
 }
 </script>

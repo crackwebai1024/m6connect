@@ -9,22 +9,21 @@
         slot="items"
         slot-scope="props"
       >
-        <td class="pa-1 text-xs-center">
-          <v-layout
-            align-center
-            row
-            spacer
+        <td class="pa-1 text-center">
+          <v-row
+            align="center"
+            class="spacer"
           >
-            <v-flex xs4>
+            <v-col cols="4">
               <v-avatar
                 class="ml-2"
                 size="36px"
               >
                 <img :src="props.item.contact.user_image">
               </v-avatar>
-            </v-flex>
+            </v-col>
 
-            <v-flex xs8>
+            <v-col cols="8">
               <p class="ma-0">
                 {{ props.item.contact.first_name }} {{ props.item.contact.last_name }}
               </p>
@@ -43,13 +42,13 @@
               >
                 {{ formatTags(props.item.contact.contact_type) }}
               </p>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </td>
-        <td class="text-xs-center">
+        <td class="text-center">
           {{ props.item.vendor.title }}
         </td>
-        <td class="text-xs-center">
+        <td class="text-center">
           <v-chip
             v-if="props.item.response === 'yes'"
             class="ma-0 pa-0"

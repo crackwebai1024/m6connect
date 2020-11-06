@@ -1,18 +1,17 @@
 <template>
   <v-hover>
-    <v-layout
+    <v-row
       slot-scope="{ hover }"
       style="padding-left: 7px;"
-      wrap
     >
-      <v-flex xs6>
+      <v-col cols="6">
         <div class="grey--text mb-1 subheading">
           Additional Information
         </div>
-      </v-flex>
-      <v-flex
-        text-xs-right
-        xs6
+      </v-col>
+      <v-col
+        class="text-right"
+        cols="6"
       >
         <v-icon
           v-show="hover"
@@ -21,8 +20,8 @@
         >
           edit
         </v-icon>
-      </v-flex>
-      <v-flex xs4>
+      </v-col>
+      <v-col cols="4">
         <template v-if="!fields.projectCreator.hide">
           <p class="body-2 ma-0 text-truncate">
             {{ getCreator(project) || 'N/A' }}
@@ -31,17 +30,17 @@
             Project Creator
           </p>
         </template>
-      </v-flex>
-      <v-flex xs8>
+      </v-col>
+      <v-col cols="8">
         <p class="body-2 ma-0 text-truncate">
           {{ project.contractor ? project.contractor.name : 'N/A' }}
         </p>
         <p class="caption grey--text">
           General Contractor
         </p>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs4>
+      <v-col cols="4">
         <template>
           <p class="body-2 ma-0 text-truncate">
             {{ parseDate(project.startDate) || 'N/A' }}
@@ -50,48 +49,48 @@
             Start Date
           </p>
         </template>
-      </v-flex>
-      <v-flex xs8>
+      </v-col>
+      <v-col cols="8">
         <p class="body-2 ma-0 text-truncate">
           {{ parseDate(project.endDate) || 'N/A' }}
         </p>
         <p class="caption grey--text">
           End Date
         </p>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs4>
+      <v-col cols="4">
         <p class="body-2 ma-0 text-truncate">
           {{ parseDate(project.phaseTargetDate) || 'N/A' }}
         </p>
         <p class="caption grey--text">
           Phase Target Date
         </p>
-      </v-flex>
-      <v-flex xs8>
+      </v-col>
+      <v-col cols="8">
         <p class="body-2 ma-0 text-truncate">
           {{ proposedSpend | currency }}
         </p>
         <p class="caption grey--text">
           Current FY Proposed Spend
         </p>
-      </v-flex>
+      </v-col>
 
-      <v-flex xs12>
+      <v-col cols="12">
         <p class="body-2 ma-0 text-truncate">
           {{ project.description || 'N/A' }}
         </p>
         <p class="caption grey--text">
           Description
         </p>
-      </v-flex>
+      </v-col>
 
       <cpm-edit
         ref="cpmEdit"
         :show="showEditModal"
         @close="reloadData"
       />
-    </v-layout>
+    </v-row>
   </v-hover>
 </template>
 

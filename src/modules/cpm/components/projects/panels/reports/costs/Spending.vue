@@ -306,18 +306,17 @@
               :lazy-src="imageUrl"
               :src="imageUrl"
             >
-              <v-layout
+              <v-row
                 slot="placeholder"
-                align-center
-                fill-height
-                justify-center
-                ma-0
+                align="center"
+                class="fill-height ma-0"
+                justify="center"
               >
                 <v-progress-circular
                   color="blue lighten-2"
                   indeterminate
                 />
-              </v-layout>
+              </v-row>
             </v-img>
 
             <iframe

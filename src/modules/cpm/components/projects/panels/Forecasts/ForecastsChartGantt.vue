@@ -3,17 +3,16 @@
     id="chart"
   >
     <template>
-      <v-layout
-        align-center
+      <v-row
+        align="center"
         :class="{ 'disabled': !showCurrentFiscalYearArea, 'button-fiscal-year': true }"
         @click="toggleShowCurrentFiscalyearArea"
       >
-        <v-flex
-          class="dot ml-5 mr-1"
-          shrink
+        <v-col
+          class="dot ml-5 mr-1 shrink"
         />
-        <v-flex>Fiscal Year Area</v-flex>
-      </v-layout>
+        <v-col>Fiscal Year Area</v-col>
+      </v-row>
       <apexchart
         height="350"
         :options="chartOptions"

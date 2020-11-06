@@ -1,22 +1,22 @@
 <template>
   <v-container>
-    <v-layout
-      class="text-xs-center"
+    <v-row
+      class="text-center"
       column
     >
-      <v-flex>
+      <v-col>
         <h1>404</h1>
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <h2 v-text="'Not Found'" />
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <span v-text="'Resource searched does not exist or is not found.'" />
-      </v-flex>
+      </v-col>
 
-      <v-flex>
+      <v-col>
         <p>
           <a
             href=""
@@ -30,8 +30,8 @@
             v-text="'Go Dashboard »'"
           />
         </p>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

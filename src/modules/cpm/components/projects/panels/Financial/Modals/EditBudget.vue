@@ -9,10 +9,10 @@
       <v-card-title
         class="customBackground headline"
       >
-        <v-layout align-center>
+        <v-row align="center">
           {{ $t('cpm.projects.budgetPanel.editBudget.budget') }}:
           {{ $h.dg(budget, 'title', '') }}
-        </v-layout>
+        </v-row>
         <v-spacer />
         <v-btn
           class="flex-end"
@@ -29,22 +29,21 @@
       </v-card-title>
 
       <v-card-text>
-        <v-layout row>
-          <v-flex
+        <v-row>
+          <v-col
             class="mr-3"
-            xs4
+            cols="4"
           >
-            <v-layout class="budget-title">
-              <v-flex xs6>
+            <v-row class="budget-title">
+              <v-col cols="6">
                 <h4>
                   {{ $t('cpm.projects.budgetPanel.editBudget.budgetSummary') }}
                 </h4>
-              </v-flex>
+              </v-col>
 
-              <v-flex
-                align-end
-                class="text-xs-right"
-                xs6
+              <v-col
+                class="align-end text-right"
+                cols="6"
               >
                 <v-icon
                   class="flex-end pt-2"
@@ -53,24 +52,23 @@
                 >
                   {{ editMode ? 'undo' : 'edit' }}
                 </v-icon>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout v-if="editMode">
-              <v-flex xs6 />
+            <v-row v-if="editMode">
+              <v-col cols="6" />
 
-              <v-flex
-                align-end
-                class="text-xs-right"
-                xs6
+              <v-col
+                class="align-end text-right"
+                cols="6"
               >
                 <v-switch
                   v-model="budget.active"
                   class="flex-end pt-2"
                   label="Active"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
             <v-form ref="form">
               <div
                 v-if="!editMode"
@@ -172,15 +170,15 @@
                 />
               </div>
             </v-form>
-          </v-flex>
+          </v-col>
 
           <v-divider
             inset
             vertical
           />
-          <v-flex
+          <v-col
             class="ml-3"
-            xs8
+            cols="8"
           >
             <div class="form-group margin-top-25">
               <line-items
@@ -225,9 +223,9 @@
                   class="headline"
                   style="background: #006699; color:#fff"
                 >
-                  <v-layout align-center>
+                  <v-row align="center">
                     {{ $t('cpm.projects.budgetPanel.editBudget.attachments') }}
-                  </v-layout>
+                  </v-row>
 
                   <v-spacer />
                   <v-btn
@@ -304,8 +302,8 @@
                 </v-card-text>
               </v-card>
             </div>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-card-text>
 
       <v-card-actions>
@@ -607,12 +605,12 @@ export default {
             .doc(this.budget.id)
             .set(this.budget)
             .then(() => {
-              if(this.type === 'forecasted') {
+              if (this.type === 'forecasted') {
                 this.setForecastTasksData({
                   projectId: this.$route.params.id
                 })
               }
-              
+
               this.$snotify.success(this.$t('cpm.projects.budgetPanel.editBudget.success'), this.$t('alerts.success'))
               this.dialog = false
             })

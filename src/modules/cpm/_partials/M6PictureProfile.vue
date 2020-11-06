@@ -6,11 +6,10 @@
     width="300"
   >
     <template v-slot:activator="{ on }">
-      <v-flex
-        class="m6-picture-profile"
+      <v-col
+        class="m6-picture-profile text-center"
+        cols="12"
         style="cursor: pointer;"
-        text-xs-center
-        xs12
         v-on="on"
       >
         <v-badge :color="statusColor">
@@ -39,7 +38,7 @@
             </v-avatar>
           </div>
         </v-badge>
-      </v-flex>
+      </v-col>
     </template>
 
     <v-card>
@@ -56,7 +55,7 @@
           @change="fileChange"
         >
 
-        <div class="text-xs-center">
+        <div class="text-center">
           <img
             v-if="imageB64"
             alt="New image"
@@ -66,7 +65,7 @@
         </div>
 
         <p
-          class="text-xs-center"
+          class="text-center"
           v-text="fileName"
         />
 

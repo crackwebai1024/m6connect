@@ -1,15 +1,21 @@
 <template>
   <m6-card-dialog title="Cost Summary">
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
-          <a 
+          <a
             class="pointer"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/financial-cost-summary'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat small>
+            <v-icon
+              flat
+              small
+            >
               launch
             </v-icon>
           </a>
@@ -17,19 +23,20 @@
         <span>{{ $t('general.openNewTab') }}</span>
       </v-tooltip>
     </template>
-    
-    <cost-summary :table-totals="totals" />
+    <!--This should not be displayed yet-->
+    <cost-summary
+      v-if="false"
+      :table-totals="totals"
+    />
 
     <v-data-table
       :key="tableKey"
-      class="fixed table-layout:"
-      :disable-initial-sort="true"
       :expand="expand"
       :headers="headers"
       item-key="name"
       :items="filteredCategories"
-      :pagination.sync="pagination"
-      :total-items="totalParents"
+      :options="pagination"
+      :server-items-length="totalParents"
     >
       <template
         slot="headers"
@@ -47,13 +54,13 @@
       </template>
 
       <template
-        slot="items"
+        slot="item"
         slot-scope="props"
       >
         <tr
           v-if="categoryHasPositiveTotals(props.item, 'totalCategoryOnly')"
           v-show="props.item.showRow"
-          class="step4 pointer"
+          class="pointer step4"
           :class="{
             'blue lighten-2': props.expanded || props.item.showChildren,
             'low-opacity':
@@ -63,25 +70,25 @@
           }"
           @click.stop="expandSelection(props)"
         >
-          <td class="text-xs-left">
+          <td class="text-left">
             {{ props.item.code ? props.item.code + ' -' : '' }}
             {{ props.item.name }}
           </td>
 
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ props.item.totalCategoryOnly.budgetTotal | currency }}
           </td>
 
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ props.item.totalCategoryOnly.commitmentsTotal | currency }}
           </td>
 
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ props.item.totalCategoryOnly.spendingTotal | currency }}
           </td>
 
           <td
-            class="text-xs-right"
+            class="text-right"
             :class="{
               overdraft: props.item.totalAllocated > props.item.budget
             }"
@@ -89,12 +96,12 @@
             {{ props.item.totalCategoryOnly.totalAllocated | currency }}
           </td>
 
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ props.item.totalCategoryOnly.changesTotal | currency }}
           </td>
 
           <td
-            class="text-xs-right"
+            class="text-right"
             :class="{
               overdraft:
                 props.item.totalAllocated + props.item.changesTotal >
@@ -104,39 +111,39 @@
             {{ props.item.totalCategoryOnly.projectFinalCost | currency }}
           </td>
 
-          <td class="text-xs-right">
+          <td class="text-right">
             {{ props.item.totalCategoryOnly.variance | currency }}
           </td>
         </tr>
       </template>
 
-      <template slot="footer">
+      <template v-slot:body.append>
         <td class="gray-row   text-left">
           <strong>{{ $tc('general.total', 1) }}</strong>
         </td>
 
-        <td class="gray-row text-xs-right">
+        <td class="gray-row text-right">
           {{ totals.budget | currency }}
         </td>
 
-        <td class="gray-row text-xs-right">
+        <td class="gray-row text-right">
           {{ totals.commitments | currency }}
         </td>
 
-        <td class="gray-row text-xs-right">
+        <td class="gray-row text-right">
           {{ totals.spending | currency }}
         </td>
 
-        <td class="gray-row text-xs-right">
+        <td class="gray-row text-right">
           {{ totals.allocated | currency }}
         </td>
 
-        <td class="gray-row text-xs-right">
+        <td class="gray-row text-right">
           {{ totals.changes | currency }}
         </td>
 
         <td
-          class="gray-row text-xs-right"
+          class="gray-row text-right"
           :class="{
             overdraft: totals.allocated + totals.changes > totals.budget
           }"
@@ -144,17 +151,17 @@
           {{ (totals.allocated + totals.changes) | currency }}
         </td>
 
-        <td class="gray-row text-xs-right">
+        <td class="gray-row text-right">
           {{ (totals.budget - (totals.allocated + totals.changes)) | currency }}
         </td>
       </template>
 
       <template v-slot:expand="props">
-        <v-layout
+        <v-row
           v-if="props.item.type !== 'parent' || !props.item.children.length"
-          justify-center
+          justify="center"
         >
-          <v-flex xs11>
+          <v-col cols="11">
             <v-data-table
               class="elevation-1"
               :headers="commitmentHeaders"
@@ -213,8 +220,8 @@
                 </tr>
               </template>
             </v-data-table>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </template>
     </v-data-table>
   </m6-card-dialog>
@@ -427,7 +434,7 @@ export default {
 
     getTable() {
       this.resetValues()
-      const url = `${this.firebaseUrl}/api/company/${window.Drupal.settings.m6_platform.company_nid}/project/${this.projectId}/reports-by-categories`
+      const url = `${this.firebaseUrl}/api/company/54395/project/${this.projectId}/reports-by-categories`
       const data = {
         environment: this.environment
       }
@@ -482,7 +489,7 @@ export default {
         .collection('commitments')
         .orderBy('number')
         .get()
-      await commitments.forEach(async c => {
+      await commitments.docs.map(async c => {
         const commitmentObject = c.data()
         commitmentObject.id = c.id
 

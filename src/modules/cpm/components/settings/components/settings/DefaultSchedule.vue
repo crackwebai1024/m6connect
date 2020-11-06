@@ -1,13 +1,13 @@
 <template>
   <v-container
+    class="pa-0"
     fluid
     grid-list-xs
-    pa-0
   >
-    <v-layout>
-      <v-flex
+    <v-row>
+      <v-col
         class="list-container"
-        xs12
+        cols="12"
       >
         <v-toolbar
           class="mb-4"
@@ -189,20 +189,17 @@
           persistent
           scrollable
         >
-          <v-flex
+          <v-col
+            cols="12"
             style="overflow-y:auto"
-            xs12
           >
             <v-card class="pb-2">
               <v-container
                 fluid
                 grid-list-md
               >
-                <v-layout
-                  row
-                  wrap
-                >
-                  <v-flex md12>
+                <v-row>
+                  <v-col md="12">
                     <v-toolbar
                       id="budget-cost-duration-form"
                       class="mb-4"
@@ -212,27 +209,21 @@
                     >
                       <h5>{{ formTitle }}</h5>
                     </v-toolbar>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
 
-                <v-layout
-                  row
-                  wrap
-                >
-                  <v-flex md12>
+                <v-row>
+                  <v-col md="12">
                     <v-text-field
                       v-model="name"
                       color="blue"
                       label="Task Name"
                     />
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
 
-                <v-layout
-                  row
-                  wrap
-                >
-                  <v-flex md4>
+                <v-row>
+                  <v-col md="4">
                     <v-btn
                       outline
                       @click="showColor = !showColor"
@@ -246,49 +237,44 @@
                         brightness_1
                       </v-icon>
                     </v-btn>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
+                  <v-col
                     v-show="showColor"
-                    md4
+                    md="4"
                   >
                     <chrome-picker v-model="color" />
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex md4>
+                  <v-col md="4">
                     <v-checkbox
                       v-model="showScheduleRollUpReport"
                       label="Show on Schedule Roll Up Report"
                     />
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
 
-                <v-layout
+                <v-row
                   v-show="action !== 'new' && action !== 'add'"
-                  row
-                  wrap
                 >
-                  <v-flex md12>
+                  <v-col md="12">
                     <v-container
                       class="pa-0"
                       fluid
                       grid-list-md
                     >
-                      <v-layout
-                        row
-                        wrap
-                      >
-                        <v-flex
+                      <v-row>
+                        <v-col
                           class="title"
-                          md4
-                          sm12
+                          md="4"
+                          sm="12"
                         >
                           Schedule Types
-                        </v-flex>
+                        </v-col>
 
-                        <v-flex
-                          md4
-                          sm12
+                        <v-col
+                          md="4"
+                          sm="12"
                         >
                           <v-btn
                             color="blue"
@@ -298,37 +284,29 @@
                           >
                             <v-icon>add</v-icon>
                           </v-btn>
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
 
-                      <v-layout
+                      <v-row
                         v-show="ganttDialog"
                         class="modal-gantt"
-                        row
-                        wrap
                       >
-                        <v-flex md12>
+                        <v-col md="12">
                           <v-container
                             fluid
                             grid-list-md
                           >
-                            <v-layout
-                              row
-                              wrap
-                            >
-                              <v-flex
+                            <v-row>
+                              <v-col
                                 class="title"
-                                md12
+                                md="12"
                               >
                                 {{ ganttModal.title }}
-                              </v-flex>
-                            </v-layout>
+                              </v-col>
+                            </v-row>
 
-                            <v-layout
-                              row
-                              wrap
-                            >
-                              <v-flex md12>
+                            <v-row>
+                              <v-col md="12">
                                 <v-select
                                   v-model="ganttModal.gantt"
                                   clearable
@@ -338,24 +316,18 @@
                                   label="Select a Schedule Type"
                                   return-object
                                 />
-                              </v-flex>
-                            </v-layout>
+                              </v-col>
+                            </v-row>
 
-                            <v-layout
-                              row
-                              wrap
-                            >
+                            <v-row>
                               <v-text-field
                                 v-model="ganttModal.duration"
                                 label="Duration"
                               />
-                            </v-layout>
+                            </v-row>
 
-                            <v-layout
-                              row
-                              wrap
-                            >
-                              <v-flex md12>
+                            <v-row>
+                              <v-col md="12">
                                 <v-select
                                   v-model="ganttModal.budgetFiscalYear"
                                   clearable
@@ -364,40 +336,31 @@
                                   :items="generalSettings.fiscalYears"
                                   label="Fiscal Year"
                                 />
-                              </v-flex>
-                            </v-layout>
+                              </v-col>
+                            </v-row>
 
-                            <v-layout
-                              row
-                              wrap
-                            >
-                              <v-flex md12>
+                            <v-row>
+                              <v-col md="12">
                                 <budget-category-select
                                   :category="
                                     $h.dg(ganttModal, 'budget_category.ref')
                                   "
                                   @newCategory="setBudgetCategory"
                                 />
-                              </v-flex>
-                            </v-layout>
+                              </v-col>
+                            </v-row>
 
-                            <v-layout
-                              row
-                              wrap
-                            >
+                            <v-row>
                               <v-text-field
                                 v-model="ganttModal.budgetPercentage"
                                 label="Budget Percentage %"
                               />
-                            </v-layout>
+                            </v-row>
 
-                            <v-layout
-                              row
-                              wrap
-                            >
-                              <v-flex
-                                md4
-                                sm12
+                            <v-row>
+                              <v-col
+                                md="4"
+                                sm="12"
                               >
                                 <v-btn
                                   color="blue"
@@ -406,11 +369,11 @@
                                 >
                                   Cancel
                                 </v-btn>
-                              </v-flex>
+                              </v-col>
 
-                              <v-flex
-                                md5
-                                sm12
+                              <v-col
+                                md="5"
+                                sm="12"
                               >
                                 <v-btn
                                   color="blue"
@@ -419,18 +382,16 @@
                                 >
                                   Save Gantt
                                 </v-btn>
-                              </v-flex>
-                            </v-layout>
+                              </v-col>
+                            </v-row>
                           </v-container>
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
 
-                      <v-layout
+                      <v-row
                         v-show="!ganttDialog"
-                        row
-                        wrap
                       >
-                        <v-flex md12>
+                        <v-col md="12">
                           <v-data-table
                             :headers="headers"
                             hide-actions
@@ -462,27 +423,25 @@
                               </td>
                             </template>
                           </v-data-table>
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
                     </v-container>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
 
-                <v-layout
+                <v-row
                   v-show="!ganttDialog"
-                  row
-                  wrap
                 >
-                  <v-flex md4>
+                  <v-col md="4">
                     <v-btn
                       :disabled="loading"
                       @click="cancel"
                     >
                       Cancel
                     </v-btn>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex md4>
+                  <v-col md="4">
                     <v-btn
                       color="blue"
                       dark
@@ -492,14 +451,14 @@
                     >
                       Save
                     </v-btn>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card>
-          </v-flex>
+          </v-col>
         </v-dialog>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

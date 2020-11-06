@@ -43,7 +43,7 @@
             <template v-slot:items="props">
               <td>{{ props.item.name }}</td>
               <td>{{ props.item.users.length }}</td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 <v-icon
                   class="ml-0 mr-2"
                   color="#757575"
@@ -82,7 +82,7 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             <label
               v-if="Number.isInteger(currentElement)"
               class="white--text"
@@ -93,7 +93,7 @@
               v-else
               class="white--text"
             >Add New Role</label>
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <div class="form-group">

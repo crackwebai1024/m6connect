@@ -18,7 +18,7 @@ import File from './modules/File'
 import AppBuilder from './modules/AppBuilder'
 import M6Codes from './modules/M6Codes'
 import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
-
+import companies from '@/modules/cpm/store/companies'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -140,6 +140,7 @@ export default new Vuex.Store({
     SnackBarNotif,
     M6Codes,
     File,
-    AppBuilder
+    AppBuilder,
+    companies
   }
 })

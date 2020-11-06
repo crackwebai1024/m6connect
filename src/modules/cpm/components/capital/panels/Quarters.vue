@@ -5,11 +5,8 @@
       fluid
       grid-list-md
     >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex md12>
+      <v-row>
+        <v-col md="12">
           <v-data-table
             :headers="headers"
             :items="items"
@@ -18,44 +15,44 @@
               slot="items"
               slot-scope="props"
             >
-              <td class="text-xs-center">
+              <td class="text-center">
                 Quarter #{{ props.item.index + 1 }}
               </td>
-              <td class="text-xs-center">
+              <td class="text-center">
                 {{ props.item.period }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 {{ props.item.spending | currency }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 {{ props.item.forecast | currency }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 {{ props.item.variance | currency }}
               </td>
             </template>
 
             <template v-slot:footer>
-              <td class="text-xs-center">
+              <td class="text-center">
                 <strong>{{ capitalPlan.fiscalYear.name }}</strong>
                 Total
               </td>
-              <td class="text-xs-center">
+              <td class="text-center">
                 {{ getPeriodYear() }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 {{ totals.spending | currency }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 {{ totals.forecast | currency }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 {{ totals.variance | currency }}
               </td>
             </template>
           </v-data-table>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </m6-card-dialog>
 </template>

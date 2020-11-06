@@ -19,10 +19,8 @@
     >
       <!-- Avatar -->
       <v-hover>
-        <v-layout
+        <v-row
           slot-scope="{ hover }"
-          row
-          wrap
         >
           <v-btn
             ref="step1"
@@ -47,16 +45,13 @@
                 'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
             "
           >
-            <v-layout
-              align-end
-              fill-height
-              ma-0
+            <v-row
+              align="end"
+              class="fill-height ma-0"
             >
-              <v-flex
-                class="lightbox white--text"
-                pl-2
-                pt-2
-                xs12
+              <v-col
+                class="lightbox pl-2 pt-2 white--text"
+                cols="12"
               >
                 <v-menu
                   offset-y
@@ -77,29 +72,29 @@
                   </div>
                 </v-menu>
 
-                <v-layout ma-0>
-                  <v-flex xs6>
+                <v-row class="ma-0">
+                  <v-col cols="6">
                     <p class="body-2 ma-0 text-truncate">
                       {{ getManagerLabel(project) || 'N/A' }}
                     </p>
                     <span class="caption">{{
                       $t('general.projectManager')
                     }}</span>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs6>
+                  <v-col cols="6">
                     <p class="body-2 ma-0 text-truncate">
                       {{ project.data.number || 'N/A' }}
                     </p>
                     <span class="caption">{{
                       $t('general.projectNumber')
                     }}</span>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
           </v-img>
-        </v-layout>
+        </v-row>
       </v-hover>
       <!-- End avatar -->
 
@@ -109,99 +104,97 @@
 
       <!-- Fields -->
       <v-hover>
-        <v-layout
+        <v-row
           slot-scope="{ hover }"
+          class="pl-2"
           :class="['box-sidebar', 'img_' + project.data.priority]"
-          pl-2
-          row
-          wrap
         >
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ project.data.status || 'N/A' }}
             </p>
 
             <span class="caption">{{ $t('cpm.budgetStatus') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs8>
+          <v-col cols="8">
             <p class="body-2 ma-0 text-truncate">
               {{ getCampus(project) }}
             </p>
 
             <span class="caption">{{ $t('general.campus') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ project.data.completion || '0' }} %
             </p>
 
             <span class="caption">{{ $t('general.completed') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs8>
+          <v-col cols="8">
             <p class="body-2 ma-0 text-truncate">
               {{ getAddress(project) }}
             </p>
 
             <span class="caption">{{ $t('general.address') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex
+          <v-col
             v-show="showProjectType"
-            xs4
+            cols="4"
           >
             <p class="body-2 ma-0 text-truncate">
               {{ project.data.projectType || 'N/A' }}
             </p>
 
             <span class="caption">{{ $t('cpm.projects.projectType') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ project.data.category || 'N/A' }}
             </p>
 
             <span class="caption">{{ $tc('general.category', 1) }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ $h.dg(project, 'data.license', 'N/A').toString() }}
             </p>
 
             <span class="caption">{{ $t('general.regulatory') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ project.data.phase || 'N/A' }}
             </p>
 
             <span class="caption">{{ $t('cpm.projects.phase') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ project.data.squareFootage || 'N/A' }}
             </p>
 
             <span class="caption">{{ $t('cpm.projects.squareFootage') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ project.data.fyApproved || 'N/A' }}
             </p>
 
             <span class="caption">{{ $t('cpm.projects.fyApproved') }}</span>
-          </v-flex>
+          </v-col>
 
-          <v-flex
+          <v-col
             v-show="showProjectCreator"
-            xs4
+            cols="4"
           >
             <template>
               <p class="body-2 ma-0 text-truncate">
@@ -212,20 +205,20 @@
                 {{ $t('cpm.projects.projectCreator') }}
               </p>
             </template>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ $h.dg(project, 'data.contractor.title', 'N/A') }}
             </p>
             <p class="caption grey--text">
               {{ $t('cpm.projects.generalContractor') }}
             </p>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs4>
+          <v-col cols="12">
+            <v-row>
+              <v-col cols="4">
                 <template>
                   <p class="body-2 ma-0 text-truncate">
                     {{ parseDate(project.data.startDate) || 'N/A' }}
@@ -235,9 +228,9 @@
                     {{ $t('cpm.projectStartDate') }}
                   </p>
                 </template>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs3>
+              <v-col cols="3">
                 <p class="body-2 ma-0 text-truncate">
                   {{ parseDate(project.data.endDate) || 'N/A' }}
                 </p>
@@ -245,9 +238,9 @@
                 <p class="caption grey--text">
                   {{ $t('cpm.projectEndDate') }}
                 </p>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs5>
+              <v-col cols="5">
                 <v-tooltip top>
                   <template v-slot:activator="{ on }">
                     <v-icon
@@ -261,13 +254,13 @@
                   </template>
                   <span>{{ $t('cpm.projects.autocalculatedSchedule') }}</span>
                 </v-tooltip>
-              </v-flex>
-            </v-layout>
-          </v-flex>
+              </v-col>
+            </v-row>
+          </v-col>
 
-          <v-flex xs12>
-            <v-layout>
-              <v-flex xs5>
+          <v-col cols="12">
+            <v-row>
+              <v-col cols="5">
                 <template>
                   <p class="body-2 ma-0 text-truncate">
                     {{
@@ -279,9 +272,9 @@
                     {{ $t('cpm.constructionStartDate') }}
                   </p>
                 </template>
-              </v-flex>
+              </v-col>
 
-              <v-flex xs6>
+              <v-col cols="6">
                 <p class="body-2 ma-0 text-truncate">
                   {{ parseDate($h.dg(constructionData, 'due_date')) || 'N/A' }}
                 </p>
@@ -289,11 +282,11 @@
                 <p class="caption grey--text">
                   {{ $t('cpm.constructionEndDate') }}
                 </p>
-              </v-flex>
-            </v-layout>
-          </v-flex>
+              </v-col>
+            </v-row>
+          </v-col>
 
-          <v-flex xs4>
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ parseDate(project.data.phaseTargetDate) || 'N/A' }}
             </p>
@@ -301,9 +294,9 @@
             <p class="caption grey--text">
               {{ $t('cpm.projects.phaseTargetDate') }}
             </p>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs8>
+          <v-col cols="8">
             <p class="body-2 ma-0 text-truncate">
               {{ proposedSpend | currency }}
             </p>
@@ -311,9 +304,9 @@
             <p class="caption grey--text">
               {{ $t('cpm.projects.currentFYProposedSpend') }}
             </p>
-          </v-flex>
-          
-          <v-flex xs4>
+          </v-col>
+
+          <v-col cols="4">
             <p class="body-2 ma-0 text-truncate">
               {{ getCompleteBudget() }}
             </p>
@@ -321,9 +314,9 @@
             <p class="caption grey--text">
               % Complete Budget
             </p>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs8>
+          <v-col cols="8">
             <p class="body-2 ma-0 text-truncate">
               {{ getCompleteSchedule() }}
             </p>
@@ -331,9 +324,9 @@
             <p class="caption grey--text">
               % Complete Schedule
             </p>
-          </v-flex>
+          </v-col>
 
-          <v-flex xs12>
+          <v-col cols="12">
             <p
               class="body-2 ma-0"
               :class="{
@@ -358,8 +351,8 @@
             <p class="caption grey--text">
               {{ $t('general.description') }}
             </p>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-hover>
 
       <!-- End fields -->
@@ -450,7 +443,7 @@ export default {
     },
     proposedSpend() {
       const find = this.fiscalYears.find(f => f.actualFY === true)
-      if(find){
+      if (find) {
         return find.amount
       }
     },
@@ -491,9 +484,9 @@ export default {
 
   methods: {
     getCompleteBudget() {
-      if(this.project.data.totals) {
+      if (this.project.data.totals) {
         const totals = this.project.data.totals
-        if(totals.budgetTotal) {
+        if (totals.budgetTotal) {
           return (totals.spendingTotal / totals.budgetTotal * 100).toFixed(0)
         }
       }
@@ -501,14 +494,14 @@ export default {
     },
     getCompleteSchedule() {
       const project = this.project.data
-      if(project.startDate && project.endDate) {
+      if (project.startDate && project.endDate) {
         const start = this.$moment(project.endDate)
         const end = this.$moment(project.startDate)
         const days = this.$moment.duration(start.diff(end)).asDays()
-        
+
         const currentDate = this.$moment(new Date())
         const currentDays = this.$moment.duration(currentDate.diff(end)).asDays()
-        
+
         return (currentDays / days * 100).toFixed(0)
       }
       return '0'
@@ -527,7 +520,7 @@ export default {
         ).docs.map(doc => doc.data() || {})
 
         const ordered = this.lodash.orderBy(milestones, 'start_date')
-  
+
         const startDate = this.$h.dg(ordered.shift(), 'start_date')
         const startDateText = this.parseDate(startDate)
         const endDate = this.$h.dg(this.lodash.last(ordered), 'start_date')
@@ -640,43 +633,43 @@ export default {
       this.$emit('changeTab', 'schedule')
     },
     getFiscalYears() {
-     const now = this.$moment()
-     let actual = false
-     db.collection('settings')
-      .doc(window.Drupal.settings.m6_platform.company_nid)
-      .collection('settings')
-      .doc('projects')
-      .get()
-      .then(fy => {
-        const data = fy.data()
-        let count = 1
-        const fiscalYears = data.fiscalYears.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
-        this.fiscalYears = fiscalYears.map( fiscalY => {
-          fiscalY.actualFY = false
-          fiscalY.show = false
-          fiscalY.amount = 0
-          if(actual && count <= 2) {
-            fiscalY.show = true
-            count++
-          }
-          if(this.$moment(fiscalY.startDate) <= now && this.$moment(fiscalY.endDate) >= now) {
-            fiscalY.actualFY = true
-            fiscalY.show = true
-            actual = true
-          }
-          
-          if(this.project.data.proposedFY) {
-            const find = this.project.data.proposedFY.find(f => f.value === fiscalY.value)
-            if(find) {
-              fiscalY.amount = find.amount
+      const now = this.$moment()
+      let actual = false
+      db.collection('settings')
+        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .collection('settings')
+        .doc('projects')
+        .get()
+        .then(fy => {
+          const data = fy.data()
+          let count = 1
+          const fiscalYears = data.fiscalYears.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
+          this.fiscalYears = fiscalYears.map(fiscalY => {
+            fiscalY.actualFY = false
+            fiscalY.show = false
+            fiscalY.amount = 0
+            if (actual && count <= 2) {
+              fiscalY.show = true
+              count++
             }
-          }
-          return fiscalY
+            if (this.$moment(fiscalY.startDate) <= now && this.$moment(fiscalY.endDate) >= now) {
+              fiscalY.actualFY = true
+              fiscalY.show = true
+              actual = true
+            }
+
+            if (this.project.data.proposedFY) {
+              const find = this.project.data.proposedFY.find(f => f.value === fiscalY.value)
+              if (find) {
+                fiscalY.amount = find.amount
+              }
+            }
+            return fiscalY
+          })
         })
-      })
     }
-  },
-  
+  }
+
 }
 </script>
 

@@ -1,13 +1,13 @@
 <template>
-  <v-flex
+  <v-col
     v-cloak
-    class="text-xs-center"
-    xs12
+    class="text-center"
+    cols="12"
   >
     <p class="headline">
       There are no results
     </p>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>

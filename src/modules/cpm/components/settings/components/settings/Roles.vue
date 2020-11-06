@@ -44,7 +44,7 @@
             <template v-slot:items="props">
               <td>{{ props.item.name }}</td>
               <td>{{ props.item.users.length }}</td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 <v-icon
                   class="ml-0 mr-2 pointer"
                   color="#757575"
@@ -79,7 +79,7 @@
     >
       <v-card>
         <v-card-title class="card-background headline">
-          <v-layout align-center>
+          <v-row align="center">
             <label
               v-if="Number.isInteger(currentElement)"
               class="white--text"
@@ -90,7 +90,7 @@
               v-else
               class="white--text"
             >Add New Role</label>
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <div class="form-group">
@@ -133,42 +133,42 @@
               $t('cpmSettings.settings.userRoles.accessPermission')
             }}</label>
 
-            <v-layout>
-              <v-flex>
+            <v-row>
+              <v-col>
                 <v-checkbox
                   v-model="access.financials"
                   label="Financials"
                 />
-              </v-flex>
+              </v-col>
 
-              <v-flex>
+              <v-col>
                 <v-checkbox
                   v-model="access.schedule"
                   label="Schedule"
                 />
-              </v-flex>
+              </v-col>
 
-              <v-flex>
+              <v-col>
                 <v-checkbox
                   v-model="access.files"
                   label="Files"
                 />
-              </v-flex>
+              </v-col>
 
-              <v-flex>
+              <v-col>
                 <v-checkbox
                   v-model="access.updates"
                   label="Updates"
                 />
-              </v-flex>
+              </v-col>
 
-              <v-flex>
+              <v-col>
                 <v-checkbox
                   v-model="access.other"
                   label="Other"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
             <label>Color</label>
             <chrome-picker v-model="roleColor" />

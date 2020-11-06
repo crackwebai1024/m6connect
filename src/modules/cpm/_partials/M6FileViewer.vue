@@ -13,7 +13,7 @@
 
       <p
         v-if="!showWithIframe"
-        class="headline pt-5 text-xs-center"
+        class="headline pt-5 text-center"
       >
         Downloading
       </p>

@@ -1,9 +1,9 @@
 <template>
-  <v-layout ref="fullscreen">
-    <v-flex
+  <v-row ref="fullscreen">
+    <v-col
       class="main-tabs"
+      cols="3"
       style="position: relative;"
-      xs3
     >
       <v-btn
         id="step1"
@@ -57,249 +57,213 @@
           </v-list>
         </template>
       </sidebar>
-    </v-flex>
+    </v-col>
 
-    <v-flex
+    <v-col
       class="pa-2"
-      xs9
+      cols="9"
     >
       <div class="group-panels pr-2">
         <div v-show="showingGroup === 'financials'">
-          <v-layout
+          <v-row
             v-if="!panelSettings.finCostSum && showPanelProject"
             id="step2"
-            row
-            wrap
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <spending-forecast />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-if="!panelSettings.finCostSum && showPanelProject"
             id="step2"
-            row
-            wrap
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <financial-cost-summary />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
-            mt-2
-            row
-            wrap
+          <v-row
+            class="mt-2"
           >
-            <v-flex
+            <v-col
               v-if="!panelSettings.finCommit && showPanelProject"
               id="step5"
-              md6
-              pr-1
-              sm12
+              class="pr-1"
+              md="6"
+              sm="12"
             >
               <financial-commitments />
-            </v-flex>
-          </v-layout>
-          <v-layout
-            mt-2
-            row
-            wrap
+            </v-col>
+          </v-row>
+          <v-row
+            class="mt-2"
           >
-            <v-flex
+            <v-col
               v-if="!panelSettings.finReconciliation && showPanelProject"
-              xs12
+              cols="12"
             >
               <reconciliation />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
-            mt-2
-            row
-            wrap
+          <v-row
+            class="mt-2"
           >
-            <v-flex
+            <v-col
               v-show="!panelSettings.finSpend && showPanelProject"
-              xs12
+              cols="12"
             >
               <financial-spendings />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
-            mt-2
-            row
-            wrap
+          <v-row
+            class="mt-2"
           >
-            <v-flex
+            <v-col
               v-if="!panelSettings.finBulletins && showPanelProject"
-              xs12
+              cols="12"
             >
               <financial-changes />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
-            mt-2
-            row
-            wrap
+          <v-row
+            class="mt-2"
           >
-            <v-flex
+            <v-col
               v-if="!panelSettings.finChangeOrders"
-              xs12
+              cols="12"
             >
               <change-orders />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
-            mt-2
-            row
-            wrap
+          <v-row
+            class="mt-2"
           >
-            <v-flex
+            <v-col
               v-if="!panelSettings.finBuyOut"
-              xs12
+              cols="12"
             >
               <buy-out />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-if="!panelSettings.finBudget"
-            mt-2
-            row
-            wrap
+            class="mt-2"
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <financials-budgets :type="type" />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-if="!panelSettings.finEstim"
-            mt-2
-            row
-            wrap
+            class="mt-2"
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <estimations />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </div>
 
         <div v-if="showingGroup === 'schedule'">
-          <v-layout
+          <v-row
             v-if="!panelSettings.mileTracker"
-            row
-            wrap
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <milestones :type="type" />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-if="!panelSettings.mileSchedule"
-            mt-2
-            row
-            wrap
+            class="mt-2"
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <schedule :type="type" />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-if="isPlannedProject"
-            mt-2
-            row
-            wrap
+            class="mt-2"
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <forecasts />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </div>
 
         <div v-show="showingGroup === 'files'">
-          <v-layout
+          <v-row
             v-if="!panelSettings.filesProject"
-            row
-            wrap
           >
-            <v-flex xs12>
+            <v-col cols="12">
               <project-files />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </div>
 
         <div v-show="showingGroup === 'updates'">
-          <v-layout
-            row
-            wrap
-          >
-            <v-flex
+          <v-row>
+            <v-col
               v-if="!panelSettings.updatesBudget"
-              md6
-              pr-1
-              sm12
+              class="pr-1"
+              md="6"
+              sm="12"
             >
               <budget-comment />
-            </v-flex>
+            </v-col>
 
-            <v-flex
+            <v-col
               v-if="!panelSettings.updatesStatus"
-              md6
-              pl-1
-              sm12
+              class="pl-1"
+              md="6"
+              sm="12"
             >
               <status-comment />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </div>
 
         <div v-show="showingGroup === 'other'">
-          <v-layout
-            row
-            wrap
-          >
-            <v-flex
+          <v-row>
+            <v-col
               v-if="!panelSettings.otherProj"
-              md6
-              pr-1
-              sm12
+              class="pr-1"
+              md="6"
+              sm="12"
             >
               <project-assignment :type="type" />
-            </v-flex>
-            <v-flex
+            </v-col>
+            <v-col
               v-show="showPanelProject"
-              md6
-              pr-1
-              xs12
+              class="pr-1"
+              cols="12"
+              md="6"
             >
               <rfps />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
-            pt-2
-            row
-            wrap
+          <v-row
+            class="pt-2"
           >
-            <v-flex
-              md6
-              pl-1
-              sm12
+            <v-col
+              class="pl-1"
+              md="6"
+              sm="12"
             >
               <project-contracts />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </div>
       </div>
-    </v-flex>
+    </v-col>
 
     <coming-soon
       :dialog="dialogSoon"
@@ -448,7 +412,7 @@
       :loading="showLoading"
       message="We are preparing the project tour"
     />
-  </v-layout>
+  </v-row>
 </template>
 
 <script>

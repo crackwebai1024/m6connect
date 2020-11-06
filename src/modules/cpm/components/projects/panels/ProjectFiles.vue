@@ -1,15 +1,21 @@
 <template>
   <m6-card-dialog :title="$t('cpm.projectProfile.sidebar.files')">
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
-          <a 
+          <a
             class="pointer pr-1"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/project-files'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat dark>
+            <v-icon
+              dark
+              flat
+            >
               launch
             </v-icon>
           </a>
@@ -17,7 +23,7 @@
         <span>{{ $t('general.openNewTab') }}</span>
       </v-tooltip>
     </template>
-    
+
     <v-tabs
       v-model="tabs"
       centered

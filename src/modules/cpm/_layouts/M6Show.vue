@@ -1,36 +1,33 @@
 <template>
   <v-container
-    class="pa-0"
-    fill-height
+    class="fill-height pa-0"
     fluid
   >
-    <v-layout fill-height>
-      <v-flex
+    <v-row class="fill-height">
+      <v-col
         v-if="!withoutAside"
-        fill-height
-        shrink
+        class="fill-height shrink"
       >
-        <v-layout fill-height>
+        <v-row class="fill-height">
           <v-card :color="asideColor">
             <h1
-              class="display-2 ma-3 text-xs-center white--text"
+              class="display-2 ma-3 text-center white--text"
               v-text="asideTitle"
             />
 
-            <v-layout
+            <v-row
               :style="`width: ${asideWidth}px`"
-              wrap
             >
               <slot name="aside" />
-            </v-layout>
+            </v-row>
           </v-card>
-        </v-layout>
-      </v-flex>
+        </v-row>
+      </v-col>
 
-      <v-flex :style="`width: calc(100% - ${withoutAside ? 0 : asideWidth}px)`">
+      <v-col :style="`width: calc(100% - ${withoutAside ? 0 : asideWidth}px)`">
         <slot />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <m6-loading :loading="loading" />
   </v-container>

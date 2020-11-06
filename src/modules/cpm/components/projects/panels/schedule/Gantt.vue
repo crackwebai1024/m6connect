@@ -8,12 +8,12 @@
     >
       <v-card>
         <v-card-title primary-title>
-          <v-flex
+          <v-col
             class="title"
-            md12
+            md="12"
           >
             Apply Schedule
-          </v-flex>
+          </v-col>
         </v-card-title>
         <v-card-text>
           <v-container
@@ -21,12 +21,10 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              align-center
-              row
-              wrap
+            <v-row
+              align="center"
             >
-              <v-flex xs12>
+              <v-col cols="12">
                 <v-select
                   v-if="isPlannedProject"
                   v-model="selectedFiscalYear"
@@ -41,14 +39,15 @@
                     {{ item.name }}
                   </template>
                 </v-select>
-              </v-flex>
-              <v-flex md4>
+              </v-col>
+              <v-col md="4">
                 {{ nameMilestone }}
-              </v-flex>
-              <v-flex md8>
+              </v-col>
+              <v-col md="8">
                 <v-menu
                   ref="menuMilestone"
                   v-model="milestoneDatePicker"
+                  v-if="!validDates.length"
                   :close-on-content-click="false"
                   full-width
                   lazy
@@ -57,7 +56,6 @@
                   :nudge-right="120"
                   offset-y
                   transition="scale-transition"
-                  v-if="!validDates.length"
                 >
                   <template v-slot:activator="{ on }">
                     <v-text-field
@@ -82,30 +80,25 @@
                   v-model="milestoneDateUsa"
                   :items="validDates"
                   label="Date Milestone"
-                >
-                  
-                </v-select>
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+                />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="12">
                 Start date will be set to be {{ daysMilestone }} days before the
                 above date
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-flex md2>
+          <v-col md="2">
             <v-btn @click="cancelApplyMilestone">
               Cancel
             </v-btn>
-          </v-flex>
-          <v-flex md2>
+          </v-col>
+          <v-col md="2">
             <v-btn
               color="blue"
               dark
@@ -114,7 +107,7 @@
             >
               Apply
             </v-btn>
-          </v-flex>
+          </v-col>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -128,8 +121,8 @@
       fluid
       grid-list-md
     >
-      <v-layout justify-end>
-        <v-flex shrink>
+      <v-row justify="end">
+        <v-col class="shrink">
           <v-btn
             color="primary"
             :flat="editing"
@@ -146,13 +139,11 @@
               close
             </v-icon>
           </v-btn>
-        </v-flex>
-      </v-layout>
-      <v-layout
+        </v-col>
+      </v-row>
+      <v-row
         v-if="editing"
-        align-center
-        row
-        wrap
+        align="center"
       >
         <v-btn @click.prevent="$store.dispatch('gantt/setConfig', !config)">
           {{ getConfigurationLabel() }}
@@ -171,9 +162,9 @@
         >
           Apply Schedule
         </v-btn>
-        <v-flex
-          md2
-          sm4
+        <v-col
+          md="2"
+          sm="4"
         >
           <v-select
             clearable
@@ -184,7 +175,7 @@
             :value="selectedGantt"
             @input="setSelectedGantt"
           />
-        </v-flex>
+        </v-col>
 
         <v-menu
           :close-on-content-click="false"
@@ -222,7 +213,7 @@
             </table>
           </v-card>
         </v-menu>
-      </v-layout>
+      </v-row>
     </v-container>
 
     <v-container
@@ -230,100 +221,88 @@
       fluid
       grid-list-md
     >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex
-          md12
-          xs12
+      <v-row>
+        <v-col
+          cols="12"
+          md="12"
         >
           <v-container
             class="pa-0"
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md3>
+            <v-row>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.title"
                   class="ma-0 pa-0"
                   color="blue"
                   label="Activity Name"
                 />
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.startDate"
                   class="ma-0 pa-0"
                   color="blue"
                   label="Start Date"
                 />
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.predecessors"
                   class="ma-0 pa-0"
                   color="blue"
                   label="Predecessors"
                 />
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.assignee"
                   class="ma-0 pa-0"
                   color="blue"
                   label="Resource Name"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md3>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.endDate"
                   class="ma-0 pa-0"
                   color="blue"
                   label="End Date"
                 />
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.duration"
                   class="ma-0 pa-0"
                   color="blue"
                   label="Duration"
                 />
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.hours"
                   class="ma-0 pa-0"
                   color="blue"
                   label="Hours"
                 />
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-checkbox
                   v-model="columns.progress"
                   class="ma-0 pa-0"
                   color="blue"
                   label="Progress"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
-        </v-flex>
-      </v-layout>
-      <v-layout
-        row
-        wrap
-      >
+        </v-col>
+      </v-row>
+      <v-row>
         <v-btn @click.prevent="$store.dispatch('gantt/setConfig', false)">
           Close
         </v-btn>
@@ -337,7 +316,7 @@
         >
           Reset Timeline
         </v-btn>
-      </v-layout>
+      </v-row>
     </v-container>
 
     <v-container
@@ -346,13 +325,10 @@
       fluid
       grid-list-md
     >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex
+      <v-row>
+        <v-col
           class="slider-config-width"
-          md12
+          md="12"
         >
           <v-slider
             v-model="columns.width"
@@ -362,18 +338,15 @@
             step="1"
             @change="updateGantt"
           />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
 
-    <v-layout
-      class="gantt-header"
-      mx-0
-      wrap
+    <v-row
+      class="gantt-header mx-0"
     >
-      <v-flex
-        class="align-center gantt-header-item py-0"
-        shrink
+      <v-col
+        class="align-center gantt-header-item py-0 shrink"
       >
         <v-btn
           class="ma-0"
@@ -386,10 +359,9 @@
           </v-icon>
           Daily
         </v-btn>
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item py-0"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item py-0 shrink"
       >
         <v-btn
           class="ma-0"
@@ -402,8 +374,8 @@
           </v-icon>
           Monthly
         </v-btn>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <div
       id="gantt-container"
       :style="ganttStyle"
@@ -628,7 +600,7 @@ export default {
       this.triggerUpdate()
     },
     softRefreshData: function () {
-      //this.debounceForecastsAfterRefresh()
+      // this.debounceForecastsAfterRefresh()
     },
     forceRefresh: function () {
       this.$nextTick(() => {
@@ -719,7 +691,7 @@ export default {
         .collection('settings')
         .doc(window.Drupal.settings.m6_platform_header.company_nid)
         .collection(`${this.settingCollectionName}`)
-        .doc('milestones').get().then( milestones => {
+        .doc('milestones').get().then(milestones => {
           const data = milestones.data()
           this.milestonesSettings = data.milestones ? data.milestones : []
         })
@@ -821,12 +793,10 @@ export default {
       }
       this.nameMilestone = this.selectedGantt.milestoneName
       this.daysMilestone = this.selectedGantt.projectStartDateDays
-      
-      const find = this.milestonesSettings.find( m => m.name === this.nameMilestone )
-      if(find && find.validDates) {
-        this.validDates = find.validDates ? find.validDates.map(row => {
-          return this.$moment(row).format('MM/DD/YYYY')
-        }) : []
+
+      const find = this.milestonesSettings.find(m => m.name === this.nameMilestone)
+      if (find && find.validDates) {
+        this.validDates = find.validDates ? find.validDates.map(row => this.$moment(row).format('MM/DD/YYYY')) : []
       }
 
       this.dialogApplyMilestone = true

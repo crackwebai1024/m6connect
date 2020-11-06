@@ -9,7 +9,7 @@
       :without-results="false"
     >
       <template v-slot:before:search>
-        <v-flex shrink>
+        <v-col class="shrink">
           <v-tooltip left>
             <template v-slot:activator="{ on }">
               <v-btn
@@ -59,25 +59,24 @@
               add
             </v-icon>
           </v-btn>
-        </v-flex>
+        </v-col>
       </template>
 
       <template v-slot:after:search>
-        <v-flex
+        <v-col
           id="step4"
-          align-center
-          shrink
+          class="align-center shrink"
         >
           <list-filtering
             :default-filters-values="{}"
             :items="{ campusOptions, pmOptions, searchOptions }"
             @filtered="onFiltered"
           />
-        </v-flex>
+        </v-col>
 
-        <v-flex
+        <v-col
           id="step5"
-          shrink
+          class="shrink"
         >
           <v-select
             v-model="view"
@@ -101,7 +100,7 @@
               {{ item.label }}
             </template>
           </v-select>
-        </v-flex>
+        </v-col>
       </template>
 
       <!--GRID VIEW-->
@@ -123,11 +122,11 @@
         </template>
 
         <template v-slot:item="{ index, item }">
-          <v-flex
-            lg3
-            md4
-            sm6
-            xs12
+          <v-col
+            cols="12"
+            lg="3"
+            md="4"
+            sm="6"
           >
             <v-card
               id="step6"
@@ -175,12 +174,12 @@
                 <span>{{ $t('cpm.openNewTab') }}</span>
               </v-tooltip>
 
-              <v-flex
-                text-xs-center
-                xs12
+              <v-col
+                class="text-center"
+                cols="12"
                 @click="goToProject(item, false)"
               >
-                <v-layout class="justify-center pt-3">
+                <v-row class="justify-center pt-3">
                   <v-badge>
                     <v-avatar
                       color="grey lighten-4"
@@ -199,11 +198,11 @@
                       </v-icon>
                     </v-avatar>
                   </v-badge>
-                </v-layout>
-              </v-flex>
+                </v-row>
+              </v-col>
 
               <v-card-text @click="goToProject(item, false)">
-                <div class="mb-2 text-xs-center">
+                <div class="mb-2 text-center">
                   <v-menu
                     offset-y
                     open-on-hover
@@ -258,11 +257,11 @@
                 </div>
               </v-card-text>
 
-              <v-card-actions class="overflow-hidden text-xs-center">
-                <v-layout row>
-                  <v-flex
-                    pa-0
-                    xs6
+              <v-card-actions class="overflow-hidden text-center">
+                <v-row>
+                  <v-col
+                    class="pa-0"
+                    cols="6"
                   >
                     <small>{{ $t('cpm.budgetStatus') }}</small>
 
@@ -276,11 +275,11 @@
                         {{ item.status || 'N/A' }}
                       </span>
                     </v-card>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pa-0
-                    xs6
+                  <v-col
+                    class="pa-0"
+                    cols="6"
                   >
                     <small>{{ $t('general.startDate') }}</small>
 
@@ -294,21 +293,19 @@
                         {{ getDate(item.startDate) }}
                       </span>
                     </v-card>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </v-card-actions>
             </v-card>
-          </v-flex>
+          </v-col>
         </template>
       </v-data-iterator>
 
-      <v-layout
+      <v-row
         v-else
         :key="view.val"
-        row
-        wrap
       >
-        <v-flex xs12>
+        <v-col cols="12">
           <m6-data-table
             :headers="headers"
             :items="resources"
@@ -324,7 +321,7 @@
               slot="items"
               slot-scope="{ item }"
             >
-              <td class="pa-1 text-xs-center">
+              <td class="pa-1 text-center">
                 <v-avatar :color="item.projectImage ? '' : 'indigo'">
                   <img
                     v-if="item.projectImage"
@@ -433,7 +430,7 @@
 
                 <td>{{ getManagerLabel(item) }}</td>
 
-                <td class="text-lg-right text-md-right text-xs-right">
+                <td class="text-lg-right text-md-right text-right">
                   {{ $h.dg(item, 'budget', 0) | currency }}
                 </td>
               </template>
@@ -452,11 +449,11 @@
                   </v-tooltip>
                 </td>
 
-                <td class="text-lg-right text-md-right text-xs-right">
+                <td class="text-lg-right text-md-right text-right">
                   {{ $h.dg(item, 'totals.spendingTotal', 0) | currency }}
                 </td>
 
-                <td class="text-lg-right text-md-right text-xs-right">
+                <td class="text-lg-right text-md-right text-right">
                   {{ $h.dg(item, 'projectFinalCost', 0) | currency }}
                 </td>
 
@@ -503,8 +500,8 @@
               </td>
             </template>
           </m6-data-table>
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
     </m6-list>
 
     <cpm-create
@@ -576,7 +573,7 @@ import ListFiltering from './modals/ListFiltering'
 
 import M6Info from './_partials/M6Info'
 
-import mixins from '@/components/_mixins/index'
+import mixins from '@/modules/cpm/_mixins/index'
 // TODO: need to transfer all the api requests to firebase over to graphql...
 
 export default {
@@ -1037,7 +1034,7 @@ export default {
         return 'settings'
       }
     },
-    
+
     fiscalYears() {
       return this.$h.dg(this.settingsProject, 'fiscalYears', [])
     }
@@ -1054,7 +1051,7 @@ export default {
       }
     },
     'pagination.rowsPerPage': async function (value) {
-      if(this.isGridView) {
+      if (this.isGridView) {
         db.collection('m6user')
           .doc(window.Drupal.settings.m6_platform.uid)
           .collection('pagination')
@@ -1122,9 +1119,9 @@ export default {
       .collection('pagination')
       .doc(this.isPlanned ? 'planned' : 'projects')
       .get().then(doc => {
-        if(doc.exists) {
+        if (doc.exists) {
           const data = doc.data()
-          if(data.rowsPerPage) {
+          if (data.rowsPerPage) {
             this.pagination.rowsPerPage = data.rowsPerPage
           }
         }
@@ -1535,13 +1532,12 @@ export default {
     },
 
     updateFilterUserOptions() {
-      
-      if(this.isPlanned) {
-        this.lastSearch.searchPlannedList = this.search 
+      if (this.isPlanned) {
+        this.lastSearch.searchPlannedList = this.search
       } else {
-        this.lastSearch.searchProjectList = this.search 
+        this.lastSearch.searchProjectList = this.search
       }
-      
+
       db.collection('m6user')
         .doc(this.userId)
         .update({

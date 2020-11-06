@@ -8,19 +8,17 @@
         fluid
         grid-list-md
       >
-        <v-layout
-          align-center
-          row
-          wrap
+        <v-row
+          align="center"
         >
           <v-spacer />
-          <v-flex
+          <v-col
             class="text-center title"
-            md9
-            xs12
+            cols="12"
+            md="9"
           >
             <h3>{{ taskNumber }} {{ task.title }}</h3>
-          </v-flex>
+          </v-col>
           <v-spacer />
           <v-btn
             icon
@@ -31,7 +29,7 @@
               delete
             </v-icon>
           </v-btn>
-        </v-layout>
+        </v-row>
       </v-container>
     </v-card-title>
     <v-card-text>
@@ -39,54 +37,48 @@
         class="pa-0"
         grid-list-md
       >
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex
-            md12
-            xs12
+        <v-row>
+          <v-col
+            cols="12"
+            md="12"
           >
             <slot name="body">
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md1
-                  xs12
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="1"
                 >
                   <v-icon>details</v-icon>
-                </v-flex>
-                <v-flex
-                  md4
-                  xs12
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="4"
                 >
                   <h4 class="margin-top-20 title">
                     {{ $tc('general.detail', 2) }}
                   </h4>
-                </v-flex>
-                <v-flex
-                  md3
-                  xs12
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="3"
                 >
                   <a
                     class="action-link"
                     href="#"
                     @click.prevent="expandAll"
                   >{{ $t('general.showAll') }}</a>
-                </v-flex>
-                <v-flex
-                  md4
-                  xs12
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="4"
                 >
                   <a
                     class="action-link"
                     href="#"
                     @click.prevent="showGeneralDetails = !showGeneralDetails"
                   >{{ $t('general.show') }} / {{ $tc('general.hideDetail', 2) }}</a>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
               <transition name="router-anim">
                 <div
                   v-if="showGeneralDetails"
@@ -138,13 +130,10 @@
                     </div>
                   </div>
 
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex
-                      md5
-                      xs12
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="5"
                     >
                       <v-menu
                         bottom
@@ -185,14 +174,11 @@
                           </v-list-tile>
                         </v-list>
                       </v-menu>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
 
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex md12>
+                  <v-row>
+                    <v-col md="12">
                       <budget-category-select
                         :category="
                           $h.dg(task, 'budgetCategories', [])
@@ -200,42 +186,36 @@
                         multiple
                         @newCategory="setBudgetCategory"
                       />
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </div>
               </transition>
               <!--SCHEDULE-->
 
               <v-divider class="mb-4 mt-4 xs12" />
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md1
-                  xs12
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="1"
                 >
                   <v-icon>calendar_today</v-icon>
-                </v-flex>
-                <v-flex
-                  md11
-                  xs12
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="11"
                 >
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex
-                      md4
-                      xs12
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="4"
                     >
                       <h4 class="title">
                         {{ $t('general.calendar') }}
                       </h4>
-                    </v-flex>
-                    <v-flex
-                      md4
-                      xs12
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="4"
                     >
                       <v-checkbox
                         v-model="task.in_schedule"
@@ -243,11 +223,11 @@
                         :label="$t('cpm.inSchedule')"
                         style="margin-top: 0; padding-top: 0"
                       />
-                    </v-flex>
-                    <v-flex
-                      class="text-xs-right"
-                      md4
-                      xs12
+                    </v-col>
+                    <v-col
+                      class="text-right"
+                      cols="12"
+                      md="4"
                     >
                       <a
                         class="action-link"
@@ -256,17 +236,14 @@
                       >
                         {{ $t('general.show') }}/{{ $tc('general.hideDetail', 2) }}
                       </a>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                   <transition name="router-anim">
                     <div v-show="showCalendarDetails">
-                      <v-layout
-                        row
-                        wrap
-                      >
-                        <v-flex
-                          md4
-                          xs12
+                      <v-row>
+                        <v-col
+                          cols="12"
+                          md="4"
                         >
                           <v-menu
                             ref="menuStartDate"
@@ -298,10 +275,10 @@
                               @input="startDatePicker = false"
                             />
                           </v-menu>
-                        </v-flex>
-                        <v-flex
-                          md4
-                          xs12
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          md="4"
                         >
                           <v-menu
                             ref="menuDueDate"
@@ -333,10 +310,10 @@
                               @input="dueDatePicker = false"
                             />
                           </v-menu>
-                        </v-flex>
-                        <v-flex
-                          md4
-                          xs12
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          md="4"
                         >
                           <v-text-field
                             v-model="task.duration"
@@ -347,16 +324,13 @@
                             :suffix="$tc('cpm.task.day', 2)"
                             @input="inputDuration"
                           />
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
 
-                      <v-layout
-                        row
-                        wrap
-                      >
-                        <v-flex
-                          md12
-                          xs12
+                      <v-row>
+                        <v-col
+                          cols="12"
+                          md="12"
                         >
                           <label>{{ $t('cpm.task.parentTask') }}:</label>
                           <v-select
@@ -366,86 +340,76 @@
                             return-object
                             :value="task.parentTask"
                           />
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
                     </div>
                   </transition>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
               <!--SUB TASKS-->
 
               <v-divider class="mb-4 mt-4 xs12" />
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md1
-                  xs12
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="1"
                 >
                   <v-icon>check_circle</v-icon>
-                </v-flex>
-                <v-flex
-                  md11
-                  xs12
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="11"
                 >
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex
-                      md3
-                      xs12
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="3"
                     >
                       <h4 class="title">
                         {{ $t('cpm.task.toDoList') }}
                       </h4>
-                    </v-flex>
-                    <v-flex
-                      md4
-                      xs12
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="4"
                     >
                       <v-progress-linear v-model="subtaskProgress" />
-                    </v-flex>
-                    <v-flex
-                      md1
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      md="1"
                       style="position:relative"
-                      xs12
                     >
                       <span class="percentage">{{ subtaskProgress }}%</span>
-                    </v-flex>
-                    <v-flex
-                      class="text-xs-right"
-                      md4
-                      xs12
+                    </v-col>
+                    <v-col
+                      class="text-right"
+                      cols="12"
+                      md="4"
                     >
                       <a
                         class="action-link"
                         href="#"
                         @click.prevent="showToDoDetails = !showToDoDetails"
                       >{{ $t('general.show') }}/{{ $tc('general.hideDetail', 2) }}</a>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
 
-                  <v-layout
+                  <v-row
                     v-show="showToDoDetails"
-                    row
-                    wrap
                   >
-                    <v-flex
+                    <v-col
                       v-for="subtask in subtasks"
                       :key="subtask.id"
-                      xs12
+                      cols="12"
                     >
-                      <v-layout
-                        align-center
-                        row
-                        wrap
+                      <v-row
+                        align="center"
                       >
-                        <v-flex
-                          md1
-                          xs12
+                        <v-col
+                          cols="12"
+                          md="1"
                         >
                           <v-checkbox
                             v-model="subtask.completed"
@@ -454,10 +418,10 @@
                             hide-details
                             @change="changeSubTask(subtask)"
                           />
-                        </v-flex>
-                        <v-flex
-                          md10
-                          xs12
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          md="10"
                         >
                           <v-text-field
                             v-model="subtask.title"
@@ -465,81 +429,72 @@
                             :label="$t('cpm.task.subtask')"
                             @input="inputSubTask(subtask)"
                           />
-                        </v-flex>
-                        <v-flex
-                          md1
-                          xs12
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          md="1"
                         >
                           <v-icon @click.prevent="deleteSubTask(subtask)">
                             delete
                           </v-icon>
-                        </v-flex>
-                      </v-layout>
-                    </v-flex>
+                        </v-col>
+                      </v-row>
+                    </v-col>
 
-                    <v-flex xs12>
+                    <v-col cols="12">
                       <a
                         class="action-link"
                         href="#"
                         @click.prevent="addSubTask"
                       >+ {{ $t('cpm.task.addNewTodoListItem') }}</a>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
 
               <!-- COMMENTS -->
 
               <v-divider class="mb-4 mt-4 xs12" />
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md1
-                  xs12
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="1"
                 >
                   <v-icon>comment</v-icon>
-                </v-flex>
-                <v-flex
-                  md11
-                  xs12
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="11"
                 >
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex
-                      md6
-                      xs12
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="6"
                     >
                       <h4 class="title">
                         {{ $tc('general.comment', 2) }}
                       </h4>
-                    </v-flex>
-                    <v-flex
-                      class="text-xs-right"
-                      md6
-                      xs12
+                    </v-col>
+                    <v-col
+                      class="text-right"
+                      cols="12"
+                      md="6"
                     >
                       <a
                         class="action-link"
                         href="#"
                         @click.prevent="showCommentDetails = !showCommentDetails"
                       >Show/Hide Details</a>
-                    </v-flex>
+                    </v-col>
                     <transition name="router-anim">
-                      <v-flex
+                      <v-col
                         v-show="showCommentDetails"
-                        xs12
+                        cols="12"
                       >
-                        <v-layout
-                          row
-                          wrap
-                        >
-                          <v-flex
+                        <v-row>
+                          <v-col
                             v-if="!showNewCommentForm"
-                            xs12
+                            cols="12"
                           >
                             <a
                               class="action-link"
@@ -548,11 +503,11 @@
                             >
                               + {{ $tc('general.addNewComment', 1) }}
                             </a>
-                          </v-flex>
+                          </v-col>
                           <transition name="router-anim">
-                            <v-flex
+                            <v-col
                               v-if="showNewCommentForm"
-                              xs12
+                              cols="12"
                             >
                               <v-textarea
                                 v-model="newComment"
@@ -569,24 +524,22 @@
                               >
                                 {{ $tc('cpm.saveComment', 1) }}
                               </v-btn>
-                            </v-flex>
+                            </v-col>
                           </transition>
-                        </v-layout>
-                        <v-layout
+                        </v-row>
+                        <v-row
                           v-for="comment in comments"
                           :key="comment.id"
-                          row
-                          wrap
                         >
-                          <v-flex
-                            md1
-                            xs12
+                          <v-col
+                            cols="12"
+                            md="1"
                           >
                             <i class="fa fa-user-circle task-icon" />
-                          </v-flex>
-                          <v-flex
-                            md11
-                            xs12
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            md="11"
                           >
                             <p class="comment">
                               {{ comment.comment }}
@@ -594,81 +547,76 @@
                             <p class="author">
                               <strong>{{ comment.user ? comment.user.name : '' }}</strong> on {{ comment.createdAt.toDate().toLocaleString('en-US') }}
                             </p>
-                          </v-flex>
-                        </v-layout>
-                      </v-flex>
+                          </v-col>
+                        </v-row>
+                      </v-col>
                     </transition>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
+                  </v-row>
+                </v-col>
+              </v-row>
 
               <!-- ACTIVITY -->
 
               <v-divider class="mb-4 mt-4 xs12" />
-              <v-layout
-                row
-                wrap
-              >
-                <v-flex
-                  md1
-                  xs12
+              <v-row>
+                <v-col
+                  cols="12"
+                  md="1"
                 >
                   <v-icon>note_add</v-icon>
-                </v-flex>
-                <v-flex
-                  md5
-                  xs12
+                </v-col>
+                <v-col
+                  cols="12"
+                  md="5"
                 >
                   <h4 class="title">
                     {{ $tc('general.activity', 2) }}
                   </h4>
-                </v-flex>
-                <v-flex
-                  class="text-xs-right"
-                  md6
-                  xs12
+                </v-col>
+                <v-col
+                  class="text-right"
+                  cols="12"
+                  md="6"
                 >
                   <a
                     class="action-link"
                     href="#"
                     @click.prevent="showActivityDetails = !showActivityDetails"
                   >{{ $t('general.show') }}/{{ $tc('general.hideDetail', 2) }}</a>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
               <transition name="router-anim">
-                <v-flex
+                <v-col
                   v-if="showActivityDetails"
-                  xs12
+                  cols="12"
                 >
-                  <v-layout
+                  <v-row
                     v-for="item in activity"
                     :key="item.id"
-                    row
-                    wrap
                   >
-                    <v-flex
-                      md1
-                      xs12
+                    <v-col
+                      cols="12"
+                      md="1"
                     >
                       <i class="fa fa-user-circle task-icon" />
-                    </v-flex>
-                    <v-flex
-                      11
+                    </v-col>
+                    <v-col
+                      class="11"
+                      cols="12"
                       md
-                      xs12
                     >
                       <p class="activity-details">
                         <strong>{{ item.user ? item.user.name : '' }}</strong> {{ item.details }}
                         <br>
                         <span class="timestamp">{{ item.createdAt.toDate().toLocaleString('en-US') }}</span>
                       </p>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
+                    </v-col>
+                  </v-row>
+                </v-col>
               </transition>
             </slot>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-text>
 

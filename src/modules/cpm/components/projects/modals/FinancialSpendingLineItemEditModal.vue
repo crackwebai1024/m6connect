@@ -26,10 +26,10 @@
             fluid
             grid-list-md
           >
-            <v-layout wrap>
-              <v-flex
-                md6
-                sm12
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.number"
@@ -37,10 +37,10 @@
                   :label="`${$tc('general.invoice', 1)} #`"
                   :rules="[rules.required]"
                 />
-              </v-flex>
-              <v-flex
-                md6
-                sm12
+              </v-col>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.po_number"
@@ -48,15 +48,12 @@
                   :label="$t('cpm.projects.poNumber')"
                   :rules="[rules.required]"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.project_name"
@@ -64,10 +61,10 @@
                   :label="$t('general.projectName')"
                   :rules="[rules.required]"
                 />
-              </v-flex>
-              <v-flex
-                md6
-                sm12
+              </v-col>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.line_number"
@@ -75,24 +72,21 @@
                   :label="`${$t('general.line')} #`"
                   :rules="[rules.required]"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <label class="money-fix v-input v-label">{{
                   $t('general.amount')
                 }}</label>
                 <money v-model="lineItemDraft.amount" />
-              </v-flex>
-              <v-flex
-                md6
-                sm12
+              </v-col>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.category"
@@ -100,15 +94,12 @@
                   :label="$tc('general.category', 1)"
                   :rules="[rules.required]"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-autocomplete
                   v-model="lineItemDraft.vendor"
@@ -119,24 +110,21 @@
                   return-object
                   :rules="[rules.required]"
                 />
-              </v-flex>
-              <v-flex
-                md6
-                sm12
+              </v-col>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.status"
                   :label="$t('general.status')"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-dialog
                   ref="dialogLineItemDateText"
@@ -185,10 +173,10 @@
                     </v-btn>
                   </v-date-picker>
                 </v-dialog>
-              </v-flex>
-              <v-flex
-                md6
-                sm12
+              </v-col>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-dialog
                   ref="dialogLineItemPaidDateText"
@@ -239,15 +227,12 @@
                     </v-btn>
                   </v-date-picker>
                 </v-dialog>
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.account"
@@ -255,11 +240,11 @@
                   :label="$t('general.account')"
                   :rules="[rules.required]"
                 />
-              </v-flex>
+              </v-col>
 
-              <v-flex
-                md6
-                sm12
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.account_category"
@@ -269,15 +254,12 @@
                   "
                   :rules="[rules.required]"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.aoc_code"
@@ -285,26 +267,23 @@
                   :label="$t('general.aocCode')"
                   :rules="[rules.required]"
                 />
-              </v-flex>
+              </v-col>
 
-              <v-flex
-                md6
-                sm12
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-checkbox
                   v-model="lineItemDraft.reconciled"
                   color="blue"
                   :label="$t('general.reconciled')"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                md="6"
+                sm="12"
               >
                 <v-text-field
                   v-model="lineItemDraft.client_capital_id"
@@ -312,24 +291,21 @@
                   :label="$t('general.clientCapitalId')"
                   :rules="[rules.required]"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md12
-                sm12
+            <v-row>
+              <v-col
+                md="12"
+                sm="12"
               >
                 <v-textarea
                   v-model="lineItemDraft.line_description"
                   color="blue"
                   :label="$t('general.lineItemDescr')"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-form>
       </v-card-text>

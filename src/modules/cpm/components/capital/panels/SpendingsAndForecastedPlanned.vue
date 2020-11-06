@@ -1,16 +1,14 @@
 <template>
   <div>
-    <v-layout
+    <v-row
       v-if="false"
-      align-center
-      row
-      wrap
+      align="center"
     >
-      <v-flex
-        mb-5
-        sm12
+      <v-col
+        class="mb-5"
+        sm="12"
       >
-        <div class="text-xs-right">
+        <div class="text-right">
           <div
             class="d-inline-block"
             style="width: 300px"
@@ -65,17 +63,14 @@
             Copy Capital Plan
           </v-btn>
         </div>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex md12>
+    <v-row>
+      <v-col md="12">
         <v-data-table
-          hide-actions
           :headers="headers"
+          hide-actions
           :items="projects"
         >
           <template
@@ -92,14 +87,11 @@
                     class="pa-0"
                     grid-list-md
                   >
-                    <v-layout
-                      row
-                      wrap
-                    >
-                      <v-flex md12>
+                    <v-row>
+                      <v-col md="12">
                         {{ header.text }}
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </v-container>
                 </template>
 
@@ -112,38 +104,33 @@
                         class="pa-0"
                         grid-list-md
                       >
-                        <v-layout
-                          row
-                          wrap
-                        >
-                          <v-flex md12>
+                        <v-row>
+                          <v-col md="12">
                             {{ header.text }}
-                          </v-flex>
-                        </v-layout>
-                        <v-layout
+                          </v-col>
+                        </v-row>
+                        <v-row
                           class="row-fiscal-year"
-                          row
-                          wrap
                         >
-                          <v-flex
-                            class="text-xs-center"
-                            md4
+                          <v-col
+                            class="text-center"
+                            md="4"
                           >
                             Spending
-                          </v-flex>
-                          <v-flex
-                            class="text-xs-center"
-                            md4
+                          </v-col>
+                          <v-col
+                            class="text-center"
+                            md="4"
                           >
                             Forecast
-                          </v-flex>
-                          <v-flex
-                            class="text-xs-center"
-                            md4
+                          </v-col>
+                          <v-col
+                            class="text-center"
+                            md="4"
                           >
                             Variance
-                          </v-flex>
-                        </v-layout>
+                          </v-col>
+                        </v-row>
                       </v-container>
                     </template>
 
@@ -174,25 +161,19 @@
                         class="pa-0"
                         grid-list-md
                       >
-                        <v-layout
-                          row
-                          wrap
-                        >
-                          <v-flex md12>
+                        <v-row>
+                          <v-col md="12">
                             {{ header.text }}
-                          </v-flex>
-                        </v-layout>
-                        <v-layout
-                          row
-                          wrap
-                        >
-                          <v-flex
-                            class="text-xs-center"
-                            md12
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col
+                            class="text-center"
+                            md="12"
                           >
                             Forecast
-                          </v-flex>
-                        </v-layout>
+                          </v-col>
+                        </v-row>
                       </v-container>
                     </template>
                   </template>
@@ -202,14 +183,11 @@
                       class="pa-0"
                       grid-list-md
                     >
-                      <v-layout
-                        row
-                        wrap
-                      >
-                        <v-flex md12>
+                      <v-row>
+                        <v-col md="12">
                           {{ header.text }}
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
                     </v-container>
                   </template>
                 </template>
@@ -221,13 +199,19 @@
             slot="items"
             slot-scope="props"
           >
-            <td @click="goToCapitalPlan" class="pointer">
+            <td
+              class="pointer"
+              @click="goToCapitalPlan"
+            >
               <span
-                class="d-inline-block text-truncate blue--text"
+                class="blue--text d-inline-block text-truncate"
                 style="max-width: 150px;"
               >
                 {{ capitalPlanProp.name }}
-                <v-icon color="blue" small>
+                <v-icon
+                  color="blue"
+                  small
+                >
                   north_east
                 </v-icon>
               </span>
@@ -241,38 +225,34 @@
                 class="pa-0"
                 grid-list-md
               >
-                <v-layout
+                <v-row
                   v-if="period.value == currentMonth || isPeriodLowerThanCurrentMonth(period.value, currentMonth)"
-                  align-center
-                  row
-                  wrap
+                  align="center"
                 >
-                  <v-flex
-                    class="text-xs-center"
-                    md4
+                  <v-col
+                    class="text-center"
+                    md="4"
                   >
                     {{
                       getSpendingPeriodFromProject(period.value, props.item) | currency
                     }}
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    class="text-xs-center"
-                    md4
+                  <v-col
+                    class="text-center"
+                    md="4"
                   >
                     <v-container
                       class="pa-0"
                       fluid
                       grid-list-md
                     >
-                      <v-layout
-                        align-center
-                        row
-                        wrap
+                      <v-row
+                        align="center"
                       >
-                        <v-flex
-                          md6
-                          sm12
+                        <v-col
+                          md="6"
+                          sm="12"
                         >
                           {{
                             getForecastPeriodFromCapitalPlan(
@@ -281,10 +261,10 @@
                               props.item.id
                             ) | currency
                           }}
-                        </v-flex>
-                        <v-flex
-                          md6
-                          sm12
+                        </v-col>
+                        <v-col
+                          md="6"
+                          sm="12"
                         >
                           <v-btn
                             color="primary"
@@ -295,14 +275,14 @@
                           >
                             <v-icon>edit</v-icon>
                           </v-btn>
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
                     </v-container>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    class="text-xs-center"
-                    md4
+                  <v-col
+                    class="text-center"
+                    md="4"
                   >
                     {{
                       getVariancePeriodFromCapitalPlan(
@@ -311,8 +291,8 @@
                         props.item.id
                       ) | currency
                     }}
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
 
                 <!--
                 <v-layout
@@ -331,29 +311,25 @@
                 </v-layout>
 -->
 
-                <v-layout
+                <v-row
                   v-else
-                  align-center
-                  row
-                  wrap
+                  align="center"
                 >
-                  <v-flex
-                    class="text-xs-right"
-                    md12
+                  <v-col
+                    class="text-right"
+                    md="12"
                   >
                     <v-container
                       class="pa-0"
                       fluid
                       grid-list-md
                     >
-                      <v-layout
-                        align-center
-                        row
-                        wrap
+                      <v-row
+                        align="center"
                       >
-                        <v-flex
-                          md6
-                          sm12
+                        <v-col
+                          md="6"
+                          sm="12"
                         >
                           {{
                             getForecastPeriodFromCapitalPlan(
@@ -362,10 +338,10 @@
                               props.item.id
                             ) | currency
                           }}
-                        </v-flex>
-                        <v-flex
-                          md6
-                          sm12
+                        </v-col>
+                        <v-col
+                          md="6"
+                          sm="12"
                         >
                           <v-btn
                             color="primary"
@@ -376,32 +352,30 @@
                           >
                             <v-icon>edit</v-icon>
                           </v-btn>
-                        </v-flex>
-                      </v-layout>
+                        </v-col>
+                      </v-row>
                     </v-container>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </v-container>
             </td>
 
             <td
               v-for="(fiscalYear, index) in fiscalYearsAvailable"
               :key="index"
-              class="text-xs-center"
+              class="text-center"
             >
               <v-container
                 class="pa-0"
                 fluid
                 grid-list-md
               >
-                <v-layout
-                  align-center
-                  row
-                  wrap
+                <v-row
+                  align="center"
                 >
-                  <v-flex
-                    md6
-                    sm12
+                  <v-col
+                    md="6"
+                    sm="12"
                   >
                     {{
                       getForecastFiscalYearFromCapitalPlan(
@@ -410,10 +384,10 @@
                         props.item.id
                       ) | currency
                     }}
-                  </v-flex>
-                  <v-flex
-                    md6
-                    sm12
+                  </v-col>
+                  <v-col
+                    md="6"
+                    sm="12"
                   >
                     <v-btn
                       color="primary"
@@ -424,14 +398,14 @@
                     >
                       <v-icon>edit</v-icon>
                     </v-btn>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </v-container>
             </td>
           </template>
         </v-data-table>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <v-dialog
       v-model="dialogForecasted"
@@ -452,18 +426,15 @@
             class="pa-0"
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-text-field
                   v-model="elementToEdit.amount"
                   label="Amount"
                   prepend-icon="attach_money"
                 />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
 
@@ -538,23 +509,27 @@ const snapshotDefault = {
   forecasts: []
 }
 
-const initialHeaders = [{ text: 'Capital Plan', type: 'default' , align: 'left' }]
+const initialHeaders = [{
+  text: 'Capital Plan',
+  type: 'default',
+  align: 'left'
+}]
 
 export default {
   name: 'SpendingsAndForecastedPlanned',
-  
+
   components: {
     BudgetByMonthChart
   },
-  
+
   props: {
     capitalPlanProp: {
       type: Object,
       default: null,
       required: true
-    }  
+    }
   },
-  
+
   data() {
     const capitalPlanId = this.capitalPlanProp.id
     const currentMonth = moment().format('YYYY-MM')
@@ -594,7 +569,7 @@ export default {
   async mounted() {
     await this.getFiscalYears()
     await this.setCapitalPlan()
-    //await this.getCapitalPlan()
+    // await this.getCapitalPlan()
   },
   methods: {
     getForecastPeriodFromCapitalPlan,
@@ -1036,11 +1011,11 @@ export default {
       return aux
     },
     goToCapitalPlan() {
-      let routeData = this.$router.resolve({
+      const routeData = this.$router.resolve({
         name: 'cpm.capitalPlan.show',
         params: { id: this.capitalPlanProp.id }
       })
-      window.open(routeData.href, '_blank');
+      window.open(routeData.href, '_blank')
     }
   }
 }

@@ -1,15 +1,21 @@
 <template>
   <m6-card-dialog title="Milestone Tracker">
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
           <a
             class="pointer pr-1"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/milestones'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat dark>
+            <v-icon
+              dark
+              flat
+            >
               launch
             </v-icon>
           </a>
@@ -49,15 +55,15 @@
     >
       <milestone
         v-if="showForm"
-        :milestones-availables="milestonesAvailables"
         :milestone-id="milestoneId"
+        :milestones-availables="milestonesAvailables"
         :project-id="projectId"
-        :user-can-edit-dates="userCanEditDates"
         :type="type"
+        :user-can-edit-dates="userCanEditDates"
         @close="closeShowForm"
       />
     </v-dialog>
-    
+
     <v-dialog
       v-model="showReview"
       max-width="600px"
@@ -95,7 +101,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
+
     <v-dialog
       v-model="showMilestoneReviews"
       max-width="600px"
@@ -103,9 +109,9 @@
     >
       <template>
         <v-data-table
+          class="elevation-1"
           :headers="milestoneHeaders"
           :items="milestoneReviews"
-          class="elevation-1"
         >
           <template v-slot:items="props">
             <td>{{ $moment(props.item.date).format('MM/DD/YYYY') }}</td>
@@ -115,7 +121,6 @@
           </template>
         </v-data-table>
       </template>
-      
     </v-dialog>
 
     <v-card-text class="card-text-milestones pa-0">
@@ -124,11 +129,8 @@
         fluid
         grid-list-md
       >
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex md12>
+        <v-row>
+          <v-col md="12">
             <v-data-table
               class="elevation-0"
               :headers="headers"
@@ -166,8 +168,8 @@
                   </template>
                 </td>
                 <td class="text-center">
-                  <v-layout justify-end>
-                    <v-flex shrink>
+                  <v-row justify="end">
+                    <v-col class="shrink">
                       <v-icon
                         class="ml-0 mr-1"
                         color="#757575"
@@ -178,8 +180,8 @@
                       >
                         edit
                       </v-icon>
-                    </v-flex>
-                    <v-flex shrink>
+                    </v-col>
+                    <v-col class="shrink">
                       <v-icon
                         color="#f44336"
                         flat
@@ -188,14 +190,14 @@
                       >
                         delete
                       </v-icon>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </td>
               </template>
             </v-data-table>
             <v-card class="elevation-0 ma-0 pa-0">
               <v-card-text class="ma-0 pa-0">
-                <v-layout class="justify ma-0 pa-0">
+                <v-row class="justify ma-0 pa-0">
                   <v-spacer />
                   <v-btn
                     v-if="pagination.rowsPerPage !== -1"
@@ -223,21 +225,28 @@
                       keyboard_arrow_up
                     </v-icon>
                   </v-btn>
-                </v-layout>
+                </v-row>
               </v-card-text>
             </v-card>
-            
+
             <v-checkbox
-              class="monthlyReview"
               v-model="monthlyReview"
+              class="monthlyReview"
+              :disabled="monthlyReview"
               label="Monthly review"
               @change="checkShowReview"
-              :disabled="monthlyReview"
             />
-            
-            <v-btn round small class="milestoneHistory" @click="showMilestoneReviews = true">History</v-btn>
-          </v-flex>
-        </v-layout>
+
+            <v-btn
+              class="milestoneHistory"
+              round
+              small
+              @click="showMilestoneReviews = true"
+            >
+              History
+            </v-btn>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-text>
     <!--DELETE MODAL-->
@@ -315,7 +324,7 @@ export default {
         { text: 'Date', value: 'date', sortable: false },
         { text: 'Action', value: 'action', sortable: false },
         { text: 'User', value: 'user', sortable: false },
-        { text: 'Comment', value: 'comment', sortable: false },
+        { text: 'Comment', value: 'comment', sortable: false }
       ],
       milestoneDeleteModal: false,
       showMilestoneReviews: false,
@@ -361,7 +370,7 @@ export default {
     ]),
 
     projectClosed() {
-      const ma =  new Set(this.milestonesAvailables.map(({ title }) => title.toLowerCase()))
+      const ma = new Set(this.milestonesAvailables.map(({ title }) => title.toLowerCase()))
 
       return ma.has('go live') || ma.has('end date')
     },
@@ -393,7 +402,7 @@ export default {
     },
 
     userCanEditDates() {
-      if(this.$h.dg(this.project, 'lockMilestoneDates') && !this.userIsManager) {
+      if (this.$h.dg(this.project, 'lockMilestoneDates') && !this.userIsManager) {
         return true
       } else {
         return false
@@ -424,7 +433,7 @@ export default {
   beforeMount() {
     this.projectId = this.pid ? this.pid : this.$route.params.id
   },
-  
+
   mounted() {
     this.getMilestoneReviews()
   },
@@ -433,7 +442,7 @@ export default {
       'checkUserRole'
     ]),
     checkShowReview() {
-      if(this.monthlyReview) {
+      if (this.monthlyReview) {
         this.showReview = true
       }
     },
@@ -444,11 +453,11 @@ export default {
     getMilestoneReviews() {
       this.milestoneReviews = []
       db.collection('cpm_projects').doc(this.project.id).collection('milestoneReviews').orderBy('date', 'desc').get().then(milestones => {
-      const date = new Date().toISOString().substring(0, 7)
-      milestones.docs.forEach(doc => {
+        const date = new Date().toISOString().substring(0, 7)
+        milestones.docs.forEach(doc => {
           const data = doc.data()
           this.milestoneReviews.push(data)
-          if(data.user.email === window.Drupal.settings.m6_platform_header.user.email &&
+          if (data.user.email === window.Drupal.settings.m6_platform_header.user.email &&
             data.date.search(date) !== -1 &&
             data.action === 'Monthly Review') {
             this.monthlyReview = true

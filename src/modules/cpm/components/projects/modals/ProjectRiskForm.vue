@@ -13,8 +13,8 @@
       </v-card-title>
       <v-card-text>
         <v-form ref="form">
-          <v-layout wrap>
-            <v-flex xs12>
+          <v-row>
+            <v-col cols="12">
               <v-autocomplete
                 v-model="risk.status"
                 clearable
@@ -55,9 +55,9 @@
                   </v-list-tile-content>
                 </template>
               </v-autocomplete>
-            </v-flex>
+            </v-col>
 
-            <v-flex xs12>
+            <v-col cols="12">
               <v-textarea
                 v-model="risk.purpose"
                 auto-grow
@@ -65,9 +65,9 @@
                 :label="$t('cpm.projects.riskAssessmentPanel.purpose')"
                 rows="3"
               />
-            </v-flex>
+            </v-col>
 
-            <v-flex xs12>
+            <v-col cols="12">
               <v-textarea
                 v-model="risk.comment"
                 auto-grow
@@ -75,17 +75,17 @@
                 :label="$t('cpm.projects.riskAssessmentPanel.comment')"
                 rows="3"
               />
-            </v-flex>
+            </v-col>
 
-            <v-flex xs12>
+            <v-col cols="12">
               <v-text-field
                 v-model="formattedDate"
                 disabled
                 :label="$t('general.date')"
                 readonly
               />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-form>
       </v-card-text>
       <v-card-actions>

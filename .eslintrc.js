@@ -15,7 +15,6 @@ module.exports = {
   plugins: ['es-beautifier', 'vuetify'],
 
   rules: {
-    'vuetify/no-deprecated-classes': 'error',
     'arrow-parens': [2, 'as-needed'],
     'block-spacing': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
@@ -135,7 +134,10 @@ module.exports = {
     camelcase: 2,
     eqeqeq: ['error', 'always'],
     quotes: ['error', 'single'],
-    semi: ['error', 'never']
+    semi: ['error', 'never'],
+    'vuetify/no-deprecated-classes': 'error',
+    'vuetify/grid-unknown-attributes': 'error',
+    'vuetify/no-legacy-grid': 'error'
   },
 
   globals: {

@@ -3,13 +3,10 @@
     fluid
     grid-list-md
   >
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex
-        class="text-xs-right"
-        md12
+    <v-row>
+      <v-col
+        class="text-right"
+        md="12"
       >
         <v-btn
           :color="!fields ? 'grey' : 'blue'"
@@ -21,14 +18,12 @@
         >
           <v-icon>filter_list</v-icon>
         </v-btn>
-      </v-flex>
-    </v-layout>
-    <v-layout
+      </v-col>
+    </v-row>
+    <v-row
       v-if="fields"
-      row
-      wrap
     >
-      <v-flex md12>
+      <v-col md="12">
         <v-radio-group
           class="mb-0 mt-0"
           row
@@ -41,13 +36,10 @@
             :label="row.text"
           />
         </v-radio-group>
-      </v-flex>
-    </v-layout>
-    <v-layout
-      row
-      wrap
-    >
-      <v-flex md12>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col md="12">
         <v-data-table
           class="mt-0"
           :headers="headers"
@@ -131,8 +123,8 @@
             <td />
           </template>
         </v-data-table>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

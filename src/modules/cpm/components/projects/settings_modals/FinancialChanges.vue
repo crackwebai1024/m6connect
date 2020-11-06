@@ -10,9 +10,9 @@
         class="headline"
         style="background: #006699; color:#fff"
       >
-        <v-layout align-center>
+        <v-row align="center">
           Changes Settings
-        </v-layout>
+        </v-row>
         <v-spacer />
 
         <portal-target :name="`financialChanges-${tab}`" />

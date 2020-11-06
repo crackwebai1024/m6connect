@@ -16,11 +16,8 @@
         fluid
         grid-list-md
       >
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex md12>
+        <v-row>
+          <v-col md="12">
             <table class="schedule-dates-list">
               <thead>
                 <tr style="border-bottom: thin solid grey;">
@@ -210,8 +207,8 @@
                 </tr>
               </draggable>
             </table>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
 
         <v-dialog
           v-model="dialog"
@@ -224,22 +221,16 @@
                 fluid
                 grid-list-md
               >
-                <v-layout
-                  row
-                  wrap
-                >
-                  <v-flex md12>
+                <v-row>
+                  <v-col md="12">
                     <v-text-field
                       v-model="dateSchedule.name"
                       label="Date Name"
                       name="Date Name"
                     />
-                  </v-flex>
-                </v-layout>
-                <v-layout
-                  row
-                  wrap
-                >
+                  </v-col>
+                </v-row>
+                <v-row>
                   <v-spacer />
                   <v-btn
                     color="error"
@@ -259,7 +250,7 @@
                   >
                     Save
                   </v-btn>
-                </v-layout>
+                </v-row>
               </v-container>
             </v-card-text>
           </v-card>

@@ -3,128 +3,116 @@
     id="gantt-container"
     class="gantt-container"
   >
-    <v-layout
+    <v-row
       class="gantt-header"
-      wrap
     >
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="closeAll"
       >
         <v-icon>
           expand_less
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.collapseAll') }}
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="openAll"
       >
         <v-icon>
           expand_more
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.expandAll') }}
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="zoomOut"
       >
         <v-icon>
           zoom_in
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.zoomIn') }}
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="zoomIn"
       >
         <v-icon>
           zoom_out
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.zoomOut') }}
-      </v-flex>
+      </v-col>
       <v-spacer />
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="exportTo('excel')"
       >
         <v-icon>
           border_all
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.exportTo', { fileFormat: 'Excel' }) }}
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="exportTo('png')"
       >
         <v-icon>
           photo
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.exportTo', { fileFormat: 'PNG' }) }}
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="exportTo('pdf')"
       >
         <v-icon>
           picture_as_pdf
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.exportTo', { fileFormat: 'PDF' }) }}
-      </v-flex>
+      </v-col>
       <v-spacer />
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="refreshData"
       >
         <v-icon>
           refresh
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.refresh') }}
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="showProjectsSelection = !showProjectsSelection"
       >
         <v-icon>
           add
         </v-icon>
         {{ $tc('cpm.forecasting.cashflow.selectProject', 2) }}
-      </v-flex>
-      <v-flex
-        class="align-center gantt-header-item"
-        shrink
+      </v-col>
+      <v-col
+        class="align-center gantt-header-item shrink"
         @click="toggleFullScreen"
       >
         <v-icon>
           fullscreen
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.fullscreen') }}
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
-    <v-layout
-      fill-height
-      wrap
+    <v-row
+      class="fill-height"
     >
-      <v-flex
+      <v-col
         class="pa-0"
-        xs12
+        cols="12"
       >
         <div
           ref="gantt"
           class="gantt"
         />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <forecasting-projects
       v-if="showProjectsSelection"
       @close="showProjectsSelection = false"
@@ -293,8 +281,8 @@ export default {
             template: task => {
               let budgetPercentage = 0
               let budget = 0
-              
-              if(task.type === 'project') {
+
+              if (task.type === 'project') {
                 budgetPercentage = Math.floor(this.$h.dg(task, 'progress', 0) * 100)
                 budget = this.$h.dg(task, 'budget', 0) * (budgetPercentage / 100)
               } else {

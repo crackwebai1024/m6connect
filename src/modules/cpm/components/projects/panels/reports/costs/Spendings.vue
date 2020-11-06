@@ -29,7 +29,7 @@
             <v-spacer />
             <v-toolbar-title class="heading">
               <v-chip
-                class="headling text-xs-center"
+                class="headling text-center"
                 color="blue darken-2"
                 dark
                 style="height: 100px"
@@ -88,29 +88,29 @@
                   slot="items"
                   slot-scope="props"
                 >
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     <a
                       href="#"
                       @click="setSpending(props.item, spending.id)"
                     >{{ props.item.number }}</a>
                   </td>
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     {{ props.item.vendor ? props.item.vendor.title : '' }}
                   </td>
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     {{ props.item.category }}
                   </td>
 
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     {{ props.item.dateText }}
                   </td>
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     {{ props.item.line_number }}
                   </td>
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     {{ props.item.line_description }}
                   </td>
-                  <td class="text-xs-center">
+                  <td class="text-center">
                     {{ props.item.amount | currency }}
                   </td>
 

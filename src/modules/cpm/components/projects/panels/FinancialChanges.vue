@@ -54,9 +54,8 @@
       </v-tooltip>
     </template>
 
-    <v-layout
-      justify-end
-      row
+    <v-row
+      justify="end"
     >
       <v-chip
         color="transparent"
@@ -66,11 +65,11 @@
         {{ $t('cpm.bulletinTotal') }}
         {{ $h.dg(project, 'totals.changesTotal', 0) | currency }}
       </v-chip>
-    </v-layout>
+    </v-row>
 
     <div
       v-if="loading"
-      class="text-xs-center"
+      class="text-center"
     >
       <v-progress-circular
         color="primary"
@@ -96,7 +95,7 @@
         <td class="text-sm-left">
           {{ props.item.costCodeText }}
         </td>
-        <td class="text-xs-right">
+        <td class="text-right">
           {{ props.item.amount | currency }}
         </td>
         <td class="text-sm-left">
@@ -108,7 +107,7 @@
         <td class="text-sm-left">
           {{ props.item.forecast ? 'Yes' : 'No' }}
         </td>
-        <td class="text-xs-center">
+        <td class="text-center">
           <m6-dropdown-actions
             :options="dropdownOptions"
             @delete="showDeleteModal(props.item)"

@@ -11,9 +11,9 @@
         class="headline"
         style="background: #006699; color:#fff"
       >
-        <v-layout align-center>
+        <v-row align="center">
           Spending for PO number: {{ commitmentNumber }}
-        </v-layout>
+        </v-row>
       </v-card-title>
 
       <v-card-text>
@@ -74,29 +74,29 @@
                     slot="items"
                     slot-scope="props"
                   >
-                    <td class="text-xs-center">
+                    <td class="text-center">
                       <a
                         href="#"
                         @click.prevent="showLineItem(props.item)"
                       >{{ props.item.number }}</a>
                     </td>
-                    <td class="text-xs-center">
+                    <td class="text-center">
                       {{ props.item.vendor ? props.item.vendor.title : '' }}
                     </td>
-                    <td class="text-xs-center">
+                    <td class="text-center">
                       {{ props.item.category }}
                     </td>
 
-                    <td class="text-xs-center">
+                    <td class="text-center">
                       {{ props.item.dateText }}
                     </td>
-                    <td class="text-xs-center">
+                    <td class="text-center">
                       {{ props.item.line_number }}
                     </td>
-                    <td class="text-xs-center">
+                    <td class="text-center">
                       {{ props.item.line_description }}
                     </td>
-                    <td class="text-xs-center">
+                    <td class="text-center">
                       {{ props.item.amount | currency }}
                     </td>
 
@@ -595,18 +595,17 @@
                       :lazy-src="imageUrl"
                       :src="imageUrl"
                     >
-                      <v-layout
+                      <v-row
                         slot="placeholder"
-                        align-center
-                        fill-height
-                        justify-center
-                        ma-0
+                        align="center"
+                        class="fill-height ma-0"
+                        justify="center"
                       >
                         <v-progress-circular
                           color="blue lighten-2"
                           indeterminate
                         />
-                      </v-layout>
+                      </v-row>
                     </v-img>
 
                     <iframe

@@ -4,15 +4,21 @@
     title="No Risks Have Been Made Yet"
   >
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
-          <a 
+          <a
             class="pointer pr-1"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/project-contracts'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat dark>
+            <v-icon
+              dark
+              flat
+            >
               launch
             </v-icon>
           </a>
@@ -20,9 +26,9 @@
         <span>{{ $t('general.openNewTab') }}</span>
       </v-tooltip>
     </template>
-    
+
     <v-card-text class="pr-0">
-      <div class="text-xs-center">
+      <div class="text-center">
         <v-progress-circular
           v-show="loading"
           color="primary"
@@ -32,19 +38,19 @@
       </div>
       <template>
         <div style="padding: 7px 0px 7px 0px;">
-          <v-layout align-center>
+          <v-row align="center">
             <table class="theme--light v-table">
               <tr>
-                <th class="text-xs-left">
+                <th class="text-left">
                   Contract Name
                 </th>
-                <th class="text-xs-center" />
+                <th class="text-center" />
               </tr>
               <tr
                 v-for="(contract, index) in project.contracts"
                 :key="index"
               >
-                <td class="text-xs-left">
+                <td class="text-left">
                   {{ contract.title }}
                 </td>
                 <td>
@@ -57,7 +63,7 @@
                 </td>
               </tr>
             </table>
-          </v-layout>
+          </v-row>
           <v-divider />
         </div>
       </template>

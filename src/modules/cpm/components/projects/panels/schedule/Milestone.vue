@@ -14,23 +14,17 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md12
-                xs12
+            <v-row>
+              <v-col
+                cols="12"
+                md="12"
               >
                 <v-container
                   fluid
                   grid-list-md
                 >
-                  <v-layout
-                    row
-                    wrap
-                  >
-                    <v-flex md12>
+                  <v-row>
+                    <v-col md="12">
                       <v-select
                         v-model="title"
                         clearable
@@ -39,22 +33,22 @@
                         :label="`${appLabel.singular} Milestone`"
                         :rules="[rules.required]"
                       />
-                    </v-flex>
-                    <v-flex md12>
+                    </v-col>
+                    <v-col md="12">
                       <v-text-field
                         v-if="customName && settings.names.length"
                         v-model="milestone.title"
                         label="Custom Milestone Name"
                       />
-                    </v-flex>
-                    <v-flex md12>
+                    </v-col>
+                    <v-col md="12">
                       <v-select
                         v-model="milestone.status"
                         :items="settings.status"
                         label="Milestone Status"
                       />
-                    </v-flex>
-                    <v-flex md6>
+                    </v-col>
+                    <v-col md="6">
                       <v-menu
                         ref="menuOriginal"
                         v-model="originalDatePicker"
@@ -86,20 +80,20 @@
                           @input="originalDatePicker = false"
                         />
                       </v-menu>
-                    </v-flex>
-                    <v-flex md6>
+                    </v-col>
+                    <v-col md="6">
                       <v-menu
                         ref="menuProjected"
                         v-model="projectedDatePicker"
                         :close-on-content-click="false"
                         full-width
+                        v-if="!validDates.length"
                         lazy
                         max-width="290px"
                         min-width="290px"
                         :nudge-right="120"
                         offset-y
                         transition="scale-transition"
-                        v-if="!validDates.length"
                       >
                         <template v-slot:activator="{ on }">
                           <v-text-field
@@ -124,22 +118,19 @@
                         v-model="projectedDateUsa"
                         :items="validDates"
                         label="New Forecasted Date"
+                        @change="getFutureMilestones"
                         @focus="firstTime = false;"
-                        @change="getFutureMilestones()"
-                      >
-                        
-                      </v-select>
-                      
-                    </v-flex>
+                      />
+                    </v-col>
 
-                    <v-flex md6>
+                    <v-col md="6">
                       <v-checkbox
                         v-model="milestone.in_report"
                         color="blue"
                         label="In Report"
                       />
-                    </v-flex>
-                    <v-flex md6>
+                    </v-col>
+                    <v-col md="6">
                       <v-menu
                         ref="menuActual"
                         v-model="actualDatePicker"
@@ -170,21 +161,21 @@
                           @input="actualDatePicker = false"
                         />
                       </v-menu>
-                    </v-flex>
+                    </v-col>
 
-                    <v-flex
+                    <v-col
                       v-if="showComments"
-                      md12
+                      md="12"
                     >
                       <v-textarea
                         v-model="comment"
                         label="Milestone Updates Comments"
                         :rules="[rules.required]"
                       />
-                    </v-flex>
-                    <v-flex
+                    </v-col>
+                    <v-col
                       v-if="comments.length"
-                      md12
+                      md="12"
                     >
                       <table class="commentsTable">
                         <tr>
@@ -208,11 +199,11 @@
                           <td>{{ comment.comment }}</td>
                         </tr>
                       </table>
-                    </v-flex>
-                  </v-layout>
+                    </v-col>
+                  </v-row>
                 </v-container>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-form>
       </v-card-text>
@@ -247,11 +238,11 @@
             class="headline"
             style="background: #006699; color:#fff"
           >
-            <v-layout align-center>
+            <v-row align="center">
               {{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}
-            </v-layout>
+            </v-row>
           </v-card-title>
-          
+
           <v-card-actions>
             <v-btn
               flat
@@ -270,12 +261,15 @@
               {{ $t('general.yes') }}
             </v-btn>
             <v-spacer />
-            <div class="linkedScheduleTasks" v-if="showLinkedScheduleTasks">
+            <div
+              v-if="showLinkedScheduleTasks"
+              class="linkedScheduleTasks"
+            >
               <v-checkbox
-                  v-model="linkedScheduleTasks"
-                  color="blue"
-                  label="Do you want to push out linked schedule tasks end date?"
-                />
+                v-model="linkedScheduleTasks"
+                color="blue"
+                label="Do you want to push out linked schedule tasks end date?"
+              />
             </div>
           </v-card-actions>
 
@@ -284,19 +278,35 @@
               fluid
               grid-list-md
             >
-              <v-layout>
-                <v-flex>
+              <v-row>
+                <v-col>
                   <table class="milestoneTable">
                     <thead>
                       <tr>
-                        <th width="12.5%">Milestone</th>
-                        <th width="12.5%">Original Forecasted Date</th>
-                        <th width="12.5%">New Forecasted Date</th>
-                        <th width="12.5%">New Forecasted Date Updated</th>
-                        <th width="12.5%">Linked Schedule Task</th>
-                        <th width="12.5%">Linked Schedule Task - End Date</th>
-                        <th width="12.5%">New Task End Date</th>
-                        <th width="12.5%">Last Updated</th>
+                        <th width="12.5%">
+                          Milestone
+                        </th>
+                        <th width="12.5%">
+                          Original Forecasted Date
+                        </th>
+                        <th width="12.5%">
+                          New Forecasted Date
+                        </th>
+                        <th width="12.5%">
+                          New Forecasted Date Updated
+                        </th>
+                        <th width="12.5%">
+                          Linked Schedule Task
+                        </th>
+                        <th width="12.5%">
+                          Linked Schedule Task - End Date
+                        </th>
+                        <th width="12.5%">
+                          New Task End Date
+                        </th>
+                        <th width="12.5%">
+                          Last Updated
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -335,7 +345,7 @@
                                 v-on="on"
                               />
                             </template>
-  
+
                             <v-date-picker
                               v-model="mile.picker"
                               no-title
@@ -343,9 +353,13 @@
                             />
                           </v-menu>
                         </td>
-                        
-                        <td class="text-center">{{ getTasksLinked(mile) }}</td>
-                        <td :class="['text-center', mile.showLinkedScheduleTasks ? 'yellow' : '']" >{{ getTasksLinkedDate(mile) }}</td>
+
+                        <td class="text-center">
+                          {{ getTasksLinked(mile) }}
+                        </td>
+                        <td :class="['text-center', mile.showLinkedScheduleTasks ? 'yellow' : '']">
+                          {{ getTasksLinkedDate(mile) }}
+                        </td>
                         <td>
                           <v-menu
                             v-if="mile.showNewEndDate"
@@ -367,7 +381,7 @@
                                 v-on="on"
                               />
                             </template>
-  
+
                             <v-date-picker
                               v-model="mile.newEndDatePicker"
                               no-title
@@ -379,8 +393,8 @@
                       </tr>
                     </tbody>
                   </table>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
           </v-card-text>
         </v-card>
@@ -564,7 +578,7 @@ export default {
     if (!this.$route.name.includes('forecasting')) {
       this.approved = true
     }
-   
+
     this.projectRef
       .collection('milestones')
       .doc(this.milestoneId)
@@ -575,15 +589,12 @@ export default {
         comments.docs.forEach(doc => {
           this.comments.push(doc.data())
         })
-        
-        
-        if(this.milestone && this.settings) {
-          const find =this.settings.milestones.find(f => f.name === this.milestone.title)
-          if(find && find.validDates) {
-            
-            this.validDates = find.validDates.map(row => {
-              return this.$moment(row).format('MM/DD/YYYY')
-            })
+
+
+        if (this.milestone && this.settings) {
+          const find = this.settings.milestones.find(f => f.name === this.milestone.title)
+          if (find && find.validDates) {
+            this.validDates = find.validDates.map(row => this.$moment(row).format('MM/DD/YYYY'))
           } else {
             this.validDates = []
           }
@@ -593,22 +604,21 @@ export default {
   },
   methods: {
     getTasksLinkedDate(item) {
-      const find = this.settingMilestones.find( m => m.name === item.title)
-      if(find && find.links) {
-        return find.links.map( l => {
+      const find = this.settingMilestones.find(m => m.name === item.title)
+      if (find && find.links) {
+        return find.links.map(l => {
           const findTask = this.tasks.find(t => l.label === t.title)
-          
-          if(findTask && find.linkedToTaskEndDate) {
-            
+
+          if (findTask && find.linkedToTaskEndDate) {
             this.showLinkedScheduleTasks = true
             item.showNewEndDate = true
             item.task_id = findTask.id
             const forecasted = this.$moment(item.picker)
             const newEndDate = this.$moment(findTask.due_date).add(item.days, 'days')
-            
+
             item.newEndDate = newEndDate.format('MM/DD/YYYY')
             item.newEndDatePicker = newEndDate.toISOString()
-            if(forecasted > this.$moment(findTask.due_date)) {
+            if (forecasted > this.$moment(findTask.due_date)) {
               item.showLinkedScheduleTasks = true
             }
             return this.$moment(findTask.due_date).format('MM/DD/YYYY')
@@ -624,48 +634,46 @@ export default {
       this.projectRef
         .collection('tasks')
         .get()
-        .then( tasks => {
-          this.tasks = tasks.docs.map(t => { 
-            return {
-              ...t.data(),
-              id: t.id 
-            }
-          })
+        .then(tasks => {
+          this.tasks = tasks.docs.map(t => ({
+            ...t.data(),
+            id: t.id
+          }))
         })
     },
     getTasksLinked(item) {
-      const find = this.settingMilestones.find( m => m.name === item.title)
-      if(find && find.links) {
-        return find.links.map( l => l.label ).join(',')
+      const find = this.settingMilestones.find(m => m.name === item.title)
+      if (find && find.links) {
+        return find.links.map(l => l.label).join(',')
       } else {
         return '---'
       }
     },
     getSettingsMilestones() {
       db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
-      .collection('settings')
-      .doc(this.appLabel.milestonesCollection)
-      .get()
-      .then(settings => {
-        if (!settings.exists) {
-          db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
-            .collection('settings')
-            .doc(this.appLabel.milestonesCollection)
-            .set({
-              names: [],
-              milestones: []
-            })
-        } else {
-          const data = settings.data()
-          this.settingMilestones = data.milestones ? data.milestones : []
-        }
-      })  
+        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .collection('settings')
+        .doc(this.appLabel.milestonesCollection)
+        .get()
+        .then(settings => {
+          if (!settings.exists) {
+            db.collection('settings')
+              .doc(Drupal.settings.m6_platform_header.company_nid)
+              .collection('settings')
+              .doc(this.appLabel.milestonesCollection)
+              .set({
+                names: [],
+                milestones: []
+              })
+          } else {
+            const data = settings.data()
+            this.settingMilestones = data.milestones ? data.milestones : []
+          }
+        })
     },
     getlastUpdated(item) {
-      if(item.userUpdate) {
-        return item.userUpdate.name + ' ' + item.userUpdate.lastName +  ' | ' + this.$moment(item.lastUpdated).format('MM/DD/YYYY')
+      if (item.userUpdate) {
+        return item.userUpdate.name + ' ' + item.userUpdate.lastName + ' | ' + this.$moment(item.lastUpdated).format('MM/DD/YYYY')
       }
     },
     updateLine(item) {
@@ -702,7 +710,7 @@ export default {
             !this.projectedDateError.length &&
             !this.originalDateError.length
         )
-        
+
         if (!validDate) {
           this.$snotify.warning('Please, enter a valid date')
           return
@@ -747,15 +755,15 @@ export default {
           this.projectRef.collection('milestoneReviews').add({
             date: new Date().toISOString(),
             user: window.Drupal.settings.m6_platform_header.user,
-            action: 'Update Milestone ' +  this.milestone.title,
+            action: 'Update Milestone ' + this.milestone.title,
             comment: this.comment
           })
         }
-        
+
         this.projectRef.update({
-            lastMilestoneUpdateUser: window.Drupal.settings.m6_platform_header.user,
-            lastMilestoneUpdateDate: new Date().toISOString()
-          })
+          lastMilestoneUpdateUser: window.Drupal.settings.m6_platform_header.user,
+          lastMilestoneUpdateDate: new Date().toISOString()
+        })
 
         if (this.updateFutureMilestone) {
           this.futureMilestones.forEach(m => {
@@ -765,8 +773,8 @@ export default {
               userUpdate: window.Drupal.settings.m6_platform_header.user,
               lastUpdated: new Date().toISOString()
             })
-            
-            if(this.linkedScheduleTasks && m.task_id) {
+
+            if (this.linkedScheduleTasks && m.task_id) {
               this.projectRef
                 .collection('tasks')
                 .doc(m.task_id)
@@ -818,7 +826,7 @@ export default {
                 data.picker = projected.toISOString()
                 this.futureMilestones.push(data)
               })
-              
+
               this.getTaskByProject()
             }
           })
@@ -851,7 +859,7 @@ export default {
       color: red;
       font-weight: 700;
     }
-    
+
   }
   tbody {
     tr:nth-child(even) {
@@ -861,7 +869,7 @@ export default {
   .text-center {
     text-align: center;
   }
-  
+
 }
 
 .vdatetime input {

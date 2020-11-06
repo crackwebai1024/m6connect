@@ -1,15 +1,21 @@
 <template>
   <m6-card-dialog title="RFP">
     <template v-slot:after:title>
-      <v-tooltip left v-if="$route.name === 'cpm.projects.show'">
+      <v-tooltip
+        v-if="$route.name === 'cpm.projects.show'"
+        left
+      >
         <template v-slot:activator="{ on }">
-          <a 
+          <a
             class="pointer pr-1"
-            v-on="on"
             :href="'/m6apps#/cpm/projects/' + $route.params.id + '/fullscreen/rfps'"
             target="_blank"
+            v-on="on"
           >
-            <v-icon flat dark>
+            <v-icon
+              dark
+              flat
+            >
               launch
             </v-icon>
           </a>
@@ -49,19 +55,16 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <v-text-field
                   v-model="rfp.name"
                   hint="Provide a name that will display to Contractors"
                   label="RFP Name"
                   name="name"
                 />
-              </v-flex>
-              <v-flex md12>
+              </v-col>
+              <v-col md="12">
                 <div>
                   <label>Maximum Allowable Contract</label>
                   <money
@@ -69,9 +72,9 @@
                     v-bind="money"
                   />
                 </div>
-              </v-flex>
+              </v-col>
 
-              <v-flex md12>
+              <v-col md="12">
                 <div class="mt-4">
                   <label>Project Manager</label>
                   <v-select
@@ -82,8 +85,8 @@
                     return-object
                   />
                 </div>
-              </v-flex>
-              <v-flex md12>
+              </v-col>
+              <v-col md="12">
                 <div
                   class="mt-4"
                 >
@@ -96,8 +99,8 @@
                     return-object
                   />
                 </div>
-              </v-flex>
-              <v-flex md12>
+              </v-col>
+              <v-col md="12">
                 <v-dialog
                   ref="dialogDate"
                   v-model="modalDate"
@@ -137,8 +140,8 @@
                     </v-btn>
                   </v-date-picker>
                 </v-dialog>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-divider />
@@ -168,11 +171,8 @@
         fluid
         grid-list-md
       >
-        <v-layout
-          row
-          wrap
-        >
-          <v-flex md12>
+        <v-row>
+          <v-col md="12">
             <v-data-table
               class="elevation-0"
               :headers="headers"
@@ -194,7 +194,7 @@
                   {{ props.item.rfpType }}
                 </td>
 
-                <td class="text-xs-right">
+                <td class="text-right">
                   <v-icon
                     class="ml-0 mr-0"
                     color="#757575"
@@ -210,7 +210,7 @@
 
             <v-card class="elevation-0 ma-0 pa-0">
               <v-card-text class="ma-0 pa-0">
-                <v-layout class="justify ma-0 pa-0">
+                <v-row class="justify ma-0 pa-0">
                   <v-spacer />
                   <v-btn
                     v-if="pagination.rowsPerPage !== -1"
@@ -238,11 +238,11 @@
                       keyboard_arrow_up
                     </v-icon>
                   </v-btn>
-                </v-layout>
+                </v-row>
               </v-card-text>
             </v-card>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </v-card-text>
   </m6-card-dialog>

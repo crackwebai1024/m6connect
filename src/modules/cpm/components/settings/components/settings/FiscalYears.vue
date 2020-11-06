@@ -83,11 +83,8 @@
             fluid
             grid-list-md
           >
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md12>
+            <v-row>
+              <v-col md="12">
                 <h6
                   v-if="currentfiscalYear.index"
                   class="indigo--text"
@@ -101,16 +98,13 @@
                   label="Name"
                   :rules="[rules.required]"
                 />
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex
-                md6
-                sm6
-                xs12
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                cols="12"
+                md="6"
+                sm="6"
               >
                 <v-dialog
                   ref="dialogStartDate"
@@ -156,11 +150,11 @@
                     </v-btn>
                   </v-date-picker>
                 </v-dialog>
-              </v-flex>
-              <v-flex
-                md6
-                sm6
-                xs12
+              </v-col>
+              <v-col
+                cols="12"
+                md="6"
+                sm="6"
               >
                 <v-dialog
                   ref="dialogEndDate"
@@ -206,13 +200,10 @@
                     </v-btn>
                   </v-date-picker>
                 </v-dialog>
-              </v-flex>
-            </v-layout>
-            <v-layout
-              row
-              wrap
-            >
-              <v-flex md3>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="3">
                 <v-btn
                   color="blue"
                   outline
@@ -220,8 +211,8 @@
                 >
                   Cancel
                 </v-btn>
-              </v-flex>
-              <v-flex md3>
+              </v-col>
+              <v-col md="3">
                 <v-btn
                   color="blue"
                   dark
@@ -229,8 +220,8 @@
                 >
                   {{ submitLoading ? 'Saving...' : 'Save' }}
                 </v-btn>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-form>
       </v-card-text>

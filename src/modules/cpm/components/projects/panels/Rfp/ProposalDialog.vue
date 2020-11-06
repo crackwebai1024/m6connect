@@ -127,12 +127,10 @@
       </v-card-text>
     </v-card>
 
-    <v-layout
-      mx-5
-      row
-      wrap
+    <v-row
+      class="mx-5"
     >
-      <v-flex xs6>
+      <v-col cols="6">
         <v-card flat>
           <v-card-text v-html="rfpBody" />
         </v-card>
@@ -190,8 +188,8 @@
             </v-treeview>
           </v-card-text>
         </v-card>
-      </v-flex>
-      <v-flex xs6>
+      </v-col>
+      <v-col cols="6">
         <v-card flat>
           <!--<v-card-title class="title ml-4">-->
           <!--Bid Packages <v-spacer></v-spacer>-->
@@ -266,8 +264,8 @@
             </div> -->
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
     <div
       v-show="false"
       id="allowanceBody"

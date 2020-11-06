@@ -16,9 +16,9 @@
       <v-card-text>
         <v-form ref="form">
           <v-textarea
-            spellcheck="true"
             v-model="comment.data.comment"
             :label="`${title} Comment *`"
+            spellcheck="true"
           />
         </v-form>
       </v-card-text>
@@ -96,8 +96,8 @@ export default {
         this.$snotify.error('Please fill in the comment', 'Error')
         return
       }
-      
-      if(this.$h.dg(this.comment, 'data.comment', '') === '') {
+
+      if (this.$h.dg(this.comment, 'data.comment', '') === '') {
         this.$snotify.error('Please fill in the comment', 'Error')
         return
       }

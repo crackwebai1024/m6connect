@@ -11,8 +11,8 @@
     >
       <v-card class="contact-edit-modal">
         <v-card-title class="card-title display-1">
-          <v-layout>
-            <v-flex xs12>
+          <v-row>
+            <v-col cols="12">
               <v-icon
                 class="icon-close"
                 dark
@@ -21,33 +21,32 @@
               >
                 close
               </v-icon>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-if="isCreate"
-            align-center
-            wrap
+            align="center"
           >
-            <v-flex
-              class="text-xs-center"
-              xs12
+            <v-col
+              class="text-center"
+              cols="12"
             >
               {{ $t('cpm.projects.createBulletin') }}
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
-          <v-layout
+          <v-row
             v-else
-            align-center
+            align="center"
           >
-            <v-flex
-              class="text-xs-center"
-              xs12
+            <v-col
+              class="text-center"
+              cols="12"
             >
               {{ $t('cpm.projects.editBulletin') }}
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card-title>
 
         <v-tabs
@@ -69,11 +68,10 @@
           >
             <v-form ref="form">
               <div v-show="tab === 0">
-                <v-layout
-                  align-center
-                  wrap
+                <v-row
+                  align="center"
                 >
-                  <v-flex xs12>
+                  <v-col cols="12">
                     <div class="elevation-2 white">
                       <v-text-field
                         v-model="change.number"
@@ -83,11 +81,11 @@
                         outline
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pr-3
-                    xs6
+                  <v-col
+                    class="pr-3"
+                    cols="6"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -106,11 +104,11 @@
                         />
                       </div>
                     </ValidationProvider>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pl-3
-                    xs6
+                  <v-col
+                    class="pl-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-select
@@ -125,11 +123,11 @@
                         return-object
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pr-3
-                    xs6
+                  <v-col
+                    class="pr-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-select
@@ -141,11 +139,11 @@
                         outline
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pl-3
-                    xs6
+                  <v-col
+                    class="pl-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-select
@@ -157,11 +155,11 @@
                         outline
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pr-3
-                    xs6
+                  <v-col
+                    class="pr-3"
+                    cols="6"
                   >
                     <v-menu
                       v-model="dateMenu"
@@ -193,11 +191,11 @@
                         @change="setDate"
                       />
                     </v-menu>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pl-3
-                    xs6
+                  <v-col
+                    class="pl-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <money
@@ -209,11 +207,11 @@
                         outline
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pr-3
-                    xs6
+                  <v-col
+                    class="pr-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-autocomplete
@@ -226,11 +224,11 @@
                         outline
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pl-3
-                    xs6
+                  <v-col
+                    class="pl-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-autocomplete
@@ -267,11 +265,11 @@
                         </template>
                       </v-autocomplete>
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pr-3
-                    xs6
+                  <v-col
+                    class="pr-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-autocomplete
@@ -301,11 +299,11 @@
                         </template>
                       </v-autocomplete>
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pl-3
-                    xs6
+                  <v-col
+                    class="pl-3"
+                    cols="6"
                   >
                     <v-menu
                       v-model="preparedDateMenu"
@@ -339,11 +337,11 @@
                         @change="setPreparedDate"
                       />
                     </v-menu>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pr-3
-                    xs6
+                  <v-col
+                    class="pr-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-autocomplete
@@ -356,11 +354,11 @@
                         outline
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pl-3
-                    xs6
+                  <v-col
+                    class="pl-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-autocomplete
@@ -396,11 +394,11 @@
                         </template>
                       </v-autocomplete>
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pr-3
-                    xs6
+                  <v-col
+                    class="pr-3"
+                    cols="6"
                   >
                     <div class="elevation-2 white">
                       <v-autocomplete
@@ -430,11 +428,11 @@
                         </template>
                       </v-autocomplete>
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex
-                    pl-3
-                    xs6
+                  <v-col
+                    class="pl-3"
+                    cols="6"
                   >
                     <v-menu
                       v-model="approvedDateMenu"
@@ -468,9 +466,9 @@
                         @change="setApprovedDate"
                       />
                     </v-menu>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs12>
+                  <v-col cols="12">
                     <div class="elevation-2 white">
                       <v-textarea
                         v-model="change.subject"
@@ -482,9 +480,9 @@
                         :rows="2"
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs12>
+                  <v-col cols="12">
                     <div class="elevation-2 white">
                       <v-textarea
                         v-model="change.background"
@@ -496,9 +494,9 @@
                         :rows="2"
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs12>
+                  <v-col cols="12">
                     <div class="elevation-2 white">
                       <v-select
                         v-model="change.commitment"
@@ -527,9 +525,9 @@
                         </template>
                       </v-select>
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs12>
+                  <v-col cols="12">
                     <div class="elevation-2 white">
                       <budget-category-select
                         :category="$h.dg(change, 'budget_category.ref', '')"
@@ -540,9 +538,9 @@
                         @newCategory="setBudgetCategory"
                       />
                     </div>
-                  </v-flex>
+                  </v-col>
 
-                  <v-flex xs12>
+                  <v-col cols="12">
                     <div class="elevation-2 white">
                       <v-textarea
                         v-model="change.description"
@@ -552,8 +550,8 @@
                         outline
                       />
                     </div>
-                  </v-flex>
-                </v-layout>
+                  </v-col>
+                </v-row>
               </div>
             </v-form>
           </v-container>

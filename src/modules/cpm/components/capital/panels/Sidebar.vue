@@ -1,21 +1,18 @@
 <template>
-  <v-layout column>
+  <v-row column>
     <v-img
       :aspect-ratio="16 / 9"
       class="sidebar-image"
       max-width="100%"
       src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
     >
-      <v-layout
-        align-end
-        fill-height
-        ma-0
+      <v-row
+        align="end"
+        class="fill-height ma-0"
       >
-        <v-flex
-          class="lightbox white--text"
-          pl-2
-          pt-2
-          xs12
+        <v-col
+          class="lightbox pl-2 pt-2 white--text"
+          cols="12"
         >
           <v-menu
             offset-y
@@ -36,19 +33,19 @@
             </div>
           </v-menu>
 
-          <v-layout ma-0>
-            <v-flex xs12>
+          <v-row class="ma-0">
+            <v-col cols="12">
               <p class="body-2 ma-0 text-truncate">
                 {{ projectsCount }}
               </p>
               <span class="caption">Projects Count</span>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-      </v-layout>
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
     </v-img>
 
-    <div class="text-xs-center">
+    <div class="text-center">
       <v-btn
         color="blue"
         dark
@@ -57,7 +54,7 @@
         Edit Plan
       </v-btn>
     </div>
-  </v-layout>
+  </v-row>
 </template>
 
 <script>

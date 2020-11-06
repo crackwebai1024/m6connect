@@ -13,12 +13,10 @@ const getters = {
   milestones: state => state.milestones,
   ticketsAvailables: state => state.tasks,
   links: state => state.links,
-  tasks: state => {
-    return {
-      data: state.tasks,
-      links: state.links
-    }
-  },
+  tasks: state => ({
+    data: state.tasks,
+    links: state.links
+  }),
   softRefreshData: state => state.softRefreshData,
   forceRefresh: state => state.forceRefresh
 }
@@ -43,60 +41,60 @@ const mutations = {
 
 const actions = {
   async getProjectMilestonesTasksAndLinks({ commit }, { projectId }) {
-    if(!projectId) return Promise.reject('missing projectId getProjectTasksAndLinks')
-    
+    if (!projectId) return Promise.reject('missing projectId getProjectTasksAndLinks')
+
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const companyId = window.Drupal.settings.m6_platform.company_nid
-      
+
       const response = await axios
-      .post(`${constfirebaseUrl}/api/company/${companyId}/forecasting/${projectId}/milestones-tasks-links/`, {
-        queryTaskFields: [
-          'budget',
-          'budgetPercentage',
-          'duration', 
-          'due_date',
-          'gantt', 
-          'in_schedule', 
-          'parent', 
-          'parentTask', 
-          'priority', 
-          'progress',
-          'projectType',
-          'start_date',
-          'title'
-        ]
-      })
-      
+        .post(`${constfirebaseUrl}/api/company/${companyId}/forecasting/${projectId}/milestones-tasks-links/`, {
+          queryTaskFields: [
+            'budget',
+            'budgetPercentage',
+            'duration',
+            'due_date',
+            'gantt',
+            'in_schedule',
+            'parent',
+            'parentTask',
+            'priority',
+            'progress',
+            'projectType',
+            'start_date',
+            'title'
+          ]
+        })
+
       const {
         milestones = [],
         tasks = [],
         links = []
       } = dataGet(response, 'data', {})
-      
+
       commit('setMilestones', milestones)
       commit('setTasks', tasks)
       commit('setLinks', links)
       commit('setSoftRefreshData')
-      
+
       return
-    } catch(e) {
+    } catch (e) {
       console.error(e)
       throw e
     }
   },
   async generateProjectTaskLinks({ dispatch }, { projectId }) {
-    if(!projectId) return Promise.reject('missing projectId generateProjectTaskLinks')
-    
+    if (!projectId) return Promise.reject('missing projectId generateProjectTaskLinks')
+
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const companyId = window.Drupal.settings.m6_platform.company_nid
-      
+
       await axios
         .post(`${constfirebaseUrl}/api/company/${companyId}/forecasting/${projectId}/links/create/`)
-      
+
       dispatch('getProjectMilestonesTasksAndLinks', { projectId })
-      
+
       return
     } catch (e) {
       console.error(e)

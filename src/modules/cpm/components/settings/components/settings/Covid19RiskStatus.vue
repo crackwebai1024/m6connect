@@ -23,7 +23,7 @@
       >
         <template v-slot:items="props">
           <td>{{ props.item.name }}</td>
-          <td class="text-xs-center">
+          <td class="text-center">
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -66,11 +66,11 @@
             :label="$t('general.status')"
             :rules="[rules.required]"
           />
-          <v-layout justify-center>
-            <v-flex shrink>
+          <v-row justify="center">
+            <v-col class="shrink">
               <chrome-picker v-model="changeColor.color" />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-card-text>
         <v-card-actions>
           <v-spacer />

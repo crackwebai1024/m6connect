@@ -62,7 +62,7 @@
                 @change="addProject(selected, item)"
               />
             </td>
-            <td class="pa-1 text-xs-center">
+            <td class="pa-1 text-center">
               <v-avatar :color="item.projectImage ? '' : 'indigo'">
                 <img
                   v-if="item.projectImage"
@@ -120,7 +120,7 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import { db } from '@/utils/Firebase'
-import mixins from '@/components/_mixins/index'
+import mixins from '@/modules/cpm/_mixins/index'
 import ListFiltering from '../modals/ListFiltering'
 
 export default {

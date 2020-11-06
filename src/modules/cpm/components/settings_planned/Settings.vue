@@ -4,12 +4,10 @@
     fluid
     grid-list-md
   >
-    <v-layout
-      fill-height
-      row
-      wrap
+    <v-row
+      class="fill-height"
     >
-      <v-flex xs4>
+      <v-col cols="4">
         <v-card class="card-settings">
           <div style="flex-container">
             <v-tooltip
@@ -36,20 +34,20 @@
             </v-tooltip>
           </div>
         </v-card>
-      </v-flex>
-      <v-flex xs4>
+      </v-col>
+      <v-col cols="4">
         <options-list
           v-if="activeSetting !== null"
           :options="activeSetting.options"
           @updateOption="updateOption"
         />
-      </v-flex>
-      <v-flex xs4>
+      </v-col>
+      <v-col cols="4">
         <keep-alive>
           <component :is="currentComponent" />
         </keep-alive>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

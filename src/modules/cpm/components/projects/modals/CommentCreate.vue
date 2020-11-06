@@ -16,9 +16,9 @@
       <v-card-text>
         <v-form ref="form">
           <v-textarea
-            spellcheck="true"
             v-model="comment"
             :label="`${title} Comment *`"
+            spellcheck="true"
           />
         </v-form>
       </v-card-text>
@@ -86,12 +86,12 @@ export default {
         this.$snotify.error('Please fill in the comment', 'Error')
         return
       }
-      
-      if(this.comment === '') {
+
+      if (this.comment === '') {
         this.$snotify.error('Please fill in the comment', 'Error')
         return
       }
-      
+
       const aux = {
         comment: this.comment,
         createdAt: new Date(),

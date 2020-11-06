@@ -25,16 +25,15 @@
       </v-icon>
     </template>
 
-    <v-layout
-      justify-end
-      row
+    <v-row
+      justify="end"
     >
       <v-chip color="transparent">
         Hours {{ parseNumber(totalHours) }}
       </v-chip>
-    </v-layout>
+    </v-row>
 
-    <div class="text-xs-center">
+    <div class="text-center">
       <v-progress-circular
         v-show="loading"
         color="primary"
@@ -54,15 +53,15 @@
       >
         <td>{{ parseDate(props.item.startDate) }}</td>
 
-        <td class="text-xs-center">
+        <td class="text-center">
           {{ parseDate(props.item.endDate) }}
         </td>
 
-        <td class="text-xs-center">
+        <td class="text-center">
           {{ parseNumber(props.item.hours) }}
         </td>
 
-        <td class="text-xs-right">
+        <td class="text-right">
           <v-icon
             class="mr-1"
             color="#757575"
@@ -111,24 +110,23 @@
               class="pa-0"
               fluid
             >
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs4>
+                <v-col cols="4">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Start Date
-                      </v-flex>
-                      <v-flex shrink>
+                      </v-col>
+                      <v-col class="shrink">
                         <span style="color:red;">*</span>
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-menu
                     ref="menu1"
                     v-model="startDatePicker"
@@ -159,103 +157,99 @@
                       @input="startDatePicker = false"
                     />
                   </v-menu>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs4>
+                <v-col cols="4">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Lost Time Accidents (LTA)
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
+                </v-col>
 
-                <v-flex xs7>
+                <v-col cols="7">
                   <v-text-field
                     v-model="dialogProperties.lta"
                     label="Lost Time Accidents (LTA)"
                     type="number"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs4>
+                <v-col cols="4">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Minor
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
+                </v-col>
 
-                <v-flex xs7>
+                <v-col cols="7">
                   <v-text-field
                     v-model="dialogProperties.minor"
                     label="Minor"
                     type="number"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs4>
+                <v-col cols="4">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Hours This Period
-                      </v-flex>
-                      <v-flex shrink>
+                      </v-col>
+                      <v-col class="shrink">
                         <span style="color:red;">*</span>
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
+                </v-col>
 
-                <v-flex xs7>
+                <v-col cols="7">
                   <v-text-field
                     v-model="dialogProperties.hours"
                     label="Hours This Period"
                     :rules="[rules.required]"
                     type="number"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs4>
+                <v-col cols="4">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         End Date
-                      </v-flex>
-                      <v-flex shrink>
+                      </v-col>
+                      <v-col class="shrink">
                         <span style="color:red;">*</span>
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-menu
                     ref="menu2"
                     v-model="endDatePicker"
@@ -286,51 +280,49 @@
                       @input="endDatePicker = false"
                     />
                   </v-menu>
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs4>
+                <v-col cols="4">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Status
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-select
                     v-model="dialogProperties.status"
                     clearable
                     :items="status"
                     label="Status"
                   />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
 
-              <v-layout
-                align-center
-                justify-center
-                row
+              <v-row
+                align="center"
+                justify="center"
               >
-                <v-flex xs4>
+                <v-col cols="4">
                   <div class="font-weight-black subheading">
-                    <v-layout>
-                      <v-flex shrink>
+                    <v-row>
+                      <v-col class="shrink">
                         Comment
-                      </v-flex>
-                    </v-layout>
+                      </v-col>
+                    </v-row>
                   </div>
-                </v-flex>
-                <v-flex xs7>
+                </v-col>
+                <v-col cols="7">
                   <v-textarea v-model="dialogProperties.comment" />
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
           </v-form>
         </v-card-text>

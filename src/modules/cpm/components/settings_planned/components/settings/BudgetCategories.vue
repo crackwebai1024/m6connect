@@ -7,7 +7,7 @@
         dark
         fab
         small
-        @click="newL1()"
+        @click="newL1"
       >
         <v-icon>add</v-icon>
       </v-btn>
@@ -23,7 +23,7 @@
             {{ props.item.code ? props.item.code + ' -' : '' }}
             {{ props.item.name }}
           </td>
-          <td class="text-xs-right">
+          <td class="text-right">
             <v-icon
               v-if="props.item.cat_1.length > 0"
               class="ml-4 mr-0"
@@ -72,9 +72,9 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             {{ formTitle }}
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text class="pa-2">
           <v-text-field
@@ -126,10 +126,10 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             Sub Category for: {{ l1Item.code ? l1Item.code + ' -' : '' }}
             {{ l1Item.name }}
-          </v-layout>
+          </v-row>
         </v-card-title>
 
         <v-card-text>
@@ -143,7 +143,7 @@
                 {{ props.item.name }}
               </td>
 
-              <td class="text-xs-right">
+              <td class="text-right">
                 <v-icon
                   v-if="props.item.cat_2.length > 0"
                   class="ml-4 mr-0"
@@ -214,10 +214,10 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             Sub Category for: {{ l2Item.code ? l2Item.code + ' -' : '' }}
             {{ l2Item.name }}
-          </v-layout>
+          </v-row>
         </v-card-title>
         <v-card-text>
           <v-data-table
@@ -229,7 +229,7 @@
                 {{ props.item.code ? props.item.code + ' -' : '' }}
                 {{ props.item.name }}
               </td>
-              <td class="text-xs-right">
+              <td class="text-right">
                 <v-icon
                   class="ml-0 mr-2"
                   color="#757575"

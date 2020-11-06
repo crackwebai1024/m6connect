@@ -8,9 +8,7 @@ const state = {
 
 const getters = {
   userRoles: state => state.userRoles,
-  userIsManager: state => {
-    return state.userRoles.includes('manager')
-  }
+  userIsManager: state => state.userRoles.includes('manager')
 }
 
 const mutations = {
@@ -25,14 +23,14 @@ const actions = {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const userId = dataGet(window, 'window.Drupal.settings.m6_platform.uid')
       const companyId = dataGet(window, 'Drupal.settings.m6_platform.company_nid')
-      
+
       const { data = false } = await axios
         .get(`${constfirebaseUrl}/api/company/${companyId}/user/${userId}/role/${role}/`)
-        
-      if(data) {
+
+      if (data) {
         commit('addUserRole', role)
       }
-      
+
       return data
     } catch (e) {
       console.error(e)

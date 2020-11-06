@@ -1,7 +1,7 @@
 <template>
   <v-card>
-    <v-layout justify-space-between>
-      <v-flex>
+    <v-row justify="space-between">
+      <v-col>
         <v-treeview
           v-model="tree"
           activatable
@@ -128,7 +128,7 @@
               <v-btn
                 icon
                 small
-                @click.stop="GoToShare()"
+                @click.stop="GoToShare"
               >
                 <v-icon small>
                   done_outline
@@ -177,8 +177,8 @@
             </template>
           </template>
         </v-treeview>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <input
       v-show="false"
@@ -216,7 +216,7 @@
     <share-modal
       :item="fileSelected"
       :show="showShareModal"
-      @close="closeShareModal()"
+      @close="closeShareModal"
     />
 
     <v-dialog
@@ -231,10 +231,8 @@
 
         <v-card-text>
           <v-container
-            fill-height
+            class="fill-height ma-0 pa-0"
             fluid
-            ma-0
-            pa-0
           >
             <v-text-field
               ref="folderName"
@@ -299,18 +297,17 @@
             :lazy-src="imageUrl"
             :src="imageUrl"
           >
-            <v-layout
+            <v-row
               slot="placeholder"
-              align-center
-              fill-height
-              justify-center
-              ma-0
+              align="center"
+              class="fill-height ma-0"
+              justify="center"
             >
               <v-progress-circular
                 color="blue lighten-2"
                 indeterminate
               />
-            </v-layout>
+            </v-row>
           </v-img>
 
           <iframe

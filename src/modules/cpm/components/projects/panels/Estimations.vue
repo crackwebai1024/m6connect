@@ -60,7 +60,7 @@
             </v-avatar>
           </router-link>
         </td>
-        <td class="text-xs-center">
+        <td class="text-center">
           <div>
             <router-link
               target="_blank"
@@ -70,11 +70,11 @@
             </router-link>
           </div>
         </td>
-        <td class="text-xs-center">
+        <td class="text-center">
           {{ props.item.total }}
         </td>
 
-        <td class="text-xs-right">
+        <td class="text-right">
           <m6-dropdown-actions
             :options="dropdownOptions"
             @delete="disassociateEstimation(props.item.id)"
@@ -85,10 +85,10 @@
 
       <template v-slot:footer>
         <td />
-        <td class="text-xs-center">
+        <td class="text-center">
           <strong>{{ $t('cpm.projects.estimates.totalCost') }}:</strong>
         </td>
-        <td class="text-xs-center">
+        <td class="text-center">
           <strong>{{ totalCost | currency }}</strong>
         </td>
         <td />
@@ -106,9 +106,9 @@
           class="headline"
           style="background: #006699; color:#fff"
         >
-          <v-layout align-center>
+          <v-row align="center">
             {{ $t('cpm.projects.estimates.createEstimate') }}
-          </v-layout>
+          </v-row>
         </v-card-title>
 
         <v-card-text>
@@ -116,8 +116,8 @@
             fluid
             grid-list-md
           >
-            <v-layout>
-              <v-flex>
+            <v-row>
+              <v-col>
                 <v-autocomplete
                   v-model="draftAssociatedEstimations"
                   clearable
@@ -140,8 +140,8 @@
                     </v-chip>
                   </template>
                 </v-autocomplete>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card-text>
         <v-card-actions>

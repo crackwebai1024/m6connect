@@ -78,8 +78,8 @@
           </template>
 
           <template v-slot:expand="props">
-            <v-layout justify-center>
-              <v-flex xs11>
+            <v-row justify="center">
+              <v-col cols="11">
                 <v-data-table
                   class="elevation-1"
                   :headers="subHeaders"
@@ -97,7 +97,7 @@
                         {{ props.item.amount | currency }}
                       </td>
                       <td>
-                        <v-flex style="float: right;">
+                        <v-col style="float: right;">
                           <v-icon
                             class="ml-0 mr-2"
                             color="#757575"
@@ -116,13 +116,13 @@
                           >
                             delete
                           </v-icon>
-                        </v-flex>
+                        </v-col>
                       </td>
                     </tr>
                   </template>
                 </v-data-table>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
           </template>
         </v-data-table>
         <div class="totals-container">
@@ -142,7 +142,7 @@ import NewLineItem from './forms/NewLineItem'
 import EditLineItem from './forms/EditLineItem'
 import moment from 'moment'
 export default {
-  name: "LineItems",
+  name: 'LineItems',
   components: {
     'new-item': NewLineItem,
     'edit-item': EditLineItem
@@ -343,7 +343,7 @@ export default {
       )
 
       const budgetCategories = []
-      Object.keys(lineItemsGroupedByCategory).map((key) => {
+      Object.keys(lineItemsGroupedByCategory).map(key => {
         let amount = 0
         const items = lineItemsGroupedByCategory[key]
         items.map(item => {

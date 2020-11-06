@@ -1,55 +1,52 @@
 <template>
-  <v-layout>
-    <v-flex
+  <v-row>
+    <v-col
       class="white"
-      xs3
+      cols="3"
     >
       <sidebar />
-    </v-flex>
+    </v-col>
 
     <portal to="destination" />
 
-    <v-flex
+    <v-col
       class="pa-2"
+      cols="9"
       style="height: calc(100vh - 125px); overflow-y: auto"
-      xs9
     >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex xs12>
+      <v-row>
+        <v-col cols="12">
           <quarters ref="quarters" />
-        </v-flex>
+        </v-col>
 
-        <v-flex
+        <v-col
           class="pt-2"
-          xs12
+          cols="12"
         >
           <spendings-and-forecasted
             ref="spendingAndForecasted"
             @refresh-quarters="refreshQuarters"
           />
-        </v-flex>
+        </v-col>
 
-        <v-flex
+        <v-col
           id="capital-plan-name-edit"
           class="pt-2"
-          xs12
+          cols="12"
         >
           <capital-plan-name v-show="showProjects" />
-        </v-flex>
+        </v-col>
 
-        <v-flex
+        <v-col
           v-if="showProjects"
           class="pt-2"
-          xs12
+          cols="12"
         >
           <projects-section @refresh-projects="refreshProjects" />
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

@@ -5,22 +5,16 @@
       fluid
       grid-list-md
     >
-      <v-layout
-        row
-        wrap
-      >
-        <v-flex md12>
+      <v-row>
+        <v-col md="12">
           <v-text-field
             v-model="name"
             label="Capital Plan Name"
           />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
-      <v-layout
-        row
-        wrap
-      >
+      <v-row>
         <v-spacer />
 
         <v-btn
@@ -30,7 +24,7 @@
         >
           Save
         </v-btn>
-      </v-layout>
+      </v-row>
     </v-container>
   </m6-card-dialog>
 </template>

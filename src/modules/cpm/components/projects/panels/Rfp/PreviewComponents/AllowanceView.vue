@@ -4,25 +4,21 @@
       <v-container fluid>
         <template v-if=" proposal.hasAllowances && allowances.length>0">
           <template v-for="(allowance, index) in allowances">
-            <v-layout
+            <v-row
               :key="index"
-              row
-              wrap
             >
-              <v-flex md12>
+              <v-col md="12">
                 <h4><strong>Allowance #{{ allowance.index }}</strong></h4>
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
-            <v-layout
+            <v-row
               :key="`${index}body`"
-              row
-              wrap
             >
-              <v-flex md12>
+              <v-col md="12">
                 <div v-html="allowance.html" />
-              </v-flex>
-            </v-layout>
+              </v-col>
+            </v-row>
 
             <!-- <v-layout row wrap :key="`${index}template-body`">
               <v-flex md12>

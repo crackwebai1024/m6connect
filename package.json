@@ -8,6 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link-http": "^1.5.17",
     "axios": "^0.19.2",
     "compressorjs": "^1.0.6",
     "core-js": "^3.6.5",
@@ -17,9 +20,13 @@
     "firebase": "^8.0.0",
     "fusioncharts": "^3.15.2",
     "getstream": "^6.2.0",
+    "gql-query-builder": "^3.5.0",
+    "graphql": "^15.4.0",
+    "graphql-tag": "^2.11.0",
     "html2canvas": "^1.0.0-rc.7",
     "konva": "^7.1.4",
     "lodash": "^4.17.20",
+    "luxon": "^1.25.0",
     "moment": "^2.29.1",
     "portal-vue": "^2.1.7",
     "stream-chat": "^2.4.0",
@@ -43,7 +50,8 @@
     "vuefire": "^2.2.4",
     "vuetify": "^2.2.11",
     "vuetify-money": "^1.0.3",
-    "vuex": "^3.5.1"
+    "vuex": "^3.5.1",
+    "vuexfire": "^3.2.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

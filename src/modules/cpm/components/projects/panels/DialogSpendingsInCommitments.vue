@@ -17,11 +17,8 @@
           fluid
           grid-list-md
         >
-          <v-layout
-            row
-            wrap
-          >
-            <v-flex md12>
+          <v-row>
+            <v-col md="12">
               <v-data-table
                 :headers="headers"
                 :items="spendings"
@@ -32,7 +29,7 @@
                 >
                   <td>{{ props.item.number }}</td>
                   <td>{{ props.item.amount | currency }}</td>
-                  <td class="text-xs-right">
+                  <td class="text-right">
                     <v-icon
                       class="mr-2"
                       color="#757575"
@@ -64,8 +61,8 @@
                   </td>
                 </template>
               </v-data-table>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-container>
       </v-card-text>
       <v-card-actions>
