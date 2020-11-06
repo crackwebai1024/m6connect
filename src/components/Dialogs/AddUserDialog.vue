@@ -1,9 +1,9 @@
 <template>
-    <v-card class="rounded-lg px-3 py-3">
-        <v-card-subtitle> 
-            <h2 class="text-center">Add Uses</h2>
+    <v-card class="rounded-lg px-8 py-3">
+        <v-card-subtitle class="pb-0"> 
+            <h2 class="text-center ma-0 mt-4 text-h4 blue--text">Add Users in your Group</h2>
         </v-card-subtitle>
-        <v-card-title>
+        <v-card-title class="pb-6">
             <v-spacer></v-spacer>
             <v-btn
                 x-large
@@ -31,20 +31,30 @@
                 dense
             ></v-text-field>
             <div v-if="element=='company'">
-                <v-btn v-for="(user, ind) of companys" :key="ind+'-company-user-dialog'" block class="my-3 py-8 rounded-lg btn-user"
-                    :color="user['selected'] ? 'green' : 'blue'"  tile x-large
-                    outlined @click="pushUser(ind)"
-                >
-                    {{`${user.user.firstName} ${user.user.lastName}`}}
-                    <v-spacer></v-spacer> 
-                    <v-chip :color="user.joinStatus.toUpperCase() === 'ACTIVE' ?
-                        'green':user.joinStatus.toUpperCase() === 'PENDING' ? 'yellow' : 'red'" >
-                        <b class="white--text" >{{ (user.joinStatus).toLowerCase() }}</b>
-                    </v-chip>
-                </v-btn>
+                <div class="d-flex justify-center align-center" v-for="(user, ind) of companys" :key="ind+'-company-user-dialog'">
+                  <v-btn block class="my-3 py-8 rounded-lg btn-user"
+                      :color="user['selected'] ? 'green' : 'blue'"  tile x-large
+                      outlined @click="pushUser(ind)"
+                  >
+                      {{`${user.user.firstName} ${user.user.lastName}`}}
+                      <v-spacer></v-spacer> 
+                      <v-chip :color="user.joinStatus.toUpperCase() === 'ACTIVE' ?
+                          'green':user.joinStatus.toUpperCase() === 'PENDING' ? 'yellow' : 'red'" >
+                          <b class="white--text" >{{ (user.joinStatus).toLowerCase() }}</b>
+                      </v-chip>
+                  </v-btn>
+                  <v-checkbox
+                    @click="pushUser(ind)"
+                    class="mt-0 ml-2"
+                    v-model="user['selected']"
+                    :value="user['selected']"
+                    color="success"
+                    hide-details
+                  ></v-checkbox>
+                </div>
                 <h2 
                     v-if="companys.length === 0"
-                    class="font-weight-black text-center"
+                    class="font-weight-black text-center mt-2"
                 >
                     No users found
                 </h2>
@@ -100,8 +110,8 @@ export default {
         ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' })
     },
     methods: {
-        pushUser(userIndex){
-            if (! this.companys[userIndex]['selected']) {
+        pushUser(userIndex) {
+            if (!this.companys[userIndex]['selected']) {
                 this.companys[userIndex]['selected'] = true;
                 this.resList.push(this.companys[userIndex]['user']['id'])
             }else{
@@ -119,7 +129,7 @@ export default {
                 image: '',
                 users: []
             });
-        }
+        },
     },
     mounted() {
         if (typeof this.currentUsers === 'string') {
