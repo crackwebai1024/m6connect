@@ -170,14 +170,12 @@
             <panel-two-columns>
               <div
                 slot="leftPanel"
-                class="mb-3 panel px-4 py-3 white card-custom-shadow rounded"
               >
                 <financial-commitments />
               </div>
 
               <div
                 slot="rightPanel"
-                class="mb-3 panel px-4 py-3 white card-custom-shadow rounded"
               >
                 <financial-spendings />
               </div>
