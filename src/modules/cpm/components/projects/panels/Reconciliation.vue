@@ -8,7 +8,8 @@
   >
     <template v-slot:after:title>
       <v-icon
-        class="mx-2"
+        class="mx-2 grey--text text--darken-2"
+        color="grey"
         flat
         light
         size="25"
@@ -25,7 +26,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="mx-2"
+            class="mx-2 grey--text text--darken-2"
             light
             size="25"
             v-on="on"
@@ -52,6 +53,7 @@
             class="mx-2 search"
             light
             size="25"
+            class="search mx-2 grey--text text--darken-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
@@ -68,6 +70,8 @@
               class="close-search mx-2"
               light
               size="25"
+              light
+              class="close-search mx-2 grey--text text--darken-2"
               v-on="on"
               @click="clearSearch"
             >
@@ -79,7 +83,7 @@
       </template>
 
       <v-icon
-        class="cursor mx-2"
+        class="cursor mx-2 grey--text text--darken-2"
         light
         @click="createShowModal = true"
       >
@@ -90,8 +94,7 @@
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor ml-1"
-            color="white"
+            class="cursor ml-1 grey--text text--darken-2"
             v-on="on"
             @click="showSettings = true"
           >
@@ -1393,7 +1396,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cpm-panel {
   margin-bottom: 10px;
 }
@@ -1445,7 +1448,16 @@ export default {
 .td-actions {
   display: inline-flex;
 }
-.mdi:before {
-  color: #444;
+.v-application .error--text {
+    font-size: 19px !important;
+    background: #ddd;
+    border-radius: 100%;
+    padding: 6px;
+}
+.td-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
 }
 </style>
