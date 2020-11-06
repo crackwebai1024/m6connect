@@ -52,7 +52,7 @@
             item-text="label"
             item-value="value"
             :items="[ { label: 'Left', value: 0}, { label: 'Right', value: 1}]"
-            label="Description"
+            label="Position"
           />
         </div>
         <div class="d-flex mt-2">
@@ -67,6 +67,7 @@
           <v-btn
             color="green"
             dark
+            @click="updatingPanel"
           >
             Save
           </v-btn>
@@ -116,6 +117,8 @@
         @closeDeleteModal="confirmDelete"
       />
     </v-dialog>
+
+    <m6-loading :loading="loading" />
   </div>
 </template>
 
@@ -123,13 +126,17 @@
 import AddField from '@/components/AppBuilder/Buttons/AddField'
 import Field from '@/components/AppBuilder/Modals/Field'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import { mapActions, mapMutations } from 'vuex'
+
 export default {
   name: 'Panel',
+
   components: {
     DeleteDialog,
     AddField,
     Field
   },
+
   props: {
     panel: {
       default: () => ({}),
@@ -137,6 +144,7 @@ export default {
       type: Object
     }
   },
+
   data() {
     return {
       showFieldModal: false,
@@ -156,24 +164,53 @@ export default {
           options: [],
           required: false
         }
-      }
+      },
+      loading: false
     }
   },
+  
   methods: {
+    ...mapActions('AppBuilder', {
+      updatePanel: 'updatePanel'
+    }),
+
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess' 
+    }),
+
+    async updatingPanel(){
+      try {
+        this.loading = true
+        const res = await this.updatePanel(this.clonePanel)
+        this.notifSuccess('Panel updated!')
+
+        this.panelEdit = false 
+        this.loading = false 
+        this.$emit('updatePanel', this.clonePanel)
+      } catch(e) {
+        this.notifDanger('There was an error while updating the panel')
+        this.loading = false 
+      }
+    },
+
     addNewField() {
       this.activeField = { ...this.defaultField }
       this.editing = false
       this.showFieldModal = true
     },
+
     editField(field) {
       this.activeField = { ...field }
       this.editing = true
       this.showFieldModal = true
     },
+
     showDelete(field) {
       this.showDeleteModal = true
       this.fieldToDelete = field.id
     },
+
     async confirmDelete(result) {
       if (result) {
         if (this.fieldToDelete) {
@@ -189,14 +226,17 @@ export default {
       this.panelToDelete = null
       this.showDeleteModal = false
     },
+    
     editPanel() {
       this.panelEdit = !this.panelEdit
       this.clonePanel = { ...this.panel }
     },
+
     deletePanel() {
       this.showDeleteModal = true
       this.panelToDelete = this.panel.id
     },
+
     pushField(pushField) {
       if (this.editing) {
         const index = this.panel.fields.map(item => item.id).indexOf(pushField.id)
@@ -207,6 +247,7 @@ export default {
       this.showFieldModal = false
       this.editing = false
     }
+
   }
 }
 </script>
