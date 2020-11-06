@@ -13,6 +13,60 @@
 
       <div class="align-center d-flex justify-end w-side">
 
+        <v-menu
+            class="mt-3"
+            :close-on-content-click="false"
+            elevation="0"
+            offset-y
+            bottom
+        >
+            <template v-slot:activator="{ on, attrs }">
+            <v-btn
+                v-bind="attrs"
+                class="align-center btns-message d-flex justify-center white--text"
+                elevation="0"
+                fab
+                height="25"
+                width="25"
+                x-small
+                v-on="on"
+            >
+                <v-icon size="19">
+                mdi-plus
+                </v-icon>
+            </v-btn>
+            </template>
+
+            <v-list class="mb-2 pa-0 transparent">
+            <v-list-item class="ma-0 pa-0 uploadfile-btn">
+                <v-tooltip
+                class="tooltip-upload-file"
+                left
+                >
+                <template v-slot:activator="{ on, attrs }">
+                    <div
+                    class="mt-3"
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                      <add-feed>
+                          <v-btn
+                              slot="btn"
+                              block
+                              color="yellow darken-1"
+                              class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"                              
+                          >
+                              New Action
+                          </v-btn>
+                      </add-feed>
+                    </div>
+                </template>
+                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">New Action</span>
+                </v-tooltip>
+            </v-list-item>
+            </v-list>
+        </v-menu>
+
         <snap-shot-nav /> 
 
         <user-options />
@@ -148,6 +202,7 @@ import AppTemplate from "@/views/Home/AppTemplate";
 import ProjectSocialMedia from "./ProjectSocialMedia";
 import PanelFull from "@/components/AppBuilder/Content/PanelFull";
 import PanelTwoColumns from "@/components/AppBuilder/Content/PanelTwoColumns";
+import AddFeed from "./AddFeed";
 
 export default {
   name: "TopNav",
@@ -157,7 +212,8 @@ export default {
     AppTemplate,
     ProjectSocialMedia,
     PanelFull,
-    PanelTwoColumns
+    PanelTwoColumns,
+    AddFeed
   },
 
   computed: {
@@ -191,15 +247,7 @@ export default {
       { url: "/user/settings", icon: "cog" }
     ]
   }),
-  methods: {
-    toogleLinks() {
-      this.showLinks = !this.showLinks;
-      let linksdiv = this.$refs.showLinksDiv;
-      this.showLinks
-        ? (linksdiv.style.height = this.heightShowLinksDiv)
-        : (linksdiv.style.height = "130px");
-    }
-  }
+  methods: {}
 };
 </script>
 

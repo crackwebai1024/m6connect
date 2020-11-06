@@ -8,6 +8,7 @@
         <SnapShotDialog 
             :showDialog="showDialog"
             :imageTest="imageTest"
+            @closing="showDialog = false"
         />
 
         <m6-loading :loading="loading" />

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="align-end bottom-0 d-flex fixed h-auto mx-2 pa-0 right-0 z-20"
+    class="chat-wrapper align-end bottom-0 d-flex fixed mx-2 pa-0 right-0 z-20"
   >
     <chatbox
       v-for="chatData in chats"
@@ -29,3 +29,8 @@ export default {
   }
 }
 </script>
+<style>
+  .chat-wrapper {
+    height: 455px;
+  }
+</style>
