@@ -1,44 +1,47 @@
 <template>
-    <div>
-        <div @click="dialog = true">
-            <slot name="actionbtn"></slot>
-        </div>
-        <template>
-            <v-dialog
-                class="vertical-scroll dont-show-scroll"
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-                scrollable
-            >
-            <v-card class="relative grey lighten-3" tile>
-                <div class="w-full white">
-                    <slot name="header"/>
-                    <v-divider class="max-w-lg w-full mx-auto blue-grey lighten-5"></v-divider>
-                    <div class="max-w-lg py-1 w-full mx-auto d-flex justify-space-between align-center">
-                        <slot name="tabs"/>
-                        <v-spacer></v-spacer>
-                        <slot name="btns"/>
-                    </div>
-                </div>
-
-                <div
-                    class="details-content grey lighten-3 h-fit min-h-full pt-2"
-                >
-                    <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
-                        <slot name="content"></slot>
-                    </v-row>
-                </div>
-            </v-card>
-            </v-dialog>
-        </template>
+  <div>
+    <div @click="dialog = true">
+      <slot name="actionbtn" />
     </div>
+    <template>
+      <v-dialog
+        v-model="dialog"
+        class="dont-show-scroll vertical-scroll"
+        fullscreen
+        hide-overlay
+        scrollable
+        transition="dialog-bottom-transition"
+      >
+        <v-card
+          class="grey lighten-3 relative"
+          tile
+        >
+          <div class="w-full white">
+            <slot name="header" />
+            <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
+            <div class="align-center d-flex justify-space-between max-w-lg mx-auto py-1 w-full">
+              <slot name="tabs" />
+              <v-spacer />
+              <slot name="btns" />
+            </div>
+          </div>
+
+          <div
+            class="details-content grey h-fit lighten-3 min-h-full pt-2"
+          >
+            <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
+              <slot name="content" />
+            </v-row>
+          </div>
+        </v-card>
+      </v-dialog>
+    </template>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "AppTemplate",
+  name: 'AppTemplate',
   components: {
   },
   props: {
@@ -50,7 +53,7 @@ export default {
   },
   methods: {
   }
-};
+}
 </script>
 
 <style lang="scss">

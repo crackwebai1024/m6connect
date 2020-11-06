@@ -118,42 +118,44 @@
       </template>
 
       <template v-slot:body.append>
-        <td class="gray-row   text-left">
-          <strong>{{ $tc('general.total', 1) }}</strong>
-        </td>
+        <tr>
+          <td class="gray-row   text-left">
+            <strong>{{ $tc('general.total', 1) }}</strong>
+          </td>
 
-        <td class="gray-row text-right">
-          {{ totals.budget | currency }}
-        </td>
+          <td class="gray-row text-right">
+            {{ totals.budget | currency }}
+          </td>
 
-        <td class="gray-row text-right">
-          {{ totals.commitments | currency }}
-        </td>
+          <td class="gray-row text-right">
+            {{ totals.commitments | currency }}
+          </td>
 
-        <td class="gray-row text-right">
-          {{ totals.spending | currency }}
-        </td>
+          <td class="gray-row text-right">
+            {{ totals.spending | currency }}
+          </td>
 
-        <td class="gray-row text-right">
-          {{ totals.allocated | currency }}
-        </td>
+          <td class="gray-row text-right">
+            {{ totals.allocated | currency }}
+          </td>
 
-        <td class="gray-row text-right">
-          {{ totals.changes | currency }}
-        </td>
+          <td class="gray-row text-right">
+            {{ totals.changes | currency }}
+          </td>
 
-        <td
-          class="gray-row text-right"
-          :class="{
-            overdraft: totals.allocated + totals.changes > totals.budget
-          }"
-        >
-          {{ (totals.allocated + totals.changes) | currency }}
-        </td>
+          <td
+            class="gray-row text-right"
+            :class="{
+              overdraft: totals.allocated + totals.changes > totals.budget
+            }"
+          >
+            {{ (totals.allocated + totals.changes) | currency }}
+          </td>
 
-        <td class="gray-row text-right">
-          {{ (totals.budget - (totals.allocated + totals.changes)) | currency }}
-        </td>
+          <td class="gray-row text-right">
+            {{ (totals.budget - (totals.allocated + totals.changes)) | currency }}
+          </td>
+        </tr>
       </template>
 
       <template v-slot:expand="props">
@@ -192,7 +194,7 @@
                 </tr>
               </template>
 
-              <template v-slot:footer>
+              <template v-slot:body.append>
                 <tr style="background-color: rgba(0, 0, 0, 0.05);">
                   <td>
                     Totals:

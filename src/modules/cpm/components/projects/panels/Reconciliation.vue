@@ -875,24 +875,24 @@ export default {
     dropdownOptions() {
       return [
         {
-          icon: 'assignment',
+          icon: 'mdi-clipboard-account',
           title: this.$t('general.seeTheResource', {
             resource: this.$tc('cpm.projects.lineItem', 2)
           }),
           event: 'see'
         },
         {
-          icon: 'edit',
+          icon: 'mdi-pencil',
           title: this.$t('general.edit'),
           event: 'edit'
         },
         {
-          icon: 'attach_money',
+          icon: 'mdi-cash',
           title: this.$t('general.showSpendings'),
           event: 'attach'
         },
         {
-          icon: 'delete',
+          icon: 'mdi-delete',
           title: this.$t('general.delete'),
           event: 'delete'
         }

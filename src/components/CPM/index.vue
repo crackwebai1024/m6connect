@@ -24,28 +24,42 @@
           class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
         >
           <div class="align-center d-flex">
-            <div class="grey lighten-3 pa-16">
-              <v-icon
-                class="grey--text text--lighten-1"
-                size="38"
-              >
-                mdi-image-filter-hdr
-              </v-icon>
+            <div>
+              <v-img
+                alt="Project Image"
+                height="150"
+                :src="project.projectImage"
+              />
             </div>
             <div class="ml-8">
-              <v-text-field
-                class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
-                label="Title"
+              <h2>{{ $h.dg(project, 'title', '') }}</h2>
+              <p
+                class="mb-0"
+                v-text="$h.dg(project, 'description', '')"
               />
-              <v-btn
-                class="blue--text capitalize px-1"
-                color="transparent"
-                elevation="0"
-              >
-                Add field
-              </v-btn>
+              <p
+                class="mb-0"
+                v-text="$h.dg(project, 'manager.label', '')"
+              />
             </div>
           </div>
+        </div>
+        <div
+          slot="tabs"
+          class="align-center d-flex"
+        >
+          <v-tabs
+            v-model="activeTab"
+            active-class="font-weight-black blue--text active-tab-company"
+          >
+            <v-tab
+              v-for="tab in tabs"
+              :key="tab.id"
+              class="blue--text capitalize"
+            >
+              {{ tab }}
+            </v-tab>
+          </v-tabs>
         </div>
         <div
           slot="btns"
@@ -63,34 +77,52 @@
           slot="content"
           class="w-full"
         >
-          <panel-full>
-            <template slot="content">
-              <financial-cost-summary />
-            </template>
-          </panel-full>
+          <template v-if="activeTab === 0">
+            <panel-two-columns>
+              <div
+                slot="leftPanel"
+                class="mb-3 panel px-4 py-3 white"
+              >
+                l
+              </div>
 
-          <v-spacer />
-          <panel-full>
-            <template slot="content">
-              <reconciliation />
-            </template>
-          </panel-full>
-          <v-spacer />
-          <panel-two-columns>
-            <div
-              slot="leftPanel"
-              class="mb-3 panel px-4 py-3 white"
-            >
-              l
-            </div>
+              <div
+                slot="rightPanel"
+                class="mb-3 panel px-4 py-3 white"
+              >
+                <project-social-media />
+              </div>
+            </panel-two-columns>
+          </template>
+          <template v-if="activeTab === 1">
+            <panel-full>
+              <template slot="content">
+                <financial-cost-summary />
+              </template>
+            </panel-full>
+            <v-spacer />
+            <panel-full>
+              <template slot="content">
+                <reconciliation />
+              </template>
+            </panel-full>
+            <v-spacer />
+            <panel-two-columns>
+              <div
+                slot="leftPanel"
+                class="mb-3 panel px-4 py-3 white"
+              >
+                l
+              </div>
 
-            <div
-              slot="rightPanel"
-              class="mb-3 panel px-4 py-3 white"
-            >
-              r
-            </div>
-          </panel-two-columns>
+              <div
+                slot="rightPanel"
+                class="mb-3 panel px-4 py-3 white"
+              >
+                r
+              </div>
+            </panel-two-columns>
+          </template>
         </div>
       </app-template>
     </template>
@@ -108,6 +140,7 @@ import M6Show from '@/modules/cpm/_layouts/M6Show.vue'
 
 import FinancialCostSummary from '@/modules/cpm/components/projects/panels/FinancialCostSummary'
 import Reconciliation from '@/modules/cpm/components/projects/panels/Reconciliation'
+import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia'
 
 import {
   db,
@@ -125,6 +158,7 @@ export default {
     Error403,
     FinancialCostSummary,
     Reconciliation,
+    ProjectSocialMedia,
     M6Show
   },
   data: () => ({
@@ -137,7 +171,9 @@ export default {
     currentTab: 0,
     showColumnLeft: true,
     showColumnRight: true,
-    project: {}
+    project: {},
+    tabs: ['Home', 'Financials'],
+    activeTab: 0
   }),
   computed: {
     ...mapGetters({

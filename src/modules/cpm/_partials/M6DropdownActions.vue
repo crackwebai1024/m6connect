@@ -11,19 +11,19 @@
           class="mr-2"
           dark
         >
-          arrow_circle_down
+          mdi-arrow-down-bold-circle
         </v-icon>
         Actions
       </v-btn>
     </template>
     <v-list dense>
       <template v-for="(option, index) in options">
-        <v-list-tile
+        <v-list-item
           v-if="!option.hide"
           :key="index"
           class="list-item"
         >
-          <v-list-tile-title @click="emitEvent(option.event)">
+          <v-list-item-title @click="emitEvent(option.event)">
             <v-row class="align-center list-item">
               <v-col class="shrink">
                 <v-icon
@@ -39,8 +39,8 @@
                 </span>
               </v-col>
             </v-row>
-          </v-list-tile-title>
-        </v-list-tile>
+          </v-list-item-title>
+        </v-list-item>
       </template>
     </v-list>
   </v-menu>

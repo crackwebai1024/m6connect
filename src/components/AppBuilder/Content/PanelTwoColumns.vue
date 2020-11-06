@@ -1,16 +1,23 @@
 <template>
-  <v-row class="pa-0 ma-0 mb-2 d-flex justify-center w-full">
-    <v-col cols="5" class="pa-0 pr-1 d-flex flex-column justify-center">
-      <slot name="leftPanel"/>
+  <v-row class="d-flex justify-center ma-0 mb-2 pa-0 w-full">
+    <v-col
+      class="d-flex flex-column pa-0 pr-1"
+      cols="5"
+    >
+      <slot name="leftPanel" />
     </v-col>
-    <v-col cols="7" class="pa-0 pl-1">
-      <slot name="rightPanel"/>
+    <v-col
+      class="pa-0 pl-1"
+      cols="7"
+    >
+      <slot name="rightPanel" />
     </v-col>
   </v-row>
 </template>
+
 <script>
 export default {
-  name: "PanelTwoColumns",
+  name: 'PanelTwoColumns',
   components: {
   },
   props: {
@@ -21,5 +28,5 @@ export default {
   },
   methods: {
   }
-};
+}
 </script>
