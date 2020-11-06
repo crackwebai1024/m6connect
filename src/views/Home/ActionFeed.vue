@@ -26,7 +26,12 @@
     </div>
     <input ref="searchInput" v-show="showSearchInput" v-model="searchInput" class="search-input" type="text" placeholder="Start Typing to Search" />
     
-    <action-feed-item v-for="(notification, index) in filteredNotifications" :key="'notification-'+index" :notification="notification"/>
+    <action-feed-item v-for="(notification, index) in filteredNotifications.filter((e, i) => i < currentIndex)" :key="'notification-'+index" :notification="notification"/>
+    <infinite-loading
+      infinite-scroll-disabled="busy"
+      @infinite="infiniteHandler" :identifier="filteredNotifications">
+      <div slot="no-more"></div>
+    </infinite-loading>
     <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>
   <v-container v-else class="transparent px-4 vertical-scroll dont-show-scroll h-full w-side">
@@ -46,6 +51,8 @@ export default {
     ActionFeedItem
   },
   data: () => ({
+    busy: false,
+    currentIndex: 0,
     loading: true,
     user:{},
     showSearchInput: false,
@@ -91,6 +98,18 @@ export default {
       workOrder:  'setWorkOrder',
       setFilterTag: 'setWorkFilter'
     }),
+    infiniteHandler($state) {
+      this.busy = true;
+      setTimeout(() => {
+        if(this.currentIndex < this.filteredNotifications.length){
+          this.currentIndex ++;
+          $state.loaded();
+        }else{
+          $state.complete();
+        }
+        this.busy = false;
+      }, 100);
+    },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
@@ -103,6 +122,9 @@ export default {
         this.loading = false;
       });
     },
+    actFeed: function() {
+      this.currentIndex = 0;
+    }
   },
   mounted(){
     this.setFilterTag({key: 'all_apps', value: 'All Apps'});
