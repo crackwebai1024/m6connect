@@ -8,7 +8,7 @@
   >
     <template v-slot:after:title>
       <v-icon
-        class="mx-2 grey--text text--darken-2"
+        class="grey--text mx-2 text--darken-2"
         color="grey"
         flat
         light
@@ -26,7 +26,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="mx-2 grey--text text--darken-2"
+            class="grey--text mx-2 text--darken-2"
             light
             size="25"
             v-on="on"
@@ -50,10 +50,9 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="mx-2 search"
+            class="grey--text mx-2 search text--darken-2"
             light
             size="25"
-            class="search mx-2 grey--text text--darken-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
@@ -67,11 +66,9 @@
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon
-              class="close-search mx-2"
+              class="close-search grey--text mx-2 text--darken-2"
               light
               size="25"
-              light
-              class="close-search mx-2 grey--text text--darken-2"
               v-on="on"
               @click="clearSearch"
             >
@@ -83,7 +80,7 @@
       </template>
 
       <v-icon
-        class="cursor mx-2 grey--text text--darken-2"
+        class="cursor grey--text mx-2 text--darken-2"
         light
         @click="createShowModal = true"
       >
@@ -94,7 +91,7 @@
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor ml-1 grey--text text--darken-2"
+            class="cursor grey--text ml-1 text--darken-2"
             v-on="on"
             @click="showSettings = true"
           >
