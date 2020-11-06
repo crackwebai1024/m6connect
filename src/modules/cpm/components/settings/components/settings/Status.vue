@@ -1,0 +1,309 @@
+<template>
+  <div>
+    <v-card>
+      <v-card-title style="position:relative">
+        <v-btn
+          absolute
+          color="blue"
+          dark
+          fab
+          right
+          small
+          @click="showForm = true"
+        >
+          <v-icon>add</v-icon>
+        </v-btn>
+      </v-card-title>
+
+      <v-card-text>
+        <div class="form-group">
+          <label>
+            {{ $t('general.current') }}
+            {{ $t('general.status') }}
+          </label>
+
+          <v-list
+            class="mainList"
+            dense
+          >
+            <v-list-tile class="myListHeader">
+              <v-list-tile-content>
+                {{ $t('general.name') }}
+              </v-list-tile-content>
+
+              <v-list-tile-action>
+                {{ $t('general.action') }}
+              </v-list-tile-action>
+            </v-list-tile>
+
+            <draggable
+              v-model="settings.status"
+              :options="{ group: 'status' }"
+              @end="drag = false"
+              @start="drag = true"
+              @update="saveOrder"
+            >
+              <v-list-tile
+                v-for="(name, key) in settings.status"
+                :key="key"
+                class="myList"
+              >
+                <v-list-tile-avatar>
+                  <v-icon
+                    color="blue"
+                    small
+                  >
+                    drag_indicator
+                  </v-icon>
+                </v-list-tile-avatar>
+
+                <v-list-tile-content>{{ name }}</v-list-tile-content>
+
+                <v-list-tile-action
+                  style="flex-direction:row; justify-content: flex-end;"
+                >
+                  <v-btn
+                    class="xs-btn"
+                    fab
+                    flat
+                    @click.prevent="editStatus(key, name)"
+                  >
+                    <v-icon>edit</v-icon>
+                  </v-btn>
+
+                  <v-btn
+                    class="xs-btn"
+                    fab
+                    flat
+                    @click.prevent="deleteStatus(key, name)"
+                  >
+                    <v-icon>delete</v-icon>
+                  </v-btn>
+                </v-list-tile-action>
+              </v-list-tile>
+            </draggable>
+          </v-list>
+        </div>
+      </v-card-text>
+    </v-card>
+
+    <v-card
+      v-if="showForm"
+      class="mt-2"
+    >
+      <v-card-text>
+        <v-form ref="form">
+          <h6
+            v-if="currentStatus"
+            class="indigo--text"
+          >
+            {{ $t('general.editing') }}
+          </h6>
+
+          <v-text-field
+            v-model="status"
+            color="blue"
+            :label="
+              `${appLabel.singular} ${$t('general.status')} ${$t(
+                'general.name'
+              )}`
+            "
+          />
+
+          <input
+            v-model="currentStatus"
+            type="hidden"
+          >
+
+          <v-btn
+            color="blue"
+            outline
+            @click="cancel"
+          >
+            Cancel
+          </v-btn>
+
+          <v-btn
+            color="blue"
+            dark
+            type="submit"
+            @click="saveStatus"
+          >
+            {{ submitLoading ? $t('general.saving') : $t('general.save') }}
+          </v-btn>
+        </v-form>
+      </v-card-text>
+    </v-card>
+  </div>
+</template>
+
+<script>
+import { db } from '@/utils/Firebase'
+import { mapState, mapGetters } from 'vuex'
+import draggable from 'vuedraggable'
+export default {
+  components: {
+    draggable
+  },
+  data() {
+    return {
+      status: '',
+      currentStatus: '',
+      settings: {},
+      submitLoading: false,
+      rules: {
+        required: value => !!value || 'Required.'
+      },
+      showForm: false
+    }
+  },
+  computed: {
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
+  mounted() {
+    db.collection('settings')
+      .doc(this.currentCompany.id)
+      .collection('settings')
+      .doc(this.appLabel.settingsCollection)
+      .get()
+      .then(settings => {
+        if (!settings.exists) {
+          db.collection('settings')
+            .doc(this.currentCompany.id)
+            .collection('settings')
+            .doc(this.appLabel.settingsCollection)
+            .set({
+              status: []
+            })
+        }
+      })
+  },
+  methods: {
+    saveOrder() {
+      db.collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc(this.appLabel.settingsCollection)
+        .update({
+          status: this.settings.status
+        })
+    },
+    saveStatus() {
+      if (this.status === '') {
+        this.$snotify.error(
+          `${this.appLabel.singular} ${this.$t(
+            'cpmSettings.settings.statusNameRequired'
+          )}`,
+          this.$t('alerts.error')
+        )
+        return
+      }
+      if (this.currentStatus === '') {
+        if (!this.settings.status) {
+          this.settings.status = []
+        }
+        this.settings.status.push(this.status)
+      } else {
+        this.$set(this.settings.status, this.currentStatus, this.status)
+      }
+      db.collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc(this.appLabel.settingsCollection)
+        .update({
+          status: this.settings.status
+        })
+      this.$snotify.success(
+        `The ${this.appLabel.singular} ${this.$t(
+          'cpmSettings.settings.statusSaved'
+        )}`,
+        this.$t('alerts.success')
+      )
+      this.status = ''
+      this.currentStatus = ''
+    },
+    deleteStatus(id, name) {
+      const confirmation = confirm(
+        `${this.$t('general.deleteMsg')} ${this.appLabel.singular} ${this.$t(
+          'general.status'
+        )}: ${name}`
+      )
+      if (confirmation) {
+        this.submitDelete(id)
+      }
+    },
+    submitDelete(id) {
+      this.settings.status.splice(id, 1)
+      db.collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc(this.appLabel.settingsCollection)
+        .update({
+          status: this.settings.status
+        })
+      this.$snotify.success(
+        `The ${this.appLabel.singular} ${this.$t(
+          'cpmSettings.settings.statusDeleted'
+        )}`,
+        this.$t('alerts.success')
+      )
+    },
+    editStatus(id, name) {
+      this.status = name
+      this.currentStatus = id
+      this.showForm = true
+    },
+    cancel() {
+      this.status = ''
+      this.currentStatus = ''
+      this.showForm = false
+    }
+  },
+  firestore() {
+    return {
+      settings: db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc(this.appLabel.settingsCollection)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scope>
+.mainList {
+  border: 1px solid #ccc;
+  .v-list__tile__action {
+    width: 20%;
+
+    button {
+      z-index: 1;
+    }
+  }
+  .myListHeader {
+    .v-list__tile__action {
+      padding-right: 10px;
+    }
+  }
+  .myList {
+    border-bottom: 1px solid #ccc;
+
+    &:first-child {
+      border-top: 1px solid #ccc;
+    }
+    &:nth-child(odd) {
+      background: #f9f9f9;
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  .v-list__tile__content {
+    font-size: 13px;
+  }
+}
+</style>

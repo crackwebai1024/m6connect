@@ -20,6 +20,7 @@ import M6Codes from './modules/M6Codes'
 import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
 import RapidTicket from './modules/RapidTicket'
 
+import companies from '@/modules/cpm/store/companies'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -147,6 +148,7 @@ export default new Vuex.Store({
     SnackBarNotif,
     M6Codes,
     File,
+    companies,
     AppBuilder,
     RapidTicket
   }

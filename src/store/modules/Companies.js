@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios from 'axios'
 import { dataGet } from '@/utils/helpers'
 
 const state = {
   list: [],
   currentCompany: {},
   companyInsuranceStatus: [
-    { label: "Bondable", val: "BONDABLE"},
-    { label: "Bonded",   val: "BONDED" },
-    { label: "Insured",  val: "INSURED" }
+    { label: 'Bondable', val: 'BONDABLE' },
+    { label: 'Bonded', val: 'BONDED' },
+    { label: 'Insured', val: 'INSURED' }
   ],
   locationTypes: [
     { label: 'Main Location', value: 'main-location' },
@@ -22,13 +22,13 @@ const state = {
     { label: 'Department', value: 'department' },
     { label: 'Field Office', value: 'field-office' }
   ]
-};
+}
 
 const getters = {
   getCurrentCompanyUsers(state) {
     return dataGet(state, 'currentCompany.users.items', [])
   }
-};
+}
 
 const mutations = {
   setCompanyList(state, payload) {
@@ -36,6 +36,7 @@ const mutations = {
   },
   setCurrentCompany(state, payload) {
     state.currentCompany = payload
+    state.currentCompany.id = '54395'
   }
 }
 
@@ -58,51 +59,54 @@ const actions = {
           resolve(res)
         })
         .catch(err => reject(err))
-
     })
   },
   updateUserCompany(context, userCompany) {
-    return new Promise( (resolve, reject) => {
-      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, { userCompany })
-      .then(res => {
-          resolve(res)
+    return new Promise((resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, {
+        userCompany
       })
-      .catch(reject)
+        .then(res => {
+          resolve(res)
+        })
+        .catch(reject)
     })
   },
   createUserCompany({ rootState }, data) {
     data.userID = rootState.Auth.user.id
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/userCompany`, data)
-      .then(resolve)
-      .catch(reject)
+        .then(resolve)
+        .catch(reject)
     })
   },
-  switchCompanies( { dispatch }, params ) {
-    return new Promise( (resolve, reject) => {
+  switchCompanies({ dispatch }, params) {
+    return new Promise((resolve, reject) => {
       axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies/switchCompanies`, params)
-      .then(res => {
-        dispatch('Auth/getUserData', {}, { root: true })
-        resolve(res)
-      })
-      .catch(err => {
-        reject(err)
-      })
+        .then(res => {
+          dispatch('Auth/getUserData', {}, { root: true })
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
     })
   },
   updateCompany({ state, commit }, company) {
-    return new Promise( (resolve, reject) => {
-      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`, { company })
-      .then(res => {
-        let currentCompany = res.data
-        currentCompany.users = state.currentCompany.users || [] 
+    return new Promise((resolve, reject) => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/companies`, {
+        company
+      })
+        .then(res => {
+          const currentCompany = res.data
+          currentCompany.users = state.currentCompany.users || []
 
-        commit('setCurrentCompany', currentCompany)
-        resolve(res)
-      })
-      .catch(err => {
-        reject(err)
-      })
+          commit('setCurrentCompany', currentCompany)
+          resolve(res)
+        })
+        .catch(err => {
+          reject(err)
+        })
     })
   }
 

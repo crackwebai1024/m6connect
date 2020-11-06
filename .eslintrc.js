@@ -8,10 +8,11 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:vue/recommended',
-    'plugin:es-beautifier/standard'
+    'plugin:es-beautifier/standard',
+    'plugin:vue/base'
   ],
 
-  plugins: ['es-beautifier'],
+  plugins: ['es-beautifier', 'vuetify'],
 
   rules: {
     'arrow-parens': [2, 'as-needed'],
@@ -133,7 +134,10 @@ module.exports = {
     camelcase: 2,
     eqeqeq: ['error', 'always'],
     quotes: ['error', 'single'],
-    semi: ['error', 'never']
+    semi: ['error', 'never'],
+    'vuetify/no-deprecated-classes': 'error',
+    'vuetify/grid-unknown-attributes': 'error',
+    'vuetify/no-legacy-grid': 'error'
   },
 
   globals: {

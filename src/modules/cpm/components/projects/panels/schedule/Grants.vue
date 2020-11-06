@@ -1,0 +1,57 @@
+<template>
+  <div class="main-content">
+    <v-data-table
+      :headers="headers"
+      hide-actions
+      :items="grants"
+    >
+      <template
+        slot="items"
+        slot-scope="props"
+      >
+        <td>{{ props.item.title }}</td>
+        <td class="justify-center layout px-0">
+          <v-icon
+            class="mr-1"
+            small
+          >
+            edit
+          </v-icon>
+          <v-icon small>
+            delete
+          </v-icon>
+        </td>
+      </template>
+    </v-data-table>
+  </div>
+</template>
+
+<script>
+import { db } from '@/utils/Firebase'
+export default {
+  data() {
+    return {
+      headers: [
+        {
+          text: 'Title',
+          align: 'left',
+          value: 'title'
+        },
+        {
+          text: 'Actions',
+          value: 'actions',
+          sortable: false,
+          align: 'center'
+        }
+      ],
+      grants: []
+    }
+  },
+  firestore() {
+    return {
+      grants: db.collection('grants')
+    }
+  },
+  mounted() {}
+}
+</script>
