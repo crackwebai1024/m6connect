@@ -1202,7 +1202,7 @@
                     :items="spendingToShow.lineItems"
                   >
                     <template
-                      slot="items"
+                      slot="item"
                       slot-scope="props"
                     >
                       <td class="text-center">
@@ -1273,6 +1273,7 @@
     <!-- show line items modal -->
 
     <searching
+      v-if="showSearchingModal"
       :previous-search="search"
       :show="showSearchingModal"
       where="spendings"
@@ -1487,7 +1488,7 @@ export default {
       ],
       isFullScreen: false,
       pagination: {
-        // sortBy: 'number',
+        sortBy: ['number'],
         descending: true,
         rowsPerPage: 10,
         totalItems: 0,

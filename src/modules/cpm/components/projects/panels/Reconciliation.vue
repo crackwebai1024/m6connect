@@ -9,9 +9,9 @@
     <template v-slot:after:title>
       <v-icon
         class="mx-2"
-        size="25"
-        light
         flat
+        light
+        size="25"
         @click="cardDialogClick"
       >
         mdi-launch
@@ -26,8 +26,8 @@
         <template v-slot:activator="{ on }">
           <v-icon
             class="mx-2"
-            size="25"
             light
+            size="25"
             v-on="on"
             @click="showSearchingModal = true"
           >
@@ -49,9 +49,9 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
+            class="mx-2 search"
             light
             size="25"
-            class="search mx-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
@@ -65,9 +65,9 @@
         <v-tooltip right>
           <template v-slot:activator="{ on }">
             <v-icon
-              size="25"
-              light
               class="close-search mx-2"
+              light
+              size="25"
               v-on="on"
               @click="clearSearch"
             >
@@ -695,7 +695,7 @@ export default {
         }
       ],
       pagination: {
-
+        sortBy: ['number'],
         descending: false,
         rowsPerPage: 10,
         totalItems: 0,

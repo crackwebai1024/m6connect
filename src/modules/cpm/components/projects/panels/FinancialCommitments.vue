@@ -133,7 +133,10 @@
       :server-items-length="pagination.totalItems"
       @update:pagination="debounceSearch(search, false)"
     >
-      <template v-slot:items="props">
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <tr
           class="step6"
           @click="fetchSpending(props)"
@@ -463,7 +466,7 @@ export default {
         }
       ],
       pagination: {
-        // sortBy: 'number',
+        sortBy: ['number'],
         descending: true,
         rowsPerPage: 10,
         totalItems: 0,
