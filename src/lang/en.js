@@ -1487,6 +1487,7 @@ export const en = {
         reconciled: 'Reconciled',
         reconciliation: 'Reconciliation',
         reconciliationStatus: 'Reconciliation Status',
+        spent: 'Spent',
         title: 'Reconciliation Request',
         user: 'User | Users'
       },
