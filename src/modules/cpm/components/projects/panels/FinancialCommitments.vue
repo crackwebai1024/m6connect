@@ -16,7 +16,7 @@
           <v-icon
             dark
             flat
-            @click="$refs.cardDialog.doubleClick"
+            @click="cardDialogClick"
           >
             launch
           </v-icon>
@@ -129,9 +129,8 @@
       expand
       :headers="headers"
       :items="resources"
-      :pagination.sync="pagination"
-      :rows-per-page-items="rowsPerPage"
-      :total-items="pagination.totalItems"
+      :options.sync="pagination"
+      :server-items-length="pagination.totalItems"
       @update:pagination="debounceSearch(search, false)"
     >
       <template v-slot:items="props">
@@ -399,7 +398,7 @@ export default {
       showInfo: false,
       associatedSpending: [],
       selectedCommitment: null,
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       showSettings: false,
       dataTable: true,
       projectId,
@@ -464,7 +463,7 @@ export default {
         }
       ],
       pagination: {
-        sortBy: 'number',
+        // sortBy: 'number',
         descending: true,
         rowsPerPage: 10,
         totalItems: 0,
@@ -664,7 +663,9 @@ export default {
     ...mapActions('cpm/projects/commitments', {
       deleteCommitmentStore: 'delete'
     }),
-
+    cardDialogClick() {
+      this.$refs.cardDialog.doubleClick()
+    },
     assignResourcesData({ data, meta: { lastPage, total } } = {}) {
       if (lastPage && this.pagination.page > lastPage) {
         this.pagination.page = 1

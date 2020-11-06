@@ -11,7 +11,7 @@
       <v-icon
         dark
         flat
-        @click="$refs.cardDialog.doubleClick"
+        @click="cardDialogClick"
       >
         launch
       </v-icon>
@@ -117,9 +117,8 @@
       :expand="false"
       :headers="headersSpendings"
       :items="resources"
-      :pagination.sync="pagination"
-      :rows-per-page-items="rowsPerPage"
-      :total-items="pagination.totalItems"
+      :options.sync="pagination"
+      :server-items-length="pagination.totalItems"
       @update:pagination="debounceSearch(search, false)"
     >
       <template v-slot:items="props">
@@ -1488,7 +1487,7 @@ export default {
       ],
       isFullScreen: false,
       pagination: {
-        sortBy: 'number',
+        // sortBy: 'number',
         descending: true,
         rowsPerPage: 10,
         totalItems: 0,
@@ -1758,7 +1757,9 @@ export default {
       updateLineItem: 'updateLineItem',
       submitDeleteLineItem: 'deleteLineItem'
     }),
-
+    cardDialogClick() {
+      this.$refs.cardDialog.doubleClick()
+    },
     removeDuplicates(array = []) {
       const unique = new Set(array)
       return [...unique]
