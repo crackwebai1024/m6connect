@@ -13,7 +13,6 @@ const UserSettings = () => import(/* webpackChunkName: 'UserSettings' */ "@/view
 const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components/Companies')
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
 const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
-const StoreFront = () => import(/* webpackChunkName: 'Store' */ '@/components/Store')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 
 import store from '../store/';
