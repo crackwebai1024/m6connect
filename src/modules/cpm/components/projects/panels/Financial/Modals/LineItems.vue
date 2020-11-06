@@ -141,6 +141,8 @@ import { db } from '@/utils/Firebase'
 import NewLineItem from './forms/NewLineItem'
 import EditLineItem from './forms/EditLineItem'
 import moment from 'moment'
+import { mapState } from 'vuex'
+
 export default {
   name: 'LineItems',
   components: {
@@ -209,7 +211,7 @@ export default {
         .doc(this.budget.id),
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('budgets'),
       lineItems: db
@@ -222,6 +224,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     total() {
       if (this.budgetCategories.length) {
         let total = 0
@@ -323,7 +328,7 @@ export default {
         if (this.$h.dg(data, 'budget_category.ref.id')) {
           const response = await db
             .collection('settings')
-            .doc(window.Drupal.settings.m6_platform.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('budgets')
             .collection('budget_categories')

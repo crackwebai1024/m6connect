@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { db } from '@/utils/Firebase'
 import mixins from '@/modules/cpm/_mixins/index'
 import ListFiltering from '../modals/ListFiltering'
@@ -151,6 +151,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     userId() {
       return window.Drupal.settings.m6_platform.uid
     },
@@ -165,10 +168,7 @@ export default {
 
     indexParameters() {
       const parameters = {
-        companyId: this.$h.dg(
-          window,
-          'Drupal.settings.m6_platform.company_nid'
-        ),
+        companyId: this.currentCompany.id,
         userId: this.userId,
         filter: { forecasted: true },
         page: this.pagination.page,
@@ -376,13 +376,13 @@ export default {
 
       settingsProject: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('projects'),
 
       settingsUsers: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('users')
     }

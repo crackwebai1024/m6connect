@@ -581,7 +581,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { Money } from 'v-money'
 import { DateTime } from 'luxon'
 import BudgetCategorySelect from '../_partials/BudgetCategorySelect'
@@ -657,6 +657,9 @@ export default {
   },
   computed: {
     ...mapGetters('companies/cpmProjects/roles', ['roles', 'roleNames']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     preparedUsers() {
       let users = []
       if (this.$h.dg(this.change, 'preparedTitle', []).length) {
@@ -863,10 +866,7 @@ export default {
     ]),
     ...mapActions('companies/cpmProjects/roles', ['fetchRoles']),
     fetchInitData() {
-      const companyId = this.$h.dg(
-        window,
-        'Drupal.settings.m6_platform.company_nid'
-      )
+      const companyId = this.currentCompany.id
 
       this.fetchApprovalTypes()
         .then(approvalTypes => (this.approvalTypes = approvalTypes))
@@ -1001,7 +1001,7 @@ export default {
         this.change.budget_category = {
           ref: db
             .collection('settings')
-            .doc(window.Drupal.settings.m6_platform.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('budgets')
             .collection('budget_categories')
@@ -1014,7 +1014,7 @@ export default {
       if (this.$h.dg(this.change, 'reason.id')) {
         this.change.reason = db
           .collection('settings')
-          .doc(window.Drupal.settings.m6_platform.company_nid)
+          .doc(this.currentCompany.id)
           .collection(`${this.settingCollectionName}`)
           .doc('changes')
           .collection('reasons')
@@ -1221,23 +1221,23 @@ export default {
       commitments: this.projectRef.collection('commitments'),
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('changes'),
       reasons: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('changes')
         .collection('reasons'),
       budgetSettings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets'),
       commitmentSettings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('commitments')
     }

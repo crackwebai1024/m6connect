@@ -231,6 +231,7 @@
 import axios from 'axios'
 import EventBus from '@/Eventbus'
 import { db } from '@/utils/Firebase'
+import { mapState } from 'vuex'
 
 import FirebaseReportComponent from './FirebaseReportComponent.vue'
 import CostSummaryPanel from './CostSummary'
@@ -349,6 +350,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     totalFilteredResorces() {
       const data = {
         amount: 0,
@@ -434,7 +438,7 @@ export default {
 
     getTable() {
       this.resetValues()
-      const url = `${this.firebaseUrl}/api/company/54395/project/${this.projectId}/reports-by-categories`
+      const url = `${this.firebaseUrl}/api/company/${this.currentCompany.id}/project/${this.projectId}/reports-by-categories`
       const data = {
         environment: this.environment
       }

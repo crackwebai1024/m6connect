@@ -113,7 +113,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 import ComponentTemplate from '../ComponentTemplate'
 export default {
@@ -133,18 +133,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc(this.appLabel.settingsCollection)
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc(this.appLabel.settingsCollection)
             .set({
@@ -156,7 +159,7 @@ export default {
   methods: {
     saveOrder() {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection)
         .update({
@@ -181,7 +184,7 @@ export default {
         )
       }
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection)
         .update({
@@ -202,7 +205,7 @@ export default {
     submitDelete(id) {
       this.settings.capitalType.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection)
         .update({
@@ -223,7 +226,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.settingsCollection)
     }

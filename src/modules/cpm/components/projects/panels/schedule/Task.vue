@@ -659,7 +659,7 @@ import 'dhtmlx-gantt'
 import axios from 'axios'
 import firebase from 'firebase/app'
 import { db } from '@/utils/Firebase'
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
 import ModalCritical from './ModalCritical'
 import BudgetCategorySelect from '@/components/cpm/projects/_partials/BudgetCategorySelect'
 export default {
@@ -724,7 +724,6 @@ export default {
       newComment: '',
       me: 0,
       userRef: {},
-      company_id: window.Drupal.settings.m6_platform_header.company_nid,
       taskTypes: [
         {
           name: this.$t('rfp.bidding'),
@@ -777,7 +776,7 @@ export default {
       subtasks: this.taskRef.collection('subtasks').orderBy('createdAt'),
       activity: this.taskRef.collection('activity').orderBy('createdAt', 'desc'),
       settings: db.collection('settings').doc(this.appLabel.firebaseCollection),
-      task_status: db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection(`${this.settingCollectionName}`).doc('task_status')
+      task_status: db.collection('settings').doc(this.currentCompany.id).collection(`${this.settingCollectionName}`).doc('task_status')
     }
   },
   computed: {
@@ -790,6 +789,12 @@ export default {
       'budgetFiscalYear',
       'budgets'
     ]),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
+    company_id() {
+      return this.currentCompany.id
+    },
     subtaskProgress() {
       const count = this.subtasks.length
       if (count === 0) {
@@ -903,7 +908,6 @@ export default {
       }
     })
 
-    this.company_id = window.Drupal.settings.m6_platform_header.company_nid
     this.me = parseInt(window.Drupal.settings.m6_platform_header.uid)
 
     document.documentElement.classList.add('has-modal-open')
@@ -1315,7 +1319,7 @@ export default {
 
       return db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets')
         .collection('budget_categories')

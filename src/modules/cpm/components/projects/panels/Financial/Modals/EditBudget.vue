@@ -353,7 +353,7 @@
 
 <script>
 import { db, storage } from '@/utils/Firebase'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import LineItemsModal from './LineItems'
 
 export default {
@@ -418,6 +418,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     dialog: {
       get() {
         return this.value
@@ -623,7 +626,7 @@ export default {
       const aux = new Promise((resolve, reject) => {
         try {
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform.company_nid)
+            .doc(this.currentCompany.id)
             .collection(`${this.settingCollectionName}`)
             .doc('projects')
             .get()
@@ -848,12 +851,12 @@ export default {
       project: db.collection('cpm_projects').doc(this.$route.params.id),
       users: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('users'),
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('budgets')
     }

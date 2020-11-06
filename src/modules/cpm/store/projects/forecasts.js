@@ -81,11 +81,11 @@ const mutations = {
 }
 
 const actions = {
-  async getForecastTasks({ commit }, { projectId }) {
+  async getForecastTasks({ rootState }, { commit }, { projectId }) {
     if (!projectId) return Promise.reject('Bad request, missing projectId createForecastTasks')
 
     try {
-      const companyId = window.Drupal.settings.m6_platform.company_nid
+      const companyId = rootState.Companies.currentCompany.id
       const { data } = await axios
         .post(`${firebaseURL}/api/company/${companyId}/projects/${projectId}/forecast-tasks/`, {
           getSpending: true,
@@ -114,7 +114,7 @@ const actions = {
     }
   },
 
-  debounceGetForecastTasks: debounce(async ({ dispatch }, { projectId } = {}) => {
+  debounceGetForecastTasks: debounce(async ({ rootState }, { dispatch }, { projectId } = {}) => {
     if (!projectId) return
     dispatch('getForecastTasks', { projectId })
   }, 1000),
@@ -122,7 +122,7 @@ const actions = {
   async getAllFiscalYears({ commit }) {
     try {
       const projectSnap = await db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(rootState.Companies.currentCompany.id)
         .collection('planned_settings')
         .doc('projects')
         .get()

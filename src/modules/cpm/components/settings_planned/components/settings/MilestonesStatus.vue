@@ -150,18 +150,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc(this.appLabel.milestonesCollection)
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc(this.appLabel.milestonesCollection)
             .set({
@@ -185,7 +188,7 @@ export default {
         this.$set(this.settings.status, this.currentElement, this.element)
       }
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.milestonesCollection)
         .update({
@@ -205,7 +208,7 @@ export default {
     submitDelete(id) {
       this.settings.status.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.milestonesCollection)
         .update({
@@ -228,7 +231,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.milestonesCollection)
     }

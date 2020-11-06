@@ -15,8 +15,8 @@ class ProposalGeneratePreview {
     this.customOptionsProposal = customOptionsProposal
     this.extras = extras
   }
-
-  getscheduleDates() {
+  
+  getscheduleDates({ rootState }) {
     const aux = new Promise((resolve, reject) => {
       try {
         const scheduleDates = {}
@@ -26,7 +26,7 @@ class ProposalGeneratePreview {
           scheduleDates['sharpBoard'] = this.proposal[auxKey]
         }
         db.collection('settings')
-          .doc(Drupal.settings.m6_platform.company_nid)
+          .doc(rootState.Companies.currentCompany.id)
           .collection('settings')
           .doc('rfp')
           .collection('scheduleDates')
@@ -60,7 +60,7 @@ class ProposalGeneratePreview {
    * @description function for getting the campus
    * @returns campus
    */
-  getCampusOptions(project) {
+  getCampusOptions(project, { rootState }) {
     const auxPromise = new Promise((resolve, reject) => {
       try {
         const options = {
@@ -69,7 +69,7 @@ class ProposalGeneratePreview {
           logo: ''
         }
 
-        db.collection('settings').doc(Drupal.settings.m6_platform.company_nid).collection('settings').doc('projects').get().then(snap => {
+        db.collection('settings').doc(rootState.Companies.currentCompany.id).collection('settings').doc('projects').get().then(snap => {
           if (snap.exists) {
             const campusArray = snap.data().campus
 

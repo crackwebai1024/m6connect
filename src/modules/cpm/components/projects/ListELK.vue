@@ -562,7 +562,7 @@
 
 <script>
 import { format } from 'date-fns'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import Excel from 'exceljs'
 import { saveAs } from 'file-saver'
 
@@ -667,6 +667,9 @@ export default {
   }),
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     isGridView() {
       return this.view.val === 'grid_view'
     },
@@ -907,10 +910,7 @@ export default {
     },
     indexParameters() {
       const parameters = {
-        companyId: this.$h.dg(
-          window,
-          'Drupal.settings.m6_platform.company_nid'
-        ),
+        companyId: this.currentCompany.id,
         userId: this.$h.dg(window, 'Drupal.settings.m6_platform.uid'),
         filter: { forecasted: this.type === 'forecasted' },
         page: this.pagination.page,
@@ -1635,13 +1635,13 @@ export default {
 
       settingsProject: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('projects'),
 
       settingsUsers: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('users')
     }

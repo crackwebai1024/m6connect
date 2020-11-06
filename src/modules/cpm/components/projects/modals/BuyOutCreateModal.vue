@@ -546,7 +546,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { DateTime } from 'luxon'
 
 export default {
@@ -613,6 +613,9 @@ export default {
       'roles',
       'roleNames'
     ]),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     preparedUsers() {
       let users = []
       if (this.$h.dg(this.change, 'preparedTitle', []).length) {
@@ -793,7 +796,7 @@ export default {
       'fetchRoles'
     ]),
     fetchInitData() {
-      const companyId = this.$h.dg(window, 'Drupal.settings.m6_platform.company_nid')
+      const companyId = this.currentCompany.id
 
       this.fetchApprovalTypes()
         .then(approvalTypes => this.approvalTypes = approvalTypes)

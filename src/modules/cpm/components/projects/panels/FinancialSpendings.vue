@@ -1505,7 +1505,7 @@ export default {
       project: db.collection('cpm_projects').doc(this.$route.params.id),
       budgetSettings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets'),
       commitments: db
@@ -1518,6 +1518,9 @@ export default {
   computed: {
     ...mapGetters('companies/cpmProjects/general', {
       vendors: 'getVendors'
+    }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
     }),
     indexParameters() {
       return {
@@ -2511,7 +2514,7 @@ export default {
         this.setDialogPropertiesCategoryRef(
           db
             .collection('settings')
-            .doc(window.Drupal.settings.m6_platform.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('budgets')
             .collection('budget_categories')

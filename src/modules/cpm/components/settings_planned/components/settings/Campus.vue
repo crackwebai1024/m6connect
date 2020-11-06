@@ -443,10 +443,16 @@
 import { db, storage } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
 import * as easings from 'vuetify/es5/util/easing-patterns'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     ComponentTemplate
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   data() {
     return {
@@ -482,14 +488,14 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc()
       .collection('planned_settings')
       .doc('projects')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('projects')
             .set({
@@ -533,7 +539,7 @@ export default {
       await Promise.all(
         Array.from(Array(fileList.length).keys()).map(x => {
           const file = fileList[x]
-          const filePath = `project/${Drupal.settings.m6_platform_header.company_nid}/campus-logo/${file.name}`
+          const filePath = `project/${this.currentCompany.id}/campus-logo/${file.name}`
           return storage.ref(filePath).put(file)
         })
       ).then(async uploadedFiles => {
@@ -686,7 +692,7 @@ export default {
     },
     updateData(msg) {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('projects')
         .update({
@@ -721,7 +727,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('projects')
     }

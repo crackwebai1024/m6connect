@@ -88,7 +88,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import ComponentTemplate from '../ComponentTemplate'
 export default {
   components: {
@@ -120,18 +120,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc('task_status')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('task_status')
             .set({
@@ -159,7 +162,7 @@ export default {
         this.$set(this.settings.status, this.currentElement, this.element)
       }
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('task_status')
         .update({
@@ -181,7 +184,7 @@ export default {
       this.settings.status.splice(id, 1)
       this.settings.color.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('task_status')
         .update({
@@ -208,7 +211,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('task_status')
     }

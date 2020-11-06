@@ -455,6 +455,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import moment from 'moment'
 
 import { db } from '@/utils/Firebase'
@@ -494,6 +496,11 @@ const snapshotDefault = {
 const initialHeaders = [{ text: 'Project', type: 'default' }]
 
 export default {
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   data() {
     const capitalPlanId = this.$route.params.id
     const currentMonth = moment().format('YYYY-MM')
@@ -905,7 +912,7 @@ export default {
         try {
           const snap = await db
             .collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('projects')
             .get()

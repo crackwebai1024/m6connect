@@ -289,6 +289,7 @@ import TimelineView from './PreviewComponents/TimelineView'
 import ProposalGeneratePreview from './helpers/ProposalGeneratePreview'
 import ProposalPreview from './helpers/ProposalPreview'
 import FeedbackTable from './FeedbackTable'
+import { mapState } from 'vuex'
 
 export default {
   name: 'InvitationDialog',
@@ -320,6 +321,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     proposalDates() {
       const aux = {}
 
@@ -369,7 +373,7 @@ export default {
       const aux = new Promise((resolve, reject) => {
         try {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('rfp')
             .collection('scheduleDates')

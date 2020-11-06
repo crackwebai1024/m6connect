@@ -198,7 +198,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import axios from 'axios'
 import { Chrome } from 'vue-color'
 import vSelect from 'vue-select'
@@ -254,18 +254,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc('roles')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('roles')
             .set({
@@ -348,7 +351,7 @@ export default {
       }
 
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('roles')
         .set({
@@ -373,7 +376,7 @@ export default {
 
       roles.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('roles')
         .set({
@@ -409,12 +412,12 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('roles'),
       users: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc(this.appLabel.usersCollection)
     }

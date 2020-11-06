@@ -99,15 +99,9 @@
 </template>
 
 <script>
-import {
-  db
-} from '@/utils/Firebase'
-import {
-  mapGetters
-} from 'vuex'
-import {
-  skipIterationForItems
-} from '@/components/cpm/helpers/HelpersFunction'
+import { db } from '@/utils/Firebase'
+import { mapState, mapGetters } from 'vuex'
+import { skipIterationForItems } from '@/components/cpm/helpers/HelpersFunction'
 export default {
   name: 'CostSummary',
   props: {
@@ -148,7 +142,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   watch: {
     dateRule: function () {
@@ -195,7 +192,7 @@ export default {
           this.budget = res.docs[0].data()
           this.budgetRef = res.docs[0].ref
 
-          db.collection('settings').doc(window.Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('budgets').get().then(budgetDoc => {
+          db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets').get().then(budgetDoc => {
             this.budgetCategories = budgetDoc.data().costCodes
             this.budgetCategories.forEach(cat => {
               this.categories.push({

@@ -221,7 +221,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { VueEditor } from 'vue2-editor'
 import vSelect from 'vue-select'
 export default {
@@ -274,6 +274,9 @@ export default {
   },
   computed: {
     ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     expireDate() {
       return this.fromDateVal
         ? this.formatDate(this.fromDateVal)
@@ -319,7 +322,7 @@ export default {
       ...this.defaultValues
     })
     db.collection('settings')
-      .doc(window.Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc(this.appLabel.settingsCollection)
       .get()

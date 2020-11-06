@@ -326,6 +326,8 @@ import { db, storage } from '@/utils/Firebase'
 import ShareModal from './ShareModal'
 import EventBus from '@/Eventbus'
 import { defaultFilesStructure } from './DefaultFilesStructure'
+import { mapState } from 'vuex'
+
 export default {
   name: 'FileSystem',
   components: {
@@ -353,6 +355,9 @@ export default {
   }),
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     treeItems() {
       return this.showingTour
         ? [
@@ -750,10 +755,11 @@ export default {
     },
 
     getPolicyAndProceduresFiles() {
+      const self = this
       return new Promise((resolve, reject) => {
         try {
           db.collection('m6companies')
-            .doc(window.Drupal.settings.m6_platform.company_nid)
+            .doc(self.currentCompany.id)
             .collection('cpm')
             .doc('default_folders')
             .collection('policy_procedures')

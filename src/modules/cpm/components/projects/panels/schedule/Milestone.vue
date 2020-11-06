@@ -405,7 +405,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'Milestone',
@@ -459,6 +459,9 @@ export default {
   },
   computed: {
     ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     settingsNames() {
       if (this.milestonesAvailables.length) {
         return this.settings.names.filter(name => !/^start date$/gim.test(name))
@@ -568,7 +571,7 @@ export default {
       milestone: this.projectRef.collection('milestones').doc(this.milestoneId),
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('milestones'),
       project: this.projectRef
@@ -651,14 +654,14 @@ export default {
     },
     getSettingsMilestones() {
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.milestonesCollection)
         .get()
         .then(settings => {
           if (!settings.exists) {
             db.collection('settings')
-              .doc(Drupal.settings.m6_platform_header.company_nid)
+              .doc(this.currentCompany.id)
               .collection('settings')
               .doc(this.appLabel.milestonesCollection)
               .set({

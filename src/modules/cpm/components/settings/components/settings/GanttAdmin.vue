@@ -328,7 +328,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 
 const milestoneDefault = {
@@ -384,18 +384,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     db.collection('settings')
-      .doc(window.Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc(this.appLabel.settingsCollection)
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc(this.appLabel.settingsCollection)
             .set({
@@ -529,7 +532,7 @@ export default {
         try {
           const gantts = this.settings.gantts || []
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc(this.appLabel.settingsCollection)
             .update({
@@ -549,7 +552,7 @@ export default {
         try {
           const tasks = this.updateTaskGantts(this.defaultSchedule.tasks)
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc(this.appLabel.scheduleCollection)
             .update({
@@ -575,7 +578,7 @@ export default {
     submitDelete(id) {
       this.settings.gantts.splice(id, 1)
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.settingsCollection)
         .update({
@@ -614,18 +617,18 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.settingsCollection),
 
       milestones: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.milestonesCollection),
 
       defaultSchedule: db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.scheduleCollection)
     }

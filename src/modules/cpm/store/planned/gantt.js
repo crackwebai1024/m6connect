@@ -40,13 +40,11 @@ const mutations = {
 }
 
 const actions = {
-  async getProjectMilestonesTasksAndLinks({ commit }, { projectId }) {
+  async getProjectMilestonesTasksAndLinks({ rootState }, { commit }, { projectId }) {
     if (!projectId) return Promise.reject('missing projectId getProjectTasksAndLinks')
-
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
-      const companyId = window.Drupal.settings.m6_platform.company_nid
-
+      const companyId = rootState.Companies.currentCompany.id
       const response = await axios
         .post(`${constfirebaseUrl}/api/company/${companyId}/forecasting/${projectId}/milestones-tasks-links/`, {
           queryTaskFields: [
@@ -83,13 +81,11 @@ const actions = {
       throw e
     }
   },
-  async generateProjectTaskLinks({ dispatch }, { projectId }) {
+  async generateProjectTaskLinks({ rootState }, { dispatch }, { projectId }) {
     if (!projectId) return Promise.reject('missing projectId generateProjectTaskLinks')
-
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
-      const companyId = window.Drupal.settings.m6_platform.company_nid
-
+      const companyId = rootState.Companies.currentCompany.id
       await axios
         .post(`${constfirebaseUrl}/api/company/${companyId}/forecasting/${projectId}/links/create/`)
 

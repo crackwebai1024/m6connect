@@ -252,6 +252,7 @@
 import ProposalDialog from './ProposalDialog'
 import { db } from '@/utils/Firebase'
 import { Money } from 'v-money'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Rfps',
@@ -307,18 +308,21 @@ export default {
     return {
       rfpSettings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('rfp'),
       project: db.collection('cpm_projects').doc(this.$route.params.id),
       proposals: db
         .collection('proposals')
-        .where('company_nid', '==', window.Drupal.settings.m6_platform.company_nid)
+        .where('company_nid', '==', this.currentCompany.id)
         .orderBy('name'),
-      rfpTemplates: db.collection('rfp_templates').where('company_nid', '==', window.Drupal.settings.m6_platform.company_nid).orderBy('name')
+      rfpTemplates: db.collection('rfp_templates').where('company_nid', '==', this.currentCompany.id).orderBy('name')
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     proposalsAvailables() {
       return this.proposals.filter(proposal => proposal.projectId === this.$route.params.id)
     },
@@ -334,7 +338,7 @@ export default {
   async mounted() {
     const snapshot = await db
       .collection('settings')
-      .doc(window.Drupal.settings.m6_platform.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc('users')
       .get()
@@ -409,7 +413,7 @@ export default {
             .doc(this.$route.params.id)
           this.rfp.projectId = this.$route.params.id
           this.rfp.project = project
-          this.rfp.company_nid = window.Drupal.settings.m6_platform.company_nid
+          this.rfp.company_nid = this.currentCompany.id
           this.rfp.invitations = []
           this.rfp.bidPackages = []
           this.rfp.risks = []

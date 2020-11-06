@@ -374,6 +374,7 @@ import axios from 'axios'
 import { Money } from 'v-money'
 import FirebaseReportComponent from './FirebaseReportComponent.vue'
 import SearchingModal from '../modals/SearchingModal'
+import { mapState } from 'vuex'
 
 const defaultItemSafety = {
   startDate: '',
@@ -483,13 +484,17 @@ export default {
       project: db.collection('cpm_projects').doc(this.$route.params.id),
       budgetSettings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets')
     }
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
+
     getViewPortHeight() {
       return `${this.viewPortHeight}px`
     },

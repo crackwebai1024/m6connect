@@ -39,8 +39,15 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
+import { mapState } from 'vuex'
+
 export default {
   name: 'HideCpmPanels',
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   data() {
     return {
       headers: [
@@ -75,7 +82,7 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(window.Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc('cpmPanels')
       .get()
@@ -85,7 +92,7 @@ export default {
           this.panelData = { panels }
 
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('cpmPanels')
             .set({ panels })
@@ -203,7 +210,7 @@ export default {
     },
     save() {
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('cpmPanels')
         .update({ panels: this.panelData.panels })

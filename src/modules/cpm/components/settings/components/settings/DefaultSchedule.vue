@@ -466,7 +466,7 @@
 import { db } from '@/utils/Firebase.js'
 import * as easings from 'vuetify/es5/util/easing-patterns'
 import { Chrome } from 'vue-color'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 
 import BudgetCategorySelect from '../../../projects/_partials/BudgetCategorySelect'
@@ -529,29 +529,32 @@ export default {
     return {
       generalSettings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.settingsCollection),
       settings: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc(this.appLabel.scheduleCollection)
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     db.collection('settings')
-      .doc(window.Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc(this.appLabel.scheduleCollection)
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc(this.appLabel.scheduleCollection)
             .set({
@@ -830,7 +833,7 @@ export default {
       const promise = new Promise((resolve, reject) => {
         try {
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc(this.appLabel.scheduleCollection)
             .update({
@@ -868,7 +871,7 @@ export default {
     saveOrder() {
       try {
         db.collection('settings')
-          .doc(window.Drupal.settings.m6_platform_header.company_nid)
+          .doc(this.currentCompany.id)
           .collection('settings')
           .doc(this.appLabel.scheduleCollection)
           .update({

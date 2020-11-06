@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 import CPMDBudget from './_partials/CPMDBudget'
 import CPMDProjectCostSummary from './_partials/CPMDProjectCostSummary'
@@ -37,7 +37,9 @@ export default {
 
   computed: {
     ...mapGetters('companies/cpmProjects', ['companiesCpmProjects']),
-
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     loading() {
       return typeof this.companiesCpmProjects === 'string'
     }
@@ -45,7 +47,7 @@ export default {
 
   created() {
     this.bindCompaniesCpmProjects({
-      companyId: this.$h.dg(window, 'Drupal.settings.m6_platform.company_nid')
+      companyId: this.currentCompany.id
     })
   },
 

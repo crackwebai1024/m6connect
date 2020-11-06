@@ -100,7 +100,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import { mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import { Chrome } from 'vue-color'
 export default {
   name: 'Covid19RiskStatus',
@@ -112,9 +112,7 @@ export default {
       changeColor: { color: '#238823' },
       covidRef: db
         .collection('settings')
-        .doc(
-          this.$h.dg(window, 'Drupal.settings.m6_platform_header.company_nid')
-        )
+        .doc(this.currentCompany.id)
         .collection('covidRiskStatus'),
       pagination: {
         rowsPerPage: -1
@@ -139,6 +137,9 @@ export default {
   computed: {
     ...mapGetters('companies/cpmProjects/settings', {
       items: 'getCovidRiskStatus'
+    }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
     })
   },
   created() {

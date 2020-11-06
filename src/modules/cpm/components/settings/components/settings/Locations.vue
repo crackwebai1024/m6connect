@@ -90,7 +90,13 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
+import { mapState } from 'vuex'
 export default {
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
+  },
   data() {
     return {
       element: '',
@@ -103,9 +109,9 @@ export default {
     }
   },
   mounted() {
-    db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').get().then(settings => {
+    db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').get().then(settings => {
       if (!settings.exists) {
-        db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').set(
+        db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').set(
           {
             locations: []
           }
@@ -127,7 +133,7 @@ export default {
       } else {
         this.$set(this.settings.locations, this.currentElement, this.element)
       }
-      db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').update({
+      db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').update({
         locations: this.settings.locations
       })
       this.$snotify.success('The Campus has been saved', 'Success')
@@ -142,7 +148,7 @@ export default {
     },
     submitDelete(id) {
       this.settings.locations.splice(id, 1)
-      db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').update(
+      db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').update(
         {
           locations: this.settings.locations
         }
@@ -160,7 +166,7 @@ export default {
   },
   firestore() {
     return {
-      settings: db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects')
+      settings: db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects')
     }
   }
 }

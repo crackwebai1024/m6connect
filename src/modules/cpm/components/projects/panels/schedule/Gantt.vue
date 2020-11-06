@@ -434,7 +434,6 @@ import {
 import _ from 'lodash'
 import axios from 'axios'
 
-const companyId = window.Drupal.settings.m6_platform_header.company_nid
 const defaultMilestone = {
   title: 'New Milestone',
   in_report: false,
@@ -460,7 +459,6 @@ export default {
       budgetFiscalYear: null,
       budgets: {},
       company: {},
-      company_id: companyId,
       daysMilestone: 0,
       defaultTasks: [],
       dialogApplyMilestone: false,
@@ -511,6 +509,9 @@ export default {
     ...mapState({
       selectedGantt: state => state.tickets.selectedGantt
     }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     ...mapGetters({
       appLabel: 'appLabel',
       axiosSettings: 'axiosSettings',
@@ -528,6 +529,9 @@ export default {
       softRefreshData: 'softRefreshData',
       forceRefresh: 'forceRefresh'
     }),
+    company_id() {
+      return this.currentCompany.id
+    },
     yearsAvailables() {
       const years = {}
       let auxYear = this.getFullYear()
@@ -689,7 +693,7 @@ export default {
     getSettingMilestones() {
       db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('milestones').get().then(milestones => {
           const data = milestones.data()
@@ -1892,7 +1896,7 @@ export default {
       const aux = new Promise((resolve, reject) => {
         try {
           db.collection('settings')
-            .doc(window.Drupal.settings.m6_platform.company_nid)
+            .doc(this.currentCompany.id)
             .collection(`${this.settingCollectionName}`)
             .doc('projects')
             .get()

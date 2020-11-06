@@ -87,7 +87,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -101,12 +101,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appLabel'])
+    ...mapGetters(['appLabel']),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
-    db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').get().then(settings => {
+    db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').get().then(settings => {
       if (!settings.exists) {
-        db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').set(
+        db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').set(
           {
             projectTypes: []
           }
@@ -128,7 +131,7 @@ export default {
       } else {
         this.$set(this.settings.projectTypes, this.currentElement, this.element)
       }
-      db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').update({
+      db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').update({
         projectTypes: this.settings.projectTypes
       })
       this.$snotify.success('The Type has been saved', 'Success')
@@ -143,7 +146,7 @@ export default {
     },
     submitDelete(id) {
       this.settings.projectTypes.splice(id, 1)
-      db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects').update(
+      db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects').update(
         {
           projectTypes: this.settings.projectTypes
         }
@@ -161,7 +164,7 @@ export default {
   },
   firestore() {
     return {
-      settings: db.collection('settings').doc(Drupal.settings.m6_platform_header.company_nid).collection('settings').doc('projects')
+      settings: db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('projects')
     }
   }
 }

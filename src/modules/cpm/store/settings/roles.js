@@ -18,12 +18,11 @@ const mutations = {
 }
 
 const actions = {
-  async checkUserRole({ commit }, { role }) {
+  async checkUserRole({ rootState }, { commit }, { role }) {
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
       const userId = dataGet(window, 'window.Drupal.settings.m6_platform.uid')
-      const companyId = dataGet(window, 'Drupal.settings.m6_platform.company_nid')
-
+      const companyId = rootState.Companies.currentCompany.id
       const { data = false } = await axios
         .get(`${constfirebaseUrl}/api/company/${companyId}/user/${userId}/role/${role}/`)
 

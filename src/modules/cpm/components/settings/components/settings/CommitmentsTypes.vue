@@ -121,12 +121,18 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
+import { mapState } from 'vuex'
 export default {
   props: {
     included: {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   data() {
     return {
@@ -157,14 +163,14 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('settings')
       .doc('commitments')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('settings')
             .doc('commitments')
             .set({
@@ -188,7 +194,7 @@ export default {
         this.$set(this.settings.types, this.currentElement, this.element)
       }
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('commitments')
         .update({
@@ -208,7 +214,7 @@ export default {
     submitDelete(id) {
       this.settings.types.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('commitments')
         .update({
@@ -234,7 +240,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('commitments')
     }

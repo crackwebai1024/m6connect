@@ -410,7 +410,7 @@ import { db } from '@/utils/Firebase'
 import { format } from 'date-fns'
 import CPMCreate from './modals/CPMCreate'
 import ListFiltering from './modals/ListFiltering'
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   components: {
     'cpm-create': CPMCreate,
@@ -514,7 +514,9 @@ export default {
     ...mapGetters({
       projects: 'cpmProjects'
     }),
-
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     getColor() {
       return key => this.settingsProject.projectColors
         ? this.settingsProject.projectColors.find(p => p.key == key).color
@@ -1247,13 +1249,13 @@ export default {
     return {
       projectAccess: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('users'),
 
       projectRoles: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('roles'),
 
@@ -1261,13 +1263,13 @@ export default {
 
       settingsProject: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('projects'),
 
       settingsUsers: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('users')
     }

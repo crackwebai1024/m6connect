@@ -286,7 +286,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import axios from 'axios'
 import * as easings from 'vuetify/es5/util/easing-patterns'
 import draggable from 'vuedraggable'
@@ -311,7 +311,7 @@ export default {
       easings: Object.keys(easings),
       CompanyTypes: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('company_types')
     }
@@ -322,6 +322,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   mounted() {
     this.CompanyTypes

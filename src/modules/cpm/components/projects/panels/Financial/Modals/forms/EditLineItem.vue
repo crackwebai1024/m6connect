@@ -131,6 +131,7 @@
 import { db } from '@/utils/Firebase'
 import { Money } from 'v-money'
 import BudgetCategorySelect from '../../../../_partials/BudgetCategorySelect'
+import { mapState } from 'vuex'
 
 export default {
   name: 'EditLineItem',
@@ -165,6 +166,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     searchBudgetCategoriesArray() {
       if (
         this.lineItem.costCodeText === undefined ||
@@ -268,7 +272,7 @@ export default {
 
     getFields() {
       db.collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('fields')
         .get()
@@ -323,7 +327,7 @@ export default {
 
       const budgetCategoryRef = db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform.company_nid)
+        .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('budgets')
         .collection('budget_categories')

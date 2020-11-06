@@ -115,6 +115,7 @@
 <script>
 import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
+import { mapState } from 'vuex'
 export default {
   components: {
     ComponentTemplate
@@ -124,6 +125,11 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   data() {
     return {
@@ -151,14 +157,14 @@ export default {
   },
   mounted() {
     db.collection('settings')
-      .doc(Drupal.settings.m6_platform_header.company_nid)
+      .doc(this.currentCompany.id)
       .collection('planned_settings')
       .doc('budgets')
       .get()
       .then(settings => {
         if (!settings.exists) {
           db.collection('settings')
-            .doc(Drupal.settings.m6_platform_header.company_nid)
+            .doc(this.currentCompany.id)
             .collection('planned_settings')
             .doc('budgets')
             .set({
@@ -182,7 +188,7 @@ export default {
         this.$set(this.settings.status, this.currentElement, this.element)
       }
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('budgets')
         .update({
@@ -202,7 +208,7 @@ export default {
     submitDelete(id) {
       this.settings.status.splice(id, 1)
       db.collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('budgets')
         .update({
@@ -225,7 +231,7 @@ export default {
     return {
       settings: db
         .collection('settings')
-        .doc(Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('planned_settings')
         .doc('budgets')
     }

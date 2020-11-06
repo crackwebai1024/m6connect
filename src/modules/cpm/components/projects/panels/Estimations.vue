@@ -166,6 +166,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { db } from '@/utils/Firebase'
 
 export default {
@@ -195,6 +196,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     dropdownOptions() {
       return [
         {
@@ -233,7 +237,7 @@ export default {
         .where(
           'company_nid',
           '==',
-          window.Drupal.settings.m6_platform_header.company_nid
+          this.currentCompany.id
         )
         .get()
         .then(querySnapshot => {

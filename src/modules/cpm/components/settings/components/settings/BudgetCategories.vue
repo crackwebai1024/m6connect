@@ -141,6 +141,7 @@
 import { db } from '@/utils/Firebase'
 import * as easings from 'vuetify/es5/util/easing-patterns'
 import draggable from 'vuedraggable'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -158,7 +159,7 @@ export default {
     return {
       budgetCategoriesRef: db
         .collection('settings')
-        .doc(window.Drupal.settings.m6_platform_header.company_nid)
+        .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets')
         .collection('budget_categories'),
@@ -195,6 +196,9 @@ export default {
   },
 
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     classOption: function () {
       const classes = []
       if (this.highLight) {
