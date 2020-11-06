@@ -30,7 +30,9 @@
     <infinite-loading
       infinite-scroll-disabled="busy"
       @infinite="infiniteHandler" :identifier="filteredNotifications">
+      <div slot="spinner"></div>
       <div slot="no-more"></div>
+      <div slot="no-results"></div>
     </infinite-loading>
     <div v-if="filteredNotifications.length === 0">No results found</div>
   </div>

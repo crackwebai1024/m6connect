@@ -33,10 +33,17 @@
       </template>
     </post-item>
     <post-item
-      v-for="(item, index) of timeline"
+      v-for="(item, index) of timeline.filter((e, i) => i < currentIndex)"
       :key="index"
       :data="item"
     />
+    <infinite-loading
+      infinite-scroll-disabled="busy"
+      @infinite="infiniteHandler" :identifier="timeline">
+      <div slot="spinner"></div>
+      <div slot="no-more"></div>
+      <div slot="no-results"></div>
+    </infinite-loading>
   </v-container>
 </template>
 
@@ -50,7 +57,8 @@ export default {
     PostItem
   },
   data: () => ({
-
+    busy: false,
+    currentIndex: 0
   }),
   computed: {
     ...mapGetters('SocialNetworkModule', ['get_filter_data']),
@@ -78,6 +86,18 @@ export default {
     ...mapActions(['set_user_data']),
     ...mapActions("GeneralListModule", { recordData:    "push_data_to_active"               }),
     ...mapActions("InfoModule",        { changeDrawer:  "change_preview_navigation_drawer"  }),
+    infiniteHandler($state) {
+      this.busy = true;
+      setTimeout(() => {
+        if(this.currentIndex < this.timeline.length){
+          this.currentIndex ++;
+          $state.loaded();
+        }else{
+          $state.complete();
+        }
+        this.busy = false;
+      }, 100);
+    },
     successCallback: () => {
       return true
     },
