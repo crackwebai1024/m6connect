@@ -66,6 +66,7 @@
           class="align-center d-flex"
         >
           <v-btn
+            icon
             class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
             elevation="0"
             light
@@ -81,7 +82,7 @@
             <panel-two-columns>
               <div
                 slot="leftPanel"
-                class="mb-3 panel px-4 py-3 white"
+                class="mb-3 panel px-4 py-3 white card-custom-shadow rounded"
               >
                 <h3 class="grey--text text--darken-3 spacing-tight font-weight-bold">Information</h3>
                 <div class="overflow-hidden">
@@ -110,9 +111,9 @@
 
               <div
                 slot="rightPanel"
-                class="mb-3 panel px-0"
+                class="mb-4 panel px-0"
               >
-                <project-social-media />
+                <project-social-media class="px-0"/>
               </div>
             </panel-two-columns>
           </template>

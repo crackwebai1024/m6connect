@@ -3,7 +3,7 @@
     class="h-full py-0"
   >
     <header-component
-      class="card-custom-shadow h-auto mb-3 rounded"
+      class="card-custom-shadow h-auto mb-4 rounded"
       hasslot
       :info="{title: 'Create Post', icon: ''}"
     >
