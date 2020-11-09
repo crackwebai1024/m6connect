@@ -23,16 +23,16 @@
                         <template v-slot:activator="{ on }">
                           <v-btn
                             :color="filtering ? 'amber' : 'primary'"
-                            dark
+                            light
                             v-on="on"
                           >
                             {{ $t('milestoneDashboard.filters') }} {{ counter ? '( ' + counter + ' )' : '' }}
 
                             <v-icon
-                              dark
+                              light
                               right
                             >
-                              filter_list
+                              mdi-filter-menu
                             </v-icon>
                           </v-btn>
                         </template>

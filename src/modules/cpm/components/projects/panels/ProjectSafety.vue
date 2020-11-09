@@ -9,7 +9,7 @@
               v-on="on"
               @click="searchTxt = ''"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
           <span>Clear Search</span>
@@ -18,10 +18,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="openModal"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 
@@ -63,23 +63,22 @@
 
         <td class="text-right">
           <v-icon
-            class="mr-1"
+            class="mr-1 pointer"
             color="#757575"
             size="20"
-            style="cursor: pointer"
             @click="openUpdateSpending(props.item)"
           >
-            edit
+            mdi-pencil
           </v-icon>
 
           <v-icon
+            class="pointer"
             color="#f44336"
-            flat
+            text
             size="20"
-            style="cursor: pointer"
             @click="openDeleteSpending(props.item)"
           >
-            delete
+            mdi-delete
           </v-icon>
         </td>
       </template>

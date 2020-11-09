@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -196,13 +196,12 @@
 
                 <td class="text-right">
                   <v-icon
-                    class="ml-0 mr-0"
+                    class="ml-0 mr-0 pointer"
                     color="#757575"
                     size="20"
-                    style="cursor: pointer"
                     @click.prevent="show(props.item)"
                   >
-                    remove_red_eye
+                    mdi-eye-off-outline
                   </v-icon>
                 </td>
               </template>
@@ -222,7 +221,7 @@
                     @click="pagination.rowsPerPage = -1"
                   >
                     <v-icon>
-                      keyboard_arrow_down
+                      mdi-arrow-down-bold-box
                     </v-icon>
                   </v-btn>
                   <v-btn
@@ -235,7 +234,7 @@
                     @click="pagination.rowsPerPage = 3"
                   >
                     <v-icon>
-                      keyboard_arrow_up
+                      mdi-arrow-up
                     </v-icon>
                   </v-btn>
                 </v-row>

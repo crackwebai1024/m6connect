@@ -56,7 +56,7 @@
                 icon
                 @click="openPolicy(standard)"
               >
-                <v-icon>folder</v-icon>
+                <v-icon>mdi-folder</v-icon>
               </v-btn>
             </v-col>
           </v-row>
@@ -115,18 +115,18 @@
                     slot-scope="{ item, open }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="item.file === 'image/jpeg' || item.file === 'image/png'"
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
                   <template
@@ -140,7 +140,7 @@
                           style="padding-top: 6px"
                           target="_blank"
                         >
-                          <v-icon small>open_in_new</v-icon>
+                          <v-icon small>mdi-folder-plus</v-icon>
                         </a>
                       </template>
                     </template>

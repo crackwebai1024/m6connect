@@ -34,7 +34,7 @@
                 class="directory-item"
                 color="blue"
               >
-                description
+                mdi-text-box-outline
               </v-icon>
               &nbsp; {{ e.name }}
             </v-btn>
@@ -81,7 +81,7 @@
                     :selected="selected"
                   >
                     <v-icon left>
-                      person
+                      mdi-account
                     </v-icon>
                     <span v-text="item.label" />
                   </v-chip>
@@ -134,7 +134,7 @@
                         v-on="on"
                       >
                         <v-icon left>
-                          event
+                          mdi-calendar-star
                         </v-icon>
                         {{ expireDate.formated }}
                       </v-btn>

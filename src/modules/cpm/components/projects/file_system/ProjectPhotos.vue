@@ -43,7 +43,7 @@
       @click="selectFile($h.dg(project, 'files.4.children.5'))"
     >
       <v-icon class="mr-1 pb-1">
-        cloud_upload
+        mdi-cloud-upload
       </v-icon>
     </v-btn>
     <v-col cols="12">
@@ -118,7 +118,7 @@
                         @click="updateImages"
                       >
                         <v-icon small>
-                          check
+                          mdi-check
                         </v-icon>
                       </v-btn>
                     </v-col>
@@ -136,7 +136,7 @@
                         @click="choosingFileToDelete(item)"
                       >
                         <v-icon small>
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-btn>
                       <v-chip
@@ -171,7 +171,7 @@
                         @click="editTags(item, index)"
                       >
                         <v-icon small>
-                          label
+                          mdi-label
                         </v-icon>
                       </v-btn>
                     </v-col>

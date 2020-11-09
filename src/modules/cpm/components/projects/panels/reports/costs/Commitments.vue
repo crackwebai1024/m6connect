@@ -70,8 +70,8 @@
               small
               @click="addLineItem(commitment.id, commitment.number, commitmentIndex)"
             >
-              <v-icon dark>
-                add
+              <v-icon light>
+                mdi-plus
               </v-icon>
             </v-btn>
 
@@ -109,8 +109,8 @@
               small
               @click="deleteCommitment(commitment.id, commitment.number, commitmentIndex)"
             >
-              <v-icon dark>
-                delete
+              <v-icon light>
+                mdi-delete
               </v-icon>
             </v-btn>
           </v-toolbar>
@@ -153,13 +153,13 @@
                       small
                       @click="setCommitment(commitment.id, props.item.id, props.index, commitmentIndex)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
                     <v-icon
                       small
                       @click="deleteLineItem(props.item, commitment.id, commitmentIndex, props.index)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </td>
                 </template>

@@ -406,7 +406,7 @@
                             style="cursor: pointer"
                             @click="openEditLineItem(props.item)"
                           >
-                            edit
+                            mdi-pencil
                           </v-icon>
 
                           <v-icon
@@ -416,7 +416,7 @@
                             style="cursor: pointer"
                             @click="deleteExpandedSpendingLineItem(props.item)"
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-col>
                       </td>

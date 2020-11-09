@@ -20,10 +20,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -31,11 +31,11 @@
       </v-tooltip>
 
       <v-icon
-        class="cursor"
-        dark
+        class="pointer"
+        light
         @click="showCreate = true"
       >
-        add
+        mdi-plus
       </v-icon>
 
       <v-tooltip left>
@@ -47,7 +47,7 @@
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>Settings</span>

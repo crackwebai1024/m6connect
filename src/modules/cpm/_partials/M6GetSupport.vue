@@ -70,7 +70,7 @@
                   small
                   @click="pickFile"
                 >
-                  <v-icon>cloud_upload</v-icon>
+                  <v-icon>mdi-cloud-upload</v-icon>
                 </v-btn>
                 <br>
                 <template v-if="screenshotTemp">
@@ -89,7 +89,7 @@
                     dark
                     @input="deleteFile(f)"
                   >
-                    <v-icon>file_copy</v-icon>
+                    <v-icon>mdi-content-copy</v-icon>
                     <span>{{ f.name }}</span>
                   </v-chip>
                 </template>
@@ -105,7 +105,7 @@
                     small
                     @click="takeScreenshot"
                   >
-                    <v-icon>camera_alt</v-icon>
+                    <v-icon>mdi-camera</v-icon>
                   </v-btn>
                 </template>
                 <template v-else>
@@ -118,7 +118,7 @@
                     small
                     @click="screenshotTemp = ''"
                   >
-                    <v-icon>remove_circle</v-icon>
+                    <v-icon>mdi-minus-circle</v-icon>
                   </v-btn>
                 </template>
               </v-col>

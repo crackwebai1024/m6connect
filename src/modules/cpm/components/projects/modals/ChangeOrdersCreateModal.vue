@@ -15,11 +15,11 @@
             <v-col cols="12">
               <v-icon
                 class="icon-close"
-                dark
+                light
                 large
                 @click="cancel"
               >
-                close
+                mdi-close
               </v-icon>
             </v-col>
           </v-row>

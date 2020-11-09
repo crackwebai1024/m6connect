@@ -132,7 +132,7 @@
                   size="20"
                   @click="openEditNote(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -141,7 +141,7 @@
                   size="20"
                   @click="openDeleteNote(props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </tr>

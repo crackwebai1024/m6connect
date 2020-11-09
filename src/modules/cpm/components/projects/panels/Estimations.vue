@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -25,10 +25,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="openModal"
       >
-        edit
+        mdi-pencil
       </v-icon>
     </template>
 
@@ -55,7 +55,7 @@
                 v-else
                 size="36"
               >
-                photo
+                mdi-image
               </v-icon>
             </v-avatar>
           </router-link>

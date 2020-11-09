@@ -33,7 +33,7 @@
                 v-else
                 size="100"
               >
-                photo
+                mdi-image
               </v-icon>
             </v-avatar>
           </div>

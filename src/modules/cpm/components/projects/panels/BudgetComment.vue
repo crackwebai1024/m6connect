@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -25,10 +25,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="createModal = true"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 
@@ -79,21 +79,21 @@
           <v-icon
             class="ml-0 mr-1"
             color="#757575"
-            flat
+            text
             size="20"
             @click="pickingBudgetComment(budget)"
           >
-            edit
+            mdi-pencil
           </v-icon>
 
           <v-icon
             class="ml-0 mr-0"
             color="#f44336"
-            flat
+            text
             size="20"
             @click="deletingComment(budget)"
           >
-            delete
+            mdi-delete
           </v-icon>
         </td>
       </v-row>

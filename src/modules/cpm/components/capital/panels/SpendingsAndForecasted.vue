@@ -257,7 +257,7 @@
                             small
                             @click="openDialogForecast(period, props.item)"
                           >
-                            <v-icon>edit</v-icon>
+                            <v-icon>mdi-pencil</v-icon>
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -334,7 +334,7 @@
                             small
                             @click="openDialogForecast(period, props.item)"
                           >
-                            <v-icon>edit</v-icon>
+                            <v-icon>mdi-pencil</v-icon>
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -380,7 +380,7 @@
                       small
                       @click="openDialogFiscalYear(fiscalYear, props.item)"
                     >
-                      <v-icon>edit</v-icon>
+                      <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>

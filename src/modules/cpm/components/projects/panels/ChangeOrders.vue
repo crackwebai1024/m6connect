@@ -3,10 +3,10 @@
     <template v-slot:after:title>
       <v-icon
         class="cursor"
-        dark
+        light
         @click="showCreate = true"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 

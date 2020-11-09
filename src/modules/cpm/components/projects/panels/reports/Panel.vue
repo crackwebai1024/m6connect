@@ -358,7 +358,7 @@
               @click="showSectionOptions = !showSectionOptions"
             >
               <v-icon small>
-                edit
+                mdi-pencil
               </v-icon>
             </v-btn>
           </v-col>

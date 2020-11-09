@@ -12,13 +12,13 @@
         <v-col class="shrink">
           <v-btn
             color="#0277BD"
-            dark
+            light
             fab
             small
             @click="showCreateModal = true"
           >
-            <v-icon dark>
-              add
+            <v-icon light>
+              mdi-plus
             </v-icon>
           </v-btn>
         </v-col>
@@ -93,7 +93,7 @@
                   v-on="on"
                   @click="deleteProject(proj)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </template>
               <span>Delete Project</span>
@@ -114,7 +114,7 @@
                     small
                     v-on="on"
                   >
-                    <v-icon>open_in_new</v-icon>
+                    <v-icon>mdi-folder-plus</v-icon>
                   </v-btn>
                 </a>
               </template>
@@ -140,7 +140,7 @@
                       v-else
                       size="100"
                     >
-                      photo
+                      mdi-image
                     </v-icon>
                   </v-avatar>
                 </v-badge>
@@ -249,7 +249,7 @@
                     v-else
                     dark
                   >
-                    wallpaper
+                    mdi-wallpaper
                   </v-icon>
                 </v-avatar>
               </td>
@@ -324,7 +324,7 @@
                       v-on="on"
                       @click="goToProject(props.item, false)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
                   </template>
                   <span>Edit</span>
@@ -339,7 +339,7 @@
                       v-on="on"
                       @click="deleteProject(props.item)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </template>
                   <span>Delete</span>
