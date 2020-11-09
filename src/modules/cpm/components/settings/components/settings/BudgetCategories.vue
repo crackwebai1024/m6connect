@@ -139,7 +139,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
@@ -179,7 +179,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       headers: [
         {
           text: 'Name',

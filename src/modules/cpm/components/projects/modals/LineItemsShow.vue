@@ -8,22 +8,15 @@
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">
         <v-row
-          align="center"
           justify="space-between"
         >
-          <v-col class="shrink">
+          <v-col>
             Line Items
           </v-col>
-          <v-col class="shrink">
-            <v-chip
-              class="text-center"
-              color="blue darken-4"
-              dark
-            >
-              PO Number: {{ commitment.number }}
-            </v-chip>
+          <v-col class="text-center">
+            PO Number: {{ commitment.number }}
           </v-col>
-          <v-col class="shrink">
+          <v-col class="text-right">
             <v-tooltip left>
               <template v-slot:activator="{ on }">
                 <v-btn
@@ -35,7 +28,7 @@
                   @click="createNewLineItem"
                 >
                   <v-icon color="indigo">
-                    add
+                    mdi-plus
                   </v-icon>
                 </v-btn>
               </template>
@@ -53,57 +46,58 @@
                 v-if="commitment.line_items"
                 :headers="headers"
                 :items="commitment.line_items"
-                :rows-per-page-items="[4]"
               >
                 <template
-                  slot="items"
+                  slot="item"
                   slot-scope="props"
                 >
-                  <td>
-                    {{ $h.dg(props.item, 'vendor.title', 'No Company') }}
-                  </td>
+                  <tr>
+                    <td>
+                      {{ $h.dg(props.item, 'vendor.title', 'No Company') }}
+                    </td>
 
-                  <td>{{ $h.dg(props.item, 'title', 'No Title') }}</td>
+                    <td>{{ $h.dg(props.item, 'title', 'No Title') }}</td>
 
-                  <td>
-                    <span class="go-right">
-                      {{ props.item.amount | currency }}
-                    </span>
-                  </td>
+                    <td>
+                      <span class="go-right">
+                        {{ props.item.amount | currency }}
+                      </span>
+                    </td>
 
-                  <td>
-                    <span>
-                      {{
-                        props.item.startDate
-                          ? getFormatedDate(props.item.startDate)
-                          : 'NN/NN/NNNN'
-                      }}
-                    </span>
-                  </td>
+                    <td>
+                      <span>
+                        {{
+                          props.item.startDate
+                            ? getFormatedDate(props.item.startDate)
+                            : 'NN/NN/NNNN'
+                        }}
+                      </span>
+                    </td>
 
-                  <td class="justify-center layout pr-0 pt-2">
-                    <v-col>
-                      <v-icon
-                        class="mr-2"
-                        color="#757575"
-                        size="20"
-                        style="cursor: pointer"
-                        @click="editLineItems(props.item.id)"
-                      >
-                        edit
-                      </v-icon>
+                    <td class="justify-center layout pr-0 pt-2">
+                      <v-col>
+                        <v-icon
+                          class="mr-2"
+                          color="#757575"
+                          size="20"
+                          style="cursor: pointer"
+                          @click="editLineItems(props.item.id)"
+                        >
+                          mdi-pencil
+                        </v-icon>
 
-                      <v-icon
-                        class="ml-0 mr-0"
-                        color="#f44336"
-                        size="20"
-                        style="cursor: pointer;"
-                        @click="deleteLineItem(props.item, props.index)"
-                      >
-                        delete
-                      </v-icon>
-                    </v-col>
-                  </td>
+                        <v-icon
+                          class="ml-0 mr-0"
+                          color="#f44336"
+                          size="20"
+                          style="cursor: pointer;"
+                          @click="deleteLineItem(props.item, props.index)"
+                        >
+                          mdi-delete
+                        </v-icon>
+                      </v-col>
+                    </td>
+                  </tr>
                 </template>
               </v-data-table>
             </v-card>
@@ -114,7 +108,6 @@
         <v-spacer />
         <v-btn
           flat
-          text
           @click="$emit('close')"
         >
           close
@@ -282,14 +275,12 @@ export default {
   right: 0;
   height: 28px !important;
   color: #04d81a;
-}
 
+}
 .contact-edit-modal {
   .v-card__title {
     padding: 10px;
-    background: #0277bd;
-    color: #fff;
-
+    border-bottom:1px solid #eee;
     h3 {
       font-weight: 100;
     }

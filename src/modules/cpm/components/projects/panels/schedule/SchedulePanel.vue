@@ -162,7 +162,7 @@ export default {
   data() {
     const projectId = this.pid ? this.pid : this.$route.params.id
     return {
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       showSettings: false,
       projectId: projectId,
       showTicket: false,

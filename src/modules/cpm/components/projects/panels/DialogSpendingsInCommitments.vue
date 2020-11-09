@@ -15,7 +15,6 @@
         <v-container
           class="pa-0"
           fluid
-          grid-list-md
         >
           <v-row>
             <v-col md="12">
@@ -24,41 +23,43 @@
                 :items="spendings"
               >
                 <template
-                  slot="items"
+                  slot="item"
                   slot-scope="props"
                 >
-                  <td>{{ props.item.number }}</td>
-                  <td>{{ props.item.amount | currency }}</td>
-                  <td class="text-right">
-                    <v-icon
-                      class="mr-2"
-                      color="#757575"
-                      size="20"
-                      @click="showSpendingLineItem(props.item)"
-                    >
-                      assignment
-                    </v-icon>
+                  <tr>
+                    <td>{{ props.item.number }}</td>
+                    <td>{{ props.item.amount | currency }}</td>
+                    <td class="text-right">
+                      <v-icon
+                        class="mr-2"
+                        color="#757575"
+                        size="20"
+                        @click="showSpendingLineItem(props.item)"
+                      >
+                        mdi-clipboard-account-outline
+                      </v-icon>
 
-                    <v-icon
-                      class="ml-0 mr-0"
-                      color="#757575"
-                      size="20"
-                      style="cursor: pointer"
-                      @click="editSpending(props.item)"
-                    >
-                      edit
-                    </v-icon>
+                      <v-icon
+                        class="ml-0 mr-0"
+                        color="#757575"
+                        size="20"
+                        style="cursor: pointer"
+                        @click="editSpending(props.item)"
+                      >
+                        mdi-pencil
+                      </v-icon>
 
-                    <v-icon
-                      class="ml-0 mr-0"
-                      color="red"
-                      size="20"
-                      style="cursor: pointer"
-                      @click="deleteSpending(props.item)"
-                    >
-                      delete
-                    </v-icon>
-                  </td>
+                      <v-icon
+                        class="ml-0 mr-0"
+                        color="red"
+                        size="20"
+                        style="cursor: pointer"
+                        @click="deleteSpending(props.item)"
+                      >
+                        mdi-delete
+                      </v-icon>
+                    </td>
+                  </tr>
                 </template>
               </v-data-table>
             </v-col>
@@ -69,7 +70,7 @@
         <v-spacer />
         <v-btn
           color="primary"
-          flat
+          text
           @click="closeModalSpendings"
         >
           Close

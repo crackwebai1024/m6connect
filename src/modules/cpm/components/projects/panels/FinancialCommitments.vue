@@ -14,8 +14,8 @@
         <template v-slot:activator="{ on }">
           <!-- THIS CHANGE WAS BECAUSE THE SPENDINGS DIALOG WAS NOT WORKING IN ANOTHER TAB FULLSCREEN -->
           <v-icon
-            light
             flat
+            light
             @click="cardDialogClick"
           >
             mdi-launch
@@ -54,7 +54,7 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="search grey--text text--darken-2"
+            class="grey--text search text--darken-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
@@ -80,7 +80,7 @@
       </template>
 
       <v-icon
-        class="cursor grey--text text--darken-2 ml-2"
+        class="cursor grey--text ml-2 text--darken-2"
         light
         @click="createShowModal = true"
       >
@@ -91,7 +91,7 @@
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor grey--text text--darken-2 ml-2"
+            class="cursor grey--text ml-2 text--darken-2"
             color="white"
             v-on="on"
             @click="showSettings = true"
@@ -134,7 +134,7 @@
       @update:pagination="debounceSearch(search, false)"
     >
       <template
-        slot="items"
+        slot="item"
         slot-scope="props"
       >
         <tr
@@ -615,24 +615,24 @@ export default {
     dropdownOptions() {
       return [
         {
-          icon: 'assignment',
+          icon: 'mdi-clipboard-account-outline',
           title: this.$t('general.seeTheResource', {
             resource: this.$tc('cpm.projects.lineItem', 2)
           }),
           event: 'see'
         },
         {
-          icon: 'edit',
+          icon: 'mdi-pencil',
           title: this.$t('general.edit'),
           event: 'edit'
         },
         {
-          icon: 'attach_money',
+          icon: 'mdi-cash',
           title: this.$t('general.showSpendings'),
           event: 'attach'
         },
         {
-          icon: 'delete',
+          icon: 'mdi-delete',
           title: this.$t('general.delete'),
           event: 'delete'
         }

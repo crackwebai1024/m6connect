@@ -237,7 +237,7 @@ export default {
 
   data() {
     return {
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       showSettings: false,
       submitLoading: false,
       company_nid: this.currentCompany.id,

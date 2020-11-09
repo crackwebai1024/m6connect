@@ -659,9 +659,14 @@ import 'dhtmlx-gantt'
 import axios from 'axios'
 import firebase from 'firebase/app'
 import { db } from '@/utils/Firebase'
-import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+import {
+  mapState,
+  mapActions,
+  mapGetters,
+  mapMutations
+} from 'vuex'
 import ModalCritical from './ModalCritical'
-import BudgetCategorySelect from '@/components/cpm/projects/_partials/BudgetCategorySelect'
+import BudgetCategorySelect from '@/modules/cpm/components/projects/_partials/BudgetCategorySelect'
 export default {
   name: 'Task',
   components: {

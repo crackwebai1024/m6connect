@@ -11,10 +11,10 @@ Vue.filter('formatPhoneNumber', function (phoneNumberString) {
   }
   return phoneNumberString
 })
-Vue.filter('normalizeDate', (date, formatType = 'YYYY-MM-DD') =>
+Vue.filter('normalizeDate', (date, formatType = 'yyyy-MM-dd') =>
   format(date, formatType)
 )
-Vue.filter('monthDayYear', (date, formatType = 'MM/DD/YYYY') =>
+Vue.filter('monthDayYear', (date, formatType = 'MM/dd/yyyy') =>
   format(date, formatType)
 )
 Vue.filter('phone', (phone = '') =>

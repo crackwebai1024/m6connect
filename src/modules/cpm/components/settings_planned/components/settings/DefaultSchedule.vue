@@ -438,12 +438,12 @@
 <script>
 import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import { Chrome } from 'vue-color'
 import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 
-import BudgetCategorySelect from '@/components/cpm/projects/_partials/BudgetCategorySelect'
+import BudgetCategorySelect from '@/modules/cpm/components/projects/_partials/BudgetCategorySelect'
 
 export default {
   name: 'DefaultSchedule',
@@ -477,7 +477,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       ganttsSettings: [],
       showColor: false,
       headers: [

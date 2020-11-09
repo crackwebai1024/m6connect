@@ -11,7 +11,7 @@
       <v-icon
         class="grey--text text--darken-2"
         light
-        flat
+        text
         @click="cardDialogClick"
       >
         mdi-launch
@@ -52,7 +52,7 @@
         <template v-slot:activator="{ on }">
           <div class="blob white">
             <v-icon
-              class="search grey--text text--darken-2"
+              class="grey--text search text--darken-2"
               dark
               v-on="on"
               @click="showSearchingModal = true"
@@ -123,7 +123,10 @@
       :server-items-length="pagination.totalItems"
       @update:pagination="debounceSearch(search, false)"
     >
-      <template v-slot:items="props">
+      <template
+        slot="item"
+        slot-scope="props"
+      >
         <tr @click="fetchLineItems(props)">
           <td>
             <v-row v-if="$h.dg(props.item, 'budget_category.code')">
@@ -195,7 +198,7 @@
               :items="expandedSpending.lineItems || []"
             >
               <template
-                slot="items"
+                slot="item"
                 slot-scope="props"
               >
                 <td class="text-center">
@@ -252,12 +255,12 @@
 
     <!-- Spending dialog -->
     <v-dialog
+      v-if="dialogSpending"
       v-model="dialogSpending"
       max-width="80%"
       persistent
       scrollable
     >
-      <!--"800px"-->
       <v-card
         v-show="method === 'add' || method === 'put'"
         :style="{ width: method === 'add' ? '80vw' : '40vw' }"
@@ -412,14 +415,14 @@
                       <v-spacer />
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="dialogSpendingDateOpenedText = false"
                       >
                         Cancel
                       </v-btn>
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="
                           $refs.dialogSpendingDateOpenedText.save(
                             formatDate(openDate)
@@ -480,14 +483,14 @@
                       <v-spacer />
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="dialogSpendingPaidDateText = false"
                       >
                         Cancel
                       </v-btn>
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="
                           $refs.dialogSpendingPaidDateText.save(
                             formatDate(paidDate)
@@ -702,11 +705,10 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            v-if="method === 'add'"
             color="gray"
             :disabled="loading"
-            flat
             :loading="loading"
+            text
             @click="closeModal"
           >
             Close
@@ -714,19 +716,14 @@
           <v-btn
             color="primary"
             :disabled="loading"
-            flat
             :loading="loading"
+            text
             @click="saveSpending"
           >
             Save
           </v-btn>
         </v-card-actions>
       </v-card>
-
-      <portal-target
-        v-if="method !== 'add'"
-        name="new-destination"
-      />
     </v-dialog>
 
     <!-- End spending dialog -->
@@ -889,14 +886,14 @@
                       <v-spacer />
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="dialogLineItemDateText = false"
                       >
                         Cancel
                       </v-btn>
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="
                           $refs.dialogLineItemDateText.save(formatDate(date))
                         "
@@ -941,14 +938,14 @@
                       <v-spacer />
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="dialogLineItemPaidDateText = false"
                       >
                         Cancel
                       </v-btn>
                       <v-btn
                         color="primary"
-                        flat
+                        text
                         @click="
                           $refs.dialogLineItemPaidDateText.save(
                             formatDate(paidDate)
@@ -1115,8 +1112,8 @@
           <v-btn
             color="gray"
             :disabled="loading"
-            flat
             :loading="loading"
+            text
             @click="closeDialogLineSpending"
           >
             Close
@@ -1124,8 +1121,8 @@
           <v-btn
             color="primary"
             :disabled="loading"
-            flat
             :loading="loading"
+            text
             @click="saveLineItemSpending"
           >
             <template v-if="methodLineItem === 'add'">
@@ -1139,6 +1136,7 @@
       </v-card>
     </v-dialog>
     <!-- End line item dialog -->
+
     <!-- show line items modal -->
     <v-dialog
       v-model="showLineItemsModal"
@@ -1147,66 +1145,64 @@
       scrollable
       transition="dialog-transition"
     >
-      <portal to="new-destination">
-        <v-card
-          class="ml-2"
-          max-width="40vw"
+      <v-card
+        class="ml-2"
+      >
+        <v-card-title
+          class="darken-3 headline light-blue pb-2"
+          style="color: white;"
         >
-          <v-card-title
-            class="darken-3 headline light-blue pb-2"
-            style="color: white;"
+          {{ $tc('cpm.projects.lineItem', 1) }}
+
+          <v-chip
+            class="headling pa-1 text-center"
+            color="blue darken-4"
+            dark
+            style="position: absolute; left: 43%;"
           >
-            {{ $tc('cpm.projects.lineItem', 1) }}
+            {{ $tc('general.invoice', 1) }}#:
 
-            <v-chip
-              class="headling pa-1 text-center"
-              color="blue darken-4"
-              dark
-              style="position: absolute; left: 43%;"
-            >
-              {{ $tc('general.invoice', 1) }}#:
+            {{ spendingToShow.number }}
+          </v-chip>
 
-              {{ spendingToShow.number }}
-            </v-chip>
-
-            <v-spacer />
-            <v-btn
-              class="mt-1"
-              color="white"
-              dark
-              fab
-              small
-              @click.native.stop="openLineItems"
-            >
-              <v-icon color="green lighten-2">
-                add
-              </v-icon>
-            </v-btn>
-          </v-card-title>
-          <v-card-text
-            :style="{
-              height: getViewPortHeight,
-              height: method === 'add' ? '78vh' : '70vh',
-              overflow: 'auto'
-            }"
+          <v-spacer />
+          <v-btn
+            class="mt-1"
+            color="white"
+            dark
+            fab
+            small
+            @click.native.stop="openLineItems"
           >
-            <!-- add card and v-card action btns -->
-            <v-container
-              class="pa-0"
-              fluid
-              grid-list-md
-            >
-              <v-row>
-                <v-col md="12">
-                  <v-data-table
-                    :headers="headersLineItems"
-                    hide-actions
-                    :items="spendingToShow.lineItems"
+            <v-icon color="green lighten-2">
+              add
+            </v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-card-text
+          :style="{
+            height: getViewPortHeight,
+            height: method === 'add' ? '78vh' : '70vh',
+            overflow: 'auto'
+          }"
+        >
+          <!-- add card and v-card action btns -->
+          <v-container
+            class="pa-0"
+            fluid
+          >
+            <v-row>
+              <v-col md="12">
+                <v-data-table
+                  :headers="headersLineItems"
+                  hide-actions
+                  :items="spendingToShow.lineItems"
+                >
+                  <template
+                    slot="item"
+                    slot-scope="props"
                   >
-                    <template
-                      slot="item"
-                      slot-scope="props"
-                    >
+                    <tr>
                       <td class="text-center">
                         {{ props.item.number }}
                       </td>
@@ -1238,7 +1234,7 @@
                             style="cursor: pointer"
                             @click="openEditLineItem(props.item)"
                           >
-                            edit
+                            mdi-pencil
                           </v-icon>
 
                           <v-icon
@@ -1248,29 +1244,29 @@
                             style="cursor: pointer"
                             @click="deleteLineItem(props.item)"
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-col>
                       </td>
-                    </template>
-                  </v-data-table>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-text>
+                    </tr>
+                  </template>
+                </v-data-table>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
 
-          <v-card-actions v-if="method !== 'add'">
-            <v-spacer />
+        <v-card-actions>
+          <v-spacer />
 
-            <v-btn
-              flat
-              @click="closeModal"
-            >
-              close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </portal>
+          <v-btn
+            text
+            @click="showLineItemsModal = false"
+          >
+            close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
     <!-- show line items modal -->
 
@@ -1388,7 +1384,7 @@ export default {
         }
       },
       commitments: [],
-      autoInit: false,
+      autoInit: true,
       dialogSpendingPaidDateText: false,
       dialogSpendingDateOpenedText: false,
       viewPortHeight:
@@ -1651,20 +1647,20 @@ export default {
     },
     dropdownOptions() {
       return [
-        // {
-        //   icon: 'assignment',
-        //   title: this.$t('general.seeTheResource', {
-        //     resource: this.$tc('cpm.projects.lineItem', 2)
-        //   }),
-        //   event: 'see'
-        // },
         {
-          icon: 'edit',
+          icon: 'mdi-clipboard-account-outline',
+          title: this.$t('general.seeTheResource', {
+            resource: this.$tc('cpm.projects.lineItem', 2)
+          }),
+          event: 'see'
+        },
+        {
+          icon: 'mdi-pencil',
           title: this.$t('general.edit'),
           event: 'edit'
         },
         {
-          icon: 'delete',
+          icon: 'mdi-delete',
           title: this.$t('general.delete'),
           event: 'delete'
         }
@@ -1735,8 +1731,9 @@ export default {
       this.fetchResources()
     })
     EventBus.$on(
-      'show-spending-lineitems-from-commitment',
-      this.showSpendingLineItemsFromCommitment
+      'show-spending-lineitems-from-commitment', payload => {
+        this.showLineItems(payload.spending)
+      }
     )
 
     axios.post(
@@ -2159,7 +2156,9 @@ export default {
     },
 
     resetFormLineSpending() {
-      this.$refs.formLineItem.reset()
+      if (this.$refs.formLineItem) {
+        this.$refs.formLineItem.reset()
+      }
       this.validLineItem = true
     },
 
@@ -2273,7 +2272,9 @@ export default {
 
     // Spendings
     resetForm() {
-      this.$refs.form.reset()
+      if (this.$refs.form) {
+        this.$refs.form.reset()
+      }
       this.valid = true
     },
 

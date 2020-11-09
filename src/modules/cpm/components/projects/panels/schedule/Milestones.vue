@@ -281,7 +281,7 @@ import EventBus from '@/Eventbus'
 import Milestone from './Milestone'
 import {
   skipIterationForItems
-} from '@/components/cpm/helpers/HelpersFunction'
+} from '@/modules/cpm/components/helpers/HelpersFunction'
 import settingsModal from '../../settings_modals/Milestones.vue'
 import plannedSettingsModal from '../../settings_modals/planned/Milestones.vue'
 
@@ -318,7 +318,7 @@ export default {
     return {
       comment: '',
       showSettings: false,
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       milestoneToDelete: {},
       milestoneHeaders: [
         { text: 'Date', value: 'date', sortable: false },

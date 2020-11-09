@@ -7,18 +7,16 @@
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">
-        <v-row
+        <template
           v-if="isCreate"
-          align="center"
         >
           Create Commitment Information
-        </v-row>
-        <v-row
+        </template>
+        <template
           v-else
-          align="center"
         >
           Edit Commitment Information
-        </v-row>
+        </template>
       </v-card-title>
 
       <v-card-text :style="{ height: getViewPortHeight }">
@@ -40,7 +38,6 @@
               <v-col cols="7">
                 <v-text-field
                   v-model="commitment.number"
-                  color="blue"
                 />
               </v-col>
             </v-row>
@@ -182,7 +179,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="commitment.completionDateText"
-                      append-icon="calendar_today"
+                      append-icon="mdi-calendar"
                       color="blue"
                       mask="date"
                       v-on="on"
@@ -239,7 +236,7 @@
                         @click.native.stop="selectFile"
                       >
                         <v-icon small>
-                          add
+                          mdi-plus
                         </v-icon>
                       </v-btn>
                       <input
@@ -324,7 +321,6 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
           text
           @click="$emit('close-only')"
         >
@@ -333,7 +329,6 @@
 
         <v-btn
           v-if="isCreate"
-          flat
           text
           @click="save('create')"
         >
@@ -342,7 +337,6 @@
 
         <v-btn
           v-if="!isCreate"
-          flat
           text
           @click="save('udpate')"
         >
@@ -965,9 +959,7 @@ export default {
 .contact-edit-modal {
   .v-card__title {
     padding: 10px;
-    background: #0277bd;
-    color: #fff;
-
+    border-bottom:1px solid #eee;
     h3 {
       font-weight: 100;
     }

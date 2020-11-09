@@ -163,7 +163,7 @@ export default {
   data() {
     return {
       showSettings: false,
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
       project: {},
       showForm: false,

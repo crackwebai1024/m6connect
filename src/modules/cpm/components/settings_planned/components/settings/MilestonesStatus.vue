@@ -113,7 +113,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import ComponentTemplate from '../ComponentTemplate'
 export default {
   components: {

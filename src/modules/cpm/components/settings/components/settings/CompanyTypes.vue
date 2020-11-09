@@ -288,7 +288,7 @@
 import { db } from '@/utils/Firebase.js'
 import { mapState, mapGetters } from 'vuex'
 import axios from 'axios'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import draggable from 'vuedraggable'
 
 export default {
@@ -308,7 +308,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       CompanyTypes: db
         .collection('settings')
         .doc(this.currentCompany.id)

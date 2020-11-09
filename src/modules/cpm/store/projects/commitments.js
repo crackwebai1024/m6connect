@@ -1,10 +1,10 @@
 import { db } from '@/utils/Firebase'
 import axios from 'axios'
 
-const elkConfig = {
-  url: window.Drupal.settings.m6_platform.elastic.url,
-  key: window.Drupal.settings.m6_platform.elastic.key
-}
+// const elkConfig = {
+//   url: window.Drupal.settings.m6_platform.elastic.url,
+//   key: window.Drupal.settings.m6_platform.elastic.key
+// }
 const state = {
 }
 
@@ -34,11 +34,11 @@ const actions = {
             target: 'commitments'
           }
 
-          await axios.post(elkConfig.url, post, {
-            headers: {
-              'x-api-key': elkConfig.key
-            }
-          })
+          // await axios.post(elkConfig.url, post, {
+          //   headers: {
+          //     'x-api-key': elkConfig.key
+          //   }
+          // })
           resolve(doc)
         })
         .catch(reject)
@@ -65,11 +65,11 @@ const actions = {
             target: 'commitments'
           }
 
-          await axios.post(elkConfig.url, post, {
-            headers: {
-              'x-api-key': elkConfig.key
-            }
-          })
+          // await axios.post(elkConfig.url, post, {
+          //   headers: {
+          //     'x-api-key': elkConfig.key
+          //   }
+          // })
           resolve(doc)
         })
         .catch(reject)
@@ -89,11 +89,11 @@ const actions = {
         action: 'delete',
         target: 'commitments'
       }
-      await axios.post(elkConfig.url, post, {
-        headers: {
-          'x-api-key': elkConfig.key
-        }
-      })
+      // await axios.post(elkConfig.url, post, {
+      //   headers: {
+      //     'x-api-key': elkConfig.key
+      //   }
+      // })
 
       db.collection('cpm_projects')
         .doc(projectId)

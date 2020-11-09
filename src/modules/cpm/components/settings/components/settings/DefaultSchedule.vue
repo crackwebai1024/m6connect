@@ -464,7 +464,7 @@
 
 <script>
 import { db } from '@/utils/Firebase.js'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import { Chrome } from 'vue-color'
 import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
@@ -503,7 +503,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       generalSettings: {},
       showColor: false,
       headers: [

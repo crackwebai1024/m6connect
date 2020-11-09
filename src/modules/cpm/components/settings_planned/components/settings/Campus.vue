@@ -442,7 +442,7 @@
 <script>
 import { db, storage } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import { mapState } from 'vuex'
 
 export default {
@@ -471,7 +471,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       latitude: '',
       longitude: '',
       address: '',

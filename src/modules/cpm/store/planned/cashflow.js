@@ -175,7 +175,7 @@ const actions = {
     })
   },
 
-  async getProjectsTasksAndLinks({ rootState } { commit }, { projectIds = [] } = {}) {
+  async getProjectsTasksAndLinks({ rootState, commit }, { projectIds = [] } = {}) {
     try {
       const constfirebaseUrl = process.env.VUE_APP_FIREBASE_APIURL
 
