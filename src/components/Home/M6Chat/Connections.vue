@@ -207,6 +207,12 @@ export default {
         }
       })
     })
+    this.client.on('channel.deleted', r => {
+      this.department.channels.splice(this.department.channels.indexOf(
+        this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+      ), 1)
+      this.$store.dispatch('GSChat/deleteChat', r.channel_id);
+    });
     this.client.on('member.removed', r => {
       if (this.user.id === r.user.id) {
         this.department.channels.splice(this.department.channels.indexOf(
