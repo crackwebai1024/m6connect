@@ -317,7 +317,7 @@
                                 v-on="on"
                                 @click="addSpending(props)"
                               >
-                                add
+                                mdi-plus-circle
                               </v-icon>
                             </template>
                             <span>Add Invoice</span>
