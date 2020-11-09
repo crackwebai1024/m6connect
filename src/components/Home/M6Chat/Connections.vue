@@ -99,7 +99,7 @@
             <v-badge
               :content="unread_count[ind]['unread']"
               inline
-              :value="unread_count[ind]['unread']"
+              :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
               <p class="font-weight-bold mb-0">
                 {{ channel.data.name }}
@@ -113,7 +113,7 @@
             <v-badge
               :content="unread_count[ind]['unread']"
               inline
-              :value="unread_count[ind]['unread']"
+                :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
               <p class="font-weight-bold mb-0">
                 {{ channel.membersInChannel.user.name }}

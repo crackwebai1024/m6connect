@@ -460,31 +460,9 @@
     <v-dialog
       v-model="deleteDiaLog"
       persistent
-      max-width="290"
+      max-width="350"
     >
-      <v-card>
-        <v-card-title class="headline">
-          Are you sure?
-        </v-card-title>
-        <v-card-text>Do you want to remove '{{ data.message }}'? </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="deleteDiaLog = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="deletePost(data)"
-          >
-            Agree
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <delete-dialog :element="`post: '${data.message}'`" @closeDeleteModal="$event ? deletePost(data) : deleteDiaLog = false" />
     </v-dialog>
   </v-container>
 </template>
@@ -493,10 +471,12 @@
 import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
   name: 'PostItem',
   components: {
+    DeleteDialog,
     PostComments,
     VEmojiPicker
   },
