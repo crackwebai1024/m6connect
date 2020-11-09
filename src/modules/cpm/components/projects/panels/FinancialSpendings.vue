@@ -257,21 +257,21 @@
     <v-dialog
       v-if="dialogSpending"
       v-model="dialogSpending"
-      max-width="80%"
+      max-width="1200"
       persistent
-      scrollable
     >
       <v-card
         v-show="method === 'add' || method === 'put'"
         :style="{ width: method === 'add' ? '80vw' : '40vw' }"
       >
         <v-card-title
-          class="darken-3 headline light-blue"
+          class="headline white grey--text text--darken-1"
           primary-title
           style="color: white;"
         >
           {{ $t('cpm.projects.spending') }}
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
         <v-card-text class="card-scroll">
           <v-form
@@ -705,6 +705,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
+            elevation="1"
             color="gray"
             :disabled="loading"
             :loading="loading"
@@ -714,6 +715,7 @@
             Close
           </v-btn>
           <v-btn
+            elevation="1"
             color="primary"
             :disabled="loading"
             :loading="loading"

@@ -31,7 +31,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
