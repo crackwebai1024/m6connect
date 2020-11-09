@@ -3,7 +3,6 @@
     v-model="show"
     max-width="1000px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">

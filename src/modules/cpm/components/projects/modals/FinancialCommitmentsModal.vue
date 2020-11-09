@@ -3,10 +3,9 @@
     v-model="show"
     max-width="800px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline">
+      <v-card-title class="headline pa-6 d-flex justify-center">
         <template
           v-if="isCreate"
         >
@@ -321,6 +320,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          elevation="1"
           text
           @click="$emit('close-only')"
         >
@@ -328,6 +328,7 @@
         </v-btn>
 
         <v-btn
+          elevation="1"
           v-if="isCreate"
           text
           @click="save('create')"
@@ -336,6 +337,7 @@
         </v-btn>
 
         <v-btn
+          elevation="1"
           v-if="!isCreate"
           text
           @click="save('udpate')"

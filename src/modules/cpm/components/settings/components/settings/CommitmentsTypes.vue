@@ -1,12 +1,13 @@
 <template>
   <div>
-    <v-card>
+    <v-card elevation="0">
       <v-card-title style="position:relative">
         <portal
           v-if="included"
           to="commitments-1"
         >
           <v-btn
+            class="mt-3"
             absolute
             color="white"
             dark
@@ -16,7 +17,7 @@
             @click="showIngform = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
