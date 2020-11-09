@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -24,11 +24,11 @@
       </v-tooltip>
 
       <v-icon
-        class="cursor"
-        dark
+        class="pointer"
+        light
         @click="openModal"
       >
-        add
+        mdi-plus
       </v-icon>
       <v-tooltip left>
         <template v-slot:activator="{ on }">
@@ -38,7 +38,7 @@
             v-on="on"
             @click="$refs.ganttSchedule.printFromVue('print')"
           >
-            print
+            mdi-printer
           </v-icon>
         </template>
         <span>{{ $t('general.print') }}</span>
@@ -51,7 +51,7 @@
             v-on="on"
             @click="$refs.ganttSchedule.printFromVue('share')"
           >
-            share
+            mdi-share
           </v-icon>
         </template>
         <span>{{ $t('general.share') }}</span>
@@ -60,12 +60,12 @@
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
+            class="pointer"
             color="white"
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>{{ $t('general.settings') }}</span>

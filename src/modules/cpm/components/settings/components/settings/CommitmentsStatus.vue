@@ -52,7 +52,7 @@
                   style="cursor: pointer"
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -62,7 +62,7 @@
                   style="cursor: pointer"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>

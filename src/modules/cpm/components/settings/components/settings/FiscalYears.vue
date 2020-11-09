@@ -11,7 +11,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -42,7 +42,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
                 <v-list-tile-content>{{ item.name }}</v-list-tile-content>
@@ -55,7 +55,7 @@
                     flat
                     @click.prevent="editFiscalYear(key, item)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
@@ -63,7 +63,7 @@
                     flat
                     @click.prevent="deleteFiscalYear(key, item)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>

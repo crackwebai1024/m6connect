@@ -16,7 +16,7 @@
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -31,7 +31,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
 
@@ -54,7 +54,7 @@
                   style="cursor: pointer"
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -64,7 +64,7 @@
                   style="cursor: pointer"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>

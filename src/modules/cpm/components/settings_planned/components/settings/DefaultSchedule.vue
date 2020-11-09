@@ -14,7 +14,7 @@
         @click="newL1"
       >
         <v-icon color="blue">
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </portal>
@@ -27,7 +27,7 @@
         small
         @click="newL1"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -80,7 +80,7 @@
                       style="cursor: pointer"
                       @click.stop="addL1(item)"
                     >
-                      add
+                      mdi-plus
                     </v-icon>
 
                     <v-icon
@@ -90,7 +90,7 @@
                       style="cursor: pointer"
                       @click.stop="edit(item)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
 
                     <v-icon
@@ -100,7 +100,7 @@
                       style="cursor: pointer"
                       @click.stop="deleteL1(index)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </v-card-title>
                 </v-card>
@@ -139,7 +139,7 @@
                                 dark
                                 small
                               >
-                                edit
+                                mdi-pencil
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -153,7 +153,7 @@
                                 dark
                                 small
                               >
-                                delete
+                                mdi-delete
                               </v-icon>
                             </v-btn>
                           </v-card-title>
@@ -217,7 +217,7 @@
                           v-show="color.hex"
                           :color="color.hex"
                         >
-                          brightness_1
+                          mdi-brightness-1
                         </v-icon>
                       </v-btn>
                     </v-col>
@@ -263,7 +263,7 @@
                               icon
                               @click="openAddGanttDialog"
                             >
-                              <v-icon>add</v-icon>
+                              <v-icon>mdi-plus</v-icon>
                             </v-btn>
                           </v-col>
                         </v-row>
@@ -382,7 +382,7 @@
                                     icon
                                     @click="editGantt(props.item, props.index)"
                                   >
-                                    <v-icon>edit</v-icon>
+                                    <v-icon>mdi-pencil</v-icon>
                                   </v-btn>
                                   <v-btn
                                     color="blue"
@@ -391,7 +391,7 @@
                                     icon
                                     @click="deleteGantt(props.index)"
                                   >
-                                    <v-icon>delete</v-icon>
+                                    <v-icon>mdi-delete</v-icon>
                                   </v-btn>
                                 </td>
                               </template>

@@ -14,7 +14,7 @@
         @click="showForm = true"
       >
         <v-icon color="blue">
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </portal>
@@ -27,7 +27,7 @@
         small
         @click="showForm = true"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -41,13 +41,12 @@
           <td>{{ props.item.label }}</td>
           <td class="text-right">
             <v-icon
-              class="ml-0 mr-0"
+              class="ml-0 mr-0 pointer"
               color="#f44336"
               size="20"
-              style="cursor: pointer"
               @click.prevent="deleteElement(props.index, props.item.label)"
             >
-              delete
+              mdi-delete
             </v-icon>
           </td>
         </template>

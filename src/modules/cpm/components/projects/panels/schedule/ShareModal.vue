@@ -51,7 +51,7 @@
                         v-on="on"
                       >
                         <v-icon left>
-                          event
+                          mdi-calendar-check
                         </v-icon>
                         {{ expireDate.formated }}
                       </v-btn>

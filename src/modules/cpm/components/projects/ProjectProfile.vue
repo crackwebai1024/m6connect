@@ -18,7 +18,7 @@
         }"
       >
         <v-icon color="black">
-          edit
+          mdi-pencil
         </v-icon>
       </v-btn>
       <sidebar
@@ -290,7 +290,7 @@
           @click="startTour"
         >
           <v-icon small>
-            near_me
+            mdi-near-me
           </v-icon>
           {{ $t('tourProjectList.start') }}
         </v-btn>

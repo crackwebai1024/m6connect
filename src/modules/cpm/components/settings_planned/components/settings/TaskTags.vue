@@ -8,7 +8,7 @@
         small
         @click="showForm = true"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <v-container
@@ -32,7 +32,7 @@
                     small
                     @click.prevent="edit(props.index, props.item)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     flat
@@ -40,7 +40,7 @@
                     small
                     @click.prevent="deleteType(props.index, props.item)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </td>
               </template>

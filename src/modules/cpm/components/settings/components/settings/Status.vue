@@ -11,7 +11,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
 
@@ -53,7 +53,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
 
@@ -68,7 +68,7 @@
                     flat
                     @click.prevent="editStatus(key, name)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
 
                   <v-btn
@@ -77,7 +77,7 @@
                     flat
                     @click.prevent="deleteStatus(key, name)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>

@@ -9,7 +9,7 @@
         small
         @click="newL1"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <v-container>
@@ -26,33 +26,30 @@
           <td class="text-right">
             <v-icon
               v-if="props.item.cat_1.length > 0"
-              class="ml-4 mr-0"
+              class="ml-4 mr-0 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               @click.stop="showSubCategoriesL2(props.item)"
             >
-              assignments
+              mdi-clipboard-text
             </v-icon>
 
             <v-icon
-              class="ml-0 mr-2"
+              class="ml-0 mr-2 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               @click.stop="addL1(props.item)"
             >
-              add
+              mdi-plus
             </v-icon>
 
             <v-icon
-              class="ml-0 mr-0"
+              class="ml-0 mr-0 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               @click.stop="edit(props.item)"
             >
-              edit
+              mdi-pencil
             </v-icon>
           </td>
         </template>
@@ -146,43 +143,39 @@
               <td class="text-right">
                 <v-icon
                   v-if="props.item.cat_2.length > 0"
-                  class="ml-4 mr-0"
+                  class="ml-4 mr-0 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="showSubCategoriesL3(props.item)"
                 >
-                  assignments
+                  mdi-clipboard-text
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-2"
+                  class="ml-0 mr-2 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="addL2(props.item)"
                 >
-                  add
+                  mdi-plus
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-0"
+                  class="ml-0 mr-0 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="edit(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
-                  class="ml-2 mr-0"
+                  class="ml-2 mr-0 pointer"
                   color="#f44336"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="deleteL2(l1Item, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -231,23 +224,21 @@
               </td>
               <td class="text-right">
                 <v-icon
-                  class="ml-0 mr-2"
+                  class="ml-0 mr-2 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="edit(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-0"
+                  class="ml-0 mr-0 pointer"
                   color="#f44336"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="deleteL3(l2Item, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>

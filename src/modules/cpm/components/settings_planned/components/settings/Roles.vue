@@ -9,14 +9,14 @@
           <v-btn
             absolute
             color="white"
-            dark
+            light
             fab
             right
             small
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -30,7 +30,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -45,23 +45,21 @@
               <td>{{ props.item.users.length }}</td>
               <td class="text-right">
                 <v-icon
-                  class="ml-0 mr-2"
+                  class="ml-0 mr-2 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.prevent="editElement(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-0"
+                  class="ml-0 mr-0 pointer"
                   color="#f44336"
                   size="20"
-                  style="cursor: pointer"
                   @click.prevent="deleteElement(props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>

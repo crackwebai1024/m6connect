@@ -11,11 +11,11 @@
             @click="printFromVue('chart')"
           >
             <v-icon
-              class="cursor"
+              class="pointer"
               color="white"
-              flat
+              text
             >
-              print
+              mdi-printer
             </v-icon>
           </a>
         </template>
@@ -37,9 +37,9 @@
             v-on="on"
           >
             <v-icon
-              flat
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>

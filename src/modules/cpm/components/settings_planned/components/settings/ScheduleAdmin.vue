@@ -7,7 +7,7 @@
         icon
         @click="openScheduleDialog"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <v-card>
@@ -47,7 +47,7 @@
                           small
                           @click="openEditSchedule(header, index)"
                         >
-                          <v-icon>edit</v-icon>
+                          <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                         <v-btn
                           color="error"
@@ -56,7 +56,7 @@
                           small
                           @click="deleteSchedule(header, index)"
                         >
-                          <v-icon>delete</v-icon>
+                          <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </div>
                       <div
@@ -89,7 +89,7 @@
                           small
                           @click="saveEditSchedule(header, index)"
                         >
-                          <v-icon>save</v-icon>
+                          <v-icon>mdi-content-save</v-icon>
                         </v-btn>
                       </div>
                     </template>
@@ -168,7 +168,7 @@
                         icon
                         @click="editDate(date)"
                       >
-                        <v-icon>edit</v-icon>
+                        <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                       <v-btn
                         color="error"
@@ -177,7 +177,7 @@
                         icon
                         @click="deleteDate(date)"
                       >
-                        <v-icon>delete</v-icon>
+                        <v-icon>mdi-delete</v-icon>
                       </v-btn>
                     </div>
                     <!-- Editing -->
@@ -191,7 +191,7 @@
                         icon
                         @click="saveEditingDate(date)"
                       >
-                        <v-icon>save</v-icon>
+                        <v-icon>mdi-content-save</v-icon>
                       </v-btn>
                       <v-btn
                         color="error"

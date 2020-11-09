@@ -24,7 +24,7 @@
             class="edit-icon pointer"
             @click="goToProject(item)"
           >
-            edit
+            mdi-pencil
           </v-icon>
         </td>
       </tr>

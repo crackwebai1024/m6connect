@@ -11,7 +11,7 @@
         @click="showDialog = true"
       >
         <v-icon>
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </v-card-title>
@@ -56,7 +56,7 @@
             class="icon__delete"
             @click="showDeleteConfirm = true"
           >
-            delete
+            mdi-delete
           </v-icon>
         </v-card-title>
         <v-card-text>

@@ -9,14 +9,14 @@
           <v-btn
             absolute
             color="white"
-            dark
+            light
             fab
             right
             small
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -24,13 +24,13 @@
           v-else
           absolute
           color="blue"
-          dark
+          light
           fab
           right
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -60,7 +60,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
                 <v-list-tile-content>{{ item }}</v-list-tile-content>
@@ -69,21 +69,21 @@
                 >
                   <v-btn
                     class="xs-btn"
-                    flat
+                    text
                     icon
                     small
                     @click.prevent="editElement(key, item)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
-                    flat
+                    text
                     icon
                     small
                     @click.prevent="deleteElement(key, item)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>
@@ -138,7 +138,7 @@
                       @click="showValidForm = true"
                     >
                       <v-icon color="blue">
-                        add
+                        mdi-plus
                       </v-icon>
                     </v-btn>
                   </v-subheader>
@@ -154,12 +154,12 @@
 
                       <v-list-tile-action>
                         <v-icon @click="editValidDate(item, index)">
-                          edit
+                          mdi-pencil
                         </v-icon>
                       </v-list-tile-action>
                       <v-list-tile-action>
                         <v-icon @click.prevent="deleteValidDate(key, item)">
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-list-tile-action>
                     </v-list-tile>
