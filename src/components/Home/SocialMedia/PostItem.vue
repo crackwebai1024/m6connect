@@ -54,7 +54,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                v-if="author"
+                v-show="isAuthor()"
                 icon
                 v-bind="attrs"
                 v-on="on"
@@ -528,10 +528,6 @@ export default {
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
     },
-    author(){
-      return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
-        : this.data.actor.id === this.user.id;
-    },
     likeIcon() {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
     },
@@ -557,6 +553,10 @@ export default {
     ...mapActions(['set_image_preview_overlay']),
     ...mapActions("WorkOrderModule", { records: "getRecords", putAct: "putAction", deleteAct: "deleteAction" }),
 
+    isAuthor(){
+      return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
+        : this.data.actor.id === this.user.id;
+    },
     changeRecord(event){
       switch( event ){
         case 'itapps':

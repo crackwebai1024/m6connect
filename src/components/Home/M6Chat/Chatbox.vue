@@ -150,7 +150,7 @@
                     class="black--text capitalize px-3 text-caption w-full"
                     elevation="0"
                     v-bind="attrs" v-on="on"
-                  >Delete Group</v-btn>
+                  >Clean chat room</v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
