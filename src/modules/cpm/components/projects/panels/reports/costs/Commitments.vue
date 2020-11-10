@@ -66,7 +66,7 @@
             <v-btn
               color="blue"
               fab
-              flat
+              text
               small
               @click="addLineItem(commitment.id, commitment.number, commitmentIndex)"
             >
@@ -77,7 +77,7 @@
 
             <v-btn
               color="blue"
-              flat
+              text
               small
               @click.stop="openSpending(commitment.number, commitment.id)"
             >
@@ -105,7 +105,7 @@
             <v-btn
               color="red"
               fab
-              flat
+              text
               small
               @click="deleteCommitment(commitment.id, commitment.number, commitmentIndex)"
             >

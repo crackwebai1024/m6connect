@@ -18,7 +18,7 @@
 
         <v-btn
           color="white"
-          flat="flat"
+          text
           @click="closeModal"
         >
           Close

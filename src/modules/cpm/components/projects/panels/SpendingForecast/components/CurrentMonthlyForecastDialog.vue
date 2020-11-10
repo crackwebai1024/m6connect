@@ -19,14 +19,14 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          text
           @click="close"
         >
           cancel
         </v-btn>
         <v-btn
           color="primary"
-          flat
+          text
           @click="onSave"
         >
           Save

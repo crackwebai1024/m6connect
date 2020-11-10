@@ -91,7 +91,7 @@
 
           <v-btn
             :disabled="loading"
-            flat
+            text
             @click="cancel"
           >
             Cancel
@@ -99,7 +99,7 @@
           <v-btn
             color="blue"
             dark
-            flat
+            text
             :loading="loading"
             @click="save"
           >
@@ -184,7 +184,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showSubCatL2 = false"
           >
             Close
@@ -247,7 +247,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showSubCatL3 = false"
           >
             Close

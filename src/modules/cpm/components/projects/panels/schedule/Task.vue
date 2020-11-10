@@ -623,14 +623,14 @@
     <v-card-actions>
       <v-spacer />
       <v-btn
-        flat
+        text
         @click="returnTasks"
       >
         {{ $t('general.cancel') }}
       </v-btn>
       <v-btn
         color="primary"
-        flat
+        text
         @click="updateTask"
       >
         {{ $t('general.update') }}

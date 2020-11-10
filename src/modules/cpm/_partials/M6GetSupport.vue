@@ -145,14 +145,14 @@
         <v-spacer />
         <v-btn
           color="error"
-          flat
+          text
           @click="close"
         >
           Close
         </v-btn>
         <v-btn
           color="success"
-          flat
+          text
           @click="createTicket"
         >
           Create Ticket

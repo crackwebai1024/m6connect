@@ -27,7 +27,7 @@
         <v-btn
           color="error"
           :disabled="deleting"
-          flat="flat"
+          text
           @click="$emit('cancel')"
         >
           No
@@ -36,7 +36,7 @@
         <v-btn
           color="blue darken-1 white--text"
           :disabled="deleting"
-          flat="flat"
+          text
           @click="$emit('confirm')"
         >
           Yes

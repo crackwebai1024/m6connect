@@ -26,7 +26,6 @@
               <td>{{ props.item }}</td>
               <td class="text-right">
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="editCategory(props.index, props.item)"
@@ -34,7 +33,6 @@
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="deleteCategory(props.index, props.item)"

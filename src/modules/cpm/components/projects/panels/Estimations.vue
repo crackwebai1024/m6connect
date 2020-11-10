@@ -147,14 +147,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showModal = false"
           >
             {{ $t('general.cancel') }}
           </v-btn>
           <v-btn
             color="primary"
-            flat
+            text
             @click="update"
           >
             {{ $t('general.upadte') }}

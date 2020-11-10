@@ -42,7 +42,6 @@
                         {{ header.name }}
                         <v-btn
                           color="blue"
-                          flat
                           icon
                           small
                           @click="openEditSchedule(header, index)"
@@ -51,7 +50,6 @@
                         </v-btn>
                         <v-btn
                           color="error"
-                          flat
                           icon
                           small
                           @click="deleteSchedule(header, index)"
@@ -72,7 +70,7 @@
                         <v-btn
                           color="error"
                           :disabled="loading"
-                          flat
+                          text
                           :loading="loading"
                           outline
                           small
@@ -83,7 +81,6 @@
                         <v-btn
                           color="blue"
                           :disabled="loading"
-                          flat
                           icon
                           :loading="loading"
                           small
@@ -164,7 +161,6 @@
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         @click="editDate(date)"
                       >
@@ -173,7 +169,6 @@
                       <v-btn
                         color="error"
                         dark
-                        flat
                         icon
                         @click="deleteDate(date)"
                       >
@@ -187,7 +182,6 @@
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         @click="saveEditingDate(date)"
                       >
@@ -196,7 +190,7 @@
                       <v-btn
                         color="error"
                         dark
-                        flat
+                        text
                         outline
                         @click="cancelEditingDate"
                       >

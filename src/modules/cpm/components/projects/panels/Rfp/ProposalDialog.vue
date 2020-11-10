@@ -193,8 +193,8 @@
         <v-card flat>
           <!--<v-card-title class="title ml-4">-->
           <!--Bid Packages <v-spacer></v-spacer>-->
-          <!--<v-btn @click="expandAllPackages" flat>Expand All</v-btn>-->
-          <!--<v-btn @click="packagesPanel = []" flat>Collapse All</v-btn>-->
+          <!--<v-btn @click="expandAllPackages" text>Expand All</v-btn>-->
+          <!--<v-btn @click="packagesPanel = []" text>Collapse All</v-btn>-->
           <!--</v-card-title>-->
           <v-card-text>
             <v-expansion-panel

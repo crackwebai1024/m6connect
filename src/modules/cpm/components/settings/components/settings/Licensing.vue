@@ -27,7 +27,6 @@
               <td>{{ props.item }}</td>
               <td class="text-right">
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="edit(props.index, props.item)"
@@ -35,7 +34,6 @@
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="deleteLicense(props.index, props.item)"

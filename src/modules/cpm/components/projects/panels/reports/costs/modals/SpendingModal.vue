@@ -624,7 +624,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          text
           text
           @click.stop="dialog=false"
         >

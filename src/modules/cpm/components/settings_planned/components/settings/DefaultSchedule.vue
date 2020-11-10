@@ -378,7 +378,6 @@
                                   <v-btn
                                     color="blue"
                                     dark
-                                    flat
                                     icon
                                     @click="editGantt(props.item, props.index)"
                                   >
@@ -387,7 +386,6 @@
                                   <v-btn
                                     color="blue"
                                     dark
-                                    flat
                                     icon
                                     @click="deleteGantt(props.index)"
                                   >

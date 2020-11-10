@@ -126,14 +126,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="modalDate = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="$refs.dialogDate.save(rfp.sharpBoard)"
                     >
                       OK
@@ -148,7 +148,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="dialogAddRfp = false"
           >
             Cancel
@@ -156,7 +156,7 @@
           <v-btn
             color="blue"
             dark
-            flat
+            text
             @click="addRFP"
           >
             Save

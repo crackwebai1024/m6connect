@@ -187,7 +187,7 @@
                   <small>Project Status</small>
                   <v-card
                     :color="getColor('listStatus')"
-                    flat
+                    text
                     tile
                   >
                     <v-card-text class="py-2 subheading white--text">
@@ -203,7 +203,7 @@
                   <small>Start Date</small>
                   <v-card
                     :color="getColor('listStartDate')"
-                    flat
+                    text
                     tile
                   >
                     <v-card-text class="py-2 subheading white--text">

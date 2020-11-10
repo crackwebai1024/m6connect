@@ -67,14 +67,12 @@
           <v-col cols="8" />
           <v-col cols="6">
             <v-btn
-              flat
               text
               @click="$emit('close')"
             >
               {{ $t('general.cancel') }}
             </v-btn>
             <v-btn
-              flat
               text
               @click="selectFolder"
             >

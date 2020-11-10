@@ -13,7 +13,7 @@
           class="mb-4"
           color="grey lighten-3"
           dense
-          flat
+          text
         >
           <h5>Add or Edit Tasks</h5>
 
@@ -404,7 +404,6 @@
                                 <v-btn
                                   color="blue"
                                   dark
-                                  flat
                                   icon
                                   @click="editGantt(props.item, props.index)"
                                 >
@@ -414,7 +413,6 @@
                                 <v-btn
                                   color="blue"
                                   dark
-                                  flat
                                   icon
                                   @click="deleteGantt(props.index)"
                                 >

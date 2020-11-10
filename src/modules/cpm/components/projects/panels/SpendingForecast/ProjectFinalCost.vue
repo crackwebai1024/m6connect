@@ -58,7 +58,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             :loading="loading"
             @click="dialogCategory = false"
           >
@@ -111,7 +111,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             :loading="loading"
             @click="dialog = false"
           >

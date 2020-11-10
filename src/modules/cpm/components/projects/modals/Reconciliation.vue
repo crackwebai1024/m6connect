@@ -77,7 +77,7 @@
           class="mb-2 mr-auto"
           color="primary"
           :disabled="!isManager"
-          flat
+          text
           @click="openCreateNote"
         >
           {{ addNoteButton }}

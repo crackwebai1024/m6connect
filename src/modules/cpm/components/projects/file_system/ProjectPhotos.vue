@@ -48,9 +48,8 @@
     </v-btn>
     <v-col cols="12">
       <v-card
-        class="elevation-0"
+        elevation="0"
         color="white"
-        flat
       >
         <v-container
           fluid
@@ -71,7 +70,7 @@
             >
               <v-card
                 class="d-flex"
-                flat
+                elevation="0"
                 tile
               >
                 <v-img

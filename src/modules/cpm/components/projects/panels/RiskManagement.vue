@@ -171,7 +171,7 @@
           <v-btn
             color="gray"
             :disabled="loading"
-            flat
+            text
             :loading="loading"
             @click="closeModal"
           >
@@ -180,7 +180,7 @@
           <v-btn
             color="primary"
             :disabled="loading"
-            flat
+            text
             :loading="loading"
             @click="saveModal"
           >

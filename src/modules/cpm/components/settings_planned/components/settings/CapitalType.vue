@@ -90,7 +90,7 @@
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="editCapitalType(key, name)"
                   >
                     <v-icon>mdi-pencil</v-icon>
@@ -98,7 +98,7 @@
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="deleteCapitalType(key, name)"
                   >
                     <v-icon>mdi-delete</v-icon>

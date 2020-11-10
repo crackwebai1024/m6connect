@@ -45,7 +45,6 @@
               <td>{{ props.item.label }}</td>
               <td class="text-right">
                 <!--<v-btn-->
-                <!--  flat-->
                 <!--  small-->
                 <!--  icon-->
                 <!--  @click.prevent="editElement(props.index, props.item)">-->

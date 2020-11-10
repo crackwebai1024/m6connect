@@ -129,7 +129,6 @@
                 >
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
                     @click.prevent="edit(key, item)"
@@ -138,7 +137,6 @@
                   </v-btn>
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
                     @click.prevent="deleteGantt(key, item)"
@@ -275,7 +273,6 @@
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         small
                         @click="editMilestone(props.item, props.index)"
@@ -285,7 +282,6 @@
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         small
                         @click="deleteMilestone(props.index)"

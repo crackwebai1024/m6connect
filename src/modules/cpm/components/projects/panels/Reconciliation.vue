@@ -10,7 +10,6 @@
       <v-icon
         class="grey--text mx-2 text--darken-2"
         color="grey"
-        flat
         light
         size="25"
         @click="cardDialogClick"
@@ -358,7 +357,7 @@
               </template>
 
               <template v-slot:expand="props">
-                <v-card flat>
+                <v-card elevation="0">
                   <v-progress-circular
                     v-show="loadingExpandedSpendingLineItems"
                     color="primary"

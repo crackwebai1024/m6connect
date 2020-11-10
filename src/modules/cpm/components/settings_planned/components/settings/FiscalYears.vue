@@ -50,7 +50,7 @@
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="editFiscalYear(key, item)"
                   >
                     <v-icon>mdi-pencil</v-icon>
@@ -58,7 +58,7 @@
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="deleteFiscalYear(key, item)"
                   >
                     <v-icon>mdi-delete</v-icon>
@@ -132,14 +132,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="modalStartDate = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="
                         $refs.dialogStartDate.save(currentfiscalYear.startDate)
                       "
@@ -182,14 +182,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="modalEndDate = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="
                         $refs.dialogEndDate.save(currentfiscalYear.endDate)
                       "

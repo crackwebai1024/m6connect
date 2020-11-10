@@ -183,7 +183,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             :loading="submitLoading"
             @click.prevent="closeDialog"
           >

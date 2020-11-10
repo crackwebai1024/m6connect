@@ -357,7 +357,7 @@
           <v-col cols="8" />
           <v-col cols="4">
             <v-btn
-              flat
+              text
               @click="$emit('close')"
             >
               Cancel

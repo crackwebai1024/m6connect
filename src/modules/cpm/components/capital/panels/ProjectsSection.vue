@@ -44,7 +44,6 @@
                       <td>
                         <v-btn
                           color="primary"
-                          flat
                           icon
                           @click="removeCapital(props.item)"
                         >
@@ -85,7 +84,6 @@
                       <td>
                         <v-btn
                           color="primary"
-                          flat
                           icon
                           @click="addCapitalPlan(props.item)"
                         >

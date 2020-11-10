@@ -19,6 +19,7 @@
             <label>{{ $t('cpm.projects.fileToShare') }}</label>
             <v-btn
               v-for="(e, index) in item"
+              :key="'btnsforitems' + index"
               id="step16"
               class="ma-2"
               outlined
@@ -181,7 +182,6 @@
           <v-col cols="8" />
           <v-col cols="6">
             <v-btn
-              flat
               text
               @click="closeModal"
             >
@@ -190,7 +190,6 @@
             <v-btn
               v-if="!previewShow && type.value === 'mail'"
               id="step21"
-              flat
               text
               @click="showPreview"
             >
@@ -198,7 +197,6 @@
             </v-btn>
             <v-btn
               v-if="previewShow || type.value === 'message'"
-              flat
               text
               @click="showConfirm = true"
             >

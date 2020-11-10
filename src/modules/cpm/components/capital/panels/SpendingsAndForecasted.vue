@@ -252,7 +252,6 @@
                         >
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             small
                             @click="openDialogForecast(period, props.item)"
@@ -329,7 +328,6 @@
                         >
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             small
                             @click="openDialogForecast(period, props.item)"
@@ -375,7 +373,6 @@
                   >
                     <v-btn
                       color="primary"
-                      flat
                       icon
                       small
                       @click="openDialogFiscalYear(fiscalYear, props.item)"
@@ -426,7 +423,7 @@
           <v-spacer />
           <v-btn
             :disabled="loading"
-            flat
+            text
             :loading="loading"
             @click="cancelForecast"
           >

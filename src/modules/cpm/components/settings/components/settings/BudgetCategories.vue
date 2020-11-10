@@ -113,7 +113,7 @@
 
           <v-btn
             :disabled="loading"
-            flat
+            text
             @click="cancel"
           >
             Cancel
@@ -122,7 +122,7 @@
           <v-btn
             color="blue"
             dark
-            flat
+            text
             :loading="loading"
             type="submit"
             @click="save"

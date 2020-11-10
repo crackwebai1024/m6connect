@@ -28,7 +28,6 @@
                 <td>{{ props.item }}</td>
                 <td class="text-right">
                   <v-btn
-                    flat
                     icon
                     small
                     @click.prevent="editElement(props.index, props.item)"
@@ -36,7 +35,6 @@
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
-                    flat
                     icon
                     small
                     @click.prevent="deleteElement(props.index, props.item)"

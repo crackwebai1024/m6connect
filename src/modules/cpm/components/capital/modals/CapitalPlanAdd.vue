@@ -122,7 +122,6 @@
                         <td>
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             @click="addCapitalPlan(props.item)"
                           >
@@ -141,7 +140,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          text
           :loading="loading"
           @click="closeCapital"
         >

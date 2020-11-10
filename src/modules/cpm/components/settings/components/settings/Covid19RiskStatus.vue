@@ -75,14 +75,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="closeDialog"
           >
             {{ $t('general.cancel') }}
           </v-btn>
           <v-btn
             color="primary"
-            flat
+            text
             @click="save"
           >
             {{ $t('general.save') }}

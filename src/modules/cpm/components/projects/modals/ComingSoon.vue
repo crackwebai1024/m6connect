@@ -23,7 +23,7 @@
         <v-spacer />
         <v-btn
           color="red"
-          flat
+          text
           @click="$emit('close-dialog')"
         >
           Close

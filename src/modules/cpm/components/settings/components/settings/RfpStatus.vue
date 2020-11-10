@@ -67,7 +67,7 @@
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="editStatus(key, status)"
                   >
                     <v-icon>mdi-pencil</v-icon>
@@ -76,7 +76,7 @@
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="deleteStatus(key, status)"
                   >
                     <v-icon>mdi-delete</v-icon>

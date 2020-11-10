@@ -7,7 +7,7 @@
       <v-toolbar
         color="green"
         dark
-        flat
+        text
       >
         <h3 class="headline mb-0">
           Policies and Procedures
@@ -52,7 +52,6 @@
             >
               <v-btn
                 color="#f44336"
-                flat
                 icon
                 @click="openPolicy(standard)"
               >
@@ -157,7 +156,7 @@
           <v-spacer />
           <v-btn
             color="gray"
-            flat
+            text
             @click="cancel"
           >
             Close

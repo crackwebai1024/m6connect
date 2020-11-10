@@ -48,7 +48,7 @@
               <v-btn
                 class="xs-btn"
                 fab
-                flat
+                icon
                 @click.prevent="edit(key, name)"
               >
                 <v-icon>mdi-pencil</v-icon>

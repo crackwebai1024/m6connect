@@ -268,7 +268,7 @@
                     <v-card
                       class="card-footer"
                       :color="getColor('listStatus')"
-                      flat
+                      text
                       tile
                     >
                       <span class="py-2 subheading white--text">
@@ -286,7 +286,7 @@
                     <v-card
                       class="card-footer pt-1"
                       :color="getColor('listStartDate')"
-                      flat
+                      text
                       tile
                     >
                       <span class="py-2 subheading white--text">

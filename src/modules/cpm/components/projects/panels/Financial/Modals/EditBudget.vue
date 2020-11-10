@@ -308,7 +308,6 @@
 
       <v-card-actions>
         <v-btn
-          flat
           text
           @click.native.stop="selectFile"
         >
@@ -323,7 +322,6 @@
         </v-btn>
         <v-spacer />
         <v-btn
-          flat
           text
           @click.stop="dialog = false"
         >

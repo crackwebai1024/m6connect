@@ -29,14 +29,14 @@
         <v-spacer />
         <v-btn
           color="gray"
-          flat
+          text
           @click="cancel"
         >
           Close
         </v-btn>
         <v-btn
           color="primary"
-          flat
+          text
           @click="create"
         >
           Create

@@ -125,7 +125,7 @@
         <v-col class="shrink">
           <v-btn
             color="primary"
-            :flat="editing"
+            :text="editing"
             :small="editing"
             @click="editing = !editing"
           >

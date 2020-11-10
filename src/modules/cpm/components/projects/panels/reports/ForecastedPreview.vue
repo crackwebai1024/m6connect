@@ -95,7 +95,6 @@
               <v-btn
                 color="blue"
                 dark
-                flat
                 icon
                 @click="openSchedule(props.item)"
               >
