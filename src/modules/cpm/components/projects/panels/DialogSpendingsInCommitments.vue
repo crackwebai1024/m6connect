@@ -69,6 +69,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          elevation="1"
           color="primary"
           text
           @click="closeModalSpendings"

@@ -13,10 +13,10 @@
           <v-spacer />
           <v-col class="shrink">
             <v-icon
-              dark
+              light
               @click="close"
             >
-              close
+              mdi-close
             </v-icon>
           </v-col>
         </v-row>

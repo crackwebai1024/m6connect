@@ -53,14 +53,14 @@
             <v-spacer />
             <v-btn
               color="red"
-              flat
+              text
               @click="cancelColor"
             >
               Cancel
             </v-btn>
             <v-btn
               color="green"
-              flat
+              text
               type="submit"
               @click="saveColor"
             >

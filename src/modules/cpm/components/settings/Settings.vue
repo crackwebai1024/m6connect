@@ -20,7 +20,7 @@
                 <v-btn
                   class="blockbtn flex-column"
                   :class="activeSetting === setting ? 'settingActive' : ''"
-                  flat
+                  icon
                   style="height:150px; width:100%; cursor: pointer;"
                   v-on="on"
                   @click="activateSettingFn(setting)"

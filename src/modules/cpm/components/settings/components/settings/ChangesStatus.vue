@@ -14,7 +14,7 @@
             small
             @click="showForm = true"
           >
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
 
           <v-data-table
@@ -31,7 +31,7 @@
                   size="20"
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -40,7 +40,7 @@
                   size="20"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>

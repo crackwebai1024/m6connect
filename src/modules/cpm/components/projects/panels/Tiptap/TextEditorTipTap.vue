@@ -14,7 +14,7 @@
               title="Undo"
               @click="commands.undo"
             >
-              <v-icon>undo</v-icon>
+              <v-icon>mdi-undo</v-icon>
             </v-btn>
 
             <v-btn
@@ -24,7 +24,7 @@
               title="Redo"
               @click="commands.redo"
             >
-              <v-icon>redo</v-icon>
+              <v-icon>mdi-redo</v-icon>
             </v-btn>
 
             <v-btn
@@ -35,7 +35,7 @@
               title="Bold"
               @click="commands.bold"
             >
-              <v-icon>format_bold</v-icon>
+              <v-icon>mdi-format-bold</v-icon>
             </v-btn>
 
             <v-btn
@@ -46,7 +46,7 @@
               title="Italic"
               @click="commands.italic"
             >
-              <v-icon>format_italic</v-icon>
+              <v-icon>mdi-format-italic</v-icon>
             </v-btn>
 
             <v-btn
@@ -57,7 +57,7 @@
               title="Strikethrough"
               @click="commands.strike"
             >
-              <v-icon>strikethrough_s</v-icon>
+              <v-icon>mdi-format-strikethrough</v-icon>
             </v-btn>
 
             <v-btn
@@ -68,7 +68,7 @@
               title="Underline"
               @click="commands.underline"
             >
-              <v-icon>format_underline</v-icon>
+              <v-icon>mdi-format-underline</v-icon>
             </v-btn>
 
             <v-btn
@@ -79,7 +79,7 @@
               title="Grey Highlight"
               @click="commands.code"
             >
-              <v-icon>code</v-icon>
+              <v-icon>mdi-code-tags</v-icon>
             </v-btn>
 
             <v-btn
@@ -101,7 +101,7 @@
               title="Align Left"
               @click="commands.alignment({ textAlign: 'left' })"
             >
-              <v-icon>format_align_left</v-icon>
+              <v-icon>mdi-format-align-left</v-icon>
             </v-btn>
 
             <v-btn
@@ -112,7 +112,7 @@
               title="Align Center"
               @click="commands.alignment({ textAlign: 'center' })"
             >
-              <v-icon>format_align_center</v-icon>
+              <v-icon>mdi-format-align-center</v-icon>
             </v-btn>
 
             <button
@@ -120,7 +120,7 @@
               :class="{ 'is-active': isActive.alignment({ textAlign: 'right' }) }"
               @click="commands.alignment({ textAlign: 'right' })"
             >
-              <v-icon>format_align_right</v-icon>
+              <v-icon>mdi-format-align-right</v-icon>
             </button>
 
             <v-btn
@@ -131,7 +131,7 @@
               title="Unordered List"
               @click="commands.bullet_list"
             >
-              <v-icon>format_list_bulleted</v-icon>
+              <v-icon>mdi-format-list-bulleted</v-icon>
             </v-btn>
 
             <v-btn
@@ -142,7 +142,7 @@
               title="Ordered List"
               @click="commands.ordered_list"
             >
-              <v-icon>format_list_numbered</v-icon>
+              <v-icon>mdi-format-list-numbered</v-icon>
             </v-btn>
 
             <v-btn
@@ -153,7 +153,7 @@
               title="Blockquote"
               @click="commands.blockquote"
             >
-              <v-icon>format_quote</v-icon>
+              <v-icon>mdi-format-quote-close</v-icon>
             </v-btn>
 
             <v-btn
@@ -164,7 +164,7 @@
               title="Code Block"
               @click="commands.code_block"
             >
-              <v-icon>code</v-icon>
+              <v-icon>mdi-file-code</v-icon>
             </v-btn>
 
             <v-btn
@@ -175,7 +175,7 @@
               title="Image"
               @click="showImagePrompt(commands.image)"
             >
-              <v-icon>image</v-icon>
+              <v-icon>mdi-image</v-icon>
             </v-btn>
 
             <v-btn
@@ -185,7 +185,7 @@
               title="New Table"
               @click="commands.createTable({rowsCount: 3, colsCount: 3, withHeaderRow: false })"
             >
-              <v-icon>border_all</v-icon>
+              <v-icon>mdi-border-all</v-icon>
             </v-btn>
 
             <template v-if="isActive.table()">
@@ -196,7 +196,7 @@
                 title="Delete table"
                 @click="commands.deleteTable"
               >
-                <v-icon>grid_off</v-icon>
+                <v-icon>mdi-grid-off</v-icon>
               </v-btn>
               <v-btn
                 class="ma-1"

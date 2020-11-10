@@ -56,7 +56,7 @@
               small
               @click="newL1"
             >
-              <v-icon>add</v-icon>
+              <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-toolbar>
           <v-expansion-panel class="elevation-0">
@@ -75,12 +75,12 @@
                 slot="actions"
                 color="white"
               >
-                crop_free
+                mdi-crop-free
               </v-icon>
               <v-card
                 slot="header"
                 class="pa-0"
-                flat
+                text
               >
                 <v-card-title class="pa-0">
                   <div style="width: 70%">
@@ -99,7 +99,7 @@
                         dark
                         small
                       >
-                        add
+                        mdi-plus
                       </v-icon>
                     </v-btn>
                     <v-btn
@@ -113,7 +113,7 @@
                         dark
                         small
                       >
-                        edit
+                        mdi-pencil
                       </v-icon>
                     </v-btn>
                     <v-btn
@@ -127,7 +127,7 @@
                         dark
                         small
                       >
-                        delete
+                        mdi-delete
                       </v-icon>
                     </v-btn>
                   </v-form>
@@ -154,7 +154,7 @@
                         slot="actions"
                         color="white"
                       >
-                        crop_free
+                        mdi-crop-free
                       </v-icon>
                       <v-card
                         slot="header"
@@ -179,7 +179,7 @@
                                 dark
                                 small
                               >
-                                add
+                                mdi-plus
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -193,7 +193,7 @@
                                 dark
                                 small
                               >
-                                edit
+                                mdi-pencil
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -207,7 +207,7 @@
                                 dark
                                 small
                               >
-                                delete
+                                mdi-delete
                               </v-icon>
                             </v-btn>
                           </v-form>
@@ -242,7 +242,7 @@
                                     dark
                                     small
                                   >
-                                    edit
+                                    mdi-pencil
                                   </v-icon>
                                 </v-btn>
                                 <v-btn
@@ -258,7 +258,7 @@
                                     dark
                                     small
                                   >
-                                    delete
+                                    mdi-delete
                                   </v-icon>
                                 </v-btn>
                               </v-form>
@@ -378,7 +378,7 @@
                   >
                     Delete logo
                     <v-icon small>
-                      delete
+                      mdi-delete
                     </v-icon>
                   </v-btn>
                 </v-col>
@@ -395,7 +395,7 @@
                   >
                     Logo&nbsp;
                     <v-icon class="mr-1 pb-1">
-                      cloud_upload
+                      mdi-cloud-upload
                     </v-icon>
                   </v-btn>
                 </v-col>

@@ -14,7 +14,7 @@
         <template v-slot:activator="{ on }">
           <!-- THIS CHANGE WAS BECAUSE THE SPENDINGS DIALOG WAS NOT WORKING IN ANOTHER TAB FULLSCREEN -->
           <v-icon
-            flat
+            text
             light
             @click="cardDialogClick"
           >
@@ -72,7 +72,7 @@
               v-on="on"
               @click="clearSearch"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
           <span>{{ $t('general.clearSearch') }}</span>

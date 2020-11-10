@@ -245,14 +245,14 @@
 
           <v-card-actions>
             <v-btn
-              flat
+              text
               @click="showModal = false"
             >
               {{ $t('general.no') }}
             </v-btn>
             <v-btn
               color="primary"
-              flat
+              text
               @click="
                 updateFutureMilestone = true
                 showModal = false

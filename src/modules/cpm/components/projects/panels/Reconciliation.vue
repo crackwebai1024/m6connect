@@ -10,7 +10,6 @@
       <v-icon
         class="grey--text mx-2 text--darken-2"
         color="grey"
-        flat
         light
         size="25"
         @click="cardDialogClick"
@@ -317,7 +316,7 @@
                                 v-on="on"
                                 @click="addSpending(props)"
                               >
-                                add
+                                mdi-plus-circle
                               </v-icon>
                             </template>
                             <span>Add Invoice</span>
@@ -358,7 +357,7 @@
               </template>
 
               <template v-slot:expand="props">
-                <v-card flat>
+                <v-card elevation="0">
                   <v-progress-circular
                     v-show="loadingExpandedSpendingLineItems"
                     color="primary"
@@ -406,7 +405,7 @@
                             style="cursor: pointer"
                             @click="openEditLineItem(props.item)"
                           >
-                            edit
+                            mdi-pencil
                           </v-icon>
 
                           <v-icon
@@ -416,7 +415,7 @@
                             style="cursor: pointer"
                             @click="deleteExpandedSpendingLineItem(props.item)"
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-col>
                       </td>

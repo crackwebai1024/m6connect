@@ -20,7 +20,7 @@
               v-if="!item.file"
               color="blue"
             >
-              {{ open ? 'folder_open' : 'folder' }}
+              {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
             </v-icon>
 
             <img
@@ -62,7 +62,7 @@
             >
 
             <v-icon v-else>
-              description
+              mdi-text-box-outline
             </v-icon>
           </template>
 
@@ -81,7 +81,7 @@
                   color="blue"
                   small
                 >
-                  create_new_folder
+                  mdi-folder-plus
                 </v-icon>
               </v-btn>
 
@@ -95,7 +95,7 @@
                   color="blue"
                   small
                 >
-                  add
+                  mdi-plus
                 </v-icon>
               </v-btn>
 
@@ -109,7 +109,7 @@
                   color="red"
                   small
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </v-btn>
             </template>
@@ -122,7 +122,7 @@
                 @click.stop="selectItemToShare(item)"
               >
                 <v-icon small>
-                  {{ (fileSelected.includes(item)) ? 'check_box' : 'check_box_outline_blank' }}
+                  {{ (fileSelected.includes(item)) ? 'mdi-check-box-outline' : 'checkbox-blank-outline' }}
                 </v-icon>
               </v-btn>
               <v-btn
@@ -131,7 +131,7 @@
                 @click.stop="GoToShare"
               >
                 <v-icon small>
-                  done_outline
+                  mdi-check-outline
                 </v-icon>
               </v-btn>
             </template>
@@ -146,7 +146,7 @@
                 @click.stop=""
               >
                 <v-icon small>
-                  open_in_new
+                  mdi-folder-plus
                 </v-icon>
               </v-btn>
 
@@ -157,7 +157,7 @@
                 @click.stop="GoshareMode(item)"
               >
                 <v-icon small>
-                  share
+                  mdi-share
                 </v-icon>
               </v-btn>
 
@@ -171,7 +171,7 @@
                   color="red"
                   small
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </v-btn>
             </template>
@@ -285,7 +285,7 @@
             "
           >
             <v-icon>
-              close
+              mdi-close
             </v-icon>
           </v-btn>
         </v-card-title>

@@ -257,21 +257,21 @@
     <v-dialog
       v-if="dialogSpending"
       v-model="dialogSpending"
-      max-width="80%"
+      max-width="1200"
       persistent
-      scrollable
     >
       <v-card
         v-show="method === 'add' || method === 'put'"
         :style="{ width: method === 'add' ? '80vw' : '40vw' }"
       >
         <v-card-title
-          class="darken-3 headline light-blue"
+          class="headline white grey--text text--darken-1"
           primary-title
           style="color: white;"
         >
           {{ $t('cpm.projects.spending') }}
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
         <v-card-text class="card-scroll">
           <v-form
@@ -573,7 +573,7 @@
                     slot-scope="{ item, open }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="
@@ -583,10 +583,10 @@
                       image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
 
@@ -601,7 +601,7 @@
                         style="padding-top: 6px"
                         target="_blank"
                       >
-                        <v-icon small>open_in_new</v-icon>
+                        <v-icon small>mdi-folder-plus</v-icon>
                       </a>
                       <v-btn
                         icon
@@ -612,7 +612,7 @@
                           color="red"
                           small
                         >
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-btn>
                     </template>
@@ -660,20 +660,20 @@
                     slot-scope="{ item, open }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="
                         item.file === 'image/jpeg' || item.file === 'image/png'
                       "
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
                   <template
@@ -690,7 +690,7 @@
                           color="red"
                           small
                         >
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-btn>
                     </template>
@@ -705,6 +705,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
+            elevation="1"
             color="gray"
             :disabled="loading"
             :loading="loading"
@@ -714,6 +715,7 @@
             Close
           </v-btn>
           <v-btn
+            elevation="1"
             color="primary"
             :disabled="loading"
             :loading="loading"
@@ -1175,7 +1177,7 @@
             @click.native.stop="openLineItems"
           >
             <v-icon color="green lighten-2">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </v-card-title>

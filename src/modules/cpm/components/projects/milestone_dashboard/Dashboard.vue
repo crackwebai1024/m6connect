@@ -6,7 +6,7 @@
   >
     <v-row>
       <v-col cols="12">
-        <v-card flat>
+        <v-card elevation="0">
           <v-card-text>
             <v-row>
               <v-col cols="12">
@@ -23,16 +23,16 @@
                         <template v-slot:activator="{ on }">
                           <v-btn
                             :color="filtering ? 'amber' : 'primary'"
-                            dark
+                            light
                             v-on="on"
                           >
                             {{ $t('milestoneDashboard.filters') }} {{ counter ? '( ' + counter + ' )' : '' }}
 
                             <v-icon
-                              dark
+                              light
                               right
                             >
-                              filter_list
+                              mdi-filter-menu
                             </v-icon>
                           </v-btn>
                         </template>
@@ -166,7 +166,8 @@
                           </tr>
                           <tr class="second">
                             <th
-                              v-for="n in (milestones.length*3)"
+                              v-for="(n, index) in (milestones.length*3)"
+                              :key="'milestoneth-' + index"
                               :style="{ 'background-color': getColor(n) }"
                               width="100"
                             >
@@ -180,7 +181,7 @@
                             <v-menu offset-y>
                               <template v-slot:activator="{ on }">
                                 <v-btn
-                                  flat
+                                  text
                                   small
                                   v-on="on"
                                 >
@@ -228,7 +229,7 @@
                               <template v-slot:activator="{ on }">
                                 <v-btn
                                   :color="mile.color"
-                                  flat
+                                  text
                                   small
                                   v-on="on"
                                 >
@@ -254,7 +255,7 @@
                             >
                               <template v-slot:activator="{ on }">
                                 <v-btn
-                                  flat
+                                  text
                                   small
                                   v-on="on"
                                 >
@@ -543,14 +544,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showModal = false"
           >
             {{ $t('general.no') }}
           </v-btn>
           <v-btn
             color="primary"
-            flat
+            text
             @click="
               updateFutureMilestone = true
               showModal = false

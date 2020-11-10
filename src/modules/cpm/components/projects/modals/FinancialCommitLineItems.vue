@@ -420,7 +420,6 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
           text
           @click="$emit('close-only')"
         >
@@ -429,7 +428,6 @@
 
         <v-btn
           v-if="isCreate"
-          flat
           text
           @click="create"
         >
@@ -438,7 +436,6 @@
 
         <v-btn
           v-if="!isCreate"
-          flat
           text
           @click="update"
         >

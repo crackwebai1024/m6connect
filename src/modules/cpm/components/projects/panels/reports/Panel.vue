@@ -59,7 +59,7 @@
                 </v-autocomplete>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="selectAllProjects"
                 >
@@ -67,7 +67,7 @@
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="options.projects = []"
                 >
@@ -109,7 +109,7 @@
                 </v-select>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="selectAllManagers"
                 >
@@ -117,7 +117,7 @@
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="managerFilter = []"
                 >
@@ -150,7 +150,7 @@
                 </v-select>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="selectAllCampus"
                 >
@@ -158,7 +158,7 @@
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="campusFilter = []"
                 >
@@ -189,7 +189,7 @@
                 </v-select>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="selectAllProjectTypes"
                 >
@@ -197,7 +197,7 @@
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="projectTypes = []"
                 >
@@ -218,7 +218,7 @@
                 />
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="selectAllProjectStatus"
                 >
@@ -226,7 +226,7 @@
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
+                  text
                   small
                   @click="projectStatus = []"
                 >
@@ -358,7 +358,7 @@
               @click="showSectionOptions = !showSectionOptions"
             >
               <v-icon small>
-                edit
+                mdi-pencil
               </v-icon>
             </v-btn>
           </v-col>

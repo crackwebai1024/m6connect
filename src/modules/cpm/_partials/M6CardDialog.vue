@@ -21,10 +21,10 @@
       <v-icon
         v-show="dialog"
         class="cursor"
-        dark
+        light
         @click="dialog = false"
       >
-        close
+        mdi-close
       </v-icon>
 
       <v-tooltip

@@ -268,12 +268,11 @@
                         >
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             small
                             @click="openDialogForecast(period, props.item)"
                           >
-                            <v-icon>edit</v-icon>
+                            <v-icon>mdi-pencil</v-icon>
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -345,12 +344,11 @@
                         >
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             small
                             @click="openDialogForecast(period, props.item)"
                           >
-                            <v-icon>edit</v-icon>
+                            <v-icon>mdi-pencil</v-icon>
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -391,12 +389,11 @@
                   >
                     <v-btn
                       color="primary"
-                      flat
                       icon
                       small
                       @click="openDialogFiscalYear(fiscalYear, props.item)"
                     >
-                      <v-icon>edit</v-icon>
+                      <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -442,7 +439,7 @@
           <v-spacer />
           <v-btn
             :disabled="loading"
-            flat
+            text
             :loading="loading"
             @click="cancelForecast"
           >

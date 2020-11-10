@@ -33,7 +33,7 @@
                 v-else
                 size="100"
               >
-                photo
+                mdi-image
               </v-icon>
             </v-avatar>
           </div>
@@ -85,7 +85,7 @@
         <v-btn
           color="error"
           :disabled="loading"
-          flat
+          text
           @click="clearAllData; dialog = false"
         >
           Cancel
@@ -94,7 +94,7 @@
         <v-btn
           color="blue darken-1"
           :disabled="!imageB64"
-          flat
+          text
           :loading="loading"
           @click="accept"
         >

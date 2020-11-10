@@ -18,7 +18,7 @@
         }"
       >
         <v-icon color="black">
-          edit
+          mdi-pencil
         </v-icon>
       </v-btn>
       <sidebar
@@ -290,14 +290,14 @@
           @click="startTour"
         >
           <v-icon small>
-            near_me
+            mdi-near-me
           </v-icon>
           {{ $t('tourProjectList.start') }}
         </v-btn>
         <v-btn
           v-if="!showPanelProject"
           class="btn-ticket"
-          flat
+          text
           :loading="loading"
           small
           target="_new"
@@ -308,7 +308,7 @@
 
         <v-btn
           class="btn-ticket"
-          flat
+          text
           small
           target="_new"
           @click="dialogSoon = true"
@@ -324,7 +324,7 @@
             <v-btn
               class="breadcrumb-button"
               fab
-              flat
+              icon
               small
               v-on="on"
               @click="fullScreen"
@@ -344,7 +344,7 @@
             <v-btn
               class="breadcrumb-button"
               fab
-              flat
+              icon
               small
               v-on="on"
               @click="dialogSoon = true"
@@ -364,7 +364,7 @@
             <v-btn
               class="breadcrumb-button"
               fab
-              flat
+              icon
               small
               v-on="on"
               @click="!disableFavBtn ? addFavorites() : removeFavorites()"
@@ -395,7 +395,7 @@
             <v-btn
               class="breadcrumb-button"
               fab
-              flat
+              icon
               small
               v-on="on"
               @click="closeProject"

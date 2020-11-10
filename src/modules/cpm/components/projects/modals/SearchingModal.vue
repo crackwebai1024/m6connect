@@ -18,6 +18,7 @@
           ref="form"
         >
           <v-text-field
+            class="mt-6 rounded white search-tag"
             ref="searchTxt"
             v-model="searchTxt"
             :label="where === 'spendings' ? spendingsLabel : commitmentsLabel"
@@ -35,21 +36,18 @@
         <v-btn
           v-if="previousSearch"
           color="red"
-          flat
           @click.prevent="clear"
         >
           Clear
         </v-btn>
         <v-btn
           color="gray"
-          flat
           @click.prevent="cancel"
         >
           Close
         </v-btn>
         <v-btn
           color="primary"
-          flat
           @click.prevent="search"
         >
           Search
@@ -103,3 +101,11 @@ export default {
   }
 }
 </script>
+<style>
+.search-tag .v-label {
+    background: #fff !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+</style>
+

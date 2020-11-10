@@ -124,7 +124,7 @@
                   size="15"
                   @click.stop="openMonthlyForecastForm(props.item, month, $h.dg(props.item, `currentMonthlyForecast.months.${month}.total`, 0))"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
               </div>
             </td>

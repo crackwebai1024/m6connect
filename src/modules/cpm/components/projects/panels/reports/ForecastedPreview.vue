@@ -16,7 +16,7 @@
           small
           @click="fields = !fields"
         >
-          <v-icon>filter_list</v-icon>
+          <v-icon>mdi-filter-menu</v-icon>
         </v-btn>
       </v-col>
     </v-row>
@@ -95,11 +95,10 @@
               <v-btn
                 color="blue"
                 dark
-                flat
                 icon
                 @click="openSchedule(props.item)"
               >
-                <v-icon>schedule</v-icon>
+                <v-icon>mdi-calendar-arrow-right</v-icon>
               </v-btn>
             </td>
           </template>

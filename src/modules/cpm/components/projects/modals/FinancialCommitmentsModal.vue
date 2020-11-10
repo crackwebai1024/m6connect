@@ -3,10 +3,9 @@
     v-model="show"
     max-width="800px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline">
+      <v-card-title class="headline pa-6 d-flex justify-center">
         <template
           v-if="isCreate"
         >
@@ -120,7 +119,7 @@
                           color="green"
                           small
                         >
-                          check
+                          mdi-check
                         </v-icon>
                         In Forecast
                       </template>
@@ -268,20 +267,20 @@
                     slot-scope="{ item }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="
                         item.file === 'image/jpeg' || item.file === 'image/png'
                       "
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
                   <template
@@ -295,7 +294,7 @@
                           :href="item.url"
                           target="_blank"
                         >
-                          <v-icon small>open_in_new</v-icon>
+                          <v-icon small>mdi-folder-plus</v-icon>
                         </a>
                         <v-btn
                           icon
@@ -306,7 +305,7 @@
                             color="red"
                             small
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-btn>
                       </template>
@@ -321,6 +320,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          elevation="1"
           text
           @click="$emit('close-only')"
         >
@@ -328,6 +328,7 @@
         </v-btn>
 
         <v-btn
+          elevation="1"
           v-if="isCreate"
           text
           @click="save('create')"
@@ -336,6 +337,7 @@
         </v-btn>
 
         <v-btn
+          elevation="1"
           v-if="!isCreate"
           text
           @click="save('udpate')"

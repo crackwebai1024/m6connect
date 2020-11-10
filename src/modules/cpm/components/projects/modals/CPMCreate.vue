@@ -312,11 +312,11 @@
                       <td>
                         <v-btn
                           color="red"
-                          flat
+                          text
                           small
                           @click="budgets.splice(index, 1)"
                         >
-                          <v-icon>delete</v-icon>
+                          <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </td>
                     </template>
@@ -357,7 +357,7 @@
           <v-col cols="8" />
           <v-col cols="4">
             <v-btn
-              flat
+              text
               @click="$emit('close')"
             >
               Cancel

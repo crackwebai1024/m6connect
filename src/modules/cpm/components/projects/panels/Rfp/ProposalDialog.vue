@@ -12,7 +12,7 @@
         icon
         @click="$emit('closeDialog')"
       >
-        <v-icon>close</v-icon>
+        <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-toolbar-title>{{ rfp.name }}</v-toolbar-title>
       <v-spacer />
@@ -60,7 +60,7 @@
             text-color="white"
           >
             <v-avatar class="blue darken-3">
-              <v-icon>account_circle</v-icon>
+              <v-icon>mdi-account-circle</v-icon>
             </v-avatar>
             {{ rfp.manager ? rfp.manager.label : '' }}
           </v-chip>
@@ -75,7 +75,7 @@
           >
             <v-avatar class="blue darken-2">
               <v-icon small>
-                calendar_today
+                mdi-calendar
               </v-icon>
             </v-avatar>
             {{ deadline }}
@@ -105,7 +105,7 @@
           text-color="white"
         >
           <v-avatar class="blue darken-3">
-            <v-icon>account_circle</v-icon>
+            <v-icon>mdi-account-circle</v-icon>
           </v-avatar>
           {{ rfp.manager ? rfp.manager.label : '' }}
         </v-chip>
@@ -119,7 +119,7 @@
         >
           <v-avatar class="blue darken-2">
             <v-icon small>
-              calendar_today
+              mdi-calendar
             </v-icon>
           </v-avatar>
           {{ deadline }}
@@ -161,16 +161,16 @@
                   v-if="!item.file"
                   color="blue"
                 >
-                  {{ open ? 'folder_open' : 'folder' }}
+                  {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                 </v-icon>
                 <v-icon v-else-if="item.file === 'image/jpeg' || item.file === 'image/png'">
-                  image
+                  mdi-image
                 </v-icon>
                 <v-icon v-else-if="item.file === 'application/pdf'">
-                  picture_as_pdf
+                  mdi-file-pdf-box
                 </v-icon>
                 <v-icon v-else>
-                  description
+                  mdi-text-box-outline
                 </v-icon>
               </template>
               <template
@@ -182,7 +182,7 @@
                   :href="item.url"
                   target="_blank"
                 >
-                  <v-icon small>open_in_new</v-icon>
+                  <v-icon small>mdi-folder-plus</v-icon>
                 </a>
               </template>
             </v-treeview>
@@ -193,8 +193,8 @@
         <v-card flat>
           <!--<v-card-title class="title ml-4">-->
           <!--Bid Packages <v-spacer></v-spacer>-->
-          <!--<v-btn @click="expandAllPackages" flat>Expand All</v-btn>-->
-          <!--<v-btn @click="packagesPanel = []" flat>Collapse All</v-btn>-->
+          <!--<v-btn @click="expandAllPackages" text>Expand All</v-btn>-->
+          <!--<v-btn @click="packagesPanel = []" text>Collapse All</v-btn>-->
           <!--</v-card-title>-->
           <v-card-text>
             <v-expansion-panel

@@ -11,7 +11,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -26,20 +26,18 @@
               <td>{{ props.item.name }}</td>
               <td class="text-right">
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="editCategory(props.index, props.item)"
                 >
-                  <v-icon>edit</v-icon>
+                  <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="deleteCategory(props.index, props.item)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </td>
             </template>

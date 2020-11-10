@@ -18,7 +18,7 @@
           small
           @click="openProjectDetails(2)"
         >
-          edit
+          mdi-pencil
         </v-icon>
       </v-col>
       <v-col cols="4">

@@ -3,26 +3,25 @@
     v-model="show"
     max-width="800px"
     persistent
-    scrollable
   >
     <v-card>
       <v-card-title
-        class="headline"
-        style="background: #006699; color:#fff"
+        class="headline white grey--text text--darken-1"
       >
-        <v-row align="center">
+        <div class="text-center w-full py-2">
           Commitment Settings
-        </v-row>
+        </div>
         <v-spacer />
 
         <portal-target :name="`commitments-${tab}`" />
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
       <v-tabs
+        class="mx-0 capitalize"
         v-model="tab"
         centered
-        color="#006699"
-        dark
+        color="primary"
         fixed-tabs
       >
         <v-tab>Commitment Status</v-tab>
@@ -34,7 +33,7 @@
         :style="{ height: getViewPortHeight }"
       >
         <v-container
-          class="pa-0"
+          class="pa-6"
           fluid
         >
           <div v-if="tab == 0">
@@ -52,7 +51,7 @@
         <v-spacer />
         <v-btn
           color="gray"
-          flat
+          text
           @click="$emit('close')"
         >
           Close

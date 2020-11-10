@@ -157,14 +157,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="dialogLineItemDateText = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="
                         $refs.dialogLineItemDateText.save(formatDate(date))
                       "
@@ -209,14 +209,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="dialogLineItemPaidDateText = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="
                         $refs.dialogLineItemPaidDateText.save(
                           formatDate(paidDate)
@@ -315,7 +315,7 @@
         <v-btn
           color="gray"
           :disabled="loading"
-          flat
+          text
           :loading="loading"
           @click="closeDialogLineSpending"
         >
@@ -324,7 +324,7 @@
         <v-btn
           color="primary"
           :disabled="loading"
-          flat
+          text
           :loading="loading"
           @click="saveLineItemSpending"
         >

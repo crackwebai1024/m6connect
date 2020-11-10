@@ -60,7 +60,7 @@
         <v-spacer />
         <v-btn
           color="gray"
-          flat
+          text
           @click="$emit('close')"
         >
           Close

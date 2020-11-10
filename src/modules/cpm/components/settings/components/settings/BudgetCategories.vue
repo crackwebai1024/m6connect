@@ -11,7 +11,7 @@
           small
           @click="newL1"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
 
@@ -42,7 +42,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
 
@@ -54,13 +54,12 @@
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-icon
-                    class="ml-0 mr-0"
+                    class="ml-0 mr-0 pointer"
                     color="#757575"
                     size="20"
-                    style="cursor: pointer"
                     @click.stop="edit(item)"
                   >
-                    edit
+                    mdi-pencil
                   </v-icon>
                 </v-list-tile-action>
               </v-list-tile>
@@ -114,7 +113,7 @@
 
           <v-btn
             :disabled="loading"
-            flat
+            text
             @click="cancel"
           >
             Cancel
@@ -123,7 +122,7 @@
           <v-btn
             color="blue"
             dark
-            flat
+            text
             :loading="loading"
             type="submit"
             @click="save"

@@ -3,7 +3,6 @@
     v-model="show"
     max-width="1000px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">
@@ -41,7 +40,7 @@
       <v-card-text :style="{ height: getViewPortHeight }">
         <v-container fluid>
           <div class="commitments-table">
-            <v-card flat>
+            <v-card elevation="0">
               <v-data-table
                 v-if="commitment.line_items"
                 :headers="headers"
@@ -107,7 +106,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          text
           @click="$emit('close')"
         >
           close

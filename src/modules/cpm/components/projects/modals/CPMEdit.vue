@@ -913,7 +913,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          text
           @click="$emit('close')"
         >
           {{ $t('general.close') }}
@@ -921,7 +921,7 @@
 
         <v-btn
           color="primary"
-          flat
+          text
           :loading="showLoading"
           @click="update"
         >

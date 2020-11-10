@@ -16,10 +16,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -28,10 +28,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="editModal = true"
       >
-        edit
+        mdi-pencil
       </v-icon>
 
       <v-tooltip left>
@@ -43,7 +43,7 @@
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>Settings</span>
@@ -183,7 +183,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             :loading="submitLoading"
             @click.prevent="closeDialog"
           >

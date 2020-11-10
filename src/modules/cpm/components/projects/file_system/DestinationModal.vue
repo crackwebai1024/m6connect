@@ -27,7 +27,7 @@
                     v-if="!item.file"
                     color="blue"
                   >
-                    folder
+                    mdi-folder
                   </v-icon>
                 </template>
 
@@ -46,7 +46,7 @@
                     color="blue"
                     @click="selectFile(item)"
                   >
-                    check_box_outline_blank
+                    mdi-checkbox-blank-outline
                   </v-icon>
 
                   <v-icon
@@ -54,7 +54,7 @@
                     color="blue"
                     @click="unselectFile(item)"
                   >
-                    check_box
+                    mdi-check-box-outline
                   </v-icon>
                 </template>
               </v-treeview>
@@ -67,14 +67,12 @@
           <v-col cols="8" />
           <v-col cols="6">
             <v-btn
-              flat
               text
               @click="$emit('close')"
             >
               {{ $t('general.cancel') }}
             </v-btn>
             <v-btn
-              flat
               text
               @click="selectFolder"
             >

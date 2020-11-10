@@ -64,7 +64,7 @@
                   color="blue"
                   small
                 >
-                  drag_indicator
+                  mdi-drag-variant
                 </v-icon>
               </v-list-tile-avatar>
               <v-list-tile-content>{{ name }}</v-list-tile-content>
@@ -74,18 +74,18 @@
                 <v-btn
                   class="xs-btn"
                   fab
-                  flat
+                  icon
                   @click.prevent="editCapitalType(key, name)"
                 >
-                  <v-icon>edit</v-icon>
+                  <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
                   class="xs-btn"
                   fab
-                  flat
+                  icon
                   @click.prevent="deleteCapitalType(key, name)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-list-tile-action>
             </v-list-tile>
