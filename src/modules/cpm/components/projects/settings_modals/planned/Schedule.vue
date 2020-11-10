@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title
-        class="headline white grey--text text--darken-1"
+        class="headline white grey--text text--darken-1 text-h6"
       >
         Schedule Settings
         <v-spacer />

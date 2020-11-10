@@ -4,16 +4,16 @@
     fluid
     grid-list-xs
   >
-    <v-row>
+    <v-row class="ma-0">
       <v-col
         class="list-container"
         cols="12"
       >
         <v-toolbar
           class="mb-4"
-          color="grey lighten-3"
           dense
           text
+          flat
         >
           <h5>Add or Edit Tasks</h5>
 
@@ -187,259 +187,263 @@
           v-model="showForm"
           max-width="800px"
           persistent
-          scrollable
         >
           <v-col
             cols="12"
+            class="pa-0"
             style="overflow-y:auto"
           >
-            <v-card class="pb-2">
+            <v-card>
               <v-container
+                class="pa-0"
                 fluid
                 grid-list-md
               >
-                <v-row>
+                <v-row class="ma-0">
                   <v-col md="12">
                     <v-toolbar
                       id="budget-cost-duration-form"
-                      class="mb-4"
-                      color="grey lighten-3"
                       dense
                       flat
                     >
-                      <h5>{{ formTitle }}</h5>
+                      <h5 class="text-h6">{{ formTitle }}</h5>
                     </v-toolbar>
                   </v-col>
                 </v-row>
+                <v-divider class="grey lighten-3" />
+                <div class="pa-4">
+                  <v-row class="ma-0">
+                    <v-col md="12">
+                      <v-text-field
+                        v-model="name"
+                        color="blue"
+                        label="Task Name"
+                      />
+                    </v-col>
+                  </v-row>
 
-                <v-row>
-                  <v-col md="12">
-                    <v-text-field
-                      v-model="name"
-                      color="blue"
-                      label="Task Name"
-                    />
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col md="4">
-                    <v-btn
-                      outline
-                      @click="showColor = !showColor"
-                    >
-                      Color
-                      <v-icon
-                        v-if="color && color.hex"
-                        v-show="color.hex"
-                        :color="color.hex"
+                  <v-row class="ma-0">
+                    <v-col md="2">
+                      <v-btn
+                        outline
+                        @click="showColor = !showColor"
                       >
-                        mdi-brightness-1
-                      </v-icon>
-                    </v-btn>
-                  </v-col>
+                        Color
+                        <v-icon
+                          class="ml-1"
+                          v-if="color && color.hex"
+                          v-show="color.hex"
+                          :color="color.hex"
+                        >
+                          mdi-brightness-1
+                        </v-icon>
+                      </v-btn>
+                    </v-col>
 
-                  <v-col
-                    v-show="showColor"
-                    md="4"
+                    <v-col
+                      class="pr-0 mb-6"
+                      v-show="showColor"
+                      md="4"
+                    >
+                      <chrome-picker class="w-full mx-auto" v-model="color" />
+                    </v-col>
+
+                    <v-col md="6" class="mt-0">
+                      <v-checkbox
+                        class="mt-0"
+                        v-model="showScheduleRollUpReport"
+                        label="Show on Schedule Roll Up Report"
+                      />
+                    </v-col>
+                  </v-row>
+
+                  <v-row
+                    class="ma-0"
+                    v-show="action !== 'new' && action !== 'add'"
                   >
-                    <chrome-picker v-model="color" />
-                  </v-col>
-
-                  <v-col md="4">
-                    <v-checkbox
-                      v-model="showScheduleRollUpReport"
-                      label="Show on Schedule Roll Up Report"
-                    />
-                  </v-col>
-                </v-row>
-
-                <v-row
-                  v-show="action !== 'new' && action !== 'add'"
-                >
-                  <v-col md="12">
-                    <v-container
-                      class="pa-0"
-                      fluid
-                      grid-list-md
-                    >
-                      <v-row>
-                        <v-col
-                          class="title"
-                          md="4"
-                          sm="12"
-                        >
-                          Schedule Types
-                        </v-col>
-
-                        <v-col
-                          md="4"
-                          sm="12"
-                        >
-                          <v-btn
-                            color="blue"
-                            dark
-                            icon
-                            @click="openAddGanttDialog"
-                          >
-                            <v-icon>mdi-plus</v-icon>
-                          </v-btn>
-                        </v-col>
-                      </v-row>
-
-                      <v-row
-                        v-show="ganttDialog"
-                        class="modal-gantt"
+                    <v-col md="12">
+                      <v-container
+                        class="pa-0"
+                        fluid
+                        grid-list-md
                       >
-                        <v-col md="12">
-                          <v-container
-                            fluid
-                            grid-list-md
+                        <v-row class="ma-0">
+                          <v-col
+                            class="title"
+                            md="4"
+                            sm="12"
                           >
-                            <v-row>
-                              <v-col
-                                class="title"
-                                md="12"
-                              >
-                                {{ ganttModal.title }}
-                              </v-col>
-                            </v-row>
+                            Schedule Types
+                          </v-col>
 
-                            <v-row>
-                              <v-col md="12">
-                                <v-select
-                                  v-model="ganttModal.gantt"
-                                  clearable
-                                  item-text="name"
-                                  item-value="value"
-                                  :items="generalSettings.gantts"
-                                  label="Select a Schedule Type"
-                                  return-object
-                                />
-                              </v-col>
-                            </v-row>
-
-                            <v-row>
-                              <v-text-field
-                                v-model="ganttModal.duration"
-                                label="Duration"
-                              />
-                            </v-row>
-
-                            <v-row>
-                              <v-col md="12">
-                                <v-select
-                                  v-model="ganttModal.budgetFiscalYear"
-                                  clearable
-                                  item-text="name"
-                                  item-value="value"
-                                  :items="generalSettings.fiscalYears"
-                                  label="Fiscal Year"
-                                />
-                              </v-col>
-                            </v-row>
-
-                            <v-row>
-                              <v-col md="12">
-                                <budget-category-select
-                                  :category="
-                                    $h.dg(ganttModal, 'budget_category.ref')
-                                  "
-                                  @newCategory="setBudgetCategory"
-                                />
-                              </v-col>
-                            </v-row>
-
-                            <v-row>
-                              <v-text-field
-                                v-model="ganttModal.budgetPercentage"
-                                label="Budget Percentage %"
-                              />
-                            </v-row>
-
-                            <v-row>
-                              <v-col
-                                md="4"
-                                sm="12"
-                              >
-                                <v-btn
-                                  color="blue"
-                                  outline
-                                  @click="clearGanttDialog"
-                                >
-                                  Cancel
-                                </v-btn>
-                              </v-col>
-
-                              <v-col
-                                md="5"
-                                sm="12"
-                              >
-                                <v-btn
-                                  color="blue"
-                                  dark
-                                  @click="saveGantt"
-                                >
-                                  Save Gantt
-                                </v-btn>
-                              </v-col>
-                            </v-row>
-                          </v-container>
-                        </v-col>
-                      </v-row>
-
-                      <v-row
-                        v-show="!ganttDialog"
-                      >
-                        <v-col md="12">
-                          <v-data-table
-                            :headers="headers"
-                            hide-actions
-                            :items="ganttsInTask"
+                          <v-col
+                            md="4"
+                            sm="12"
                           >
-                            <template v-slot:items="props">
-                              <td>{{ props.item.gantt.name }}</td>
-                              <td>{{ props.item.duration }}</td>
-                              <td>
-                                <v-btn
-                                  color="blue"
-                                  dark
-                                  icon
-                                  @click="editGantt(props.item, props.index)"
-                                >
-                                  <v-icon>mdi-pencil</v-icon>
-                                </v-btn>
+                            <v-btn
+                              color="blue"
+                              dark
+                              icon
+                              @click="openAddGanttDialog"
+                            >
+                              <v-icon>mdi-plus</v-icon>
+                            </v-btn>
+                          </v-col>
+                        </v-row>
 
-                                <v-btn
-                                  color="blue"
-                                  dark
-                                  icon
-                                  @click="deleteGantt(props.index)"
+                        <v-row
+                          v-show="ganttDialog"
+                          class="modal-gantt ma-0"
+                        >
+                          <v-col md="12">
+                            <v-container
+                              fluid
+                              grid-list-md
+                            >
+                              <v-row class="ma-0">
+                                <v-col
+                                  class="title"
+                                  md="12"
                                 >
-                                  <v-icon>mdi-delete</v-icon>
-                                </v-btn>
-                              </td>
-                            </template>
-                          </v-data-table>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-col>
-                </v-row>
+                                  {{ ganttModal.title }}
+                                </v-col>
+                              </v-row>
 
-                <v-row
-                  v-show="!ganttDialog"
-                >
-                  <v-col md="4">
+                              <v-row class="ma-0">
+                                <v-col md="12">
+                                  <v-select
+                                    v-model="ganttModal.gantt"
+                                    clearable
+                                    item-text="name"
+                                    item-value="value"
+                                    :items="generalSettings.gantts"
+                                    label="Select a Schedule Type"
+                                    return-object
+                                  />
+                                </v-col>
+                              </v-row>
+
+                              <v-row class="ma-0">
+                                <v-text-field
+                                  v-model="ganttModal.duration"
+                                  label="Duration"
+                                />
+                              </v-row>
+
+                              <v-row class="ma-0">
+                                <v-col md="12">
+                                  <v-select
+                                    v-model="ganttModal.budgetFiscalYear"
+                                    clearable
+                                    item-text="name"
+                                    item-value="value"
+                                    :items="generalSettings.fiscalYears"
+                                    label="Fiscal Year"
+                                  />
+                                </v-col>
+                              </v-row>
+
+                              <v-row class="ma-0">
+                                <v-col md="12">
+                                  <budget-category-select
+                                    :category="
+                                      $h.dg(ganttModal, 'budget_category.ref')
+                                    "
+                                    @newCategory="setBudgetCategory"
+                                  />
+                                </v-col>
+                              </v-row>
+
+                              <v-row class="ma-0">
+                                <v-text-field
+                                  v-model="ganttModal.budgetPercentage"
+                                  label="Budget Percentage %"
+                                />
+                              </v-row>
+
+                              <v-row class="ma-0">
+                                <v-col
+                                  md="4"
+                                  sm="12"
+                                >
+                                  <v-btn
+                                    color="blue"
+                                    outline
+                                    @click="clearGanttDialog"
+                                  >
+                                    Cancel
+                                  </v-btn>
+                                </v-col>
+
+                                <v-col
+                                  md="5"
+                                  sm="12"
+                                >
+                                  <v-btn
+                                    color="blue"
+                                    dark
+                                    @click="saveGantt"
+                                  >
+                                    Save Gantt
+                                  </v-btn>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-col>
+                        </v-row>
+
+                        <v-row
+                          class="ma-0"
+                          v-show="!ganttDialog"
+                        >
+                          <v-col md="12">
+                            <v-data-table
+                              :headers="headers"
+                              hide-actions
+                              :items="ganttsInTask"
+                            >
+                              <template v-slot:items="props">
+                                <td>{{ props.item.gantt.name }}</td>
+                                <td>{{ props.item.duration }}</td>
+                                <td>
+                                  <v-btn
+                                    color="blue"
+                                    dark
+                                    icon
+                                    @click="editGantt(props.item, props.index)"
+                                  >
+                                    <v-icon>mdi-pencil</v-icon>
+                                  </v-btn>
+
+                                  <v-btn
+                                    color="blue"
+                                    dark
+                                    icon
+                                    @click="deleteGantt(props.index)"
+                                  >
+                                    <v-icon>mdi-delete</v-icon>
+                                  </v-btn>
+                                </td>
+                              </template>
+                            </v-data-table>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-col>
+                  </v-row>
+
+                  <v-row
+                    class="ma-0 d-flex justify-end"
+                    v-show="!ganttDialog"
+                  >
                     <v-btn
+                      class="mx-2"
                       :disabled="loading"
                       @click="cancel"
                     >
                       Cancel
                     </v-btn>
-                  </v-col>
 
-                  <v-col md="4">
                     <v-btn
                       color="blue"
                       dark
@@ -449,8 +453,8 @@
                     >
                       Save
                     </v-btn>
-                  </v-col>
-                </v-row>
+                  </v-row>
+                </div>
               </v-container>
             </v-card>
           </v-col>
