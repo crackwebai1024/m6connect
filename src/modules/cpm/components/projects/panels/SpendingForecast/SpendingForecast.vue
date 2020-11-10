@@ -11,8 +11,7 @@
             @click="printFromVue('chart')"
           >
             <v-icon
-              class="pointer"
-              color="white"
+              class="pointer grey--text text--darken-1"
               text
             >
               mdi-printer

@@ -20,8 +20,7 @@
     >
       <v-icon
         v-show="dialog"
-        class="cursor"
-        light
+        class="pointer grey--text text--darken-1"
         @click="dialog = false"
       >
         mdi-close
@@ -40,7 +39,7 @@
           </span>
         </template>
 
-        <span>{{ titleTooltip }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ titleTooltip }}</span>
       </v-tooltip>
 
       <span
