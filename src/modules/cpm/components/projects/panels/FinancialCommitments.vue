@@ -14,11 +14,11 @@
         <template v-slot:activator="{ on }">
           <!-- THIS CHANGE WAS BECAUSE THE SPENDINGS DIALOG WAS NOT WORKING IN ANOTHER TAB FULLSCREEN -->
           <v-icon
-            dark
+            light
             flat
-            @click="$refs.cardDialog.doubleClick"
+            @click="cardDialogClick"
           >
-            launch
+            mdi-launch
           </v-icon>
         </template>
         <span>{{ $t('general.openNewTab') }}</span>
@@ -32,11 +32,11 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            dark
+            light
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify-scan
           </v-icon>
         </template>
 
@@ -54,11 +54,11 @@
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="search"
+            class="search grey--text text--darken-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
-            search
+            mdi-magnify-scan
           </v-icon>
         </template>
         <span>{{ $t('general.search') }}</span>
@@ -80,23 +80,23 @@
       </template>
 
       <v-icon
-        class="cursor"
-        dark
+        class="cursor grey--text text--darken-2 ml-2"
+        light
         @click="createShowModal = true"
       >
-        add
+        mdi-plus-circle
       </v-icon>
 
       <v-tooltip left>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
+            class="cursor grey--text text--darken-2 ml-2"
             color="white"
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>{{ $t('general.settings') }}</span>
@@ -129,12 +129,14 @@
       expand
       :headers="headers"
       :items="resources"
-      :pagination.sync="pagination"
-      :rows-per-page-items="rowsPerPage"
-      :total-items="pagination.totalItems"
+      :options.sync="pagination"
+      :server-items-length="pagination.totalItems"
       @update:pagination="debounceSearch(search, false)"
     >
-      <template v-slot:items="props">
+      <template
+        slot="items"
+        slot-scope="props"
+      >
         <tr
           class="step6"
           @click="fetchSpending(props)"
@@ -399,7 +401,7 @@ export default {
       showInfo: false,
       associatedSpending: [],
       selectedCommitment: null,
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       showSettings: false,
       dataTable: true,
       projectId,
@@ -464,7 +466,7 @@ export default {
         }
       ],
       pagination: {
-        sortBy: 'number',
+        sortBy: ['number'],
         descending: true,
         rowsPerPage: 10,
         totalItems: 0,
@@ -664,7 +666,9 @@ export default {
     ...mapActions('cpm/projects/commitments', {
       deleteCommitmentStore: 'delete'
     }),
-
+    cardDialogClick() {
+      this.$refs.cardDialog.doubleClick()
+    },
     assignResourcesData({ data, meta: { lastPage, total } } = {}) {
       if (lastPage && this.pagination.page > lastPage) {
         this.pagination.page = 1

@@ -4,18 +4,24 @@ import auth from '../../Auth';
 export default {
   namespaced: true,
   state: {
-    actionFeed:[]
+    actionFeed:[],
+    filter:{}
   },
   getters: {  
     getActionFeed: state => state.actionFeed,
+    getFilter: state => state.filter,
   },
   mutations: {
-    SET_WORK_ORDER: (state, payload) => state.actionFeed = payload,
+    SET_WORK_ORDER:  (state, payload) => state.actionFeed = payload,
+    SET_WORK_FILTER: (state, payload) => state.filter = payload,
   },
   actions: {
-    async setWorkOrder({commit}){
-      let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${auth.state.user.id}`);
-      commit('SET_WORK_ORDER', res['data']);
+    setWorkFilter({ commit }, data){
+      commit('SET_WORK_FILTER', data);
+    },
+    async setWorkOrder(state){
+      let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${auth.state.user.id}/${state.state.filter.key}`);
+      state.commit('SET_WORK_ORDER', res['data']);
     },
     async getUsersList({}, data) {
       return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/user/list`, {userIds: data})

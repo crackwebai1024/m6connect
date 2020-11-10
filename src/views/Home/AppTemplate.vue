@@ -27,7 +27,7 @@
           </div>
 
           <div
-            class="details-content grey h-fit lighten-3 min-h-full pt-2"
+            class="details-content grey h-fit lighten-3 min-h-full pt-3"
           >
             <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
               <slot name="content" />
@@ -92,5 +92,8 @@ export default {
 }
 .panel {
     min-height: 300px;
+}
+.v-tabs-slider {
+    color: #2196F3;
 }
 </style>

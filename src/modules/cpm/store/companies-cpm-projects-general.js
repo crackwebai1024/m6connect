@@ -40,7 +40,9 @@ const actions = {
   fetchVendors({ commit }) {
     return new Promise((resolve, reject) => {
       axios
-        .post('/m6-platform/api/general', { action: 'get_vendors' })
+        .post('https://apps.m6connect.com/m6-platform/api/general', {
+          action: 'get_vendors'
+        })
         .then(response => {
           commit('setVendors', dataGet(response, 'data.result', []))
         })
