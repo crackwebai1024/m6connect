@@ -224,7 +224,7 @@ export default {
   },
   mounted() {
     this.itemInfo['author'] = this.user.id;
-    this.selects({ params: ["wo_status", "wo_request_type"] }).then((res) => {
+    this.selects({ params: ["wo_request_type"] }).then((res) => {
       this.options["type"] = res["data"]["wo_request_type"];
     });
   },

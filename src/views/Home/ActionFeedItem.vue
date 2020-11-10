@@ -2,8 +2,11 @@
   <div v-if="notification['post']['actor']['data']" @mouseover="showActionBtns = true"
     @click="setPost()"
     @mouseleave="showActionBtns = false" class="actionfeed-content__card relative pointer card-custom-shadow rounded white mb-4 pt-4 px-3 pb-12">
-      <div v-if="notification.record" :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
+      <div v-if="notification.record" :class="notification.colorTag +' card-content__tag absolute mt-9 white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
         {{ notification.record.app_type }}
+      </div>
+      <div :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'">
+        {{notification.status}}
       </div>
       <div class="d-flex">
         <v-avatar size="36">
@@ -27,11 +30,11 @@
           <template v-slot:activator="{ on, attrs }">
             <v-badge
               v-for="(follower, index) in users" :key="index + 'follower'" style="margin-left:-5px"
-              :bordered="follower.status === 378 ? false : true"
-              :dark="follower.status === 378 ? false : true"
+              :bordered="follower.status === 378 || follower.status === 379 ? false : true"
+              :dark="follower.status === 378 || follower.status === 379 ? false : true"
               top
-              :color="follower.status === 378 ? 'green accent-3' : 'white black--text'"
-              :icon="follower.status === 378 ? 'mdi-check' : 'mdi-help'"
+              :color="follower.status === 378 ? 'green accent-3' : follower.status === 379 ? 'red' :'white black--text'"
+              :icon="follower.status === 378 ? 'mdi-check' : follower.status === 379 ? 'mdi-close-circle' : 'mdi-help'"
               offset-x="12"
               offset-y="12"
             >
@@ -101,7 +104,7 @@ export default {
     updateStatus(e){
       this.$store.dispatch('WorkOrderModule/updateActionItem', {
         items: this.notification['wo_assignments'],
-        value: e ? 378 : 376
+        value: e ? 378 : 379
       }).then(()=>{
         this.workOrder();
       });

@@ -17,11 +17,11 @@
         <div class="my-5"></div>
           <v-badge
             v-for="(follower, index) in actionPost.props.wo_assignments" :key="index + 'follower'"  
-            :bordered="follower.status === 378 || follower.status === 376 ? false : true"
-            :dark="follower.status === 378 || follower.status === 376 ? false : true"
+            :bordered="follower.status === 378 || follower.status === 379 ? false : true"
+            :dark="follower.status === 378 || follower.status === 379 ? false : true"
             top
-            :color="follower.status === 378 ? 'green accent-3' : follower.status === 376 ? 'red' :'white black--text'"
-            :icon="follower.status === 378 ? 'mdi-check' : follower.status === 376 ? 'mdi-close-circle' : 'mdi-help'"
+            :color="follower.status === 378 ? 'green accent-3' : follower.status === 379 ? 'red' :'white black--text'"
+            :icon="follower.status === 378 ? 'mdi-check' : follower.status === 379 ? 'mdi-close-circle' : 'mdi-help'"
             offset-x="12"
             offset-y="12"
           >
