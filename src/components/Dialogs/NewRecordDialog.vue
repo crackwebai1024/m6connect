@@ -15,7 +15,12 @@
 
             <v-tabs-items v-model="tab">
                 <v-tab-item v-for="item in items" :key="item.tab" >
-                    <component @closeModal="closeModal" v-bind:is="item.component" :app="item.app" />
+                    <component 
+                        @closeModal="closeModal" 
+                        @closingGenericRecord="closingGenericRecord" 
+                        v-bind:is="item.component" 
+                        :app="item.app" 
+                    />
                 </v-tab-item>
             </v-tabs-items>
         </v-card-text>
@@ -41,6 +46,10 @@ export default {
         }),
         closeModal(){
             this.$emit('closeModal');
+        },
+        closingGenericRecord() {
+            this.closeModal()
+            // calling the model would happen here
         }
     },
 

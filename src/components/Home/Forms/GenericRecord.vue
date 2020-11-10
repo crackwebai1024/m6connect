@@ -32,6 +32,7 @@
             </v-row>
             <v-row>
                 <v-col cols="12" class="float-right" >
+                    <v-spacer></v-spacer>
                     <v-btn color="green darken-2" class="white--text" @click="saveRecord">
                         save 
                     </v-btn>
@@ -44,6 +45,7 @@
 
 <script>
 import { mapActions, mapState, mapMutations } from 'vuex'
+const recordDefault = { app_id: "", record_number: "", title: "", description: "", status: "", author: "", metadata: {} }
 
 export default {
     name: "GenericRecord",
@@ -56,31 +58,33 @@ export default {
     },
 
     data: () => ({
-        record: {
-            app_id: "",
-            record_number: "",
-            title: "",
-            description: "",
-            status: "",
-            author: "",
-            metadata: {}
-        },
         statusOptions: [ 'Published', 'Draft', 'Archived' ],
         loading: false,
         rules: {
             generic: [ v => !!v || 'Item is required' ]
-        }
+        },
+        record: recordDefault,
+        recordDefault: recordDefault 
+
     }),
+
     methods: {
         ...mapActions('AppBuilder', {
             createRecord: 'createRecord',
             getLatestRecordNumber: 'getLatestRecordNumber'
         }),
+
         ...mapMutations('SnackBarNotif', {
             notifDanger: 'notifDanger',
             notifSuccess: 'notifSuccess' 
         }),
-       async saveRecord() {
+
+        close(){
+            this.record = {...this.recordDefault}
+            this.$emit('closingGenericRecord')
+        },
+
+        async saveRecord() {
             try {
                 if( !this.$refs.form.validate() ) {
                     this.notifDanger('Please Fill Out The Entire Form')
@@ -96,11 +100,12 @@ export default {
 
                 this.notifSuccess('The Record Was Created')
                 this.loading = false 
+                this.close()
             } catch(e) {
                 this.notifDanger('There Was An Error While Creating The Record')
                 this.loading = false
             }
-       } 
+        } 
     },
 
     computed: {
