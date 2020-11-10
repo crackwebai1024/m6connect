@@ -52,7 +52,6 @@
 
     <div class="align-center d-flex justify-space-between max-w-lg mx-auto w-full">
       <div class="align-center d-flex">
-        activeTab {{activeTab}}
         <v-tabs
           v-if="appLoaded"
           v-model="activeTab"
