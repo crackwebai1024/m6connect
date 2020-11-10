@@ -30,7 +30,7 @@
                 outlined
                 dense
             ></v-text-field>
-            <div v-if="element=='company'" style="max-height: 400px; overflow-y: scroll;" class="messages-container white" >
+            <div v-if="element=='company'" style="height: 400px; overflow-y: scroll;" class="messages-container white" >
                 <div class="d-flex align-center" v-for="(user, ind) of companies" :key="ind+'-company-user-dialog'">
                     <v-btn tile depressed color="transparent" class="my-2 py-6 my-0 btn-user"
                         block

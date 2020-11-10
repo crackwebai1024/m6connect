@@ -27,14 +27,14 @@
           <template v-slot:activator="{ on, attrs }">
             <v-badge
               v-for="(follower, index) in users" :key="index + 'follower'" style="margin-left:-5px"
-              :bordered="follower.review ? false : true"
-              :dark="follower.review ? false : true"
+              :bordered="follower.status === 378 ? false : true"
+              :dark="follower.status === 378 ? false : true"
               top
-              :color="follower.review ? 'green accent-3' : 'white black--text'"
-              :icon="follower.review ? 'mdi-check' : 'mdi-help'"
+              :color="follower.status === 378 ? 'green accent-3' : 'white black--text'"
+              :icon="follower.status === 378 ? 'mdi-check' : 'mdi-help'"
               offset-x="12"
               offset-y="12"
-            > 
+            >
             <v-avatar size="28">
               <v-img v-if="follower.profilePic !== ''" :src="follower.profilePic"></v-img>
               <v-icon v-else color="light-blue lighten-3">mdi-account</v-icon>
@@ -52,10 +52,10 @@
         <p class="mb-0 mr-2"><v-icon size="17">mdi-message-outline</v-icon> {{ cont('comment') }}</p>
       </div>
       <div v-if="showActionBtns" class="d-flex action-btns absolute pa-3 text-caption align-center">
-        <v-btn icon color="grey">
+        <v-btn @click="updateStatus(false)" icon color="grey">
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-btn icon color="green accent-3">
+        <v-btn @click="updateStatus(true )" icon color="green accent-3">
           <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
         </v-btn>
       </div>
@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     ...mapActions("WorkOrderModule", {
+      workOrder: "setWorkOrder",
       getUsers: "getUsersList"
     }),
     ...mapActions("InfoModule", {
@@ -97,6 +98,14 @@ export default {
       setActPost: "setActionPost"
     }),
     ...mapActions("GeneralListModule", {recordData: "push_data_to_active"}),
+    updateStatus(e){
+      this.$store.dispatch('WorkOrderModule/updateActionItem', {
+        items: this.notification['wo_assignments'],
+        value: e ? 378 : 376
+      }).then(()=>{
+        this.workOrder();
+      });
+    },
     setPost() {
       let { record, colorTag, id } = this.notification;
       
@@ -172,11 +181,18 @@ export default {
     if (this.notification.wo_assignments && this.notification.wo_assignments.length > 0) {
       let localUsers = [];
       this.notification.wo_assignments.forEach(assign => {
+        this.users.push({
+          status: assign.status,
+          actionId: assign.id
+        });
         localUsers.push(assign.assignee)
       });
       
       this.getUsers(localUsers).then(res => {
-        this.users = res.data
+        res.data.forEach((user, ind) => {
+          let info = [user, this.users[ind]];
+          this.users[ind] = Object.assign(...info);
+        })
       });
     }
   }

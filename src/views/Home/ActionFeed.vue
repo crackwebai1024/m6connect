@@ -120,6 +120,7 @@ export default {
   watch: {
     cUser: function (val) {
       this.user = val;
+      this.loading = true;
       this.workOrder().then(() => {
         this.loading = false;
       });

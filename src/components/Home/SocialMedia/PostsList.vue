@@ -15,21 +15,21 @@
       </template>
       <template v-slot:assignments>
         <div class="my-5"></div>
-        <v-badge
-          v-for="(follower, index) in actionPost.props.wo_assignments" :key="index + 'follower'" style="margin-left:-5px"
-          :bordered="follower.review ? false : true"
-          :dark="follower.review ? false : true"
-          top
-          :color="follower.review ? 'green accent-3' : 'white black--text'"
-          :icon="follower.review ? 'mdi-check' : 'mdi-help'"
-          offset-x="12"
-          offset-y="12"
-        >
-          <v-avatar size="28">
-            <v-img v-if="follower.profilePic !== ''" :src="follower.profilePic"></v-img>
-            <v-icon v-else color="light-blue lighten-3">mdi-account</v-icon>
-          </v-avatar>
-        </v-badge>
+          <v-badge
+            v-for="(follower, index) in actionPost.props.wo_assignments" :key="index + 'follower'"  
+            :bordered="follower.status === 378 || follower.status === 376 ? false : true"
+            :dark="follower.status === 378 || follower.status === 376 ? false : true"
+            top
+            :color="follower.status === 378 ? 'green accent-3' : follower.status === 376 ? 'red' :'white black--text'"
+            :icon="follower.status === 378 ? 'mdi-check' : follower.status === 376 ? 'mdi-close-circle' : 'mdi-help'"
+            offset-x="12"
+            offset-y="12"
+          >
+            <v-avatar size="28">
+              <v-img v-if="follower.profilePic !== ''" :src="follower.profilePic"></v-img>
+              <v-icon v-else color="light-blue lighten-3">mdi-account</v-icon>
+            </v-avatar>
+          </v-badge>
       </template>
     </post-item>
     <post-item
@@ -128,3 +128,5 @@ export default {
   }
 }
 </script>
+<style>
+</style>

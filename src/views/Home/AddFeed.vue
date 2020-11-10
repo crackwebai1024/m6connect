@@ -62,22 +62,12 @@
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col cols="6" class="py-0">
+                <v-col cols="12" class="py-0">
                   <v-select
                     v-model="itemInfo.type"
                     :rules="selectRules"
                     label="Request Type"
                     :items="options.type"
-                    item-value="id"
-                    item-text="value"
-                  ></v-select>
-                </v-col>
-                <v-col cols="6" class="py-0">
-                  <v-select
-                    v-model="itemInfo.status"
-                    :rules="selectRules"
-                    label="Status"
-                    :items="options.Status"
                     item-value="id"
                     item-text="value"
                   ></v-select>
@@ -167,13 +157,11 @@ export default {
       title: null,
       type: null,
       record_id: null,
-      status: null,
     },
     res: {
       due_date: false,
     },
     options: {
-      Status: [],
       records: [],
       type: [],
     },
@@ -238,7 +226,6 @@ export default {
     this.itemInfo['author'] = this.user.id;
     this.selects({ params: ["wo_status", "wo_request_type"] }).then((res) => {
       this.options["type"] = res["data"]["wo_request_type"];
-      this.options["Status"] = res["data"]["wo_status"];
     });
   },
 };
