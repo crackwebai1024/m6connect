@@ -119,7 +119,7 @@
                     <v-text-field
                       v-model="currentfiscalYear.startDate"
                       label="Start date"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       :rules="[rules.required]"
                       v-on="on"
@@ -169,7 +169,7 @@
                     <v-text-field
                       v-model="currentfiscalYear.endDate"
                       label="End date"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       :rules="[rules.required]"
                       v-on="on"

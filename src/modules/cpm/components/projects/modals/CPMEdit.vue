@@ -553,7 +553,7 @@
                         `${$t('cpm.projects.phase')} ${$t('general.date')}`
                       "
                       persistent-hint
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       v-on="on"
                     />
                   </template>

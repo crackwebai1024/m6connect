@@ -6,13 +6,12 @@
   >
     <v-card>
       <v-card-title
-        class="green headline lighten-2"
+        class="white grey--text text--darken-1"
         primary-title
-        style="color: white;"
       >
         Search in {{ where }}
       </v-card-title>
-
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-form
           ref="form"

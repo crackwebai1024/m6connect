@@ -114,7 +114,7 @@
                     <v-text-field
                       v-model="rfp.sharpBoard"
                       label="Sharp HealthCare Board"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       v-on="on"
                     />

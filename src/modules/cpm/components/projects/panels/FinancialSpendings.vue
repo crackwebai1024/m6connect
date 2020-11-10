@@ -261,8 +261,8 @@
       persistent
     >
       <v-card
+        class="w-full"
         v-show="method === 'add' || method === 'put'"
-        :style="{ width: method === 'add' ? '80vw' : '40vw' }"
       >
         <v-card-title
           class="headline white grey--text text--darken-1"
@@ -397,7 +397,7 @@
                       <v-text-field
                         v-model="dialogProperties.dateOpenedText"
                         :label="$t('general.dateOpened')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         v-on="on"
                         @blur="
@@ -466,7 +466,7 @@
                       <v-text-field
                         v-model="dialogProperties.paidDateText"
                         :label="$t('general.datePaid')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         :rules="[rules.required]"
                         v-on="on"
@@ -735,7 +735,6 @@
       v-model="dialogLineItem"
       max-width="600px"
       persistent
-      scrollable
       transition="dialog-transition"
     >
       <v-card>
@@ -871,7 +870,7 @@
                       <v-text-field
                         v-model="dialogLineItemProperties.dateText"
                         :label="$t('general.date')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         :rules="[rules.required]"
                         v-on="on"
@@ -922,7 +921,7 @@
                       <v-text-field
                         v-model="dialogLineItemProperties.paidDateText"
                         :label="$t('general.datePaid')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         v-on="on"
                         @blur="
@@ -1144,7 +1143,6 @@
       v-model="showLineItemsModal"
       max-width="1000px"
       persistent
-      scrollable
       transition="dialog-transition"
     >
       <v-card

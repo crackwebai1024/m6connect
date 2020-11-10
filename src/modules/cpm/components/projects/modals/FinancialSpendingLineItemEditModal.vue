@@ -140,7 +140,7 @@
                     <v-text-field
                       v-model="lineItemDraft.dateText"
                       :label="$t('general.date')"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       :rules="[rules.required]"
                       v-on="on"
@@ -191,7 +191,7 @@
                     <v-text-field
                       v-model="lineItemDraft.paidDateText"
                       :label="$t('general.datePaid')"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       v-on="on"
                       @blur="

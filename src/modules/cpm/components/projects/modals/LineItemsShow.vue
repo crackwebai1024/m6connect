@@ -106,6 +106,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          elevation="1"
           text
           @click="$emit('close')"
         >

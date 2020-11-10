@@ -25,8 +25,9 @@
         <v-spacer />
 
         <v-btn
-          color="error"
+          color="red"
           :disabled="deleting"
+          elevation="1"
           text
           @click="$emit('cancel')"
         >
@@ -36,6 +37,7 @@
         <v-btn
           color="blue darken-1 white--text"
           :disabled="deleting"
+          elevation="1"
           text
           @click="$emit('confirm')"
         >

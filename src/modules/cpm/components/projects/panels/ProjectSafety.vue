@@ -144,7 +144,7 @@
                         hint="MM/DD/YYYY format"
                         label="Start Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         :rules="[rules.required]"
                         v-on="on"
                       />
@@ -267,7 +267,7 @@
                         hint="MM/DD/YYYY format"
                         label="End Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         :rules="[rules.required]"
                         v-on="on"
                       />

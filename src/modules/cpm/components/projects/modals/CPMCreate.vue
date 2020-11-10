@@ -225,7 +225,7 @@
                         hint="MM/DD/YYYY format"
                         label="Start Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         v-on="on"
                       />
                     </template>
@@ -272,7 +272,7 @@
                         hint="MM/DD/YYYY format"
                         label="End Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         v-on="on"
                       />
                     </template>

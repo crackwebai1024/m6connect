@@ -428,7 +428,7 @@
                 <v-text-field
                   v-model="elementToEdit.amount"
                   label="Amount"
-                  prepend-icon="attach_money"
+                  prepend-icon="mdi-cash"
                 />
               </v-col>
             </v-row>
