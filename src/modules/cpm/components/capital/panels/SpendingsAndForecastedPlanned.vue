@@ -1028,8 +1028,4 @@ computed: {
 .row-fiscal-year {
   min-width: 220px;
 }
-
-.pointer {
-  cursor: pointer;
-}
 </style>

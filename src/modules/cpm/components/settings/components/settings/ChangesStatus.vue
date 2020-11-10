@@ -227,10 +227,6 @@ export default {
   top: 5px;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
 .customBackground {
   background: #006699;
   color: #fff;

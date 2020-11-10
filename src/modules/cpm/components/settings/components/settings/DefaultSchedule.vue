@@ -905,7 +905,4 @@ export default {
   width: 100%;
 }
 
-.pointer {
-  cursor: pointer;
-}
 </style>

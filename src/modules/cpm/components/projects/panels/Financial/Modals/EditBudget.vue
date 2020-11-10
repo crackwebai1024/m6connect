@@ -900,8 +900,4 @@ export default {
   background: #006699;
   color: #fff;
 }
-
-.pointer {
-  cursor: pointer;
-}
 </style>

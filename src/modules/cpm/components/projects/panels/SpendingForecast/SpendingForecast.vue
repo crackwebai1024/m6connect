@@ -459,8 +459,4 @@ export default {
 .apexClass .apexcharts-canvas {
   z-index: 1 !important;
 }
-
-.pointer {
-  cursor: pointer;
-}
 </style>

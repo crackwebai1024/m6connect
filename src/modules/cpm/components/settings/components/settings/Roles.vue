@@ -500,10 +500,6 @@ export default {
   position: relative;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
 .card-background {
   background: #006699;
   color: #fff;
