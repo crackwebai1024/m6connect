@@ -9,7 +9,7 @@
 
         <v-spacer />
         <v-btn
-          class="flex-end"
+          class="justify-end"
           color="blue darken-2"
           dark
           fab
@@ -536,10 +536,6 @@ export default {
 
 .padding-top-10 {
   padding-top: 0.625rem;
-}
-
-.flex-end {
-  justify-content: flex-end;
 }
 
 .text-right {

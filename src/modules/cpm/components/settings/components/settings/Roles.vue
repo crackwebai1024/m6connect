@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title class="posRelative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="assignment-2"
@@ -496,10 +496,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.posRelative {
-  position: relative;
-}
-
 .card-background {
   background: #006699;
   color: #fff;

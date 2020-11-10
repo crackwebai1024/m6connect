@@ -15,7 +15,7 @@
         </v-row>
         <v-spacer />
         <v-btn
-          class="flex-end"
+          class="justify-end"
           color="blue darken-2"
           dark
           fab
@@ -46,7 +46,7 @@
                 cols="6"
               >
                 <v-icon
-                  class="flex-end pt-2"
+                  class="justify-end pt-2"
                   size="20"
                   @click.stop="editMode=!editMode"
                 >
@@ -64,7 +64,7 @@
               >
                 <v-switch
                   v-model="budget.active"
-                  class="flex-end pt-2"
+                  class="justify-end pt-2"
                   label="Active"
                 />
               </v-col>
@@ -229,7 +229,7 @@
 
                   <v-spacer />
                   <v-btn
-                    class="flex-end"
+                    class="justify-end"
                     color="blue darken-2"
                     dark
                     fab
@@ -881,10 +881,6 @@ export default {
 
 .padding-top-10 {
   padding-top: 	0.625rem;
-}
-
-.flex-end {
-  justify-content: flex-end;
 }
 
 .text-right {
