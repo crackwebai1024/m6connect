@@ -43,6 +43,7 @@
     <v-dialog
       v-model="dialog"
       width="800"
+      persistent
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
