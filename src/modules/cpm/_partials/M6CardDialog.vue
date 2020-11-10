@@ -1,7 +1,7 @@
 <template>
   <component
     :is="rootComponent"
-    class="m6-card-dialog mb-2 card-custom-shadow white rounded"
+    class="w-full m6-card-dialog mb-2 card-custom-shadow white rounded"
     :class="{ 'ma-0': !dialog }"
     column
     fill-height

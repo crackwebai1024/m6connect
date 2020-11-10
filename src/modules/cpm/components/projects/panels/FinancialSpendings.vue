@@ -47,7 +47,7 @@
 
       <v-tooltip
         v-if="!search"
-        left
+        bottom
       >
         <template v-slot:activator="{ on }">
           <div class="blob white">
@@ -62,7 +62,7 @@
           </div>
         </template>
 
-        <span>{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
