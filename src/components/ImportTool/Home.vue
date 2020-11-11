@@ -190,12 +190,12 @@
       width="450px"
     >
       <v-card>
-        <v-card-title v-if="preset.id">
-          Update Template
+        <v-card-title class="headline px-6 py-3 white">
+          <span class="grey--text text--darken-2 text-h6">
+            {{ preset.id ? 'Update Template' : 'Add New Template' }}
+          </span>
         </v-card-title>
-        <v-card-title v-else>
-          Add New Template
-        </v-card-title>
+        <v-divider class="grey lighten-3 z-index" />
         <v-card-text class="px-6">
           <v-text-field
             v-model="preset.name"
