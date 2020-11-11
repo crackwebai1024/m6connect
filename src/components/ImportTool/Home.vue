@@ -1,14 +1,22 @@
 <template>
-  <v-container class="overflow-y-auto">
-    <v-row class="my-5">
+  <v-container class="dont-show-scroll vertical-scroll">
+    <v-row class="mx-0 my-4">
       <v-col
+        class="pa-0"
         cols="12"
       >
         <v-card>
-          <v-card-title>Upload Document</v-card-title>
-          <v-card-text>
+          <v-card-title class="headline px-6 py-3 white">
+            <span class="grey--text text--darken-2 text-h6">
+              Upload Document
+            </span>
+          </v-card-title>
+          <v-divider class="grey lighten-3 z-index" />
+          <v-card-text class="pb-5 px-6">
             <v-form>
-              <p>Please upload your export file</p>
+              <p class="blue--text mb-1 text--lighten-1">
+                Please upload your export file
+              </p>
               <input
                 type="file"
                 @change="onFileChange"
@@ -18,18 +26,27 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-row class="my-5">
+    <v-row class="mx-0 my-4">
       <v-col
         v-if="fileData"
+        class="pa-0"
         cols="12"
       >
         <v-card>
-          <v-card-title>Select Your Headers</v-card-title>
-          <v-card-text>
+          <v-card-title class="headline px-6 py-3 white">
+            <span class="grey--text text--darken-2 text-h6">
+              Select Your Headers
+            </span>
+          </v-card-title>
+          <v-divider class="grey lighten-3" />
+          <v-card-text class="px-6">
             <template v-if="firstRow === null && fileData">
               <template v-if="!getHeadersByRow && fileData.headers">
-                <p>This are the headers?</p>
+                <p class="blue--text mb-1 text--lighten-1">
+                  This are the headers?
+                </p>
                 <table-headers
+                  class="table-headers"
                   :headers="fileData.headers"
                 />
               </template>
@@ -46,12 +63,13 @@
                 />
                 <table-headers
                   v-if="rowSelected.length"
+                  class="table-headers"
                   :headers="rowSelected"
                 />
               </template>
             </template>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="d-flex justify-end pb-4 px-6">
             <v-btn
               v-if="!getHeadersByRow"
               @click="setHeaders(fileData.headers)"
@@ -64,7 +82,10 @@
             >
               Yes
             </v-btn>
-            <v-btn @click="getRows">
+            <v-btn
+              class="ml-3"
+              @click="getRows"
+            >
               No
             </v-btn>
           </v-card-actions>
@@ -72,66 +93,88 @@
       </v-col>
     </v-row>
 
-    <v-row class="my-5">
-      <v-col cols="12">
+    <v-row class="mx-0 my-4">
+      <v-col
+        class="pa-0"
+        cols="12"
+      >
         <v-card>
-          <v-card-title>
-            Map Fields or Select Preset <v-spacer /> <v-select
+          <v-card-title class="headline px-6 py-4 white">
+            <span class="grey--text text--darken-2 text-h6">
+              Map Fields
+            </span>
+            <v-spacer />
+            <v-select
+              class="mt-3 select-preset"
               clearable
               dense
               item-text="name"
               :items="presets"
-              label="Select a Preset"
+              label="Select a Template"
               return-object
               @change="setPreset"
             />
           </v-card-title>
-          <v-card-text>
+          <v-divider class="grey lighten-3" />
+          <v-card-text class="px-6">
             <v-row>
               <v-col
+                class="pb-0"
                 cols="12"
                 md="12"
               >
-                <v-simple-table>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>FILE HEADER</th>
-                      <th>ENTITY</th>
+                <v-simple-table class="presets-table table-headers">
+                  <thead class="d-none">
+                    <tr class="d-flex flex-column preset-row-header">
+                      <th class="d-none">
+                        #
+                      </th>
+                      <th class="align-center d-flex justify-start">
+                        Field Name
+                      </th>
+                      <th class="align-center d-flex justify-start">
+                        Type of Data
+                      </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="d-flex">
                     <template
                       v-for="(header, hi) in importHeaders"
                     >
                       <tr
                         :key="hi"
+                        class="d-flex flex-column preset-row"
                       >
-                        <td>{{ hi+1 }}</td>
-                        <td>
-                          {{ header }}
+                        <td class="d-none">
+                          {{ hi+1 }}
                         </td>
-                        <td>
+                        <td class="align-center d-flex font-weight-bold justify-start text-caption">
+                          {{ typeof(header) === 'string' ? header : '-' }}
+                        </td>
+                        <td
+                          class="justify-start preset-select-content"
+                          style="height: auto;"
+                        >
                           <v-autocomplete
                             v-model="mappedFields[hi]"
+                            class="font-weight-bold justify-start mb-1 text-caption"
+                            elevation="3"
                             item-text="name"
                             item-value="value"
                             :items="selectFields"
-                            label="Select Field"
+                            label="Data Type"
                           />
                         </td>
                       </tr>
                     </template>
                   </tbody>
                 </v-simple-table>
-                <v-card-actions>
+                <v-card-actions class="pa-0 pt-6">
                   <v-spacer />
                   <v-btn
-                    color="blue"
-                    dark
                     @click="savePresetDialog = true"
                   >
-                    Save Preset
+                    Save Template
                   </v-btn>
                 </v-card-actions>
               </v-col>
@@ -151,7 +194,7 @@
 
               <!--                      <v-expansion-panel-content>-->
               <!--                        <v-card>-->
-              <!--                          <v-card-text>-->
+              <!--                          <v-card-text class="px-6">-->
               <!--                            <template v-for="field in sections">-->
               <!--                              <div :key="field.name">-->
               <!--                                <p class="mb-0">-->
@@ -176,19 +219,18 @@
       </v-col>
     </v-row>
 
-    <v-row>
-      <v-col>
-        <v-card>
-          <v-card-text>
-            <v-btn @click="startImport">
-              Start
-            </v-btn>
-          </v-card-text>
-        </v-card>
-      </v-col>
+    <v-row class="d-flex justify-center ma-0 mb-4">
+      <v-btn
+        class="blue capitalize lighten-1 px-10 py-5 text-h6 white--text"
+        elevation="1"
+        text
+        @click="startImport"
+      >
+        Start
+      </v-btn>
     </v-row>
 
-    <!--Save Preset Dialog-->
+    <!--Save Template Dialog-->
     <v-dialog
       v-if="savePresetDialog"
       v-model="savePresetDialog"
@@ -196,12 +238,12 @@
     >
       <v-card>
         <v-card-title v-if="preset.id">
-          Update Preset
+          Update Template
         </v-card-title>
         <v-card-title v-else>
-          Add New Preset
+          Add New Template
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="px-6">
           <v-text-field
             v-model="preset.name"
             label="Name"
@@ -425,7 +467,6 @@ export default {
       },
       preset: {},
       savePresetDialog: false
-
     }
   },
   computed: {
@@ -678,5 +719,24 @@ export default {
 <style>
 .theme--light.v-text-field > .v-input__control > .v-input__slot:before {
   border: 1px solid #000;
+}
+.select-preset .v-select__slot {
+  padding: 5px;
+}
+.table-headers .table, .table-headers th, .table-headers td {
+  border: 1px solid #90A4AE !important;
+  font-weight: 900;
+}
+.table-headers .v-data-table__wrapper {
+  padding-bottom: 4px;
+}
+.presets-table table {
+  display: flex;
+}
+.preset-row-header {
+  min-width: 105px;
+}
+.preset-row {
+  min-width: 230px;
 }
 </style>
