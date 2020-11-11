@@ -30,11 +30,11 @@
           <template v-slot:activator="{ on, attrs }">
             <v-badge
               v-for="(follower, index) in users" :key="index + 'follower'" style="margin-left:-5px"
-              :bordered="follower.status === 378 || follower.status === 379 ? false : true"
-              :dark="follower.status === 378 || follower.status === 379 ? false : true"
+              :bordered="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
+              :dark="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
               top
-              :color="follower.status === 378 ? 'green accent-3' : follower.status === 379 ? 'red' :'white black--text'"
-              :icon="follower.status === 378 ? 'mdi-check' : follower.status === 379 ? 'mdi-close-circle' : 'mdi-help'"
+              :color="follower.status === 'Complete' ? 'green accent-3' : follower.status === 'Declined' ? 'red' :'white black--text'"
+              :icon="follower.status === 'Complete' ? 'mdi-check' : follower.status === 'Declined' ? 'mdi-close-circle' : 'mdi-help'"
               offset-x="12"
               offset-y="12"
             >
@@ -104,7 +104,7 @@ export default {
     updateStatus(e){
       this.$store.dispatch('WorkOrderModule/updateActionItem', {
         items: this.notification['wo_assignments'],
-        value: e ? 378 : 379
+        value: e ? 'Complete' : 'Declined'
       }).then(()=>{
         this.workOrder();
       });
@@ -139,7 +139,7 @@ export default {
     pendingApprovals(approvals) {
       let pendingApprovals = 0 ;
       approvals.forEach(element => {
-        if(!element.review) pendingApprovals++
+        if(element.status === 'Pending') pendingApprovals++
       });
       
       return pendingApprovals;

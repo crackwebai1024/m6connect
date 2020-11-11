@@ -130,11 +130,6 @@ export default {
       });
     },
     actFeed: function(val) {
-      if( val.length > 0 ) {
-        val.forEach(item => {
-          item['status'] = this.status.filter(e => e.id === item.status)[0]['value'];
-        });
-      }
       this.currentIndex = 0;
     }
   },
