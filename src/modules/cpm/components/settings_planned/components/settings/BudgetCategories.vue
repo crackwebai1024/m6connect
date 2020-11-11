@@ -9,7 +9,7 @@
         small
         @click="newL1"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <v-container>
@@ -26,33 +26,30 @@
           <td class="text-right">
             <v-icon
               v-if="props.item.cat_1.length > 0"
-              class="ml-4 mr-0"
+              class="ml-4 mr-0 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               @click.stop="showSubCategoriesL2(props.item)"
             >
-              assignments
+              mdi-clipboard-text
             </v-icon>
 
             <v-icon
-              class="ml-0 mr-2"
+              class="ml-0 mr-2 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               @click.stop="addL1(props.item)"
             >
-              add
+              mdi-plus
             </v-icon>
 
             <v-icon
-              class="ml-0 mr-0"
+              class="ml-0 mr-0 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               @click.stop="edit(props.item)"
             >
-              edit
+              mdi-pencil
             </v-icon>
           </td>
         </template>
@@ -68,14 +65,12 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             {{ formTitle }}
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text class="pa-2">
           <v-text-field
             v-model="name"
@@ -94,7 +89,7 @@
 
           <v-btn
             :disabled="loading"
-            flat
+            text
             @click="cancel"
           >
             Cancel
@@ -102,7 +97,7 @@
           <v-btn
             color="blue"
             dark
-            flat
+            text
             :loading="loading"
             @click="save"
           >
@@ -122,16 +117,13 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Sub Category for: {{ l1Item.code ? l1Item.code + ' -' : '' }}
             {{ l1Item.name }}
-          </v-row>
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-data-table
             :headers="headers"
@@ -146,43 +138,39 @@
               <td class="text-right">
                 <v-icon
                   v-if="props.item.cat_2.length > 0"
-                  class="ml-4 mr-0"
+                  class="ml-4 mr-0 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="showSubCategoriesL3(props.item)"
                 >
-                  assignments
+                  mdi-clipboard-text
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-2"
+                  class="ml-0 mr-2 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="addL2(props.item)"
                 >
-                  add
+                  mdi-plus
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-0"
+                  class="ml-0 mr-0 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="edit(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
-                  class="ml-2 mr-0"
+                  class="ml-2 mr-0 pointer"
                   color="#f44336"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="deleteL2(l1Item, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -191,7 +179,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showSubCatL2 = false"
           >
             Close
@@ -210,15 +198,13 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Sub Category for: {{ l2Item.code ? l2Item.code + ' -' : '' }}
             {{ l2Item.name }}
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-data-table
             :headers="headers"
@@ -231,23 +217,21 @@
               </td>
               <td class="text-right">
                 <v-icon
-                  class="ml-0 mr-2"
+                  class="ml-0 mr-2 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="edit(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-0"
+                  class="ml-0 mr-0 pointer"
                   color="#f44336"
                   size="20"
-                  style="cursor: pointer"
                   @click.stop="deleteL3(l2Item, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -256,7 +240,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showSubCatL3 = false"
           >
             Close

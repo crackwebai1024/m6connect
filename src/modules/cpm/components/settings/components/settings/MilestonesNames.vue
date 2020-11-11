@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="milestones"
@@ -16,7 +16,7 @@
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -30,7 +30,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -60,7 +60,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
                 <v-list-tile-content>{{ item }}</v-list-tile-content>
@@ -69,21 +69,19 @@
                 >
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
                     @click.prevent="editElement(key, item)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
                     @click.prevent="deleteElement(key, item)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>
@@ -102,20 +100,18 @@
               <td>{{ props.item }}</td>
               <td class="text-xs-right">
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  <v-icon>edit</v-icon>
+                  <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -132,13 +128,10 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Milestone Names
-          </v-row>
+          </span>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -174,7 +167,7 @@
                       @click="showValidForm = true"
                     >
                       <v-icon color="blue">
-                        add
+                        mdi-plus
                       </v-icon>
                     </v-btn>
                   </v-subheader>
@@ -190,12 +183,12 @@
 
                       <v-list-tile-action>
                         <v-icon @click="editValidDate(item, index)">
-                          edit
+                          mdi-pencil
                         </v-icon>
                       </v-list-tile-action>
                       <v-list-tile-action>
                         <v-icon @click.prevent="deleteValidDate(key, item)">
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-list-tile-action>
                     </v-list-tile>
@@ -238,12 +231,12 @@
       max-width="400px"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          Valid Date
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Valid Date
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-menu
             v-model="validDatePicker"

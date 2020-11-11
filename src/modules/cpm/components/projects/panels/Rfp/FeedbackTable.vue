@@ -58,7 +58,7 @@
             text-color="white"
           >
             <v-avatar class="darken-3 green">
-              <v-icon>done</v-icon>
+              <v-icon>mdi-check</v-icon>
             </v-avatar>
             Bidding
           </v-chip>
@@ -84,7 +84,7 @@
             text-color="white"
           >
             <v-avatar class="darken-3 red">
-              <v-icon>not_interested</v-icon>
+              <v-icon>mdi-bookmark-off</v-icon>
             </v-avatar>
             Not Bidding
           </v-chip>
@@ -97,7 +97,7 @@
             text-color="white"
           >
             <v-avatar class="blue darken-3">
-              <v-icon>done</v-icon>
+              <v-icon>mdi-check</v-icon>
             </v-avatar>
             Sending Proposal
           </v-chip>

@@ -14,7 +14,7 @@
         <template v-slot:activator="{ on }">
           <!-- THIS CHANGE WAS BECAUSE THE SPENDINGS DIALOG WAS NOT WORKING IN ANOTHER TAB FULLSCREEN -->
           <v-icon
-            flat
+            text
             light
             @click="cardDialogClick"
           >
@@ -50,7 +50,7 @@
 
       <v-tooltip
         v-if="!search"
-        left
+        bottom
       >
         <template v-slot:activator="{ on }">
           <v-icon
@@ -61,21 +61,21 @@
             mdi-magnify-scan
           </v-icon>
         </template>
-        <span>{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
-        <v-tooltip right>
+        <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon
               class="close-search"
               v-on="on"
               @click="clearSearch"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
-          <span>{{ $t('general.clearSearch') }}</span>
+          <span class="grey lighten-3 rounded pa-1">{{ $t('general.clearSearch') }}</span>
         </v-tooltip>
       </template>
 
@@ -87,7 +87,7 @@
         mdi-plus-circle
       </v-icon>
 
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
@@ -99,7 +99,7 @@
             mdi-cog
           </v-icon>
         </template>
-        <span>{{ $t('general.settings') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.settings') }}</span>
       </v-tooltip>
     </template>
 

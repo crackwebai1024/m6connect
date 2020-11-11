@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="assignment-2"
@@ -9,14 +9,14 @@
           <v-btn
             absolute
             color="white"
-            dark
+            light
             fab
             right
             small
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -30,7 +30,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -45,23 +45,21 @@
               <td>{{ props.item.users.length }}</td>
               <td class="text-right">
                 <v-icon
-                  class="ml-0 mr-2"
+                  class="ml-0 mr-2 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.prevent="editElement(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-0"
+                  class="ml-0 mr-0 pointer"
                   color="#f44336"
                   size="20"
-                  style="cursor: pointer"
                   @click.prevent="deleteElement(props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -78,23 +76,12 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            <label
-              v-if="Number.isInteger(currentElement)"
-              class="white--text"
-            >
-              Edit Role
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Role</label>
-          </v-row>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ Number.isInteger(currentElement) ? 'Edit Role' : 'Add New Role' }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <div class="form-group">
             <v-text-field
@@ -167,7 +154,7 @@
 
           <v-btn
             color="red darken-1"
-            flat="flat"
+            text
             @click="showConfirmDialog = false"
           >
             Cancel

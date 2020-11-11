@@ -3,7 +3,6 @@
     v-model="show"
     max-width="1000px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline">
@@ -41,7 +40,7 @@
       <v-card-text :style="{ height: getViewPortHeight }">
         <v-container fluid>
           <div class="commitments-table">
-            <v-card flat>
+            <v-card elevation="0">
               <v-data-table
                 v-if="commitment.line_items"
                 :headers="headers"
@@ -77,20 +76,18 @@
                     <td class="justify-center layout pr-0 pt-2">
                       <v-col>
                         <v-icon
-                          class="mr-2"
+                          class="mr-2 pointer"
                           color="#757575"
                           size="20"
-                          style="cursor: pointer"
                           @click="editLineItems(props.item.id)"
                         >
                           mdi-pencil
                         </v-icon>
 
                         <v-icon
-                          class="ml-0 mr-0"
+                          class="ml-0 mr-0 pointer"
                           color="#f44336"
                           size="20"
-                          style="cursor: pointer;"
                           @click="deleteLineItem(props.item, props.index)"
                         >
                           mdi-delete
@@ -107,7 +104,8 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          elevation="1"
+          text
           @click="$emit('close')"
         >
           close

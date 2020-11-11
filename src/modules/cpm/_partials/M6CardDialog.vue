@@ -1,7 +1,7 @@
 <template>
   <component
     :is="rootComponent"
-    class="m6-card-dialog mb-2 card-custom-shadow white rounded"
+    class="w-full m6-card-dialog mb-2 card-custom-shadow white rounded"
     :class="{ 'ma-0': !dialog }"
     column
     fill-height
@@ -20,11 +20,10 @@
     >
       <v-icon
         v-show="dialog"
-        class="cursor"
-        dark
+        class="pointer grey--text text--darken-1"
         @click="dialog = false"
       >
-        close
+        mdi-close
       </v-icon>
 
       <v-tooltip
@@ -40,7 +39,7 @@
           </span>
         </template>
 
-        <span>{{ titleTooltip }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ titleTooltip }}</span>
       </v-tooltip>
 
       <span
@@ -172,8 +171,5 @@ export default {
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
-}
-.vue-portal-target {
-  display: flex;
 }
 </style>

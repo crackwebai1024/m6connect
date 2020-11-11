@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -25,10 +25,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="createModal = true"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 
@@ -44,9 +44,9 @@
     </div>
 
     <div
+      class="py-2 px-0"
       v-for="(budget, index) in commentsSortedByDate"
       :key="index"
-      style="padding: 7px 0px 7px 0px;"
     >
       <v-row
         align="center"
@@ -79,21 +79,21 @@
           <v-icon
             class="ml-0 mr-1"
             color="#757575"
-            flat
+            text
             size="20"
             @click="pickingBudgetComment(budget)"
           >
-            edit
+            mdi-pencil
           </v-icon>
 
           <v-icon
             class="ml-0 mr-0"
             color="#f44336"
-            flat
+            text
             size="20"
             @click="deletingComment(budget)"
           >
-            delete
+            mdi-delete
           </v-icon>
         </td>
       </v-row>
@@ -101,8 +101,8 @@
     </div>
 
     <div
+      class="py-2 px-0"
       v-if="budgetComments.length == 0 && !loading"
-      style="padding: 7px 0px 7px 0px;"
     >
       <span class="text-center">No Status Budget Have Been Made Yet</span>
     </div>

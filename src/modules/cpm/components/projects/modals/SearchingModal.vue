@@ -5,19 +5,20 @@
     width="500"
   >
     <v-card>
-      <v-card-title
-        class="green headline lighten-2"
-        primary-title
-        style="color: white;"
-      >
-        Search in {{ where }}
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          Search in {{ where }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-form
           ref="form"
         >
           <v-text-field
+            class="mt-6 rounded white search-tag"
             ref="searchTxt"
             v-model="searchTxt"
             :label="where === 'spendings' ? spendingsLabel : commitmentsLabel"
@@ -35,21 +36,18 @@
         <v-btn
           v-if="previousSearch"
           color="red"
-          flat
           @click.prevent="clear"
         >
           Clear
         </v-btn>
         <v-btn
           color="gray"
-          flat
           @click.prevent="cancel"
         >
           Close
         </v-btn>
         <v-btn
           color="primary"
-          flat
           @click.prevent="search"
         >
           Search
@@ -103,3 +101,11 @@ export default {
   }
 }
 </script>
+<style>
+.search-tag .v-label {
+    background: #fff !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+</style>
+

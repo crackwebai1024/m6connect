@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              flat
+              text
               small
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>

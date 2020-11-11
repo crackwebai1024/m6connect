@@ -47,7 +47,7 @@
 
       <v-tooltip
         v-if="!search"
-        left
+        bottom
       >
         <template v-slot:activator="{ on }">
           <div class="blob white">
@@ -62,7 +62,7 @@
           </div>
         </template>
 
-        <span>{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
@@ -226,20 +226,18 @@
                 <td class="pa-0 text-center">
                   <v-col>
                     <v-icon
-                      class="ml-0 mr-2"
+                      class="ml-0 mr-2 pointer"
                       color="#757575"
                       size="20"
-                      style="cursor: pointer"
                       @click="openEditLineItem(props.item)"
                     >
                       mdi-pencil
                     </v-icon>
 
                     <v-icon
-                      class="ml-0 mr-0"
+                      class="ml-0 mr-0 pointer"
                       color="#f44336"
                       size="20"
-                      style="cursor: pointer"
                       @click="deleteLineItem(props.item)"
                     >
                       mdi-delete
@@ -257,21 +255,21 @@
     <v-dialog
       v-if="dialogSpending"
       v-model="dialogSpending"
-      max-width="80%"
+      max-width="1200"
       persistent
-      scrollable
     >
       <v-card
+        class="w-full"
         v-show="method === 'add' || method === 'put'"
-        :style="{ width: method === 'add' ? '80vw' : '40vw' }"
       >
-        <v-card-title
-          class="darken-3 headline light-blue"
-          primary-title
-          style="color: white;"
-        >
-          {{ $t('cpm.projects.spending') }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.spending') }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
+
+        <v-divider class="grey lighten-3" />
 
         <v-card-text class="card-scroll">
           <v-form
@@ -397,7 +395,7 @@
                       <v-text-field
                         v-model="dialogProperties.dateOpenedText"
                         :label="$t('general.dateOpened')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         v-on="on"
                         @blur="
@@ -466,7 +464,7 @@
                       <v-text-field
                         v-model="dialogProperties.paidDateText"
                         :label="$t('general.datePaid')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         :rules="[rules.required]"
                         v-on="on"
@@ -573,7 +571,7 @@
                     slot-scope="{ item, open }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="
@@ -583,10 +581,10 @@
                       image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
 
@@ -601,7 +599,7 @@
                         style="padding-top: 6px"
                         target="_blank"
                       >
-                        <v-icon small>open_in_new</v-icon>
+                        <v-icon small>mdi-folder-plus</v-icon>
                       </a>
                       <v-btn
                         icon
@@ -612,7 +610,7 @@
                           color="red"
                           small
                         >
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-btn>
                     </template>
@@ -660,20 +658,20 @@
                     slot-scope="{ item, open }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="
                         item.file === 'image/jpeg' || item.file === 'image/png'
                       "
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
                   <template
@@ -690,7 +688,7 @@
                           color="red"
                           small
                         >
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-btn>
                     </template>
@@ -705,6 +703,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
+            elevation="1"
             color="gray"
             :disabled="loading"
             :loading="loading"
@@ -714,6 +713,7 @@
             Close
           </v-btn>
           <v-btn
+            elevation="1"
             color="primary"
             :disabled="loading"
             :loading="loading"
@@ -733,18 +733,16 @@
       v-model="dialogLineItem"
       max-width="600px"
       persistent
-      scrollable
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="green headline lighten-2"
-          primary-title
-          style="color: white;"
-        >
-          {{ $t('cpm.projects.spending') }}
-          {{ $tc('cpm.projects.lineItem', 1) }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.spending') }}
+            {{ $tc('cpm.projects.lineItem', 1) }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form
             ref="formLineItem"
@@ -869,7 +867,7 @@
                       <v-text-field
                         v-model="dialogLineItemProperties.dateText"
                         :label="$t('general.date')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         :rules="[rules.required]"
                         v-on="on"
@@ -920,7 +918,7 @@
                       <v-text-field
                         v-model="dialogLineItemProperties.paidDateText"
                         :label="$t('general.datePaid')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         v-on="on"
                         @blur="
@@ -1142,7 +1140,6 @@
       v-model="showLineItemsModal"
       max-width="1000px"
       persistent
-      scrollable
       transition="dialog-transition"
     >
       <v-card
@@ -1175,7 +1172,7 @@
             @click.native.stop="openLineItems"
           >
             <v-icon color="green lighten-2">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </v-card-title>

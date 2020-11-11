@@ -6,9 +6,13 @@
     @input="close"
   >
     <v-card>
-      <v-card-title class="title">
-        Current Monthly Forecast
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          Current Monthly Forecast
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
+
       <v-card-text>
         <money
           v-model="total"
@@ -19,14 +23,14 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          text
           @click="close"
         >
           cancel
         </v-btn>
         <v-btn
           color="primary"
-          flat
+          text
           @click="onSave"
         >
           Save

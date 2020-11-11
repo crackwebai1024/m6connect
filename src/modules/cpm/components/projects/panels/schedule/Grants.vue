@@ -15,10 +15,10 @@
             class="mr-1"
             small
           >
-            edit
+            mdi-pencil
           </v-icon>
           <v-icon small>
-            delete
+            mdi-delete
           </v-icon>
         </td>
       </template>

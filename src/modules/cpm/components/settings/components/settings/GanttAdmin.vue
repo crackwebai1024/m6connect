@@ -6,13 +6,10 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title primary-title>
-          <v-col
-            class="title"
-            md="12"
-          >
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Milestone
-          </v-col>
+          </span>
         </v-card-title>
         <v-card-text>
           <v-container
@@ -80,7 +77,7 @@
       </v-card>
     </v-dialog>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"
@@ -90,7 +87,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -120,7 +117,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
                 <v-list-tile-content>{{ item.name }}</v-list-tile-content>
@@ -129,21 +126,19 @@
                 >
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
                     @click.prevent="edit(key, item)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
                     @click.prevent="deleteGantt(key, item)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>
@@ -250,7 +245,7 @@
                   icon
                   @click="addMilestone"
                 >
-                  <v-icon>add</v-icon>
+                  <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
@@ -275,22 +270,20 @@
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         small
                         @click="editMilestone(props.item, props.index)"
                       >
-                        <v-icon>edit</v-icon>
+                        <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         small
                         @click="deleteMilestone(props.index)"
                       >
-                        <v-icon>delete</v-icon>
+                        <v-icon>mdi-delete</v-icon>
                       </v-btn>
                     </td>
                   </template>

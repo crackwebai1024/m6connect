@@ -120,13 +120,13 @@
                       small
                       @click="setSpending(props.item, spending.id)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
                     <v-icon
                       small
                       @click="deleteLineItem(props.item, spending.id, props.index, spendingIndex)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </td>
                 </template>

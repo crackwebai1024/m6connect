@@ -17,10 +17,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -28,23 +28,23 @@
       </v-tooltip>
 
       <v-icon
-        class="cursor"
-        dark
+        class="pointer"
+        light
         @click="createNewBudget"
       >
-        add
+        mdi-plus
       </v-icon>
 
       <v-tooltip left>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
+            class="pointer"
             color="white"
             v-on="on"
             @click="openSettingModal"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>{{ $t('cpm.projects.budgetPanel.settings') }}</span>

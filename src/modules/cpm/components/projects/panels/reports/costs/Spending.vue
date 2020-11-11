@@ -72,15 +72,17 @@
                   slot="actions"
                   color="white"
                 >
-                  crop_free
+                  mdi-crop-free
                 </v-icon>
                 <v-card
                   slot="header"
                   class="pa-0"
                   flat
                 >
-                  <v-card-title class="pa-0">
-                    {{ item.name }}
+                  <v-card-title class="headline px-6 py-4 white">
+                    <span class="grey--text text--darken-1">
+                      {{ item.name }}
+                    </span>
                     <v-spacer />
                     <v-btn
                       class="ma-1"
@@ -90,13 +92,14 @@
                     >
                       <v-icon
                         color="green"
-                        dark
+                        light
                         small
                       >
-                        check_circle_outline
+                        mdi-check-circle-outline
                       </v-icon>
                     </v-btn>
                   </v-card-title>
+                  <v-divider class="grey lighten-3" />
                 </v-card>
                 <v-card
                   class="pa-0"
@@ -121,15 +124,17 @@
                           slot="actions"
                           color="white"
                         >
-                          crop_free
+                          mdi-crop-free
                         </v-icon>
                         <v-card
                           slot="header"
                           class="pa-0 pl-4"
                           flat
                         >
-                          <v-card-title class="pa-0">
-                            {{ itemL2.name }}
+                          <v-card-title class="headline px-6 py-4 white">
+                            <span class="grey--text text--darken-1">
+                              {{ itemL2.name }}
+                            </span>
                             <v-spacer />
                             <v-btn
                               class="ma-1"
@@ -139,13 +144,14 @@
                             >
                               <v-icon
                                 color="green"
-                                dark
+                                light
                                 small
                               >
-                                check_circle_outline
+                                mdi-check-circle-outline
                               </v-icon>
                             </v-btn>
                           </v-card-title>
+                          <v-divider class="grey lighten-3" />
                         </v-card>
                         <v-card
                           class="pa-0 pl-4"
@@ -158,8 +164,10 @@
                               class="pa-0 pl-4 pr-5"
                               flat
                             >
-                              <v-card-title class="pa-0">
-                                {{ itemL3.name }}
+                              <v-card-title class="headline px-6 py-4 white">
+                                <span class="grey--text text--darken-1">
+                                  {{ itemL3.name }}
+                                </span>
                                 <v-spacer />
                                 <v-btn
                                   class="ma-1"
@@ -169,10 +177,10 @@
                                 >
                                   <v-icon
                                     color="green"
-                                    dark
+                                    light
                                     small
                                   >
-                                    check_circle_outline
+                                    mdi-check-circle-outline
                                   </v-icon>
                                 </v-btn>
                               </v-card-title>
@@ -208,7 +216,7 @@
                   color="blue"
                   small
                 >
-                  add
+                  mdi-plus
                 </v-icon>
               </v-btn>
             </h5>
@@ -256,16 +264,16 @@
                 slot-scope="{ item, open, leaf }"
               >
                 <v-icon v-if="!item.file">
-                  {{ open ? 'folder_open' : 'folder' }}
+                  {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                 </v-icon>
                 <v-icon v-else-if="item.file === 'image/jpeg' || item.file === 'image/png'">
-                  image
+                  mdi-image
                 </v-icon>
                 <v-icon v-else-if="item.file === 'application/pdf'">
-                  picture_as_pdf
+                  mdi-file-pdf-box
                 </v-icon>
                 <v-icon v-else>
-                  description
+                  mdi-text-box-outline
                 </v-icon>
               </template>
               <template
@@ -278,7 +286,7 @@
                       :href="item.url"
                       style="padding-top: 6px"
                       target="_blank"
-                    ><v-icon small>open_in_new</v-icon></a>
+                    ><v-icon small>mdi-folder-plus</v-icon></a>
                     <v-btn
                       icon
                       small
@@ -288,7 +296,7 @@
                         color="red"
                         small
                       >
-                        delete
+                        mdi-delete
                       </v-icon>
                     </v-btn>
                   </template>

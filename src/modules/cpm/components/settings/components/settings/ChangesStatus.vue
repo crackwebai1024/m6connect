@@ -14,7 +14,7 @@
             small
             @click="showForm = true"
           >
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
 
           <v-data-table
@@ -31,7 +31,7 @@
                   size="20"
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -40,7 +40,7 @@
                   size="20"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -56,11 +56,12 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title class="customBackground headline">
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Changes Status
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form ref="form">
             <v-text-field
@@ -225,14 +226,5 @@ export default {
 <style lang="scss" scoped>
 .customPosition {
   top: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.customBackground {
-  background: #006699;
-  color: #fff;
 }
 </style>

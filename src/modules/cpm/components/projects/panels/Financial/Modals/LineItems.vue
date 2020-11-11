@@ -1,27 +1,25 @@
 <template>
   <div>
     <v-card class="licensing-edit-modal">
-      <v-card-title
-        class="headline"
-        style="background: #006699; color:#fff"
-      >
-        {{ $t('cpm.projects.budgetPanel.editBudget.lineItems') }}
-
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          {{ $t('cpm.projects.budgetPanel.editBudget.lineItems') }}
+        </span>
         <v-spacer />
         <v-btn
-          class="flex-end"
+          class="justify-end"
           color="blue darken-2"
           dark
           fab
           small
           @click="openNewItem"
         >
-          <v-icon dark>
-            add
+          <v-icon light>
+            mdi-plus
           </v-icon>
         </v-btn>
       </v-card-title>
-
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <new-item
           v-if="showNewItem"
@@ -57,10 +55,10 @@
             >
               <td>
                 <v-icon v-if="!props.expanded">
-                  keyboard_arrow_right
+                  mdi-arrow-right-box
                 </v-icon>
                 <v-icon v-if="props.expanded">
-                  keyboard_arrow_down
+                  mdi-arrow-down-box
                 </v-icon>
               </td>
               <td>
@@ -105,7 +103,7 @@
                             style="cursor: pointer"
                             @click.stop="editLineItem(props.item)"
                           >
-                            edit
+                            mdi-pencil
                           </v-icon>
                           <v-icon
                             class="ml-0 mr-2"
@@ -114,7 +112,7 @@
                             style="cursor: pointer"
                             @click.stop="deleteLineItem(props.item)"
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-col>
                       </td>
@@ -536,10 +534,6 @@ export default {
 
 .padding-top-10 {
   padding-top: 0.625rem;
-}
-
-.flex-end {
-  justify-content: flex-end;
 }
 
 .text-right {

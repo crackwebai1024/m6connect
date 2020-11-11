@@ -9,7 +9,7 @@
               v-on="on"
               @click="searchTxt = ''"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
           <span>Clear Search</span>
@@ -18,10 +18,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="openModal"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 
@@ -63,23 +63,22 @@
 
         <td class="text-right">
           <v-icon
-            class="mr-1"
+            class="mr-1 pointer"
             color="#757575"
             size="20"
-            style="cursor: pointer"
             @click="openUpdateSpending(props.item)"
           >
-            edit
+            mdi-pencil
           </v-icon>
 
           <v-icon
+            class="pointer"
             color="#f44336"
-            flat
+            text
             size="20"
-            style="cursor: pointer"
             @click="openDeleteSpending(props.item)"
           >
-            delete
+            mdi-delete
           </v-icon>
         </td>
       </template>
@@ -93,14 +92,12 @@
       scrollable
     >
       <v-card v-show="method === 'add' || method === 'put'">
-        <v-card-title
-          class="darken-3 headline light-blue"
-          primary-title
-          style="color: white;"
-        >
-          Safety
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Safety
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form
             ref="form"
@@ -145,7 +142,7 @@
                         hint="MM/DD/YYYY format"
                         label="Start Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         :rules="[rules.required]"
                         v-on="on"
                       />
@@ -268,7 +265,7 @@
                         hint="MM/DD/YYYY format"
                         label="End Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         :rules="[rules.required]"
                         v-on="on"
                       />
@@ -333,7 +330,7 @@
           <v-btn
             color="gray"
             :disabled="loading"
-            flat
+            text
             :loading="loading"
             @click="closeModal"
           >
@@ -342,7 +339,7 @@
           <v-btn
             color="primary"
             :disabled="loading"
-            flat
+            text
             :loading="loading"
             @click="saveSafety"
           >

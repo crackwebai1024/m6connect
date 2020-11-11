@@ -1,7 +1,9 @@
 <template>
   <v-card>
-    <v-card-title class="title">
-      {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+    <v-card-title class="headline px-6 py-4 white">
+      <span class="grey--text text--darken-1">
+        {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+      </span>
       <v-spacer />
       <v-btn
         color="primary"
@@ -11,7 +13,7 @@
         @click="showDialog = true"
       >
         <v-icon>
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </v-card-title>
@@ -48,15 +50,17 @@
       width="500"
     >
       <v-card>
-        <v-card-title class="primary title white--text">
-          {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+          </span>
           <v-spacer />
           <v-icon
             v-if="itemToEdit.id"
             class="icon__delete"
             @click="showDeleteConfirm = true"
           >
-            delete
+            mdi-delete
           </v-icon>
         </v-card-title>
         <v-card-text>
@@ -75,14 +79,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="closeDialog"
           >
             {{ $t('general.cancel') }}
           </v-btn>
           <v-btn
             color="primary"
-            flat
+            text
             @click="save"
           >
             {{ $t('general.save') }}

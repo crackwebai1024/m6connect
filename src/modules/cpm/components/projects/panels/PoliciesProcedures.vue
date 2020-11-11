@@ -7,7 +7,7 @@
       <v-toolbar
         color="green"
         dark
-        flat
+        text
       >
         <h3 class="headline mb-0">
           Policies and Procedures
@@ -52,11 +52,10 @@
             >
               <v-btn
                 color="#f44336"
-                flat
                 icon
                 @click="openPolicy(standard)"
               >
-                <v-icon>folder</v-icon>
+                <v-icon>mdi-folder</v-icon>
               </v-btn>
             </v-col>
           </v-row>
@@ -77,13 +76,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="green headline lighten-2"
-          primary-title
-          style="color: white;"
-        >
-          Files
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Files 
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             fluid
@@ -115,18 +113,18 @@
                     slot-scope="{ item, open }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="item.file === 'image/jpeg' || item.file === 'image/png'"
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
                   <template
@@ -140,7 +138,7 @@
                           style="padding-top: 6px"
                           target="_blank"
                         >
-                          <v-icon small>open_in_new</v-icon>
+                          <v-icon small>mdi-folder-plus</v-icon>
                         </a>
                       </template>
                     </template>
@@ -157,7 +155,7 @@
           <v-spacer />
           <v-btn
             color="gray"
-            flat
+            text
             @click="cancel"
           >
             Close

@@ -4,11 +4,12 @@
     max-width="480"
   >
     <v-card class="m6_connect_card">
-      <v-card-title class="headline">
-        <span style="color: white">{{ title }}</span>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">{{ title }}</span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text v-html="message">
+      <v-card-text v-html="message" class="pt-3">
         <div>
           <div
             v-for="(item, indexD) in details"
@@ -24,18 +25,20 @@
         <v-spacer />
 
         <v-btn
-          color="error"
+          color="red"
           :disabled="deleting"
-          flat="flat"
+          elevation="1"
+          text
           @click="$emit('cancel')"
         >
           No
         </v-btn>
 
         <v-btn
-          color="blue darken-1"
+          color="blue darken-1 white--text"
           :disabled="deleting"
-          flat="flat"
+          elevation="1"
+          text
           @click="$emit('confirm')"
         >
           Yes

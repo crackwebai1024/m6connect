@@ -4,12 +4,12 @@
     :width="showWithIframe ? '90%' : '300px'"
   >
     <v-card :style="showWithIframe ? 'height: 90vh' : ''">
-      <v-card-title>
-        <span
-          class="headline"
-          v-text="name"
-        />
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          {{ name }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
       <p
         v-if="!showWithIframe"
@@ -21,8 +21,8 @@
       <img
         v-if="isImage"
         :alt="`Error loading - ${name}`"
+        class="w-full"
         :src="urlDecoded"
-        style="width: 100%"
       >
 
       <iframe

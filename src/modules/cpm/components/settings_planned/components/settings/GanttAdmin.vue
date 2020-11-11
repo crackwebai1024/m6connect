@@ -3,12 +3,12 @@
     <template slot="button">
       <v-btn
         color="blue"
-        dark
+        light
         fab
         small
         @click="showForm = true"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -22,20 +22,20 @@
           <td>{{ props.item.name }}</td>
           <td class="text-right">
             <v-btn
-              flat
+              text
               icon
               small
               @click.prevent="edit(props.index, props.item)"
             >
-              <v-icon>edit</v-icon>
+              <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn
-              flat
+              text
               icon
               small
               @click.prevent="deleteGantt(props.index, props.item)"
             >
-              <v-icon>delete</v-icon>
+              <v-icon>mdi-delete</v-icon>
             </v-btn>
           </td>
         </template>
@@ -48,14 +48,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title primary-title>
-          <v-col
-            class="title"
-            md="12"
-          >
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Milestone
-          </v-col>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             class="pa-0"
@@ -217,7 +215,7 @@
                   icon
                   @click="addMilestone"
                 >
-                  <v-icon>add</v-icon>
+                  <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
@@ -241,23 +239,23 @@
                     <td>
                       <v-btn
                         color="blue"
-                        dark
-                        flat
+                        light
+                        text
                         icon
                         small
                         @click="editMilestone(props.item, props.index)"
                       >
-                        <v-icon>edit</v-icon>
+                        <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                       <v-btn
                         color="blue"
-                        dark
-                        flat
+                        light
+                        text
                         icon
                         small
                         @click="deleteMilestone(props.index)"
                       >
-                        <v-icon>delete</v-icon>
+                        <v-icon>mdi-delete</v-icon>
                       </v-btn>
                     </td>
                   </template>

@@ -3,7 +3,7 @@
     <template v-slot:after:title>
       <v-tooltip
         v-if="$route.name === 'cpm.projects.show'"
-        left
+        bottom
       >
         <template v-slot:activator="{ on }">
           <a
@@ -13,62 +13,59 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
-        <span>{{ $t('general.openNewTab') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.openNewTab') }}</span>
       </v-tooltip>
 
       <v-icon
-        class="cursor"
-        dark
+        class="pointer"
+        light
         @click="openModal"
       >
-        add
+        mdi-plus
       </v-icon>
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
-            class="cursor"
-            color="white"
+            class="pointer grey--text text--darken-1 mx-1"
             v-on="on"
             @click="$refs.ganttSchedule.printFromVue('print')"
           >
-            print
+            mdi-printer
           </v-icon>
         </template>
-        <span>{{ $t('general.print') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.print') }}</span>
       </v-tooltip>
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
-            class="cursor"
-            color="white"
+            class="pointer grey--text text--darken-1 mx-1"
             v-on="on"
             @click="$refs.ganttSchedule.printFromVue('share')"
           >
-            share
+            mdi-share
           </v-icon>
         </template>
-        <span>{{ $t('general.share') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.share') }}</span>
       </v-tooltip>
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
-            color="white"
+            class="pointer grey--text text--darken-1 ml-1"
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
-        <span>{{ $t('general.settings') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.settings') }}</span>
       </v-tooltip>
     </template>
 

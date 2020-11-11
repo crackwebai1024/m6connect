@@ -6,9 +6,13 @@
     scrollable
   >
     <v-card>
-      <v-card-title>
-        <span class="headline">{{ $t('cpm.projects.titleDestination') }}</span>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          {{ $t('cpm.projects.titleDestination') }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
+
       <v-card-text>
         <v-container>
           <v-row justify="space-between">
@@ -27,7 +31,7 @@
                     v-if="!item.file"
                     color="blue"
                   >
-                    folder
+                    mdi-folder
                   </v-icon>
                 </template>
 
@@ -46,7 +50,7 @@
                     color="blue"
                     @click="selectFile(item)"
                   >
-                    check_box_outline_blank
+                    mdi-checkbox-blank-outline
                   </v-icon>
 
                   <v-icon
@@ -54,7 +58,7 @@
                     color="blue"
                     @click="unselectFile(item)"
                   >
-                    check_box
+                    mdi-check-box-outline
                   </v-icon>
                 </template>
               </v-treeview>
@@ -67,14 +71,12 @@
           <v-col cols="8" />
           <v-col cols="6">
             <v-btn
-              flat
               text
               @click="$emit('close')"
             >
               {{ $t('general.cancel') }}
             </v-btn>
             <v-btn
-              flat
               text
               @click="selectFolder"
             >

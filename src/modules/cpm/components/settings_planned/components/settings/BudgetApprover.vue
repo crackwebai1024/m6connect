@@ -14,7 +14,7 @@
         @click="showForm = true"
       >
         <v-icon color="blue">
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </portal>
@@ -27,7 +27,7 @@
         small
         @click="showForm = true"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -41,13 +41,12 @@
           <td>{{ props.item.label }}</td>
           <td class="text-right">
             <v-icon
-              class="ml-0 mr-0"
+              class="ml-0 mr-0 pointer"
               color="#f44336"
               size="20"
-              style="cursor: pointer"
               @click.prevent="deleteElement(props.index, props.item.label)"
             >
-              delete
+              mdi-delete
             </v-icon>
           </td>
         </template>
@@ -62,23 +61,12 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            <label
-              v-if="currentElement !== ''"
-              class="white--text"
-            >
-              Edit Budget Approver
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Budget Approver</label>
-          </v-row>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ currentElement !== '' ? 'Edit Budget Approver' : 'Add New Budget Approver' }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form ref="form">
             <div class="form-group">

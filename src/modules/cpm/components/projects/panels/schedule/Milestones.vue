@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -26,10 +26,10 @@
       <v-icon
         v-if="!projectClosed"
         class="cursor"
-        dark
+        light
         @click="newMilestone"
       >
-        add
+        mdi-plus
       </v-icon>
 
       <v-tooltip left>
@@ -41,7 +41,7 @@
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>Settings</span>
@@ -70,12 +70,12 @@
       per
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          Monthly Review
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Monthly Review
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-textarea
             v-model="comment"
@@ -171,24 +171,23 @@
                   <v-row justify="end">
                     <v-col class="shrink">
                       <v-icon
-                        class="ml-0 mr-1"
+                        class="ml-0 mr-1 pointer"
                         color="#757575"
-                        flat
+                        text
                         size="20"
-                        style="cursor: pointer"
                         @click.prevent="setMilestone(props.item)"
                       >
-                        edit
+                        mdi-pencil
                       </v-icon>
                     </v-col>
                     <v-col class="shrink">
                       <v-icon
                         color="#f44336"
-                        flat
+                        text
                         size="20"
                         @click.prevent="deleteMilestone(props.item)"
                       >
-                        delete
+                        mdi-delete
                       </v-icon>
                     </v-col>
                   </v-row>
@@ -203,13 +202,13 @@
                     v-if="pagination.rowsPerPage !== -1"
                     class="button-showall"
                     color="primary"
-                    dark
+                    light
                     fab
                     small
                     @click="pagination.rowsPerPage = -1"
                   >
                     <v-icon>
-                      keyboard_arrow_down
+                      mdi-arrow-down-box
                     </v-icon>
                   </v-btn>
                   <v-btn
@@ -222,7 +221,7 @@
                     @click="pagination.rowsPerPage = 3"
                   >
                     <v-icon>
-                      keyboard_arrow_up
+                      mdi-arrow-up-box
                     </v-icon>
                   </v-btn>
                 </v-row>

@@ -5,18 +5,16 @@
     width="800"
   >
     <v-card class="contract-create-modal">
-      <v-card-title class="headline">
-        <v-row class="ml-2">
-          Create Project
-        </v-row>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">Create Project</span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
       <v-row
         class="elevation-0"
         style="background-color: #0277BD;"
       >
         <v-stepper
-          class="elevation-0"
-          style="width: 100%;"
+          class="elevation-0 w-full"
         >
           <v-stepper-header style="background-color: #0277BD;">
             <v-stepper-step
@@ -225,7 +223,7 @@
                         hint="MM/DD/YYYY format"
                         label="Start Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         v-on="on"
                       />
                     </template>
@@ -272,7 +270,7 @@
                         hint="MM/DD/YYYY format"
                         label="End Date"
                         persistent-hint
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         v-on="on"
                       />
                     </template>
@@ -312,11 +310,11 @@
                       <td>
                         <v-btn
                           color="red"
-                          flat
+                          text
                           small
                           @click="budgets.splice(index, 1)"
                         >
-                          <v-icon>delete</v-icon>
+                          <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </td>
                     </template>
@@ -357,7 +355,7 @@
           <v-col cols="8" />
           <v-col cols="4">
             <v-btn
-              flat
+              text
               @click="$emit('close')"
             >
               Cancel

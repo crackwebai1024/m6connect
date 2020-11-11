@@ -7,7 +7,7 @@
         icon
         @click="openScheduleDialog"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <v-card>
@@ -42,21 +42,19 @@
                         {{ header.name }}
                         <v-btn
                           color="blue"
-                          flat
                           icon
                           small
                           @click="openEditSchedule(header, index)"
                         >
-                          <v-icon>edit</v-icon>
+                          <v-icon>mdi-pencil</v-icon>
                         </v-btn>
                         <v-btn
                           color="error"
-                          flat
                           icon
                           small
                           @click="deleteSchedule(header, index)"
                         >
-                          <v-icon>delete</v-icon>
+                          <v-icon>mdi-delete</v-icon>
                         </v-btn>
                       </div>
                       <div
@@ -72,7 +70,7 @@
                         <v-btn
                           color="error"
                           :disabled="loading"
-                          flat
+                          text
                           :loading="loading"
                           outline
                           small
@@ -83,13 +81,12 @@
                         <v-btn
                           color="blue"
                           :disabled="loading"
-                          flat
                           icon
                           :loading="loading"
                           small
                           @click="saveEditSchedule(header, index)"
                         >
-                          <v-icon>save</v-icon>
+                          <v-icon>mdi-content-save</v-icon>
                         </v-btn>
                       </div>
                     </template>
@@ -164,20 +161,18 @@
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         @click="editDate(date)"
                       >
-                        <v-icon>edit</v-icon>
+                        <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                       <v-btn
                         color="error"
                         dark
-                        flat
                         icon
                         @click="deleteDate(date)"
                       >
-                        <v-icon>delete</v-icon>
+                        <v-icon>mdi-delete</v-icon>
                       </v-btn>
                     </div>
                     <!-- Editing -->
@@ -187,16 +182,15 @@
                       <v-btn
                         color="blue"
                         dark
-                        flat
                         icon
                         @click="saveEditingDate(date)"
                       >
-                        <v-icon>save</v-icon>
+                        <v-icon>mdi-content-save</v-icon>
                       </v-btn>
                       <v-btn
                         color="error"
                         dark
-                        flat
+                        text
                         outline
                         @click="cancelEditingDate"
                       >

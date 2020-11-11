@@ -16,7 +16,7 @@
           icon
           @click="closeDialog"
         >
-          <v-icon>close</v-icon>
+          <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-toolbar-title>Forecasting Projects</v-toolbar-title>
       </v-toolbar>
@@ -72,7 +72,7 @@
                   v-else
                   dark
                 >
-                  wallpaper
+                  mdi-wallpaper
                 </v-icon>
               </v-avatar>
             </td>

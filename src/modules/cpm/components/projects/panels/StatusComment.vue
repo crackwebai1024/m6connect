@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -24,11 +24,11 @@
       </v-tooltip>
 
       <v-icon
-        class="cursor"
-        dark
+        class="pointer"
+        light
         @click="createModal = true"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 
@@ -77,23 +77,21 @@
 
         <td class="text-right">
           <v-icon
-            class="ml-0 mr-1"
+            class="ml-0 mr-1 pointer"
             color="#757575"
             size="20"
-            style="cursor: pointer"
             @click="pickingStatusComment(status)"
           >
-            edit
+            mdi-pencil
           </v-icon>
 
           <v-icon
-            class="ml-0 mr-0"
+            class="ml-0 mr-0 pointer"
             color="#f44336"
             size="20"
-            style="cursor: pointer"
             @click="deletingComment(status)"
           >
-            delete
+            mdi-delete
           </v-icon>
         </td>
       </v-row>

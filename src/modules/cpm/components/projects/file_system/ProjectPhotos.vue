@@ -1,5 +1,5 @@
 <template>
-  <v-row style="background: #FFF">
+  <v-row class="white">
     <input
       v-show="false"
       id="files"
@@ -43,14 +43,13 @@
       @click="selectFile($h.dg(project, 'files.4.children.5'))"
     >
       <v-icon class="mr-1 pb-1">
-        cloud_upload
+        mdi-cloud-upload
       </v-icon>
     </v-btn>
     <v-col cols="12">
       <v-card
-        class="elevation-0"
+        elevation="0"
         color="white"
-        flat
       >
         <v-container
           fluid
@@ -71,7 +70,7 @@
             >
               <v-card
                 class="d-flex"
-                flat
+                elevation="0"
                 tile
               >
                 <v-img
@@ -118,7 +117,7 @@
                         @click="updateImages"
                       >
                         <v-icon small>
-                          check
+                          mdi-check
                         </v-icon>
                       </v-btn>
                     </v-col>
@@ -136,7 +135,7 @@
                         @click="choosingFileToDelete(item)"
                       >
                         <v-icon small>
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-btn>
                       <v-chip
@@ -171,7 +170,7 @@
                         @click="editTags(item, index)"
                       >
                         <v-icon small>
-                          label
+                          mdi-label
                         </v-icon>
                       </v-btn>
                     </v-col>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"
@@ -11,7 +11,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -42,7 +42,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
                 <v-list-tile-content>{{ name }}</v-list-tile-content>
@@ -52,18 +52,18 @@
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="editStatus(key, name)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
                     fab
-                    flat
+                    icon
                     @click.prevent="deleteStatus(key, name)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>

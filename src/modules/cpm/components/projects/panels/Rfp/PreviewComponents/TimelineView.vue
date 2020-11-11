@@ -9,9 +9,13 @@
           <span class="title">{{ date.value }}</span>
         </template>
         <v-card class="elevation-2">
-          <v-card-title class="headline">
-            {{ date.label }}
+          <v-card-title class="headline white px-6 py-4">
+            <span class="grey--text text--darken-1">
+              {{ date.label }}
+            </span>
           </v-card-title>
+          <v-divider class="grey lighten-3" />
+
         </v-card>
       </v-timeline-item>
     </v-timeline>

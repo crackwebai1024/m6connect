@@ -10,7 +10,6 @@
       <v-icon
         class="grey--text mx-2 text--darken-2"
         color="grey"
-        flat
         light
         size="25"
         @click="cardDialogClick"
@@ -46,7 +45,7 @@
 
       <v-tooltip
         v-if="!search"
-        left
+        bottom
       >
         <template v-slot:activator="{ on }">
           <v-icon
@@ -59,11 +58,11 @@
             mdi-magnify-scan
           </v-icon>
         </template>
-        <span>{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
-        <v-tooltip right>
+        <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon
               class="close-search grey--text mx-2 text--darken-2"
@@ -75,7 +74,7 @@
               mdi-close
             </v-icon>
           </template>
-          <span>{{ $t('general.clearSearch') }}</span>
+          <span class="grey lighten-3 rounded pa-1">{{ $t('general.clearSearch') }}</span>
         </v-tooltip>
       </template>
 
@@ -87,7 +86,7 @@
         mdi-plus-circle
       </v-icon>
 
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
@@ -98,7 +97,7 @@
             mdi-cog
           </v-icon>
         </template>
-        <span>{{ $t('general.settings') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.settings') }}</span>
       </v-tooltip>
     </template>
 
@@ -317,7 +316,7 @@
                                 v-on="on"
                                 @click="addSpending(props)"
                               >
-                                add
+                                mdi-plus-circle
                               </v-icon>
                             </template>
                             <span>Add Invoice</span>
@@ -358,7 +357,7 @@
               </template>
 
               <template v-slot:expand="props">
-                <v-card flat>
+                <v-card elevation="0">
                   <v-progress-circular
                     v-show="loadingExpandedSpendingLineItems"
                     color="primary"
@@ -406,7 +405,7 @@
                             style="cursor: pointer"
                             @click="openEditLineItem(props.item)"
                           >
-                            edit
+                            mdi-pencil
                           </v-icon>
 
                           <v-icon
@@ -416,7 +415,7 @@
                             style="cursor: pointer"
                             @click="deleteExpandedSpendingLineItem(props.item)"
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-col>
                       </td>

@@ -9,7 +9,7 @@
     </v-col>
 
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"
@@ -19,7 +19,7 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
       <v-card-text>
@@ -34,20 +34,18 @@
               <td>{{ props.item }}</td>
               <td class="text-right">
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="editStatus(props.index, props.item)"
                 >
-                  <v-icon>edit</v-icon>
+                  <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="deleteStatus(props.index, props.item)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </td>
             </template>

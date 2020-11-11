@@ -17,8 +17,8 @@
             small
             @click="showCreateModal = true"
           >
-            <v-icon dark>
-              add
+            <v-icon light>
+              mdi-plus
             </v-icon>
           </v-btn>
         </v-col>
@@ -64,8 +64,7 @@
           sm="6"
         >
           <v-card
-            class="cpmCard"
-            style="cursor: pointer;"
+            class="cpmCard pointer"
             @mouseleave="showDeleteIconApplication = null"
             @mouseover="showDeleteIconApplication = indexR"
           >
@@ -82,7 +81,7 @@
                   v-on="on"
                   @click="deleteCapitalPlan(proj)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </template>
               <span>Delete Project</span>
@@ -103,7 +102,7 @@
                     small
                     v-on="on"
                   >
-                    <v-icon>open_in_new</v-icon>
+                    <v-icon>mdi-folder-plus</v-icon>
                   </v-btn>
                 </a>
               </template>
@@ -129,7 +128,7 @@
                       v-else
                       size="100"
                     >
-                      photo
+                      mdi-image
                     </v-icon>
                   </v-avatar>
                 </v-badge>
@@ -174,7 +173,7 @@
                     v-else
                     dark
                   >
-                    wallpaper
+                   mdi-wallpaper
                   </v-icon>
                 </v-avatar>
               </td>
@@ -183,7 +182,7 @@
                   href="#"
                   @click.prevent="goToCapital(props.item, false)"
                 >
-                  <span style="color: #0D47A1;">{{ props.item.name }}</span>
+                  <span class="blue--text text--lighten-1">{{ props.item.name }}</span>
                 </a>
               </td>
               <td class="text-center">
@@ -191,11 +190,11 @@
                   <template v-slot:activator="{ on }">
                     <v-icon
                       small
-                      style="cursor: pointer;"
+                      class="pointer"
                       v-on="on"
                       @click="goToCapital(props.item, false)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
                   </template>
                   <span>Edit</span>
@@ -206,7 +205,7 @@
                     <v-icon
                       v-if="props.item.canDelete != false"
                       small
-                      style="cursor: pointer;"
+                      class="pointer"
                       v-on="on"
                       @click="deleteCapitalPlan(props.item)"
                     >

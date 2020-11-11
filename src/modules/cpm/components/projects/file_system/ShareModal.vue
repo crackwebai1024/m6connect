@@ -6,9 +6,10 @@
     scrollable
   >
     <v-card>
-      <v-card-title class="customBackground headline">
-        <span>{{ $t('cpm.projects.shareDocument') }}</span>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">{{ $t('cpm.projects.shareDocument') }}</span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-container>
           <v-row
@@ -19,6 +20,7 @@
             <label>{{ $t('cpm.projects.fileToShare') }}</label>
             <v-btn
               v-for="(e, index) in item"
+              :key="'btnsforitems' + index"
               id="step16"
               class="ma-2"
               outlined
@@ -34,7 +36,7 @@
                 class="directory-item"
                 color="blue"
               >
-                description
+                mdi-text-box-outline
               </v-icon>
               &nbsp; {{ e.name }}
             </v-btn>
@@ -81,7 +83,7 @@
                     :selected="selected"
                   >
                     <v-icon left>
-                      person
+                      mdi-account
                     </v-icon>
                     <span v-text="item.label" />
                   </v-chip>
@@ -134,7 +136,7 @@
                         v-on="on"
                       >
                         <v-icon left>
-                          event
+                          mdi-calendar-star
                         </v-icon>
                         {{ expireDate.formated }}
                       </v-btn>
@@ -181,7 +183,6 @@
           <v-col cols="8" />
           <v-col cols="6">
             <v-btn
-              flat
               text
               @click="closeModal"
             >
@@ -190,7 +191,6 @@
             <v-btn
               v-if="!previewShow && type.value === 'mail'"
               id="step21"
-              flat
               text
               @click="showPreview"
             >
@@ -198,7 +198,6 @@
             </v-btn>
             <v-btn
               v-if="previewShow || type.value === 'message'"
-              flat
               text
               @click="showConfirm = true"
             >
@@ -521,9 +520,5 @@ export default {
 .directory-item {
   width: 2.25rem;
   height: 2.25rem;
-}
-.customBackground {
-  background: #006699;
-  color: #fff;
 }
 </style>

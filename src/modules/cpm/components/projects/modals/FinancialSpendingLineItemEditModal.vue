@@ -8,14 +8,14 @@
     transition="dialog-transition"
   >
     <v-card>
-      <v-card-title
-        class="green headline lighten-2"
-        primary-title
-        style="color: white;"
-      >
-        {{ $t('cpm.projects.spending') }}
-        {{ $tc('cpm.projects.lineItem', 1) }}
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          {{ $t('cpm.projects.spending') }}
+          {{ $tc('cpm.projects.lineItem', 1) }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
+
       <v-card-text>
         <v-form
           ref="formExpandedSpendingLineItem"
@@ -140,7 +140,7 @@
                     <v-text-field
                       v-model="lineItemDraft.dateText"
                       :label="$t('general.date')"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       :rules="[rules.required]"
                       v-on="on"
@@ -157,14 +157,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="dialogLineItemDateText = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="
                         $refs.dialogLineItemDateText.save(formatDate(date))
                       "
@@ -191,7 +191,7 @@
                     <v-text-field
                       v-model="lineItemDraft.paidDateText"
                       :label="$t('general.datePaid')"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       v-on="on"
                       @blur="
@@ -209,14 +209,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="dialogLineItemPaidDateText = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="
                         $refs.dialogLineItemPaidDateText.save(
                           formatDate(paidDate)
@@ -315,7 +315,7 @@
         <v-btn
           color="gray"
           :disabled="loading"
-          flat
+          text
           :loading="loading"
           @click="closeDialogLineSpending"
         >
@@ -324,7 +324,7 @@
         <v-btn
           color="primary"
           :disabled="loading"
-          flat
+          text
           :loading="loading"
           @click="saveLineItemSpending"
         >

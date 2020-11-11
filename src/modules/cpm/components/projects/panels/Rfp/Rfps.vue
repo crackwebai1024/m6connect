@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -42,13 +42,12 @@
       width="500"
     >
       <v-card>
-        <v-card-title
-          class="grey headline lighten-2"
-          primary-title
-        >
-          Add RFP
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Add RFP
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             class="pa-0"
@@ -114,7 +113,7 @@
                     <v-text-field
                       v-model="rfp.sharpBoard"
                       label="Sharp HealthCare Board"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       v-on="on"
                     />
@@ -126,14 +125,14 @@
                     <v-spacer />
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="modalDate = false"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
                       color="primary"
-                      flat
+                      text
                       @click="$refs.dialogDate.save(rfp.sharpBoard)"
                     >
                       OK
@@ -148,7 +147,7 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="dialogAddRfp = false"
           >
             Cancel
@@ -156,7 +155,7 @@
           <v-btn
             color="blue"
             dark
-            flat
+            text
             @click="addRFP"
           >
             Save
@@ -196,13 +195,12 @@
 
                 <td class="text-right">
                   <v-icon
-                    class="ml-0 mr-0"
+                    class="ml-0 mr-0 pointer"
                     color="#757575"
                     size="20"
-                    style="cursor: pointer"
                     @click.prevent="show(props.item)"
                   >
-                    remove_red_eye
+                    mdi-eye-off-outline
                   </v-icon>
                 </td>
               </template>
@@ -222,7 +220,7 @@
                     @click="pagination.rowsPerPage = -1"
                   >
                     <v-icon>
-                      keyboard_arrow_down
+                      mdi-arrow-down-bold-box
                     </v-icon>
                   </v-btn>
                   <v-btn
@@ -235,7 +233,7 @@
                     @click="pagination.rowsPerPage = 3"
                   >
                     <v-icon>
-                      keyboard_arrow_up
+                      mdi-arrow-up
                     </v-icon>
                   </v-btn>
                 </v-row>

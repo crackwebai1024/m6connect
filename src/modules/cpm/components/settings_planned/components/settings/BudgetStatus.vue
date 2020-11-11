@@ -12,7 +12,7 @@
         @click="showForm = true"
       >
         <v-icon color="blue">
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </portal>
@@ -21,12 +21,12 @@
       <v-btn
         v-if="!included"
         color="primary"
-        dark
+        light
         fab
         small
         @click="showForm = true"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -40,23 +40,21 @@
           <td>{{ props.item }}</td>
           <td class="text-right">
             <v-icon
-              class="ml-0 mr-2"
+              class="ml-0 mr-2 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               @click.prevent="editElement(props.index, props.item)"
             >
-              edit
+              mdi-pencil
             </v-icon>
 
             <v-icon
-              class="ml-0 mr-0"
+              class="ml-0 mr-0 pointer"
               color="#f44336"
               size="20"
-              style="cursor: pointer"
               @click.prevent="deleteElement(props.index, props.item)"
             >
-              delete
+              mdi-delete
             </v-icon>
           </td>
         </template>
@@ -71,14 +69,12 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Budget Status
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form ref="form">
             <v-text-field

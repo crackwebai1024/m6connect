@@ -11,7 +11,7 @@
         @click="closeAll"
       >
         <v-icon>
-          expand_less
+          mdi-arrow-expand-up
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.collapseAll') }}
       </v-col>
@@ -20,7 +20,7 @@
         @click="openAll"
       >
         <v-icon>
-          expand_more
+          mdi-arrow-expand-down
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.expandAll') }}
       </v-col>
@@ -29,7 +29,7 @@
         @click="zoomOut"
       >
         <v-icon>
-          zoom_in
+          mdi-magnify-plus-outline
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.zoomIn') }}
       </v-col>
@@ -38,7 +38,7 @@
         @click="zoomIn"
       >
         <v-icon>
-          zoom_out
+          mdi-magnify-minus-outline
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.zoomOut') }}
       </v-col>
@@ -48,7 +48,7 @@
         @click="exportTo('excel')"
       >
         <v-icon>
-          border_all
+          mdi-border-all
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.exportTo', { fileFormat: 'Excel' }) }}
       </v-col>
@@ -57,7 +57,7 @@
         @click="exportTo('png')"
       >
         <v-icon>
-          photo
+          mdi-image
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.exportTo', { fileFormat: 'PNG' }) }}
       </v-col>
@@ -66,7 +66,7 @@
         @click="exportTo('pdf')"
       >
         <v-icon>
-          picture_as_pdf
+          mdi-file-pdf-box
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.exportTo', { fileFormat: 'PDF' }) }}
       </v-col>
@@ -76,7 +76,7 @@
         @click="refreshData"
       >
         <v-icon>
-          refresh
+          mdi-refresh
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.refresh') }}
       </v-col>
@@ -85,7 +85,7 @@
         @click="showProjectsSelection = !showProjectsSelection"
       >
         <v-icon>
-          add
+          mdi-plus
         </v-icon>
         {{ $tc('cpm.forecasting.cashflow.selectProject', 2) }}
       </v-col>
@@ -94,7 +94,7 @@
         @click="toggleFullScreen"
       >
         <v-icon>
-          fullscreen
+          mdi-fullscreen
         </v-icon>
         {{ $t('cpm.forecasting.cashflow.fullscreen') }}
       </v-col>

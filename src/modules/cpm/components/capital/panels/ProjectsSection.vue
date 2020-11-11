@@ -44,11 +44,10 @@
                       <td>
                         <v-btn
                           color="primary"
-                          flat
                           icon
                           @click="removeCapital(props.item)"
                         >
-                          <v-icon>arrow_right_alt</v-icon>
+                          <v-icon>mdi-arrow-right-thick</v-icon>
                         </v-btn>
                       </td>
                     </template>
@@ -85,11 +84,10 @@
                       <td>
                         <v-btn
                           color="primary"
-                          flat
                           icon
                           @click="addCapitalPlan(props.item)"
                         >
-                          <v-icon>add</v-icon>
+                          <v-icon>mdi-plus</v-icon>
                         </v-btn>
                       </td>
                     </template>

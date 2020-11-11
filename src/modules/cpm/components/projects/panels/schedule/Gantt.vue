@@ -7,14 +7,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title primary-title>
-          <v-col
-            class="title"
-            md="12"
-          >
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
             Apply Schedule
-          </v-col>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             class="pa-0"
@@ -125,7 +123,7 @@
         <v-col class="shrink">
           <v-btn
             color="primary"
-            :flat="editing"
+            :text="editing"
             :small="editing"
             @click="editing = !editing"
           >
@@ -136,7 +134,7 @@
               right
               small
             >
-              close
+              mdi-close
             </v-icon>
           </v-btn>
         </v-col>
@@ -350,12 +348,12 @@
       >
         <v-btn
           class="ma-0"
-          flat
+          text
           small
           @click="setScale(0)"
         >
           <v-icon>
-            calendar_today
+            mdi-calendar
           </v-icon>
           Daily
         </v-btn>
@@ -365,12 +363,12 @@
       >
         <v-btn
           class="ma-0"
-          flat
+          text
           small
           @click="setScale(1)"
         >
           <v-icon>
-            date_range
+            mdi-calendar-range
           </v-icon>
           Monthly
         </v-btn>
@@ -405,10 +403,10 @@
       @click="expandGantt"
     >
       <v-icon v-if="!expandTasksOnGantt">
-        expand_more
+        mdi-arrow-expand-down
       </v-icon>
       <v-icon v-else>
-        expand_less
+        mdi-arrow-expand-up
       </v-icon>
     </v-btn>
   </div>

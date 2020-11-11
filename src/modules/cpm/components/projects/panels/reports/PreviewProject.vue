@@ -3,12 +3,12 @@
     flat
     fluid
   >
-    <v-card-title
-      class="title"
-      primary-title
-    >
-      {{ project.title }}
+    <v-card-title class="headline white px-6 py-4">
+      <span class="grey--text text--darken-1">
+        {{ project.title }}
+      </span>
     </v-card-title>
+    <v-divider class="grey lighten-3" />
     <v-card-text>
       <v-container
         class="pa-0"

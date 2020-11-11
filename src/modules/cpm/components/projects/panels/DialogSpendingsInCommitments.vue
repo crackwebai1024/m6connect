@@ -5,12 +5,12 @@
     transition="dialog-transition"
   >
     <v-card>
-      <v-card-title
-        class="title"
-        primary-title
-      >
-        Spending in {{ title }}
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          Spending in {{ title }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-container
           class="pa-0"
@@ -40,20 +40,18 @@
                       </v-icon>
 
                       <v-icon
-                        class="ml-0 mr-0"
+                        class="ml-0 mr-0 pointer"
                         color="#757575"
                         size="20"
-                        style="cursor: pointer"
                         @click="editSpending(props.item)"
                       >
                         mdi-pencil
                       </v-icon>
 
                       <v-icon
-                        class="ml-0 mr-0"
+                        class="ml-0 mr-0 pointer"
                         color="red"
                         size="20"
-                        style="cursor: pointer"
                         @click="deleteSpending(props.item)"
                       >
                         mdi-delete
@@ -69,6 +67,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          elevation="1"
           color="primary"
           text
           @click="closeModalSpendings"
