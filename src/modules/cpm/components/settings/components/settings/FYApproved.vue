@@ -9,7 +9,7 @@
     </v-col>
 
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"

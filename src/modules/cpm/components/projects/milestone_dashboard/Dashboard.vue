@@ -289,12 +289,10 @@
       width="500"
     >
       <v-card>
-        <v-card-title
-          class="blue headline lighten-2 text-white"
-          primary-title
-        >
-          {{ $t('milestoneDashboard.comments') }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">{{ $t('milestoneDashboard.comments') }}</span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-list
             v-if="comments.length"
@@ -325,12 +323,12 @@
       max-width="400px"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          {{ $t('milestoneDashboard.milestoneInformation') }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('milestoneDashboard.milestoneInformation') }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <h3>{{ $t('milestoneDashboard.name') }}: {{ milestoneName }}</h3>
           <v-menu
@@ -403,12 +401,12 @@
       max-width="400px"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          Milestone Information
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Milestone Information
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <h3>Name: {{ milestoneName }}</h3>
           <v-menu
@@ -468,15 +466,10 @@
       :width="800"
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            {{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}
-          </v-row>
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">{{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}</span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             fluid
@@ -589,12 +582,12 @@
       per
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          Monthly Review
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Monthly Review
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text v-if="project.monthlyReview">
           <v-textarea
             v-model="comment"

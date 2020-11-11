@@ -78,20 +78,12 @@
       scrollable
     >
       <v-card>
-        <v-card-title class="card-background headline">
-          <v-row align="center">
-            <label
-              v-if="Number.isInteger(currentElement)"
-              class="white--text"
-            >
-              Edit Role
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Role</label>
-          </v-row>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ Number.isInteger(currentElement) ? 'Edit Role' : 'Add New Role' }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <div class="form-group">
             <v-text-field

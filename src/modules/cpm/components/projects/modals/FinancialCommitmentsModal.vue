@@ -5,18 +5,21 @@
     persistent
   >
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline pa-6 d-flex justify-center">
-        <template
-          v-if="isCreate"
-        >
-          Create Commitment Information
-        </template>
-        <template
-          v-else
-        >
-          Edit Commitment Information
-        </template>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          <template
+            v-if="isCreate"
+          >
+            Create Commitment Information
+          </template>
+          <template
+            v-else
+          >
+            Edit Commitment Information
+          </template>          
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
       <v-card-text :style="{ height: getViewPortHeight }">
         <v-container fluid>

@@ -264,13 +264,13 @@
         class="w-full"
         v-show="method === 'add' || method === 'put'"
       >
-        <v-card-title
-          class="headline white grey--text text--darken-1"
-          primary-title
-          style="color: white;"
-        >
-          {{ $t('cpm.projects.spending') }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.spending') }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
+
         <v-divider class="grey lighten-3" />
 
         <v-card-text class="card-scroll">
@@ -738,14 +738,13 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="green headline lighten-2"
-          primary-title
-          style="color: white;"
-        >
-          {{ $t('cpm.projects.spending') }}
-          {{ $tc('cpm.projects.lineItem', 1) }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.spending') }}
+            {{ $tc('cpm.projects.lineItem', 1) }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form
             ref="formLineItem"

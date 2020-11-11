@@ -6,15 +6,12 @@
     scrollable
   >
     <v-card class="licensing-edit-modal">
-      <v-card-title
-        class="customBackground headline"
-      >
-        <v-row align="center">
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
           {{ $t('cpm.projects.budgetPanel.editBudget.budget') }}:
           {{ $h.dg(budget, 'title', '') }}
-        </v-row>
-        <v-spacer />
-        <v-btn
+        </span>
+         <v-btn
           class="justify-end"
           color="blue darken-2"
           dark
@@ -27,6 +24,7 @@
           </v-icon>
         </v-btn>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
       <v-card-text>
         <v-row>
@@ -219,14 +217,10 @@
               </v-dialog>
               <v-divider /><br><br><br>
               <v-card class="mb-4">
-                <v-card-title
-                  class="headline"
-                  style="background: #006699; color:#fff"
-                >
-                  <v-row align="center">
+                <v-card-title class="headline px-6 py-4 white">
+                  <span class="grey--text text--darken-1">
                     {{ $t('cpm.projects.budgetPanel.editBudget.attachments') }}
-                  </v-row>
-
+                  </span>
                   <v-spacer />
                   <v-btn
                     class="justify-end"
@@ -241,6 +235,7 @@
                     </v-icon>
                   </v-btn>
                 </v-card-title>
+                <v-divider class="grey lighten-3" />
 
                 <v-card-text>
                   <v-treeview
@@ -890,10 +885,5 @@ export default {
 .totals-container {
   margin-top: 0.3125rem;
   text-align: right;
-}
-
-.customBackground {
-  background: #006699;
-  color: #fff;
 }
 </style>

@@ -6,13 +6,10 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title primary-title>
-          <v-col
-            class="title"
-            md="12"
-          >
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Milestone
-          </v-col>
+          </span>
         </v-card-title>
         <v-card-text>
           <v-container
@@ -80,7 +77,7 @@
       </v-card>
     </v-dialog>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card elevation="0">
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="commitments-0"
@@ -78,12 +78,10 @@
       persistent
     >
       <v-card>
-        <v-card-title
-          class="headline white grey--text text--darken-1"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Change Status
-          </v-row>
+          </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
         <v-card-text class="d-flex flex-wrap justify-end">

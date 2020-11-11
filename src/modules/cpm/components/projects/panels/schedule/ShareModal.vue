@@ -6,9 +6,12 @@
     scrollable
   >
     <v-card>
-      <v-card-title class="customBackground headline">
-        <span>{{ $t('cpm.projects.shareGantt') }}</span>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          {{ $t('cpm.projects.shareGantt') }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-container>
           <v-row
@@ -311,9 +314,5 @@ export default {
 .directory-item {
   width: 2.25rem;
   height: 2.25rem;
-}
-.customBackground {
-  background: #006699;
-  color: #fff;
 }
 </style>

@@ -15,14 +15,10 @@
     </template>
 
     <v-card>
-      <v-card-title
-        class="headline"
-        style="background: #006699; color:#fff"
-      >
-        <v-row align="center">
-          Support Tickets
-        </v-row>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">Support Tickets</span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
       <v-tabs
         v-model="tab"
         centered
@@ -55,7 +51,7 @@
               id="uploadCaptureInputFile"
               ref="image"
               multiple
-              style="display: none"
+              class="d-none"
               type="file"
               @change="onFilePicked"
             >

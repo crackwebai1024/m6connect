@@ -56,11 +56,12 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title class="customBackground headline">
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Changes Status
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form ref="form">
             <v-text-field
@@ -225,10 +226,5 @@ export default {
 <style lang="scss" scoped>
 .customPosition {
   top: 5px;
-}
-
-.customBackground {
-  background: #006699;
-  color: #fff;
 }
 </style>

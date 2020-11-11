@@ -61,23 +61,12 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            <label
-              v-if="currentElement !== ''"
-              class="white--text"
-            >
-              Edit Budget Approver
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Budget Approver</label>
-          </v-row>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ currentElement !== '' ? 'Edit Budget Approver' : 'Add New Budget Approver' }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form ref="form">
             <div class="form-group">

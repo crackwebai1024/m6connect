@@ -1,7 +1,9 @@
 <template>
   <v-card>
-    <v-card-title class="title">
-      {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+    <v-card-title class="headline px-6 py-4 white">
+      <span class="grey--text text--darken-1">
+        {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+      </span>
       <v-spacer />
       <v-btn
         color="primary"
@@ -48,8 +50,10 @@
       width="500"
     >
       <v-card>
-        <v-card-title class="primary title white--text">
-          {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpmSettings.settings.projOptions.covid19RiskStatus') }}
+          </span>
           <v-spacer />
           <v-icon
             v-if="itemToEdit.id"

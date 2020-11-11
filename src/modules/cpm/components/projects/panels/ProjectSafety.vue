@@ -92,14 +92,12 @@
       scrollable
     >
       <v-card v-show="method === 'add' || method === 'put'">
-        <v-card-title
-          class="darken-3 headline light-blue"
-          primary-title
-          style="color: white;"
-        >
-          Safety
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Safety
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form
             ref="form"

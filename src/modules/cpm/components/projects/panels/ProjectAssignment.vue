@@ -115,12 +115,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="blue headline white--text"
-          primary-title
-        >
-          Edit Project Team
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Edit Project Team
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3"/>
         <v-card-text>
           <v-container
             class="pa-0"

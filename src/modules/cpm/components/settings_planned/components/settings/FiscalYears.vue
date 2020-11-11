@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <v-btn
           color="blue"
           dark

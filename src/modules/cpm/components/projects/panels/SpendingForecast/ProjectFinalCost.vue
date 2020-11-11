@@ -17,12 +17,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          {{ $t('cpm.projects.budgetCategory') }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.budgetCategory') }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-row
             align="center"
@@ -76,12 +76,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          {{ $t('cpm.projects.forecast') }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.forecast') }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-row
             align="center"

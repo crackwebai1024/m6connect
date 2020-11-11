@@ -224,10 +224,11 @@
       persistent
       width="600px"
     >
-      <v-card class="elevation-0">
-        <v-card-title>
-          <span class="headline">{{ $t('cpm.projects.createNewFolder') }}</span>
+      <v-card flat>
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">{{ $t('cpm.projects.createNewFolder') }}</span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
         <v-card-text>
           <v-container
