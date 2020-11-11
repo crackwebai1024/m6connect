@@ -87,7 +87,7 @@
             <v-hover
               v-slot:default="{ hover }">
               <div class="relative">
-                <v-card v-if="hover" class="absolute max-w-none pa-1 bottom-0 left-0 w-fit z-20" style="margin-bottom: -64px; margin-left: -130px;">
+                <v-card v-if="hover" class="absolute max-w-none pa-1 top-0 left-0 w-fit z-20" style="margin-bottom: -64px; margin-left: -130px;">
                   <v-btn
                     @click="messageEdit = channel.data.id + '-channel'"
                     height="25"
@@ -143,14 +143,14 @@
             <v-hover
               v-slot:default="{ hover }">
               <div class="relative">
-                <v-card v-if="hover" class="absolute max-w-none pa-1 bottom-0 left-0 w-fit z-20" style="margin-bottom: -90px; margin-left: -130px;">
+                <v-card v-if="hover" class="absolute max-w-none pa-1 top-0 left-0 w-fit z-20" style="margin-bottom: -90px; margin-left: -100px;">
                   <v-btn
-                    @click="messageEdit = channel.data.id + '-channel'"
+                    @click="messageEdit = channel.data.id + '-single-channel'"
                     height="25"
                     class="black--text capitalize px-3 text-caption w-full"
                     elevation="0"
                     v-bind="attrs" v-on="on"
-                  >Delete Group</v-btn>
+                  >Clean chat room</v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
@@ -163,7 +163,7 @@
               </div>
             </v-hover>
           </template>
-          <delete-dialog v-if="messageEdit === channel.membersInChannel.user.id + 'channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
+          <delete-dialog v-if="messageEdit === channel.data.id + '-single-channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"

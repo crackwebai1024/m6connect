@@ -14,8 +14,18 @@ export default {
   mutations: {
     SET_WORK_ORDER:  (state, payload) => state.actionFeed = payload,
     SET_WORK_FILTER: (state, payload) => state.filter = payload,
+    UPDATE_ACTION_ITEM: async ({}, payload) => await axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/wo_assignments/${payload.id}`, payload)
   },
   actions: {
+    updateActionItem({ commit }, data) {
+      let item = data['items'].filter((e) => { return e.assignee === auth.state.user.id });
+      if ( item.length > 0 ) {
+        commit('UPDATE_ACTION_ITEM', {
+          id: item[0]['id'],
+          status: data['value']
+        });
+      }
+    },
     setWorkFilter({ commit }, data){
       commit('SET_WORK_FILTER', data);
     },

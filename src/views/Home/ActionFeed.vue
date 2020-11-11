@@ -62,6 +62,7 @@ export default {
     showActionBtns: false,
     // action feed data 
     notifications: [ ],
+    status: [],
   }),
   name: "ActionFeed",
   computed: {
@@ -100,6 +101,9 @@ export default {
       workOrder:  'setWorkOrder',
       setFilterTag: 'setWorkFilter'
     }),
+    ...mapActions("ITAppsModule", {
+      select: "get_selects"
+    }),
     infiniteHandler($state) {
       this.busy = true;
       setTimeout(() => {
@@ -120,17 +124,21 @@ export default {
   watch: {
     cUser: function (val) {
       this.user = val;
+      this.loading = true;
       this.workOrder().then(() => {
         this.loading = false;
       });
     },
-    actFeed: function() {
+    actFeed: function(val) {
       this.currentIndex = 0;
     }
   },
   mounted(){
     this.setFilterTag({key: 'all_apps', value: 'All Apps'});
     this.user = this.cUser;
+    this.select('/wo_status').then(res => {
+      this.status = res.data;
+    });
     this.workOrder().then(() => {
       this.loading = false;
     });
