@@ -114,6 +114,7 @@
                         <td>
                           <v-autocomplete
                             v-model="mappedFields[hi]"
+                            clearable
                             item-text="name"
                             item-value="value"
                             :items="selectFields"
@@ -180,7 +181,7 @@
       <v-col>
         <v-card>
           <v-card-text>
-            <v-btn @click="startImport">
+            <v-btn @click="prepareToImport">
               Start
             </v-btn>
           </v-card-text>
@@ -235,6 +236,8 @@ import { db, doFirebaseAuth, newFirebaseInit } from '@/utils/Firebase'
 import { mapState } from 'vuex'
 
 export default {
+  /* eslint-disable camelcase */
+  /* eslint-disable no-console */
   // eslint-disable-next-line vue/match-component-file-name
   name: 'ImportCPM',
   components: {
@@ -424,7 +427,8 @@ export default {
         ]
       },
       preset: {},
-      savePresetDialog: false
+      savePresetDialog: false,
+      types: []
 
     }
   },
@@ -530,31 +534,12 @@ export default {
       this.importHeaders = headers
     },
     prepareToImport() {
-      let commitmentsCheck = false
-      let spendingsCheck = false
-      let projectsCheck = false
+      let projectsCheck = null
       const errors = []
-      const types = []
-      // Verify the headers
-      this.mappedFields.forEach(item => {
-        if (item.includes('commitmentLineItem') !== false || item.includes('commitments') !== false) {
-          commitmentsCheck = true
-          if (item.includes('id_number') === false) {
-            errors.push('Commitment Number/ID is required')
-          }
-          if (item.includes('amount') === false) {
-            errors.push('Commitment Number/ID is required')
-          }
-        }
 
-        if (item.includes('spendingLineItem') !== false || item.includes('spendings') !== false) {
-          spendingsCheck = true
-          if (item.includes('projects_id_number')) {
-            projectsCheck = true
-          } else {
-            errors.push('Project Number/ID is required')
-          }
-        }
+      // Verify the headers
+
+      this.mappedFields.forEach(item => {
         if (item.includes('projects') !== false) {
           if (item.includes('projects_id_number')) {
             projectsCheck = true
@@ -565,29 +550,70 @@ export default {
       })
 
       if (projectsCheck && !errors.length) {
-        if (commitmentsCheck) {
-          types.push('commitments')
-        }
-        // Then with Spendings
-        if (spendingsCheck) {
-          types.push('spendings')
-        }
+        this.types.push('commitments')
+        this.startImport()
+      } else {
+        console.error(errors)
       }
     },
     async startImport() {
-      this.fileData.data.map(async (item, index) => {
+      for (let index = 1; index < this.fileData.data.length; index++) {
+        const item = this.fileData.data[index]
         if (index === 0) {
           // SKIP HEADERS
-        } else if (index === 1) {
+        } else if (index <= 10) {
+          console.log('CHECKING ' + index)
           const formatedData = this.formatData(item)
           // Check if project exists
-          const project = await this.getProject(formatedData.projects_id_number)
+          let project = await this.getProject(formatedData.projects_id_number)
+
           // Create project if not exists
           if (project === false) {
-            this.createProject(formatedData)
+            console.log('Creating Project')
+            project = await this.createProject(formatedData)
+          } else {
+            project = project[0]
           }
+
+
+          // Once the project is created, we check if we are importing commitments or spendings
+          if (this.types.includes('commitments')) {
+            const number = formatedData.commitments_id_number || formatedData.commitmentLineItem_po_id_number
+            if (number === undefined) {
+              console.error('MISSING NUMBER')
+              break
+            }
+            let commitment = await this.getCommitment(project.id, number)
+
+            if (commitment.length > 1) {
+              // Error we can have just one commitment with the same number
+              this.$snotify.error('Commitment duplicated: ', 'Error')
+              break
+            }
+
+            if (!commitment) {
+              // Commitment not exists
+              commitment = await this.createCommitment(project.id, formatedData)
+              console.log('Creating Commitment')
+            } else {
+              console.log('Using Existing Commitment')
+              commitment = commitment[0]
+            }
+
+            // Verify if the line item already exists
+            const checkLineItem = await this.getCommitmentLineItem(project.id, commitment.id, formatedData.commitmentLineItem_line_number)
+            if (!checkLineItem) {
+              console.log('Creating Line Item')
+              await this.createCommitmentLineItem(project.id, commitment.id, formatedData)
+            } else {
+              console.log('Skipping Line Item, already exists')
+            }
+          }
+          // else if (types.includes('spendings')) {}
+        } else {
+          break
         }
-      })
+      }
     },
     formatData(item) {
       const formated = {}
@@ -613,43 +639,68 @@ export default {
         }
       }))
     },
+    async getCommitment(projectID, number) {
+      const docs = await db.collection('cpm_projects')
+        .doc(projectID)
+        .collection('commitments')
+        .where('number', '==', number)
+        .get()
+      if (docs.empty) {
+        return false
+      }
+      return await Promise.all(docs.docs.map(async item => item))
+    },
+    async getCommitmentLineItem(projectID, commitmentID, number) {
+      const docs = await db.collection('cpm_projects')
+        .doc(projectID)
+        .collection('commitments')
+        .doc(commitmentID)
+        .collection('line_items')
+        .where('line_number', '==', number)
+        .get()
+      if (docs.empty) {
+        return false
+      } else {
+        return true
+      }
+    },
     async createProject(item) {
       const project = {
-        campus: item.campus || '',
-        category: item.category || '',
+        campus: item.projects_campus || '',
+        category: item.projects_category || '',
         company_nid: this.currentCompany.id || '',
-        contractor: item.contractor || '',
+        contractor: item.projects_contractor || '',
         createdAt: new Date(),
         description: item.projects_description || '',
-        endDate: item.endDate || '',
-        endDateText: item.endDateText || '',
-        files: item.files || '',
-        manager: item.manager || '',
-        totalPlanBudget: item.totalPlanBudget || '',
+        endDate: item.projects_endDate || '',
+        endDateText: item.projects_endDateText || '',
+        files: item.projects_files || '',
+        manager: item.projects_manager || '',
+        totalPlanBudget: item.projects_totalPlanBudget || '',
         nextChangeNumber: 1,
         nextCommitmentNumber: 1,
         nextInvoiceNumber: 1,
         nextTaskNumber: 1,
         soft_delete: 0,
         number: item.projects_id_number || '',
-        phase: item.phase || '',
-        phaseTargetDate: item.phaseTargetDate || '',
-        phaseTargetDateText: item.phaseTargetDateText || '',
-        projectType: item.projectType || '',
-        project_invoice_total: item.project_invoice_total || '',
+        phase: item.projects_phase || '',
+        phaseTargetDate: item.projects_phaseTargetDate || '',
+        phaseTargetDateText: item.projects_phaseTargetDateText || '',
+        projectType: item.projects_projectType || '',
+        project_invoice_total: item.projects_project_invoice_total || '',
         project_total_open_po_w_tax:
-            item.project_total_open_po_w_tax || '',
-        project_total_po_amount: item.project_total_po_amount || '',
-        projectImage: item.projectImage || '',
-        proposedSpend: item.proposedSpend || '',
-        sameAsCampusAddress: item.sameAsCampusAddress || '',
-        setDefaultSchedule: item.setDefaultSchedule || '',
-        squareFootage: item.squareFootage || '',
-        standard: item.standard || '',
-        startDate: item.startDate || '',
-        startDateText: item.startDateText || '',
-        status: item.status || '',
-        teamMembers: item.teamMembers || '',
+            item.projects_total_open_po_w_tax || '',
+        project_total_po_amount: item.projects_total_po_amount || '',
+        projectImage: item.projects_projectImage || '',
+        proposedSpend: item.projects_proposedSpend || '',
+        sameAsCampusAddress: item.projects_sameAsCampusAddress || '',
+        setDefaultSchedule: item.projects_setDefaultSchedule || '',
+        squareFootage: item.projects_squareFootage || '',
+        standard: item.projects_standard || '',
+        startDate: item.projects_startDate || '',
+        startDateText: item.projects_startDateText || '',
+        status: item.projects_status || '',
+        teamMembers: item.projects_teamMembers || '',
         title: item.projects_title || item.projects_id_number || 'New Project',
         forecasted: false,
         creator: {},
@@ -668,15 +719,122 @@ export default {
           projectFinalCost: 0
         }
       }
-      const newProject = await db.collection('cpm_projects').add(project)
-      return newProject
+      return await db.collection('cpm_projects').add(project)
+    },
+    async createCommitment(projectID, item) {
+      const newCommitment = {
+        number: item.commitments_id_number,
+        total_po_amount: 0,
+        total_open_po_w_tax: 0,
+        amount: 0,
+        invoiceTotal: 0,
+        vendor: [],
+        createdAt: new Date(),
+        createdBy: 'm6works_import_tool',
+        budgetCategory: item.commitments_budgetCategory || '', // Name
+        budget_category: item.commitments_budget_category || '' // reference
+      }
+
+      return new Promise(resolve => {
+        const spending = db.collection('cpm_projects').doc(projectID).collection('commitments').add(newCommitment)
+        resolve(spending)
+      })
+    },
+    async createCommitmentLineItem(projectID, commitmentID, item) {
+      const newCommitmentLineItem = {
+        number: item.commitmentLineItem_amount || '',
+        line_number: item.commitmentLineItem_line_number || '',
+        title: item.commitmentLineItem_title || '',
+        startDateText: item.commitmentLineItem_startDate || '',
+        startDate: new Date(item.commitmentLineItem_startDate).getTime() || '',
+        vendor: [],
+        account: item.commitmentLineItem_account || '',
+        quantity: item.commitmentLineItem_tax_amount || '',
+        quantity_amount: 1,
+        system_date: '',
+        tax_amount: item.commitmentLineItem_tax_amount || '',
+        cost_per_item: item.commitmentLineItem_cost_per_item || '',
+        total_po_line_amount: item.commitmentLineItem_amount || '',
+        amount: item.commitmentLineItem_amount || '',
+        open_po_amount: ''
+      }
+      return new Promise(resolve => {
+        const spending = db.collection('cpm_projects')
+          .doc(projectID)
+          .collection('commitments')
+          .doc(commitmentID)
+          .collection('line_items')
+          .add(newCommitmentLineItem)
+        resolve(spending)
+      })
+    },
+    async createSpending(projectID, item) {
+      const newSpending = {
+        number: item.spendings_id_number,
+        total_po_amount: 0,
+        total_open_po_w_tax: 0,
+        amount: 0,
+        invoiceTotal: 0,
+        vendor: {},
+        createdAt: new Date(),
+        createdBy: 'm6works_import_tool'
+        // budgetCategory: item.spendingLineItem_account_category || '', // Name
+        // budget_category: item.spendingLineItem_account_category || '' // reference
+      }
+
+      return new Promise(resolve => {
+        const spending = db.collection('cpm_projects').doc(projectID).collection('spendings').add(newSpending)
+        resolve(spending)
+      })
+    },
+    async createSpendingLineItem(projectID, spendingID, item) {
+      if (item.spendingLineItem_commitment_id_number) {
+        this.getCommitment(item.spendingLineItem_commitment_id_number)
+      }
+
+      const newSpendingLineItem = {
+        client_capital_id: item || '',
+        number: item.spendings_id_number || '',
+        po_number: item.spendings_commitment_id_number || '',
+        vendors: [],
+        vendor: {},
+        line_number: item.spendingLineItem_line_number || '',
+        line_description: item.spendingLineItem_description || '',
+        dateText: item.spendingLineItem_start_date || '',
+        date: new Date(item.spendingLineItem_start_date).getTime() || '',
+        paidDateText: item.spendingLineItem_paid_date || '',
+        paidDate: new Date(item.spendingLineItem_paid_date).getTime() || '',
+        updateDateText: '',
+        updateDate: '',
+        account: item.spendingLineItem_paid_date || '',
+        aoc_code: item.spendingLineItem_paid_date || '',
+        status: item.spendingLineItem_status || '',
+        amount: item.spendingLineItem_amount || '',
+        account_category: item.spendingLineItem_account_category || '',
+        cancel_seq: '',
+        suffix: '',
+        po_code: '',
+        dist_company: '',
+        dist_acct_unit: '',
+        dis_sub_acct: '',
+        dist_seq_nbr: ''
+      }
+      return new Promise(resolve => {
+        const spendingLineItem = db.collection('cpm_projects')
+          .doc(projectID)
+          .collection('commitments')
+          .doc(spendingID)
+          .collection('line_items')
+          .add(newSpendingLineItem)
+        resolve(spendingLineItem)
+      })
     }
   }
 }
 </script>
 
 <style>
-.theme--light.v-text-field > .v-input__control > .v-input__slot:before {
+theme--light.v-text-field > .v-input__control > .v-input__slo:before {
   border: 1px solid #000;
 }
 </style>
