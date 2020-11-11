@@ -395,13 +395,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          {{ getTitleDialog() }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ getTitleDialog() }}
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             class="pa-0"
@@ -412,7 +411,7 @@
                 <v-text-field
                   v-model="elementToEdit.amount"
                   label="Amount"
-                  prepend-icon="attach_money"
+                  prepend-icon="mdi-cash"
                 />
               </v-col>
             </v-row>

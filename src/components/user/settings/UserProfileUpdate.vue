@@ -12,7 +12,7 @@
               <v-row>
                 <v-col col-xs-12 >
 
-                  <div class="flex-column flex-end" >
+                  <div class="flex-column justify-end" >
                     <m6-upload 
                       btnButton="purple" 
                       @response="reponseProfileImg" 
@@ -170,27 +170,6 @@ export default {
   width: 10rem;
   height: 10rem;
   margin-bottom: -0.5rem;
-}
-.flex-column {
-  display: flex;      
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  flex-direction: column;
-}
-.flex-row {
-  display: flex;      
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  flex-direction: row;
-}
-.flex-center {
-  align-items: center;
-}
-.flex-end {
-  align-items: flex-end;
-}
-.flex-start {
-  align-items: flex-start;
 }
 </style>
 

@@ -1,7 +1,6 @@
 <template>
   <v-dialog
     persistent
-    scrollable
     value="true"
     :width="800"
     @input="closeDialog"

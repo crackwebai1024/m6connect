@@ -5,14 +5,10 @@
     width="500"
   >
     <v-card>
-      <v-card-title
-        class="blue headline lighten-2"
-        primary-title
-        style="color: white;"
-      >
-        Coming Soon
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">Coming Soon</span>
       </v-card-title>
-
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         This feature is on it's way
       </v-card-text>

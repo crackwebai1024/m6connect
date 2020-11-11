@@ -7,9 +7,8 @@
   >
     <template v-slot:activator="{ on }">
       <v-col
-        class="m6-picture-profile text-center"
+        class="m6-picture-profile pointer text-center"
         cols="12"
-        style="cursor: pointer;"
         v-on="on"
       >
         <v-badge :color="statusColor">
@@ -42,10 +41,10 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline">
-        Change picture
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">Change picture</span>
       </v-card-title>
-
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <input
           ref="inputFile"
@@ -59,8 +58,8 @@
           <img
             v-if="imageB64"
             alt="New image"
+            class="max-w-full"
             :src="imageB64"
-            style="max-width: 100%"
           >
         </div>
 
@@ -94,8 +93,8 @@
         <v-btn
           color="blue darken-1"
           :disabled="!imageB64"
-          text
           :loading="loading"
+          text
           @click="accept"
         >
           Accept

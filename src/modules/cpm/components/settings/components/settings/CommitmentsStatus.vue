@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card elevation="0">
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="commitments-0"
@@ -74,30 +74,30 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="400px"
       persistent
-      scrollable
     >
-      <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            Changes Status
-          </v-row>
+      <v-card>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Change Status
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="d-flex flex-wrap justify-end">
           <v-text-field
+            class="mt-3 mb-2 w-full"
             v-model="element"
             color="blue"
             label="Commitments Status Name"
           />
           <input
+            class="w-full"
             v-model="currentElement"
             type="hidden"
           >
           <v-btn
+            class="white--text mx-2"
             color="blue"
             outline
             @click="cancel"

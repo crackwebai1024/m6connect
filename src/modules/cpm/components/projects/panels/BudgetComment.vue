@@ -44,9 +44,9 @@
     </div>
 
     <div
+      class="py-2 px-0"
       v-for="(budget, index) in commentsSortedByDate"
       :key="index"
-      style="padding: 7px 0px 7px 0px;"
     >
       <v-row
         align="center"
@@ -101,8 +101,8 @@
     </div>
 
     <div
+      class="py-2 px-0"
       v-if="budgetComments.length == 0 && !loading"
-      style="padding: 7px 0px 7px 0px;"
     >
       <span class="text-center">No Status Budget Have Been Made Yet</span>
     </div>

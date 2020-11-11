@@ -21,14 +21,14 @@
         <v-list-item
           v-if="!option.hide"
           :key="index"
-          class="list-item px-2"
+          class="list-item px-0"
         >
           <v-list-item-title @click="emitEvent(option.event)">
             <v-row class="align-center list-item ma-0">
               <v-col class="shrink mx-0 pa-2 transparent pr-0">
                 <v-icon
                   v-if="option.icon"
-                  class="mr-0"
+                  class="mr-0 transparent"
                 >
                   {{ option.icon }}
                 </v-icon>

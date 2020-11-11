@@ -11,8 +11,7 @@
             @click="printFromVue('chart')"
           >
             <v-icon
-              class="pointer"
-              color="white"
+              class="pointer grey--text text--darken-1"
               text
             >
               mdi-printer
@@ -459,9 +458,5 @@ export default {
 <style lang="scss">
 .apexClass .apexcharts-canvas {
   z-index: 1 !important;
-}
-
-.pointer {
-  cursor: pointer;
 }
 </style>

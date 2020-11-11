@@ -39,7 +39,6 @@
         >
           <v-toolbar
             class="mb-4"
-            color="grey lighten-3"
             dense
             flat
           >

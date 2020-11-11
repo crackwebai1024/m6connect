@@ -47,7 +47,7 @@
 
       <v-tooltip
         v-if="!search"
-        left
+        bottom
       >
         <template v-slot:activator="{ on }">
           <div class="blob white">
@@ -62,7 +62,7 @@
           </div>
         </template>
 
-        <span>{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
@@ -226,20 +226,18 @@
                 <td class="pa-0 text-center">
                   <v-col>
                     <v-icon
-                      class="ml-0 mr-2"
+                      class="ml-0 mr-2 pointer"
                       color="#757575"
                       size="20"
-                      style="cursor: pointer"
                       @click="openEditLineItem(props.item)"
                     >
                       mdi-pencil
                     </v-icon>
 
                     <v-icon
-                      class="ml-0 mr-0"
+                      class="ml-0 mr-0 pointer"
                       color="#f44336"
                       size="20"
-                      style="cursor: pointer"
                       @click="deleteLineItem(props.item)"
                     >
                       mdi-delete
@@ -261,16 +259,16 @@
       persistent
     >
       <v-card
+        class="w-full"
         v-show="method === 'add' || method === 'put'"
-        :style="{ width: method === 'add' ? '80vw' : '40vw' }"
       >
-        <v-card-title
-          class="headline white grey--text text--darken-1"
-          primary-title
-          style="color: white;"
-        >
-          {{ $t('cpm.projects.spending') }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.spending') }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
+
         <v-divider class="grey lighten-3" />
 
         <v-card-text class="card-scroll">
@@ -397,7 +395,7 @@
                       <v-text-field
                         v-model="dialogProperties.dateOpenedText"
                         :label="$t('general.dateOpened')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         v-on="on"
                         @blur="
@@ -466,7 +464,7 @@
                       <v-text-field
                         v-model="dialogProperties.paidDateText"
                         :label="$t('general.datePaid')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         :rules="[rules.required]"
                         v-on="on"
@@ -735,18 +733,16 @@
       v-model="dialogLineItem"
       max-width="600px"
       persistent
-      scrollable
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="green headline lighten-2"
-          primary-title
-          style="color: white;"
-        >
-          {{ $t('cpm.projects.spending') }}
-          {{ $tc('cpm.projects.lineItem', 1) }}
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            {{ $t('cpm.projects.spending') }}
+            {{ $tc('cpm.projects.lineItem', 1) }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form
             ref="formLineItem"
@@ -871,7 +867,7 @@
                       <v-text-field
                         v-model="dialogLineItemProperties.dateText"
                         :label="$t('general.date')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         :rules="[rules.required]"
                         v-on="on"
@@ -922,7 +918,7 @@
                       <v-text-field
                         v-model="dialogLineItemProperties.paidDateText"
                         :label="$t('general.datePaid')"
-                        prepend-icon="event"
+                        prepend-icon="mdi-calendar"
                         readonly
                         v-on="on"
                         @blur="
@@ -1144,7 +1140,6 @@
       v-model="showLineItemsModal"
       max-width="1000px"
       persistent
-      scrollable
       transition="dialog-transition"
     >
       <v-card

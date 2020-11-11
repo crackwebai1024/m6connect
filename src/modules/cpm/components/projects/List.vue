@@ -75,8 +75,7 @@
           sm="6"
         >
           <v-card
-            class="cpmCard"
-            style="cursor: pointer;"
+            class="cpmCard pointer"
             @mouseleave="showDeleteIconApplication = null"
             @mouseover="showDeleteIconApplication = indexR"
           >
@@ -191,7 +190,7 @@
                     tile
                   >
                     <v-card-text class="py-2 subheading white--text">
-                      <span style="color: white;">{{ proj.status }}</span>
+                      <span class="white--text">{{ proj.status }}</span>
                     </v-card-text>
                   </v-card>
                 </v-col>
@@ -209,7 +208,7 @@
                     <v-card-text class="py-2 subheading white--text">
                       <span
                         v-if="proj.startDate"
-                        style="color: white;"
+                        class="white--text"
                       >
                         {{ parseDate(proj.startDate) }}
                       </span>
@@ -258,7 +257,7 @@
                   href="#"
                   @click.prevent="goToProject(props.item, false)"
                 >
-                  <span style="color: #0D47A1;">{{ props.item.number }}</span>
+                  <span class="blue--text text--lighten-1">{{ props.item.number }}</span>
                 </a>
               </td>
               <td>{{ props.item.campus ? props.item.campus.name : '' }}</td>
@@ -290,7 +289,7 @@
               <td>{{ props.item.projectType }}</td>
 
               <template v-if="!isPlanned">
-                <td style="text-align:right;">
+                <td class="text-right">
                   {{
                     parseFloat(
                       props.item.budget ? props.item.budget : 0
@@ -300,7 +299,7 @@
                     })
                   }}
                 </td>
-                <td style="text-align:right;">
+                <td class="text-right">
                   {{
                     parseFloat(
                       props.item.projectFinalCost
@@ -318,9 +317,8 @@
                 <v-tooltip left>
                   <template v-slot:activator="{ on }">
                     <v-icon
-                      class="mr-2"
+                      class="mr-2 pointer"
                       small
-                      style="cursor: pointer;"
                       v-on="on"
                       @click="goToProject(props.item, false)"
                     >
@@ -333,9 +331,9 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <v-icon
+                      class="pointer"
                       v-if="props.item.canDelete != false"
                       small
-                      style="cursor: pointer;"
                       v-on="on"
                       @click="deleteProject(props.item)"
                     >

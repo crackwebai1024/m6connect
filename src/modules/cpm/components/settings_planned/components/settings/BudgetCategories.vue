@@ -65,14 +65,12 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             {{ formTitle }}
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text class="pa-2">
           <v-text-field
             v-model="name"
@@ -119,16 +117,13 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Sub Category for: {{ l1Item.code ? l1Item.code + ' -' : '' }}
             {{ l1Item.name }}
-          </v-row>
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-data-table
             :headers="headers"
@@ -203,15 +198,13 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Sub Category for: {{ l2Item.code ? l2Item.code + ' -' : '' }}
             {{ l2Item.name }}
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-data-table
             :headers="headers"

@@ -411,13 +411,12 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          {{ getTitleDialog() }}
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ getTitleDialog() }}
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             class="pa-0"
@@ -428,7 +427,7 @@
                 <v-text-field
                   v-model="elementToEdit.amount"
                   label="Amount"
-                  prepend-icon="attach_money"
+                  prepend-icon="mdi-cash"
                 />
               </v-col>
             </v-row>
@@ -439,8 +438,8 @@
           <v-spacer />
           <v-btn
             :disabled="loading"
-            text
             :loading="loading"
+            text
             @click="cancelForecast"
           >
             Cancel
@@ -528,7 +527,7 @@ export default {
       required: true
     }
   },
-computed: {
+  computed: {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     })
@@ -1027,9 +1026,5 @@ computed: {
 <style scoped>
 .row-fiscal-year {
   min-width: 220px;
-}
-
-.pointer {
-  cursor: pointer;
 }
 </style>

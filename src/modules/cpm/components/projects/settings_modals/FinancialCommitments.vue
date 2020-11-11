@@ -50,6 +50,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
+          elevation="1"
           color="gray"
           text
           @click="$emit('close')"

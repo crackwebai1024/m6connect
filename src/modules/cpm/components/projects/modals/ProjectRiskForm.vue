@@ -6,11 +6,12 @@
     @input="closeDialog"
   >
     <v-card>
-      <v-card-title
-        class="green headline lighten-2 white--text"
-      >
-        {{ actionButton }} {{ $t('cpm.projects.riskAssessmentPanel.title') }}
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          {{ actionButton }} {{ $t('cpm.projects.riskAssessmentPanel.title') }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-form ref="form">
           <v-row>

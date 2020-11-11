@@ -42,13 +42,12 @@
       width="500"
     >
       <v-card>
-        <v-card-title
-          class="grey headline lighten-2"
-          primary-title
-        >
-          Add RFP
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Add RFP
+          </span>
         </v-card-title>
-
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-container
             class="pa-0"
@@ -114,7 +113,7 @@
                     <v-text-field
                       v-model="rfp.sharpBoard"
                       label="Sharp HealthCare Board"
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       readonly
                       v-on="on"
                     />

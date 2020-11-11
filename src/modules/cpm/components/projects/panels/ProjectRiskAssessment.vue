@@ -179,9 +179,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .pointer {
-    cursor: pointer;
-  }
   .action-icon {
     transition: all 0.2s ease-out;
 

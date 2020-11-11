@@ -1,15 +1,13 @@
 <template>
   <div>
     <v-card class="licensing-edit-modal">
-      <v-card-title
-        class="headline"
-        style="background: #006699; color:#fff"
-      >
-        {{ $t('cpm.projects.budgetPanel.editBudget.lineItems') }}
-
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          {{ $t('cpm.projects.budgetPanel.editBudget.lineItems') }}
+        </span>
         <v-spacer />
         <v-btn
-          class="flex-end"
+          class="justify-end"
           color="blue darken-2"
           dark
           fab
@@ -21,7 +19,7 @@
           </v-icon>
         </v-btn>
       </v-card-title>
-
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <new-item
           v-if="showNewItem"
@@ -536,10 +534,6 @@ export default {
 
 .padding-top-10 {
   padding-top: 0.625rem;
-}
-
-.flex-end {
-  justify-content: flex-end;
 }
 
 .text-right {

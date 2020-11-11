@@ -82,13 +82,12 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="green headline lighten-2"
-          primary-title
-          style="color: white;"
-        >
-          Risk Management
+        <v-card-title class="headline white px-6 py-4">
+          <span class="grey--text text--darken-1">
+            Risk Management
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
         <v-card-text>
           <v-container

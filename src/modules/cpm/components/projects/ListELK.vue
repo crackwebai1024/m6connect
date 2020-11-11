@@ -1715,10 +1715,6 @@ export default {
   height: 100%;
 }
 
-.pointer {
-  cursor: pointer;
-}
-
 .fullWidth {
   width: 100%
 }

@@ -45,12 +45,12 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-title v-if="currentCategory === ''">
-        Creating
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          {{ currentCategory === '' ? 'Creating' : 'Editing' }}
+        </span>
       </v-card-title>
-      <v-card-title v-else>
-        Editing
-      </v-card-title>
+      <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-form ref="form">
           <v-text-field

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="budget-2"
@@ -81,14 +81,12 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Budget Types
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text>
           <v-form ref="form">
             <v-text-field

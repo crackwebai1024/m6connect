@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="assignment-1"
@@ -73,7 +73,7 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
+        
           class="headline"
           style="background: #006699; color:#fff"
         >
