@@ -13,47 +13,49 @@
           </v-card-title>
           <v-divider class="grey lighten-3 z-index" />
           <v-card-text class="pb-5 px-6">
+            <!-- Upload Document -->
             <v-form>
               <p class="blue--text mb-1 text--lighten-1">
-                Please upload your export file
+                Step 1: Please upload your export file
               </p>
               <input
                 type="file"
                 @change="onFileChange"
               >
             </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row class="mx-0 my-4">
-      <v-col
-        v-if="fileData"
-        class="pa-0"
-        cols="12"
-      >
-        <v-card>
-          <v-card-title class="headline px-6 py-3 white">
-            <span class="grey--text text--darken-2 text-h6">
-              Select Your Headers
-            </span>
-          </v-card-title>
-          <v-divider class="grey lighten-3" />
-          <v-card-text class="px-6">
+            <!-- Select Headers -->
             <template v-if="firstRow === null && fileData">
               <template v-if="!getHeadersByRow && fileData.headers">
-                <p class="blue--text mb-1 text--lighten-1">
-                  This are the headers?
+                <p class="blue--text mb-1 mt-4 text--lighten-1">
+                  Step 2: Are these your column headers?
                 </p>
                 <table-headers
                   class="table-headers"
                   :headers="fileData.headers"
                 />
+                <div
+                  class="d-flex justify-end pt-4"
+                >
+                  <v-btn
+                    @click="setHeaders(fileData.headers)"
+                  >
+                    Yes
+                  </v-btn>
+                  <v-btn
+                    class="ml-3"
+                    @click="getRows"
+                  >
+                    No
+                  </v-btn>
+                </div>
               </template>
 
               <template
                 v-if="getHeadersByRow"
               >
+                <p class="blue--text mb-1 mt-4 text--lighten-1">
+                  Step 2: Are these your column headers?
+                </p>
                 <v-select
                   v-model="rowSelected"
                   item-text="label"
@@ -66,29 +68,40 @@
                   class="table-headers"
                   :headers="rowSelected"
                 />
+                <div
+                  class="d-flex justify-end pt-4"
+                >
+                  <v-btn
+                    @click="setHeaders(rowSelected)"
+                  >
+                    Yes
+                  </v-btn>
+                  <v-btn
+                    class="ml-3"
+                    @click="getRows"
+                  >
+                    No
+                  </v-btn>
+                </div>
               </template>
             </template>
           </v-card-text>
-          <v-card-actions class="d-flex justify-end pb-4 px-6">
-            <v-btn
-              v-if="!getHeadersByRow"
-              @click="setHeaders(fileData.headers)"
-            >
-              Yes
-            </v-btn>
-            <v-btn
-              v-else
-              @click="setHeaders(rowSelected)"
-            >
-              Yes
-            </v-btn>
-            <v-btn
-              class="ml-3"
-              @click="getRows"
-            >
-              No
-            </v-btn>
-          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row class="d-none mx-0 my-4">
+      <v-col
+        v-if="fileData"
+        class="pa-0"
+        cols="12"
+      >
+        <v-card>
+          <v-card-title class="headline px-6 py-3 white">
+            <span class="grey--text text--darken-2 text-h6">
+              Select Your Headers
+            </span>
+          </v-card-title>
+          <v-divider class="grey lighten-3" />
         </v-card>
       </v-col>
     </v-row>
@@ -110,7 +123,7 @@
               dense
               item-text="name"
               :items="presets"
-              label="Select a Template"
+              label="Select M6 Template"
               return-object
               @change="setPreset"
             />
@@ -149,21 +162,28 @@
                           {{ hi+1 }}
                         </td>
                         <td class="align-center d-flex font-weight-bold justify-start text-caption">
-                          {{ typeof(header) === 'string' ? header : '-' }}
+                          {{ typeof(header) === 'string' || typeof(header) === 'number' ? header : '-' }}
                         </td>
                         <td
                           class="justify-start preset-select-content"
                           style="height: auto;"
                         >
-                          <v-autocomplete
-                            v-model="mappedFields[hi]"
-                            class="font-weight-bold justify-start mb-1 text-caption"
-                            elevation="3"
-                            item-text="name"
-                            item-value="value"
-                            :items="selectFields"
-                            label="Data Type"
-                          />
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-autocomplete
+                                v-model="mappedFields[hi]"
+                                v-bind="attrs"
+                                class="font-weight-bold justify-start mb-1 text-caption"
+                                elevation="3"
+                                item-text="name"
+                                item-value="value"
+                                :items="selectFields"
+                                label="M6 Field Match"
+                                v-on="on"
+                              />
+                            </template>
+                            <span class="grey lighten- px-3 py-1 rounded white--text">Select M6 label which most closely matches your column header</span>
+                          </v-tooltip>
                         </td>
                       </tr>
                     </template>
