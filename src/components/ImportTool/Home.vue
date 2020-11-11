@@ -136,6 +136,7 @@
                               v-model="mappedFields[hi]"
                               v-bind="attrs"
                               class="font-weight-bold justify-start mb-1 text-caption"
+                              clearable
                               elevation="3"
                               item-text="name"
                               item-value="value"
@@ -172,7 +173,7 @@
                   class="blue capitalize lighten-1 px-10 py-5 text-h6 white--text"
                   elevation="1"
                   text
-                  @click="startImport"
+                  @click="prepareToImport"
                 >
                   Create
                 </v-btn>
