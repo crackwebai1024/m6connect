@@ -16,18 +16,20 @@
             <!-- Upload Document -->
             <v-form>
               <p class="blue--text mb-1 text--lighten-1">
-                Step 1: Please upload your export file
+                Step 1. Please upload your export file
               </p>
               <input
+                data-buttonText="Hello there, pick your files"
                 type="file"
                 @change="onFileChange"
               >
             </v-form>
+            <v-divider class="grey lighten-3 my-2 z-index" />
             <!-- Select Headers -->
             <template v-if="firstRow === null && fileData">
               <template v-if="!getHeadersByRow && fileData.headers">
                 <p class="blue--text mb-1 mt-4 text--lighten-1">
-                  Step 2: Are these your column headers?
+                  Step 2. Are these your column headers?
                 </p>
                 <table-headers
                   class="table-headers"
@@ -48,13 +50,14 @@
                     No
                   </v-btn>
                 </div>
+                <v-divider class="grey lighten-3 my-2 z-index" />
               </template>
 
               <template
                 v-if="getHeadersByRow"
               >
                 <p class="blue--text mb-1 mt-4 text--lighten-1">
-                  Step 2: Are these your column headers?
+                  Step 2. Are these your column headers?
                 </p>
                 <v-select
                   v-model="rowSelected"
@@ -83,157 +86,80 @@
                     No
                   </v-btn>
                 </div>
+                <v-divider class="grey lighten-3 my-2 z-index" />
               </template>
             </template>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row class="d-none mx-0 my-4">
-      <v-col
-        v-if="fileData"
-        class="pa-0"
-        cols="12"
-      >
-        <v-card>
-          <v-card-title class="headline px-6 py-3 white">
-            <span class="grey--text text--darken-2 text-h6">
-              Select Your Headers
-            </span>
-          </v-card-title>
-          <v-divider class="grey lighten-3" />
-        </v-card>
-      </v-col>
-    </v-row>
 
-    <v-row class="mx-0 my-4">
-      <v-col
-        class="pa-0"
-        cols="12"
-      >
-        <v-card>
-          <v-card-title class="headline px-6 py-4 white">
-            <span class="grey--text text--darken-2 text-h6">
-              Map Fields
-            </span>
-            <v-spacer />
-            <v-select
-              class="mt-3 select-preset"
-              clearable
-              dense
-              item-text="name"
-              :items="presets"
-              label="Select M6 Template"
-              return-object
-              @change="setPreset"
-            />
-          </v-card-title>
-          <v-divider class="grey lighten-3" />
-          <v-card-text class="px-6">
-            <v-row>
-              <v-col
-                class="pb-0"
-                cols="12"
-                md="12"
-              >
-                <v-simple-table class="presets-table table-headers">
-                  <thead class="d-none">
-                    <tr class="d-flex flex-column preset-row-header">
-                      <th class="d-none">
-                        #
-                      </th>
-                      <th class="align-center d-flex justify-start">
-                        Field Name
-                      </th>
-                      <th class="align-center d-flex justify-start">
-                        Type of Data
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="d-flex">
-                    <template
-                      v-for="(header, hi) in importHeaders"
-                    >
-                      <tr
-                        :key="hi"
-                        class="d-flex flex-column preset-row"
-                      >
-                        <td class="d-none">
-                          {{ hi+1 }}
-                        </td>
-                        <td class="align-center d-flex font-weight-bold justify-start text-caption">
-                          {{ typeof(header) === 'string' || typeof(header) === 'number' ? header : '-' }}
-                        </td>
-                        <td
-                          class="justify-start preset-select-content"
-                          style="height: auto;"
-                        >
-                          <v-tooltip bottom>
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-autocomplete
-                                v-model="mappedFields[hi]"
-                                v-bind="attrs"
-                                class="font-weight-bold justify-start mb-1 text-caption"
-                                elevation="3"
-                                item-text="name"
-                                item-value="value"
-                                :items="selectFields"
-                                label="M6 Field Match"
-                                v-on="on"
-                              />
-                            </template>
-                            <span class="grey lighten- px-3 py-1 rounded white--text">Select M6 label which most closely matches your column header</span>
-                          </v-tooltip>
-                        </td>
-                      </tr>
-                    </template>
-                  </tbody>
-                </v-simple-table>
-                <v-card-actions class="pa-0 pt-6">
-                  <v-spacer />
-                  <v-btn
-                    @click="savePresetDialog = true"
+            <!-- Map Fields -->
+            <template v-if="showStep3">
+              <div class="d-flex justify-start">
+                <p
+                  class="blue--text mb-0 mr-4 mt-4 text--lighten-1"
+                >
+                  Step 3. Select M6 Template
+                </p>
+                <v-select
+                  class="mb-4 mt-2 select-preset"
+                  clearable
+                  dense
+                  item-text="name"
+                  :items="presets"
+                  label="Select..."
+                  return-object
+                  solo
+                  style="max-width: 200px;"
+                  @change="setPreset"
+                />
+              </div>
+              <v-simple-table class="presets-table table-headers">
+                <tbody class="d-flex">
+                  <template
+                    v-for="(header, hi) in importHeaders"
                   >
-                    Save Template
-                  </v-btn>
-                </v-card-actions>
-              </v-col>
-              <!--              <v-col-->
-              <!--                cols="12"-->
-              <!--                md="4"-->
-              <!--              >-->
-              <!--                <h1>Fields Description</h1>-->
-              <!--                <v-expansion-panels>-->
-              <!--                  <template v-for="(sections, title) in fields">-->
-              <!--                    <v-expansion-panel-->
-              <!--                      :key="title"-->
-              <!--                    >-->
-              <!--                      <v-expansion-panel-header>-->
-              <!--                        {{ title }} Fields-->
-              <!--                      </v-expansion-panel-header>-->
-
-              <!--                      <v-expansion-panel-content>-->
-              <!--                        <v-card>-->
-              <!--                          <v-card-text class="px-6">-->
-              <!--                            <template v-for="field in sections">-->
-              <!--                              <div :key="field.name">-->
-              <!--                                <p class="mb-0">-->
-              <!--                                  <strong>{{ field.name }}</strong>-->
-              <!--                                </p>-->
-              <!--                                <p class="ma-0">-->
-              <!--                                  <small>{{ field.description }}</small>-->
-              <!--                                </p>-->
-              <!--                                <v-divider class="my-3" />-->
-              <!--                              </div>-->
-              <!--                            </template>-->
-              <!--                          </v-card-text>-->
-              <!--                        </v-card>-->
-              <!--                      </v-expansion-panel-content>-->
-              <!--                    </v-expansion-panel>-->
-              <!--                  </template>-->
-              <!--                </v-expansion-panels>-->
-              <!--              </v-col>-->
-            </v-row>
+                    <tr
+                      :key="hi"
+                      class="d-flex flex-column preset-row"
+                    >
+                      <td class="d-none">
+                        {{ hi+1 }}
+                      </td>
+                      <td class="align-center d-flex font-weight-bold justify-start text-caption">
+                        {{ typeof(header) === 'string' || typeof(header) === 'number' ? header : '-' }}
+                      </td>
+                      <td
+                        class="justify-start preset-select-content"
+                        style="height: auto;"
+                      >
+                        <v-tooltip bottom>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-autocomplete
+                              v-model="mappedFields[hi]"
+                              v-bind="attrs"
+                              class="font-weight-bold justify-start mb-1 text-caption"
+                              elevation="3"
+                              item-text="name"
+                              item-value="value"
+                              :items="selectFields"
+                              label="M6 Field Match"
+                              v-on="on"
+                            />
+                          </template>
+                          <span class="grey lighten- px-3 py-1 rounded white--text">Select M6 label which most closely matches your column header</span>
+                        </v-tooltip>
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+              </v-simple-table>
+              <v-card-actions class="pa-0 pt-6">
+                <v-spacer />
+                <v-btn
+                  @click="savePresetDialog = true"
+                >
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </template>
           </v-card-text>
         </v-card>
       </v-col>
@@ -311,6 +237,7 @@ export default {
       firstRow: null,
       getHeadersByRow: false,
       startRow: 1,
+      showStep3: false,
       importHeaders: [],
       mappedFields: [],
       presets: [],
@@ -589,6 +516,7 @@ export default {
     },
     setHeaders(headers) {
       this.importHeaders = headers
+      this.showStep3 = true
     },
     prepareToImport() {
       let commitmentsCheck = false
@@ -746,6 +674,7 @@ export default {
 .table-headers .table, .table-headers th, .table-headers td {
   border: 1px solid #90A4AE !important;
   font-weight: 900;
+  white-space: nowrap;
 }
 .table-headers .v-data-table__wrapper {
   padding-bottom: 4px;
