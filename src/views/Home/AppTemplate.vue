@@ -45,13 +45,19 @@ export default {
   components: {
   },
   props: {
+    propsDialog: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => ({
     dialog: false
   }),
-  computed: {
-  },
-  methods: {
+
+  watch: {
+    propsDialog(val) {
+      this.dialog = val
+    }
   }
 }
 </script>

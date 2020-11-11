@@ -21,7 +21,7 @@
                         v-bind:is="item.component" 
                         :app="item.app" 
                     />
-                </v-tab-item>
+                </v-tab-item> 
             </v-tabs-items>
         </v-card-text>
     </v-card>
@@ -30,7 +30,7 @@
 <script>
 import ItAppForm from "@/components/Home/Forms/ItAppForm";
 import GenericRecord from '@/components/Home/Forms/GenericRecord';
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 
 export default {
     name: "NewRecordDialog",
@@ -44,12 +44,17 @@ export default {
         ...mapActions('AppBuilder', {
             getAppList: 'getAppList'
         }),
+
+        ...mapMutations('RecordsInstance', {
+            setCurrentRecord: 'setCurrentRecord',
+            setDisplayShow: 'setDisplayAppBuilderShow'
+        }),
+
         closeModal(){
             this.$emit('closeModal');
         },
         closingGenericRecord() {
             this.closeModal()
-            // calling the model would happen here
         }
     },
 
