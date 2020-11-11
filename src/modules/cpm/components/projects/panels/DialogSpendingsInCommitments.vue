@@ -40,20 +40,18 @@
                       </v-icon>
 
                       <v-icon
-                        class="ml-0 mr-0"
+                        class="ml-0 mr-0 pointer"
                         color="#757575"
                         size="20"
-                        style="cursor: pointer"
                         @click="editSpending(props.item)"
                       >
                         mdi-pencil
                       </v-icon>
 
                       <v-icon
-                        class="ml-0 mr-0"
+                        class="ml-0 mr-0 pointer"
                         color="red"
                         size="20"
-                        style="cursor: pointer"
                         @click="deleteSpending(props.item)"
                       >
                         mdi-delete

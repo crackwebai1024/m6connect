@@ -64,8 +64,7 @@
           sm="6"
         >
           <v-card
-            class="cpmCard"
-            style="cursor: pointer;"
+            class="cpmCard pointer"
             @mouseleave="showDeleteIconApplication = null"
             @mouseover="showDeleteIconApplication = indexR"
           >
@@ -183,7 +182,7 @@
                   href="#"
                   @click.prevent="goToCapital(props.item, false)"
                 >
-                  <span style="color: #0D47A1;">{{ props.item.name }}</span>
+                  <span class="blue--text text--lighten-1">{{ props.item.name }}</span>
                 </a>
               </td>
               <td class="text-center">

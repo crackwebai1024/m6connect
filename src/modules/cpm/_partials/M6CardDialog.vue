@@ -172,7 +172,4 @@ export default {
   overflow: hidden !important;
   text-overflow: ellipsis;
 }
-.vue-portal-target {
-  display: flex;
-}
 </style>

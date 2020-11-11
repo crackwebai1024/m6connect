@@ -14,8 +14,7 @@
         style="background-color: #0277BD;"
       >
         <v-stepper
-          class="elevation-0"
-          style="width: 100%;"
+          class="elevation-0 w-full"
         >
           <v-stepper-header style="background-color: #0277BD;">
             <v-stepper-step

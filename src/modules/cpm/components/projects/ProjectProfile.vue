@@ -1,9 +1,8 @@
 <template>
   <v-row ref="fullscreen">
     <v-col
-      class="main-tabs"
+      class="main-tabs relative"
       cols="3"
-      style="position: relative;"
     >
       <v-btn
         id="step1"

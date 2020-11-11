@@ -1,5 +1,5 @@
 <template>
-  <v-row style="background: #FFF">
+  <v-row class="white">
     <input
       v-show="false"
       id="files"

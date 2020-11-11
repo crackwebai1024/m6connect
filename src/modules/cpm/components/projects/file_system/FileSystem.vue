@@ -312,9 +312,10 @@
           </v-img>
 
           <iframe
+            class="w-full"
             v-if="pdfUrl"
             :src="pdfUrl"
-            style="width: 100%; height: 750px; border: none"
+            style="height: 750px; border: none"
           />
         </v-card-text>
       </v-card>

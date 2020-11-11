@@ -45,10 +45,10 @@
                             <v-select
                               v-model="campusFilter"
                               item-text="name"
-                              label="Campus"
                               item-value="value"
-                              multiple
                               :items="alphabetical(campus, 'asc', 'name')"
+                              label="Campus"
+                              multiple
                               return-object
                             >
                               <template
@@ -68,10 +68,10 @@
                             <v-select
                               v-model="managerFilter"
                               item-text="label"
-                              label="Project Manager"
                               item-value="value"
-                              multiple
                               :items="alphabetical(users.projectManager, 'asc', 'label')"
+                              label="Project Manager"
+                              multiple
                               return-object
                             >
                               <template
@@ -149,6 +149,7 @@
                           <tr class="first">
                             <th
                               v-for="(h, i) in props.headers"
+                              :key="'headerprops-' + i"
                               rowspan="2"
                               :style="{'background-color': '#EFEFEF', 'max-width': h.width || '300px', 'white-space': 'break-spaces'}"
                             >
@@ -156,10 +157,10 @@
                             </th>
                             <th
                               v-for="(milestone, index) in milestones"
-                              colspan="3"
                               :key="index"
-                              width="200"
+                              colspan="3"
                               :style="{ 'background-color': milestone.color ? milestone.color.hex : '#EFEFEF'}"
+                              width="200"
                             >
                               {{ milestone.name ? milestone.name : milestone }}
                             </th>
@@ -181,8 +182,8 @@
                             <v-menu offset-y>
                               <template v-slot:activator="{ on }">
                                 <v-btn
-                                  text
                                   small
+                                  text
                                   v-on="on"
                                 >
                                   {{ props.item.number }}
@@ -229,8 +230,8 @@
                               <template v-slot:activator="{ on }">
                                 <v-btn
                                   :color="mile.color"
-                                  text
                                   small
+                                  text
                                   v-on="on"
                                 >
                                   {{ mile.date || '---' }}
@@ -255,8 +256,8 @@
                             >
                               <template v-slot:activator="{ on }">
                                 <v-btn
-                                  text
                                   small
+                                  text
                                   v-on="on"
                                 >
                                   {{ mile.date || '---' }}
@@ -289,7 +290,7 @@
       width="500"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">{{ $t('milestoneDashboard.comments') }}</span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
@@ -323,7 +324,7 @@
       max-width="400px"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             {{ $t('milestoneDashboard.milestoneInformation') }}
           </span>
@@ -401,7 +402,7 @@
       max-width="400px"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Milestone Information
           </span>
@@ -466,7 +467,7 @@
       :width="800"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">{{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}</span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
@@ -582,7 +583,7 @@
       per
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Monthly Review
           </span>

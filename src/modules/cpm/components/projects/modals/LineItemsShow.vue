@@ -76,20 +76,18 @@
                     <td class="justify-center layout pr-0 pt-2">
                       <v-col>
                         <v-icon
-                          class="mr-2"
+                          class="mr-2 pointer"
                           color="#757575"
                           size="20"
-                          style="cursor: pointer"
                           @click="editLineItems(props.item.id)"
                         >
                           mdi-pencil
                         </v-icon>
 
                         <v-icon
-                          class="ml-0 mr-0"
+                          class="ml-0 mr-0 pointer"
                           color="#f44336"
                           size="20"
-                          style="cursor: pointer;"
                           @click="deleteLineItem(props.item, props.index)"
                         >
                           mdi-delete
