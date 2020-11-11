@@ -36,7 +36,6 @@ const mutations = {
   },
   setCurrentCompany(state, payload) {
     state.currentCompany = payload
-    state.currentCompany.id = '54395'
   }
 }
 

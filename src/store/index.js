@@ -25,6 +25,7 @@ import gantt from '@/modules/cpm/store/gantt'
 
 import companies from '@/modules/cpm/store/companies'
 import cpm from '@/modules/cpm/store'
+import ImportCPM from './modules/ImportCPM'
 
 Vue.use(Vuex)
 const appLabel = {
@@ -180,6 +181,7 @@ export default new Vuex.Store({
     RapidTicket,
     hideCpmPanels,
     ganttSettings,
-    gantt
+    gantt,
+    ImportCPM
   }
 })
