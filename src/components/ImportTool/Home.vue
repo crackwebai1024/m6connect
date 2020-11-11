@@ -156,24 +156,31 @@
                 <v-btn
                   @click="savePresetDialog = true"
                 >
-                  Save
+                  Save Selections
                 </v-btn>
               </v-card-actions>
+              <v-divider class="grey lighten-3 my-2 z-index" />
+              <v-row class="d-flex flex-column justify-end ma-0">
+                <div class="d-flex justify-start">
+                  <p
+                    class="blue--text mb-3 text--lighten-1"
+                  >
+                    Step 4. Create Record
+                  </p>
+                </div>
+                <v-btn
+                  class="blue capitalize lighten-1 px-10 py-5 text-h6 white--text"
+                  elevation="1"
+                  text
+                  @click="startImport"
+                >
+                  Create
+                </v-btn>
+              </v-row>
             </template>
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
-
-    <v-row class="d-flex justify-center ma-0 mb-4">
-      <v-btn
-        class="blue capitalize lighten-1 px-10 py-5 text-h6 white--text"
-        elevation="1"
-        text
-        @click="startImport"
-      >
-        Start
-      </v-btn>
     </v-row>
 
     <!--Save Template Dialog-->
