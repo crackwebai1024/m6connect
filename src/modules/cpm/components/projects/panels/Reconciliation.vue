@@ -58,7 +58,7 @@
             mdi-magnify-scan
           </v-icon>
         </template>
-        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
@@ -74,7 +74,7 @@
               mdi-close
             </v-icon>
           </template>
-          <span class="grey lighten-3 rounded pa-1">{{ $t('general.clearSearch') }}</span>
+          <span class="grey lighten-3 pa-1 rounded">{{ $t('general.clearSearch') }}</span>
         </v-tooltip>
       </template>
 
@@ -97,7 +97,7 @@
             mdi-cog
           </v-icon>
         </template>
-        <span class="grey lighten-3 rounded pa-1">{{ $t('general.settings') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.settings') }}</span>
       </v-tooltip>
     </template>
 
@@ -670,27 +670,19 @@ export default {
       subheaders: [
         {
           text: this.$t('general.invoiceNumber'),
-          value: 'number',
-          align: 'left',
-          class: 'header text-xs-left'
+          value: 'number'
         },
         {
           text: this.$t('cpm.projects.budgetCategory'),
-          sortable: false,
-          align: 'left',
-          class: 'header'
+          sortable: false
         },
         {
           text: this.$t('general.date'),
-          value: 'date',
-          align: 'center',
-          class: 'header text-xs-center'
+          value: 'date'
         },
         {
           text: this.$t('general.invoiceAmount'),
-          value: 'amount',
-          align: 'right',
-          class: 'header text-xs-right'
+          value: 'amount'
         }
       ],
       pagination: {
@@ -705,34 +697,28 @@ export default {
       headersLineItems: [
         {
           text: `${this.$tc('general.invoice', 1)} #`,
-          align: 'center',
           value: 'number'
         },
         {
           text: this.$t('cpm.projects.vendorName'),
-          align: 'center',
           value: 'vendor'
         },
         {
           text: this.$tc('general.category', 1),
-          align: 'center',
           value: 'category'
         },
-        { text: this.$t('general.date'), align: 'center', value: 'dateText' },
+        { text: this.$t('general.date'), value: 'dateText' },
         {
           text: `${this.$t('general.line')} #`,
-          align: 'center',
           value: 'line_number'
         },
         {
           text: this.$t('general.lineItemDescr'),
-          align: 'center',
           value: 'line_description'
         },
-        { text: this.$t('general.amount'), align: 'right', value: 'amount' },
+        { text: this.$t('general.amount'), value: 'amount' },
         {
           text: this.$t('general.actions'),
-          align: 'center',
           value: 'actions',
           sortable: false
         }
@@ -783,57 +769,48 @@ export default {
           {
             text: this.$t('cpm.projects.budgetCategory'),
             value: 'budget_category.name',
-            align: 'left',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.poNumber'),
             value: 'number',
-            align: 'left',
             class: 'header'
           },
           {
             text: this.$t('general.vendor'),
             value: 'vendor',
-            align: 'left',
             class: 'header',
             sortable: false
           },
           {
             text: this.$t('general.amount'),
             value: 'amount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.spending'),
             value: 'spendingAmount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('general.balance'),
             value: 'openAmount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.reconciliationPanel.reconciliation'),
             value: 'verifiedStatus',
-            align: 'center',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.reconciliationPanel.m6Verified'),
             value: 'openAmount',
-            align: 'center',
             class: 'header'
           },
           {
             text: this.$t('general.actions'),
             value: 'actions',
             sortable: false,
-            align: 'center',
             class: 'header'
           }
         ]
@@ -842,38 +819,32 @@ export default {
           {
             text: this.$t('cpm.projects.poNumber'),
             value: 'number',
-            align: 'left',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.po'),
             value: 'total_po_amount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.open'),
             value: 'total_open_po_w_tax',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.reconciliationPanel.reconciliation'),
             value: 'verifiedStatus',
-            align: 'center',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.reconciliationPanel.m6Verified'),
             value: 'openAmount',
-            align: 'center',
             class: 'header'
           },
           {
             text: this.$t('general.actions'),
             value: 'actions',
             sortable: false,
-            align: 'center',
             class: 'header'
           }
         ]

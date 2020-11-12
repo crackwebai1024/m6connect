@@ -1423,34 +1423,28 @@ export default {
       headersLineItems: [
         {
           text: `${this.$tc('general.invoice', 1)} #`,
-          align: 'center',
           value: 'number'
         },
         {
           text: this.$t('cpm.projects.vendorName'),
-          align: 'center',
           value: 'vendor'
         },
         {
           text: this.$tc('general.category', 1),
-          align: 'center',
           value: 'category'
         },
-        { text: this.$t('general.date'), align: 'center', value: 'dateText' },
+        { text: this.$t('general.date'), value: 'dateText' },
         {
           text: `${this.$t('general.line')} #`,
-          align: 'center',
           value: 'line_number'
         },
         {
           text: this.$t('general.lineItemDescr'),
-          align: 'center',
           value: 'line_description'
         },
-        { text: this.$t('general.amount'), align: 'right', value: 'amount' },
+        { text: this.$t('general.amount'), value: 'amount' },
         {
           text: this.$t('general.actions'),
-          align: 'center',
           value: 'actions',
           sortable: false
         }
@@ -1538,58 +1532,48 @@ export default {
         return [
           {
             text: this.$t('cpm.projects.budgetCategory'),
-            value: 'budget_category.name',
-            align: 'left'
+            value: 'budget_category.name'
           },
           {
             text: this.$t('general.invoiceNumber'),
-            value: 'number',
-            align: 'left'
+            value: 'number'
           },
           {
             text: this.$t('cpm.projects.poNumber'),
-            value: 'po_number',
-            align: 'left'
+            value: 'po_number'
           },
           {
             text: this.$t('general.vendor'),
             value: '',
-            align: 'left',
             sortable: false
           },
           {
             text: this.$t('general.description'),
             value: 'description',
-            align: 'left',
             sortable: false
           },
           {
             text: this.$t('general.invDate'),
             value: '',
-            align: 'center',
             sortable: false
           },
           {
             text: this.$t('general.distDate'),
             value: '',
-            align: 'center',
             sortable: false
           },
           // {
           //   text: this.$t('general.status'),
           //   value: '',
-          //   align: 'left',
           //   sortable: false
           // },
           {
             text: this.$t('general.amount'),
-            value: 'amount',
-            align: 'right'
+            value: 'amount'
           },
           {
             text: this.$t('general.actions'),
             value: 'actions',
-            align: 'center',
             sortable: false
           }
         ]
@@ -1597,30 +1581,25 @@ export default {
         return [
           {
             text: this.$t('cpm.projects.budgetCategory'),
-            value: 'budget_category.name',
-            align: 'left'
+            value: 'budget_category.name'
           },
           {
             text: this.$t('cpm.projects.vendorName'),
             value: '',
-            align: 'left',
             sortable: false
           },
           {
             text: this.$t('general.invDate'),
             value: '',
-            align: 'center',
             sortable: false
           },
           {
             text: this.$t('general.amount'),
-            value: 'amount',
-            align: 'right'
+            value: 'amount'
           },
           {
             text: this.$t('general.actions'),
             value: 'number',
-            align: 'center',
             sortable: false
           }
         ]

@@ -8,7 +8,10 @@
     <v-card>
       <v-card-title class="display-1 white white--text">
         <div class="relative w-full">
-          <v-btn icon class="absolute top-0 left-0 pointer">
+          <v-btn
+            class="absolute left-0 pointer top-0"
+            icon
+          >
             <v-icon
               class="icon-close"
               light
@@ -19,9 +22,9 @@
             </v-icon>
           </v-btn>
           <div
-            class="d-flex justify-center align-center"
+            class="align-center d-flex justify-center"
           >
-            <p class="text-center text-h6 grey--text text--darken-1 mb-0">
+            <p class="grey--text mb-0 text--darken-1 text-center text-h6">
               {{ $t('cpm.projects.reconciliationPanel.reconciliationStatus') }}
             </p>
           </div>
@@ -30,8 +33,8 @@
       <v-divider class="grey lighten-3" />
       <v-card-text>
         <v-autocomplete
-          class="mt-3"
           v-model="commitment.verifiedStatus"
+          class="mt-3"
           :disabled="!isManager"
           item-text="text"
           item-value="value"
@@ -103,18 +106,18 @@
           </v-row>
         </template>
         <v-data-table
-          light
-          class="white"
           v-if="!showNoteInput"
+          class="white"
           disable-initial-sort
           :headers="headers"
           :items="notes"
+          light
         >
           <template
             slot="items"
             slot-scope="props"
           >
-            <tr class="white grey--text">
+            <tr class="grey--text white">
               <td>
                 {{ `${ $h.dg(props, 'item.user.name', '') } ${ $h.dg(props, 'item.user.lastName', '') }` }}
               </td>

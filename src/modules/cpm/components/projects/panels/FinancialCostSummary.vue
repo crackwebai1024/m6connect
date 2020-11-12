@@ -13,8 +13,8 @@
             v-on="on"
           >
             <v-icon
-              text
               small
+              text
             >
               mdi-launch
             </v-icon>
@@ -38,21 +38,6 @@
       :options="pagination"
       :server-items-length="totalParents"
     >
-      <template
-        slot="headers"
-        slot-scope="props"
-      >
-        <tr>
-          <th
-            v-for="(header, index) in props.headers"
-            :key="index"
-            :class="'text-xs-' + header.align"
-          >
-            {{ header.text }}
-          </th>
-        </tr>
-      </template>
-
       <template
         slot="item"
         slot-scope="props"
@@ -295,43 +280,35 @@ export default {
       headers: [
         {
           text: this.$t('cpm.projects.budgetCategory'),
-          value: 'code',
-          align: 'left'
+          value: 'code'
         },
         {
           text: this.$t('cpm.projects.budget'),
-          value: 'budgetTotal',
-          align: 'right'
+          value: 'budgetTotal'
         },
         {
           text: this.$tc('cpm.projects.commitment', 2),
-          value: 'commitmentsTotal',
-          align: 'right'
+          value: 'commitmentsTotal'
         },
         {
           text: this.$t('cpm.projects.spending'),
-          value: 'spendingTotal',
-          align: 'right'
+          value: 'spendingTotal'
         },
         {
           text: this.$t('cpm.projects.totalAllocated'),
-          value: 'totalAllocated',
-          align: 'right'
+          value: 'totalAllocated'
         },
         {
           text: this.$t('cpm.pendingBulletins'),
-          value: 'changesTotal',
-          align: 'right'
+          value: 'changesTotal'
         },
         {
           text: this.$t('cpm.projects.projectedFinalCost'),
-          value: 'projectFinalCost',
-          align: 'right'
+          value: 'projectFinalCost'
         },
         {
           text: this.$t('cpm.projects.variance'),
-          value: 'variance',
-          align: 'right'
+          value: 'variance'
         }
       ],
       commitmentHeaders: [
@@ -347,7 +324,29 @@ export default {
       pagination: {
         rowsPerPage: -1
       },
-      tableKey: 1
+      tableKey: 1,
+      headers1: [
+        {
+          text: 'Dessert (100g serving)',
+          align: 'start',
+          value: 'name'
+        },
+        { text: 'Calories', value: 'calories' },
+        { text: 'Fat (g)', value: 'fat' },
+        { text: 'Carbs (g)', value: 'carbs' },
+        { text: 'Protein (g)', value: 'protein' },
+        { text: 'Iron (%)', value: 'iron' }
+      ],
+      desserts1: [
+        {
+          name: 'Frozen Yogurt',
+          calories: 159,
+          fat: 6.0,
+          carbs: 24,
+          protein: 4.0,
+          iron: '1%'
+        }
+      ]
     }
   },
 
