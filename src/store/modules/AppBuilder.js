@@ -202,6 +202,15 @@ const actions = {
       })
       .catch(e => reject(e))
     })
+  },
+
+  bulkSaveFieldValues(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values`, payload).then( ({ data }) => {
+        resolve(data)
+      })
+      .catch(err => resolve(err))
+    })
   }
 
 }

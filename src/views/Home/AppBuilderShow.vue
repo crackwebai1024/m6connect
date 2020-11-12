@@ -45,32 +45,36 @@
             <div 
                 slot="content" 
                 class="w-full" 
+                v-show="i === currentTab"
                 v-for="(tab, i) in $h.dg(app, 'tabs', [])" 
                 :key="`tab-item-${i}`" 
-                v-show="i === currentTab"
             >
                 <panel-two-columns>
-                    <!--  -->
+
                     <div slot="leftPanel" >
-                        {{ tab[0].panels }}
                         <div 
-                            v-for="(panel, index) in $h.dg(tab, `0.panels`, [])" 
+                            v-for="(panel, index) in  panelsByColumn( $h.dg( tab, 'panels', []), 0 )"
                             :key="`p-l-${index}`"  
                             class="white py-3 px-4 mb-3 panel"
                         >
-                            panel title: {{ panel.title }}
+                            <h3>{{ panel.title }}</h3>
+
+                            <form-show-generator :fields="$h.dg(panel, 'fields', [])" />
                         </div>
                     </div>
+
                     <div slot="rightPanel">
-                        {{ tab[1].panels }}
                         <div 
-                            v-for="(panel, index) in $h.dg(tab, `1.panels`, [])" 
+                            v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 1 )"
                             :key="`p-l-${index}`"  
                             class="white py-3 px-4 mb-3 panel"
                         >
-                            panel title: {{ panel.title }}
+                            <h3>{{ panel.title }}</h3>
+
+                            <form-show-generator :fields="$h.dg(panel, 'fields', [])" />
                         </div>
                     </div>
+
                 </panel-two-columns>
             </div>
         </app-template>
@@ -83,6 +87,7 @@ import ProjectSocialMedia from "./ProjectSocialMedia";
 import PanelFull from "@/components/AppBuilder/Content/PanelFull";
 import PanelTwoColumns from "@/components/AppBuilder/Content/PanelTwoColumns"
 import { mapState, mapMutations, mapActions } from 'vuex'
+import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
 
 export default {
 
@@ -90,23 +95,28 @@ export default {
         AppTemplate,
         ProjectSocialMedia,
         PanelFull,
-        PanelTwoColumns
+        PanelTwoColumns,
+        FormShowGenerator
     },
 
     computed: {
         ...mapState("Companies", {
             currentCompany: "currentCompany"
         }),
+
         ...mapState('RecordsInstance', {
             currentRecord: 'currentRecord',
             showSelf: 'displayAppBuilderShow'
-        })
+        }),
+
+        panelsByColumn() {
+            return (panels, column) => panels.filter( p => p.column === column )
+        }
     },
 
     methods: {
         ...mapActions('AppBuilder', {
             getRecordById: 'getRecordById',
-            // getAppList: 'getAppList's
             getApp: 'getApp'
         }),
         ...mapMutations('RecordsInstance', {
@@ -122,13 +132,7 @@ export default {
 
     async mounted() {
         try {
-            // this.tabs = await this.getAppList()
             this.app = await this.getApp()
-            console.log('res===========')
-            console.log(this.app)
-            // for (let x = 0; x < res.length; x++) {
-            //    this.items.push({ isGeneric: true, tab: res[x].title, component: "GenericRecord", app: res[x] }) 
-            // }
         } catch(e) {
 
         }

@@ -104,7 +104,7 @@ export default {
 
                 this.record = { ...this.record, author: this.currentUser.id, recordNumber, appID: this.app.id }
 
-                const record = await this.createRecord(this.record)
+                this.record = await this.createRecord(this.record)
 
                 this.notifSuccess('The Record Was Created')
                 this.loading = false 
