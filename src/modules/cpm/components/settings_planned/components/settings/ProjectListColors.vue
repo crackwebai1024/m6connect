@@ -93,7 +93,6 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {

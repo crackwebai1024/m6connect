@@ -67,11 +67,11 @@ export default {
     return {
       capitalPlanId: capitalPlanId,
       headers: [
-        { text: 'Name', value: 'index', align: 'center' },
-        { text: 'Period', value: 'period', align: 'center' },
-        { text: 'Spending Amount', value: 'spending', align: 'center' },
-        { text: 'Forecast Amount', value: 'forecast', align: 'center' },
-        { text: 'Variance Amount', value: 'variance', align: 'center' }
+        { text: 'Name', value: 'index' },
+        { text: 'Period', value: 'period' },
+        { text: 'Spending Amount', value: 'spending' },
+        { text: 'Forecast Amount', value: 'forecast' },
+        { text: 'Variance Amount', value: 'variance' }
       ],
       items: [],
       capitalPlan: {

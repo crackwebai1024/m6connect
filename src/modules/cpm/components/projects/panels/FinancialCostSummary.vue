@@ -328,7 +328,6 @@ export default {
       headers1: [
         {
           text: 'Dessert (100g serving)',
-          align: 'start',
           value: 'name'
         },
         { text: 'Calories', value: 'calories' },

@@ -304,14 +304,12 @@ export default {
           text: this.$t('cpm.forecasting.table.budgetPercentage'),
           value: 'budgetPercentage',
           class: this.headerStyles[0],
-          align: 'right',
           sortable: false,
           fixed: true
         },
         {
           text: this.$t('cpm.forecasting.table.amount'),
           value: 'budget',
-          align: 'right',
           class: this.headerStyles[0],
           sortable: false,
           fixed: true
@@ -323,7 +321,6 @@ export default {
         this.monthsForForecastsTable.map(month => {
           monthHeaders.push({
             text: month,
-            align: 'right',
             class: this.headerStyles[0],
             sortable: false
           })
@@ -341,7 +338,6 @@ export default {
           this.futureFiscalYears.map((fy, index) => {
             fyHeaders.push({
               text: this.$h.dg(fy, 'name', ''),
-              align: 'right',
               class: this.headerStyles[index + 1],
               sortable: false
             })
@@ -357,7 +353,6 @@ export default {
           this.previousFiscalYears.map((fy, index) => {
             previousFYHeaders.push({
               text: this.$h.dg(fy, 'name', ''),
-              align: 'right',
               class: this.previousFYStyles[index + 1],
               sortable: false
             })

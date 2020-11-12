@@ -277,17 +277,14 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Users',
-          align: 'left',
           sortable: false
         },
         {
           text: 'Action',
-          align: 'right',
           sortable: false
         }
       ],

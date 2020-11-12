@@ -447,9 +447,9 @@ export default {
       valid: true,
       headersSafety: [
         { text: 'Period Start', value: 'startDate' },
-        { text: 'Perior End', value: 'endDate', align: 'center' },
-        { text: 'Hours', value: 'hours', align: 'center' },
-        { text: 'Actions', value: 'number', align: 'right', sortable: false }
+        { text: 'Perior End', value: 'endDate' },
+        { text: 'Hours', value: 'hours },
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       validLineItem: true,
       methodLineItem: 'add',

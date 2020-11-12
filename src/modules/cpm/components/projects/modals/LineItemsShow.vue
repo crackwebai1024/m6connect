@@ -175,9 +175,9 @@ export default {
       headers: [
         { text: 'Company Name', value: 'company' },
         { text: 'Line Description', value: 'title' },
-        { text: 'Total', value: 'amount', align: 'right' },
+        { text: 'Total', value: 'amount' },
         { text: 'Date', value: 'startDate' },
-        { text: 'Actions', value: 'name', sortable: false, align: 'left' }
+        { text: 'Actions', value: 'name', sortable: false }
       ]
     }
   },

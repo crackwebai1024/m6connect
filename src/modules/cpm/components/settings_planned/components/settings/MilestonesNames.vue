@@ -9,8 +9,8 @@
           <v-btn
             absolute
             color="white"
-            light
             fab
+            light
             right
             small
             @click="showForm = true"
@@ -24,8 +24,8 @@
           v-else
           absolute
           color="blue"
-          light
           fab
+          light
           right
           small
           @click="showForm = true"
@@ -69,18 +69,18 @@
                 >
                   <v-btn
                     class="xs-btn"
-                    text
                     icon
                     small
+                    text
                     @click.prevent="editElement(key, item)"
                   >
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
-                    text
                     icon
                     small
+                    text
                     @click.prevent="deleteElement(key, item)"
                   >
                     <v-icon>mdi-delete</v-icon>
@@ -295,12 +295,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ],

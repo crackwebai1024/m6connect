@@ -106,12 +106,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

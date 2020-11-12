@@ -245,14 +245,12 @@ export default {
         {
           name: 'start_date',
           label: 'Start Date',
-          align: 'center',
           width: 100,
           resize: true
         },
         {
           name: 'end_date',
           label: 'End Date',
-          align: 'center',
           width: 70,
           resize: true
         },
@@ -270,14 +268,12 @@ export default {
             name: 'percentage',
             label: '%',
             width: 30,
-            align: 'right',
             template: task => Math.floor(task.progress * 100) + '%'
           },
           {
             name: 'budget',
             width: 80,
             label: 'Budget',
-            align: 'right',
             template: task => {
               let budgetPercentage = 0
               let budget = 0

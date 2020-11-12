@@ -3,8 +3,8 @@
     <template slot="button">
       <v-btn
         color="blue"
-        light
         fab
+        light
         small
         @click="showForm = true"
       >
@@ -22,17 +22,17 @@
           <td>{{ props.item.name }}</td>
           <td class="text-right">
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="edit(props.index, props.item)"
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="deleteGantt(props.index, props.item)"
             >
               <v-icon>mdi-delete</v-icon>
@@ -239,20 +239,20 @@
                     <td>
                       <v-btn
                         color="blue"
-                        light
-                        text
                         icon
+                        light
                         small
+                        text
                         @click="editMilestone(props.item, props.index)"
                       >
                         <v-icon>mdi-pencil</v-icon>
                       </v-btn>
                       <v-btn
                         color="blue"
-                        light
-                        text
                         icon
+                        light
                         small
+                        text
                         @click="deleteMilestone(props.index)"
                       >
                         <v-icon>mdi-delete</v-icon>
@@ -320,13 +320,11 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name',
           sortable: false
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action',
           sortable: false
         }

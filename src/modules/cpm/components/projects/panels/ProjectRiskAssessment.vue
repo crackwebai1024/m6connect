@@ -102,8 +102,8 @@ export default {
           text: this.$t('cpm.projects.riskAssessmentPanel.comment'),
           sortable: false
         },
-        { text: this.$t('general.date'), align: 'center', sortable: false },
-        { text: this.$t('general.actions'), align: 'right', sortable: false }
+        { text: this.$t('general.date'), sortable: false },
+        { text: this.$t('general.actions'), sortable: false }
       ]
     }
   },

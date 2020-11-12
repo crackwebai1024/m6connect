@@ -9,8 +9,8 @@
           <v-btn
             absolute
             color="white"
-            light
             fab
+            light
             right
             small
             @click="showForm = true"
@@ -224,17 +224,14 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Users',
-          align: 'left',
           sortable: false
         },
         {
           text: 'Action',
-          align: 'right',
           sortable: false
         }
       ]

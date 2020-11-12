@@ -159,19 +159,16 @@ export default {
         { text: this.$t('cpm.projects.budgetPanel.type'), value: 'type' },
         {
           text: this.$t('cpm.projects.budgetPanel.planBudget'),
-          value: 'plan',
-          align: 'right'
+          value: 'plan'
         },
         {
           text: this.$t('cpm.projects.budgetPanel.totalBudget'),
-          value: 'total',
-          align: 'right'
+          value: 'total'
         },
         {
           text: this.$t('general.actions'),
           value: 'title',
-          sortable: false,
-          align: 'center'
+          sortable: false
         }
       ],
       budgets: [],

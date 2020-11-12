@@ -509,8 +509,7 @@ const snapshotDefault = {
 
 const initialHeaders = [{
   text: 'Capital Plan',
-  type: 'default',
-  align: 'left'
+  type: 'default'
 }]
 
 export default {

@@ -3,8 +3,8 @@
     <template slot="button">
       <v-btn
         color="primary"
-        light
         fab
+        light
         small
         @click="showForm = true"
       >
@@ -22,17 +22,17 @@
           <td>{{ props.item }}</td>
           <td class="text-right">
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="edit(props.index, props.item)"
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="deleteLicense(props.index, props.item)"
             >
               <v-icon>mdi-delete</v-icon>
@@ -105,12 +105,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

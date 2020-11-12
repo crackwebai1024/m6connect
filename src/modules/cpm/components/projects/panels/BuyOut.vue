@@ -111,7 +111,7 @@ export default {
         { text: 'Firm', value: 'firm' },
         { text: 'Prepared by', value: 'preparedBy' },
         { text: 'Approved by', value: 'approvedBy' },
-        { text: 'Actions', value: 'number', align: 'center', sortable: false }
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       pagination: { rowsPerPage: 3 },
       rowsPerPage: [3]

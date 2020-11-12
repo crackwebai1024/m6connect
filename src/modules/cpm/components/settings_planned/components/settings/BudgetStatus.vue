@@ -21,8 +21,8 @@
       <v-btn
         v-if="!included"
         color="primary"
-        light
         fab
+        light
         small
         @click="showForm = true"
       >
@@ -140,12 +140,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

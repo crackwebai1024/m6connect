@@ -34,14 +34,12 @@ export default {
       headers: [
         {
           text: 'Title',
-          align: 'left',
           value: 'title'
         },
         {
           text: 'Actions',
           value: 'actions',
-          sortable: false,
-          align: 'center'
+          sortable: false
         }
       ],
       grants: []

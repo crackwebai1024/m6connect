@@ -7,8 +7,8 @@
           to="commitments-1"
         >
           <v-btn
-            class="mt-3"
             absolute
+            class="mt-3"
             color="white"
             dark
             fab
@@ -149,12 +149,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

@@ -186,7 +186,7 @@ export default {
           text: this.$t('cpm.projects.budgetPanel.editBudget.amount'),
           value: 'amount'
         },
-        { text: this.$t('general.actions'), sortable: false, align: 'right' }
+        { text: this.$t('general.actions'), sortable: false }
       ],
       showNewItem: false,
       showEditItem: false,

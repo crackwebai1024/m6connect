@@ -73,22 +73,21 @@
       scrollable
     >
       <v-card class="mt-2">
-        
-          class="headline"
-          style="background: #006699; color:#fff"
+        class="headline"
+        style="background: #006699; color:#fff"
         >
-          <v-row align="center">
-            <label
-              v-if="currentElement !== ''"
-              class="white--text"
-            >
-              Edit Budget Approver
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Budget Approver</label>
-          </v-row>
+        <v-row align="center">
+          <label
+            v-if="currentElement !== ''"
+            class="white--text"
+          >
+            Edit Budget Approver
+          </label>
+          <label
+            v-else
+            class="white--text"
+          >Add New Budget Approver</label>
+        </v-row>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -189,12 +188,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

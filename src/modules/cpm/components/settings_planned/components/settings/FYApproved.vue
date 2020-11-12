@@ -28,17 +28,17 @@
           <td>{{ props.item }}</td>
           <td class="text-right">
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="editStatus(props.index, props.item)"
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="deleteStatus(props.index, props.item)"
             >
               <v-icon>mdi-delete</v-icon>
@@ -111,12 +111,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

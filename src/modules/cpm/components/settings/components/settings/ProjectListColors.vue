@@ -43,7 +43,7 @@
             Change the color for projects {{ changeColor.label }}
           </span>
         </v-card-title>
-      <v-divider class="grey lighten-3" />
+        <v-divider class="grey lighten-3" />
 
         <v-card-text>
           <chrome-picker v-model="changeColor.color" />
@@ -94,7 +94,6 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {

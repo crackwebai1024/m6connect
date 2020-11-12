@@ -120,8 +120,8 @@
           <v-btn
             color="blue"
             dark
-            text
             :loading="loading"
+            text
             type="submit"
             @click="save"
           >
@@ -180,12 +180,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

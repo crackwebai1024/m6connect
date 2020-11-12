@@ -11,7 +11,7 @@
             @click="printFromVue('chart')"
           >
             <v-icon
-              class="pointer grey--text text--darken-1"
+              class="grey--text pointer text--darken-1"
               text
             >
               mdi-printer
@@ -90,8 +90,7 @@ export default {
     chartOptions() {
       return {
         title: {
-          text: this.$t('cpm.projects.spendingForecast'),
-          align: 'center'
+          text: this.$t('cpm.projects.spendingForecast')
         },
         chart: {
           height: 350,

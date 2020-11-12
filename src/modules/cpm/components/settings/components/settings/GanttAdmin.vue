@@ -350,13 +350,11 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name',
           sortable: false
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action',
           sortable: false
         }

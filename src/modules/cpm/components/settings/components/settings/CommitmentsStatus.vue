@@ -7,8 +7,8 @@
           to="commitments-0"
         >
           <v-btn
-            class="mt-3"
             absolute
+            class="mt-3"
             color="white"
             dark
             fab
@@ -86,18 +86,18 @@
         <v-divider class="grey lighten-3" />
         <v-card-text class="d-flex flex-wrap justify-end">
           <v-text-field
-            class="mt-3 mb-2 w-full"
             v-model="element"
+            class="mb-2 mt-3 w-full"
             color="blue"
             label="Commitments Status Name"
           />
           <input
-            class="w-full"
             v-model="currentElement"
+            class="w-full"
             type="hidden"
           >
           <v-btn
-            class="white--text mx-2"
+            class="mx-2 white--text"
             color="blue"
             outline
             @click="cancel"
@@ -149,12 +149,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

@@ -9,8 +9,8 @@
           <v-btn
             absolute
             color="white"
-            light
             fab
+            light
             right
             small
             @click="createModal"
@@ -25,8 +25,8 @@
           v-else
           absolute
           color="blue"
-          light
           fab
+          light
           right
           small
           @click="createModal"
@@ -155,12 +155,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ],

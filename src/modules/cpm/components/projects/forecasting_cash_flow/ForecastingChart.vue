@@ -43,8 +43,7 @@ export default {
           curve: 'straight'
         },
         title: {
-          text: 'Forecasting Budgets',
-          align: 'left'
+          text: 'Forecasting Budgets'
         },
         grid: {
           row: {

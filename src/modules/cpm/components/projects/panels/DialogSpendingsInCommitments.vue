@@ -5,7 +5,7 @@
     transition="dialog-transition"
   >
     <v-card>
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           Spending in {{ title }}
         </span>
@@ -67,8 +67,8 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          elevation="1"
           color="primary"
+          elevation="1"
           text
           @click="closeModalSpendings"
         >
@@ -124,7 +124,7 @@ export default {
       headers: [
         { text: 'Number', value: 'number' },
         { text: 'Amount', value: 'amount' },
-        { text: 'Actions', value: 'number', align: 'right', sortable: false }
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       showSpendings: true
     }

@@ -126,7 +126,6 @@ export default {
         {
           text: this.$tc('general.color', 1),
           sortable: false,
-          align: 'center',
           width: '30%'
         }
       ],

@@ -42,7 +42,7 @@
       width="500"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Add RFP
           </span>
@@ -262,8 +262,8 @@ export default {
     return {
       headers: [
         { text: 'RFP Name', value: 'name' },
-        { text: 'RFP Type', value: 'rfpType', align: 'left' },
-        { text: 'Actions', value: 'number', align: 'right', sortable: false }
+        { text: 'RFP Type', value: 'rfpType' },
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       proposals: [],
       dialog: false,

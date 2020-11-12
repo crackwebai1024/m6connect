@@ -12,8 +12,8 @@
         <v-col class="shrink">
           <v-btn
             color="#0277BD"
-            light
             fab
+            light
             small
             @click="showCreateModal = true"
           >
@@ -331,8 +331,8 @@
                 <v-tooltip right>
                   <template v-slot:activator="{ on }">
                     <v-icon
-                      class="pointer"
                       v-if="props.item.canDelete != false"
+                      class="pointer"
                       small
                       v-on="on"
                       @click="deleteProject(props.item)"
@@ -459,11 +459,10 @@ export default {
       { text: 'Description', value: 'description' },
       { text: 'Project Manager', value: 'managerLabel' },
       { text: 'Project Type', value: 'projectType' },
-      { text: 'Budget', value: 'budget', align: 'right' },
+      { text: 'Budget', value: 'budget' },
       {
         text: 'Projected Final Cost',
-        value: 'projectFinalCost',
-        align: 'right'
+        value: 'projectFinalCost'
       },
       { text: 'Status', value: 'status' },
       { text: 'Actions', value: 'name', sortable: false }
@@ -480,8 +479,7 @@ export default {
       { text: 'FY5', value: 'FY5' },
       {
         text: 'Total Budget',
-        value: 'budget',
-        align: 'right'
+        value: 'budget'
       }, // computed/function
       { text: 'RFP Date', value: 'RFP Date' },
       { text: 'Board Approval' },
