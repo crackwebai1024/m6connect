@@ -62,7 +62,7 @@
           </div>
         </template>
 
-        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
@@ -259,10 +259,10 @@
       persistent
     >
       <v-card
-        class="w-full"
         v-show="method === 'add' || method === 'put'"
+        class="w-full"
       >
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             {{ $t('cpm.projects.spending') }}
           </span>
@@ -703,9 +703,9 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            elevation="1"
             color="gray"
             :disabled="loading"
+            elevation="1"
             :loading="loading"
             text
             @click="closeModal"
@@ -713,9 +713,9 @@
             Close
           </v-btn>
           <v-btn
-            elevation="1"
             color="primary"
             :disabled="loading"
+            elevation="1"
             :loading="loading"
             text
             @click="saveSpending"
@@ -736,7 +736,7 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             {{ $t('cpm.projects.spending') }}
             {{ $tc('cpm.projects.lineItem', 1) }}
@@ -1145,23 +1145,19 @@
       <v-card
         class="ml-2"
       >
-        <v-card-title
-          class="darken-3 headline light-blue pb-2"
-          style="color: white;"
-        >
-          {{ $tc('cpm.projects.lineItem', 1) }}
-
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ $tc('cpm.projects.lineItem', 1) }}
+          </span>
           <v-chip
-            class="headling pa-1 text-center"
+            class="absolute headling px-3 py-1 text-center white--text"
             color="blue darken-4"
             dark
-            style="position: absolute; left: 43%;"
+            style="left: 43%;"
           >
-            {{ $tc('general.invoice', 1) }}#:
-
+            {{ $tc('general.invoice', 1) }}# :
             {{ spendingToShow.number }}
           </v-chip>
-
           <v-spacer />
           <v-btn
             class="mt-1"
@@ -1176,6 +1172,7 @@
             </v-icon>
           </v-btn>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text
           :style="{
             height: getViewPortHeight,
