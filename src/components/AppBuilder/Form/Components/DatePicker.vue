@@ -1,59 +1,66 @@
 <template>
-  <div>
-    <v-menu
-      ref="menu1"
-      v-model="menu1"
-      :close-on-content-click="false"
-      max-width="290px"
-      min-width="290px"
-      offset-y
-      transition="scale-transition"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-          outlined
-          filled
-          v-model="dateFormatted"
-          v-bind="attrs"
-          hint="MM/DD/YYYY format"
-          label="Date"
-          persistent-hint
-          prepend-icon="mdi-calendar"
-          v-on="on"
-          @blur="date = parseDate(dateFormatted)"
-        />
-      </template>
-      <v-date-picker
-        v-model="date"
-        no-title
-        @input="menu1 = false"
+  <v-menu
+    ref="menu1"
+    v-model="menu1"
+    :close-on-content-click="false"
+    full-width
+    lazy
+    max-width="290px"
+    min-width="290px"
+    transition="scale-transition"
+  >
+    <template v-slot:activator="{ on }">
+      <v-text-field
+        outlined
+        filled
+        v-model="dateFormatted"
+        clearable
+        hint="MM/DD/YYYY format"
+        :label="label"
+        persistent-hint
+        :readonly="readonly"
+        :rules="rules"
+        :value="value"
+        v-on="on"
+        @blur="date = parseDate(dateFormatted)"
       />
-    </v-menu>
-  </div>
+    </template>
+    <v-date-picker
+      v-model="date"
+      no-title
+      @input="menu1 = false"
+    />
+  </v-menu>
 </template>
 
 <script>
-const today = new Date().toISOString().substr(0, 10)
 export default {
   props: {
+    label: {
+      type: String,
+      default: ''
+    },
+    rules: {
+      type: Array,
+      default: () => []
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: String,
-      default: today
+      default: ''
     }
   },
-
-  data: vm => ({
-    dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+  data: () => ({
+    date: '',
+    dateFormatted: '',
     menu1: false
   }),
-
   computed: {
     computedDateFormatted() {
-      const formatedDate = this.formatDate(this.date)
-      console.log('formatedDate')
-      console.log(formatedDate)
-      this.$emit('input', formatedDate)
-      return formatedDate
+      return this.formatDate(this.date)
     }
   },
 
@@ -62,7 +69,7 @@ export default {
       this.dateFormatted = this.formatDate(this.date)
     },
     value(val) {
-      this.date = val
+      this.dateFormatted = val
     }
   },
 
@@ -71,7 +78,9 @@ export default {
       if (!date) return null
 
       const [year, month, day] = date.split('-')
-      return `${month}/${day}/${year}`
+      const res = `${month}/${day}/${year}`
+      this.$emit('input', res)
+      return res
     },
     parseDate(date) {
       if (!date) return null

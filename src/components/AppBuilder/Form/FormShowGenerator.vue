@@ -49,7 +49,7 @@ export default {
         typeToComponentMapping: {
             'text': { component: 'v-text-field' },
             'number': { component: 'v-text-field', type: 'number'},
-            // 'timestamp': { component: 'date-picker' }
+            'timestamp': { component: 'date-picker' }
         },
         genericRecord: {},
         formRules: {
@@ -84,7 +84,11 @@ export default {
                     const f = this.fields[x]
                     payload.fields.push({ value: this.$h.dg(this.genericRecord, `${f.id}`, ''), field_id: f.id })
                 }
+                console.log('payload=======')
+                console.log(payload)
                 const res = await this.bulkSaveFieldValues(payload)
+                console.log('res=====')
+                console.log(res)
                 this.notifSuccess('The values were saved')
                 this.loading = false 
             } catch(e) {
