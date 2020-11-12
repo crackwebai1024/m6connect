@@ -99,7 +99,7 @@
             <v-badge
               :content="unread_count[ind]['unread']"
               inline
-              :value="unread_count[ind]['unread']"
+              :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
               <p class="font-weight-bold mb-0">
                 {{ channel.data.name }}
@@ -113,7 +113,7 @@
             <v-badge
               :content="unread_count[ind]['unread']"
               inline
-              :value="unread_count[ind]['unread']"
+                :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
               <p class="font-weight-bold mb-0">
                 {{ channel.membersInChannel.user.name }}
@@ -207,6 +207,12 @@ export default {
         }
       })
     })
+    this.client.on('channel.deleted', r => {
+      this.department.channels.splice(this.department.channels.indexOf(
+        this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+      ), 1)
+      this.$store.dispatch('GSChat/deleteChat', r.channel_id);
+    });
     this.client.on('member.removed', r => {
       if (this.user.id === r.user.id) {
         this.department.channels.splice(this.department.channels.indexOf(

@@ -15,28 +15,35 @@
       </template>
       <template v-slot:assignments>
         <div class="my-5"></div>
-        <v-badge
-          v-for="(follower, index) in actionPost.props.wo_assignments" :key="index + 'follower'" style="margin-left:-5px"
-          :bordered="follower.review ? false : true"
-          :dark="follower.review ? false : true"
-          top
-          :color="follower.review ? 'green accent-3' : 'white black--text'"
-          :icon="follower.review ? 'mdi-check' : 'mdi-help'"
-          offset-x="12"
-          offset-y="12"
-        >
-          <v-avatar size="28">
-            <v-img v-if="follower.profilePic !== ''" :src="follower.profilePic"></v-img>
-            <v-icon v-else color="light-blue lighten-3">mdi-account</v-icon>
-          </v-avatar>
-        </v-badge>
+          <v-badge
+            v-for="(follower, index) in actionPost.props.wo_assignments" :key="index + 'follower'"  
+            :bordered="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
+            :dark="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
+            top
+            :color="follower.status === 'Complete' ? 'green accent-3' : follower.status === 'Declined' ? 'red' :'white black--text'"
+            :icon="follower.status === 'Complete' ? 'mdi-check' : follower.status === 'Declined' ? 'mdi-close-circle' : 'mdi-help'"
+            offset-x="12"
+            offset-y="12"
+          >
+            <v-avatar size="28">
+              <v-img v-if="follower.profilePic !== ''" :src="follower.profilePic"></v-img>
+              <v-icon v-else color="light-blue lighten-3">mdi-account</v-icon>
+            </v-avatar>
+          </v-badge>
       </template>
     </post-item>
     <post-item
-      v-for="(item, index) of timeline"
+      v-for="(item, index) of timeline.filter((e, i) => i < currentIndex)"
       :key="index"
       :data="item"
     />
+    <infinite-loading
+      infinite-scroll-disabled="busy"
+      @infinite="infiniteHandler" :identifier="timeline">
+      <div slot="spinner"></div>
+      <div slot="no-more"></div>
+      <div slot="no-results"></div>
+    </infinite-loading>
   </v-container>
 </template>
 
@@ -50,7 +57,8 @@ export default {
     PostItem
   },
   data: () => ({
-
+    busy: false,
+    currentIndex: 0
   }),
   computed: {
     ...mapGetters('SocialNetworkModule', ['get_filter_data']),
@@ -78,6 +86,18 @@ export default {
     ...mapActions(['set_user_data']),
     ...mapActions("GeneralListModule", { recordData:    "push_data_to_active"               }),
     ...mapActions("InfoModule",        { changeDrawer:  "change_preview_navigation_drawer"  }),
+    infiniteHandler($state) {
+      this.busy = true;
+      setTimeout(() => {
+        if(this.currentIndex < this.timeline.length){
+          this.currentIndex ++;
+          $state.loaded();
+        }else{
+          $state.complete();
+        }
+        this.busy = false;
+      }, 100);
+    },
     successCallback: () => {
       return true
     },
@@ -108,3 +128,5 @@ export default {
   }
 }
 </script>
+<style>
+</style>

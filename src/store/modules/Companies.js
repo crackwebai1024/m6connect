@@ -36,6 +36,9 @@ const mutations = {
   },
   setCurrentCompany(state, payload) {
     state.currentCompany = payload
+    if (process.env.VUE_APP_COMPANY_ID) {
+      state.currentCompany.id = process.env.VUE_APP_COMPANY_ID
+    }
   }
 }
 

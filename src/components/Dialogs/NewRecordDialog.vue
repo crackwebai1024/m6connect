@@ -15,7 +15,12 @@
 
             <v-tabs-items v-model="tab">
                 <v-tab-item v-for="item in items" :key="item.tab" >
-                    <component @closeModal="closeModal" v-bind:is="item.component"></component>
+                    <component 
+                        @closeModal="closeModal" 
+                        @closingGenericRecord="closingGenericRecord" 
+                        v-bind:is="item.component" 
+                        :app="item.app" 
+                    />
                 </v-tab-item>
             </v-tabs-items>
         </v-card-text>
@@ -24,21 +29,49 @@
 
 <script>
 import ItAppForm from "@/components/Home/Forms/ItAppForm";
+import GenericRecord from '@/components/Home/Forms/GenericRecord';
+import { mapActions } from 'vuex'
 
 export default {
     name: "NewRecordDialog",
+
+    components: {
+        ItAppForm,
+        GenericRecord
+    },
+
     methods: {
+        ...mapActions('AppBuilder', {
+            getAppList: 'getAppList'
+        }),
         closeModal(){
             this.$emit('closeModal');
+        },
+        closingGenericRecord() {
+            this.closeModal()
+            // calling the model would happen here
         }
     },
+
     data: () => ({
         tab: null,
-        items:[{
-            tab: "ItApp",
-            component: ItAppForm
-        }]
+        items:[
+            {
+                tab: "ItApp",
+                component: ItAppForm
+            }
+        ]
     }),
+ 
+    async mounted() {
+        try {
+            const res = await this.getAppList()
+            for (let x = 0; x < res.length; x++) {
+               this.items.push({ isGeneric: true, tab: res[x].title, component: "GenericRecord", app: res[x] }) 
+            }
+        } catch(e) {
+        }
+    }
 }
 </script>
 <style scoped>

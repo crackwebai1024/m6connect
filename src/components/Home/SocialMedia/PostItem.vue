@@ -54,7 +54,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn
-                v-if="author"
+                v-show="isAuthor()"
                 icon
                 v-bind="attrs"
                 v-on="on"
@@ -460,31 +460,9 @@
     <v-dialog
       v-model="deleteDiaLog"
       persistent
-      max-width="290"
+      max-width="350"
     >
-      <v-card>
-        <v-card-title class="headline">
-          Are you sure?
-        </v-card-title>
-        <v-card-text>Do you want to remove '{{ data.message }}'? </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="deleteDiaLog = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="deletePost(data)"
-          >
-            Agree
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <delete-dialog :element="`post: '${data.message}'`" @closeDeleteModal="$event ? deletePost(data) : deleteDiaLog = false" />
     </v-dialog>
   </v-container>
 </template>
@@ -493,10 +471,12 @@
 import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
   name: 'PostItem',
   components: {
+    DeleteDialog,
     PostComments,
     VEmojiPicker
   },
@@ -548,10 +528,6 @@ export default {
     tagColor() {
       return this.data['postType'] === 'request' ? 'red' : 'teal accent-3'
     },
-    author(){
-      return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
-        : this.data.actor.id === this.user.id;
-    },
     likeIcon() {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
     },
@@ -577,6 +553,10 @@ export default {
     ...mapActions(['set_image_preview_overlay']),
     ...mapActions("WorkOrderModule", { records: "getRecords", putAct: "putAction", deleteAct: "deleteAction" }),
 
+    isAuthor(){
+      return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
+        : this.data.actor.id === this.user.id;
+    },
     changeRecord(event){
       switch( event ){
         case 'itapps':

@@ -1,6 +1,6 @@
 <template>
     <v-card class="rounded-lg px-8 py-3">
-        <v-card-subtitle class="pb-0"> 
+        <v-card-subtitle class="pb-0">
             <h2 class="text-center ma-0 mt-4 text-h4 blue--text">Add Users in your Group</h2>
         </v-card-subtitle>
         <v-card-title class="pb-6">
@@ -30,30 +30,46 @@
                 outlined
                 dense
             ></v-text-field>
-            <div v-if="element=='company'">
-                <div class="d-flex justify-center align-center" v-for="(user, ind) of companys" :key="ind+'-company-user-dialog'">
-                  <v-btn block class="my-3 py-8 rounded-lg btn-user"
-                      :color="user['selected'] ? 'green' : 'blue'"  tile x-large
-                      outlined @click="pushUser(ind)"
-                  >
-                      {{`${user.user.firstName} ${user.user.lastName}`}}
-                      <v-spacer></v-spacer> 
-                      <v-chip :color="user.joinStatus.toUpperCase() === 'ACTIVE' ?
-                          'green':user.joinStatus.toUpperCase() === 'PENDING' ? 'yellow' : 'red'" >
-                          <b class="white--text" >{{ (user.joinStatus).toLowerCase() }}</b>
-                      </v-chip>
-                  </v-btn>
-                  <v-checkbox
-                    @click="pushUser(ind)"
-                    class="mt-0 ml-2"
-                    v-model="user['selected']"
-                    :value="user['selected']"
-                    color="success"
-                    hide-details
-                  ></v-checkbox>
+            <div v-if="element=='company'" style="height: 400px; overflow-y: scroll;" class="messages-container white" >
+                <div class="d-flex align-center" v-for="(user, ind) of companies" :key="ind+'-company-user-dialog'">
+                    <v-btn tile depressed color="transparent" class="my-2 py-6 my-0 btn-user"
+                        block
+                        @click="user['selected'] = !user['selected']"
+                    >
+                        <v-checkbox
+                            @click="user['selected'] = !user['selected']"
+                            v-model="user['selected']"
+                            class="mt-0 mr-2"
+                            :value="user['selected']"
+                            color="success"
+                            hide-details
+                        ></v-checkbox>
+                        <v-avatar
+                            :color="user['user']['profilePic']? 'transparent' : 'blue' "
+                            class="mr-3"
+                            dark
+                            size="36"
+                        >
+                            <v-img
+                                v-if="user['user']['profilePic']"
+                                :src="user['user']['profilePic']"
+                            />
+                            <template v-else>
+                                <span class="text-uppercase white--text">{{ user.user.firstName.charAt(0) }}{{user.user.lastName.charAt(0)}}</span>
+                            </template>
+                        </v-avatar>
+                        {{`${user.user.firstName} ${user.user.lastName}`}}
+                        <v-spacer></v-spacer> 
+                        <v-chip 
+                            :color="user.joinStatus.toUpperCase() === 'ACTIVE' ? 'green'
+                            : user.joinStatus.toUpperCase() === 'PENDING' ? 'yellow' : 'red'"
+                        >
+                            <span class="white--text" >{{ (user.joinStatus).toLowerCase() }}</span>
+                        </v-chip>
+                    </v-btn>
                 </div>
                 <h2 
-                    v-if="companys.length === 0"
+                    v-if="companies.length === 0"
                     class="font-weight-black text-center mt-2"
                 >
                     No users found
@@ -96,7 +112,7 @@ export default {
     data: () => ({
         hoverUser: false,
         roomName: '',
-        companys: [],
+        companies: [],
         resList:[],
         element: 'company'
     }),
@@ -110,25 +126,29 @@ export default {
         ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' })
     },
     methods: {
-        pushUser(userIndex) {
-            if (!this.companys[userIndex]['selected']) {
-                this.companys[userIndex]['selected'] = true;
-                this.resList.push(this.companys[userIndex]['user']['id'])
-            }else{
-                this.companys[userIndex]['selected'] = false;
-                this.resList.splice( this.resList.indexOf( this.companys[userIndex]['user']['id'] ), 1 );
-            }
-        },
         res(a){
-            a ? this.$emit('closeModal', {
-                name: this.roomName,
-                image: '',
-                users: this.resList
-            }) : this.$emit('closeModal', {
-                name: this.roomName,
-                image: '',
-                users: []
-            });
+            if(a){
+                let res = this.resList.slice();
+                
+                this.companies.forEach(item => {
+                    if( item.selected ) {
+                        res.push( item['user']['id'] );
+                        item['selected'] = false;
+                    }
+                });
+                this.$emit('closeModal', {
+                    name: this.roomName,
+                    image: '',
+                    users: res
+                })
+            }else{
+                this.$emit('closeModal', {
+                    name: this.roomName,
+                    image: '',
+                    users: []
+                });
+            }
+            this.roomName = '';
         },
     },
     mounted() {
@@ -137,7 +157,7 @@ export default {
             this.companyUsers.splice(this.companyUsers.indexOf(
                 cUser
             ), 1)
-            this.companys = this.companyUsers;
+            this.companies = this.companyUsers;
 
             if (cUser) {
                 this.resList.push(cUser.user.id)
@@ -146,7 +166,7 @@ export default {
             this.companyUsers.forEach(item => {
                 if (Object.keys(this.currentUsers).filter((e) => { return e === item.user.id; }).length === 0) {
                     item['selected'] = false;
-                    this.companys.push(item);
+                    this.companies.push(item);
                 }else{
                     this.resList.push(item.user.id)
                 }

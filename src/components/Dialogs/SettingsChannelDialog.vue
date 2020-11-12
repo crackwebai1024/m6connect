@@ -4,6 +4,17 @@
             color="purple accent-4"
         >
             <v-toolbar-title class="white--text">Channel Settings</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn tile depressed color="transparent" class="white--text" @click="boolDeleteDiaLog = true">
+                Delete Channel <v-icon>mdi-trash-can</v-icon>
+            </v-btn>
+            <v-dialog
+                v-model="boolDeleteDiaLog"
+                persistent
+                max-width="350"
+            >
+                <delete-dialog :element="`cannel: '${ channel.data.name }'`" @closeDeleteModal="$event ? deleteGroup() : boolDeleteDiaLog = false" />
+            </v-dialog>
         </v-toolbar>
         <v-card-text>
             <v-form ref="form">
@@ -69,9 +80,13 @@
 
 <script>
 import { mapMutations } from 'vuex';
+import DeleteDialog from "@/components/Dialogs/DeleteDialog";
 
 export default {
     name: "SettingsChannelDialog",
+    components: {
+        DeleteDialog
+    },
     props: {
         channel: {
             type: Object,
@@ -79,6 +94,7 @@ export default {
         }
     },
     data: () => ({
+        boolDeleteDiaLog: false,
         loading: false,
         channelName: '',
         channelImage: ''
@@ -87,6 +103,14 @@ export default {
         ...mapMutations('SnackBarNotif', 
             { notifDanger: 'notifDanger' }
         ),
+        deleteGroup(){
+            this.channel.delete().then(() => {
+                this.updateChannel(false);
+            }).catch(()=>{
+                this.notifDanger('There was an error since deleting.')
+            })
+            this.boolDeleteDiaLog = false;
+        },
         async updateChannel(res) {
             if (res) {
                 let res = await this.channel.update({

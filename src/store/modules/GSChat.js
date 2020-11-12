@@ -34,6 +34,14 @@ const mutations = {
       state.chats.splice(index, 1)
     }
   },
+  DELETE_CHAT: (state, payload) => {
+    const channel = state.chats.find(chat => chat.id === payload)
+    const index = state.chats.indexOf(channel)
+
+    if (index > -1) {
+      state.chats.splice(index, 1)
+    }
+  },
   SET_CHATS: (state, payload) => state.chats = payload,
   SET_CLIENT: state => {
     state.client = new StreamChat(process.env.VUE_APP_GS_ID, null, {
@@ -146,6 +154,12 @@ const actions = {
   removeChat({ commit }, payload) {
     return new Promise(resolve => {
       commit('REMOVE_CHAT', payload)
+      resolve(true)
+    })
+  },
+  deleteChat({ commit }, payload) {
+    return new Promise(resolve => {
+      commit('DELETE_CHAT', payload)
       resolve(true)
     })
   },
