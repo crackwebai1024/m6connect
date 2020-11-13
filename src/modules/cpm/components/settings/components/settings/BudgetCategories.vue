@@ -15,7 +15,7 @@
         </v-btn>
       </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Budget Categories</label>
           <v-list
@@ -85,7 +85,7 @@
         </v-card-title>
         <v-divider class="grey lighten-3" />
 
-        <v-card-text class="pa-2">
+        <v-card-text class="pa-2 vertical-scroll">
           <v-text-field
             v-model="name"
             color="blue"
@@ -120,8 +120,8 @@
           <v-btn
             color="blue"
             dark
-            text
             :loading="loading"
+            text
             type="submit"
             @click="save"
           >
@@ -180,12 +180,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

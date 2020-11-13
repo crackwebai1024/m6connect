@@ -5,8 +5,8 @@
         <v-btn
           absolute
           color="blue"
-          light
           fab
+          light
           right
           small
           @click="newL1"
@@ -15,7 +15,7 @@
         </v-btn>
       </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>{{ $t('cpmSettings.timelineAdmin.defaultActivities') }}</label>
           <v-list
@@ -87,9 +87,9 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
-          <v-card-text class="pa-2">
+          <v-card-text class="pa-2 vertical-scroll">
             <v-text-field
               v-model="name"
               color="blue"
@@ -97,7 +97,7 @@
             />
           </v-card-text>
 
-          <v-card-text class="pa-2">
+          <v-card-text class="pa-2 vertical-scroll">
             <v-textarea
               v-model="note"
               color="blue"

@@ -1,6 +1,6 @@
 <template>
   <m6-card-dialog title="Projects">
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-container
         class="pa-0"
         fluid

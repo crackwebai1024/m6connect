@@ -102,14 +102,14 @@
       :width="800"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             {{ $t('cpm.projects.estimates.createEstimate') }}
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             fluid
             grid-list-md
@@ -173,12 +173,11 @@ export default {
     return {
       headers: [
         { text: this.$t('cpm.projects.estimates.image'), sortable: false },
-        { text: this.$t('general.name'), value: 'name', align: 'center' },
-        { text: this.$t('general.total'), value: 'total', align: 'center' },
+        { text: this.$t('general.name'), value: 'name' },
+        { text: this.$t('general.total'), value: 'total' },
         {
           text: this.$t('general.actions'),
           value: 'number',
-          align: 'right',
           sortable: false
         }
       ],

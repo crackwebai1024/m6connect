@@ -47,9 +47,9 @@
             <v-icon
               class="ml-0 mr-1"
               color="#757575"
-              text
               size="20"
               style="cursor: pointer"
+              text
               @click="editItem(risk)"
             >
               mdi-pencil
@@ -58,8 +58,8 @@
             <v-icon
               class="ml-0 mr-0"
               color="#f44336"
-              text
               size="20"
+              text
               @click="deleteItem(risk)"
             >
               mdi-delete
@@ -82,14 +82,14 @@
       scrollable
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Risk Management
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             fluid
@@ -170,8 +170,8 @@
           <v-btn
             color="gray"
             :disabled="loading"
-            text
             :loading="loading"
+            text
             @click="closeModal"
           >
             Close
@@ -179,8 +179,8 @@
           <v-btn
             color="primary"
             :disabled="loading"
-            text
             :loading="loading"
+            text
             @click="saveModal"
           >
             Save

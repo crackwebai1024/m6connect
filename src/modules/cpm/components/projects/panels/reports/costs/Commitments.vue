@@ -66,8 +66,8 @@
             <v-btn
               color="blue"
               fab
-              text
               small
+              text
               @click="addLineItem(commitment.id, commitment.number, commitmentIndex)"
             >
               <v-icon light>
@@ -77,8 +77,8 @@
 
             <v-btn
               color="blue"
-              text
               small
+              text
               @click.stop="openSpending(commitment.number, commitment.id)"
             >
               Spending
@@ -105,8 +105,8 @@
             <v-btn
               color="red"
               fab
-              text
               small
+              text
               @click="deleteCommitment(commitment.id, commitment.number, commitmentIndex)"
             >
               <v-icon light>
@@ -115,7 +115,7 @@
             </v-btn>
           </v-toolbar>
         </v-card-title>
-        <v-card-text class="pa-0">
+        <v-card-text class="pa-0 vertical-scroll">
           <div class="commitments-table">
             <v-card flat>
               <v-data-table
@@ -238,8 +238,7 @@ export default {
       headers.push({
         text: 'Actions',
         value: 'name',
-        sortable: false,
-        align: 'left'
+        sortable: false
       })
     }
     return {

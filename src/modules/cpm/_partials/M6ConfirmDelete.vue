@@ -4,12 +4,15 @@
     max-width="480"
   >
     <v-card class="m6_connect_card">
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">{{ title }}</span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text v-html="message" class="pt-3">
+      <v-card-text
+        class="pt-3 vertical-scroll"
+        v-html="message"
+      >
         <div>
           <div
             v-for="(item, indexD) in details"

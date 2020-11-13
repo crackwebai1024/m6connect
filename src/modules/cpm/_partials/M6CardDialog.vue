@@ -1,7 +1,7 @@
 <template>
   <component
     :is="rootComponent"
-    class="w-full m6-card-dialog mb-2 card-custom-shadow white rounded"
+    class="card-custom-shadow m6-card-dialog mb-2 rounded w-full white"
     :class="{ 'ma-0': !dialog }"
     column
     fill-height
@@ -11,16 +11,16 @@
     @keydown.27="dialog = false"
   >
     <v-toolbar
-      elevation="0"
-      class="step3 font-weight-medium rounded-t"
+      class="font-weight-medium rounded-t step3"
       :color="'white'"
       dark
+      elevation="0"
       :height="50"
       @dblclick="doubleClick"
     >
       <v-icon
         v-show="dialog"
-        class="pointer grey--text text--darken-1"
+        class="grey--text pointer text--darken-1"
         @click="dialog = false"
       >
         mdi-close
@@ -39,7 +39,7 @@
           </span>
         </template>
 
-        <span class="grey lighten-3 rounded pa-1">{{ titleTooltip }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ titleTooltip }}</span>
       </v-tooltip>
 
       <span
@@ -62,7 +62,7 @@
       }"
     >
       <v-card-text
-        :class="`card-container ${cardTextClass}`"
+        :class="`vertical-scroll card-container ${cardTextClass}`"
         :style="{
           height: contentHeight,
           'min-height': minHeight,

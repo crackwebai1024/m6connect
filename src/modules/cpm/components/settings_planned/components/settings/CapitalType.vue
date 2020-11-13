@@ -3,8 +3,8 @@
     <template slot="button">
       <v-btn
         color="primary"
-        light
         fab
+        light
         small
         @click="showForm = true"
       >
@@ -16,7 +16,7 @@
 
     <v-container class="pt-0">
       <v-card>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <h6
               v-if="currentCapitalType"
@@ -53,7 +53,7 @@
       </v-card>
 
       <v-card>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <label>Current Type of Request</label>
           <v-list
             class="mainList"
@@ -138,7 +138,7 @@ export default {
     ...mapGetters(['appLabel']),
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
-    }),
+    })
   },
   mounted() {
     db.collection('settings')

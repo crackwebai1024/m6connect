@@ -114,7 +114,7 @@
                 class="pa-0"
                 flat
               >
-                <v-card-text class="pa-0">
+                <v-card-text class="pa-0 vertical-scroll">
                   <v-expansion-panel class="elevation-0">
                     <v-expansion-panel-content
                       v-for="(itemL2, indexL2) in item.lvl_1"
@@ -191,7 +191,7 @@
                         class="pa-0 pl-4"
                         flat
                       >
-                        <v-card-text class="pa-0 pl-4">
+                        <v-card-text class="pa-0 pl-4 vertical-scroll">
                           <v-card
                             v-for="(itemL3, indexL3) in itemL2.lvl_2"
                             :key="indexL3"

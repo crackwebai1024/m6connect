@@ -199,7 +199,7 @@
         color="blue"
         dark
       >
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           {{ $t('general.uploadingFilesMessage') }}
 
           <p>{{ uploadStatusText }}</p>
@@ -225,12 +225,12 @@
       width="600px"
     >
       <v-card flat>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">{{ $t('cpm.projects.createNewFolder') }}</span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             class="fill-height ma-0 pa-0"
             fluid
@@ -291,7 +291,7 @@
           </v-btn>
         </v-card-title>
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-img
             v-if="imageUrl"
             contain
@@ -312,8 +312,8 @@
           </v-img>
 
           <iframe
-            class="w-full"
             v-if="pdfUrl"
+            class="w-full"
             :src="pdfUrl"
             style="height: 750px; border: none"
           />

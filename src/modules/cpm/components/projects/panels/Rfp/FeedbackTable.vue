@@ -119,11 +119,10 @@ export default {
         {
           text: 'Contact',
           value: 'contact',
-          sortable: false,
-          align: 'center'
+          sortable: false
         },
-        { text: 'Company', value: 'vendor', align: 'center' },
-        { text: 'Feedback', value: 'response', align: 'center' }
+        { text: 'Company', value: 'vendor' },
+        { text: 'Feedback', value: 'response' }
       ],
       responses: []
     }

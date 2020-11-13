@@ -102,7 +102,7 @@
                   class="pa-0"
                   flat
                 >
-                  <v-card-text class="pa-0">
+                  <v-card-text class="pa-0 vertical-scroll">
                     <v-expansion-panel
                       class="elevation-0"
                     >
@@ -154,7 +154,7 @@
                           class="pa-0 pl-4"
                           flat
                         >
-                          <v-card-text class="pa-0 pl-4">
+                          <v-card-text class="pa-0 pl-4 vertical-scroll">
                             <v-card
                               v-for="(itemL3, indexL3) in itemL2.cat_2"
                               :key="indexL3"
@@ -307,7 +307,7 @@
                 color="blue"
                 dark
               >
-                <v-card-text>
+                <v-card-text class="vertical-scroll">
                   Please stand by, uploading files...
                   <v-progress-linear
                     class="mb-0"

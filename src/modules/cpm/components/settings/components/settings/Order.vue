@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-select
         v-model="project_order.phase_order"
         clearable

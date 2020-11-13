@@ -14,7 +14,7 @@
     >
 
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           <template
             v-show="tab === 0"
@@ -47,7 +47,7 @@
         </v-tab>
       </v-tabs>
 
-      <v-card-text class="card-text">
+      <v-card-text class="card-text vertical-scroll">
         <v-tabs-items v-model="tab">
           <!-- Project info -->
           <v-tab-item>
@@ -912,8 +912,8 @@
 
         <v-btn
           color="primary"
-          text
           :loading="showLoading"
+          text
           @click="update"
         >
           {{ $t('general.update') }}

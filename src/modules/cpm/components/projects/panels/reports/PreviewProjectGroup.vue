@@ -1,6 +1,6 @@
 <template>
   <v-card flat>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-container
         fluid
         grid-list-md

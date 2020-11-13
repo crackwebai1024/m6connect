@@ -14,7 +14,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Current Items</label>
           <v-list
@@ -76,7 +76,7 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <h6
             v-if="currentPhase"

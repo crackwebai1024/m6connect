@@ -5,8 +5,8 @@
         <v-btn
           absolute
           color="blue"
-          light
           fab
+          light
           right
           small
           @click="showForm = true"
@@ -14,7 +14,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Current {{ appLabel.singular }} Types</label>
           <v-data-table
@@ -26,17 +26,17 @@
               <td>{{ props.item }}</td>
               <td class="text-right">
                 <v-btn
-                  text
                   icon
                   small
+                  text
                   @click.prevent="edit(props.index, props.item)"
                 >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  text
                   icon
                   small
+                  text
                   @click.prevent="deleteType(props.index, props.item)"
                 >
                   <v-icon>mdi-delete</v-icon>
@@ -52,7 +52,7 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <h6
             v-if="currentType"
@@ -110,12 +110,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

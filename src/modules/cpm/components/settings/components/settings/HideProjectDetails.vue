@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-progress-circular
           v-if="showLoading"
           color="primary"

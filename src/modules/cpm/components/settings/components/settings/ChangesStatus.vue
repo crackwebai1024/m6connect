@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Status</label>
           <v-btn
@@ -62,7 +62,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <v-text-field
               v-model="element"
@@ -128,12 +128,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

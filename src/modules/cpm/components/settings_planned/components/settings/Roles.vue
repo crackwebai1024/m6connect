@@ -9,8 +9,8 @@
           <v-btn
             absolute
             color="white"
-            light
             fab
+            light
             right
             small
             @click="showForm = true"
@@ -33,7 +33,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Roles</label>
           <v-data-table
@@ -82,7 +82,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <div class="form-group">
             <v-text-field
               v-model="roleName"
@@ -224,17 +224,14 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Users',
-          align: 'left',
           sortable: false
         },
         {
           text: 'Action',
-          align: 'right',
           sortable: false
         }
       ]

@@ -174,11 +174,11 @@ export default {
         { text: this.$t('cpm.bulletinNumber'), value: 'number' },
         { text: 'Title', value: 'title' },
         { text: 'Budget Category', value: 'costCodeText' },
-        { text: 'Amount', value: 'amount', align: 'right' },
+        { text: 'Amount', value: 'amount' },
         { text: 'Reason Code', value: 'reason.name' },
         { text: 'Status', value: 'status' },
         { text: 'Forecast', value: 'forecast' },
-        { text: 'Actions', value: 'number', align: 'center', sortable: false }
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       showEdit: false,
       changeToEdit: {},

@@ -7,13 +7,13 @@
     transition="dialog-transition"
   >
     <v-card>
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           Capital Plan
         </span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-container
           class="pa-0"
           fluid
@@ -140,8 +140,8 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          text
           :loading="loading"
+          text
           @click="closeCapital"
         >
           Cancel

@@ -70,13 +70,13 @@
       per
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Monthly Review
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-textarea
             v-model="comment"
             label="Comment'"
@@ -123,7 +123,7 @@
       </template>
     </v-dialog>
 
-    <v-card-text class="card-text-milestones pa-0">
+    <v-card-text class="card-text-milestones pa-0 vertical-scroll">
       <v-container
         class="pa-0"
         fluid
@@ -173,8 +173,8 @@
                       <v-icon
                         class="ml-0 mr-1 pointer"
                         color="#757575"
-                        text
                         size="20"
+                        text
                         @click.prevent="setMilestone(props.item)"
                       >
                         mdi-pencil
@@ -183,8 +183,8 @@
                     <v-col class="shrink">
                       <v-icon
                         color="#f44336"
-                        text
                         size="20"
+                        text
                         @click.prevent="deleteMilestone(props.item)"
                       >
                         mdi-delete
@@ -195,15 +195,15 @@
               </template>
             </v-data-table>
             <v-card class="elevation-0 ma-0 pa-0">
-              <v-card-text class="ma-0 pa-0">
+              <v-card-text class="ma-0 pa-0 vertical-scroll">
                 <v-row class="justify ma-0 pa-0">
                   <v-spacer />
                   <v-btn
                     v-if="pagination.rowsPerPage !== -1"
                     class="button-showall"
                     color="primary"
-                    light
                     fab
+                    light
                     small
                     @click="pagination.rowsPerPage = -1"
                   >
@@ -341,12 +341,11 @@ export default {
         { text: 'In Report', value: 'in_report' },
         {
           text: 'Original Forecasted Date',
-          value: 'original',
-          align: 'center'
+          value: 'original'
         },
-        { text: 'New Forecasted Date', value: 'projected', align: 'center' },
-        { text: 'Actual Completion Date', value: 'actual', align: 'center' },
-        { text: 'Actions', sortable: false, align: 'center' }
+        { text: 'New Forecasted Date', value: 'projected' },
+        { text: 'Actual Completion Date', value: 'actual' },
+        { text: 'Actions', sortable: false }
       ],
       rowsPerPageItems: [3, 10, 20, 30, 40, { text: 'All', value: -1 }],
       pagination: {

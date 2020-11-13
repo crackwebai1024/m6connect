@@ -65,7 +65,6 @@ export default {
         {
           text: this.$t('general.action'),
           class: 'info dark white--text subheading dark',
-          align: 'right',
           sortable: false
         }
       ]

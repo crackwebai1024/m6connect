@@ -11,7 +11,7 @@
           {{ $t('cpm.projects.budgetPanel.editBudget.budget') }}:
           {{ $h.dg(budget, 'title', '') }}
         </span>
-         <v-btn
+        <v-btn
           class="justify-end"
           color="blue darken-2"
           dark
@@ -26,7 +26,7 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-row>
           <v-col
             class="mr-3"
@@ -205,7 +205,7 @@
                   color="blue"
                   dark
                 >
-                  <v-card-text>
+                  <v-card-text class="vertical-scroll">
                     {{ $t('general.uploadingFilesMessage') }}
                     <v-progress-linear
                       class="mb-0"
@@ -237,7 +237,7 @@
                 </v-card-title>
                 <v-divider class="grey lighten-3" />
 
-                <v-card-text>
+                <v-card-text class="vertical-scroll">
                   <v-treeview
                     v-model="tree"
                     activatable

@@ -23,7 +23,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-row
             align="center"
             justify="center"
@@ -82,7 +82,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-row
             align="center"
             justify="center"

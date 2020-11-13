@@ -21,17 +21,17 @@
           <td>{{ props.item }}</td>
           <td class="text-right">
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="editCategory(props.index, props.item)"
             >
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <v-btn
-              text
               icon
               small
+              text
               @click.prevent="deleteCategory(props.index, props.item)"
             >
               <v-icon>mdi-delete</v-icon>
@@ -51,7 +51,7 @@
         </span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <v-text-field
             v-model="category"
@@ -96,12 +96,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ],

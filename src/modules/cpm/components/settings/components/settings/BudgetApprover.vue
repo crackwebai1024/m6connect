@@ -33,7 +33,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Budget Approvers</label>
           <v-data-table
@@ -73,24 +73,23 @@
       scrollable
     >
       <v-card class="mt-2">
-        
-          class="headline"
-          style="background: #006699; color:#fff"
+        class="headline"
+        style="background: #006699; color:#fff"
         >
-          <v-row align="center">
-            <label
-              v-if="currentElement !== ''"
-              class="white--text"
-            >
-              Edit Budget Approver
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Budget Approver</label>
-          </v-row>
+        <v-row align="center">
+          <label
+            v-if="currentElement !== ''"
+            class="white--text"
+          >
+            Edit Budget Approver
+          </label>
+          <label
+            v-else
+            class="white--text"
+          >Add New Budget Approver</label>
+        </v-row>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <div class="form-group">
               <label v-if="currentElement !== ''">Edit Budget Approver</label>
@@ -189,12 +188,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

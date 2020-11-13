@@ -67,7 +67,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <div class="form-group">
               <label v-if="currentElement !== ''">Edit Budget Approver</label>
@@ -165,12 +165,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

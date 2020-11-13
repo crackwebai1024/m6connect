@@ -130,8 +130,7 @@ export default {
   computed: {
     styleForeighObject() {
       return {
-        color: this.textColor || '#000000',
-        textAlign: 'center'
+        color: this.textColor || '#000000'
       }
     },
     dashStyle() {
@@ -158,7 +157,8 @@ export default {
       return (this.value >= this.min && this.value <= this.max) && !this.disabled
     },
     zeroRadians() {
-                /* this weird little bit of logic below is to handle the fact that usually we
+
+      /* this weird little bit of logic below is to handle the fact that usually we
                     want the value arc to start drawing from the 'zero' point, but, in the case
                     that the minimum and maximum values are both above zero, we set the 'zero point'
                     at the supplied minimum, so the value arc renders as the user would expect */

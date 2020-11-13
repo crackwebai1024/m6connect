@@ -15,8 +15,8 @@
             <v-col cols="12">
               <v-icon
                 class="icon-close"
-                light
                 large
+                light
                 @click="cancel"
               >
                 mdi-close
@@ -60,7 +60,7 @@
           </v-tab>
         </v-tabs>
 
-        <v-card-text class="card-text">
+        <v-card-text class="card-text vertical-scroll">
           <v-container
             fluid
             grid-list-lg

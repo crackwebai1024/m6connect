@@ -108,7 +108,7 @@
                   class="pa-0"
                   flat
                 >
-                  <v-card-text class="pa-0">
+                  <v-card-text class="pa-0 vertical-scroll">
                     <v-expansion-panel class="elevation-0">
                       <v-expansion-panel-content
                         v-for="(itemL2, indexL2) in item.cat_1"
@@ -173,7 +173,7 @@
           scrollable
         >
           <v-card class="pb-2">
-            <v-card-text>
+            <v-card-text class="vertical-scroll">
               <v-col cols="12">
                 <v-container
                   fluid

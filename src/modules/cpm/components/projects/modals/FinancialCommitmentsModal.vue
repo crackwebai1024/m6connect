@@ -5,7 +5,7 @@
     persistent
   >
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           <template
             v-if="isCreate"
@@ -16,12 +16,15 @@
             v-else
           >
             Edit Commitment Information
-          </template>          
+          </template>
         </span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text :style="{ height: getViewPortHeight }">
+      <v-card-text
+        class="vertical-scroll"
+        :style="{ height: getViewPortHeight }"
+      >
         <v-container fluid>
           <v-form ref="form">
             <v-row
@@ -31,7 +34,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       Commitment Number
                     </v-col>
                   </v-row>
@@ -51,7 +54,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       Budget Category
                     </v-col>
                   </v-row>
@@ -73,7 +76,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="´text-nowrap">
                       Commitment Type
                     </v-col>
                   </v-row>
@@ -95,7 +98,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       From Changes
                     </v-col>
                   </v-row>
@@ -161,7 +164,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       Completion Date
                     </v-col>
                   </v-row>
@@ -320,10 +323,11 @@
           </v-form>
         </v-container>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="pa-6">
         <v-spacer />
         <v-btn
-          elevation="1"
+          color="grey darken-1"
+          flat
           text
           @click="$emit('close-only')"
         >
@@ -331,17 +335,20 @@
         </v-btn>
 
         <v-btn
-          elevation="1"
           v-if="isCreate"
+          class="blue lighten-2"
+          color="white"
+          elevation="1"
           text
           @click="save('create')"
         >
           Create
         </v-btn>
-
         <v-btn
+          v-else
+          class="blue lighten-2"
+          color="white"
           elevation="1"
-          v-if="!isCreate"
           text
           @click="save('udpate')"
         >
@@ -359,7 +366,7 @@
         color="blue"
         dark
       >
-        <v-card-text>
+        <v-card-text class="pt-3 vertical-scroll">
           Please stand by, uploading files...
           <v-progress-linear
             class="mb-0"

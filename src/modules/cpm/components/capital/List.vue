@@ -135,7 +135,10 @@
               </v-row>
             </v-col>
 
-            <v-card-text @click="goToCapital(proj, false)">
+            <v-card-text
+              class="vertical-scroll"
+              @click="goToCapital(proj, false)"
+            >
               <div class="mb-2 text-center">
                 <p
                   class="font-weight-bold headline"
@@ -173,7 +176,7 @@
                     v-else
                     dark
                   >
-                   mdi-wallpaper
+                    mdi-wallpaper
                   </v-icon>
                 </v-avatar>
               </td>
@@ -189,8 +192,8 @@
                 <v-tooltip left>
                   <template v-slot:activator="{ on }">
                     <v-icon
-                      small
                       class="pointer"
+                      small
                       v-on="on"
                       @click="goToCapital(props.item, false)"
                     >
@@ -204,8 +207,8 @@
                   <template v-slot:activator="{ on }">
                     <v-icon
                       v-if="props.item.canDelete != false"
-                      small
                       class="pointer"
+                      small
                       v-on="on"
                       @click="deleteCapitalPlan(props.item)"
                     >
@@ -325,7 +328,7 @@ export default {
     headers: [
       { text: '', value: 'picture' },
       { text: 'Capital Plan Name', value: 'name' },
-      { text: 'Actions', value: 'name', align: 'center', sortable: false }
+      { text: 'Actions', value: 'name', sortable: false }
     ],
     pagination: { sortBy: 'number', descending: false, rowsPerPage: 10 },
     page: 1,

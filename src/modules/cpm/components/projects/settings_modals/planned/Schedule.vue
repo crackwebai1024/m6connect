@@ -6,7 +6,7 @@
   >
     <v-card>
       <v-card-title
-        class="headline white grey--text text--darken-1 text-h6"
+        class="grey--text headline text--darken-1 text-h6 white"
       >
         Schedule Settings
         <v-spacer />
@@ -14,7 +14,7 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
       <v-card-text
-        class="hidden-overflow pa-0"
+        class="hidden-overflow pa-0 vertical-scroll"
         :style="{'height': getViewPortHeight}"
       >
         <v-container
@@ -31,8 +31,8 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          elevation="1"
           color="gray"
+          elevation="1"
           text
           @click="$emit('close')"
         >

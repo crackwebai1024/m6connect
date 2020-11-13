@@ -9,8 +9,8 @@
           <v-btn
             absolute
             color="white"
-            light
             fab
+            light
             right
             small
             @click="showForm = true"
@@ -24,8 +24,8 @@
           v-else
           absolute
           color="blue"
-          light
           fab
+          light
           right
           small
           @click="showForm = true"
@@ -33,7 +33,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Current Name</label>
           <v-list
@@ -69,18 +69,18 @@
                 >
                   <v-btn
                     class="xs-btn"
-                    text
                     icon
                     small
+                    text
                     @click.prevent="editElement(key, item)"
                   >
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
-                    text
                     icon
                     small
+                    text
                     @click.prevent="deleteElement(key, item)"
                   >
                     <v-icon>mdi-delete</v-icon>
@@ -106,7 +106,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <v-row>
               <v-col sm="6">
@@ -206,7 +206,7 @@
         >
           Valid Date
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-menu
             v-model="validDatePicker"
             :close-on-content-click="false"
@@ -295,12 +295,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ],

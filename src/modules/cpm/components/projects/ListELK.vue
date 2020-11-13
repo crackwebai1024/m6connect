@@ -142,8 +142,8 @@
                     absolute
                     class="deleteBtn"
                     color="red"
-                    light
                     fab
+                    light
                     small
                     v-on="on"
                     @click="deleteProject(item)"
@@ -201,7 +201,10 @@
                 </v-row>
               </v-col>
 
-              <v-card-text @click="goToProject(item, false)">
+              <v-card-text
+                class="vertical-scroll"
+                @click="goToProject(item, false)"
+              >
                 <div class="mb-2 text-center">
                   <v-menu
                     offset-y
@@ -380,7 +383,7 @@
                   </template>
 
                   <v-card color="rgb(255, 255, 255, 0.9)">
-                    <v-card-text>
+                    <v-card-text class="vertical-scroll">
                       {{ item.title }}
                     </v-card-text>
                   </v-card>
@@ -745,7 +748,6 @@ export default {
       headers.push({
         text: this.$t('cpm.totalBudget'),
         value: 'budget',
-        align: 'right',
         sortable: false
       })
 
@@ -827,8 +829,7 @@ export default {
 
           {
             text: this.$t('cpm.projects.projectedFinalCost'),
-            value: 'projectFinalCost',
-            align: 'right'
+            value: 'projectFinalCost'
           },
           { text: this.$t('cpm.projectStart'), sortable: false },
           { text: 'Construction Star', sortable: false },

@@ -42,13 +42,13 @@
       width="500"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Add RFP
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             fluid
@@ -164,7 +164,7 @@
       </v-card>
     </v-dialog>
 
-    <v-card-text class="pa-0">
+    <v-card-text class="pa-0 vertical-scroll">
       <v-container
         class="pa-0"
         fluid
@@ -207,7 +207,7 @@
             </v-data-table>
 
             <v-card class="elevation-0 ma-0 pa-0">
-              <v-card-text class="ma-0 pa-0">
+              <v-card-text class="ma-0 pa-0 vertical-scroll">
                 <v-row class="justify ma-0 pa-0">
                   <v-spacer />
                   <v-btn
@@ -262,8 +262,8 @@ export default {
     return {
       headers: [
         { text: 'RFP Name', value: 'name' },
-        { text: 'RFP Type', value: 'rfpType', align: 'left' },
-        { text: 'Actions', value: 'number', align: 'right', sortable: false }
+        { text: 'RFP Type', value: 'rfpType' },
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       proposals: [],
       dialog: false,

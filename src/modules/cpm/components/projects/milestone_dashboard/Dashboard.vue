@@ -7,7 +7,7 @@
     <v-row>
       <v-col cols="12">
         <v-card elevation="0">
-          <v-card-text>
+          <v-card-text class="vertical-scroll">
             <v-row>
               <v-col cols="12">
                 <div class="tableWrap">
@@ -294,7 +294,7 @@
           <span class="grey--text text--darken-1">{{ $t('milestoneDashboard.comments') }}</span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-list
             v-if="comments.length"
             class="commentList"
@@ -330,7 +330,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <h3>{{ $t('milestoneDashboard.name') }}: {{ milestoneName }}</h3>
           <v-menu
             v-if="!validDates.length"
@@ -408,7 +408,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <h3>Name: {{ milestoneName }}</h3>
           <v-menu
             v-model="actualDatePicker"
@@ -471,7 +471,7 @@
           <span class="grey--text text--darken-1">{{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}</span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             fluid
             grid-list-md
@@ -589,13 +589,19 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text v-if="project.monthlyReview">
+        <v-card-text
+          v-if="project.monthlyReview"
+          class="vertical-scroll"
+        >
           <v-textarea
             v-model="comment"
             label="Comments"
           />
         </v-card-text>
-        <v-card-text v-else>
+        <v-card-text
+          v-else
+          class="vertical-scroll"
+        >
           <p>You already did it</p>
         </v-card-text>
         <v-card-actions v-if="project.monthlyReview">

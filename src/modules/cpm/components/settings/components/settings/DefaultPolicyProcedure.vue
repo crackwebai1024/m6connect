@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-row>
         <v-col md="12">
           <v-container

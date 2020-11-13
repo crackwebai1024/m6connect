@@ -1,6 +1,6 @@
 <template>
   <v-card flat>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-container fluid>
         <template v-if=" proposal.hasAllowances && allowances.length>0">
           <template v-for="(allowance, index) in allowances">

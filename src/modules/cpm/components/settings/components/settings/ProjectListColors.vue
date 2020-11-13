@@ -4,7 +4,7 @@
       <v-card-title class="relative">
         <label>Current Project List Colors</label>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-data-table
           :headers="headers"
           :items="colors"
@@ -43,9 +43,9 @@
             Change the color for projects {{ changeColor.label }}
           </span>
         </v-card-title>
-      <v-divider class="grey lighten-3" />
+        <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <chrome-picker v-model="changeColor.color" />
         </v-card-text>
         <v-card-actions>
@@ -94,7 +94,6 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {

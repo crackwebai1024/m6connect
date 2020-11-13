@@ -38,7 +38,7 @@
         </template>
 
         <v-card color="rgb(255, 255, 255, 0.9)">
-          <v-card-text>
+          <v-card-text class="vertical-scroll">
             <b>{{ $t('general.currentSearchTerm') }}:</b>
             {{ search }}
           </v-card-text>
@@ -62,7 +62,7 @@
           </div>
         </template>
 
-        <span class="grey lighten-3 rounded pa-1">{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
@@ -259,10 +259,10 @@
       persistent
     >
       <v-card
-        class="w-full"
         v-show="method === 'add' || method === 'put'"
+        class="w-full"
       >
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             {{ $t('cpm.projects.spending') }}
           </span>
@@ -271,7 +271,7 @@
 
         <v-divider class="grey lighten-3" />
 
-        <v-card-text class="card-scroll">
+        <v-card-text class="card-scroll vertical-scroll">
           <v-form
             ref="form"
             v-model="valid"
@@ -703,9 +703,9 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            elevation="1"
             color="gray"
             :disabled="loading"
+            elevation="1"
             :loading="loading"
             text
             @click="closeModal"
@@ -713,9 +713,9 @@
             Close
           </v-btn>
           <v-btn
-            elevation="1"
             color="primary"
             :disabled="loading"
+            elevation="1"
             :loading="loading"
             text
             @click="saveSpending"
@@ -736,14 +736,14 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             {{ $t('cpm.projects.spending') }}
             {{ $tc('cpm.projects.lineItem', 1) }}
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form
             ref="formLineItem"
             v-model="validLineItem"
@@ -1145,23 +1145,19 @@
       <v-card
         class="ml-2"
       >
-        <v-card-title
-          class="darken-3 headline light-blue pb-2"
-          style="color: white;"
-        >
-          {{ $tc('cpm.projects.lineItem', 1) }}
-
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ $tc('cpm.projects.lineItem', 1) }}
+          </span>
           <v-chip
-            class="headling pa-1 text-center"
+            class="absolute headling px-3 py-1 text-center white--text"
             color="blue darken-4"
             dark
-            style="position: absolute; left: 43%;"
+            style="left: 43%;"
           >
-            {{ $tc('general.invoice', 1) }}#:
-
+            {{ $tc('general.invoice', 1) }}# :
             {{ spendingToShow.number }}
           </v-chip>
-
           <v-spacer />
           <v-btn
             class="mt-1"
@@ -1176,7 +1172,9 @@
             </v-icon>
           </v-btn>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
         <v-card-text
+          class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
             height: method === 'add' ? '78vh' : '70vh',
@@ -1426,34 +1424,28 @@ export default {
       headersLineItems: [
         {
           text: `${this.$tc('general.invoice', 1)} #`,
-          align: 'center',
           value: 'number'
         },
         {
           text: this.$t('cpm.projects.vendorName'),
-          align: 'center',
           value: 'vendor'
         },
         {
           text: this.$tc('general.category', 1),
-          align: 'center',
           value: 'category'
         },
-        { text: this.$t('general.date'), align: 'center', value: 'dateText' },
+        { text: this.$t('general.date'), value: 'dateText' },
         {
           text: `${this.$t('general.line')} #`,
-          align: 'center',
           value: 'line_number'
         },
         {
           text: this.$t('general.lineItemDescr'),
-          align: 'center',
           value: 'line_description'
         },
-        { text: this.$t('general.amount'), align: 'right', value: 'amount' },
+        { text: this.$t('general.amount'), value: 'amount' },
         {
           text: this.$t('general.actions'),
-          align: 'center',
           value: 'actions',
           sortable: false
         }
@@ -1541,58 +1533,48 @@ export default {
         return [
           {
             text: this.$t('cpm.projects.budgetCategory'),
-            value: 'budget_category.name',
-            align: 'left'
+            value: 'budget_category.name'
           },
           {
             text: this.$t('general.invoiceNumber'),
-            value: 'number',
-            align: 'left'
+            value: 'number'
           },
           {
             text: this.$t('cpm.projects.poNumber'),
-            value: 'po_number',
-            align: 'left'
+            value: 'po_number'
           },
           {
             text: this.$t('general.vendor'),
             value: '',
-            align: 'left',
             sortable: false
           },
           {
             text: this.$t('general.description'),
             value: 'description',
-            align: 'left',
             sortable: false
           },
           {
             text: this.$t('general.invDate'),
             value: '',
-            align: 'center',
             sortable: false
           },
           {
             text: this.$t('general.distDate'),
             value: '',
-            align: 'center',
             sortable: false
           },
           // {
           //   text: this.$t('general.status'),
           //   value: '',
-          //   align: 'left',
           //   sortable: false
           // },
           {
             text: this.$t('general.amount'),
-            value: 'amount',
-            align: 'right'
+            value: 'amount'
           },
           {
             text: this.$t('general.actions'),
             value: 'actions',
-            align: 'center',
             sortable: false
           }
         ]
@@ -1600,30 +1582,25 @@ export default {
         return [
           {
             text: this.$t('cpm.projects.budgetCategory'),
-            value: 'budget_category.name',
-            align: 'left'
+            value: 'budget_category.name'
           },
           {
             text: this.$t('cpm.projects.vendorName'),
             value: '',
-            align: 'left',
             sortable: false
           },
           {
             text: this.$t('general.invDate'),
             value: '',
-            align: 'center',
             sortable: false
           },
           {
             text: this.$t('general.amount'),
-            value: 'amount',
-            align: 'right'
+            value: 'amount'
           },
           {
             text: this.$t('general.actions'),
             value: 'number',
-            align: 'center',
             sortable: false
           }
         ]
