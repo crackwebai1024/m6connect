@@ -29,21 +29,44 @@
           </v-btn>
         </div>
       </div>
-      <div style="" class="flex-space-between">
-        <img class="app-icon-link pr-2" :src="app.iconLink" alt="">
-        <v-form ref="formApp" >
-          <v-text-field label="App Title" :rules="rules.generic" v-model="app.title" class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl" />
-          <v-text-field label="App Prefix" :rules="rules.generic" v-model="app.prefix" maxlength="3" class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl" />
-          <m6-upload 
-            btnButton="purple" 
-            @response="responseAppLogo" 
-            @loading="loading = !loading" 
+      <div
+        class="flex-space-between"
+        style=""
+      >
+        <img
+          alt=""
+          class="app-icon-link pr-2"
+          :src="app.iconLink"
+        >
+        <v-form ref="formApp">
+          <v-text-field
+            v-model="app.title"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            label="App Title"
+            :rules="rules.generic"
+          />
+          <v-text-field
+            v-model="app.prefix"
+            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+            label="App Prefix"
+            maxlength="3"
+            :rules="rules.generic"
+          />
+          <m6-upload
+            btn-button="purple"
+            @loading="loading = !loading"
+            @response="responseAppLogo"
           >
             <v-icon>mdi-cloud-upload</v-icon>
           </m6-upload>
-          <v-btn color="green darken-2" style="float: right;" class="white--text" @click="updatingApp" >
+          <v-btn
+            class="white--text"
+            color="green darken-2"
+            style="float: right;"
+            @click="updatingApp"
+          >
             save
-          </v-btn> 
+          </v-btn>
         </v-form>
       </div>
     </div>
@@ -52,7 +75,7 @@
 
     <div class="align-center d-flex justify-space-between max-w-lg mx-auto w-full">
       <div class="align-center d-flex">
-        activeTab {{activeTab}}
+        activeTab {{ activeTab }}
         <v-tabs
           v-if="appLoaded"
           v-model="activeTab"
@@ -63,22 +86,44 @@
             :key="index"
             class="blue--text capitalize"
           >
-            <template v-if="activeTab === index" >
-              <v-btn  color="green darken-2" icon dark @click="editingTab(tab)" >
+            <template v-if="activeTab === index">
+              <v-btn
+                color="green darken-2"
+                dark
+                icon
+                @click="editingTab(tab)"
+              >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
-              <v-btn color="red darken-2" icon dark @click="deleteTab"  >
+              <v-btn
+                color="red darken-2"
+                dark
+                icon
+                @click="deleteTab"
+              >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
             </template>
 
-            <span >{{ tab.title }}</span>
+            <span>{{ tab.title }}</span>
 
-            <template v-if="activeTab === index" >
-              <v-btn color="blue darken-2" icon class="white--text" :disabled="index === 0" @click="moveTabs(app.tabs[index], app.tabs[index-1])">
+            <template v-if="activeTab === index">
+              <v-btn
+                class="white--text"
+                color="blue darken-2"
+                :disabled="index === 0"
+                icon
+                @click="moveTabs(app.tabs[index], app.tabs[index-1])"
+              >
                 <v-icon>mdi-arrow-left-thick</v-icon>
               </v-btn>
-              <v-btn color="blue darken-2" icon class="white--text" :disabled="$h.dg(app, 'tabs', []).length - 1 === index" @click="moveTabs(app.tabs[index], app.tabs[index+1])" >
+              <v-btn
+                class="white--text"
+                color="blue darken-2"
+                :disabled="$h.dg(app, 'tabs', []).length - 1 === index"
+                icon
+                @click="moveTabs(app.tabs[index], app.tabs[index+1])"
+              >
                 <v-icon>mdi-arrow-right-thick</v-icon>
               </v-btn>
             </template>
@@ -98,7 +143,7 @@
     </div>
     <div
       v-if="appLoaded"
-      class="details-content grey h-fit lighten-3  pt-2"
+      class="details-content grey h-fit lighten-3 pt-2"
     >
       <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
         <v-col
@@ -168,14 +213,14 @@
       />
     </v-dialog>
 
-    <tab-updates 
-      :tab-to-edit="tabToEdit"
+    <tab-updates
       :dialog="showTabEditDialog"
-      @updateTab="updatingTab"
+      :tab-to-edit="tabToEdit"
       @closing="closingTabUpdates"
+      @updateTab="updatingTab"
     />
 
-    <m6-loading 
+    <m6-loading
       :loading="loading"
     />
   </v-card>
@@ -210,7 +255,7 @@ export default {
     tabToEdit: {},
     loading: false,
     rules: {
-      generic: [ v => !!v || 'This field is required', ]
+      generic: [v => !!v || 'This field is required']
     }
   }),
 
@@ -236,16 +281,16 @@ export default {
 
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
-      notifSuccess: 'notifSuccess' 
+      notifSuccess: 'notifSuccess'
     }),
 
     updatePanel(data) {
-      this.app.tabs[this.activeTab].panels = this.app.tabs[this.activeTab].panels.map( p => p.id == data.id ? data: p )
+      this.app.tabs[this.activeTab].panels = this.app.tabs[this.activeTab].panels.map(p => p.id == data.id ? data : p)
     },
 
     async responseAppLogo(data) {
-      this.loading = true 
-      if( data.ok ) {
+      this.loading = true
+      if (data.ok) {
         this.app.iconLink = data.data.link
         await this.updateApp({ params: this.app })
         this.notifSuccess('The image was uploaded')
@@ -258,9 +303,9 @@ export default {
     },
 
     async updatingApp() {
-      this.loading = true 
-      
-      if(!this.$refs.formApp.validate()) {
+      this.loading = true
+
+      if (!this.$refs.formApp.validate()) {
         this.notifDanger('Please fill in all required fields')
         this.loading = false
         return
@@ -270,7 +315,7 @@ export default {
         const res = await this.updateApp({ params: this.app })
         this.loading = false
         this.notifSuccess('Updated!')
-      } catch(e) {
+      } catch (e) {
         this.loading = false
         this.notifDanger('There was an error while updating')
         return e
@@ -283,7 +328,7 @@ export default {
         { id: current.id, order: tabToSwitchWith.order }
       ]
 
-      this.loading = true 
+      this.loading = true
 
       try {
         await this.switchOrderTabs({ idsAndOrders })
@@ -298,27 +343,30 @@ export default {
 
         // this.activeTab = 0
 
-        this.loading = false 
-      } catch(e) {
+        this.loading = false
+      } catch (e) {
         this.notifDanger('There was an error while updating the tabs')
         this.loading = false
       }
     },
 
     editingTab(tab) {
-      this.showTabEditDialog = true 
-      this.$nextTick( () => {
+      this.showTabEditDialog = true
+      this.$nextTick(() => {
         this.tabToEdit = tab
       })
     },
 
     updatingTab(payload) {
-      this.app.tabs[this.activeTab] = { ...this.app.tabs[this.activeTab], ...payload.tab }
+      this.app.tabs[this.activeTab] = {
+        ...this.app.tabs[this.activeTab],
+        ...payload.tab
+      }
     },
 
     closingTabUpdates() {
       this.showTabEditDialog = false
-      this.$nextTick( () => {
+      this.$nextTick(() => {
         this.tabToDelete = {}
       })
     },
@@ -377,19 +425,16 @@ export default {
     border-bottom: 1px solid #F8F3EC;
     margin-bottom: -1px;
 }
-.theme--light.v-text-field > .v-input__control > .v-input__slot:before {
-    border: none;
-}
 .panel {
     min-height: 350px;
 }
 .app-icon-link {
   height: 3rem;
-  width: auto; 
+  width: auto;
   border-radius: 20%;
 }
 .flex-space-between {
-  display: flex; 
+  display: flex;
   justify-content: space-between;
 }
 </style>

@@ -5,7 +5,7 @@
       <slot name="button" />
     </v-card-title>
     <slot />
-    <v-card-text />
+    <v-card-text class="vertical-scroll" />
   </v-card>
 </template>
 

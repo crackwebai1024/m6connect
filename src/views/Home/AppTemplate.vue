@@ -87,9 +87,6 @@ export default {
     border-bottom: 1px solid #F8F3EC;
     margin-bottom: -1px;
 }
-.theme--light.v-text-field > .v-input__control > .v-input__slot:before {
-    border: none;
-}
 .panel {
     min-height: 300px;
 }

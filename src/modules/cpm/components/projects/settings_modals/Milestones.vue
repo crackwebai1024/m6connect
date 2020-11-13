@@ -16,7 +16,7 @@
       <v-divider class="grey lighten-3" />
 
       <v-card-text
-        class="pa-0"
+        class="pa-0 vertical-scroll"
         :style="{'height': getViewPortHeight}"
       >
         <v-container

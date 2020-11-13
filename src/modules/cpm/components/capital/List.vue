@@ -135,7 +135,10 @@
               </v-row>
             </v-col>
 
-            <v-card-text @click="goToCapital(proj, false)">
+            <v-card-text
+              class="vertical-scroll"
+              @click="goToCapital(proj, false)"
+            >
               <div class="mb-2 text-center">
                 <p
                   class="font-weight-bold headline"

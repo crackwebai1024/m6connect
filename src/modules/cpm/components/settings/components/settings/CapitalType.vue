@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <h6
             v-if="currentCapitalType"
@@ -37,7 +37,7 @@
       </v-card-text>
     </v-card>
     <v-card>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <label>Current Type of Request</label>
         <v-list
           class="mainList"

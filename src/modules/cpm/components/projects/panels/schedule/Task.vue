@@ -32,7 +32,7 @@
         </v-row>
       </v-container>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-container
         class="pa-0"
         grid-list-md

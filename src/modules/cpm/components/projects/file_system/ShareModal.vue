@@ -6,11 +6,11 @@
     scrollable
   >
     <v-card>
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">{{ $t('cpm.projects.shareDocument') }}</span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-container>
           <v-row
             v-if="!previewShow"
@@ -20,8 +20,8 @@
             <label>{{ $t('cpm.projects.fileToShare') }}</label>
             <v-btn
               v-for="(e, index) in item"
-              :key="'btnsforitems' + index"
               id="step16"
+              :key="'btnsforitems' + index"
               class="ma-2"
               outlined
               tile

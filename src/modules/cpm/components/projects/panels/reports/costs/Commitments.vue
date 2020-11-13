@@ -115,7 +115,7 @@
             </v-btn>
           </v-toolbar>
         </v-card-title>
-        <v-card-text class="pa-0">
+        <v-card-text class="pa-0 vertical-scroll">
           <div class="commitments-table">
             <v-card flat>
               <v-data-table

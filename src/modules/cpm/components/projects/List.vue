@@ -146,7 +146,10 @@
               </v-row>
             </v-col>
 
-            <v-card-text @click="goToProject(proj, false)">
+            <v-card-text
+              class="vertical-scroll"
+              @click="goToProject(proj, false)"
+            >
               <div class="mb-2 text-center">
                 <p
                   class="font-weight-bold headline"
@@ -189,7 +192,7 @@
                     text
                     tile
                   >
-                    <v-card-text class="py-2 subheading white--text">
+                    <v-card-text class="py-2 subheading vertical-scroll white--text">
                       <span class="white--text">{{ proj.status }}</span>
                     </v-card-text>
                   </v-card>
@@ -205,7 +208,7 @@
                     text
                     tile
                   >
-                    <v-card-text class="py-2 subheading white--text">
+                    <v-card-text class="py-2 subheading vertical-scroll white--text">
                       <span
                         v-if="proj.startDate"
                         class="white--text"

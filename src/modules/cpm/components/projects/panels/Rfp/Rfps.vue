@@ -48,7 +48,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             fluid
@@ -164,7 +164,7 @@
       </v-card>
     </v-dialog>
 
-    <v-card-text class="pa-0">
+    <v-card-text class="pa-0 vertical-scroll">
       <v-container
         class="pa-0"
         fluid
@@ -207,7 +207,7 @@
             </v-data-table>
 
             <v-card class="elevation-0 ma-0 pa-0">
-              <v-card-text class="ma-0 pa-0">
+              <v-card-text class="ma-0 pa-0 vertical-scroll">
                 <v-row class="justify ma-0 pa-0">
                   <v-spacer />
                   <v-btn

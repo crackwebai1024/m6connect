@@ -201,7 +201,10 @@
                 </v-row>
               </v-col>
 
-              <v-card-text @click="goToProject(item, false)">
+              <v-card-text
+                class="vertical-scroll"
+                @click="goToProject(item, false)"
+              >
                 <div class="mb-2 text-center">
                   <v-menu
                     offset-y
@@ -380,7 +383,7 @@
                   </template>
 
                   <v-card color="rgb(255, 255, 255, 0.9)">
-                    <v-card-text>
+                    <v-card-text class="vertical-scroll">
                       {{ item.title }}
                     </v-card-text>
                   </v-card>

@@ -6,7 +6,7 @@
     scrollable
   >
     <v-card>
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           Budget Settings
         </span>
@@ -28,7 +28,7 @@
       </v-tabs>
 
       <v-card-text
-        class="pa-0"
+        class="pa-0 vertical-scroll"
         :style="{ height: getViewPortHeight }"
       >
         <v-container

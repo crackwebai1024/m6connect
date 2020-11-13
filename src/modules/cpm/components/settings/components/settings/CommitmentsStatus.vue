@@ -34,7 +34,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Types</label>
           <v-data-table
@@ -84,7 +84,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="d-flex flex-wrap justify-end">
+        <v-card-text class="d-flex flex-wrap justify-end vertical-scroll">
           <v-text-field
             v-model="element"
             class="mb-2 mt-3 w-full"
@@ -93,20 +93,23 @@
           />
           <input
             v-model="currentElement"
-            class="w-full"
+            class="mb-6 w-full"
             type="hidden"
           >
           <v-btn
-            class="mx-2 white--text"
-            color="blue"
-            outline
+            color="grey darken-1"
+            flat
+            text
             @click="cancel"
           >
             Cancel
           </v-btn>
+
           <v-btn
-            color="blue"
-            dark
+            class="blue lighten-2"
+            color="white"
+            elevation="1"
+            text
             @click="save"
           >
             {{ submitLoading ? 'Saving...' : 'Save' }}
@@ -122,6 +125,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'CommitmentStatus',
   props: {
     included: {
       type: Boolean,

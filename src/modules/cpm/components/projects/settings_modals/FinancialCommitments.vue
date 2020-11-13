@@ -6,9 +6,9 @@
   >
     <v-card>
       <v-card-title
-        class="headline white grey--text text--darken-1"
+        class="grey--text headline text--darken-1 white"
       >
-        <div class="text-center w-full py-2">
+        <div class="py-2 text-center w-full">
           Commitment Settings
         </div>
         <v-spacer />
@@ -18,9 +18,9 @@
       <v-divider class="grey lighten-3" />
 
       <v-tabs
-        class="mx-0 capitalize"
         v-model="tab"
         centered
+        class="capitalize mx-0"
         color="primary"
         fixed-tabs
       >
@@ -29,7 +29,7 @@
       </v-tabs>
 
       <v-card-text
-        class="pa-0"
+        class="pa-0 vertical-scroll"
         :style="{ height: getViewPortHeight }"
       >
         <v-container
@@ -47,10 +47,9 @@
 
       <v-divider />
       <m6-loading :loading="showLoading" />
-      <v-card-actions>
+      <v-card-actions class="px-6 py-4">
         <v-spacer />
         <v-btn
-          elevation="1"
           color="gray"
           text
           @click="$emit('close')"

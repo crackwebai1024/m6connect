@@ -11,7 +11,7 @@
         </span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-container
           class="pa-0"
           fluid

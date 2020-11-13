@@ -4,7 +4,7 @@
     cols="12"
   >
     <v-card class="elevation-0">
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="stats-container">
           <div class="knob-container">
             <knob-custom

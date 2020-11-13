@@ -31,7 +31,10 @@
         </v-tab>
       </v-tabs>
 
-      <v-card-text style="height: 350px; overflow-y: auto;">
+      <v-card-text
+        class="vertical-scroll"
+        style="height: 350px;"
+      >
         <div v-show="tab === 0">
           <v-form ref="form">
             <v-text-field

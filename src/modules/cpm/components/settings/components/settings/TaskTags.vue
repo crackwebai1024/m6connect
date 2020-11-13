@@ -14,7 +14,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Current {{ appLabel.singular }} Task Tags</label>
           <v-data-table
@@ -51,7 +51,7 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <v-text-field
             v-model="type"

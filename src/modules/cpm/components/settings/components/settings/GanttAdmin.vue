@@ -11,7 +11,7 @@
             Milestone
           </span>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             fluid
@@ -90,7 +90,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Schedule Type</label>
           <v-list
@@ -152,7 +152,7 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <v-container
             class="pa-0"

@@ -33,7 +33,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Budget Approvers</label>
           <v-data-table
@@ -89,7 +89,7 @@
           >Add New Budget Approver</label>
         </v-row>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <div class="form-group">
               <label v-if="currentElement !== ''">Edit Budget Approver</label>

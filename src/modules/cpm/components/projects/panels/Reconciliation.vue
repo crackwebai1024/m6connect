@@ -36,7 +36,7 @@
         </template>
 
         <v-card color="rgb(255, 255, 255, 0.9)">
-          <v-card-text>
+          <v-card-text class="vertical-scroll">
             <b>{{ $t('general.currentSearchTerm') }}:</b>
             {{ search }}
           </v-card-text>

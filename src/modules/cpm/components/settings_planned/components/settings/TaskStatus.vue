@@ -17,7 +17,7 @@
       grid-list-md
     >
       <v-card>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <div class="form-group">
             <label>Current Status</label>
             <v-data-table
@@ -51,7 +51,7 @@
         v-if="showForm"
         class="mt-2"
       >
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <v-text-field
               v-model="element"

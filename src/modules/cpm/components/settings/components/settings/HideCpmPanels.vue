@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <h2>{{ $t('cpmSettings.hidePanels.title') }}</h2>
 

@@ -44,7 +44,7 @@
         flat
         style="background: transparent"
       >
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-chip
             color="blue"
             text-color="white"
@@ -89,7 +89,7 @@
       flat
       style="background: transparent"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-chip
           color="blue"
           text-color="white"
@@ -132,20 +132,23 @@
     >
       <v-col cols="6">
         <v-card flat>
-          <v-card-text v-html="rfpBody" />
+          <v-card-text
+            class="vertical-scroll"
+            v-html="rfpBody"
+          />
         </v-card>
         <v-divider />
         <v-card
           class="mt-4"
           flat
         >
-          <v-card-title class="headline white px-6 py-4">
+          <v-card-title class="headline px-6 py-4 white">
             <span class="grey--text text--darken-1">
               Documents
             </span>
           </v-card-title>
           <v-divider class="grey lighten-3" />
-          <v-card-text>
+          <v-card-text class="vertical-scroll">
             <v-treeview
               v-model="tree"
               activatable
@@ -197,7 +200,7 @@
           <!--<v-btn @click="expandAllPackages" text>Expand All</v-btn>-->
           <!--<v-btn @click="packagesPanel = []" text>Collapse All</v-btn>-->
           <!--</v-card-title>-->
-          <v-card-text>
+          <v-card-text class="vertical-scroll">
             <v-expansion-panel
               v-model="packagesPanel"
               expand
@@ -215,7 +218,7 @@
                   Invitation Feedback
                 </div>
                 <v-card class="pt-0">
-                  <v-card-text class="pt-0">
+                  <v-card-text class="pt-0 vertical-scroll">
                     <feedback-table
                       :package-id="item.id"
                       :rfp-id="rfpId"

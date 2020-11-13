@@ -17,7 +17,7 @@
         </v-icon>
       </v-btn>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-data-table
         :headers="headers"
         :items="items"
@@ -63,7 +63,7 @@
             mdi-delete
           </v-icon>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-text-field
             ref="statusInput"
             v-model="itemToEdit.name"

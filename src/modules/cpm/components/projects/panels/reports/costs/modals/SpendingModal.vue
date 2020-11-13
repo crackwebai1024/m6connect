@@ -7,14 +7,14 @@
       class="licensing-edit-modal"
       style="overflow:scroll;"
     >
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           Spending for PO number: {{ commitmentNumber }}
         </span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-card
           v-for="(spending, spendingIndex) in spendings"
           :key="spending.id"
@@ -47,7 +47,7 @@
               </v-toolbar-title>
             </v-toolbar>
           </v-card-title>
-          <v-card-text class="pa-0">
+          <v-card-text class="pa-0 vertical-scroll">
             <div class="commitments-table">
               <v-card flat>
                 <!--<v-card-title>-->
@@ -429,7 +429,7 @@
                           class="pa-0"
                           flat
                         >
-                          <v-card-text class="pa-0">
+                          <v-card-text class="pa-0 vertical-scroll">
                             <v-expansion-panel
                               class="elevation-0"
                             >
@@ -480,7 +480,7 @@
                                   class="pa-0 pl-4"
                                   flat
                                 >
-                                  <v-card-text class="pa-0 pl-4">
+                                  <v-card-text class="pa-0 pl-4 vertical-scroll">
                                     <v-card
                                       v-for="(itemL3, indexL3) in itemL2.cat_2"
                                       :key="indexL3"

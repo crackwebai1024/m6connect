@@ -11,7 +11,7 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text class="white">
+      <v-card-text class="vertical-scroll white">
         <v-data-table
           :headers="headers"
           :items="companiesCpmProjects"

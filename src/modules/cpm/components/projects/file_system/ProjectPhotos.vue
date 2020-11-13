@@ -19,7 +19,7 @@
         color="blue"
         dark
       >
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           {{ $t('general.uploadingFilesMessage') }}
           <v-progress-linear
             class="mb-0"
@@ -48,8 +48,8 @@
     </v-btn>
     <v-col cols="12">
       <v-card
-        elevation="0"
         color="white"
+        elevation="0"
       >
         <v-container
           fluid

@@ -20,7 +20,7 @@
         </v-btn>
       </v-card-title>
       <v-divider class="grey lighten-3" />
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <new-item
           v-if="showNewItem"
           :budget-categories-select="budgetCategoriesSelect"

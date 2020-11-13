@@ -110,96 +110,96 @@
                 </div>
                 <v-divider class="grey lighten-3 my-2 z-index" />
               </template>
-            </template>
 
-            <!-- Map Fields -->
-            <template v-if="showStep3">
-              <div class="d-flex justify-start">
-                <p
-                  class="blue--text mb-0 mr-4 mt-4 text--lighten-1"
-                >
-                  Step 3. Select M6 Template
-                </p>
-                <v-select
-                  class="mb-4 mt-2 select-preset"
-                  clearable
-                  dense
-                  item-text="name"
-                  :items="presets"
-                  label="Select..."
-                  return-object
-                  solo
-                  style="max-width: 200px;"
-                  @change="setPreset"
-                />
-              </div>
-              <v-simple-table class="presets-table table-headers">
-                <tbody class="d-flex">
-                  <template
-                    v-for="(header, hi) in importHeaders"
-                  >
-                    <tr
-                      :key="hi"
-                      class="d-flex flex-column preset-row"
-                    >
-                      <td class="d-none">
-                        {{ hi+1 }}
-                      </td>
-                      <td class="align-center d-flex font-weight-bold justify-start text-caption">
-                        {{ typeof(header) === 'string' || typeof(header) === 'number' ? header : '-' }}
-                      </td>
-                      <td
-                        class="justify-start preset-select-content"
-                        style="height: auto;"
-                      >
-                        <v-tooltip bottom>
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-autocomplete
-                              v-model="mappedFields[hi]"
-                              v-bind="attrs"
-                              class="font-weight-bold justify-start mb-1 text-caption"
-                              clearable
-                              elevation="3"
-                              item-text="name"
-                              item-value="value"
-                              :items="selectFields"
-                              label="M6 Field Match"
-                              v-on="on"
-                            />
-                          </template>
-                          <span class="grey lighten- px-3 py-1 rounded white--text">Select M6 label which most closely matches your column header</span>
-                        </v-tooltip>
-                      </td>
-                    </tr>
-                  </template>
-                </tbody>
-              </v-simple-table>
-              <v-card-actions class="pa-0 pt-6">
-                <v-spacer />
-                <v-btn
-                  @click="savePresetDialog = true"
-                >
-                  Save Selections
-                </v-btn>
-              </v-card-actions>
-              <v-divider class="grey lighten-3 my-2 z-index" />
-              <v-row class="d-flex flex-column justify-end ma-0">
+              <!-- Map Fields -->
+              <template v-if="showStep3">
                 <div class="d-flex justify-start">
                   <p
-                    class="blue--text mb-3 text--lighten-1"
+                    class="blue--text mb-0 mr-4 mt-4 text--lighten-1"
                   >
-                    Step 4. Create Record
+                    Step 3. Select M6 Template
                   </p>
+                  <v-select
+                    class="mb-4 mt-2 select-preset"
+                    clearable
+                    dense
+                    item-text="name"
+                    :items="presets"
+                    label="Select..."
+                    return-object
+                    solo
+                    style="max-width: 200px;"
+                    @change="setPreset"
+                  />
                 </div>
-                <v-btn
-                  class="blue capitalize lighten-1 px-10 py-5 text-h6 white--text"
-                  elevation="1"
-                  text
-                  @click="prepareToImport"
-                >
-                  Create
-                </v-btn>
-              </v-row>
+                <v-simple-table class="presets-table table-headers">
+                  <tbody class="d-flex">
+                    <template
+                      v-for="(header, hi) in importHeaders"
+                    >
+                      <tr
+                        :key="hi"
+                        class="d-flex flex-column preset-row"
+                      >
+                        <td class="d-none">
+                          {{ hi+1 }}
+                        </td>
+                        <td class="align-center d-flex font-weight-bold justify-start text-caption">
+                          {{ typeof(header) === 'string' || typeof(header) === 'number' ? header : '-' }}
+                        </td>
+                        <td
+                          class="justify-start preset-select-content"
+                          style="height: auto;"
+                        >
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-autocomplete
+                                v-model="mappedFields[hi]"
+                                v-bind="attrs"
+                                class="font-weight-bold justify-start mb-1 text-caption"
+                                clearable
+                                elevation="3"
+                                item-text="name"
+                                item-value="value"
+                                :items="selectFields"
+                                label="M6 Field Match"
+                                v-on="on"
+                              />
+                            </template>
+                            <span class="grey lighten- px-3 py-1 rounded white--text">Select M6 label which most closely matches your column header</span>
+                          </v-tooltip>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </v-simple-table>
+                <v-card-actions class="pa-0 pt-6">
+                  <v-spacer />
+                  <v-btn
+                    @click="savePresetDialog = true"
+                  >
+                    Save Selections
+                  </v-btn>
+                </v-card-actions>
+                <v-divider class="grey lighten-3 my-2 z-index" />
+                <v-row class="d-flex flex-column justify-end ma-0">
+                  <div class="d-flex justify-start">
+                    <p
+                      class="blue--text mb-3 text--lighten-1"
+                    >
+                      Step 4. Create Record
+                    </p>
+                  </div>
+                  <v-btn
+                    class="blue capitalize lighten-1 px-10 py-5 text-h6 white--text"
+                    elevation="1"
+                    text
+                    @click="prepareToImport"
+                  >
+                    Create
+                  </v-btn>
+                </v-row>
+              </template>
             </template>
           </v-card-text>
         </v-card>
@@ -532,12 +532,14 @@ export default {
     },
     getRows() {
       this.getHeadersByRow = true
+      this.showStep3 = false
     },
     onFileChange(e) {
       this.fileErrors = []
       this.showStep2Loader = true
       const files = e.target.files || e.dataTransfer.files
       if (!files.length) {
+        this.showStep2Loader = false
         return
       }
       // TODO: move this to store
@@ -548,13 +550,14 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }).then(({ data } = {}) => {
-        console.log(data)
-        const noEmptyFields = data.headers.filter(header => header !== null)
-        if (noEmptyFields.length !== 0) {
+        const noEmptyHeaders = data.headers.filter(header => header !== null)
+        const noEmptyFields = data.data.filter(field => field !== null)
+        console.log(noEmptyHeaders, noEmptyFields)
+        if (noEmptyHeaders.length == 0 && noEmptyFields.length == 0) {
+          this.fileErrors = ['There are no headers in this file']
+        } else {
           this.fileData = data
           this.fileErrors = []
-        } else {
-          this.fileErrors = ['There are no headers in this file']
         }
         this.showStep2Loader = false
       }).catch(error => {

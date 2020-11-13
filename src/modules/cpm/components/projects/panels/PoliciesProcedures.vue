@@ -15,7 +15,7 @@
       </v-toolbar>
     </v-card-title>
 
-    <v-card-text class="card-container">
+    <v-card-text class="card-container vertical-scroll">
       <div class="text-center">
         <v-progress-circular
           v-show="loading"
@@ -76,13 +76,13 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title class="headline white px-6 py-4">
+        <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
-            Files 
+            Files
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             fluid
             grid-list-md

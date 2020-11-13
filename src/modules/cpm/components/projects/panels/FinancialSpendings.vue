@@ -38,7 +38,7 @@
         </template>
 
         <v-card color="rgb(255, 255, 255, 0.9)">
-          <v-card-text>
+          <v-card-text class="vertical-scroll">
             <b>{{ $t('general.currentSearchTerm') }}:</b>
             {{ search }}
           </v-card-text>
@@ -271,7 +271,7 @@
 
         <v-divider class="grey lighten-3" />
 
-        <v-card-text class="card-scroll">
+        <v-card-text class="card-scroll vertical-scroll">
           <v-form
             ref="form"
             v-model="valid"
@@ -743,7 +743,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form
             ref="formLineItem"
             v-model="validLineItem"
@@ -1174,6 +1174,7 @@
         </v-card-title>
         <v-divider class="grey lighten-3" />
         <v-card-text
+          class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
             height: method === 'add' ? '78vh' : '70vh',

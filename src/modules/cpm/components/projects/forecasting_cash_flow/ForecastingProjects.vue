@@ -20,7 +20,7 @@
         </v-btn>
         <v-toolbar-title>Forecasting Projects</v-toolbar-title>
       </v-toolbar>
-      <v-card-text class="pa-1">
+      <v-card-text class="pa-1 vertical-scroll">
         <m6-list
           class="fluid"
           label="Search"
@@ -102,7 +102,7 @@
                 </template>
 
                 <v-card color="rgb(255, 255, 255, 0.9)">
-                  <v-card-text>
+                  <v-card-text class="vertical-scroll">
                     {{ item.title }}
                   </v-card-text>
                 </v-card>

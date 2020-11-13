@@ -12,8 +12,8 @@
         <v-toolbar
           class="mb-4"
           dense
-          text
           flat
+          text
         >
           <h5>Add or Edit Tasks</h5>
 
@@ -117,7 +117,7 @@
                 class="pa-0"
                 flat
               >
-                <v-card-text class="pa-0">
+                <v-card-text class="pa-0 vertical-scroll">
                   <v-expansion-panel class="elevation-0">
                     <v-expansion-panel-content
                       v-for="(itemL2, indexL2) in item.cat_1"
@@ -189,8 +189,8 @@
           persistent
         >
           <v-col
-            cols="12"
             class="pa-0"
+            cols="12"
             style="overflow-y:auto"
           >
             <v-card>
@@ -206,7 +206,9 @@
                       dense
                       flat
                     >
-                      <h5 class="text-h6">{{ formTitle }}</h5>
+                      <h5 class="text-h6">
+                        {{ formTitle }}
+                      </h5>
                     </v-toolbar>
                   </v-col>
                 </v-row>
@@ -230,9 +232,9 @@
                       >
                         Color
                         <v-icon
-                          class="ml-1"
                           v-if="color && color.hex"
                           v-show="color.hex"
+                          class="ml-1"
                           :color="color.hex"
                         >
                           mdi-brightness-1
@@ -241,25 +243,31 @@
                     </v-col>
 
                     <v-col
-                      class="pr-0 mb-6"
                       v-show="showColor"
+                      class="mb-6 pr-0"
                       md="4"
                     >
-                      <chrome-picker class="w-full mx-auto" v-model="color" />
+                      <chrome-picker
+                        v-model="color"
+                        class="mx-auto w-full"
+                      />
                     </v-col>
 
-                    <v-col md="6" class="mt-0">
+                    <v-col
+                      class="mt-0"
+                      md="6"
+                    >
                       <v-checkbox
-                        class="mt-0"
                         v-model="showScheduleRollUpReport"
+                        class="mt-0"
                         label="Show on Schedule Roll Up Report"
                       />
                     </v-col>
                   </v-row>
 
                   <v-row
-                    class="ma-0"
                     v-show="action !== 'new' && action !== 'add'"
+                    class="ma-0"
                   >
                     <v-col md="12">
                       <v-container
@@ -293,7 +301,7 @@
 
                         <v-row
                           v-show="ganttDialog"
-                          class="modal-gantt ma-0"
+                          class="ma-0 modal-gantt"
                         >
                           <v-col md="12">
                             <v-container
@@ -393,8 +401,8 @@
                         </v-row>
 
                         <v-row
-                          class="ma-0"
                           v-show="!ganttDialog"
+                          class="ma-0"
                         >
                           <v-col md="12">
                             <v-data-table
@@ -433,8 +441,8 @@
                   </v-row>
 
                   <v-row
-                    class="ma-0 d-flex justify-end"
                     v-show="!ganttDialog"
+                    class="d-flex justify-end ma-0"
                   >
                     <v-btn
                       class="mx-2"

@@ -5,11 +5,11 @@
     @input="closeModal"
   >
     <v-card class="white">
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">{{ title }}</span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
-      <v-card-text class="headline white--text">
+      <v-card-text class="headline vertical-scroll white--text">
         {{ message }}
       </v-card-text>
       <v-card-actions>

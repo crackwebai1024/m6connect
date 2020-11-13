@@ -37,7 +37,10 @@
         </v-row>
       </v-card-title>
 
-      <v-card-text :style="{ height: getViewPortHeight }">
+      <v-card-text
+        class="vertical-scroll"
+        :style="{ height: getViewPortHeight }"
+      >
         <v-container fluid>
           <div class="commitments-table">
             <v-card elevation="0">

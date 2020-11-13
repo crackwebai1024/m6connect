@@ -71,7 +71,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="pa-2">
+        <v-card-text class="pa-2 vertical-scroll">
           <v-text-field
             v-model="name"
             color="blue"
@@ -124,7 +124,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-data-table
             :headers="headers"
             :items="l1Item.cat_1"
@@ -205,7 +205,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-data-table
             :headers="headers"
             :items="l2Item.cat_2"

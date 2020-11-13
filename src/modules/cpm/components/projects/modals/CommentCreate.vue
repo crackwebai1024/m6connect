@@ -5,12 +5,12 @@
     width="500"
   >
     <v-card>
-      <v-card-title class="headline white px-6 py-4">
+      <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">Create a {{ title }} Comment</span>
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <v-textarea
             v-model="comment"
