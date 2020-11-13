@@ -246,7 +246,7 @@ export default {
       rowSelected: [],
       firstRow: null,
       getHeadersByRow: false,
-      startRow: 1,
+      startRow: 0,
       showStep3: false,
       importHeaders: [],
       mappedFields: [],
@@ -424,7 +424,8 @@ export default {
       },
       preset: {},
       savePresetDialog: false,
-      types: []
+      types: [],
+      budgetCategories: []
     }
   },
   computed: {
@@ -433,11 +434,13 @@ export default {
     }),
     rows() {
       const data = []
-      for (let i = this.startRow; i <= this.startRow + 10; i++) {
-        data.push({
-          label: i,
-          value: this.fileData.data[i]
-        })
+      if (this.fileData.length) {
+        for (let i = this.startRow; i <= this.startRow + 10; i++) {
+          data.push({
+            label: i,
+            value: this.fileData.data[i]
+          })
+        }
       }
       return data
     },
@@ -468,6 +471,7 @@ export default {
     await newFirebaseInit()
     await doFirebaseAuth()
     await this.$store.dispatch('ImportCPM/getPresets').then(response => (this.presets = response))
+    this.getBudgetCategories()
   },
   methods: {
     closePresetDialog() {
@@ -718,6 +722,19 @@ export default {
       return await db.collection('cpm_projects').add(project)
     },
     async createCommitment(projectID, item) {
+      let bc = {}
+      if (item.commitments_budget_category) {
+        if (this.budgetCategories.length > 0) {
+          // eslint-disable-next-line eqeqeq
+          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category || s.code == item.commitments_budget_category)
+          if (!bc) {
+            bc = this.createBudgetCategory({
+              code: item.commitments_budget_category || item.commitments_budget_category,
+              name: item.commitments_budget_category || item.commitments_budget_category
+            })
+          }
+        }
+      }
       const newCommitment = {
         number: item.commitments_id_number,
         total_po_amount: 0,
@@ -727,8 +744,8 @@ export default {
         vendor: [],
         createdAt: new Date(),
         createdBy: 'm6works_import_tool',
-        budgetCategory: item.commitments_budgetCategory || '', // Name
-        budget_category: item.commitments_budget_category || '' // reference
+        budgetCategory: bc.name || '', // Name
+        budget_category: bc.ref || {} // reference
       }
 
       return new Promise(resolve => {
@@ -824,6 +841,17 @@ export default {
           .add(newSpendingLineItem)
         resolve(spendingLineItem)
       })
+    },
+    async getBudgetCategories() {
+      const response = await db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets').collection('budget_categories').get()
+      this.budgetCategories = await Promise.all(response.docs.map(async item => {
+        const data = await item.data()
+        return { id: item.id, ref: item.ref, ...data }
+      }))
+    },
+    async createBudgetCategory(code) {
+      const newBC = await db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets').collection('budget_categories').add(code)
+      return { id: newBC.id, ref: newBC.ref, ...code }
     }
   }
 }

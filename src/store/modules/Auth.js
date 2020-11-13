@@ -2,16 +2,16 @@ import axios from 'axios'
 import { dataGet } from '@/utils/helpers'
 
 const state = {
-  AccessToken: "",
-  IdToken: "",
-  exp: "",
+  AccessToken: '',
+  IdToken: '',
+  exp: '',
   user: {},
-  statusColors:{
-    PENDING: "#e3aa27",
-    ACTIVE: "#59cf51",
-    INACTIVE: "#bf2121"
+  statusColors: {
+    PENDING: '#e3aa27',
+    ACTIVE: '#59cf51',
+    INACTIVE: '#bf2121'
   }
-};
+}
 
 const getters = {
   loggedIn(state) {
@@ -23,7 +23,7 @@ const getters = {
   getCurrentUserCompanies(state) {
     return dataGet(state, 'user.companies.items', [])
   },
-  getAccessToken(state){
+  getAccessToken(state) {
     return state.AccessToken
   }
 }
@@ -39,9 +39,9 @@ const mutations = {
     state.user = payload
   },
   logoutUser(state) {
-    state.AccessToken = ""
-    state.IdToken = ""
-    state.exp = ""
+    state.AccessToken = ''
+    state.IdToken = ''
+    state.exp = ''
     state.user = {}
     window.localStorage.removeItem('m6Token')
   }
@@ -55,16 +55,20 @@ const actions = {
         IdToken
       })
         .then(res => {
-          const activeCompanies = res.data.companies.items.filter( c => c.joinStatus === "ACTIVE" )
+          const activeCompanies = res.data.companies.items.filter(c => c.joinStatus === 'ACTIVE')
 
           // if empty as in they have not been acepted by any company, send back to signin with error
-          if( !activeCompanies.length ) { 
-            dispatch('SnackBarNotif/notifDanger', 'Please wait to be accepted by your company to start', { root: true } )
+          if (!activeCompanies.length) {
+            dispatch('SnackBarNotif/notifDanger', 'Please wait to be accepted by your company to start', {
+              root: true
+            })
             commit('logoutUser')
-            reject({})
+            reject('Please wait to be accepted by your company to start')
           } else {
-            const companyRel = res.data.companies.items.find( c => c.active )
-            dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
+            const companyRel = res.data.companies.items.find(c => c.active)
+            dispatch('Companies/getCompanyByID', companyRel.company.id, {
+              root: true
+            })
             commit('setUser', res.data)
           }
 
@@ -136,18 +140,20 @@ const actions = {
         })
     })
   },
-  updateUserData({ commit, state, dispatch }, user) { //update user in dynamo
-    return new Promise( (resolve, reject) => {
+  updateUserData({ commit, state, dispatch }, user) { // update user in dynamo
+    return new Promise((resolve, reject) => {
       axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/user`, { user })
         .then(res => {
-          let data = res.data
-          
-          if( state.user.id == data.id ){
+          const data = res.data
+
+          if (state.user.id == data.id) {
             data.companies = state.user.companies
             commit('setUser', data)
           } else {
-            const companyRel = state.user.companies.items.find( c => c.active )
-            dispatch('Companies/getCompanyByID', companyRel.company.id, { root: true })
+            const companyRel = state.user.companies.items.find(c => c.active)
+            dispatch('Companies/getCompanyByID', companyRel.company.id, {
+              root: true
+            })
           }
           resolve(res)
         })
