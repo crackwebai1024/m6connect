@@ -54,21 +54,14 @@ export default {
         }
     },
 
-    watch: {
-        fields(val) {
-            console.log('val======')
-            console.log(val)
-        }
-    },
-
     data: () => ({
         typeToComponentMapping: {
-            // 'text': { component: 'v-text-field' },
-            // 'number': { component: 'v-text-field', type: 'number' },
-            // 'timestamp': { component: 'date-picker' },
+            'text': { component: 'v-text-field' },
+            'number': { component: 'v-text-field', type: 'number' },
+            'timestamp': { component: 'date-picker' },
             'autocomplete': { component: 'v-autocomplete' ,multiple: true, chips: true, clearable: true },
-            // 'boolean': { component: 'radio-btn-options' },
-            // 'people': { component: 'people-autocomplete', multiple: true, chips: true, clearable: true }
+            'boolean': { component: 'radio-btn-options' },
+            'people': { component: 'people-autocomplete', multiple: true, chips: true, clearable: true }
         },
         genericRecord: {},
         formRules: {
@@ -100,21 +93,25 @@ export default {
 
                 const payload = { record_id: this.currentRecord.id, fields: [] } 
                 for( let x = 0; x < this.fields.length; x++ ) {
+
                     const f = this.fields[x]
-                    if( !this.$h.dg(this.genericRecord, `${f.id}`, '') ) continue
+                    const value = this.$h.dg(this.genericRecord, `${f.id}`, '')
                     
-                    payload.fields.push({ value: this.$h.dg(this.genericRecord, `${f.id}`, ''), field_id: f.id })
+                    if( !value ) continue
+                    
+                    if( Array.isArray(value) ) {
+                        const res = value.map( v => ({ value: v,  field_id: f.id }) )
+                        payload.fields = [...payload.fields, ...res]
+                    } else {
+                        payload.fields.push({ value, field_id: f.id })
+                    }
                 }
-                console.log('payload=======')
-                console.log(payload)
-                // const res = await this.bulkSaveFieldValues(payload)
-                // console.log('res=====')
-                // console.log(res)
+
+                await this.bulkSaveFieldValues(payload)
+
                 this.notifSuccess('The values were saved')
                 this.loading = false 
             } catch(e) {
-            console.log('e')
-            console.log(e)
                 this.notifDanger('The was an error while saving')
                this.loading = false  
             }

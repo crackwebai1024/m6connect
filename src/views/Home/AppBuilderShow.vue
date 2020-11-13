@@ -133,26 +133,11 @@ export default {
     async mounted() {
         try {
             this.app = await this.getApp()
-            console.log('this.app======')
-            console.log(this.app)
         } catch(e) {
 
         }
     }
 
-    // async mounted() {
-    //     try {
-    //         if( this.$route.name === "records.show" ) {
-    //             const res = await this.getRecordById(this.$route.params.id)
-    //             console.log('res------')
-    //             console.log(res)
-    //             this.displayAppBuilderShow()
-    //         }
-    //     } catch(e) {
-    //         console.log('e------')
-    //         console.log(e)
-    //     }
-    // }
 }
 </script>
 

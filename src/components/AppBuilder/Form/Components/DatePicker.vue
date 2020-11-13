@@ -77,7 +77,7 @@ export default {
       this.dateFormatted = this.formatDate(this.date)
     },
     value(val) {
-      this.dateFormatted = val
+      this.dateFormatted = this.formatDate(val)
     }
   },
 
@@ -87,7 +87,7 @@ export default {
 
       const [year, month, day] = date.split('-')
       const res = `${month}/${day}/${year}`
-      this.$emit('input', res)
+      this.$emit('input', date)
       return res
     },
     parseDate(date) {
