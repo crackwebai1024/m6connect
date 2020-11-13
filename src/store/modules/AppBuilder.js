@@ -186,11 +186,30 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
+
   deleteFieldValue(_, payload) {
     return new Promise((resolve, reject) => {
       axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/fieldValue/${payload}`).then(({ data }) => {
         resolve(data)
       }).catch(e => reject(e))
+    })
+  },
+
+  getRecordById(_, id) {
+    return new Promise( (resolve, reject) => {
+      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${id}`).then( ({ data }) => {
+        resolve(data)
+      })
+      .catch(e => reject(e))
+    })
+  },
+
+  bulkSaveFieldValues(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values`, payload).then( ({ data }) => {
+        resolve(data)
+      })
+      .catch(err => resolve(err))
     })
   }
 

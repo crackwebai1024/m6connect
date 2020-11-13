@@ -48,7 +48,7 @@ import { mapActions, mapState, mapMutations } from 'vuex'
 const recordDefault = { app_id: "", record_number: "", title: "", description: "", status: "", author: "", metadata: {} }
 
 export default {
-    name: "GenericRecord",
+    name: "GenericRecord", 
 
     props: {
         app: {
@@ -79,7 +79,15 @@ export default {
             notifSuccess: 'notifSuccess' 
         }),
 
+        ...mapMutations('RecordsInstance', {
+            setDisplayAppBuilderShow: 'setDisplayAppBuilderShow',
+            setCurrentRecord: 'setCurrentRecord'
+        }),
+
         close(){
+            this.setCurrentRecord({...this.record})
+            this.setDisplayAppBuilderShow()
+
             this.record = {...this.recordDefault}
             this.$emit('closingGenericRecord')
         },
@@ -96,7 +104,7 @@ export default {
 
                 this.record = { ...this.record, author: this.currentUser.id, recordNumber, appID: this.app.id }
 
-                const newRecordRes = await this.createRecord(this.record)
+                this.record = await this.createRecord(this.record)
 
                 this.notifSuccess('The Record Was Created')
                 this.loading = false 

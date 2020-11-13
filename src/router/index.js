@@ -14,6 +14,7 @@ const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
 const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
+const AppBuilderSHow = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShow.vue')
 
 import store from '../store/';
 Vue.use(VueRouter);
@@ -99,6 +100,11 @@ const router = new VueRouter({
         public: true
       }
     },
+    {
+      path: "/record/:id",
+      name: "record.show",
+      component: AppBuilderSHow
+    }
   ],
 });
 
@@ -164,4 +170,3 @@ router.beforeEach(async (to, from, next) => {
 
 
 export default router;
-
