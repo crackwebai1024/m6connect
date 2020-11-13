@@ -26,21 +26,29 @@
             </v-form>
             <v-divider class="grey lighten-3 my-2 z-index" />
             <!-- File Upload Errors -->
-            <p
-              v-for="(fileError, i) in fileErrors"
-              :key="'fileError-' + i"
-              class="mb-1 mt-4 red--text text--lighten-1"
-            >
-              <v-icon
-                color="red lighten-1"
-                size="16"
+            <template v-show="!showStep2Loader">
+              <p
+                v-for="(fileError, i) in fileErrors"
+                :key="'fileError-' + i"
+                class="mb-1 mt-4 red--text text--lighten-1"
               >
-                mdi-close-box-outline
-              </v-icon>
-              {{ fileError }}
-            </p>
+                <v-icon
+                  color="red lighten-1"
+                  size="16"
+                >
+                  mdi-close-box-outline
+                </v-icon>
+                {{ fileError }}
+              </p>
+            </template>
+            <v-progress-circular
+              v-show="showStep2Loader"
+              color="blue"
+              indeterminate
+              size="20"
+            />
             <!-- Select Headers -->
-            <template v-if="firstRow === null && fileData && fileErrors.length === 0">
+            <template v-if="firstRow === null && fileData && fileErrors.length === 0 && !showStep2Loader">
               <template v-if="!getHeadersByRow && fileData.headers">
                 <p class="blue--text mb-1 mt-4 text--lighten-1">
                   Step 2. Are these your column headers?
@@ -68,7 +76,7 @@
               </template>
 
               <template
-                v-if="getHeadersByRow && fileErrors.length === 0"
+                v-if="getHeadersByRow && fileErrors.length === 0 && !showStep2Loader"
               >
                 <p class="blue--text mb-1 mt-4 text--lighten-1">
                   Step 2. Are these your column headers?
@@ -439,7 +447,8 @@ export default {
       },
       preset: {},
       savePresetDialog: false,
-      types: []
+      types: [],
+      showStep2Loader: false
     }
   },
   computed: {
@@ -525,6 +534,8 @@ export default {
       this.getHeadersByRow = true
     },
     onFileChange(e) {
+      this.fileErrors = []
+      this.showStep2Loader = true
       const files = e.target.files || e.dataTransfer.files
       if (!files.length) {
         return
@@ -545,8 +556,10 @@ export default {
         } else {
           this.fileErrors = ['There are no headers in this file']
         }
+        this.showStep2Loader = false
       }).catch(error => {
         this.fileErrors = [error.message]
+        this.showStep2Loader = false
       })
     },
     setHeaders(headers) {
