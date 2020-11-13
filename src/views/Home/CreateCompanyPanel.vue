@@ -97,7 +97,8 @@
     </div>
     <div
       v-if="appLoaded"
-      class="details-content grey h-fit lighten-3  pt-2"
+      class="details-content grey h-fit lighten-3  pt-2 pb-5"
+      style="height: 59vh; overflow-y: auto;"
     >
       <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
         <v-col

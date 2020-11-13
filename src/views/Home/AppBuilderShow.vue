@@ -133,6 +133,8 @@ export default {
     async mounted() {
         try {
             this.app = await this.getApp()
+            console.log('this.app======')
+            console.log(this.app)
         } catch(e) {
 
         }

@@ -11,8 +11,8 @@
   >
     <template v-slot:activator="{ on }">
       <v-text-field
-        outlined
-        filled
+        :outlined="outlined"
+        :filled="filled"
         v-model="dateFormatted"
         clearable
         hint="MM/DD/YYYY format"
@@ -51,6 +51,14 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    outlined: {
+      type: Boolean,
+      default: false
+    },
+    filled: {
+      type: Boolean, 
+      default: false
     }
   },
   data: () => ({

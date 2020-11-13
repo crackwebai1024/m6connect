@@ -12,6 +12,10 @@
                         :label=" $h.dg( f, 'label', '' ) "
                         :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []" 
                         v-model="genericRecord[`${f.id}`]"
+                        :items="$h.dg( f, 'metadata.options', [] )"
+                        :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
+                        :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
+                        :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
                     />
                 </v-col>
             </v-row>
@@ -28,14 +32,19 @@
 </template>
 
 <script>
-import { VTextField } from 'vuetify/lib'
+import { VTextField, VAutocomplete } from 'vuetify/lib'
 import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
+import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOptions.vue'
+import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     components: {
         VTextField,
-        DatePicker
+        DatePicker,
+        VAutocomplete,
+        RadioBtnOptions,            
+        PeopleAutocomplete
     },
 
     props: {
@@ -45,11 +54,21 @@ export default {
         }
     },
 
+    watch: {
+        fields(val) {
+            console.log('val======')
+            console.log(val)
+        }
+    },
+
     data: () => ({
         typeToComponentMapping: {
-            'text': { component: 'v-text-field' },
-            'number': { component: 'v-text-field', type: 'number'},
-            'timestamp': { component: 'date-picker' }
+            // 'text': { component: 'v-text-field' },
+            // 'number': { component: 'v-text-field', type: 'number' },
+            // 'timestamp': { component: 'date-picker' },
+            'autocomplete': { component: 'v-autocomplete' ,multiple: true, chips: true, clearable: true },
+            // 'boolean': { component: 'radio-btn-options' },
+            // 'people': { component: 'people-autocomplete', multiple: true, chips: true, clearable: true }
         },
         genericRecord: {},
         formRules: {
@@ -82,16 +101,20 @@ export default {
                 const payload = { record_id: this.currentRecord.id, fields: [] } 
                 for( let x = 0; x < this.fields.length; x++ ) {
                     const f = this.fields[x]
+                    if( !this.$h.dg(this.genericRecord, `${f.id}`, '') ) continue
+                    
                     payload.fields.push({ value: this.$h.dg(this.genericRecord, `${f.id}`, ''), field_id: f.id })
                 }
                 console.log('payload=======')
                 console.log(payload)
-                const res = await this.bulkSaveFieldValues(payload)
-                console.log('res=====')
-                console.log(res)
+                // const res = await this.bulkSaveFieldValues(payload)
+                // console.log('res=====')
+                // console.log(res)
                 this.notifSuccess('The values were saved')
                 this.loading = false 
             } catch(e) {
+            console.log('e')
+            console.log(e)
                 this.notifDanger('The was an error while saving')
                this.loading = false  
             }
