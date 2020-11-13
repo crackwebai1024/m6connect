@@ -62,7 +62,7 @@
             :key="index"
             class="blue--text capitalize"
           >
-            <template v-if="activeTab === index" >
+            <template v-if="activeTab === index && !tab.readOnly" >
               <v-btn  color="green darken-2" icon dark @click="editingTab(tab)" >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
@@ -73,7 +73,7 @@
 
             <span >{{ tab.title }}</span>
 
-            <template v-if="activeTab === index" >
+            <template v-if="activeTab === index && !tab.readOnly" >
               <v-btn color="blue darken-2" icon class="white--text" :disabled="index === 0" @click="moveTabs(app.tabs[index], app.tabs[index-1])">
                 <v-icon>mdi-arrow-left-thick</v-icon>
               </v-btn>
@@ -145,6 +145,7 @@
         <v-col
           class="pa-0 pl-1"
           cols="7"
+          v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
         >
           <panel
             v-for="panel in rightPanels"
@@ -154,6 +155,14 @@
             @updatePanel="updatePanel"
           />
           <add-panel @addNewPanel="addNewPanel(1)" />
+        </v-col>
+
+        <v-col
+          v-else
+          class="pa-0 pl-1"
+          cols="7"
+        >
+          <project-social-media class="opacity-social-media" postListShow />
         </v-col>
       </v-row>
     </div>
@@ -188,6 +197,7 @@ import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
+import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import { mapActions, mapMutations } from 'vuex'
 
 export default {
@@ -197,7 +207,8 @@ export default {
     AddPanel,
     AddTab,
     Panel,
-    TabUpdates
+    TabUpdates,
+    ProjectSocialMedia
   },
 
   data: () => ({
@@ -391,6 +402,9 @@ export default {
 .flex-space-between {
   display: flex; 
   justify-content: space-between;
+}
+.opacity-social-media {
+  opacity: 0.5;
 }
 </style>
 
