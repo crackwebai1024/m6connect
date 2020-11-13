@@ -19,14 +19,28 @@
                 Step 1. Please upload your export file
               </p>
               <input
-                data-buttonText="Hello there, pick your files"
+                accept=".xlsx"
                 type="file"
                 @change="onFileChange"
               >
             </v-form>
             <v-divider class="grey lighten-3 my-2 z-index" />
+            <!-- File Upload Errors -->
+            <p
+              v-for="(fileError, i) in fileErrors"
+              :key="'fileError-' + i"
+              class="mb-1 mt-4 red--text text--lighten-1"
+            >
+              <v-icon
+                color="red lighten-1"
+                size="16"
+              >
+                mdi-close-box-outline
+              </v-icon>
+              {{ fileError }}
+            </p>
             <!-- Select Headers -->
-            <template v-if="firstRow === null && fileData">
+            <template v-if="firstRow === null && fileData && fileErrors.length === 0">
               <template v-if="!getHeadersByRow && fileData.headers">
                 <p class="blue--text mb-1 mt-4 text--lighten-1">
                   Step 2. Are these your column headers?
@@ -54,7 +68,7 @@
               </template>
 
               <template
-                v-if="getHeadersByRow"
+                v-if="getHeadersByRow && fileErrors.length === 0"
               >
                 <p class="blue--text mb-1 mt-4 text--lighten-1">
                   Step 2. Are these your column headers?
@@ -242,6 +256,7 @@ export default {
     return {
       file: '',
       fileData: [],
+      fileErrors: [],
       sheetSelected: false,
       rowSelected: [],
       firstRow: null,
@@ -522,7 +537,16 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }).then(({ data } = {}) => {
-        this.fileData = data
+        console.log(data)
+        const noEmptyFields = data.headers.filter(header => header !== null)
+        if (noEmptyFields.length !== 0) {
+          this.fileData = data
+          this.fileErrors = []
+        } else {
+          this.fileErrors = ['There are no headers in this file']
+        }
+      }).catch(error => {
+        this.fileErrors = [error.message]
       })
     },
     setHeaders(headers) {
