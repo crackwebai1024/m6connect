@@ -26,19 +26,21 @@
               </v-icon>
             </v-btn>
           </template>
-          <v-list dense>
-            <v-list-item
-              v-for="(item, i) in areas"
-              :key="i"
-            >
-              <v-list-item-title
-                @click="item.function"
-                :class="item.type === 'title' ? 'grey--text' : 'black--text pointer' "
+          <template v-if="!postListShow" >
+            <v-list dense >
+              <v-list-item
+                v-for="(item, i) in areas"
+                :key="i"
               >
-                {{ item.text }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
+                <v-list-item-title
+                  @click="item.function"
+                  :class="item.type === 'title' ? 'grey--text' : 'black--text pointer' "
+                >
+                  {{ item.text }}
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </template>
         </v-menu>
       </template>
       <template v-slot:input>
@@ -66,6 +68,7 @@
           single-line
           solo-inverted
           @keyup.enter="addActivity"
+          :disabled="postListShow"
         >
           <template v-slot:append>
             <v-row class="align-center d-flex">
@@ -79,6 +82,7 @@
                 multiple
                 prepend-icon="mdi-image-outline"
                 @change="onImagesChange($event)"
+                :disabled="postListShow"
               />
               <!--              <v-icon class="red&#45;&#45;text text&#45;&#45;lighten-1">-->
               <!--                mdi-link-variant-->
@@ -86,6 +90,7 @@
               <v-btn
                 icon
                 @click="addActivity"
+                :disabled="postListShow"
               >
                 <v-icon
                   class="blue--text text--lighten-1"
@@ -133,7 +138,7 @@
       class="my-3"
       type="list-item-avatar-three-line, actions"
     ></v-skeleton-loader>
-    <posts-list />
+    <posts-list v-if="!postListShow" />
   </v-container>
 </template>
 
@@ -155,6 +160,14 @@ export default {
     posts_list: [{}],
     showSkeletonPost: false
   }),
+
+  props: {
+    postListShow: {
+      type: Boolean,
+      default: false
+    }
+  },
+
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
     srcImageFiles() {
