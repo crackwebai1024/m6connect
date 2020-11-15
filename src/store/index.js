@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Data from './data'
+import DynamicAppsModule from './modules/Backend/DynamicApps/DynamicAppsModule'
 import ITAppsModule from './modules/Backend/ItApps/ITAppsModule'
 import SocialNetworkModule from './modules/SocialNetworkModule'
 import GeneralListModule from './modules/GeneralListModule'
@@ -133,6 +134,7 @@ export default new Vuex.Store({
   },
 
   modules: {
+    DynamicAppsModule,
     SocialNetworkModule,
     GeneralListModule,
     NavigationStack,

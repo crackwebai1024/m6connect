@@ -76,7 +76,7 @@
                     v-bind="attrs"
                     v-on="on"
                     >
-                      <add-feed>
+                      <create-app>
                           <v-btn
                               slot="btn"
                               block
@@ -85,7 +85,7 @@
                           >
                               Add New Application
                           </v-btn>
-                      </add-feed>
+                      </create-app>
                     </div>
                 </template>
                 <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
@@ -119,6 +119,7 @@ import UserOptions from "@/components/Home/TopNav/UserOptions";
 // import ProjectSocialMedia from "./ProjectSocialMedia";
 // import PanelFull from "@/components/AppBuilder/Content/PanelFull";
 // import PanelTwoColumns from "@/components/AppBuilder/Content/PanelTwoColumns";
+import CreateApp from "@/components/Dialogs/CreateAppDialog";
 import AddFeed from "./AddFeed";
 import CompanyHome from './CompanyHome'
 import AppBuilderShow from './AppBuilderShow'
@@ -133,6 +134,7 @@ export default {
     // PanelFull,
     // PanelTwoColumns,
     AddFeed,
+    CreateApp,
     CompanyHome,
     AppBuilderShow
   },
