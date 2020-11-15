@@ -1,6 +1,7 @@
 import axios from "axios";
 import generalListModule from "../../GeneralListModule";
 const Convert = require("@/store/models/itapps");
+const convertApps = require("@/store/models/m6apps");
 const ItAppDescription = require("@/store/models/itapp_description");
 const ItAppDependencies = require("@/store/models/itapp_dependencies");
 
@@ -24,6 +25,11 @@ export default {
         async get_it_apps(cont){
           let response = await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/itapps`);
           cont.state.itappsRecords = Convert.toItappsArray(response['data']);
+          generalListModule.state.general_list = cont.state.itappsRecords;
+        },
+        async get_all_apps(cont){
+          let response = await axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/apps`);
+          cont.state.itappsRecords = convertApps.toM6Apps(response['data']);
           generalListModule.state.general_list = cont.state.itappsRecords;
         },
         async get_description({}, id) {

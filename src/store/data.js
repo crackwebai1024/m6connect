@@ -22,6 +22,9 @@ const Rationalization = {
   Users: () => import("@/components/RecordMode/RecordComponents/RecordType/ITApps/Rationalization/Users")
 }
 
+// Dynamic App
+const DynamicAppSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/DynamicAppSummary")
+
 export default{
   // Home Data
     get_views_list: () => [
@@ -135,6 +138,13 @@ export default{
           icon: 'mdi-format-textbox',   
           name:'Rationalization Attributes',
           component: Rationalization.Attributes
+        }
+      ],
+      dynamic_app: [
+        {
+          icon: 'mdi-format-textbox', 
+          name: 'summary',
+          component: DynamicAppSummary
         }
       ],
       project:[

@@ -1,35 +1,20 @@
 // To parse this data:
 //
-//   const Convert = require("./itapps.js");
+//   const Convert = require("@/store/models/m6apps");
 //
-//   const itapps = Convert.toItapps(json);
-//   const json = Convert.itappsToJson(itapps);
+//   const m6Apps = Convert.toM6Apps(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
-function toItapps(json) {
-    return cast(json, r("Itapps"));
+// Converts JSON strings to/from your types
+// and asserts the results of JSON.parse at runtime
+function toM6Apps(json) {
+    return cast(json, a(r("M6Apps")));
 }
 
-function toItappsArray(json) {
-    let arr = [];
-    json.forEach(i => {
-        arr.push(cast(i, r("Itapps")));
-    });
-    return arr;
-}
-
-function itappsToJson(value) {
-    Object.keys(value).forEach(key => {
-        if(typeof value[key] === 'object' && value[key] == null) {
-        value[key] = {
-            id: undefined,
-            field: undefined,
-            value: undefined
-        }
-    }});
-    return uncast(value, r("Itapps")); 
+function m6AppsToJson(value) {
+    return JSON.stringify(uncast(value, a(r("M6Apps"))), null, 2);
 }
 
 function invalidValue(typ, val, key = '') {
@@ -146,6 +131,10 @@ function uncast(val, typ) {
     return transform(val, typ, jsToJSONProps);
 }
 
+function a(typ) {
+    return { arrayItems: typ };
+}
+
 function u(...typs) {
     return { unionMembers: typs };
 }
@@ -159,52 +148,51 @@ function r(name) {
 }
 
 const typeMap = {
-    "Itapps": o([
-        { json: "id",                   js: "id",                    typ: u(undefined, 0) },
-        { json: "app_number",           js: "app_number",            typ: u(undefined, "") },
-        { json: "app_type",             js: "app_type",              typ: u(undefined, "") },
-        { json: "title",                js: "title",                 typ: u(undefined, "") },
-        { json: "author",               js: "author",                typ: u(undefined, "") },
-        { json: "iconLink",             js: "iconLink",              typ: u(undefined, "") },
-        { json: "prefix",               js: "prefix",                typ: u(undefined, "") },
-        { json: "description",          js: "description",           typ: u(undefined, "") },
-        { json: "created_at",           js: "created_at",            typ: u(undefined, Date) },
-        { json: "updated_at",           js: "updated_at",            typ: u(undefined, Date) },
-        { json: "image_info",           js: "image_info",            typ: u(undefined, r("ImageInfo")) },
-        { json: "general_info",         js: "general_info",          typ: u(undefined, r("GeneralInfo")) },
+    "M6Apps": o([
+        { json: "id",                   js: "id",                   typ: u(undefined, 0)                },
+        { json: "app_number",           js: "app_number",           typ: u(undefined, "")               },
+        { json: "app_type",             js: "app_type",             typ: u(undefined, "")               },
+        { json: "title",                js: "title",                typ: u(undefined, "")               },
+        { json: "author",               js: "author",               typ: u(undefined, "")               },
+        { json: "description",          js: "description",          typ: u(undefined, "")               },
+        { json: "created_at",           js: "created_at",           typ: u(undefined, Date)             },
+        { json: "updated_at",           js: "updated_at",           typ: u(undefined, Date)             },
+        { json: "iconLink",             js: "iconLink",             typ: u(undefined, "")               },
+        { json: "prefix",               js: "prefix",               typ: u(undefined, "")               },
+        { json: "image_info",           js: "image_info",           typ: u(undefined, r("ImageInfo"))   },
+        { json: "general_info",         js: "general_info",         typ: u(undefined, r("GeneralInfo")) },
     ], false),
     "GeneralInfo": o([
-        { json: "id",                   js: "id",                    typ: u(undefined, 0) },
-        { json: "app_id",               js: "app_id",                typ: u(undefined, 0) },
-        { json: "vendor_id",            js: "vendor_id",             typ: u(undefined, "") },
-        { json: "version",              js: "version",               typ: u(undefined, "") },
-        { json: "created_at",           js: "created_at",            typ: u(undefined, Date) },
-        { json: "updated_at",           js: "updated_at",            typ: u(undefined, Date) },
-        { json: "status",               js: "status",                typ: u(undefined, r("AppSettings")) },
-        { json: "first_contact_group",  js: "first_contact_group",   typ: u(undefined, r("AppSettings")) },
-        { json: "category",             js: "category",              typ: u(undefined, null, r("AppSettings")) },
-        { json: "sub_category",         js: "sub_category",          typ: u(undefined, null, r("AppSettings")) },
-        { json: "type",                 js: "type",                  typ: u(undefined, r("AppSettings")) },
-        { json: "app_management",       js: "app_management",        typ: u(null, r("AppSettings")) },
-        { json: "server_hosting_model", js: "server_hosting_model",  typ: u(null, r("AppSettings")) },
-        { json: "capability",           js: "capability",            typ: u(null, r("AppSettings")) },
+        { json: "id",                   js: "id",                   typ: u(undefined, 0)                },
+        { json: "app_id",               js: "app_id",               typ: u(undefined, 0)                },
+        { json: "vendor_id",            js: "vendor_id",            typ: u(undefined, "")               },
+        { json: "version",              js: "version",              typ: u(undefined, "")               },
+        { json: "created_at",           js: "created_at",           typ: u(undefined, Date)             },
+        { json: "updated_at",           js: "updated_at",           typ: u(undefined, Date)             },
+        { json: "status",               js: "status",               typ: u(undefined, r("Category"))    },
+        { json: "first_contact_group",  js: "first_contact_group",  typ: u(undefined, r("Category"))    },
+        { json: "category",             js: "category",             typ: u(undefined, r("Category"))    },
+        { json: "sub_category",         js: "sub_category",         typ: u(undefined, null)             },
+        { json: "type",                 js: "type",                 typ: u(undefined, r("Category"))    },
+        { json: "app_management",       js: "app_management",       typ: u(undefined, null)             },
+        { json: "server_hosting_model", js: "server_hosting_model", typ: u(undefined, null)             },
+        { json: "capability",           js: "capability",           typ: u(undefined, null)             },
     ], false),
-    "AppSettings": o([
-        { json: "id",                   js: "id",                    typ: u(undefined, 0) },
-        { json: "value",                js: "value",                 typ: u(undefined, "") },
-        { json: "field",                js: "field",                 typ: u(undefined, "") },
+    "Category": o([
+        { json: "id",                   js: "id",                   typ: u(undefined, 0)                },
+        { json: "value",                js: "value",                typ: u(undefined, "")               },
+        { json: "field",                js: "field",                typ: u(undefined, "")               },
     ], false),
     "ImageInfo": o([
-        { json: "id",                   js: "id",                    typ: u(undefined, 0) },
-        { json: "app_id",               js: "app_id",                typ: u(undefined, 0) },
-        { json: "image_url",            js: "image_url",             typ: u(null, "") },
-        { json: "created_at",           js: "created_at",            typ: u(undefined, Date) },
-        { json: "updated_at",           js: "updated_at",            typ: u(undefined, Date) },
+        { json: "id",                   js: "id",                   typ: u(undefined, 0)                },
+        { json: "app_id",               js: "app_id",               typ: u(undefined, 0)                },
+        { json: "image_url",            js: "image_url",            typ: u(undefined, null)             },
+        { json: "created_at",           js: "created_at",           typ: u(undefined, Date)             },
+        { json: "updated_at",           js: "updated_at",           typ: u(undefined, Date)             },
     ], false),
 };
 
 module.exports = {
-    "itappsToJson": itappsToJson,
-    "toItapps": toItapps,
-    "toItappsArray": toItappsArray
+    "m6AppsToJson": m6AppsToJson,
+    "toM6Apps": toM6Apps,
 };

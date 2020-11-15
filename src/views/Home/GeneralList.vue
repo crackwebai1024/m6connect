@@ -56,7 +56,7 @@
           Add new Record
         </v-btn>
       </template>
-      <new-record-dialog @closeModal="closeModal" />      
+      <new-record-dialog @closeModal="closeModal" />
     </v-dialog>
     <div
       :key="index"
@@ -87,24 +87,27 @@ export default {
     dialog: false,
     searchInput: "",
     areas: [
-      { text: "Everyone", type: "subtitle" },
-      { text: "My company", type: "subtitle" },
-      { text: "Teams", type: "title" },
-      { text: "All my teams", type: "subtitle" },
-      { text: "IT Team XY", type: "subtitle" },
-      { text: "CPM Team Z", type: "subtitle" },
-      { text: "Departments", type: "title" },
+      { text: "Everyone",           type: "subtitle" },
+      { text: "My company",         type: "subtitle" },
+      { text: "Teams",              type: "title"    },
+      { text: "All my teams",       type: "subtitle" },
+      { text: "IT Team XY",         type: "subtitle" },
+      { text: "CPM Team Z",         type: "subtitle" },
+      { text: "Departments",        type: "title"    },
       { text: "All my departments", type: "subtitle" },
-      { text: "Finances", type: "subtitle" },
-      { text: "Operations", type: "subtitle" },
+      { text: "Finances",           type: "subtitle" },
+      { text: "Operations",         type: "subtitle" },
     ],
   }),
   computed: {
-    ...mapGetters("GeneralListModule", ["get_general_list"]),
+    ...mapGetters("GeneralListModule", {
+      list: "get_general_list"
+    }),
   },
   methods: {
-    ...mapActions("GeneralListModule", ["load_mock_general_data"]),
-    ...mapActions("ITAppsModule", ["get_it_apps"]),
+    ...mapActions("ITAppsModule", {
+      getApps: "get_all_apps"
+    }),
 
     remainingPerPage(page) {
       let remaining = this.perPage;
@@ -123,10 +126,9 @@ export default {
     },
   },
   mounted() {
-    this.get_it_apps().then(
-      res => (this.records = this.get_general_list())
+    this.getApps().then(
+      apps => (this.records = this.list())
     );
-    // this.load_mock_general_data();
   },
 };
 </script>

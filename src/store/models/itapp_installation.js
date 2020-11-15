@@ -149,6 +149,8 @@ const typeMap = {
         { json: "app_number",                           js: "app_number",               typ: u(undefined, "") },
         { json: "app_type",                             js: "app_type",                 typ: u(undefined, "") },
         { json: "title",                                js: "title",                    typ: u(undefined, "") },
+        { json: "iconLink",                             js: "iconLink",                 typ: u(undefined, "") },
+        { json: "prefix",                               js: "prefix",                   typ: u(undefined, "") },
         { json: "author",                               js: "author",                   typ: u(undefined, "") },
         { json: "description",                          js: "description",              typ: u(undefined, "") },
         { json: "created_at",                           js: "created_at",               typ: u(undefined, Date) },
