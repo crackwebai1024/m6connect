@@ -8,14 +8,19 @@ const ItAppDependencies = require("@/store/models/itapp_dependencies");
 export default {
   namespaced: true,
   state: {
-      itappsRecords: []
+    itappsRecords: [],
+    filter:{}
   },
   getters: {
-      
+    getFilter: state => state.filter
   },
   mutations: {
+    SET_FILTER_TAG:  (state, payload) => state.filter = payload,
   },
   actions: {
+    set_filter_tag({commit}, data) {
+      commit('SET_FILTER_TAG', data);
+    },
       // Push record
         async push_record({}, id){
           let a = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/itapps/get_itapp_info/${id}`);
@@ -28,7 +33,19 @@ export default {
           generalListModule.state.general_list = cont.state.itappsRecords;
         },
         async get_all_apps(cont){
-          let response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/apps`);
+          let response = {};
+          switch (cont.state.filter.key) {
+            case 'everyone':
+              response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/apps`);
+              break;
+            case 'itapps':
+              response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/itapps`);
+              break;
+            case 'dynamicapps':
+              response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps`);
+              break;
+          }
+          
           cont.state.itappsRecords = convertApps.toM6Apps(response['data']);
           generalListModule.state.general_list = cont.state.itappsRecords;
         },

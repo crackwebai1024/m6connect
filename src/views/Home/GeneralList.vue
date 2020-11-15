@@ -6,14 +6,15 @@
         <v-menu transition="slide-y-transition" offset-y bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn elevation="0" class="capitalize mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
-              All Apps
+              {{filter['value']}}
               <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
             </v-btn>
           </template>
           <v-list dense>
             <v-list-item v-for="(item, i) in areas" :key="i">
               <v-list-item-title
-                :class="item.type == 'title' ? 'grey--text' : 'black--text'"
+                @click="item.function"
+                :class="item.type == 'title' ? 'grey--text' : 'black--text pointer'"
               >{{ item.text }}</v-list-item-title>
             </v-list-item>
           </v-list>
@@ -86,29 +87,42 @@ export default {
     records: [],
     dialog: false,
     searchInput: "",
-    areas: [
-      { text: "Everyone",           type: "subtitle" },
-      { text: "My company",         type: "subtitle" },
-      { text: "Teams",              type: "title"    },
-      { text: "All my teams",       type: "subtitle" },
-      { text: "IT Team XY",         type: "subtitle" },
-      { text: "CPM Team Z",         type: "subtitle" },
-      { text: "Departments",        type: "title"    },
-      { text: "All my departments", type: "subtitle" },
-      { text: "Finances",           type: "subtitle" },
-      { text: "Operations",         type: "subtitle" },
-    ],
   }),
   computed: {
     ...mapGetters("GeneralListModule", {
       list: "get_general_list"
     }),
+    ...mapGetters("ITAppsModule", {
+      filter: "getFilter"
+    }),
+    areas(){ 
+      return [
+        { text: "Everyone",           type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'Everyone'           }); this.reload();}},
+        { text: "Applications",       type: "title",    function: () => {                                                                                          }},
+        { text: "ITApps",             type: "subtitle", function: () => { this.setFilterTag({key: 'itapps',          value: 'ITApps'             }); this.reload();}},
+        { text: "DynamicApps",        type: "subtitle", function: () => { this.setFilterTag({key: 'dynamicapps',     value: 'DynamicApps'        }); this.reload();}},
+        { text: "Teams",              type: "title",    function: () => {                                                                                          }},
+        { text: "All my teams",       type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'All my teams'       }); this.reload();}},
+        { text: "IT Team XY",         type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'IT Team XY'         }); this.reload();}},
+        { text: "CPM Team Z",         type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'CPM Team Z'         }); this.reload();}},
+        { text: "Departments",        type: "title",    function: () => {                                                                                          }},
+        { text: "All my departments", type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'All my departments' }); this.reload();}},
+        { text: "Finances",           type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'Finances'           }); this.reload();}},
+        { text: "Operations",         type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'Operations'         }); this.reload();}},
+      ]
+    }
   },
   methods: {
     ...mapActions("ITAppsModule", {
-      getApps: "get_all_apps"
+      getApps: "get_all_apps",
+      setFilterTag: "set_filter_tag"
     }),
-
+    reload(){
+      this.records = [];
+      this.getApps().then( 
+        apps => (this.records = this.list())
+      );
+    },
     remainingPerPage(page) {
       let remaining = this.perPage;
       if (page + 1 === this.pages) {
@@ -126,6 +140,7 @@ export default {
     },
   },
   mounted() {
+    this.setFilterTag({key: 'everyone', value: 'Everyone'});
     this.getApps().then(
       apps => (this.records = this.list())
     );
