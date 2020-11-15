@@ -5,7 +5,7 @@ const getters = {}
 const mutations = {}
 
 const actions = {
-  getApp(_, payload) {
+  getApp(_, payload = 1) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`).then(({ data }) => {
         resolve(data)
@@ -210,6 +210,26 @@ const actions = {
         resolve(data)
       })
       .catch(err => resolve(err))
+    })
+  },
+
+  getFieldValuesPerPanel(_, { recordID, panelID } = {}) {
+    return new Promise( (resolve, reject) => { 
+      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`)
+      .then( ({ data }) => {
+        resolve(data)
+      })
+      .catch( e => reject(e) )
+    })
+  },
+
+  updateSomeFieldValues(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/some`, payload)
+      .then( ({ data }) => {
+        resolve(data)
+      })
+      .catch( e => reject(e) )
     })
   }
 

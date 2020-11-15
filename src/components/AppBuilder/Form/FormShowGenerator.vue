@@ -1,6 +1,5 @@
 <template>
     <v-form ref="form" >
-
         <v-container fluid>
             <v-row>
                 <v-col cols="12" v-for="f in fields" :key="`custom-field-${f.id}`">
@@ -20,10 +19,11 @@
                 </v-col>
             </v-row>
 
-            <v-row>
+            <v-row v-if="fields.length > 0" >
                 <v-col cols="12" >
                     <v-spacer></v-spacer>
-                    <v-btn color="green" class="white--text" @click="saving" >Save</v-btn>
+                    <v-btn v-if="isEdit" color="green" class="white--text" @click="updating" >update</v-btn>
+                    <v-btn v-else color="green" class="white--text" @click="creating" >create</v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -51,6 +51,11 @@ export default {
         fields: {
             type: Array,
             default: () => ([])
+        },
+
+        panel: {
+            type: Object,
+            default: () => ({})
         }
     },
 
@@ -67,7 +72,8 @@ export default {
         formRules: {
             standard: [ v => !!v || 'This field is required', ]
         },
-        loading: false
+        loading: false,
+        isEdit: false
     }),
 
     computed: {
@@ -79,7 +85,9 @@ export default {
 
     methods: {
         ...mapActions('AppBuilder', {
-            bulkSaveFieldValues: 'bulkSaveFieldValues'
+            bulkSaveFieldValues: 'bulkSaveFieldValues',
+            getFieldValuesPerPanel: 'getFieldValuesPerPanel',
+            updateSomeFieldValues: 'updateSomeFieldValues'
         }),
 
         ...mapMutations('SnackBarNotif', {
@@ -87,7 +95,7 @@ export default {
             notifSuccess: 'notifSuccess' 
         }),
 
-        async saving() {
+        async creating() {
             try {
                 this.loading = true 
 
@@ -115,8 +123,59 @@ export default {
                 this.notifDanger('The was an error while saving')
                this.loading = false  
             }
+        },
 
+        async updating() {
+            try {
+                this.loading = true 
+
+                const payload = { record_id: this.$route.params.id, fields: [] } 
+                for( let x = 0; x < this.fields.length; x++ ) {
+
+                    const f = this.fields[x]
+                    const value = this.$h.dg(this.genericRecord, `${f.id}`, '')
+                    
+                    if( !value ) continue
+                    
+                    if( Array.isArray(value) ) {
+                        const res = value.map( v => ({ value: v,  field_id: f.id }) )
+                        payload.fields = [...payload.fields, ...res]
+                    } else {
+                        payload.fields.push({ value, field_id: f.id })
+                    }
+                }
+                const updated = await this.updateSomeFieldValues(payload)
+
+                this.notifSuccess('The values were updated')
+                this.loading = false 
+            } catch(e) {
+                this.notifDanger('The was an error while updated')
+                this.loading = false  
+            }
         }
-    }
+    },
+
+    async mounted() {
+        
+        if( this.$route.name == 'record.show' ){
+            try {
+                this.loading = true 
+                
+                const res = await this.getFieldValuesPerPanel({ recordID: this.$route.params.id, panelID: this.panel.id })
+
+                if( Object.keys(res).length > 0 ) {
+                    this.genericRecord = {...res}
+                    this.isEdit = true
+                }
+
+                this.loading = false
+            } catch(e) {
+                console.log('e')
+                console.log(e)
+                this.loading = false
+            }
+        }
+    },
+
 }
 </script>
