@@ -32,7 +32,7 @@
             :rules="[
               v => !!v || 'Please fill this in. It is required to do the search'
             ]"
-            @keyup.enter="search"
+            @keydown.enter.prevent="search"
           />
         </v-form>
       </v-card-text>
