@@ -4,7 +4,7 @@
         v-model="valid"
         lazy-validation>
         <v-row >
-            <v-col col="12" class="text-center pa-0" >
+            <v-col cols="12" class="text-center pa-0" >
                 <v-avatar size="100" class="mr-2 text-center">
                     <img
                         v-if="appImage !== ''"
@@ -26,11 +26,21 @@
                     <v-icon size="33">mdi-plus-circle</v-icon>
                 </m6-upload>
             </v-col>
-            <v-col cols="12" >
+            <v-col cols="6" >
                 <v-text-field
                     v-model="itemInfo.title"
                     label="Title"
                     :rules="stringsRules('Title')"
+                    required
+                ></v-text-field>
+            </v-col>
+            <v-col cols="6" >
+                <v-text-field
+                    v-model="itemInfo.prefix"
+                    label="Prefix"
+                    counter="3"
+                    @keypress="isLetter($event)"
+                    :rules="stringLengthRules('Prefix')"
                     required
                 ></v-text-field>
             </v-col>
@@ -80,7 +90,8 @@ export default {
         loading: false,
         // RecordInfo
         itemInfo: {
-            title: "", 
+            title: "",
+            prefix: "",
             description: "", 
             tabs: []
         },
@@ -105,7 +116,9 @@ export default {
             this.itemInfo['image'] = {    
                 image_url: this.appImage === '' ? null : this.appImage
             }
-            this.post_app(this.itemInfo).then(()=>{});
+            this.post_app(this.itemInfo).then(()=>{}).catch(e => {
+                console.log(e.message);
+            });
         },
         pushTab(){
             this.itemInfo['tabs'].push(
@@ -118,6 +131,11 @@ export default {
                 order: 0
             };
             this.showTabInput = false;
+        },
+        isLetter(e) {
+            let char = String.fromCharCode(e.keyCode);
+            if(/^[A-Za-z]+$/.test(char)) return true;
+            else e.preventDefault();
         },
         selectRules(name){
             return [
@@ -133,6 +151,12 @@ export default {
             return [
                 v => !!v || name+' is required',
                 v => v.length <= 255 || name+' must be less than 255 characters'
+            ];
+        },
+        stringLengthRules(name){
+            return [
+                v => !!v || name+' is required',
+                v => v.length === 3 || name+' must be 3 characters'
             ];
         },
         close(){
