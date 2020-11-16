@@ -36,7 +36,7 @@
         </template>
 
         <v-card color="rgb(255, 255, 255, 0.9)">
-          <v-card-text class="vertical-scroll">
+          <v-card-text>
             <b>{{ $t('general.currentSearchTerm') }}:</b>
             {{ search }}
           </v-card-text>
@@ -1414,12 +1414,6 @@ export default {
 }
 .td-actions {
   display: inline-flex;
-}
-.v-application .error--text {
-    font-size: 19px !important;
-    background: #ddd;
-    border-radius: 100%;
-    padding: 6px;
 }
 .td-actions {
   display: flex;

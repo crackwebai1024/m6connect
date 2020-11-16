@@ -40,7 +40,7 @@
           <v-data-table
             :headers="headers"
             :items="settings.status"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>
@@ -84,7 +84,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="d-flex flex-wrap justify-end vertical-scroll">
+        <v-card-text class="d-flex flex-wrap justify-end pb-1 vertical-scroll">
           <v-text-field
             v-model="element"
             class="mb-2 mt-3 w-full"
@@ -96,9 +96,10 @@
             class="mb-6 w-full"
             type="hidden"
           >
+        </v-card-text>
+        <v-card-actions class="d-flex justify-end">
           <v-btn
             color="grey darken-1"
-            flat
             text
             @click="cancel"
           >
@@ -114,7 +115,7 @@
           >
             {{ submitLoading ? 'Saving...' : 'Save' }}
           </v-btn>
-        </v-card-text>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>

@@ -40,7 +40,7 @@
           <v-data-table
             :headers="headers"
             :items="settings.types"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>
@@ -74,11 +74,10 @@
     <v-dialog
       v-if="showIngform"
       v-model="showIngform"
-      max-width="800px"
+      max-width="500px"
       persistent
-      scrollable
     >
-      <v-card class="mt-2">
+      <v-card>
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Commitments Types
@@ -96,23 +95,27 @@
               v-model="currentElement"
               type="hidden"
             >
-            <v-btn
-              color="blue"
-              outline
-              @click="cancel"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="blue"
-              dark
-              type="submit"
-              @click="save"
-            >
-              {{ submitLoading ? 'Saving...' : 'Save' }}
-            </v-btn>
           </v-form>
         </v-card-text>
+        <v-card-actions class="d-flex justify-end">
+          <v-btn
+            color="grey darken-1"
+            text
+            @click="cancel"
+          >
+            Cancel
+          </v-btn>
+
+          <v-btn
+            class="blue lighten-2"
+            color="white"
+            elevation="1"
+            text
+            @click="save"
+          >
+            {{ submitLoading ? 'Saving...' : 'Save' }}
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -122,6 +125,7 @@
 import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 export default {
+  name: 'CommitmentsTypes',
   props: {
     included: {
       type: Boolean,
