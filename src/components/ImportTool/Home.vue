@@ -82,11 +82,12 @@
                   Step 2. Are these your column headers?
                 </p>
                 <v-select
-                  v-model="rowSelected"
                   item-text="label"
                   item-value="value"
                   :items="rows"
                   label="Select a Row"
+                  return-object
+                  @change="setStartRow"
                 />
                 <table-headers
                   v-if="rowSelected.length"
@@ -477,7 +478,8 @@ export default {
       savePresetDialog: false,
       types: [],
       showStep2Loader: false,
-      budgetCategories: []
+      budgetCategories: [],
+      rowNumber: 0
     }
   },
   computed: {
@@ -486,14 +488,14 @@ export default {
     }),
     rows() {
       const data = []
-      if (this.fileData.length) {
-        for (let i = this.startRow; i <= this.startRow + 10; i++) {
-          data.push({
-            label: i,
-            value: this.fileData.data[i]
-          })
-        }
+
+      for (let i = this.startRow; i <= this.startRow + 20; i++) {
+        data.push({
+          label: i + 1,
+          value: this.fileData.data[i]
+        })
       }
+
       return data
     },
     selectFields() {
@@ -526,6 +528,10 @@ export default {
     this.getBudgetCategories()
   },
   methods: {
+    setStartRow(a) {
+      this.rowNumber = a.label
+      this.rowSelected = a.value
+    },
     closePresetDialog() {
       if (!this.preset.id) {
         this.preset = {}
@@ -636,9 +642,9 @@ export default {
     async startImport() {
       for (let index = 1; index < this.fileData.data.length; index++) {
         const item = this.fileData.data[index]
-        if (index === 0) {
+        if (index <= this.rowNumber) {
           // SKIP HEADERS
-        } else if (index <= 10) {
+        } else {
           console.log('CHECKING ' + index)
           const formatedData = this.formatData(item)
           // Check if project exists
@@ -722,8 +728,6 @@ export default {
               console.log('Skipping Line Item, already exists')
             }
           }
-        } else {
-          break
         }
       }
     },
