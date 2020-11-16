@@ -245,6 +245,20 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
+    <v-dialog>
+      <v-card>
+        <v-card-text>
+          <v-progress-linear
+            v-model="knowledge"
+            height="25"
+          >
+            <strong>{{ Math.ceil(knowledge) }}%</strong>
+          </v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -479,7 +493,8 @@ export default {
       types: [],
       showStep2Loader: false,
       budgetCategories: [],
-      rowNumber: 0
+      rowNumber: 0,
+      percentage: 0
     }
   },
   computed: {
@@ -640,7 +655,8 @@ export default {
       }
     },
     async startImport() {
-      for (let index = 1; index < this.fileData.data.length; index++) {
+      this.percentage = 0
+      for (let index = 0; index < this.fileData.data.length; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
@@ -729,6 +745,8 @@ export default {
             }
           }
         }
+
+        this.percentage = (index * 100) / this.fileData.data.length
       }
     },
     formatData(item) {
