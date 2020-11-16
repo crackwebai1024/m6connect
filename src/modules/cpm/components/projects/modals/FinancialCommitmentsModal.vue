@@ -174,8 +174,6 @@
                 <v-menu
                   v-model="dateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -327,7 +325,6 @@
         <v-spacer />
         <v-btn
           color="grey darken-1"
-          flat
           text
           @click="$emit('close-only')"
         >
