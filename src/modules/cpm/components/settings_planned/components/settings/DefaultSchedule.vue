@@ -14,7 +14,7 @@
         @click="newL1"
       >
         <v-icon color="blue">
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </portal>
@@ -27,7 +27,7 @@
         small
         @click="newL1"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -39,7 +39,6 @@
         >
           <v-toolbar
             class="mb-4"
-            color="grey lighten-3"
             dense
             flat
           >
@@ -80,7 +79,7 @@
                       style="cursor: pointer"
                       @click.stop="addL1(item)"
                     >
-                      add
+                      mdi-plus
                     </v-icon>
 
                     <v-icon
@@ -90,7 +89,7 @@
                       style="cursor: pointer"
                       @click.stop="edit(item)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
 
                     <v-icon
@@ -100,7 +99,7 @@
                       style="cursor: pointer"
                       @click.stop="deleteL1(index)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </v-card-title>
                 </v-card>
@@ -109,7 +108,7 @@
                   class="pa-0"
                   flat
                 >
-                  <v-card-text class="pa-0">
+                  <v-card-text class="pa-0 vertical-scroll">
                     <v-expansion-panel class="elevation-0">
                       <v-expansion-panel-content
                         v-for="(itemL2, indexL2) in item.cat_1"
@@ -139,7 +138,7 @@
                                 dark
                                 small
                               >
-                                edit
+                                mdi-pencil
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -153,7 +152,7 @@
                                 dark
                                 small
                               >
-                                delete
+                                mdi-delete
                               </v-icon>
                             </v-btn>
                           </v-card-title>
@@ -174,7 +173,7 @@
           scrollable
         >
           <v-card class="pb-2">
-            <v-card-text>
+            <v-card-text class="vertical-scroll">
               <v-col cols="12">
                 <v-container
                   fluid
@@ -217,7 +216,7 @@
                           v-show="color.hex"
                           :color="color.hex"
                         >
-                          brightness_1
+                          mdi-brightness-1
                         </v-icon>
                       </v-btn>
                     </v-col>
@@ -263,7 +262,7 @@
                               icon
                               @click="openAddGanttDialog"
                             >
-                              <v-icon>add</v-icon>
+                              <v-icon>mdi-plus</v-icon>
                             </v-btn>
                           </v-col>
                         </v-row>
@@ -378,20 +377,18 @@
                                   <v-btn
                                     color="blue"
                                     dark
-                                    flat
                                     icon
                                     @click="editGantt(props.item, props.index)"
                                   >
-                                    <v-icon>edit</v-icon>
+                                    <v-icon>mdi-pencil</v-icon>
                                   </v-btn>
                                   <v-btn
                                     color="blue"
                                     dark
-                                    flat
                                     icon
                                     @click="deleteGantt(props.index)"
                                   >
-                                    <v-icon>delete</v-icon>
+                                    <v-icon>mdi-delete</v-icon>
                                   </v-btn>
                                 </td>
                               </template>
@@ -438,12 +435,12 @@
 <script>
 import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import { Chrome } from 'vue-color'
 import { mapState, mapGetters } from 'vuex'
 import draggable from 'vuedraggable'
 
-import BudgetCategorySelect from '@/components/cpm/projects/_partials/BudgetCategorySelect'
+import BudgetCategorySelect from '@/modules/cpm/components/projects/_partials/BudgetCategorySelect'
 
 export default {
   name: 'DefaultSchedule',
@@ -477,7 +474,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       ganttsSettings: [],
       showColor: false,
       headers: [

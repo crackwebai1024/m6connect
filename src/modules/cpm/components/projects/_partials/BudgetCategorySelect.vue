@@ -35,11 +35,11 @@
           slot="item"
           slot-scope="{ parent, item, tile }"
         >
-          <v-list-tile-content
+          <div
             :class="($h.dg(item, 'classOption', []).length > 0) ? item.classOption : 'highLightDisable'"
           >
             {{ $h.dg(item, 'code', 'N/A') }} - {{ $h.dg(item, 'name', 'Undefined') }}
-          </v-list-tile-content>
+          </div>
         </template>
         <template
           slot="selection"
@@ -109,7 +109,7 @@ export default {
   },
   methods: {
     fetchBudgetCategories() {
-      let self = this
+      const self = this
       this.axios.get(
         `${process.env.VUE_APP_FIREBASE_APIURL}/api/company/${self.currentCompany.id}/budget-categories`
       )

@@ -15,6 +15,7 @@ const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
 const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 const AppBuilderSHow = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShow.vue')
+const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
 
 import store from '../store/';
 Vue.use(VueRouter);
@@ -99,6 +100,11 @@ const router = new VueRouter({
       meta: {
         public: true
       }
+    },
+    {
+      path: "/cpm/import/tool",
+      name: "cpm.import",
+      component: ImportTool
     },
     {
       path: "/record/:id",

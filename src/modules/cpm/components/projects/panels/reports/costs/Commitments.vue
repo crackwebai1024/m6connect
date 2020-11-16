@@ -66,19 +66,19 @@
             <v-btn
               color="blue"
               fab
-              flat
               small
+              text
               @click="addLineItem(commitment.id, commitment.number, commitmentIndex)"
             >
-              <v-icon dark>
-                add
+              <v-icon light>
+                mdi-plus
               </v-icon>
             </v-btn>
 
             <v-btn
               color="blue"
-              flat
               small
+              text
               @click.stop="openSpending(commitment.number, commitment.id)"
             >
               Spending
@@ -105,17 +105,17 @@
             <v-btn
               color="red"
               fab
-              flat
               small
+              text
               @click="deleteCommitment(commitment.id, commitment.number, commitmentIndex)"
             >
-              <v-icon dark>
-                delete
+              <v-icon light>
+                mdi-delete
               </v-icon>
             </v-btn>
           </v-toolbar>
         </v-card-title>
-        <v-card-text class="pa-0">
+        <v-card-text class="pa-0 vertical-scroll">
           <div class="commitments-table">
             <v-card flat>
               <v-data-table
@@ -153,13 +153,13 @@
                       small
                       @click="setCommitment(commitment.id, props.item.id, props.index, commitmentIndex)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
                     <v-icon
                       small
                       @click="deleteLineItem(props.item, commitment.id, commitmentIndex, props.index)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </td>
                 </template>
@@ -238,8 +238,7 @@ export default {
       headers.push({
         text: 'Actions',
         value: 'name',
-        sortable: false,
-        align: 'left'
+        sortable: false
       })
     }
     return {

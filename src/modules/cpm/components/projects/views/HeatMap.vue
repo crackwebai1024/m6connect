@@ -24,7 +24,7 @@
             class="edit-icon pointer"
             @click="goToProject(item)"
           >
-            edit
+            mdi-pencil
           </v-icon>
         </td>
       </tr>
@@ -65,7 +65,6 @@ export default {
         {
           text: this.$t('general.action'),
           class: 'info dark white--text subheading dark',
-          align: 'right',
           sortable: false
         }
       ]
@@ -103,9 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .pointer {
-    cursor: pointer;
-  }
   .edit-icon {
     transition: all 0.2s ease-out;
 

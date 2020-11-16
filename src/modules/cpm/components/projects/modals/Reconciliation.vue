@@ -1,42 +1,46 @@
 <template>
   <v-dialog
     persistent
-    scrollable
     value="true"
     :width="800"
     @input="closeDialog"
   >
     <v-card>
-      <v-card-title class="display-1 primary white--text">
-        <v-row>
-          <v-col cols="12">
+      <v-card-title class="display-1 white white--text">
+        <div class="relative w-full">
+          <v-btn
+            class="absolute left-0 pointer top-0"
+            icon
+          >
             <v-icon
               class="icon-close"
-              dark
+              light
               medium
               @click="closeDialog"
             >
-              close
+              mdi-close
             </v-icon>
-          </v-col>
-          <v-col
-            class="text-center"
-            cols="12"
+          </v-btn>
+          <div
+            class="align-center d-flex justify-center"
           >
-            {{ $t('cpm.projects.reconciliationPanel.reconciliationStatus') }}
-          </v-col>
-        </v-row>
+            <p class="grey--text mb-0 text--darken-1 text-center text-h6">
+              {{ $t('cpm.projects.reconciliationPanel.reconciliationStatus') }}
+            </p>
+          </div>
+        </div>
       </v-card-title>
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         <v-autocomplete
           v-model="commitment.verifiedStatus"
+          class="mt-3"
           :disabled="!isManager"
-          hide-details
           item-text="text"
           item-value="value"
           :items="verifiedStatus"
           :label="$t('cpm.projects.reconciliationPanel.reconciled')"
-          outline
+          outlined
         >
           <template v-slot:selection="data">
             <v-row align="center">
@@ -72,9 +76,10 @@
           </template>
         </v-autocomplete>
         <v-btn
+          class="mb-2 mr-auto"
           color="primary"
           :disabled="!isManager"
-          flat
+          text
           @click="openCreateNote"
         >
           {{ addNoteButton }}
@@ -102,15 +107,17 @@
         </template>
         <v-data-table
           v-if="!showNoteInput"
+          class="white"
           disable-initial-sort
           :headers="headers"
           :items="notes"
+          light
         >
           <template
             slot="items"
             slot-scope="props"
           >
-            <tr>
+            <tr class="grey--text white">
               <td>
                 {{ `${ $h.dg(props, 'item.user.name', '') } ${ $h.dg(props, 'item.user.lastName', '') }` }}
               </td>
@@ -127,7 +134,7 @@
                   size="20"
                   @click="openEditNote(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -136,7 +143,7 @@
                   size="20"
                   @click="openDeleteNote(props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </tr>

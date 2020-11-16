@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title class="posRelative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="assignment-2"
@@ -16,7 +16,7 @@
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -30,10 +30,10 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Roles</label>
           <v-data-table
@@ -51,7 +51,7 @@
                   size="20"
                   @click.prevent="editElement(props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -61,7 +61,7 @@
                   size="20"
                   @click.prevent="deleteElement(props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -78,21 +78,13 @@
       scrollable
     >
       <v-card>
-        <v-card-title class="card-background headline">
-          <v-row align="center">
-            <label
-              v-if="Number.isInteger(currentElement)"
-              class="white--text"
-            >
-              Edit Role
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Role</label>
-          </v-row>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ Number.isInteger(currentElement) ? 'Edit Role' : 'Add New Role' }}
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <div class="form-group">
             <v-text-field
               v-model="roleName"
@@ -208,7 +200,7 @@
 
           <v-btn
             color="red darken-1"
-            flat="flat"
+            text
             @click="showConfirmDialog = false"
           >
             Cancel
@@ -285,17 +277,14 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Users',
-          align: 'left',
           sortable: false
         },
         {
           text: 'Action',
-          align: 'right',
           sortable: false
         }
       ],
@@ -496,14 +485,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.posRelative {
-  position: relative;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
 .card-background {
   background: #006699;
   color: #fff;

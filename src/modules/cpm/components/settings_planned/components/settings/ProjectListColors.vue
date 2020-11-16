@@ -2,10 +2,10 @@
   <component-template>
     <v-container class="pt-0">
       <v-card>
-        <v-card-title style="position:relative">
+        <v-card-title class="relative">
           <label>Current Project List Colors</label>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-data-table
             :headers="headers"
             :items="colors"
@@ -38,29 +38,27 @@
         width="500"
       >
         <v-card class="mt-2">
-          <v-card-title
-            class="headline"
-            style="background: #006699; color:#fff"
-          >
-            <v-row align="center">
+          <v-card-title class="headline px-6 py-4 white">
+            <span class="grey--text text--darken-1">
               Change the color for projects {{ changeColor.label }}
-            </v-row>
+            </span>
           </v-card-title>
-          <v-card-text>
+          <v-divider class="grey lighten-3" />
+          <v-card-text class="vertical-scroll">
             <chrome-picker v-model="changeColor.color" />
           </v-card-text>
           <v-card-actions>
             <v-spacer />
             <v-btn
               color="red"
-              flat
+              text
               @click="cancelColor"
             >
               Cancel
             </v-btn>
             <v-btn
               color="green"
-              flat
+              text
               type="submit"
               @click="saveColor"
             >
@@ -95,7 +93,6 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {

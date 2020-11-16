@@ -3,25 +3,28 @@
     v-model="show"
     max-width="800px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline">
-        <v-row
-          v-if="isCreate"
-          align="center"
-        >
-          Create Commitment Information
-        </v-row>
-        <v-row
-          v-else
-          align="center"
-        >
-          Edit Commitment Information
-        </v-row>
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          <template
+            v-if="isCreate"
+          >
+            Create Commitment Information
+          </template>
+          <template
+            v-else
+          >
+            Edit Commitment Information
+          </template>
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text :style="{ height: getViewPortHeight }">
+      <v-card-text
+        class="vertical-scroll"
+        :style="{ height: getViewPortHeight }"
+      >
         <v-container fluid>
           <v-form ref="form">
             <v-row
@@ -31,7 +34,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       Commitment Number
                     </v-col>
                   </v-row>
@@ -40,7 +43,6 @@
               <v-col cols="7">
                 <v-text-field
                   v-model="commitment.number"
-                  color="blue"
                 />
               </v-col>
             </v-row>
@@ -52,7 +54,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       Budget Category
                     </v-col>
                   </v-row>
@@ -74,7 +76,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="´text-nowrap">
                       Commitment Type
                     </v-col>
                   </v-row>
@@ -96,7 +98,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       From Changes
                     </v-col>
                   </v-row>
@@ -123,7 +125,7 @@
                           color="green"
                           small
                         >
-                          check
+                          mdi-check
                         </v-icon>
                         In Forecast
                       </template>
@@ -162,7 +164,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="text-nowrap">
                       Completion Date
                     </v-col>
                   </v-row>
@@ -172,8 +174,6 @@
                 <v-menu
                   v-model="dateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -182,7 +182,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="commitment.completionDateText"
-                      append-icon="calendar_today"
+                      append-icon="mdi-calendar"
                       color="blue"
                       mask="date"
                       v-on="on"
@@ -239,7 +239,7 @@
                         @click.native.stop="selectFile"
                       >
                         <v-icon small>
-                          add
+                          mdi-plus
                         </v-icon>
                       </v-btn>
                       <input
@@ -271,20 +271,20 @@
                     slot-scope="{ item }"
                   >
                     <v-icon v-if="!item.file">
-                      {{ open ? 'folder_open' : 'folder' }}
+                      {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                     </v-icon>
                     <v-icon
                       v-else-if="
                         item.file === 'image/jpeg' || item.file === 'image/png'
                       "
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
-                      picture_as_pdf
+                      mdi-file-pdf-box
                     </v-icon>
                     <v-icon v-else>
-                      description
+                      mdi-text-box-outline
                     </v-icon>
                   </template>
                   <template
@@ -298,7 +298,7 @@
                           :href="item.url"
                           target="_blank"
                         >
-                          <v-icon small>open_in_new</v-icon>
+                          <v-icon small>mdi-folder-plus</v-icon>
                         </a>
                         <v-btn
                           icon
@@ -309,7 +309,7 @@
                             color="red"
                             small
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-btn>
                       </template>
@@ -321,10 +321,10 @@
           </v-form>
         </v-container>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="pa-6">
         <v-spacer />
         <v-btn
-          flat
+          color="grey darken-1"
           text
           @click="$emit('close-only')"
         >
@@ -333,16 +333,19 @@
 
         <v-btn
           v-if="isCreate"
-          flat
+          class="blue lighten-2"
+          color="white"
+          elevation="1"
           text
           @click="save('create')"
         >
           Create
         </v-btn>
-
         <v-btn
-          v-if="!isCreate"
-          flat
+          v-else
+          class="blue lighten-2"
+          color="white"
+          elevation="1"
           text
           @click="save('udpate')"
         >
@@ -360,7 +363,7 @@
         color="blue"
         dark
       >
-        <v-card-text>
+        <v-card-text class="pt-3 vertical-scroll">
           Please stand by, uploading files...
           <v-progress-linear
             class="mb-0"
@@ -965,9 +968,7 @@ export default {
 .contact-edit-modal {
   .v-card__title {
     padding: 10px;
-    background: #0277bd;
-    color: #fff;
-
+    border-bottom:1px solid #eee;
     h3 {
       font-weight: 100;
     }

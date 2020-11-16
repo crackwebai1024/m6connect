@@ -3,12 +3,12 @@
     <template slot="button">
       <v-btn
         color="primary"
-        dark
+        light
         fab
         small
         @click="showForm = true"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -38,7 +38,7 @@
                 color="blue"
                 small
               >
-                drag_indicator
+                mdi-drag-variant
               </v-icon>
             </v-list-tile-avatar>
             <v-list-tile-content>{{ name }}</v-list-tile-content>
@@ -48,18 +48,18 @@
               <v-btn
                 class="xs-btn"
                 fab
-                flat
+                icon
                 @click.prevent="edit(key, name)"
               >
-                <v-icon>edit</v-icon>
+                <v-icon>mdi-pencil</v-icon>
               </v-btn>
               <v-btn
                 class="xs-btn"
                 fab
-                flat
+                text
                 @click.prevent="deletePhase(key, name)"
               >
-                <v-icon>delete</v-icon>
+                <v-icon>mdi-delete</v-icon>
               </v-btn>
             </v-list-tile-action>
           </v-list-tile>
@@ -71,7 +71,7 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <h6
             v-if="currentPhase"

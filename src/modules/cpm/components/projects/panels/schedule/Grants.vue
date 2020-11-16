@@ -15,10 +15,10 @@
             class="mr-1"
             small
           >
-            edit
+            mdi-pencil
           </v-icon>
           <v-icon small>
-            delete
+            mdi-delete
           </v-icon>
         </td>
       </template>
@@ -34,14 +34,12 @@ export default {
       headers: [
         {
           text: 'Title',
-          align: 'left',
           value: 'title'
         },
         {
           text: 'Actions',
           value: 'actions',
-          sortable: false,
-          align: 'center'
+          sortable: false
         }
       ],
       grants: []

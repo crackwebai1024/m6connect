@@ -20,13 +20,40 @@ import M6Codes from './modules/M6Codes'
 import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
 import RapidTicket from './modules/RapidTicket'
 import RecordsInstance from './modules/RecordsInstance'
+import hideCpmPanels from '@/modules/cpm/store/hide-cpm-panels'
+import ganttSettings from '@/modules/cpm/store/gantt-settings'
+import gantt from '@/modules/cpm/store/gantt'
 
 import companies from '@/modules/cpm/store/companies'
+import cpm from '@/modules/cpm/store'
+import ImportCPM from './modules/ImportCPM'
+
 Vue.use(Vuex)
+const appLabel = {
+  singular: 'Project',
+  plural: 'Projects',
+  firebaseCollection: 'cpm_projects',
+  settingsCollection: 'projects',
+  scheduleCollection: 'default_schedule',
+  milestonesCollection: 'milestones',
+  usersCollection: 'users',
+  rolesCollection: 'roles',
+  profile: {
+    campus: 'Campus',
+    category: 'Category',
+    risk: 'Risk',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    phase: 'Phase',
+    phaseTargetDate: 'Phase Target Date',
+    projectManagerUpdate: 'Project Manager Update'
+  }
+}
 
 export default new Vuex.Store({
 
   state: {
+    appLabel: appLabel,
     chats: [],
     departments: {
       // id and then properties
@@ -58,6 +85,7 @@ export default new Vuex.Store({
   },
 
   getters: {
+    appLabel: state => state.appLabel,
     // View Home Getters
     layout: state => state.layout,
     get_views_list: state => () => state.viewsList,
@@ -151,6 +179,11 @@ export default new Vuex.Store({
     File,
     companies,
     AppBuilder,
+    RapidTicket,
+    hideCpmPanels,
+    ganttSettings,
+    gantt,
+    ImportCPM,
     RapidTicket,
     RecordsInstance
   }

@@ -24,7 +24,7 @@
                 v-on="on"
                 @click="showAllMileStones = !showAllMileStones"
               >
-                <v-icon>calendar_today</v-icon>
+                <v-icon>mdi-calendar</v-icon>
               </v-btn>
             </template>
 
@@ -42,8 +42,8 @@
             small
             @click="downloadCSV"
           >
-            <v-icon dark>
-              cloud
+            <v-icon light>
+              mdi-cloud
             </v-icon>
           </v-btn>
 
@@ -55,8 +55,8 @@
             small
             @click="showCreateModal = true"
           >
-            <v-icon dark>
-              add
+            <v-icon light>
+              mdi-plus
             </v-icon>
           </v-btn>
         </v-col>
@@ -142,13 +142,13 @@
                     absolute
                     class="deleteBtn"
                     color="red"
-                    dark
                     fab
+                    light
                     small
                     v-on="on"
                     @click="deleteProject(item)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </template>
 
@@ -167,7 +167,7 @@
                     v-on="on"
                     @click="goToProject(item, true)"
                   >
-                    <v-icon>open_in_new</v-icon>
+                    <v-icon>mdi-folder-plus</v-icon>
                   </v-btn>
                 </template>
 
@@ -194,14 +194,17 @@
                         v-else
                         size="100"
                       >
-                        photo
+                        mdi-image
                       </v-icon>
                     </v-avatar>
                   </v-badge>
                 </v-row>
               </v-col>
 
-              <v-card-text @click="goToProject(item, false)">
+              <v-card-text
+                class="vertical-scroll"
+                @click="goToProject(item, false)"
+              >
                 <div class="mb-2 text-center">
                   <v-menu
                     offset-y
@@ -268,7 +271,7 @@
                     <v-card
                       class="card-footer"
                       :color="getColor('listStatus')"
-                      flat
+                      text
                       tile
                     >
                       <span class="py-2 subheading white--text">
@@ -286,7 +289,7 @@
                     <v-card
                       class="card-footer pt-1"
                       :color="getColor('listStartDate')"
-                      flat
+                      text
                       tile
                     >
                       <span class="py-2 subheading white--text">
@@ -331,7 +334,7 @@
                     v-else
                     dark
                   >
-                    wallpaper
+                    mdi-wallpaper
                   </v-icon>
                 </v-avatar>
               </td>
@@ -380,7 +383,7 @@
                   </template>
 
                   <v-card color="rgb(255, 255, 255, 0.9)">
-                    <v-card-text>
+                    <v-card-text class="vertical-scroll">
                       {{ item.title }}
                     </v-card-text>
                   </v-card>
@@ -477,7 +480,7 @@
                       v-on="on"
                       @click="goToProject(item, false)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
                   </template>
                   <span>{{ $t('general.edit') }}</span>
@@ -492,7 +495,7 @@
                       v-on="on"
                       @click="deleteProject(item)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </template>
                   <span>{{ $t('general.delete') }}</span>
@@ -527,7 +530,7 @@
         @click="startTour"
       >
         <v-icon small>
-          near_me
+          mdi-near-me
         </v-icon>
         {{ $t('tourProjectList.start') }}
       </v-btn>
@@ -745,7 +748,6 @@ export default {
       headers.push({
         text: this.$t('cpm.totalBudget'),
         value: 'budget',
-        align: 'right',
         sortable: false
       })
 
@@ -827,8 +829,7 @@ export default {
 
           {
             text: this.$t('cpm.projects.projectedFinalCost'),
-            value: 'projectFinalCost',
-            align: 'right'
+            value: 'projectFinalCost'
           },
           { text: this.$t('cpm.projectStart'), sortable: false },
           { text: 'Construction Star', sortable: false },
@@ -1713,10 +1714,6 @@ export default {
 .card-footer {
   padding-top: 3px !important;
   height: 100%;
-}
-
-.pointer {
-  cursor: pointer;
 }
 
 .fullWidth {

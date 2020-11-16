@@ -1,8 +1,8 @@
 <template>
   <v-hover>
     <v-row
+      class="pl-2"
       slot-scope="{ hover }"
-      style="padding-left: 7px;"
     >
       <v-col cols="6">
         <div class="grey--text mb-1 subheading">
@@ -18,7 +18,7 @@
           small
           @click="openProjectDetails(2)"
         >
-          edit
+          mdi-pencil
         </v-icon>
       </v-col>
       <v-col cols="4">

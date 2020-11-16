@@ -19,7 +19,7 @@
           dark
           right
         >
-          filter_list
+          mdi-filter-menu
         </v-icon>
       </v-btn>
     </template>

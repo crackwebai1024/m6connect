@@ -20,7 +20,7 @@
               v-if="!item.file"
               color="blue"
             >
-              {{ open ? 'folder_open' : 'folder' }}
+              {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
             </v-icon>
 
             <img
@@ -62,7 +62,7 @@
             >
 
             <v-icon v-else>
-              description
+              mdi-text-box-outline
             </v-icon>
           </template>
 
@@ -81,7 +81,7 @@
                   color="blue"
                   small
                 >
-                  create_new_folder
+                  mdi-folder-plus
                 </v-icon>
               </v-btn>
 
@@ -95,7 +95,7 @@
                   color="blue"
                   small
                 >
-                  add
+                  mdi-plus
                 </v-icon>
               </v-btn>
 
@@ -109,7 +109,7 @@
                   color="red"
                   small
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </v-btn>
             </template>
@@ -122,7 +122,7 @@
                 @click.stop="selectItemToShare(item)"
               >
                 <v-icon small>
-                  {{ (fileSelected.includes(item)) ? 'check_box' : 'check_box_outline_blank' }}
+                  {{ (fileSelected.includes(item)) ? 'mdi-check-box-outline' : 'checkbox-blank-outline' }}
                 </v-icon>
               </v-btn>
               <v-btn
@@ -131,7 +131,7 @@
                 @click.stop="GoToShare"
               >
                 <v-icon small>
-                  done_outline
+                  mdi-check-outline
                 </v-icon>
               </v-btn>
             </template>
@@ -146,7 +146,7 @@
                 @click.stop=""
               >
                 <v-icon small>
-                  open_in_new
+                  mdi-folder-plus
                 </v-icon>
               </v-btn>
 
@@ -157,7 +157,7 @@
                 @click.stop="GoshareMode(item)"
               >
                 <v-icon small>
-                  share
+                  mdi-share
                 </v-icon>
               </v-btn>
 
@@ -171,7 +171,7 @@
                   color="red"
                   small
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </v-btn>
             </template>
@@ -199,7 +199,7 @@
         color="blue"
         dark
       >
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           {{ $t('general.uploadingFilesMessage') }}
 
           <p>{{ uploadStatusText }}</p>
@@ -224,12 +224,13 @@
       persistent
       width="600px"
     >
-      <v-card class="elevation-0">
-        <v-card-title>
-          <span class="headline">{{ $t('cpm.projects.createNewFolder') }}</span>
+      <v-card flat>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">{{ $t('cpm.projects.createNewFolder') }}</span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             class="fill-height ma-0 pa-0"
             fluid
@@ -285,12 +286,12 @@
             "
           >
             <v-icon>
-              close
+              mdi-close
             </v-icon>
           </v-btn>
         </v-card-title>
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-img
             v-if="imageUrl"
             contain
@@ -312,8 +313,9 @@
 
           <iframe
             v-if="pdfUrl"
+            class="w-full"
             :src="pdfUrl"
-            style="width: 100%; height: 750px; border: none"
+            style="height: 750px; border: none"
           />
         </v-card-text>
       </v-card>

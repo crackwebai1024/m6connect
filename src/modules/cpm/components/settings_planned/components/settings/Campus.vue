@@ -8,7 +8,7 @@
         small
         @click="newL1"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
     <input
@@ -30,7 +30,7 @@
         color="blue"
         dark
       >
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           Please stand by, uploading image...
           <v-progress-linear
             class="mb-0"
@@ -74,7 +74,7 @@
                 slot="actions"
                 color="white"
               >
-                crop_free
+                mdi-crop-free
               </v-icon>
               <v-card
                 slot="header"
@@ -98,7 +98,7 @@
                         dark
                         small
                       >
-                        add
+                        mdi-plus
                       </v-icon>
                     </v-btn>
                     <v-btn
@@ -112,7 +112,7 @@
                         dark
                         small
                       >
-                        edit
+                        mdi-pencil
                       </v-icon>
                     </v-btn>
                     <v-btn
@@ -126,7 +126,7 @@
                         dark
                         small
                       >
-                        delete
+                        mdi-delete
                       </v-icon>
                     </v-btn>
                   </v-form>
@@ -136,7 +136,7 @@
                 class="pa-0"
                 flat
               >
-                <v-card-text class="pa-0">
+                <v-card-text class="pa-0 vertical-scroll">
                   <v-expansion-panel class="elevation-0">
                     <v-expansion-panel-content
                       v-for="(itemL2, indexL2) in item.lvl_1"
@@ -153,7 +153,7 @@
                         slot="actions"
                         color="white"
                       >
-                        crop_free
+                        mdi-crop-free
                       </v-icon>
                       <v-card
                         slot="header"
@@ -178,7 +178,7 @@
                                 dark
                                 small
                               >
-                                add
+                                mdi-plus
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -192,7 +192,7 @@
                                 dark
                                 small
                               >
-                                edit
+                                mdi-pencil
                               </v-icon>
                             </v-btn>
                             <v-btn
@@ -206,7 +206,7 @@
                                 dark
                                 small
                               >
-                                delete
+                                mdi-delete
                               </v-icon>
                             </v-btn>
                           </v-form>
@@ -216,7 +216,7 @@
                         class="pa-0 pl-4"
                         flat
                       >
-                        <v-card-text class="pa-0 pl-4">
+                        <v-card-text class="pa-0 pl-4 vertical-scroll">
                           <v-card
                             v-for="(itemL3, indexL3) in itemL2.lvl_2"
                             :key="indexL3"
@@ -241,7 +241,7 @@
                                     dark
                                     small
                                   >
-                                    edit
+                                    mdi-pencil
                                   </v-icon>
                                 </v-btn>
                                 <v-btn
@@ -257,7 +257,7 @@
                                     dark
                                     small
                                   >
-                                    delete
+                                    mdi-delete
                                   </v-icon>
                                 </v-btn>
                               </v-form>
@@ -377,7 +377,7 @@
                   >
                     Delete logo
                     <v-icon small>
-                      delete
+                      mdi-delete
                     </v-icon>
                   </v-btn>
                 </v-col>
@@ -394,7 +394,7 @@
                   >
                     Logo&nbsp;
                     <v-icon class="mr-1 pb-1">
-                      cloud_upload
+                      mdi-cloud-upload
                     </v-icon>
                   </v-btn>
                 </v-col>
@@ -442,7 +442,7 @@
 <script>
 import { db, storage } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import { mapState } from 'vuex'
 
 export default {
@@ -471,7 +471,7 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       latitude: '',
       longitude: '',
       address: '',

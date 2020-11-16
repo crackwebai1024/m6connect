@@ -6,29 +6,27 @@
     scrollable
   >
     <v-card class="licensing-edit-modal">
-      <v-card-title
-        class="customBackground headline"
-      >
-        <v-row align="center">
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
           {{ $t('cpm.projects.budgetPanel.editBudget.budget') }}:
           {{ $h.dg(budget, 'title', '') }}
-        </v-row>
-        <v-spacer />
+        </span>
         <v-btn
-          class="flex-end"
+          class="justify-end"
           color="blue darken-2"
           dark
           fab
           small
           @click="createNewBudget"
         >
-          <v-icon dark>
-            add
+          <v-icon light>
+            mdi-plus
           </v-icon>
         </v-btn>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-row>
           <v-col
             class="mr-3"
@@ -46,11 +44,11 @@
                 cols="6"
               >
                 <v-icon
-                  class="flex-end pt-2"
+                  class="justify-end pt-2"
                   size="20"
                   @click.stop="editMode=!editMode"
                 >
-                  {{ editMode ? 'undo' : 'edit' }}
+                  {{ editMode ? 'mdi-undo' : 'mdi-pencil' }}
                 </v-icon>
               </v-col>
             </v-row>
@@ -64,7 +62,7 @@
               >
                 <v-switch
                   v-model="budget.active"
-                  class="flex-end pt-2"
+                  class="justify-end pt-2"
                   label="Active"
                 />
               </v-col>
@@ -207,7 +205,7 @@
                   color="blue"
                   dark
                 >
-                  <v-card-text>
+                  <v-card-text class="vertical-scroll">
                     {{ $t('general.uploadingFilesMessage') }}
                     <v-progress-linear
                       class="mb-0"
@@ -219,30 +217,27 @@
               </v-dialog>
               <v-divider /><br><br><br>
               <v-card class="mb-4">
-                <v-card-title
-                  class="headline"
-                  style="background: #006699; color:#fff"
-                >
-                  <v-row align="center">
+                <v-card-title class="headline px-6 py-4 white">
+                  <span class="grey--text text--darken-1">
                     {{ $t('cpm.projects.budgetPanel.editBudget.attachments') }}
-                  </v-row>
-
+                  </span>
                   <v-spacer />
                   <v-btn
-                    class="flex-end"
+                    class="justify-end"
                     color="blue darken-2"
                     dark
                     fab
                     small
                     @click="selectFile"
                   >
-                    <v-icon dark>
-                      add
+                    <v-icon light>
+                      mdi-plus
                     </v-icon>
                   </v-btn>
                 </v-card-title>
+                <v-divider class="grey lighten-3" />
 
-                <v-card-text>
+                <v-card-text class="vertical-scroll">
                   <v-treeview
                     v-model="tree"
                     activatable
@@ -258,20 +253,20 @@
                       slot-scope="{ item, open }"
                     >
                       <v-icon v-if="!item.file">
-                        {{ open ? 'folder_open' : 'folder' }}
+                        {{ open ? 'mdi-folder-open' : 'mdi-folder' }}
                       </v-icon>
                       <v-icon
                         v-else-if="
                           item.file === 'image/jpeg' || item.file === 'image/png'
                         "
                       >
-                        image
+                        mdi-image
                       </v-icon>
                       <v-icon v-else-if="item.file === 'application/pdf'">
-                        picture_as_pdf
+                        mdi-file-pdf-box
                       </v-icon>
                       <v-icon v-else>
-                        description
+                        mdi-text-box-outline
                       </v-icon>
                     </template>
                     <template
@@ -285,7 +280,7 @@
                             :href="item.url"
                             target="_blank"
                           >
-                            <v-icon small>open_in_new</v-icon>
+                            <v-icon small>mdi-folder-plus</v-icon>
                           </a>
                           <v-icon
                             class="ml-2 mr-0 pointer"
@@ -293,7 +288,7 @@
                             size="20"
                             @click.stop="deleteFile(item, open, leaf)"
                           >
-                            delete
+                            mdi-delete
                           </v-icon>
                         </template>
                       </template>
@@ -308,7 +303,6 @@
 
       <v-card-actions>
         <v-btn
-          flat
           text
           @click.native.stop="selectFile"
         >
@@ -318,12 +312,11 @@
             color="#757575"
             size="20"
           >
-            add
+            mdi-plus
           </v-icon>
         </v-btn>
         <v-spacer />
         <v-btn
-          flat
           text
           @click.stop="dialog = false"
         >
@@ -885,10 +878,6 @@ export default {
   padding-top: 	0.625rem;
 }
 
-.flex-end {
-  justify-content: flex-end;
-}
-
 .text-right {
   text-align: right;
 }
@@ -896,14 +885,5 @@ export default {
 .totals-container {
   margin-top: 0.3125rem;
   text-align: right;
-}
-
-.customBackground {
-  background: #006699;
-  color: #fff;
-}
-
-.pointer {
-  cursor: pointer;
 }
 </style>

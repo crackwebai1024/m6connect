@@ -14,30 +14,21 @@
     >
 
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline">
-        <v-container
-          class="pa-0"
-          fluid
-          grid-list-md
-        >
-          <v-row
-            align="center"
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          <template
+            v-show="tab === 0"
           >
-            <v-col
-              v-show="tab === 0"
-              md="12"
-            >
-              {{ $t('cpm.projects.editProjectInfo') }}
-            </v-col>
-            <v-col
-              v-show="tab === 1"
-              md="12"
-            >
-              {{ $t('cpm.projects.editProjectDetails') }}
-            </v-col>
-          </v-row>
-        </v-container>
+            {{ $t('cpm.projects.editProjectInfo') }}
+          </template>
+          <template
+            v-show="tab === 1"
+          >
+            {{ $t('cpm.projects.editProjectDetails') }}
+          </template>
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
       <v-tabs
         v-model="tab"
@@ -56,7 +47,7 @@
         </v-tab>
       </v-tabs>
 
-      <v-card-text class="card-text">
+      <v-card-text class="card-text vertical-scroll">
         <v-tabs-items v-model="tab">
           <!-- Project info -->
           <v-tab-item>
@@ -553,7 +544,7 @@
                         `${$t('cpm.projects.phase')} ${$t('general.date')}`
                       "
                       persistent-hint
-                      prepend-icon="event"
+                      prepend-icon="mdi-calendar"
                       v-on="on"
                     />
                   </template>
@@ -913,7 +904,7 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
+          text
           @click="$emit('close')"
         >
           {{ $t('general.close') }}
@@ -921,8 +912,8 @@
 
         <v-btn
           color="primary"
-          flat
           :loading="showLoading"
+          text
           @click="update"
         >
           {{ $t('general.update') }}

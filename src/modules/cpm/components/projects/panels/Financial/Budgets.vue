@@ -17,10 +17,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -28,23 +28,23 @@
       </v-tooltip>
 
       <v-icon
-        class="cursor"
-        dark
+        class="pointer"
+        light
         @click="createNewBudget"
       >
-        add
+        mdi-plus
       </v-icon>
 
       <v-tooltip left>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor"
+            class="pointer"
             color="white"
             v-on="on"
             @click="openSettingModal"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>{{ $t('cpm.projects.budgetPanel.settings') }}</span>
@@ -146,7 +146,7 @@ export default {
 
   data() {
     return {
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       showSettings: false,
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
       headers: [
@@ -159,19 +159,16 @@ export default {
         { text: this.$t('cpm.projects.budgetPanel.type'), value: 'type' },
         {
           text: this.$t('cpm.projects.budgetPanel.planBudget'),
-          value: 'plan',
-          align: 'right'
+          value: 'plan'
         },
         {
           text: this.$t('cpm.projects.budgetPanel.totalBudget'),
-          value: 'total',
-          align: 'right'
+          value: 'total'
         },
         {
           text: this.$t('general.actions'),
           value: 'title',
-          sortable: false,
-          align: 'center'
+          sortable: false
         }
       ],
       budgets: [],

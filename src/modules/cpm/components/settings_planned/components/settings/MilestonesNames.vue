@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="milestones"
@@ -9,14 +9,14 @@
           <v-btn
             absolute
             color="white"
-            dark
             fab
+            light
             right
             small
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -24,16 +24,16 @@
           v-else
           absolute
           color="blue"
-          dark
           fab
+          light
           right
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Current Name</label>
           <v-list
@@ -60,7 +60,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
                 <v-list-tile-content>{{ item }}</v-list-tile-content>
@@ -69,21 +69,21 @@
                 >
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
+                    text
                     @click.prevent="editElement(key, item)"
                   >
-                    <v-icon>edit</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-btn>
                   <v-btn
                     class="xs-btn"
-                    flat
                     icon
                     small
+                    text
                     @click.prevent="deleteElement(key, item)"
                   >
-                    <v-icon>delete</v-icon>
+                    <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-list-tile-action>
               </v-list-tile>
@@ -100,15 +100,13 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Milestone Names
-          </v-row>
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <v-row>
               <v-col sm="6">
@@ -138,7 +136,7 @@
                       @click="showValidForm = true"
                     >
                       <v-icon color="blue">
-                        add
+                        mdi-plus
                       </v-icon>
                     </v-btn>
                   </v-subheader>
@@ -154,12 +152,12 @@
 
                       <v-list-tile-action>
                         <v-icon @click="editValidDate(item, index)">
-                          edit
+                          mdi-pencil
                         </v-icon>
                       </v-list-tile-action>
                       <v-list-tile-action>
                         <v-icon @click.prevent="deleteValidDate(key, item)">
-                          delete
+                          mdi-delete
                         </v-icon>
                       </v-list-tile-action>
                     </v-list-tile>
@@ -208,7 +206,7 @@
         >
           Valid Date
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-menu
             v-model="validDatePicker"
             :close-on-content-click="false"
@@ -297,12 +295,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ],

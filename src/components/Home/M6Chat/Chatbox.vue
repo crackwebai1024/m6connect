@@ -10,10 +10,14 @@
       :class="[minimized ? 'blue lighten-2' : '']"
       @click="minimizeChatBox"
     >
-      <div v-if="channel.id.substr(14, 5) === 'group'"
+      <div
+        v-if="channel.id.substr(14, 5) === 'group'"
         class="align-center d-flex"
       >
-        <v-avatar size="42" class="mr-2">
+        <v-avatar
+          class="mr-2"
+          size="42"
+        >
           <img
             v-if="channel.data.image !== ''"
             :alt="channel.data.image"
@@ -22,7 +26,6 @@
           <v-icon v-else>
             mdi-account-group-outline
           </v-icon>
-
         </v-avatar>
         <div class="ml-1">
           <p
@@ -33,7 +36,8 @@
           </p>
         </div>
       </div>
-      <div v-else
+      <div
+        v-else
         class="align-center d-flex"
       >
         <v-badge
@@ -46,8 +50,8 @@
         >
           <v-avatar size="42">
             <img
-              :alt="channel.name"
               v-if="users[0].user.image"
+              :alt="channel.name"
               :src="users[0].user.image"
             >
             <template v-else>
@@ -82,95 +86,154 @@
         <v-dialog
           v-if="channel.id.substr(14, 5) === 'group'"
           v-model="deleteDialog"
-          width="50%">
+          width="50%"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-hover
-              v-slot:default="{ hover }">
+              v-slot:default="{ hover }"
+            >
               <div class="relative">
-                <v-card v-if="hover" class="absolute max-w-none pa-1 top-0 left-0 w-fit z-20" style="margin-bottom: -64px; margin-left: -130px;">
+                <v-card
+                  v-if="hover"
+                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
+                  style="margin-bottom: -64px; margin-left: -130px;"
+                >
                   <v-btn
-                    @click="messageEdit = channel.data.id + '-channel'"
-                    height="25"
+                    v-bind="attrs"
                     class="black--text capitalize px-3 text-caption w-full"
                     elevation="0"
-                    v-bind="attrs" v-on="on"
-                  >Delete Conversation</v-btn>
+                    height="25"
+                    v-on="on"
+                    @click="messageEdit = channel.data.id + '-channel'"
+                  >
+                    Delete Conversation
+                  </v-btn>
                   <v-btn
+                    v-bind="attrs"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                    height="25"
+                    v-on="on"
                     @click="messageEdit = channel.data.id + '-info'"
-                    height="25"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    v-bind="attrs" v-on="on"
-                  >Information</v-btn>
+                  >
+                    Information
+                  </v-btn>
                   <v-btn
                     v-if="channel.data.created_by.id === user.id"
+                    v-bind="attrs"
+                    class="black--text capitalize mt-1 px-1 text-caption w-full"
+                    elevation="0"
+                    height="25"
+                    v-on="on"
                     @click="messageEdit = channel.data.id + '-add-user'"
-                    height="25"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    v-bind="attrs" v-on="on"
-                  >Add Users</v-btn>
+                  >
+                    Add Users
+                  </v-btn>
                   <v-btn
                     v-if="channel.data.created_by.id === user.id"
-                    @click="messageEdit = channel.data.id + '-edit'"
-                    height="25"
+                    v-bind="attrs"
                     class="black--text capitalize mt-1 px-1 text-caption w-full"
                     elevation="0"
-                    v-bind="attrs" v-on="on"
-                  >Edit Configuration</v-btn>
+                    height="25"
+                    v-on="on"
+                    @click="messageEdit = channel.data.id + '-edit'"
+                  >
+                    Edit Configuration
+                  </v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
-                  color="white" fab x-small >
+                  color="white"
+                  fab
+                  x-small
+                >
                   <v-icon
-                    size="15" >
+                    size="15"
+                  >
                     mdi-cogs
                   </v-icon>
                 </v-btn>
               </div>
             </v-hover>
           </template>
-          <delete-dialog v-if="messageEdit === channel.data.id + '-channel'" :element="`messages on '${channel.data.name}' group`" @closeDeleteModal="cleanChat($event)" />
-          <add-user-dialog v-if="messageEdit === channel.data.id + '-add-user'" :currentUsers="channel.state.members" @closeModal="addUser($event)"></add-user-dialog>
-          <info-users-dialog v-if="messageEdit === channel.data.id + '-info'" :currentUsers="channel.state.members" :channel="channel" ></info-users-dialog>
-          <settings-channel-dialog v-if="messageEdit === channel.data.id + '-edit'" :channel="channel" @closeEditeModal="closeModal()" ></settings-channel-dialog>
+          <delete-dialog
+            v-if="messageEdit === channel.data.id + '-channel'"
+            :element="`messages on '${channel.data.name}' group`"
+            @closeDeleteModal="cleanChat($event)"
+          />
+          <add-user-dialog
+            v-if="messageEdit === channel.data.id + '-add-user'"
+            :current-users="channel.state.members"
+            @closeModal="addUser($event)"
+          />
+          <info-users-dialog
+            v-if="messageEdit === channel.data.id + '-info'"
+            :channel="channel"
+            :current-users="channel.state.members"
+          />
+          <settings-channel-dialog
+            v-if="messageEdit === channel.data.id + '-edit'"
+            :channel="channel"
+            @closeEditeModal="closeModal"
+          />
         </v-dialog>
         <v-dialog
           v-else
           v-model="deleteDialog"
-          width="50%">
+          width="50%"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-hover
-              v-slot:default="{ hover }">
+              v-slot:default="{ hover }"
+            >
               <div class="relative">
-                <v-card v-if="hover" class="absolute max-w-none pa-1 top-0 left-0 w-fit z-20" style="margin-bottom: -90px; margin-left: -100px;">
+                <v-card
+                  v-if="hover"
+                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
+                  style="margin-bottom: -90px; margin-left: -130px;"
+                >
                   <v-btn
-                    @click="messageEdit = channel.data.id + '-single-channel'"
-                    height="25"
+                    v-bind="attrs"
                     class="black--text capitalize px-3 text-caption w-full"
                     elevation="0"
-                    v-bind="attrs" v-on="on"
-                  >Clean chat room</v-btn>
+                    height="25"
+                    v-on="on"
+                    @click="messageEdit = channel.data.id + '-channel'"
+                  >
+                    Delete Group
+                  </v-btn>
                 </v-card>
                 <v-btn
                   class="btn-chat-shadow ml-2"
-                  color="white" fab x-small >
+                  color="white"
+                  fab
+                  x-small
+                >
                   <v-icon
-                    size="15" >
+                    size="15"
+                  >
                     mdi-cogs
                   </v-icon>
                 </v-btn>
               </div>
             </v-hover>
           </template>
-          <delete-dialog v-if="messageEdit === channel.data.id + '-single-channel'" :element="`conversation with '${channel.membersInChannel.user.name}'`" @closeDeleteModal="cleanChat($event)" />
+          <delete-dialog
+            v-if="messageEdit === channel.data.id + '-single-channel'"
+            :element="`conversation with '${channel.membersInChannel.user.name}'`"
+            @closeDeleteModal="cleanChat($event)"
+          />
         </v-dialog>
         <v-btn
           class="btn-chat-shadow ml-2"
-          color="white" fab x-small
-          @click="closeChat" >
+          color="white"
+          fab
+          x-small
+          @click="closeChat"
+        >
           <v-icon
-            size="15" >
+            size="15"
+          >
             mdi-close
           </v-icon>
         </v-btn>
@@ -178,7 +241,8 @@
     </div>
     <v-divider
       class="divider-chat"
-      :class="[minimized ? 'd-none' : '']" />
+      :class="[minimized ? 'd-none' : '']"
+    />
     <!-- Messages Container -->
     <div
       ref="messages"
@@ -187,15 +251,20 @@
     >
       <div
         v-if="messages.length === 0"
-        class="d-flex flex-column justify-center text-caption align-center grey--text h-full px-3"
+        class="align-center d-flex flex-column grey--text h-full justify-center px-3 text-caption"
       >
-        <div class="w-full d-flex justify-center">
-          <v-icon size="40" class="grey--text text--lighten-1">mdi-message-settings-outline</v-icon>
+        <div class="d-flex justify-center w-full">
+          <v-icon
+            class="grey--text text--lighten-1"
+            size="40"
+          >
+            mdi-message-settings-outline
+          </v-icon>
         </div>
-        <div class="d-flex text-caption align-center mt-3 w-full">
-          <v-divider class="blue-grey lighten-5"></v-divider>
-            <span class="mx-3 grey--text text--lighten-1">No messages yet</span>
-          <v-divider class="blue-grey lighten-5"></v-divider>
+        <div class="align-center d-flex mt-3 text-caption w-full">
+          <v-divider class="blue-grey lighten-5" />
+          <span class="grey--text mx-3 text--lighten-1">No messages yet</span>
+          <v-divider class="blue-grey lighten-5" />
         </div>
       </div>
       <!-- Message Bubble -->
@@ -206,11 +275,11 @@
         <!-- Day Divider -->
         <div
           v-if="dayDivider(message.created_at, index).show"
-          class="d-flex text-caption align-center my-2 grey--text"
+          class="align-center d-flex grey--text my-2 text-caption"
         >
-          <v-divider class="blue-grey lighten-5"></v-divider>
-            <span class="mx-3">{{ dayDivider(message.created_at, index).value }}</span>
-          <v-divider class="blue-grey lighten-5"></v-divider>
+          <v-divider class="blue-grey lighten-5" />
+          <span class="mx-3">{{ dayDivider(message.created_at, index).value }}</span>
+          <v-divider class="blue-grey lighten-5" />
         </div>
         <div
           class="d-flex"
@@ -218,7 +287,7 @@
         >
           <template v-if="user.id === message.user.id">
             <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
-            <div 
+            <div
               v-if="messageEdit === message.id"
               class="mb-3 ml-2"
             >
@@ -227,8 +296,9 @@
                 v-model="messageEditInput"
                 class="h-full mr-2 px-2 text-body-1"
                 size="8"
+                @keyup.enter="editMessage('inputMessage-' + index)"
                 @keyup.esc="cancelMessage"
-                @keyup.enter="editMessage('inputMessage-' + index)">
+              >
               <v-btn
                 class="btn-chat-shadow grey--text mb-3 mr-2"
                 fab
@@ -242,7 +312,8 @@
                 </v-icon>
               </v-btn>
             </div>
-            <div v-else
+            <div
+              v-else
               class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
             >
               {{ message.text }}
@@ -270,27 +341,37 @@
             </v-icon>
             <v-dialog
               v-model="deleteDialog"
-              width="500">
+              width="500"
+            >
               <template v-slot:activator="{ on, attrs }">
                 <v-hover
-                  v-slot:default="{ hover }">
+                  v-slot:default="{ hover }"
+                >
                   <div class="pointer relative">
-                    <v-card v-if="hover" class="absolute d-flex max-w-none message-btns pa-1 rounded-pill top-0 left-0 w-fit mb-1 z-20">
+                    <v-card
+                      v-if="hover"
+                      class="absolute d-flex left-0 max-w-none mb-1 message-btns pa-1 rounded-pill top-0 w-fit z-20"
+                    >
                       <v-btn
-                        @click="messageEdit = message.id+message.id"
-                        height="25"
-                        rounded
+                        v-bind="attrs"
                         class="black--text capitalize px-3 text-caption"
                         elevation="0"
-                        v-bind="attrs" v-on="on"
-                      >Delete</v-btn>
-                      <v-btn
-                        @click="edit(message)"
                         height="25"
                         rounded
+                        v-on="on"
+                        @click="messageEdit = message.id+message.id"
+                      >
+                        Delete
+                      </v-btn>
+                      <v-btn
                         class="black--text capitalize ml-1 px-1 text-caption"
                         elevation="0"
-                      >Edit</v-btn>
+                        height="25"
+                        rounded
+                        @click="edit(message)"
+                      >
+                        Edit
+                      </v-btn>
                     </v-card>
                     <v-icon>
                       mdi-settings-helper
@@ -298,7 +379,11 @@
                   </div>
                 </v-hover>
               </template>
-              <delete-dialog :element="`message '${message.text}'`" v-if="messageEdit === message.id+message.id" @closeDeleteModal="beforeDelete($event, message.id)" />
+              <delete-dialog
+                v-if="messageEdit === message.id+message.id"
+                :element="`message '${message.text}'`"
+                @closeDeleteModal="beforeDelete($event, message.id)"
+              />
             </v-dialog>
           </template>
           <template v-else>
@@ -416,15 +501,16 @@
         </div>
       </div>
     </template>
-    <p 
+    <p
       v-if="Object.keys( whoTyping ).length > 0"
-      class="text-caption my-0 mx-5 font-italic"
+      class="font-italic mx-5 my-0 text-caption"
     >
-      User {{whoTyping.name}} is typing
+      User {{ whoTyping.name }} is typing
     </p>
     <div
       class="align-center chat-send-section px-4"
-      :class="[minimized ? 'd-none' : 'd-flex']" >
+      :class="[minimized ? 'd-none' : 'd-flex']"
+    >
       <v-menu
         :close-on-content-click="false"
         elevation="0"
@@ -502,8 +588,8 @@
         v-model="valueInput"
         class="h-full outline-none px-2 text-body-1 w-full"
         placeholder="Type a message here..."
-        @keyup="typing"
         @keydown="stopTyping"
+        @keyup="typing"
         @keyup.enter="sendMessage"
       >
       <v-btn
@@ -584,7 +670,15 @@ export default {
     docFiles: [],
     offset: true,
     minimized: false,
-    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    days: [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'
+    ]
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -603,7 +697,7 @@ export default {
       const users = []
       Object.keys(this.channel.state.members).forEach(userKey => {
         if (userKey !== this.user.id) {
-          users.push(this.channel.state.members[userKey]);
+          users.push(this.channel.state.members[userKey])
         }
       })
       return users
@@ -617,10 +711,10 @@ export default {
     }
   },
   watch: {
-    messages: function(){
+    messages: function () {
       this.messages.forEach((message, ind) => {
         if (message.type === 'deleted') {
-          this.messages.splice(ind, 1);
+          this.messages.splice(ind, 1)
         }
       })
     }
@@ -631,74 +725,87 @@ export default {
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
-    
+
     this.client.on('typing.start', r => {
       if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
-        this.whoTyping = r.user;
+        this.whoTyping = r.user
       }
     })
     this.client.on('typing.stop', r => {
       if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
-        this.whoTyping = '';
+        this.whoTyping = ''
       }
     })
-    
+
     this.dataReady = true
   },
   methods: {
-    ...mapActions("GSChat", ["removeMessage", "updateMessage"]),
-    closeModal(){
-      this.deleteDialog = false;
+    ...mapActions('GSChat', ['removeMessage', 'updateMessage']),
+    closeModal() {
+      this.deleteDialog = false
     },
-    edit(message){
-      this.messageEdit = message.id;
-      this.messageEditInput = message.text;
+    edit(message) {
+      this.messageEdit = message.id
+      this.messageEditInput = message.text
     },
     async addUser(event) {
-      this.deleteDialog = false;
-      this.hover = false;
+      this.deleteDialog = false
+      this.hover = false
       if (event.users.length > 0) {
         // We make the new conversation
-        let res = [];
+        const res = []
         event.users.forEach(item => {
-          if(Object.keys(this.channel.state.members).indexOf(item) < 0){
-            res.push(item);
+          if (Object.keys(this.channel.state.members).indexOf(item) < 0) {
+            res.push(item)
           }
-        });
+        })
 
         if (res.length > 0) {
-          await this.channel.addMembers(res);
+          await this.channel.addMembers(res)
         }
       }
     },
-    removeUser(event){
-      this.deleteDialog = false;
-      this.hover = false;
+    removeUser(event) {
+      this.deleteDialog = false
+      this.hover = false
     },
-    async cleanChat(event){
-      this.deleteDialog = false;
-      this.hover = false;
-      if(event){
-        this.messages = [];
-        await this.channel.hide(null, true);
-        await this.channel.show();
+    async cleanChat(event) {
+      this.deleteDialog = false
+      this.hover = false
+      if (event) {
+        this.messages = []
+        await this.channel.hide(null, true)
+        await this.channel.show()
       }
     },
-    async typing(){
-      await this.channel.keystroke();
+    async typing() {
+      await this.channel.keystroke()
     },
-    async stopTyping(){
-      await this.channel.stopTyping();
+    async stopTyping() {
+      await this.channel.stopTyping()
     },
-    setDate(item){
-      const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-      
+    setDate(item) {
+      const months = [
+        'JAN',
+        'FEB',
+        'MAR',
+        'APR',
+        'MAY',
+        'JUN',
+        'JUL',
+        'AUG',
+        'SEP',
+        'OCT',
+        'NOV',
+        'DEC'
+      ]
+
       // If the last session was more than 1 day ago it shows the date else it shows the time.
-      return 86400000 - (new Date - item) <= 0 ? 
+      return 86400000 - (new Date - item) <= 0 ?
         `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}` :
         `Last connection: ${
-          item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2,'0') : item.getHours().toString().padStart(2,'0')
-        }:${item.getMinutes().toString().padStart(2,'0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
+          item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2, '0') : item.getHours().toString().padStart(2, '0')
+        }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
@@ -707,34 +814,34 @@ export default {
         this.$refs.inputMessage.focus()
       })
     },
-    cancelMessage(){
-      this.messageEdit = '';
-      this.messageEditInput = '';
+    cancelMessage() {
+      this.messageEdit = ''
+      this.messageEditInput = ''
     },
-    editMessage(nameReference){
-      if(this.messageEditInput !== ''){
-        this.updateMessage({ 
-          id: this.messageEdit, 
+    editMessage(nameReference) {
+      if (this.messageEditInput !== '') {
+        this.updateMessage({
+          id: this.messageEdit,
           text: this.messageEditInput
-        });
-        this.messageEdit = '';
-        this.messageEditInput = '';
+        })
+        this.messageEdit = ''
+        this.messageEditInput = ''
       }
     },
-    deleteMessage(event){
+    deleteMessage(event) {
       this.messages.splice(this.messages.indexOf(
-        this.messages.filter((e) => { return e.id === event.message.id; })[0]
-      ), 1);
+        this.messages.filter(e => e.id === event.message.id)[0]
+      ), 1)
     },
-    updateMsg(event){
-      let msgs = this.messages;
-      let index = msgs.indexOf( msgs.filter((e) => { return e.id === event.message.id; })[0] )
-      this.messages[index] = Object.assign(...[msgs[index], event.message]);
+    updateMsg(event) {
+      const msgs = this.messages
+      const index = msgs.indexOf(msgs.filter(e => e.id === event.message.id)[0])
+      this.messages[index] = Object.assign(...[msgs[index], event.message])
     },
     async closeChat() {
       this.channel.off('message.new', this.addNewMessage)
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
-      await this.channel.markRead();
+      await this.channel.markRead()
     },
     firstCommentBeforeAnswer(authorId, index, messages) {
       if (index === 0) {
@@ -744,7 +851,7 @@ export default {
       }
     },
     dayDivider(messageTime, index) {
-      let result = {
+      const result = {
         show: false,
         value: ''
       }
@@ -759,21 +866,21 @@ export default {
         result.show = true
       }
       if (result.show) {
-        let dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 86400000)
-        switch(dayCurrentWeekDifference) {
+        const dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 86400000)
+        switch (dayCurrentWeekDifference) {
           case 0:
-            result.value = currentMessageTime.toString().substr(0,15)
-            break;
+            result.value = currentMessageTime.toString().substr(0, 15)
+            break
           case 1:
             result.value = 'Yesterday'
-            break;
+            break
           case 2:
-          case 3:          
+          case 3:
           case 4:
           case 5:
           case 6:
             result.value = this.days[currentMessageTime.getDay()]
-            break;
+            break
           default:
             result.value = (currentMessageTime.getMonth() + 1) + '/' + currentMessageTime.getDate() + '/' + currentMessageTime.getFullYear()
         }
@@ -784,12 +891,12 @@ export default {
       this.showDialog = !this.showDialog
     },
     onSelectEmoji(emoji) {
-      if(this.messageEdit === ''){
+      if (this.messageEdit === '') {
         this.valueInput += emoji.data
         // Optional
         this.toogleDialogEmoji()
         this.$nextTick(() => this.$refs.inputMessage.focus())
-      }else{
+      } else {
         this.messageEditInput += emoji.data
         this.toogleDialogEmoji()
       }
@@ -815,11 +922,11 @@ export default {
       })
     },
     beforeDelete(decision, messageID) {
-      this.messageEdit = '';
-      this.deleteDialog = false;
-      this.hover = false;
-      if(decision) {
-        this.removeMessage(messageID);
+      this.messageEdit = ''
+      this.deleteDialog = false
+      this.hover = false
+      if (decision) {
+        this.removeMessage(messageID)
       }
     },
     minimizeChatBox() {
@@ -949,9 +1056,6 @@ export default {
 }
 .v-list-item {
   min-height: 30px !important;
-}
-.v-menu__content {
-  box-shadow: none !important;
 }
 .v-tooltip__content {
   background: transparent !important;

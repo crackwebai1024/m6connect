@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <label>{{ $t('cpmSettings.settings.projOptions.expirationDate.title') }}:</label>
       <v-text-field
         v-model="expirationDefaultDate"

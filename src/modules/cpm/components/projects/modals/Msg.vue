@@ -5,15 +5,14 @@
       width="500"
     >
       <v-card>
-        <v-card-title
-          :class="'headline ' + color + ' lighten-2'"
-          primary-title
-          style="color: white;"
-        >
-          {{ title }}
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ title }}
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           {{ text }}
         </v-card-text>
 
@@ -23,7 +22,7 @@
           <v-spacer />
           <v-btn
             color="primary"
-            flat
+            text
             @click="$emit('close')"
           >
             Ok

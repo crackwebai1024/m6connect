@@ -1,13 +1,14 @@
 <template>
   <div>
-    <v-card>
-      <v-card-title style="position:relative">
+    <v-card elevation="0">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="commitments-0"
         >
           <v-btn
             absolute
+            class="mt-3"
             color="white"
             dark
             fab
@@ -16,7 +17,7 @@
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -30,16 +31,16 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Types</label>
           <v-data-table
             :headers="headers"
             :items="settings.status"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>
@@ -51,7 +52,7 @@
                   style="cursor: pointer"
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -61,7 +62,7 @@
                   style="cursor: pointer"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -73,44 +74,48 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="400px"
       persistent
-      scrollable
     >
-      <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            Changes Status
-          </v-row>
+      <v-card>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Change Status
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="d-flex flex-wrap justify-end pb-1 vertical-scroll">
           <v-text-field
             v-model="element"
+            class="mb-2 mt-3 w-full"
             color="blue"
             label="Commitments Status Name"
           />
           <input
             v-model="currentElement"
+            class="mb-6 w-full"
             type="hidden"
           >
+        </v-card-text>
+        <v-card-actions class="d-flex justify-end">
           <v-btn
-            color="blue"
-            outline
+            color="grey darken-1"
+            text
             @click="cancel"
           >
             Cancel
           </v-btn>
+
           <v-btn
-            color="blue"
-            dark
+            class="blue lighten-2"
+            color="white"
+            elevation="1"
+            text
             @click="save"
           >
             {{ submitLoading ? 'Saving...' : 'Save' }}
           </v-btn>
-        </v-card-text>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -121,6 +126,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'CommitmentStatus',
   props: {
     included: {
       type: Boolean,
@@ -148,12 +154,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

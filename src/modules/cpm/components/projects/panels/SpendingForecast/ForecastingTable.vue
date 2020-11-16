@@ -124,7 +124,7 @@
                   size="15"
                   @click.stop="openMonthlyForecastForm(props.item, month, $h.dg(props.item, `currentMonthlyForecast.months.${month}.total`, 0))"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
               </div>
             </td>
@@ -317,14 +317,12 @@ export default {
           text: this.$t('cpm.forecasting.budgetPercentage'),
           value: 'budgetPercentage',
           class: this.headerStyles[0] + ' cell-width',
-          align: 'right',
           sortable: false
           // fixed: true
         },
         {
           text: this.$t('general.amount'),
           value: 'budget',
-          align: 'right',
           class: this.headerStyles[0] + ' cell-width',
           sortable: false
           // fixed: true
@@ -337,21 +335,18 @@ export default {
           // Forecast Budget Moths
           monthHeaders.push({
             text: this.$t('cpm.forecasting.originalForecast'),
-            align: 'right',
             class: this.originalForecastStyle + ' cell-width',
             sortable: false
           })
           // Actual Spending
           monthHeaders.push({
             text: this.$t('cpm.forecasting.actualSpending'),
-            align: 'right',
             class: this.actualSpendingStyle + ' cell-width',
             sortable: false
           })
           // Thrid Column
           monthHeaders.push({
             text: 'Current Monthly <br> Forecast',
-            align: 'right',
             class: this.autocalculatedMonthlyForecastStyle + ' cell-width',
             sortable: false
           })
@@ -369,7 +364,6 @@ export default {
           this.futureFiscalYears.map((fy, index) => {
             fyHeaders.push({
               text: this.$h.dg(fy, 'name', ''),
-              align: 'right',
               class: this.headerStyles[index + 1] + ' cell-width',
               sortable: false
             })
@@ -385,7 +379,6 @@ export default {
           this.previousFiscalYears.map((fy, index) => {
             previousFYHeaders.push({
               text: this.$h.dg(fy, 'name', ''),
-              align: 'right',
               class: this.previousFYStyles[index + 1] + ' cell-width',
               sortable: false
             })

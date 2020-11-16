@@ -7,13 +7,13 @@
     transition="dialog-transition"
   >
     <v-card>
-      <v-card-title
-        class="title"
-        primary-title
-      >
-        Capital Plan
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          Capital Plan
+        </span>
       </v-card-title>
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         <v-container
           class="pa-0"
           fluid
@@ -82,11 +82,10 @@
                         <td>
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             @click="removeCapital(props.item)"
                           >
-                            <v-icon>arrow_right_alt</v-icon>
+                            <v-icon>mdi-arrow-right-thick</v-icon>
                           </v-btn>
                         </td>
                       </template>
@@ -123,11 +122,10 @@
                         <td>
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             @click="addCapitalPlan(props.item)"
                           >
-                            <v-icon>add</v-icon>
+                            <v-icon>mdi-plus</v-icon>
                           </v-btn>
                         </td>
                       </template>
@@ -142,8 +140,8 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
           :loading="loading"
+          text
           @click="closeCapital"
         >
           Cancel

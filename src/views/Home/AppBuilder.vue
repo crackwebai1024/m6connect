@@ -1,93 +1,111 @@
 <template>
-    <div>
-        <div @click="dialog = true">
-            <slot name="actionbtn"></slot>
-        </div>
-        <template>
-            <v-dialog
-                class="vertical-scroll dont-show-scroll"
-                v-model="dialog"
-                fullscreen
-                hide-overlay
-                transition="dialog-bottom-transition"
-                scrollable
-            >
-            <v-card class="relative grey lighten-3" tile>
-                <div class="w-full white">
-                    <slot name="header"/>
-                    <v-divider class="max-w-lg w-full mx-auto blue-grey lighten-5"></v-divider>
-                    <div class="max-w-lg w-full mx-auto d-flex justify-space-between align-center">
-                        <slot name="tabs"/>
-                        <div v-if="editPanel" class="d-flex align-center">
-                            <v-tabs
-                                v-if="appLoaded"
-                                v-model="activeTab"
-                                active-class="font-weight-black blue--text active-tab-company"
-                            >
-                                <v-tab
-                                    v-for="tab in app.tabs"
-                                    :key="tab.id"
-                                    class="blue--text capitalize"
-                                >
-                                    {{ tab.title }}
-                                </v-tab>
-                            </v-tabs>
-                            <add-tab @addNewTab="addNewTab" />
-                        </div>
-                        <slot name="btns"/>
-                    </div>
-                </div>
-
-                <div
-                    v-if="appLoaded"
-                    class="details-content grey lighten-3 h-fit min-h-full pt-2"
-                >
-                    <v-row
-                        v-if="app.tabs.length > 1"
-                        class="align-start d-flex justify-center max-w-lg mb-2 mx-auto pt-1 w-full"
-                    >
-                        <v-btn
-                        color="red"
-                        dark
-                        @click="deleteTab"
-                        >
-                            Delete Tab
-                        </v-btn>
-                    </v-row>
-                    <v-row class="max-w-lg w-full pt-1 mx-auto d-flex justify-space-between align-start">
-                        <v-col cols="5" class="pa-0 pr-1 d-flex flex-column justify-center">
-                            <panel
-                                v-for="panel in leftPanels"
-                                :key="panel.id"
-                                :panel="panel"
-                                @deletePanel="deletePanel"
-                            />
-                            <add-panel v-if="editPanel" @addNewPanel="addNewPanel(0)" />
-                        </v-col>
-                        <v-col cols="7" class="pa-0 pl-1">
-                            <panel
-                                v-for="panel in rightPanels"
-                                :key="panel.id"
-                                :panel="panel"
-                                @deletePanel="deletePanel"
-                            />
-                            <add-panel v-if="editPanel" @addNewPanel="addNewPanel(1)" />
-                        </v-col>
-                    </v-row>
-                </div>
-                <v-dialog
-                    v-model="showDeleteModal"
-                    width="500"
-                >
-                    <delete-dialog
-                        element="Tab"
-                        @closeDeleteModal="confirmDelete"
-                    />
-                </v-dialog>
-            </v-card>
-            </v-dialog>
-        </template>
+  <div>
+    <div @click="dialog = true">
+      <slot name="actionbtn" />
     </div>
+    <template>
+      <v-dialog
+        v-model="dialog"
+        class="dont-show-scroll vertical-scroll"
+        fullscreen
+        hide-overlay
+        scrollable
+        transition="dialog-bottom-transition"
+      >
+        <v-card
+          class="grey lighten-3 relative"
+          tile
+        >
+          <div class="w-full white">
+            <slot name="header" />
+            <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
+            <div class="align-center d-flex justify-space-between max-w-lg mx-auto w-full">
+              <slot name="tabs" />
+              <div
+                v-if="editPanel"
+                class="align-center d-flex"
+              >
+                <v-tabs
+                  v-if="appLoaded"
+                  v-model="activeTab"
+                  active-class="font-weight-black blue--text active-tab-company"
+                >
+                  <v-tab
+                    v-for="tab in app.tabs"
+                    :key="tab.id"
+                    class="blue--text capitalize"
+                  >
+                    {{ tab.title }}
+                  </v-tab>
+                </v-tabs>
+                <add-tab @addNewTab="addNewTab" />
+              </div>
+              <slot name="btns" />
+            </div>
+          </div>
+
+          <div
+            v-if="appLoaded"
+            class="details-content grey h-fit lighten-3 min-h-full pt-2"
+          >
+            <v-row
+              v-if="app.tabs.length > 1"
+              class="align-start d-flex justify-center max-w-lg mb-2 mx-auto pt-1 w-full"
+            >
+              <v-btn
+                color="red"
+                dark
+                @click="deleteTab"
+              >
+                Delete Tab
+              </v-btn>
+            </v-row>
+            <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
+              <v-col
+                class="d-flex flex-column justify-center pa-0 pr-1"
+                cols="5"
+              >
+                <panel
+                  v-for="panel in leftPanels"
+                  :key="panel.id"
+                  :panel="panel"
+                  @deletePanel="deletePanel"
+                />
+                <add-panel
+                  v-if="editPanel"
+                  @addNewPanel="addNewPanel(0)"
+                />
+              </v-col>
+              <v-col
+                class="pa-0 pl-1"
+                cols="7"
+              >
+                <panel
+                  v-for="panel in rightPanels"
+                  :key="panel.id"
+                  :panel="panel"
+                  @deletePanel="deletePanel"
+                />
+                <add-panel
+                  v-if="editPanel"
+                  @addNewPanel="addNewPanel(1)"
+                />
+              </v-col>
+            </v-row>
+          </div>
+          <v-dialog
+            v-model="showDeleteModal"
+            width="500"
+          >
+            <delete-dialog
+              element="Tab"
+              @closeDeleteModal="confirmDelete"
+            />
+          </v-dialog>
+        </v-card>
+      </v-dialog>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -97,7 +115,7 @@ import Panel from '@/components/AppBuilder/Panel'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
-  name: "PanelDetailsTemplate",
+  name: 'PanelDetailsTemplate',
   components: {
     DeleteDialog,
     AddPanel,
@@ -108,7 +126,7 @@ export default {
     editPanel: {
       type: Boolean,
       default: false
-    },
+    }
   },
   data: () => ({
     dialog: false,
@@ -172,7 +190,7 @@ export default {
       this.showDeleteModal = false
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -205,9 +223,6 @@ export default {
 .add-field .v-input input {
     border-bottom: 1px solid #F8F3EC;
     margin-bottom: -1px;
-}
-.theme--light.v-text-field > .v-input__control > .v-input__slot:before {
-    border: none;
 }
 .panel {
     min-height: 300px;

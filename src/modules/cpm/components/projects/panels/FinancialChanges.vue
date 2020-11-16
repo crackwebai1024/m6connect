@@ -20,10 +20,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -31,11 +31,11 @@
       </v-tooltip>
 
       <v-icon
-        class="cursor"
-        dark
+        class="pointer"
+        light
         @click="showCreate = true"
       >
-        add
+        mdi-plus
       </v-icon>
 
       <v-tooltip left>
@@ -47,7 +47,7 @@
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>Settings</span>
@@ -163,7 +163,7 @@ export default {
   data() {
     return {
       showSettings: false,
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
       project: {},
       showForm: false,
@@ -174,11 +174,11 @@ export default {
         { text: this.$t('cpm.bulletinNumber'), value: 'number' },
         { text: 'Title', value: 'title' },
         { text: 'Budget Category', value: 'costCodeText' },
-        { text: 'Amount', value: 'amount', align: 'right' },
+        { text: 'Amount', value: 'amount' },
         { text: 'Reason Code', value: 'reason.name' },
         { text: 'Status', value: 'status' },
         { text: 'Forecast', value: 'forecast' },
-        { text: 'Actions', value: 'number', align: 'center', sortable: false }
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       showEdit: false,
       changeToEdit: {},

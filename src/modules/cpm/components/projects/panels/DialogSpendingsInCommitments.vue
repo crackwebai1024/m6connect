@@ -5,17 +5,16 @@
     transition="dialog-transition"
   >
     <v-card>
-      <v-card-title
-        class="title"
-        primary-title
-      >
-        Spending in {{ title }}
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          Spending in {{ title }}
+        </span>
       </v-card-title>
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         <v-container
           class="pa-0"
           fluid
-          grid-list-md
         >
           <v-row>
             <v-col md="12">
@@ -24,41 +23,41 @@
                 :items="spendings"
               >
                 <template
-                  slot="items"
+                  slot="item"
                   slot-scope="props"
                 >
-                  <td>{{ props.item.number }}</td>
-                  <td>{{ props.item.amount | currency }}</td>
-                  <td class="text-right">
-                    <v-icon
-                      class="mr-2"
-                      color="#757575"
-                      size="20"
-                      @click="showSpendingLineItem(props.item)"
-                    >
-                      assignment
-                    </v-icon>
+                  <tr>
+                    <td>{{ props.item.number }}</td>
+                    <td>{{ props.item.amount | currency }}</td>
+                    <td class="text-right">
+                      <v-icon
+                        class="mr-2"
+                        color="#757575"
+                        size="20"
+                        @click="showSpendingLineItem(props.item)"
+                      >
+                        mdi-clipboard-account-outline
+                      </v-icon>
 
-                    <v-icon
-                      class="ml-0 mr-0"
-                      color="#757575"
-                      size="20"
-                      style="cursor: pointer"
-                      @click="editSpending(props.item)"
-                    >
-                      edit
-                    </v-icon>
+                      <v-icon
+                        class="ml-0 mr-0 pointer"
+                        color="#757575"
+                        size="20"
+                        @click="editSpending(props.item)"
+                      >
+                        mdi-pencil
+                      </v-icon>
 
-                    <v-icon
-                      class="ml-0 mr-0"
-                      color="red"
-                      size="20"
-                      style="cursor: pointer"
-                      @click="deleteSpending(props.item)"
-                    >
-                      delete
-                    </v-icon>
-                  </td>
+                      <v-icon
+                        class="ml-0 mr-0 pointer"
+                        color="red"
+                        size="20"
+                        @click="deleteSpending(props.item)"
+                      >
+                        mdi-delete
+                      </v-icon>
+                    </td>
+                  </tr>
                 </template>
               </v-data-table>
             </v-col>
@@ -69,7 +68,8 @@
         <v-spacer />
         <v-btn
           color="primary"
-          flat
+          elevation="1"
+          text
           @click="closeModalSpendings"
         >
           Close
@@ -124,7 +124,7 @@ export default {
       headers: [
         { text: 'Number', value: 'number' },
         { text: 'Amount', value: 'amount' },
-        { text: 'Actions', value: 'number', align: 'right', sortable: false }
+        { text: 'Actions', value: 'number', sortable: false }
       ],
       showSpendings: true
     }

@@ -1,8 +1,8 @@
 import { db } from '@/utils/Firebase'
-const elkConfig = {
-  url: window.Drupal.settings.m6_platform.elastic.url,
-  key: window.Drupal.settings.m6_platform.elastic.key
-}
+// const elkConfig = {
+//   url: window.Drupal.settings.m6_platform.elastic.url,
+//   key: window.Drupal.settings.m6_platform.elastic.key
+// }
 
 import axios from 'axios'
 
@@ -35,12 +35,12 @@ const actions = {
             action: 'create',
             target: 'spendings'
           }
-
-          await axios.post(elkConfig.url, post, {
-            headers: {
-              'x-api-key': elkConfig.key
-            }
-          })
+          //
+          // await axios.post(elkConfig.url, post, {
+          //   headers: {
+          //     'x-api-key': elkConfig.key
+          //   }
+          // })
           dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
             projectId
           }, {
@@ -72,11 +72,11 @@ const actions = {
             target: 'spendings'
           }
 
-          await axios.post(elkConfig.url, post, {
-            headers: {
-              'x-api-key': elkConfig.key
-            }
-          })
+          // await axios.post(elkConfig.url, post, {
+          //   headers: {
+          //     'x-api-key': elkConfig.key
+          //   }
+          // })
           dispatch('cpm/projects/forecasts/debounceGetForecastTasks', {
             projectId
           }, {
@@ -103,11 +103,11 @@ const actions = {
         target: 'spendings'
       }
 
-      await axios.post(elkConfig.url, post, {
-        headers: {
-          'x-api-key': elkConfig.key
-        }
-      })
+      // await axios.post(elkConfig.url, post, {
+      //   headers: {
+      //     'x-api-key': elkConfig.key
+      //   }
+      // })
 
       db.collection('cpm_projects')
         .doc(projectId)

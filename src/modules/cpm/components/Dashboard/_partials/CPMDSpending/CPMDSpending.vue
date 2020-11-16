@@ -6,13 +6,13 @@
   >
     <v-card
       class="elevation-0"
-      color="#3374BD"
     >
-      <v-card-title class="headline white--text">
-        Spending
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">Spending</span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text class="white">
+      <v-card-text class="vertical-scroll white">
         <chart
           ref="chart"
           :chart-data="dataCollection"

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position: relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"
@@ -11,11 +11,11 @@
           small
           @click="newL1"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Budget Categories</label>
           <v-list
@@ -42,7 +42,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
 
@@ -54,13 +54,12 @@
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-icon
-                    class="ml-0 mr-0"
+                    class="ml-0 mr-0 pointer"
                     color="#757575"
                     size="20"
-                    style="cursor: pointer"
                     @click.stop="edit(item)"
                   >
-                    edit
+                    mdi-pencil
                   </v-icon>
                 </v-list-tile-action>
               </v-list-tile>
@@ -79,16 +78,14 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             {{ formTitle }}
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
-        <v-card-text class="pa-2">
+        <v-card-text class="pa-2 vertical-scroll">
           <v-text-field
             v-model="name"
             color="blue"
@@ -114,7 +111,7 @@
 
           <v-btn
             :disabled="loading"
-            flat
+            text
             @click="cancel"
           >
             Cancel
@@ -123,8 +120,8 @@
           <v-btn
             color="blue"
             dark
-            flat
             :loading="loading"
+            text
             type="submit"
             @click="save"
           >
@@ -139,7 +136,7 @@
 
 <script>
 import { db } from '@/utils/Firebase'
-import * as easings from 'vuetify/es5/util/easing-patterns'
+// import * as easings from 'vuetify/es5/util/easing-patterns'
 import draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
@@ -179,16 +176,14 @@ export default {
         offset: 0,
         easing: 'easeInOutCubic'
       },
-      easings: Object.keys(easings),
+      // easings: Object.keys(easings),
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

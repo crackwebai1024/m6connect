@@ -7,14 +7,14 @@
       class="elevation-0 white--text"
       color="transparent"
     >
-      <v-card-title
-        class="headline"
-        style="overflow-x: auto"
-      >
-        Budget: {{ budgetTotal | currency }}
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          Budget: {{ budgetTotal | currency }}
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <chart
           ref="chart"
           :chart-data="dataCollection"

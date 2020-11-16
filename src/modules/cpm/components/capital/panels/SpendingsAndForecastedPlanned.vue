@@ -268,12 +268,11 @@
                         >
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             small
                             @click="openDialogForecast(period, props.item)"
                           >
-                            <v-icon>edit</v-icon>
+                            <v-icon>mdi-pencil</v-icon>
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -345,12 +344,11 @@
                         >
                           <v-btn
                             color="primary"
-                            flat
                             icon
                             small
                             @click="openDialogForecast(period, props.item)"
                           >
-                            <v-icon>edit</v-icon>
+                            <v-icon>mdi-pencil</v-icon>
                           </v-btn>
                         </v-col>
                       </v-row>
@@ -391,12 +389,11 @@
                   >
                     <v-btn
                       color="primary"
-                      flat
                       icon
                       small
                       @click="openDialogFiscalYear(fiscalYear, props.item)"
                     >
-                      <v-icon>edit</v-icon>
+                      <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -414,14 +411,13 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          {{ getTitleDialog() }}
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ getTitleDialog() }}
+          </span>
         </v-card-title>
-
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             grid-list-md
@@ -431,7 +427,7 @@
                 <v-text-field
                   v-model="elementToEdit.amount"
                   label="Amount"
-                  prepend-icon="attach_money"
+                  prepend-icon="mdi-cash"
                 />
               </v-col>
             </v-row>
@@ -442,8 +438,8 @@
           <v-spacer />
           <v-btn
             :disabled="loading"
-            flat
             :loading="loading"
+            text
             @click="cancelForecast"
           >
             Cancel
@@ -513,8 +509,7 @@ const snapshotDefault = {
 
 const initialHeaders = [{
   text: 'Capital Plan',
-  type: 'default',
-  align: 'left'
+  type: 'default'
 }]
 
 export default {
@@ -531,7 +526,7 @@ export default {
       required: true
     }
   },
-computed: {
+  computed: {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     })
@@ -1030,9 +1025,5 @@ computed: {
 <style scoped>
 .row-fiscal-year {
   min-width: 220px;
-}
-
-.pointer {
-  cursor: pointer;
 }
 </style>

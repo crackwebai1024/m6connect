@@ -1,5 +1,5 @@
 <template>
-  <v-menu>
+  <v-menu transition="scale-transition" class="card-custom-shadow m6-dropdown" right>
     <template v-slot:activator="{ on }">
       <v-btn
         color="info"
@@ -16,24 +16,24 @@
         Actions
       </v-btn>
     </template>
-    <v-list dense>
+    <v-list dense class="pa-0">
       <template v-for="(option, index) in options">
         <v-list-item
           v-if="!option.hide"
           :key="index"
-          class="list-item"
+          class="list-item px-0"
         >
           <v-list-item-title @click="emitEvent(option.event)">
-            <v-row class="align-center list-item">
-              <v-col class="shrink">
+            <v-row class="align-center list-item ma-0">
+              <v-col class="shrink mx-0 pa-2 transparent pr-0">
                 <v-icon
                   v-if="option.icon"
-                  class="mr-2"
+                  class="mr-0 transparent"
                 >
                   {{ option.icon }}
                 </v-icon>
               </v-col>
-              <v-col class="grow">
+              <v-col class="grow ma-2 py-0 px-1">
                 <span class="line-item-text">
                   {{ option.title }}
                 </span>
@@ -93,5 +93,14 @@ export default {
   .list-item:hover i {
     background: #24b6ff;
     color: white;
+  }
+  .list-item:hover .line-item-text{
+    color: white !important;
+  }
+  .v-icon.v-icon {
+    background: transparent;
+  }
+  .m6-dropdown .v-menu__content {
+    left: 2000px;
   }
 </style>

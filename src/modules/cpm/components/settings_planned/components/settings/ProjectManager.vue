@@ -14,7 +14,7 @@
         @click="showForm = true"
       >
         <v-icon color="blue">
-          add
+          mdi-plus
         </v-icon>
       </v-btn>
     </portal>
@@ -27,7 +27,7 @@
         small
         @click="showForm = true"
       >
-        <v-icon>add</v-icon>
+        <v-icon>mdi-plus</v-icon>
       </v-btn>
     </template>
 
@@ -46,7 +46,7 @@
               style="cursor: pointer"
               @click.prevent="deleteElement(props.index, props.item.label)"
             >
-              delete
+              mdi-delete
             </v-icon>
           </td>
         </template>
@@ -61,26 +61,13 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            <label
-              v-if="currentElement !== ''"
-              class="white--text"
-            >
-              Edit {{ appLabel.singular }} Manager
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >
-              Add New {{ appLabel.singular }} Manager
-            </label>
-          </v-row>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ currentElement !== '' ? `Edit ${appLabel.singular} Manager` : `Add New ${appLabel.singular} Manager` }}
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <label v-if="currentElement !== ''">
               Edit {{ appLabel.singular }} Manager
@@ -172,12 +159,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]
