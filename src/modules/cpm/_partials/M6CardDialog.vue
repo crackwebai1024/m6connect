@@ -79,7 +79,6 @@
 <script>
 export default {
   name: 'M6CardDialog',
-
   props: {
     cardTextClass: {
       type: String,
@@ -137,7 +136,7 @@ export default {
   }),
   computed: {
     rootComponent() {
-      return this.dialog ? 'v-dialog' : 'div'
+      return 'div'
     }
   },
   watch: {

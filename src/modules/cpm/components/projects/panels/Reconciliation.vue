@@ -1415,12 +1415,6 @@ export default {
 .td-actions {
   display: inline-flex;
 }
-.v-application .error--text {
-    font-size: 19px !important;
-    background: #ddd;
-    border-radius: 100%;
-    padding: 6px;
-}
 .td-actions {
   display: flex;
   justify-content: center;
