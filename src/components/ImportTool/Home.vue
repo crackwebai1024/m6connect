@@ -290,6 +290,34 @@ export default {
           {
             name: 'ID/Number',
             description: ''
+          },
+          {
+            name: 'Category',
+            description: ''
+          },
+          {
+            name: 'Contractor',
+            description: ''
+          },
+          {
+            name: 'startDate',
+            description: ''
+          },
+          {
+            name: 'End Date',
+            description: ''
+          },
+          {
+            name: 'Total Plan Budget',
+            description: ''
+          },
+          {
+            name: 'Phase',
+            description: ''
+          },
+          {
+            name: 'Forecasted',
+            description: ''
           }
         ],
         commitments: [
@@ -556,8 +584,7 @@ export default {
       }).then(({ data } = {}) => {
         const noEmptyHeaders = data.headers.filter(header => header !== null)
         const noEmptyFields = data.data.filter(field => field !== null)
-        console.log(noEmptyHeaders, noEmptyFields)
-        if (noEmptyHeaders.length == 0 && noEmptyFields.length == 0) {
+        if (noEmptyHeaders.length === 0 && noEmptyFields.length === 0) {
           this.fileErrors = ['There are no headers in this file']
         } else {
           this.fileData = data
@@ -574,23 +601,33 @@ export default {
       this.showStep3 = true
     },
     prepareToImport() {
-      let projectsCheck = null
+      let projectsCheck = false
+      let commitmentsToCheck = false
+      let spendingsToCheck = false
       const errors = []
 
       // Verify the headers
 
       this.mappedFields.forEach(item => {
-        if (item.includes('projects') !== false) {
-          if (item.includes('projects_id_number')) {
-            projectsCheck = true
-          } else {
-            errors.push('Project Number/ID is required')
-          }
+        if (item.includes('projects_id_number') !== false) {
+          projectsCheck = true
+        }
+
+        if (item.includes('commitments_id_number') !== false) {
+          commitmentsToCheck = true
+        }
+        if (item.includes('spendings_id_number') !== false) {
+          spendingsToCheck = true
         }
       })
 
       if (projectsCheck && !errors.length) {
-        this.types.push('commitments')
+        if (commitmentsToCheck) {
+          this.types.push('commitments')
+        }
+        if (spendingsToCheck) {
+          this.types.push('spendings')
+        }
         this.startImport()
       } else {
         console.error(errors)
@@ -611,6 +648,7 @@ export default {
           if (project === false) {
             console.log('Creating Project')
             project = await this.createProject(formatedData)
+            await this.storeForRevert('project', project.id)
           } else {
             project = project[0]
           }
@@ -634,6 +672,7 @@ export default {
             if (!commitment) {
               // Commitment not exists
               commitment = await this.createCommitment(project.id, formatedData)
+              await this.storeForRevert('commitment', commitment.id)
               console.log('Creating Commitment')
             } else {
               console.log('Using Existing Commitment')
@@ -644,12 +683,45 @@ export default {
             const checkLineItem = await this.getCommitmentLineItem(project.id, commitment.id, formatedData.commitmentLineItem_line_number)
             if (!checkLineItem) {
               console.log('Creating Line Item')
-              await this.createCommitmentLineItem(project.id, commitment.id, formatedData)
+              const newCommitmentLineItem = await this.createCommitmentLineItem(project.id, commitment.id, formatedData)
+              await this.storeForRevert('commitmentLineItem', newCommitmentLineItem.id)
+            } else {
+              console.log('Skipping Line Item, already exists')
+            }
+          } else if (this.types.includes('spendings')) {
+            const number = formatedData.spendings_id_number
+            if (number === undefined) {
+              console.error('MISSING NUMBER')
+              break
+            }
+            let spending = await this.getSpending(project.id, number)
+
+            if (spending.length > 1) {
+              // Error we can have just one commitment with the same number
+              this.$snotify.error('Spending duplicated: ', 'Error')
+              break
+            }
+
+            if (!spending) {
+              // Commitment not exists
+              spending = await this.createSpending(project.id, formatedData)
+              await this.storeForRevert('spending', spending.id)
+              console.log('Creating Commitment')
+            } else {
+              console.log('Using Existing Commitment')
+              spending = spending[0]
+            }
+
+            // Verify if the line item already exists
+            const checkLineItem = await this.getSpendingLineItem(project.id, spending.id, formatedData.spendingLineItem_line_number)
+            if (!checkLineItem) {
+              console.log('Creating Line Item')
+              const newSpendingLineItem = await this.createCommitmentLineItem(project.id, spending.id, formatedData)
+              await this.storeForRevert('spendingLineItem', newSpendingLineItem.id)
             } else {
               console.log('Skipping Line Item, already exists')
             }
           }
-          // else if (types.includes('spendings')) {}
         } else {
           break
         }
@@ -694,6 +766,31 @@ export default {
       const docs = await db.collection('cpm_projects')
         .doc(projectID)
         .collection('commitments')
+        .doc(commitmentID)
+        .collection('line_items')
+        .where('line_number', '==', number)
+        .get()
+      if (docs.empty) {
+        return false
+      } else {
+        return true
+      }
+    },
+    async getSpending(projectID, number) {
+      const docs = await db.collection('cpm_projects')
+        .doc(projectID)
+        .collection('spendings')
+        .where('number', '==', number)
+        .get()
+      if (docs.empty) {
+        return false
+      }
+      return await Promise.all(docs.docs.map(async item => item))
+    },
+    async getSpendingLineItem(projectID, commitmentID, number) {
+      const docs = await db.collection('cpm_projects')
+        .doc(projectID)
+        .collection('spendings')
         .doc(commitmentID)
         .collection('line_items')
         .where('line_number', '==', number)
@@ -822,6 +919,20 @@ export default {
       })
     },
     async createSpending(projectID, item) {
+      let bc = {}
+      if (item.commitments_budget_category) {
+        if (this.budgetCategories.length > 0) {
+          // eslint-disable-next-line eqeqeq
+          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category || s.code == item.commitments_budget_category)
+          if (!bc) {
+            bc = this.createBudgetCategory({
+              code: item.commitments_budget_category || item.commitments_budget_category,
+              name: item.commitments_budget_category || item.commitments_budget_category
+            })
+          }
+        }
+      }
+
       const newSpending = {
         number: item.spendings_id_number,
         total_po_amount: 0,
@@ -830,9 +941,9 @@ export default {
         invoiceTotal: 0,
         vendor: {},
         createdAt: new Date(),
-        createdBy: 'm6works_import_tool'
-        // budgetCategory: item.spendingLineItem_account_category || '', // Name
-        // budget_category: item.spendingLineItem_account_category || '' // reference
+        createdBy: 'm6works_import_tool',
+        budgetCategory: bc.name || '', // Name
+        budget_category: bc.ref || {} // reference
       }
 
       return new Promise(resolve => {
@@ -846,6 +957,8 @@ export default {
       }
 
       const newSpendingLineItem = {
+        createdAt: new Date(),
+        createdBy: 'm6works_import_tool',
         client_capital_id: item || '',
         number: item.spendings_id_number || '',
         po_number: item.spendings_commitment_id_number || '',
@@ -892,6 +1005,16 @@ export default {
     async createBudgetCategory(code) {
       const newBC = await db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets').collection('budget_categories').add(code)
       return { id: newBC.id, ref: newBC.ref, ...code }
+    },
+    async storeForRevert(type, id) {
+      const start = new Date()
+      const year = start.getFullYear().toString()
+      const month = ('0' + (start.getMonth() + 1)).slice(-2).toString()
+      const day = ('0' + (start.getDate())).slice(-2).toString()
+
+      db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).add({
+        id
+      })
     }
   }
 }
