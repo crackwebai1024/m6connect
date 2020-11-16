@@ -1,127 +1,148 @@
 <template>
-    <v-card>
-        <v-card-title class="d-flex justify-center" >
-            <div class="pa-1 subtitle-2 blue--text">User Management | </div> 
+  <v-card>
+    <v-card-title class="d-flex justify-center">
+      <div class="blue--text pa-1 subtitle-2">
+        User Management |
+      </div>
 
-            <div class="pa-1 subtitle-2 blue--text" >
-                <v-spacer />
-                <v-switch
-                    v-model="showPendingOnly"
-                    :label=" showPendingOnly ? 'Pending Users' : 'All Users' "
-                ></v-switch>
-            </div>
-        </v-card-title>
-        <v-card-text>
-            <v-data-table
-                :headers="headers"
-                :items="usersFiltered"
-                :items-per-page="5"
-                class="elevation-0"
-                @click:row="clickedUser"
-                show-expand
+      <div class="blue--text pa-1 subtitle-2">
+        <v-spacer />
+        <v-switch
+          v-model="showPendingOnly"
+          :label=" showPendingOnly ? 'Pending Users' : 'All Users' "
+        />
+      </div>
+    </v-card-title>
+    <v-card-text>
+      <v-data-table
+        class="elevation-0"
+        :headers="headers"
+        :items="usersFiltered"
+        :items-per-page="5"
+        show-expand
+        @click:row="clickedUser"
+      >
+        <template #item.fullName="{ item }">
+          <div class="horizontal-center">
+            <img
+              v-if="$h.dg(item, 'user.profilePic', '')"
+              class="round-img"
+              :src="$h.dg(item, 'user.profilePic', '')"
             >
-                <template #item.fullName="{ item }">
-                    <div class="horizontal-center">
-                        <img
-                            class="round-img"
-                            :src="$h.dg(item, 'user.profilePic', '')"
-                            v-if="$h.dg(item, 'user.profilePic', '')"
-                        >
-                        <v-icon v-else x-large  >mdi-account-circle</v-icon>
+            <v-icon
+              v-else
+              x-large
+            >
+              mdi-account-circle
+            </v-icon>
 
-                        <span class="pl-2" >{{ item.user.firstName }} {{ item.user.lastName }}</span>
-                    </div>
-                </template>
+            <span class="pl-2">{{ item.user.firstName }} {{ item.user.lastName }}</span>
+          </div>
+        </template>
 
-                <template #item.email="{ item }" >
-                    {{ item.user.email }}
-                </template>
+        <template #item.email="{ item }">
+          {{ item.user.email }}
+        </template>
 
-                <template #item.status="{ item }" >
-                    <v-chip v-if="$h.dg(item, 'joinStatus', '')" :color=" statusColors[$h.dg(item, 'joinStatus', '')] " >
-                        <b class="white--text" >{{ $h.dg(item, 'joinStatus', '').toLowerCase() }}</b>
-                    </v-chip>
-                </template>
+        <template #item.status="{ item }">
+          <v-chip
+            v-if="$h.dg(item, 'joinStatus', '')"
+            :color=" statusColors[$h.dg(item, 'joinStatus', '')] "
+          >
+            <b class="white--text">{{ $h.dg(item, 'joinStatus', '').toLowerCase() }}</b>
+          </v-chip>
+        </template>
 
-                <template #item.actions="{ item }" >
-                    <v-select
-                        v-model="item.joinStatus"
-                        :items="selectItems"
-                        item-text="label"
-                        item-value="val"
-                        label="User Status"
-                        single-line
-                        @input="selectInput(item)"
-                    />
-                </template>
-
-            </v-data-table>
-        </v-card-text>
-        <m6-loading :loading="loading" />
-    </v-card>
+        <template #item.actions="{ item }">
+          <v-select
+            v-model="item.joinStatus"
+            item-text="label"
+            item-value="val"
+            :items="selectItems"
+            label="User Status"
+            single-line
+            @input="selectInput(item)"
+          />
+        </template>
+      </v-data-table>
+    </v-card-text>
+    <m6-loading :loading="loading" />
+  </v-card>
 </template>
 
 <script>
-import { mapMutations, mapGetters, mapState, mapActions } from 'vuex'
+import {
+  mapMutations,
+  mapGetters,
+  mapState,
+  mapActions
+} from 'vuex'
 
 export default {
-    name: "UserMangementTable",
-    data: () => ({
-        loading: false,
-        showPendingOnly: false
+  name: 'UserMangementTable',
+  data: () => ({
+    loading: false,
+    showPendingOnly: false
+  }),
+  methods: {
+    ...mapMutations('UserSettingsControl', {
+      setUserToShow: 'setUserToShow',
+      setThirdColumnComponent: 'setThirdColumnComponent'
     }),
-    methods: {
-        ...mapMutations('UserSettingsControl', {
-            setUserToShow: 'setUserToShow',
-            setThirdColumnComponent : 'setThirdColumnComponent'
-        }),
-        ...mapActions('Companies', {
-            updateUserCompany: 'updateUserCompany'
-        }),    
-        clickedUser(user){
-            this.setUserToShow(user)
-            this.setThirdColumnComponent({ name: "user-settings-details" })
-        },
-        async selectInput(item) {
-            try{
-                this.loading = true
-                await this.updateUserCompany(item)
-                this.loading = false
-            } catch(e) {
-                this.loading = false
-            }
-        }
+    ...mapActions('Companies', {
+      updateUserCompany: 'updateUserCompany'
+    }),
+    clickedUser(user) {
+      this.setUserToShow(user)
+      this.setThirdColumnComponent({ name: 'user-settings-details' })
     },
-    computed: {
-        ...mapGetters('Companies', {
-            users: 'getCurrentCompanyUsers' 
-        }),
-        ...mapState('Auth', {
-            statusColors: "statusColors"
-        }),
-        ...mapState('UserSettingsControl', {
-            secondColumnComponent: 'secondColumnComponent',
-        }),
-        selectItems(){
-            return Object.keys(this.statusColors).map( s => ({ val: s, label: s.toLowerCase() }))
-        },
-        headers() {
-            let headers = [
-                { text: 'Full Name', value: 'fullName' },
-                { text: 'Status', value: 'status' },
-                { text: 'Email', value: 'email' },
-            ]
-            
-            headers.push({ text: 'Actions', value: "actions", sortable: false })
+    async selectInput(item) {
+      try {
+        this.loading = true
+        await this.updateUserCompany(item)
+        this.loading = false
+      } catch (e) {
+        this.loading = false
+      }
+    }
+  },
+  computed: {
+    ...mapGetters('Companies', {
+      users: 'getCurrentCompanyUsers'
+    }),
+    ...mapState('Auth', {
+      statusColors: 'statusColors'
+    }),
+    ...mapState('UserSettingsControl', {
+      secondColumnComponent: 'secondColumnComponent'
+    }),
+    selectItems() {
+      return Object.keys(this.statusColors).map(s => ({
+        val: s,
+        label: s.toLowerCase()
+      }))
+    },
+    headers() {
+      const headers = [
+        { text: 'Full Name', value: 'fullName' },
+        { text: 'Status', value: 'status' },
+        { text: 'Email', value: 'email' }
+      ]
 
-            return headers
-        },
-        usersFiltered() {
-            return this.showPendingOnly ? 
-                this.users.filter( u => u.joinStatus === "PENDING" ) : 
-                this.users
-        }
+      headers.push({
+        text: 'Actions',
+        value: 'actions',
+        sortable: false
+      })
+
+      return headers
     },
+    usersFiltered() {
+      return this.showPendingOnly ?
+        this.users.filter(u => u.joinStatus === 'PENDING') :
+        this.users
+    }
+  }
 }
 </script>
 
@@ -131,7 +152,7 @@ export default {
         width: 3rem;
     }
     .horizontal-center {
-        display: flex;      
+        display: flex;
         display: -webkit-flex;
         display: -ms-flexbox;
         flex-direction: row;
