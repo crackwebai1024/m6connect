@@ -68,7 +68,9 @@
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon
-              class="close-search"
+              class="close-search grey--text mx-2 text--darken-2"
+              light
+              size="25"
               v-on="on"
               @click="clearSearch"
             >
