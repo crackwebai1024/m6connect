@@ -3,7 +3,7 @@
         ref="form"
         v-model="valid"
         lazy-validation>
-        <v-row>
+        <v-row >
             <v-col col="12" class="text-center pa-0" >
                 <v-avatar size="100" class="mr-2 text-center">
                     <img
@@ -42,63 +42,6 @@
                     required
                 ></v-text-field>
             </v-col>
-            <v-btn
-                block
-                color="blue darken-1"
-                @click="showTabInput = !showTabInput;"
-                class="white--text mr-4">
-                Create Tab
-            </v-btn>
-            <v-row v-if="showTabInput">
-                <v-col cols="12" >
-                    <v-text-field
-                        v-model="tab.title"
-                        label="Title"
-                        :rules="stringsRules('Title')"
-                        required
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="5" >
-                    <v-text-field
-                        type="number"
-                        v-model="tab.weight"
-                        label="Weight"
-                        :rules="stringsRules('Weight')"
-                        required
-                    ></v-text-field>
-                </v-col>
-                <v-spacer></v-spacer>
-                <v-col cols="5" >
-                    <v-text-field
-                        type="number"
-                        v-model="tab.order"
-                        label="Order"
-                        :rules="stringsRules('Order')"
-                        required
-                    ></v-text-field>
-                </v-col>
-                <v-col cols="3">
-                    <span>Read Only: </span>
-                </v-col>
-                <v-col cols="9">
-                    <v-checkbox
-                        @click="tab['readOnly'] = !tab['readOnly']"
-                        v-model="tab['readOnly']"
-                        class="mt-0 mr-2"
-                        :value="tab['readOnly']"
-                        color="success"
-                        hide-details
-                    ></v-checkbox>
-                </v-col>
-                <v-spacer></v-spacer>
-                <v-btn 
-                    :disabled="!valid"
-                    color="success"
-                    class="mr-4"
-                    @click="pushTab()">
-                    Add
-                </v-btn>
-            </v-row>
             <v-col cols=12 v-for="(tab, index) in itemInfo.tabs" :key="index+'-tab'" >
                 <v-chip 
                     color="green"
@@ -141,13 +84,6 @@ export default {
             description: "", 
             tabs: []
         },
-        tab: {
-            readOnly: false,
-            title: "",
-            weight: 0,
-            order: 0
-        },
-        description:"",
         // Lists
         validation:[
             { label: "Yes", value: true },
@@ -169,9 +105,7 @@ export default {
             this.itemInfo['image'] = {    
                 image_url: this.appImage === '' ? null : this.appImage
             }
-            this.post_app(this.itemInfo).then(()=>{
-
-            });
+            this.post_app(this.itemInfo).then(()=>{});
         },
         pushTab(){
             this.itemInfo['tabs'].push(

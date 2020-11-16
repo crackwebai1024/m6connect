@@ -11,7 +11,7 @@
             </v-btn>
           </template>
           <v-list dense>
-            <v-list-item v-for="(item, i) in areas" :key="i">
+            <v-list-item v-for="(item, i) in areas.concat(areas2)" :key="i">
               <v-list-item-title
                 @click="item.function"
                 :class="item.type == 'title' ? 'grey--text' : 'black--text pointer'"
@@ -25,6 +25,7 @@
           class="font-weight-bold"
           height="40"
           label="Start Typing to Search"
+          @change="changeEvent"
           rounded
           flat
           dense
@@ -59,14 +60,23 @@
       </template>
       <new-record-dialog @closeModal="closeModal" />
     </v-dialog>
-    <div
-      :key="index"
-      v-for="(item, index) of records"
-      :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-    >
-      <general-item :recordData="item" />
+    <div v-if="!loading">
+      <div
+        :key="index"
+        v-for="(item, index) of records"
+        :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+      >
+        <general-item :recordData="item" />
+      </div>
+      <div class="w-full max-w-tight mx-auto py-3" v-if="records.length === 0">No results found</div>
     </div>
-    <div class="w-full max-w-tight mx-auto py-3" v-if="records.length === 0">No results found</div>
+    <v-container v-else>
+      <v-progress-circular
+        style="margin-left: 45%;"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+    </v-container>
   </v-container>
 </template>
 <script>
@@ -83,6 +93,8 @@ export default {
   },
   name: "GeneralList",
   data: () => ({
+    loading: true,
+    areas2: [],
     perPage: 8,
     records: [],
     dialog: false,
@@ -97,30 +109,43 @@ export default {
     }),
     areas(){ 
       return [
-        { text: "Everyone",           type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'Everyone'           }); this.reload();}},
-        { text: "Applications",       type: "title",    function: () => {                                                                                          }},
-        { text: "ITApps",             type: "subtitle", function: () => { this.setFilterTag({key: 'itapps',          value: 'ITApps'             }); this.reload();}},
-        { text: "DynamicApps",        type: "subtitle", function: () => { this.setFilterTag({key: 'dynamicapps',     value: 'DynamicApps'        }); this.reload();}},
-        { text: "Teams",              type: "title",    function: () => {                                                                                          }},
-        { text: "All my teams",       type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'All my teams'       }); this.reload();}},
-        { text: "IT Team XY",         type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'IT Team XY'         }); this.reload();}},
-        { text: "CPM Team Z",         type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'CPM Team Z'         }); this.reload();}},
-        { text: "Departments",        type: "title",    function: () => {                                                                                          }},
-        { text: "All my departments", type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'All my departments' }); this.reload();}},
-        { text: "Finances",           type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'Finances'           }); this.reload();}},
-        { text: "Operations",         type: "subtitle", function: () => { this.setFilterTag({key: 'everyone',        value: 'Operations'         }); this.reload();}},
+        { text: "All Apps",     type: "subtitle", function: () => { this.setFilterTag({key: 'everyone', value: 'All Apps' }); this.reload();}},
+        { text: "Applications", type: "title",    function: () => {                                                                         }},
+        { text: "ITApps",       type: "subtitle", function: () => { this.setFilterTag({key: 'itapps',   value: 'ITApps'   }); this.reload();}}
       ]
     }
   },
   methods: {
     ...mapActions("ITAppsModule", {
       getApps: "get_all_apps",
+      selectApp: "get_select_apps",
+      filterApps: "get_filter_apps",
       setFilterTag: "set_filter_tag"
     }),
+    ...mapActions("DynamicAppsModule", {
+      getDynamicApps: "get_all_apps_by_id",
+      setDynamicApps: 'set_apps'
+    }),
+    changeEvent(event){
+      this.records = [];
+      this.loading = true;
+      this.filterApps({ param: event }).then(() => {
+        this.records = this.list();
+        this.loading = false;
+      });
+    },
+    getRecords(appId){
+      this.loading = true;
+      this.getDynamicApps(appId).then(() => {
+        this.records = this.list();
+        this.loading = false;
+      });
+    },
     reload(){
+      this.loading = true;
       this.records = [];
       this.getApps().then( 
-        apps => (this.records = this.list())
+        apps => (this.records = this.list(), this.loading = false)
       );
     },
     remainingPerPage(page) {
@@ -140,10 +165,18 @@ export default {
     },
   },
   mounted() {
-    this.setFilterTag({key: 'everyone', value: 'Everyone'});
+    this.setDynamicApps();
+    this.setFilterTag({key: 'everyone', value: 'All Apps'});
     this.getApps().then(
-      apps => (this.records = this.list())
+      apps => (this.records = this.list(), this.loading = false)
     );
+    this.selectApp().then(res => {
+      res['data'].forEach(app => {
+        this.areas2.push(
+          { text: app['title'], type: "subtitle", function: () => { this.setFilterTag({key: 'dynamicApp', value: app['title'] }); this.getRecords(app.id); }},
+        );
+      })
+    })
   },
 };
 </script>

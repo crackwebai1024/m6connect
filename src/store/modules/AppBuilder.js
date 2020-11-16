@@ -107,6 +107,7 @@ const actions = {
     })
   },
   createRecord(_, payload) {
+    console.log(payload);
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record`, payload).then(({ data }) => {
         resolve(data)

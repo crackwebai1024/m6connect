@@ -1,6 +1,5 @@
 import axios from "axios";
 import generalListModule from "../../GeneralListModule";
-const Convert = require("@/store/models/itapps");
 const convertApps = require("@/store/models/m6apps");
 const ItAppDescription = require("@/store/models/itapp_description");
 const ItAppDependencies = require("@/store/models/itapp_dependencies");
@@ -26,14 +25,18 @@ export default {
           let a = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/itapps/get_itapp_info/${id}`);
           generalListModule.state.general_list.push(a.data);
         },
-      // GET ITApps
-        async get_it_apps(cont){
-          let response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/itapps`);
-          cont.state.itappsRecords = Convert.toItappsArray(response['data']);
+        async get_filter_apps(cont, data){
+          let response = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/filter/apps`,data);
+          
+          cont.state.itappsRecords = convertApps.toM6Apps(response['data']);
           generalListModule.state.general_list = cont.state.itappsRecords;
         },
+        async get_select_apps(){
+          return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/apps/selects`);
+        },
+      // GET Apps
         async get_all_apps(cont){
-          let response = {};
+          let response = [];
           switch (cont.state.filter.key) {
             case 'everyone':
               response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/apps`);
