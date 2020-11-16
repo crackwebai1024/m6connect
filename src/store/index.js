@@ -19,6 +19,7 @@ import AppBuilder from './modules/AppBuilder'
 import M6Codes from './modules/M6Codes'
 import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
 import RapidTicket from './modules/RapidTicket'
+import RecordsInstance from './modules/RecordsInstance'
 import hideCpmPanels from '@/modules/cpm/store/hide-cpm-panels'
 import ganttSettings from '@/modules/cpm/store/gantt-settings'
 import gantt from '@/modules/cpm/store/gantt'
@@ -182,6 +183,8 @@ export default new Vuex.Store({
     hideCpmPanels,
     ganttSettings,
     gantt,
-    ImportCPM
+    ImportCPM,
+    RapidTicket,
+    RecordsInstance
   }
 })
