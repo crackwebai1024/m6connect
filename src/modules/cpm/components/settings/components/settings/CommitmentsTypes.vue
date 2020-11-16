@@ -34,7 +34,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text class="vertical-scroll">
+      <v-card-text>
         <div class="form-group">
           <label v-if="!included">Current Types</label>
           <v-data-table
@@ -46,20 +46,18 @@
               <td>{{ props.item }}</td>
               <td class="text-right">
                 <v-icon
-                  class="mr-2"
+                  class="mr-2 pointer"
                   color="#757575"
                   size="20"
-                  style="cursor: pointer"
                   @click.prevent="editElement(props.index, props.item)"
                 >
                   mdi-pencil
                 </v-icon>
 
                 <v-icon
-                  class="ml-0 mr-0"
+                  class="ml-0 mr-0 pointer"
                   color="#f44336"
                   size="20"
-                  style="cursor: pointer"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
                   mdi-delete

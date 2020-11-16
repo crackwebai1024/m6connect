@@ -96,19 +96,17 @@
                       <td>
                         <v-col style="float: right;">
                           <v-icon
-                            class="ml-0 mr-2"
+                            class="ml-0 mr-2 pointer"
                             color="#757575"
                             size="20"
-                            style="cursor: pointer"
                             @click.stop="editLineItem(props.item)"
                           >
                             mdi-pencil
                           </v-icon>
                           <v-icon
-                            class="ml-0 mr-2"
+                            class="ml-0 mr-2 pointer"
                             color="#f44336"
                             size="20"
-                            style="cursor: pointer"
                             @click.stop="deleteLineItem(props.item)"
                           >
                             mdi-delete

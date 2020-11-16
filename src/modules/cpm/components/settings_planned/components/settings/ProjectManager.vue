@@ -40,10 +40,9 @@
           <td>{{ props.item.label }}</td>
           <td class="text-right">
             <v-icon
-              class="ml-0 mr-0"
+              class="ml-0 mr-0 pointer"
               color="#f44336"
               size="20"
-              style="cursor: pointer"
               @click.prevent="deleteElement(props.index, props.item.label)"
             >
               mdi-delete
