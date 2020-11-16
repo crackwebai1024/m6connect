@@ -130,7 +130,6 @@
     <m6-data-table
       :align-actions="alignActions"
       class="elevation-0"
-      :expand="false"
       fixed-header
       :headers="headers"
       :items="resources"
@@ -288,7 +287,6 @@
           <v-col cols="11">
             <v-data-table
               class="elevation-1"
-              :expand="false"
               :headers="subheaders"
               hide-actions
               :items="props.item.spending"

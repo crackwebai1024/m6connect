@@ -41,7 +41,6 @@
           @edited="lineItemEdited"
         />
         <v-data-table
-          :expand="expand"
           :headers="headers"
           item-key="category.name"
           :items="budgetCategories"

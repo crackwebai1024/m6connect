@@ -116,7 +116,6 @@
 
     <m6-data-table
       :align-actions="alignActions"
-      :expand="false"
       :headers="headersSpendings"
       :items="resources"
       :options.sync="pagination"

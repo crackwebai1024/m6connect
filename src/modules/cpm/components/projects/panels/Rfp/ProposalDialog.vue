@@ -203,7 +203,6 @@
           <v-card-text class="vertical-scroll">
             <v-expansion-panel
               v-model="packagesPanel"
-              expand
               popout
             >
               <v-expansion-panel-content
