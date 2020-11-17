@@ -23,7 +23,7 @@
                 <v-col cols="12" >
                     <v-spacer></v-spacer>
                     <v-btn v-if="isEdit" color="green" class="white--text" @click="updating" >update</v-btn>
-                    <v-btn v-else color="green" class="white--text" @click="creating" >create</v-btn>
+                    <v-btn v-else color="green" class="white--text" @click="creating" >save</v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -102,7 +102,7 @@ export default {
             try {
                 this.loading = true 
 
-                const payload = { record_id: this.currentRecord.id, fields: [] } 
+                const payload = { record_id: this.currentRecord.id || this.$route.params.id, fields: [] } 
                 for( let x = 0; x < this.fields.length; x++ ) {
 
                     const f = this.fields[x]
@@ -117,6 +117,8 @@ export default {
                         payload.fields.push({ value, field_id: f.id })
                     }
                 }
+                console.log('payload')
+                console.log(payload)
 
                 await this.bulkSaveFieldValues(payload)
 
