@@ -31,7 +31,6 @@
 
     <v-data-table
       :key="tableKey"
-      :expand="expand"
       :headers="headers"
       item-key="name"
       :items="filteredCategories"
@@ -258,7 +257,6 @@ export default {
       selectedRow: {},
       allCommitments: [],
       commitments: [],
-      expand: false,
       project: {},
       projectId,
       budget: {},

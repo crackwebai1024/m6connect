@@ -116,7 +116,6 @@
 
     <m6-data-table
       :align-actions="alignActions"
-      :expand="false"
       :headers="headersSpendings"
       :items="resources"
       :options.sync="pagination"
@@ -1223,20 +1222,18 @@
                       <td class="pa-0 text-center">
                         <v-col>
                           <v-icon
-                            class="ml-0 mr-2"
+                            class="ml-0 mr-2 pointer"
                             color="#757575"
                             size="20"
-                            style="cursor: pointer"
                             @click="openEditLineItem(props.item)"
                           >
                             mdi-pencil
                           </v-icon>
 
                           <v-icon
-                            class="ml-0 mr-0"
+                            class="ml-0 mr-0 pointer"
                             color="#f44336"
                             size="20"
-                            style="cursor: pointer"
                             @click="deleteLineItem(props.item)"
                           >
                             mdi-delete

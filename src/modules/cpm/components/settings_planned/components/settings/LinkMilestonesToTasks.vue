@@ -23,6 +23,7 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
+  name: 'LinkMilestonesToTasks',
   components: {
     Treeselect
   },
@@ -70,10 +71,6 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     })
-  },
-  mounted() {
-    this.values = this.options
-    this.getList()
   },
   watch: {
     options(value) {
