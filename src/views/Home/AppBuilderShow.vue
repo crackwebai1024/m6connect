@@ -71,7 +71,7 @@
                     >
                         <h3>{{ panel.title }}</h3>
 
-                        <form-show-generator :fields="$h.dg(panel, 'fields', [])" />
+                        <form-show-generator :panel="panel" :fields="$h.dg(panel, 'fields', [])" />
                     </div>
                 </div>
 
