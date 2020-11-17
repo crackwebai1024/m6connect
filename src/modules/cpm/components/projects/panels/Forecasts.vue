@@ -2,7 +2,6 @@
   <m6-card-dialog title="Forecasts">
     <v-expansion-panel
       v-if="capitalPlans && capitalPlans.length"
-      :expand="true"
     >
       <v-expansion-panel-content
         v-for="capitalPlan in capitalPlans"

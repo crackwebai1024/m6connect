@@ -128,7 +128,6 @@
       v-if="dataTable"
       :align-actions="alignActions"
       class="elevation-0"
-      expand
       :headers="headers"
       :items="resources"
       :options.sync="pagination"

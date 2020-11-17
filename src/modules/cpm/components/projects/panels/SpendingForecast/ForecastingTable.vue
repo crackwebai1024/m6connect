@@ -20,7 +20,6 @@
     </v-row>
     <m6-data-table
       disable-initial-sort
-      :expand="true"
       :headers="headers"
       item-key="id"
       :items="tasksWithPositiveAmount"
