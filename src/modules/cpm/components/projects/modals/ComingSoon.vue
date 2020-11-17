@@ -5,15 +5,11 @@
     width="500"
   >
     <v-card>
-      <v-card-title
-        class="blue headline lighten-2"
-        primary-title
-        style="color: white;"
-      >
-        Coming Soon
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">Coming Soon</span>
       </v-card-title>
-
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         This feature is on it's way
       </v-card-text>
 
@@ -23,7 +19,7 @@
         <v-spacer />
         <v-btn
           color="red"
-          flat
+          text
           @click="$emit('close-dialog')"
         >
           Close

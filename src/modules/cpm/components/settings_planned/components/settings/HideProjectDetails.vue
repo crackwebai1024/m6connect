@@ -2,7 +2,7 @@
   <component-template>
     <v-container class="pt-0">
       <v-card>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-progress-circular
             v-if="showLoading"
             color="primary"

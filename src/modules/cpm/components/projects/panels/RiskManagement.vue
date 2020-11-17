@@ -3,10 +3,10 @@
     <template v-slot:after:title>
       <v-icon
         class="cursor"
-        dark
+        light
         @click="openModal"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 
@@ -47,22 +47,22 @@
             <v-icon
               class="ml-0 mr-1"
               color="#757575"
-              flat
               size="20"
               style="cursor: pointer"
+              text
               @click="editItem(risk)"
             >
-              edit
+              mdi-pencil
             </v-icon>
 
             <v-icon
               class="ml-0 mr-0"
               color="#f44336"
-              flat
               size="20"
+              text
               @click="deleteItem(risk)"
             >
-              delete
+              mdi-delete
             </v-icon>
           </td>
         </v-row>
@@ -82,15 +82,14 @@
       scrollable
     >
       <v-card>
-        <v-card-title
-          class="green headline lighten-2"
-          primary-title
-          style="color: white;"
-        >
-          Risk Management
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Risk Management
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             fluid
@@ -171,8 +170,8 @@
           <v-btn
             color="gray"
             :disabled="loading"
-            flat
             :loading="loading"
+            text
             @click="closeModal"
           >
             Close
@@ -180,8 +179,8 @@
           <v-btn
             color="primary"
             :disabled="loading"
-            flat
             :loading="loading"
+            text
             @click="saveModal"
           >
             Save

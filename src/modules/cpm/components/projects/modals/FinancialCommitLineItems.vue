@@ -6,22 +6,23 @@
     scrollable
   >
     <v-card class="contact-edit-modal">
-      <v-card-title class="headline">
-        <v-row
-          v-if="isCreate"
-          align="center"
-        >
-          Create Commitment Line Item
-        </v-row>
-        <v-row
-          v-else
-          align="center"
-        >
-          Edit Commitment Line Item
-        </v-row>
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          <template
+            v-if="isCreate"
+          >
+            Create Commitment Line Item
+          </template>
+          <template
+            v-else
+          >
+            Edit Commitment Line Item
+          </template>
+        </span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-container fluid>
           <v-form ref="form">
             <v-row
@@ -420,7 +421,6 @@
       <v-card-actions>
         <v-spacer />
         <v-btn
-          flat
           text
           @click="$emit('close-only')"
         >
@@ -429,7 +429,6 @@
 
         <v-btn
           v-if="isCreate"
-          flat
           text
           @click="create"
         >
@@ -438,7 +437,6 @@
 
         <v-btn
           v-if="!isCreate"
-          flat
           text
           @click="update"
         >

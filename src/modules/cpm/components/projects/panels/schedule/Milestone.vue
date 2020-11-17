@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-card>
-      <v-card-title
-        class="title"
-        primary-title
-      >
-        Milestone Information
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          Milestone Information
+        </span>
       </v-card-title>
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <v-container
             class="pa-0"
@@ -234,25 +234,23 @@
         :width="1200"
       >
         <v-card>
-          <v-card-title
-            class="headline"
-            style="background: #006699; color:#fff"
-          >
-            <v-row align="center">
+          <v-card-title class="headline white px-6 py-4">
+            <span class="grey--text text--darken-1">
               {{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}
-            </v-row>
+            </span>
           </v-card-title>
+          <v-divider class="grey lighten-3" />
 
           <v-card-actions>
             <v-btn
-              flat
+              text
               @click="showModal = false"
             >
               {{ $t('general.no') }}
             </v-btn>
             <v-btn
               color="primary"
-              flat
+              text
               @click="
                 updateFutureMilestone = true
                 showModal = false
@@ -273,7 +271,7 @@
             </div>
           </v-card-actions>
 
-          <v-card-text>
+          <v-card-text class="vertical-scroll">
             <v-container
               fluid
               grid-list-md

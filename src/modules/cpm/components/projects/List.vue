@@ -12,13 +12,13 @@
         <v-col class="shrink">
           <v-btn
             color="#0277BD"
-            dark
             fab
+            light
             small
             @click="showCreateModal = true"
           >
-            <v-icon dark>
-              add
+            <v-icon light>
+              mdi-plus
             </v-icon>
           </v-btn>
         </v-col>
@@ -75,8 +75,7 @@
           sm="6"
         >
           <v-card
-            class="cpmCard"
-            style="cursor: pointer;"
+            class="cpmCard pointer"
             @mouseleave="showDeleteIconApplication = null"
             @mouseover="showDeleteIconApplication = indexR"
           >
@@ -93,7 +92,7 @@
                   v-on="on"
                   @click="deleteProject(proj)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </template>
               <span>Delete Project</span>
@@ -114,7 +113,7 @@
                     small
                     v-on="on"
                   >
-                    <v-icon>open_in_new</v-icon>
+                    <v-icon>mdi-folder-plus</v-icon>
                   </v-btn>
                 </a>
               </template>
@@ -140,14 +139,17 @@
                       v-else
                       size="100"
                     >
-                      photo
+                      mdi-image
                     </v-icon>
                   </v-avatar>
                 </v-badge>
               </v-row>
             </v-col>
 
-            <v-card-text @click="goToProject(proj, false)">
+            <v-card-text
+              class="vertical-scroll"
+              @click="goToProject(proj, false)"
+            >
               <div class="mb-2 text-center">
                 <p
                   class="font-weight-bold headline"
@@ -187,11 +189,11 @@
                   <small>Project Status</small>
                   <v-card
                     :color="getColor('listStatus')"
-                    flat
+                    text
                     tile
                   >
-                    <v-card-text class="py-2 subheading white--text">
-                      <span style="color: white;">{{ proj.status }}</span>
+                    <v-card-text class="py-2 subheading vertical-scroll white--text">
+                      <span class="white--text">{{ proj.status }}</span>
                     </v-card-text>
                   </v-card>
                 </v-col>
@@ -203,13 +205,13 @@
                   <small>Start Date</small>
                   <v-card
                     :color="getColor('listStartDate')"
-                    flat
+                    text
                     tile
                   >
-                    <v-card-text class="py-2 subheading white--text">
+                    <v-card-text class="py-2 subheading vertical-scroll white--text">
                       <span
                         v-if="proj.startDate"
-                        style="color: white;"
+                        class="white--text"
                       >
                         {{ parseDate(proj.startDate) }}
                       </span>
@@ -249,7 +251,7 @@
                     v-else
                     dark
                   >
-                    wallpaper
+                    mdi-wallpaper
                   </v-icon>
                 </v-avatar>
               </td>
@@ -258,7 +260,7 @@
                   href="#"
                   @click.prevent="goToProject(props.item, false)"
                 >
-                  <span style="color: #0D47A1;">{{ props.item.number }}</span>
+                  <span class="blue--text text--lighten-1">{{ props.item.number }}</span>
                 </a>
               </td>
               <td>{{ props.item.campus ? props.item.campus.name : '' }}</td>
@@ -290,7 +292,7 @@
               <td>{{ props.item.projectType }}</td>
 
               <template v-if="!isPlanned">
-                <td style="text-align:right;">
+                <td class="text-right">
                   {{
                     parseFloat(
                       props.item.budget ? props.item.budget : 0
@@ -300,7 +302,7 @@
                     })
                   }}
                 </td>
-                <td style="text-align:right;">
+                <td class="text-right">
                   {{
                     parseFloat(
                       props.item.projectFinalCost
@@ -318,13 +320,12 @@
                 <v-tooltip left>
                   <template v-slot:activator="{ on }">
                     <v-icon
-                      class="mr-2"
+                      class="mr-2 pointer"
                       small
-                      style="cursor: pointer;"
                       v-on="on"
                       @click="goToProject(props.item, false)"
                     >
-                      edit
+                      mdi-pencil
                     </v-icon>
                   </template>
                   <span>Edit</span>
@@ -334,12 +335,12 @@
                   <template v-slot:activator="{ on }">
                     <v-icon
                       v-if="props.item.canDelete != false"
+                      class="pointer"
                       small
-                      style="cursor: pointer;"
                       v-on="on"
                       @click="deleteProject(props.item)"
                     >
-                      delete
+                      mdi-delete
                     </v-icon>
                   </template>
                   <span>Delete</span>
@@ -461,11 +462,10 @@ export default {
       { text: 'Description', value: 'description' },
       { text: 'Project Manager', value: 'managerLabel' },
       { text: 'Project Type', value: 'projectType' },
-      { text: 'Budget', value: 'budget', align: 'right' },
+      { text: 'Budget', value: 'budget' },
       {
         text: 'Projected Final Cost',
-        value: 'projectFinalCost',
-        align: 'right'
+        value: 'projectFinalCost'
       },
       { text: 'Status', value: 'status' },
       { text: 'Actions', value: 'name', sortable: false }
@@ -482,8 +482,7 @@ export default {
       { text: 'FY5', value: 'FY5' },
       {
         text: 'Total Budget',
-        value: 'budget',
-        align: 'right'
+        value: 'budget'
       }, // computed/function
       { text: 'RFP Date', value: 'RFP Date' },
       { text: 'Board Approval' },

@@ -101,7 +101,9 @@
 <script>
 import { db } from '@/utils/Firebase'
 import { mapState, mapGetters } from 'vuex'
-import { skipIterationForItems } from '@/components/cpm/helpers/HelpersFunction'
+import {
+  skipIterationForItems
+} from '@/components/cpm/helpers/HelpersFunction'
 export default {
   name: 'CostSummary',
   props: {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="assignment-1"
@@ -16,7 +16,7 @@
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -30,10 +30,10 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Budget Approvers</label>
           <v-data-table
@@ -45,11 +45,10 @@
               <td>{{ props.item.label }}</td>
               <td class="text-right">
                 <!--<v-btn-->
-                <!--  flat-->
                 <!--  small-->
                 <!--  icon-->
                 <!--  @click.prevent="editElement(props.index, props.item)">-->
-                <!--  <v-icon>edit</v-icon>-->
+                <!--  <v-icon>mdi-pencil</v-icon>-->
                 <!--</v-btn>-->
                 <v-icon
                   class="ml-0 mr-0"
@@ -58,7 +57,7 @@
                   style="cursor: pointer"
                   @click.prevent="deleteElement(props.index, props.item.label)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -74,24 +73,23 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
+        class="headline"
+        style="background: #006699; color:#fff"
         >
-          <v-row align="center">
-            <label
-              v-if="currentElement !== ''"
-              class="white--text"
-            >
-              Edit Budget Approver
-            </label>
-            <label
-              v-else
-              class="white--text"
-            >Add New Budget Approver</label>
-          </v-row>
+        <v-row align="center">
+          <label
+            v-if="currentElement !== ''"
+            class="white--text"
+          >
+            Edit Budget Approver
+          </label>
+          <label
+            v-else
+            class="white--text"
+          >Add New Budget Approver</label>
+        </v-row>
         </v-card-title>
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <div class="form-group">
               <label v-if="currentElement !== ''">Edit Budget Approver</label>
@@ -190,12 +188,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

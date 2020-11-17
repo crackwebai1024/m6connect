@@ -11,11 +11,10 @@
             @click="printFromVue('chart')"
           >
             <v-icon
-              class="cursor"
-              color="white"
-              flat
+              class="grey--text pointer text--darken-1"
+              text
             >
-              print
+              mdi-printer
             </v-icon>
           </a>
         </template>
@@ -37,9 +36,9 @@
             v-on="on"
           >
             <v-icon
-              flat
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -91,8 +90,7 @@ export default {
     chartOptions() {
       return {
         title: {
-          text: this.$t('cpm.projects.spendingForecast'),
-          align: 'center'
+          text: this.$t('cpm.projects.spendingForecast')
         },
         chart: {
           height: 350,
@@ -459,9 +457,5 @@ export default {
 <style lang="scss">
 .apexClass .apexcharts-canvas {
   z-index: 1 !important;
-}
-
-.pointer {
-  cursor: pointer;
 }
 </style>

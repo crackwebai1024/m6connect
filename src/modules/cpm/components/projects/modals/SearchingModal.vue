@@ -5,51 +5,54 @@
     width="500"
   >
     <v-card>
-      <v-card-title
-        class="green headline lighten-2"
-        primary-title
-        style="color: white;"
-      >
-        Search in {{ where }}
+      <v-card-title class="d-flex headline justify-space-between px-6 py-4 white">
+        <span class="grey--text text--darken-1">
+          Search in {{ where }}
+        </span>
+        <v-btn
+          color="gray"
+          icon
+          @click.prevent="cancel"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         <v-form
           ref="form"
         >
           <v-text-field
             ref="searchTxt"
             v-model="searchTxt"
+            class="mt-6 rounded search-tag white"
             :label="where === 'spendings' ? spendingsLabel : commitmentsLabel"
             :rules="[
               v => !!v || 'Please fill this in. It is required to do the search'
             ]"
-            @keyup.enter="search"
+            @keydown.enter.prevent="search"
           />
         </v-form>
       </v-card-text>
 
       <v-divider />
-      <v-card-actions>
+      <v-card-actions class="px-6 py-4">
         <v-spacer />
         <v-btn
           v-if="previousSearch"
-          color="red"
-          flat
+          class="white--text"
+          color="red lighten-3"
           @click.prevent="clear"
         >
           Clear
         </v-btn>
         <v-btn
-          color="gray"
-          flat
-          @click.prevent="cancel"
-        >
-          Close
-        </v-btn>
-        <v-btn
-          color="primary"
-          flat
+          class="blue lighten-2"
+          color="white"
+          elevation="1"
+          text
           @click.prevent="search"
         >
           Search
@@ -103,3 +106,12 @@ export default {
   }
 }
 </script>
+
+<style>
+.search-tag .v-label {
+    background: #fff !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+</style>
+

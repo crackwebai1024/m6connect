@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <portal
           v-if="included"
           to="budget-0"
@@ -16,7 +16,7 @@
             @click="showForm = true"
           >
             <v-icon color="blue">
-              add
+              mdi-plus
             </v-icon>
           </v-btn>
         </portal>
@@ -31,10 +31,10 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Budget Status</label>
           <v-data-table
@@ -52,7 +52,7 @@
                   style="cursor: pointer"
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -62,7 +62,7 @@
                   style="cursor: pointer"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -79,15 +79,13 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Budget Status
-          </v-row>
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <v-text-field
               v-model="element"
@@ -152,12 +150,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label v-if="!included">Current Status</label>
           <v-btn
@@ -14,7 +14,7 @@
             small
             @click="showForm = true"
           >
-            <v-icon>add</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-btn>
 
           <v-data-table
@@ -31,7 +31,7 @@
                   size="20"
                   @click.prevent="editElement(props.index, props.item)"
                 >
-                  edit
+                  mdi-pencil
                 </v-icon>
 
                 <v-icon
@@ -40,7 +40,7 @@
                   size="20"
                   @click.prevent="deleteElement(props.index, props.item)"
                 >
-                  delete
+                  mdi-delete
                 </v-icon>
               </td>
             </template>
@@ -56,12 +56,13 @@
       scrollable
     >
       <v-card class="mt-2">
-        <v-card-title class="customBackground headline">
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Changes Status
-          </v-row>
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-form ref="form">
             <v-text-field
               v-model="element"
@@ -127,12 +128,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]
@@ -225,14 +224,5 @@ export default {
 <style lang="scss" scoped>
 .customPosition {
   top: 5px;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.customBackground {
-  background: #006699;
-  color: #fff;
 }
 </style>

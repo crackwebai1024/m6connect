@@ -16,10 +16,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -27,7 +27,7 @@
       </v-tooltip>
     </template>
 
-    <v-card-text class="pr-0">
+    <v-card-text class="pr-0 vertical-scroll">
       <div class="text-center">
         <v-progress-circular
           v-show="loading"

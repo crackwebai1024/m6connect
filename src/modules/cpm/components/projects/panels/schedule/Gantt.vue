@@ -7,15 +7,13 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title primary-title>
-          <v-col
-            class="title"
-            md="12"
-          >
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             Apply Schedule
-          </v-col>
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             fluid
@@ -45,9 +43,9 @@
               </v-col>
               <v-col md="8">
                 <v-menu
+                  v-if="!validDates.length"
                   ref="menuMilestone"
                   v-model="milestoneDatePicker"
-                  v-if="!validDates.length"
                   :close-on-content-click="false"
                   full-width
                   lazy
@@ -125,8 +123,8 @@
         <v-col class="shrink">
           <v-btn
             color="primary"
-            :flat="editing"
             :small="editing"
+            :text="editing"
             @click="editing = !editing"
           >
             {{ editBtnName }}
@@ -136,7 +134,7 @@
               right
               small
             >
-              close
+              mdi-close
             </v-icon>
           </v-btn>
         </v-col>
@@ -350,12 +348,12 @@
       >
         <v-btn
           class="ma-0"
-          flat
           small
+          text
           @click="setScale(0)"
         >
           <v-icon>
-            calendar_today
+            mdi-calendar
           </v-icon>
           Daily
         </v-btn>
@@ -365,12 +363,12 @@
       >
         <v-btn
           class="ma-0"
-          flat
           small
+          text
           @click="setScale(1)"
         >
           <v-icon>
-            date_range
+            mdi-calendar-range
           </v-icon>
           Monthly
         </v-btn>
@@ -405,10 +403,10 @@
       @click="expandGantt"
     >
       <v-icon v-if="!expandTasksOnGantt">
-        expand_more
+        mdi-arrow-expand-down
       </v-icon>
       <v-icon v-else>
-        expand_less
+        mdi-arrow-expand-up
       </v-icon>
     </v-btn>
   </div>
@@ -1194,7 +1192,6 @@ export default {
         gantt.config.columns.push({
           name: 'start_date',
           label: 'Start Date',
-          align: 'center',
           width: 110,
           template: function (obj) {
             return format(obj.start_date, 'MM/DD/YYYY')
@@ -1205,7 +1202,6 @@ export default {
         gantt.config.columns.push({
           name: 'end_date',
           label: 'End Date',
-          align: 'center',
           width: 110,
           template: function (obj) {
             return format(obj.due_date, 'MM/DD/YYYY')
@@ -1215,7 +1211,6 @@ export default {
       if (this.columns.duration) {
         gantt.config.columns.push({
           name: 'duration',
-          align: 'center',
           width: 60,
           template: function (obj) {
             return obj.duration + ' days'
@@ -1227,7 +1222,6 @@ export default {
           name: 'predecessors',
           label: 'Predecessors',
           width: 100,
-          align: 'center',
           editor: editors.predecessors,
           template: task => {
             const labels = []
@@ -1246,7 +1240,6 @@ export default {
       if (this.columns.assignee) {
         gantt.config.columns.push({
           name: 'assignee',
-          align: 'center',
           label: 'Resource Name',
           width: 155,
           template: obj => {
@@ -1275,7 +1268,6 @@ export default {
       if (this.columns.hours) {
         gantt.config.columns.push({
           name: 'hours',
-          align: 'center',
           label: 'Man Hours',
           width: 85,
           template: function (obj) {
@@ -1286,7 +1278,6 @@ export default {
       if (this.columns.progress) {
         gantt.config.columns.push({
           name: 'progress',
-          align: 'center',
           label: 'Progress',
           width: 85,
           template: function (obj) {

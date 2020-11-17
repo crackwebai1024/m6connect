@@ -1,21 +1,21 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position: relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"
-          dark
           fab
+          light
           right
           small
           @click="newL1"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>{{ $t('cpmSettings.timelineAdmin.defaultActivities') }}</label>
           <v-list
@@ -47,7 +47,7 @@
                     color="blue"
                     small
                   >
-                    drag_indicator
+                    mdi-drag-variant
                   </v-icon>
                 </v-list-tile-avatar>
 
@@ -59,22 +59,20 @@
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-icon
-                    class="ml-0 mr-0"
+                    class="ml-0 mr-0 pointer"
                     color="black"
                     size="18"
-                    style="cursor: pointer"
                     @click.stop="edit(item)"
                   >
-                    edit
+                    mdi-pencil
                   </v-icon>
                   <v-icon
-                    class="ml-2 mr-0"
+                    class="ml-2 mr-0 pointer"
                     color="black"
                     size="18"
-                    style="cursor: pointer"
                     @click.stop="deleteTimeline(item)"
                   >
-                    delete
+                    mdi-delete
                   </v-icon>
                 </v-list-tile-action>
               </v-list-tile>
@@ -89,9 +87,9 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
-          <v-card-text class="pa-2">
+          <v-card-text class="pa-2 vertical-scroll">
             <v-text-field
               v-model="name"
               color="blue"
@@ -99,7 +97,7 @@
             />
           </v-card-text>
 
-          <v-card-text class="pa-2">
+          <v-card-text class="pa-2 vertical-scroll">
             <v-textarea
               v-model="note"
               color="blue"

@@ -3,23 +3,18 @@
     v-model="show"
     max-width="900px"
     persistent
-    scrollable
   >
     <v-card>
       <v-card-title
-        class="headline"
-        style="background: #006699; color:#fff;"
+        class="grey--text headline text--darken-1 text-h6 white"
       >
         Schedule Settings
-
         <v-spacer />
-
         <portal-target name="schedule" />
       </v-card-title>
-
-
+      <v-divider class="grey lighten-3" />
       <v-card-text
-        class="hidden-overflow pa-0"
+        class="hidden-overflow pa-0 vertical-scroll"
         :style="{'height': getViewPortHeight}"
       >
         <v-container
@@ -37,7 +32,8 @@
         <v-spacer />
         <v-btn
           color="gray"
-          flat
+          elevation="1"
+          text
           @click="$emit('close')"
         >
           Close

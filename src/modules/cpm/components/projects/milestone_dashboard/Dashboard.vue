@@ -6,8 +6,8 @@
   >
     <v-row>
       <v-col cols="12">
-        <v-card flat>
-          <v-card-text>
+        <v-card elevation="0">
+          <v-card-text class="vertical-scroll">
             <v-row>
               <v-col cols="12">
                 <div class="tableWrap">
@@ -23,16 +23,16 @@
                         <template v-slot:activator="{ on }">
                           <v-btn
                             :color="filtering ? 'amber' : 'primary'"
-                            dark
+                            light
                             v-on="on"
                           >
                             {{ $t('milestoneDashboard.filters') }} {{ counter ? '( ' + counter + ' )' : '' }}
 
                             <v-icon
-                              dark
+                              light
                               right
                             >
-                              filter_list
+                              mdi-filter-menu
                             </v-icon>
                           </v-btn>
                         </template>
@@ -45,10 +45,10 @@
                             <v-select
                               v-model="campusFilter"
                               item-text="name"
-                              label="Campus"
                               item-value="value"
-                              multiple
                               :items="alphabetical(campus, 'asc', 'name')"
+                              label="Campus"
+                              multiple
                               return-object
                             >
                               <template
@@ -68,10 +68,10 @@
                             <v-select
                               v-model="managerFilter"
                               item-text="label"
-                              label="Project Manager"
                               item-value="value"
-                              multiple
                               :items="alphabetical(users.projectManager, 'asc', 'label')"
+                              label="Project Manager"
+                              multiple
                               return-object
                             >
                               <template
@@ -149,6 +149,7 @@
                           <tr class="first">
                             <th
                               v-for="(h, i) in props.headers"
+                              :key="'headerprops-' + i"
                               rowspan="2"
                               :style="{'background-color': '#EFEFEF', 'max-width': h.width || '300px', 'white-space': 'break-spaces'}"
                             >
@@ -156,17 +157,18 @@
                             </th>
                             <th
                               v-for="(milestone, index) in milestones"
-                              colspan="3"
                               :key="index"
-                              width="200"
+                              colspan="3"
                               :style="{ 'background-color': milestone.color ? milestone.color.hex : '#EFEFEF'}"
+                              width="200"
                             >
                               {{ milestone.name ? milestone.name : milestone }}
                             </th>
                           </tr>
                           <tr class="second">
                             <th
-                              v-for="n in (milestones.length*3)"
+                              v-for="(n, index) in (milestones.length*3)"
+                              :key="'milestoneth-' + index"
                               :style="{ 'background-color': getColor(n) }"
                               width="100"
                             >
@@ -180,8 +182,8 @@
                             <v-menu offset-y>
                               <template v-slot:activator="{ on }">
                                 <v-btn
-                                  flat
                                   small
+                                  text
                                   v-on="on"
                                 >
                                   {{ props.item.number }}
@@ -228,8 +230,8 @@
                               <template v-slot:activator="{ on }">
                                 <v-btn
                                   :color="mile.color"
-                                  flat
                                   small
+                                  text
                                   v-on="on"
                                 >
                                   {{ mile.date || '---' }}
@@ -254,8 +256,8 @@
                             >
                               <template v-slot:activator="{ on }">
                                 <v-btn
-                                  flat
                                   small
+                                  text
                                   v-on="on"
                                 >
                                   {{ mile.date || '---' }}
@@ -288,13 +290,11 @@
       width="500"
     >
       <v-card>
-        <v-card-title
-          class="blue headline lighten-2 text-white"
-          primary-title
-        >
-          {{ $t('milestoneDashboard.comments') }}
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">{{ $t('milestoneDashboard.comments') }}</span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-list
             v-if="comments.length"
             class="commentList"
@@ -324,13 +324,13 @@
       max-width="400px"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          {{ $t('milestoneDashboard.milestoneInformation') }}
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            {{ $t('milestoneDashboard.milestoneInformation') }}
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <h3>{{ $t('milestoneDashboard.name') }}: {{ milestoneName }}</h3>
           <v-menu
             v-if="!validDates.length"
@@ -402,13 +402,13 @@
       max-width="400px"
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          Milestone Information
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Milestone Information
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <h3>Name: {{ milestoneName }}</h3>
           <v-menu
             v-model="actualDatePicker"
@@ -467,16 +467,11 @@
       :width="800"
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
-            {{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}
-          </v-row>
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">{{ $t('cpm.projects.milestones.modalEditForecastedDateTitle') }}</span>
         </v-card-title>
-
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-container
             fluid
             grid-list-md
@@ -543,14 +538,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showModal = false"
           >
             {{ $t('general.no') }}
           </v-btn>
           <v-btn
             color="primary"
-            flat
+            text
             @click="
               updateFutureMilestone = true
               showModal = false
@@ -588,19 +583,25 @@
       per
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          Monthly Review
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Monthly Review
+          </span>
         </v-card-title>
-        <v-card-text v-if="project.monthlyReview">
+        <v-divider class="grey lighten-3" />
+        <v-card-text
+          v-if="project.monthlyReview"
+          class="vertical-scroll"
+        >
           <v-textarea
             v-model="comment"
             label="Comments"
           />
         </v-card-text>
-        <v-card-text v-else>
+        <v-card-text
+          v-else
+          class="vertical-scroll"
+        >
           <p>You already did it</p>
         </v-card-text>
         <v-card-actions v-if="project.monthlyReview">

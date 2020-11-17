@@ -26,13 +26,13 @@
             @click="deleteTaskConfirm"
           >
             <v-icon color="red">
-              delete
+              mdi-delete
             </v-icon>
           </v-btn>
         </v-row>
       </v-container>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-container
         class="pa-0"
         grid-list-md
@@ -48,7 +48,7 @@
                   cols="12"
                   md="1"
                 >
-                  <v-icon>details</v-icon>
+                  <v-icon>mdi-text-box-outline</v-icon>
                 </v-col>
                 <v-col
                   cols="12"
@@ -198,7 +198,7 @@
                   cols="12"
                   md="1"
                 >
-                  <v-icon>calendar_today</v-icon>
+                  <v-icon>mdi-calendar</v-icon>
                 </v-col>
                 <v-col
                   cols="12"
@@ -355,7 +355,7 @@
                   cols="12"
                   md="1"
                 >
-                  <v-icon>check_circle</v-icon>
+                  <v-icon>mdi-check-circle</v-icon>
                 </v-col>
                 <v-col
                   cols="12"
@@ -435,7 +435,7 @@
                           md="1"
                         >
                           <v-icon @click.prevent="deleteSubTask(subtask)">
-                            delete
+                            mdi-delete
                           </v-icon>
                         </v-col>
                       </v-row>
@@ -460,7 +460,7 @@
                   cols="12"
                   md="1"
                 >
-                  <v-icon>comment</v-icon>
+                  <v-icon>mdi-comment</v-icon>
                 </v-col>
                 <v-col
                   cols="12"
@@ -563,7 +563,7 @@
                   cols="12"
                   md="1"
                 >
-                  <v-icon>note_add</v-icon>
+                  <v-icon>mdi-note-plus</v-icon>
                 </v-col>
                 <v-col
                   cols="12"
@@ -623,14 +623,14 @@
     <v-card-actions>
       <v-spacer />
       <v-btn
-        flat
+        text
         @click="returnTasks"
       >
         {{ $t('general.cancel') }}
       </v-btn>
       <v-btn
         color="primary"
-        flat
+        text
         @click="updateTask"
       >
         {{ $t('general.update') }}
@@ -659,9 +659,14 @@ import 'dhtmlx-gantt'
 import axios from 'axios'
 import firebase from 'firebase/app'
 import { db } from '@/utils/Firebase'
-import { mapState, mapActions, mapGetters, mapMutations } from 'vuex'
+import {
+  mapState,
+  mapActions,
+  mapGetters,
+  mapMutations
+} from 'vuex'
 import ModalCritical from './ModalCritical'
-import BudgetCategorySelect from '@/components/cpm/projects/_partials/BudgetCategorySelect'
+import BudgetCategorySelect from '@/modules/cpm/components/projects/_partials/BudgetCategorySelect'
 export default {
   name: 'Task',
   components: {

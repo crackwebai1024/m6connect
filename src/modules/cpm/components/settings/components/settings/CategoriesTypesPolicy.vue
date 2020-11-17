@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card>
-      <v-card-title style="position:relative">
+      <v-card-title class="relative">
         <v-btn
           absolute
           color="blue"
@@ -11,10 +11,10 @@
           small
           @click="showForm = true"
         >
-          <v-icon>add</v-icon>
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <div class="form-group">
           <label>Current Items</label>
           <v-data-table
@@ -26,20 +26,18 @@
               <td>{{ props.item.name }}</td>
               <td class="text-right">
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="editCategory(props.index, props.item)"
                 >
-                  <v-icon>edit</v-icon>
+                  <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn
-                  flat
                   icon
                   small
                   @click.prevent="deleteCategory(props.index, props.item)"
                 >
-                  <v-icon>delete</v-icon>
+                  <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </td>
             </template>
@@ -51,7 +49,7 @@
       v-if="showForm"
       class="mt-2"
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <v-text-field
             v-model="type"
@@ -106,12 +104,10 @@ export default {
       headers: [
         {
           text: 'Name',
-          align: 'left',
           value: 'name'
         },
         {
           text: 'Action',
-          align: 'right',
           value: 'action'
         }
       ]

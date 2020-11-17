@@ -13,15 +13,15 @@
           <v-spacer />
           <v-col class="shrink">
             <v-icon
-              dark
+              light
               @click="close"
             >
-              close
+              mdi-close
             </v-icon>
           </v-col>
         </v-row>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <slot />
       </v-card-text>
     </v-card>

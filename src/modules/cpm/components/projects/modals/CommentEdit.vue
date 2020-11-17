@@ -5,15 +5,12 @@
     width="500"
   >
     <v-card>
-      <v-card-title
-        class="green headline lighten-2"
-        primary-title
-        style="color: white;"
-      >
-        Edit a {{ title }} Comment
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">Edit a {{ title }} Comment</span>
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-form ref="form">
           <v-textarea
             v-model="comment.data.comment"
@@ -29,14 +26,14 @@
         <v-spacer />
         <v-btn
           color="gray"
-          flat
+          text
           @click="cancel"
         >
           Close
         </v-btn>
         <v-btn
           color="primary"
-          flat
+          text
           @click="update"
         >
           Update

@@ -1,6 +1,6 @@
 <template>
   <v-card height="100%">
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-list>
         <template v-for="(item, index) in options">
           <v-list-tile

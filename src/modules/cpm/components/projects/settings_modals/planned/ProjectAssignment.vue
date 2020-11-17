@@ -6,17 +6,14 @@
     scrollable
   >
     <v-card>
-      <v-card-title
-        class="headline"
-        style="background: #006699; color:#fff"
-      >
-        <v-row align="center">
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">
           Project Team Settings
-        </v-row>
+        </span>
         <v-spacer />
-
         <portal-target :name="`assignment-${tab}`" />
       </v-card-title>
+      <v-divider class="grey lighten-3" />
 
       <v-tabs
         v-model="tab"
@@ -31,7 +28,7 @@
       </v-tabs>
 
       <v-card-text
-        class="pa-0"
+        class="pa-0 vertical-scroll"
         :style="{'height': getViewPortHeight}"
       >
         <v-container
@@ -57,7 +54,7 @@
         <v-spacer />
         <v-btn
           color="gray"
-          flat
+          text
           @click="$emit('close')"
         >
           Close

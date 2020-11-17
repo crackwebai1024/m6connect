@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -25,10 +25,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="openModal"
       >
-        edit
+        mdi-pencil
       </v-icon>
     </template>
 
@@ -55,7 +55,7 @@
                 v-else
                 size="36"
               >
-                photo
+                mdi-image
               </v-icon>
             </v-avatar>
           </router-link>
@@ -102,16 +102,14 @@
       :width="800"
     >
       <v-card>
-        <v-card-title
-          class="headline"
-          style="background: #006699; color:#fff"
-        >
-          <v-row align="center">
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
             {{ $t('cpm.projects.estimates.createEstimate') }}
-          </v-row>
+          </span>
         </v-card-title>
+        <v-divider class="grey lighten-3" />
 
-        <v-card-text>
+        <v-card-text class="vertical-scroll">
           <v-container
             fluid
             grid-list-md
@@ -147,14 +145,14 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
+            text
             @click="showModal = false"
           >
             {{ $t('general.cancel') }}
           </v-btn>
           <v-btn
             color="primary"
-            flat
+            text
             @click="update"
           >
             {{ $t('general.upadte') }}
@@ -175,12 +173,11 @@ export default {
     return {
       headers: [
         { text: this.$t('cpm.projects.estimates.image'), sortable: false },
-        { text: this.$t('general.name'), value: 'name', align: 'center' },
-        { text: this.$t('general.total'), value: 'total', align: 'center' },
+        { text: this.$t('general.name'), value: 'name' },
+        { text: this.$t('general.total'), value: 'total' },
         {
           text: this.$t('general.actions'),
           value: 'number',
-          align: 'right',
           sortable: false
         }
       ],

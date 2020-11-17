@@ -13,10 +13,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -26,10 +26,10 @@
       <v-icon
         v-if="!projectClosed"
         class="cursor"
-        dark
+        light
         @click="newMilestone"
       >
-        add
+        mdi-plus
       </v-icon>
 
       <v-tooltip left>
@@ -41,7 +41,7 @@
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>Settings</span>
@@ -70,13 +70,13 @@
       per
     >
       <v-card>
-        <v-card-title
-          class="title"
-          primary-title
-        >
-          Monthly Review
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Monthly Review
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-textarea
             v-model="comment"
             label="Comment'"
@@ -123,7 +123,7 @@
       </template>
     </v-dialog>
 
-    <v-card-text class="card-text-milestones pa-0">
+    <v-card-text class="card-text-milestones pa-0 vertical-scroll">
       <v-container
         class="pa-0"
         fluid
@@ -171,24 +171,23 @@
                   <v-row justify="end">
                     <v-col class="shrink">
                       <v-icon
-                        class="ml-0 mr-1"
+                        class="ml-0 mr-1 pointer"
                         color="#757575"
-                        flat
                         size="20"
-                        style="cursor: pointer"
+                        text
                         @click.prevent="setMilestone(props.item)"
                       >
-                        edit
+                        mdi-pencil
                       </v-icon>
                     </v-col>
                     <v-col class="shrink">
                       <v-icon
                         color="#f44336"
-                        flat
                         size="20"
+                        text
                         @click.prevent="deleteMilestone(props.item)"
                       >
-                        delete
+                        mdi-delete
                       </v-icon>
                     </v-col>
                   </v-row>
@@ -196,20 +195,20 @@
               </template>
             </v-data-table>
             <v-card class="elevation-0 ma-0 pa-0">
-              <v-card-text class="ma-0 pa-0">
+              <v-card-text class="ma-0 pa-0 vertical-scroll">
                 <v-row class="justify ma-0 pa-0">
                   <v-spacer />
                   <v-btn
                     v-if="pagination.rowsPerPage !== -1"
                     class="button-showall"
                     color="primary"
-                    dark
                     fab
+                    light
                     small
                     @click="pagination.rowsPerPage = -1"
                   >
                     <v-icon>
-                      keyboard_arrow_down
+                      mdi-arrow-down-box
                     </v-icon>
                   </v-btn>
                   <v-btn
@@ -222,7 +221,7 @@
                     @click="pagination.rowsPerPage = 3"
                   >
                     <v-icon>
-                      keyboard_arrow_up
+                      mdi-arrow-up-box
                     </v-icon>
                   </v-btn>
                 </v-row>
@@ -281,7 +280,7 @@ import EventBus from '@/Eventbus'
 import Milestone from './Milestone'
 import {
   skipIterationForItems
-} from '@/components/cpm/helpers/HelpersFunction'
+} from '@/modules/cpm/components/helpers/HelpersFunction'
 import settingsModal from '../../settings_modals/Milestones.vue'
 import plannedSettingsModal from '../../settings_modals/planned/Milestones.vue'
 
@@ -318,7 +317,7 @@ export default {
     return {
       comment: '',
       showSettings: false,
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       milestoneToDelete: {},
       milestoneHeaders: [
         { text: 'Date', value: 'date', sortable: false },
@@ -342,12 +341,11 @@ export default {
         { text: 'In Report', value: 'in_report' },
         {
           text: 'Original Forecasted Date',
-          value: 'original',
-          align: 'center'
+          value: 'original'
         },
-        { text: 'New Forecasted Date', value: 'projected', align: 'center' },
-        { text: 'Actual Completion Date', value: 'actual', align: 'center' },
-        { text: 'Actions', sortable: false, align: 'center' }
+        { text: 'New Forecasted Date', value: 'projected' },
+        { text: 'Actual Completion Date', value: 'actual' },
+        { text: 'Actions', sortable: false }
       ],
       rowsPerPageItems: [3, 10, 20, 30, 40, { text: 'All', value: -1 }],
       pagination: {

@@ -7,9 +7,8 @@
   >
     <template v-slot:activator="{ on }">
       <v-col
-        class="m6-picture-profile text-center"
+        class="m6-picture-profile pointer text-center"
         cols="12"
-        style="cursor: pointer;"
         v-on="on"
       >
         <v-badge :color="statusColor">
@@ -33,7 +32,7 @@
                 v-else
                 size="100"
               >
-                photo
+                mdi-image
               </v-icon>
             </v-avatar>
           </div>
@@ -42,11 +41,11 @@
     </template>
 
     <v-card>
-      <v-card-title class="headline">
-        Change picture
+      <v-card-title class="headline px-6 py-4 white">
+        <span class="grey--text text--darken-1">Change picture</span>
       </v-card-title>
-
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         <input
           ref="inputFile"
           accept=".png, .jpg, .jpeg, .gif, .svg"
@@ -59,8 +58,8 @@
           <img
             v-if="imageB64"
             alt="New image"
+            class="max-w-full"
             :src="imageB64"
-            style="max-width: 100%"
           >
         </div>
 
@@ -85,7 +84,7 @@
         <v-btn
           color="error"
           :disabled="loading"
-          flat
+          text
           @click="clearAllData; dialog = false"
         >
           Cancel
@@ -94,8 +93,8 @@
         <v-btn
           color="blue darken-1"
           :disabled="!imageB64"
-          flat
           :loading="loading"
+          text
           @click="accept"
         >
           Accept

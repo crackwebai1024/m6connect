@@ -66,9 +66,9 @@
           class="align-center d-flex"
         >
           <v-btn
-            icon
             class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
             elevation="0"
+            icon
             light
           >
             <v-icon>mdi-magnify</v-icon>
@@ -82,7 +82,7 @@
             <panel-two-columns>
               <div
                 slot="leftPanel"
-                class="mb-3 px-6 py-5 white card-custom-shadow rounded"
+                class="card-custom-shadow mb-3 px-6 py-5 rounded white"
               >
                 <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
                   Information
@@ -150,10 +150,11 @@
                 slot="rightPanel"
                 class="mb-4 panel px-0"
               >
-                <project-social-media class="px-0"/>
+                <project-social-media class="px-0" />
               </div>
             </panel-two-columns>
           </template>
+          <!--FINANCIALS-->
           <template v-if="activeTab === 1">
             <panel-full>
               <template slot="content">
@@ -167,20 +168,63 @@
               </template>
             </panel-full>
             <v-spacer />
-            <panel-two-columns>
-              <div
-                slot="leftPanel"
-              >
+            <panel-full>
+              <template slot="content">
                 <financial-commitments />
-              </div>
-
-              <div
-                slot="rightPanel"
-              >
+              </template>
+            </panel-full>
+            <v-spacer />
+            <panel-full>
+              <template slot="content">
                 <financial-spendings />
-              </div>
-            </panel-two-columns>
+              </template>
+            </panel-full>
+            <v-spacer />
+            <!--            <panel-two-columns>-->
+            <!--              <div-->
+            <!--                slot="leftPanel"-->
+            <!--              />-->
+
+            <!--              <div-->
+            <!--                slot="rightPanel"-->
+            <!--              />-->
+            <!--            </panel-two-columns>-->
           </template>
+          <!--FINANCIALS-->
+
+          <!--SCHEDULE-->
+          <template v-if="activeTab === 2">
+            <panel-full>
+              <template slot="content">
+                <v-row
+                  v-if="!panelSettings.mileTracker"
+                >
+                  <v-col cols="12">
+                    <milestones :type="type" />
+                  </v-col>
+                </v-row>
+
+                <v-row
+                  v-if="!panelSettings.mileSchedule"
+                  class="mt-2"
+                >
+                  <v-col cols="12">
+                    <schedule :type="type" />
+                  </v-col>
+                </v-row>
+
+                <v-row
+                  v-if="isPlannedProject"
+                  class="mt-2"
+                >
+                  <v-col cols="12">
+                    <forecasts />
+                  </v-col>
+                </v-row>
+              </template>
+            </panel-full>
+          </template>
+          <!--SCHEDULE-->
         </div>
       </app-template>
     </template>
@@ -188,12 +232,11 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
 import AppTemplate from '@/views/Home/AppTemplate'
 import PanelFull from '@/components/AppBuilder/Content/PanelFull'
 import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
-import Error403 from '@/modules/cpm/_layouts/Error403'
 import M6Show from '@/modules/cpm/_layouts/M6Show.vue'
 
 import FinancialCostSummary from '@/modules/cpm/components/projects/panels/FinancialCostSummary'
@@ -201,7 +244,9 @@ import Reconciliation from '@/modules/cpm/components/projects/panels/Reconciliat
 import FinancialCommitments from '@/modules/cpm/components/projects/panels/FinancialCommitments'
 import FinancialSpendings from '@/modules/cpm/components/projects/panels/FinancialSpendings'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia'
-
+import Milestones from '@/modules/cpm/components/projects/panels/schedule/Milestones'
+import Schedule from '@/modules/cpm/components/projects/panels/schedule/SchedulePanel'
+import Forecasts from '@/modules/cpm/components/projects/panels/Forecasts/ForecastsPanel'
 import {
   db,
   newFirebaseInit,
@@ -215,13 +260,15 @@ export default {
     AppTemplate,
     PanelFull,
     PanelTwoColumns,
-    Error403,
+    Milestones,
     FinancialCostSummary,
     Reconciliation,
     ProjectSocialMedia,
     FinancialCommitments,
     FinancialSpendings,
-    M6Show
+    Schedule,
+    Forecasts
+
   },
   data: () => ({
     tab: null,
@@ -234,14 +281,21 @@ export default {
     showColumnLeft: true,
     showColumnRight: true,
     project: {},
-    tabs: ['Home', 'Financials'],
+    type: 'project',
+    tabs: ['Home', 'Financials', 'Schedule'],
     activeTab: 0
   }),
   computed: {
+    isPlannedProject() {
+      return this.$h.dg(this.$route, 'name') === 'cpm.forecasting.show'
+    },
     ...mapGetters({
       getScreenStatus: 'GeneralListModule/get_screen_status',
       getRecordFullScreen: 'GeneralListModule/get_record_full_screen',
       getImagePreviewOverlay: 'get_image_preview_overlay'
+    }),
+    ...mapGetters({
+      panelSettings: 'hideCpmPanels/getPanelSettings'
     })
   },
   async created() {
@@ -252,9 +306,13 @@ export default {
     db.collection('cpm_projects').doc(this.$route.params.id).get().then(response => {
       this.project = response.data()
     })
+    await this.getPanelSettings()
   },
   beforeDestroy() {},
   methods: {
+    ...mapActions({
+      getPanelSettings: 'hideCpmPanels/getSettings'
+    })
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <component
     :is="rootComponent"
-    class="m6-card-dialog mb-2 card-custom-shadow white rounded"
+    class="card-custom-shadow m6-card-dialog mb-2 rounded w-full white"
     :class="{ 'ma-0': !dialog }"
     column
     fill-height
@@ -11,20 +11,19 @@
     @keydown.27="dialog = false"
   >
     <v-toolbar
-      elevation="0"
-      class="step3 font-weight-medium rounded-t"
+      class="font-weight-medium rounded-t step3"
       :color="'white'"
       dark
+      elevation="0"
       :height="50"
       @dblclick="doubleClick"
     >
       <v-icon
         v-show="dialog"
-        class="cursor"
-        dark
+        class="grey--text pointer text--darken-1"
         @click="dialog = false"
       >
-        close
+        mdi-close
       </v-icon>
 
       <v-tooltip
@@ -40,7 +39,7 @@
           </span>
         </template>
 
-        <span>{{ titleTooltip }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ titleTooltip }}</span>
       </v-tooltip>
 
       <span
@@ -63,7 +62,7 @@
       }"
     >
       <v-card-text
-        :class="`card-container ${cardTextClass}`"
+        :class="`vertical-scroll card-container ${cardTextClass}`"
         :style="{
           height: contentHeight,
           'min-height': minHeight,
@@ -80,7 +79,6 @@
 <script>
 export default {
   name: 'M6CardDialog',
-
   props: {
     cardTextClass: {
       type: String,
@@ -138,7 +136,7 @@ export default {
   }),
   computed: {
     rootComponent() {
-      return this.dialog ? 'v-dialog' : 'div'
+      return 'div'
     }
   },
   watch: {
@@ -172,8 +170,5 @@ export default {
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
-}
-.vue-portal-target {
-  display: flex;
 }
 </style>

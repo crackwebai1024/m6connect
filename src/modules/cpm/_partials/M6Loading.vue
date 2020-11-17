@@ -8,7 +8,7 @@
       color="primary"
       dark
     >
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         {{ message }}
 
         <v-progress-linear

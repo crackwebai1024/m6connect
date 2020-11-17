@@ -16,7 +16,7 @@
       </v-toolbar>
     </v-card-title>
 
-    <v-card-text class="pa-0">
+    <v-card-text class="pa-0 vertical-scroll">
       <v-container
         class="check-options-container pa-0"
         grid-list-xs
@@ -33,7 +33,7 @@
           </v-col>
           <v-col md="9">
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>Choose Project(s)</label>
                 <v-autocomplete
                   v-model="options.projects"
@@ -59,16 +59,16 @@
                 </v-autocomplete>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="selectAllProjects"
                 >
                   Select All
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="options.projects = []"
                 >
                   Clear
@@ -87,7 +87,7 @@
           </v-col>
           <v-col md="4">
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>{{ appLabel.singular }} Manager</label>
                 <v-select
                   v-model="managerFilter"
@@ -109,16 +109,16 @@
                 </v-select>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="selectAllManagers"
                 >
                   Select All
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="managerFilter = []"
                 >
                   Clear
@@ -128,7 +128,7 @@
           </v-col>
           <v-col md="5">
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>Campus</label>
                 <v-select
                   v-model="campusFilter"
@@ -150,16 +150,16 @@
                 </v-select>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="selectAllCampus"
                 >
                   Select All
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="campusFilter = []"
                 >
                   Clear
@@ -172,7 +172,7 @@
           <v-spacer md3 />
           <v-col md="4">
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>Project Types</label>
                 <v-select
                   v-model="projectTypes"
@@ -189,16 +189,16 @@
                 </v-select>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="selectAllProjectTypes"
                 >
                   Select All
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="projectTypes = []"
                 >
                   Clear
@@ -208,7 +208,7 @@
           </v-col>
           <v-col md="5">
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>Project Status</label>
                 <v-select
                   v-model="projectStatus"
@@ -218,16 +218,16 @@
                 />
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="selectAllProjectStatus"
                 >
                   Select All
                 </v-btn>
                 <v-btn
                   class="ma-0"
-                  flat
                   small
+                  text
                   @click="projectStatus = []"
                 >
                   Clear
@@ -258,7 +258,7 @@
             md="3"
           >
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>Choose Month</label>
                 <v-select
                   v-model="dateSelected.month"
@@ -274,7 +274,7 @@
             md="3"
           >
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>Choose Year</label>
                 <v-select
                   v-model="dateSelected.year"
@@ -335,7 +335,7 @@
 
           <v-col md="3">
             <v-card flat>
-              <v-card-text>
+              <v-card-text class="vertical-scroll">
                 <label>Choose Report</label>
                 <v-select
                   v-model="reportSelectedAux"
@@ -358,7 +358,7 @@
               @click="showSectionOptions = !showSectionOptions"
             >
               <v-icon small>
-                edit
+                mdi-pencil
               </v-icon>
             </v-btn>
           </v-col>
@@ -379,7 +379,7 @@
                 style="border-left: 1px solid #808080"
               >
                 <v-card-title>Details</v-card-title>
-                <v-card-text>
+                <v-card-text class="vertical-scroll">
                   <v-checkbox
                     v-model="previewOptions.checkProfile"
                     class="ma-0"
@@ -408,7 +408,7 @@
                 class="mt-5"
                 flat
               >
-                <v-card-text>
+                <v-card-text class="vertical-scroll">
                   <v-checkbox
                     v-model="previewOptions.checkCostSummary"
                     class="ma-0"
@@ -432,7 +432,7 @@
                 class="mt-5"
                 flat
               >
-                <v-card-text>
+                <v-card-text class="vertical-scroll">
                   <v-checkbox
                     v-model="previewOptions.checkMilestones"
                     class="ma-0"
@@ -483,7 +483,7 @@
       </v-container>
     </v-card-text>
 
-    <v-card-text>
+    <v-card-text class="vertical-scroll">
       <v-tabs
         v-if="showWebReport"
         v-model="tabActive"

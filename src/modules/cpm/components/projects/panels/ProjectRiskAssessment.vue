@@ -3,10 +3,10 @@
     <template v-slot:after:title>
       <v-icon
         class="cursor"
-        dark
+        light
         @click="openCreateForm"
       >
-        add
+        mdi-plus
       </v-icon>
     </template>
 
@@ -43,13 +43,13 @@
               class="action-icon action-icon__edit pointer"
               @click="editRisk(props.item)"
             >
-              edit
+              mdi-pencil
             </v-icon>
             <v-icon
               class="action-icon action-icon__delete pointer"
               @click="deleteRiskConfirm(props.item)"
             >
-              delete
+              mdi-delete
             </v-icon>
           </td>
         </tr>
@@ -102,8 +102,8 @@ export default {
           text: this.$t('cpm.projects.riskAssessmentPanel.comment'),
           sortable: false
         },
-        { text: this.$t('general.date'), align: 'center', sortable: false },
-        { text: this.$t('general.actions'), align: 'right', sortable: false }
+        { text: this.$t('general.date'), sortable: false },
+        { text: this.$t('general.actions'), sortable: false }
       ]
     }
   },
@@ -179,9 +179,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .pointer {
-    cursor: pointer;
-  }
   .action-icon {
     transition: all 0.2s ease-out;
 

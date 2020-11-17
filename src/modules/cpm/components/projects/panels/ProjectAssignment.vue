@@ -16,10 +16,10 @@
             v-on="on"
           >
             <v-icon
-              dark
-              flat
+              light
+              text
             >
-              launch
+              mdi-launch
             </v-icon>
           </a>
         </template>
@@ -28,10 +28,10 @@
 
       <v-icon
         class="cursor"
-        dark
+        light
         @click="editModal = true"
       >
-        edit
+        mdi-pencil
       </v-icon>
 
       <v-tooltip left>
@@ -43,7 +43,7 @@
             v-on="on"
             @click="showSettings = true"
           >
-            settings_applications
+            mdi-cog
           </v-icon>
         </template>
         <span>Settings</span>
@@ -115,13 +115,13 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          class="blue headline white--text"
-          primary-title
-        >
-          Edit Project Team
+        <v-card-title class="headline px-6 py-4 white">
+          <span class="grey--text text--darken-1">
+            Edit Project Team
+          </span>
         </v-card-title>
-        <v-card-text>
+        <v-divider class="grey lighten-3" />
+        <v-card-text class="vertical-scroll">
           <v-container
             class="pa-0"
             fluid
@@ -183,8 +183,8 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            flat
             :loading="submitLoading"
+            text
             @click.prevent="closeDialog"
           >
             Close
@@ -237,7 +237,7 @@ export default {
 
   data() {
     return {
-      isAdmin: window.Drupal.settings.m6_platform_header.company_admin,
+      isAdmin: true,
       showSettings: false,
       submitLoading: false,
       company_nid: this.currentCompany.id,

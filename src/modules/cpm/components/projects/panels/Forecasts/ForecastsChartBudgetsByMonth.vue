@@ -54,8 +54,7 @@ export default {
     chartOptions() {
       const chartOptions = {
         title: {
-          text: `${this.$t('cpm.forecasting.chart.budgetsByMonthTitle')} | ${this.$h.dg(this.budgetFiscalYear, 'name', '')}`,
-          align: 'left'
+          text: `${this.$t('cpm.forecasting.chart.budgetsByMonthTitle')} | ${this.$h.dg(this.budgetFiscalYear, 'name', '')}`
         },
         chart: {
           type: 'bar',

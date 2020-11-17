@@ -32,7 +32,7 @@
             @click="openProjectDetails(0)"
           >
             <v-icon color="black">
-              edit
+              mdi-pencil
             </v-icon>
           </v-btn>
 
@@ -245,11 +245,11 @@
                   <template v-slot:activator="{ on }">
                     <v-icon
                       color="primary"
-                      dark
+                      light
                       v-on="on"
                       @click="goToSchedule"
                     >
-                      help
+                      mdi-help
                     </v-icon>
                   </template>
                   <span>{{ $t('cpm.projects.autocalculatedSchedule') }}</span>

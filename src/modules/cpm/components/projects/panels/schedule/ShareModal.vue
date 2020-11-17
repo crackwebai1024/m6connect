@@ -6,10 +6,13 @@
     scrollable
   >
     <v-card>
-      <v-card-title class="customBackground headline">
-        <span>{{ $t('cpm.projects.shareGantt') }}</span>
+      <v-card-title class="headline white px-6 py-4">
+        <span class="grey--text text--darken-1">
+          {{ $t('cpm.projects.shareGantt') }}
+        </span>
       </v-card-title>
-      <v-card-text>
+      <v-divider class="grey lighten-3" />
+      <v-card-text class="vertical-scroll">
         <v-container>
           <v-row
             v-if="!previewShow"
@@ -51,7 +54,7 @@
                         v-on="on"
                       >
                         <v-icon left>
-                          event
+                          mdi-calendar-check
                         </v-icon>
                         {{ expireDate.formated }}
                       </v-btn>
@@ -98,7 +101,6 @@
           <v-col cols="8" />
           <v-col cols="6">
             <v-btn
-              flat
               text
               @click="closeModal"
             >
@@ -107,7 +109,6 @@
             <v-btn
               v-if="!previewShow && type.value === 'mail'"
               id="step21"
-              flat
               text
               @click="showPreview"
             >
@@ -115,7 +116,6 @@
             </v-btn>
             <v-btn
               v-if="previewShow || type.value === 'message'"
-              flat
               text
               @click="showConfirm = true"
             >
@@ -314,9 +314,5 @@ export default {
 .directory-item {
   width: 2.25rem;
   height: 2.25rem;
-}
-.customBackground {
-  background: #006699;
-  color: #fff;
 }
 </style>

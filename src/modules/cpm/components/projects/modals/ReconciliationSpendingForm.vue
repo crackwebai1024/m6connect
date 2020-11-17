@@ -12,11 +12,11 @@
           <v-col cols="12">
             <v-icon
               class="icon-close"
-              dark
               large
+              light
               @click="closeDialog"
             >
-              close
+              mdi-close
             </v-icon>
           </v-col>
           <v-col
@@ -27,7 +27,7 @@
           </v-col>
         </v-row>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="vertical-scroll">
         <v-row>
           <v-col cols="12">
             <v-text-field

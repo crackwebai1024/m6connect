@@ -15,7 +15,7 @@
           <!-- THIS CHANGE WAS BECAUSE THE SPENDINGS DIALOG WAS NOT WORKING IN ANOTHER TAB FULLSCREEN -->
           <v-icon
             light
-            flat
+            text
             @click="cardDialogClick"
           >
             mdi-launch
@@ -50,48 +50,50 @@
 
       <v-tooltip
         v-if="!search"
-        left
+        bottom
       >
         <template v-slot:activator="{ on }">
           <v-icon
-            class="search grey--text text--darken-2"
+            class="grey--text search text--darken-2"
             v-on="on"
             @click="showSearchingModal = true"
           >
             mdi-magnify-scan
           </v-icon>
         </template>
-        <span>{{ $t('general.search') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.search') }}</span>
       </v-tooltip>
 
       <template v-if="search">
-        <v-tooltip right>
+        <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon
-              class="close-search"
+              class="close-search grey--text mx-2 text--darken-2"
+              light
+              size="25"
               v-on="on"
               @click="clearSearch"
             >
-              close
+              mdi-close
             </v-icon>
           </template>
-          <span>{{ $t('general.clearSearch') }}</span>
+          <span class="grey lighten-3 pa-1 rounded">{{ $t('general.clearSearch') }}</span>
         </v-tooltip>
       </template>
 
       <v-icon
-        class="cursor grey--text text--darken-2 ml-2"
+        class="cursor grey--text ml-2 text--darken-2"
         light
         @click="createShowModal = true"
       >
         mdi-plus-circle
       </v-icon>
 
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="cursor grey--text text--darken-2 ml-2"
+            class="cursor grey--text ml-2 text--darken-2"
             color="white"
             v-on="on"
             @click="showSettings = true"
@@ -99,7 +101,7 @@
             mdi-cog
           </v-icon>
         </template>
-        <span>{{ $t('general.settings') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.settings') }}</span>
       </v-tooltip>
     </template>
 
@@ -134,7 +136,7 @@
       @update:pagination="debounceSearch(search, false)"
     >
       <template
-        slot="items"
+        slot="item"
         slot-scope="props"
       >
         <tr
@@ -443,25 +445,21 @@ export default {
         {
           text: this.$t('general.invoiceNumber'),
           value: 'number',
-          align: 'left',
           class: 'header'
         },
         {
           text: this.$t('cpm.projects.budgetCategory'),
           sortable: false,
-          align: 'left',
           class: 'header'
         },
         {
           text: this.$t('general.date'),
           value: 'date',
-          align: 'center',
           class: 'header'
         },
         {
           text: this.$t('general.invoiceAmount'),
           value: 'amount',
-          align: 'right',
           class: 'header'
         }
       ],
@@ -512,51 +510,43 @@ export default {
           {
             text: this.$t('cpm.projects.poNumber'),
             value: 'number',
-            align: 'left',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.vendor'),
             value: 'vendor',
-            align: 'left',
             class: 'header',
             sortable: false
           },
           {
             text: this.$t('cpm.projects.budgetCategory'),
             value: 'budget_category.name',
-            align: 'left',
             class: 'header'
           },
           {
             text: this.$t('general.description'),
             value: 'notes',
-            align: 'left',
             class: 'header',
             sortable: false
           },
           {
             text: this.$t('cpm.projects.commitmentTotal'),
             value: 'amount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.invoiceTotal'),
             value: 'spendingAmount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.balance'),
             value: 'openAmount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('general.date'),
             value: 'completionDate',
-            align: 'center',
             class: 'header',
             sortable: false
           },
@@ -564,7 +554,6 @@ export default {
             text: this.$t('general.actions'),
             value: 'actions',
             sortable: false,
-            align: 'center',
             class: 'header'
           }
         ]
@@ -573,32 +562,27 @@ export default {
           {
             text: this.$t('cpm.projects.poNumber'),
             value: 'number',
-            align: 'left',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.vendor'),
             value: 'vendor',
-            align: 'left',
             class: 'header',
             sortable: false
           },
           {
             text: this.$t('cpm.projects.po'),
             value: 'total_po_amount',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('cpm.projects.open'),
             value: 'total_open_po_w_tax',
-            align: 'right',
             class: 'header'
           },
           {
             text: this.$t('general.date'),
             value: 'completionDate',
-            align: 'center',
             class: 'header',
             sortable: false
           },
@@ -606,7 +590,6 @@ export default {
             text: this.$t('general.actions'),
             value: 'actions',
             sortable: false,
-            align: 'center',
             class: 'header'
           }
         ]
@@ -615,24 +598,24 @@ export default {
     dropdownOptions() {
       return [
         {
-          icon: 'assignment',
+          icon: 'mdi-clipboard-account-outline',
           title: this.$t('general.seeTheResource', {
             resource: this.$tc('cpm.projects.lineItem', 2)
           }),
           event: 'see'
         },
         {
-          icon: 'edit',
+          icon: 'mdi-pencil',
           title: this.$t('general.edit'),
           event: 'edit'
         },
         {
-          icon: 'attach_money',
+          icon: 'mdi-cash',
           title: this.$t('general.showSpendings'),
           event: 'attach'
         },
         {
-          icon: 'delete',
+          icon: 'mdi-delete',
           title: this.$t('general.delete'),
           event: 'delete'
         }
