@@ -6,12 +6,15 @@ export default {
   namespaced: true,
   state: {
     appsList : [],
+    appId: {}
   },
   getters: {
-    getApps: state => state.appsList
+    getApps:  state => state.appsList,
+    getAppId: state => state.appId
   },
   mutations: {
-    SET_APPS:  (state, payload) => state.appsList = payload,
+    SET_APPS:     (state, payload) => state.appsList = payload,
+    PUSH_APP_ID:  (state, payload) => state.appId    = payload,
   },
   actions: {
     async set_apps({ commit }){
@@ -21,8 +24,11 @@ export default {
     async post_app({}, data) {
         return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps`, data);
     },
-    async get_all_apps_by_id({}, appId){
-      let apps = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/${appId}`)
+    push_app_id({ commit }, data){
+      commit('PUSH_APP_ID', data);
+    },
+    async get_all_apps_by_id({}, app){
+      let apps = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/${app}`)
       generalListModule.state.general_list = convertApps.toM6Apps(apps['data']);
     }
   }

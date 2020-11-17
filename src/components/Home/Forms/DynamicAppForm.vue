@@ -103,7 +103,8 @@ export default {
     }),
     methods: {
         ...mapActions('DynamicAppsModule',{
-            post_app: "post_app"
+            post_app: "post_app",
+            pushAppId: "push_app_id"
         }),
         responseRecordImg(res) {
             if(res.ok) {
@@ -116,8 +117,9 @@ export default {
             this.itemInfo['image'] = {    
                 image_url: this.appImage === '' ? null : this.appImage
             }
-            this.post_app(this.itemInfo).then(()=>{}).catch(e => {
-                console.log(e.message);
+            this.post_app(this.itemInfo).then(res =>{
+                this.pushAppId(res['data']['id']);
+                this.$router.push(`/dev`);
             });
         },
         pushTab(){

@@ -154,7 +154,7 @@ const typeMap = {
         { json: "description",                          js: "description",              typ: u(undefined, "") },
         { json: "created_at",                           js: "created_at",               typ: u(undefined, Date) },
         { json: "updated_at",                           js: "updated_at",               typ: u(undefined, Date) },
-        { json: "prefix",                               js: "prefix",                   typ: u(undefined, null) },
+        { json: "prefix",                               js: "prefix",                   typ: u(undefined, u(null, "")) },
         { json: "installation_attachment",              js: "installation_attachment",  typ: u(undefined, null) },
         { json: "installation_support",                 js: "installation_support",     typ: u(undefined, null, r("InstallationSupport")) },
         { json: "installation_general",                 js: "general_info",             typ: u(undefined, null, r("InstallationGeneral")) },

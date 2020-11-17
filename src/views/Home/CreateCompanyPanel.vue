@@ -198,7 +198,7 @@ import Panel from '@/components/AppBuilder/Panel'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'CreateCompanyPanel',
@@ -226,6 +226,10 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('DynamicAppsModule', {
+      getAppId: 'getAppId'
+    }),
+
     leftPanels() {
       return this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
     },
@@ -234,9 +238,13 @@ export default {
     }
   },
 
-  async mounted() {
-    this.app = await this.$store.dispatch('AppBuilder/getApp', 1)
-    this.appLoaded = true
+  mounted() {
+    this.$store.dispatch('AppBuilder/getApp', this.getAppId).then(res => {
+      this.app = res;
+
+      if( Object.keys( this.app ).length === 0)     this.$router.push(`/`);
+      this.appLoaded = true
+    });
   },
 
   methods: {

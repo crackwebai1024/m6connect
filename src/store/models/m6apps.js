@@ -162,6 +162,7 @@ const typeMap = {
         { json: "image_info",           js: "image_info",           typ: u(undefined, r("ImageInfo")) },
         { json: "general_info",         js: "general_info",         typ: u(undefined, r("GeneralInfo")) },
         { json: "app_id",               js: "app_id",               typ: u(undefined, 0) },
+        { json: "panel_id",             js: "panel_id",             typ: u(undefined, u( null, 0 )) },
         { json: "record_number",        js: "record_number",        typ: u(undefined, "") },
         { json: "status",               js: "status",               typ: u(undefined, "") },
         { json: "metadata",             js: "metadata",             typ: u(undefined, "") },
