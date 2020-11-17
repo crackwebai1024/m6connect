@@ -5,7 +5,7 @@
 
 <script>
 import AppBuilderShow from '@/views/Home/AppBuilderShow.vue'
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
     components: {
@@ -17,9 +17,30 @@ export default {
             setDisplayAppBuilderShow: 'setDisplayAppBuilderShow',
             setCurrentRecord: 'setCurrentRecord'
         }),
+
+        ...mapActions('AppBuilder', {
+            getRecordById: 'getRecordById',
+            getApp: 'getApp'
+        }),
+
+        ...mapActions('RecordsInstance', {
+            getRecordById: 'getRecordById'
+        }),
+
     },
 
-    mounted() {
+    async mounted() {
+        this.setDisplayAppBuilderShow()
+        
+        try {
+            const record = await this.getRecordById(this.$route.params.id)
+            const app = await this.getApp(record.app_id)
+        } catch(e) {
+
+        }
+    },
+
+    beforeDestroy(){
         this.setDisplayAppBuilderShow()
     }
 }

@@ -1,13 +1,20 @@
 import axios from 'axios'
-const defaultState = {}
+const defaultState = {
+  app: {}
+}
 const state = () => defaultState
 const getters = {}
-const mutations = {}
+const mutations = {
+  setCurrentApp(state, payload) {
+    state.app = payload
+  }
+}
 
 const actions = {
-  getApp(_, payload = 1) {
+  getApp({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`).then(({ data }) => {
+        commit('setCurrentApp', data)
         resolve(data)
       }).catch(e => reject(e))
     })
@@ -192,15 +199,6 @@ const actions = {
       axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/fieldValue/${payload}`).then(({ data }) => {
         resolve(data)
       }).catch(e => reject(e))
-    })
-  },
-
-  getRecordById(_, id) {
-    return new Promise( (resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${id}`).then( ({ data }) => {
-        resolve(data)
-      })
-      .catch(e => reject(e))
     })
   },
 
