@@ -117,8 +117,6 @@ export default {
                         payload.fields.push({ value, field_id: f.id })
                     }
                 }
-                console.log('payload')
-                console.log(payload)
 
                 await this.bulkSaveFieldValues(payload)
 
