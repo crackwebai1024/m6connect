@@ -156,10 +156,10 @@ export default {
 
                 const payloadToCreate = { record_id: this.$route.params.id, fields: [] }
                 payloadToCreate.fields = this.createFieldsPayload(createObj)
-                
+
                 await this.updateSomeFieldValues(payload)
                 await this.bulkSaveFieldValues(payloadToCreate)
-                await this.deleteFieldsByIds({ deleteArr })
+                if( deleteArr.length ) await this.deleteFieldsByIds({ deleteArr })
 
                 this.notifSuccess('The values were updated')
                 this.loading = false 

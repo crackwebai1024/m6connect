@@ -3,26 +3,23 @@
         <div slot="header" class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
             <div class="d-flex align-center">
                 <img
-                    v-if="currentCompany.logo"
-                    :alt="currentCompany.name" 
+                    v-if="app.iconLink"
+                    :alt="app.iconLink" 
                     class="rounded pointer" 
                     width="180" 
                     height="150" 
                     :src="currentCompany.logo"
                 >
+
+                <v-icon size="180" v-else >mdi-store</v-icon>
+
                 <div class="ml-8">
-                    <p class="font-weight-regular text-h5 mb-1">{{ currentCompany.name }}</p>
+                    <p class="font-weight-regular text-h5 mb-1">{{ app.title }}</p>
                     <p>{{ currentCompany.legalCompanyName }}</p>
                 </div>
             </div>
             <div>
-                <v-btn
-                    class="blue left-0 ml-3 mt-1 px-8 py-6 white--text font-weight-black"
-                    text
-                    light
-                >
-                    Connect
-                </v-btn>
+
             </div>
         </div>
         <div slot="tabs" class="d-flex align-center">
