@@ -12,6 +12,7 @@ const UserSettings = () => import(/* webpackChunkName: 'UserSettings' */ "@/view
 
 const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components/Companies')
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
+const AppsBuilderList = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps/AppBuilder')
 const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShowBlank.vue')
@@ -76,6 +77,11 @@ const router = new VueRouter({
       component: Apps
     },
     {
+      path: "/apps/app-builder",
+      name: "app-builder",
+      component: AppsBuilderList
+    },
+    {
       path: "/companies",
       name: "companies",
       component: Companies
@@ -86,7 +92,7 @@ const router = new VueRouter({
       component: UserSettings
     },
     {
-      path: "/dev",
+      path: "/dev/:id",
       name: "dev",
       component: Dev,
       meta: {

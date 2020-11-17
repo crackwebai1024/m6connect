@@ -31,12 +31,13 @@
                 </v-col>                    
             </v-row>
             <v-row>
-                <v-col cols="12" class="float-right" >
                     <v-spacer></v-spacer>
+                    <v-btn color="error" @click="cancel()" class="white--text mr-4">
+                        Cancel
+                    </v-btn>
                     <v-btn color="green darken-2" class="white--text" @click="saveRecord">
                         save 
                     </v-btn>
-                </v-col>
             </v-row>
         </v-container>
         <m6-loading :loading="loading" />
@@ -83,6 +84,10 @@ export default {
             setDisplayAppBuilderShow: 'setDisplayAppBuilderShow',
             setCurrentRecord: 'setCurrentRecord'
         }),
+
+        cancel(){
+            this.$emit('closingGenericRecord')
+        },
 
         close(){
             this.setCurrentRecord({...this.record})
