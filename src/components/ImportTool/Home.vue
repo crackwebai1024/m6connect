@@ -1035,7 +1035,8 @@ export default {
       const day = ('0' + (start.getDate())).slice(-2).toString()
 
       db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).add({
-        id
+        id,
+        companyID: this.currentCompany.id
       })
     }
   }
