@@ -246,17 +246,32 @@
       </v-card>
     </v-dialog>
 
-
-    <v-dialog>
+    <v-dialog
+      v-model="percentageDialog"
+      max-width="600px"
+      persistent
+    >
       <v-card>
-        <v-card-text>
+        <v-card-text class="py-4">
           <v-progress-linear
-            v-model="knowledge"
+            v-model="percentage"
             height="25"
           >
-            <strong>{{ Math.ceil(knowledge) }}%</strong>
+            <strong class="white--text">{{ Math.ceil(percentage) === 100 ? 'Done!' : `${Math.ceil(percentage)}%` }}</strong>
           </v-progress-linear>
         </v-card-text>
+        <v-card-actions class="px-6 py-0">
+          <v-spacer />
+          <v-btn
+            v-show="Math.ceil(percentage) >= 100"
+            class="mb-3"
+            color="blue darken-1"
+            text
+            @click="percentageDialog = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-container>
@@ -494,7 +509,8 @@ export default {
       showStep2Loader: false,
       budgetCategories: [],
       rowNumber: 0,
-      percentage: 0
+      percentage: 0,
+      percentageDialog: false
     }
   },
   computed: {
@@ -656,6 +672,8 @@ export default {
     },
     async startImport() {
       this.percentage = 0
+      this.percentageDialog = true
+
       for (let index = 0; index < this.fileData.data.length; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
