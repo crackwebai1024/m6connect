@@ -16,17 +16,31 @@
           </v-icon>
         </div>
         <div class="ml-8">
-          <v-text-field
-            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
-            label="Record Title"
-          />
-          <v-btn
-            class="blue--text capitalize px-1"
-            color="transparent"
-            elevation="0"
-          >
-            Add field
-          </v-btn>
+          <p class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl" >
+            Record Title
+          <p/>
+          <add-field @addNewField="addNewField" />
+          <v-list>
+            <v-list-item
+              class="my-0 py-0"
+              v-for="field in app.fields"
+              :key="field.id"
+            >
+              <v-list-item-content @click="editField(field)">
+                <v-list-item-title>{{ field.label }}</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action class="my-0 py-0">
+                <v-btn
+                  icon
+                  @click="showDelete(field)"
+                >
+                  <v-icon color="red lighten-3">
+                    mdi-delete
+                  </v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
         </div>
       </div>
       <div
@@ -75,7 +89,6 @@
 
     <div class="align-center d-flex justify-space-between max-w-lg mx-auto w-full">
       <div class="align-center d-flex">
-        activeTab {{ activeTab }}
         <v-tabs
           v-if="appLoaded"
           v-model="activeTab"
@@ -130,15 +143,14 @@
           </v-tab>
         </v-tabs>
         <add-tab @addNewTab="addNewTab" />
-      </div>
-      <div class="align-center d-flex">
-        <v-btn
-          class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
-          elevation="0"
-          light
-        >
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
+        <field
+          v-if="showFieldModal"
+          :editing="editing"
+          :field="activeField"
+          :show="showFieldModal"
+          @close="showFieldModal = false"
+          @result="pushField"
+        />
       </div>
     </div>
     <div
@@ -218,7 +230,7 @@
       width="500"
     >
       <delete-dialog
-        element="Tab"
+        :element="message"
         @closeDeleteModal="confirmDelete"
       />
     </v-dialog>
@@ -241,6 +253,8 @@
 import AddPanel from '@/components/AppBuilder/Buttons/AddPanel'
 import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
+import AddField from '@/components/AppBuilder/Buttons/AddField'
+import Field from '@/components/AppBuilder/Modals/Field'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
@@ -251,7 +265,9 @@ export default {
   components: {
     DeleteDialog,
     AddPanel,
+    AddField,
     AddTab,
+    Field,
     Panel,
     TabUpdates,
     ProjectSocialMedia
@@ -259,13 +275,31 @@ export default {
 
   data: () => ({
     app: {},
+    message: 'Tab',
     appLoaded: false,
     showDeleteModal: false,
     tabToDelete: null,
+    fieldToDelete: null,
     activeTab: 0,
     showTabEditDialog: false,
     tabToEdit: {},
     loading: false,
+
+
+    showFieldModal: false,
+    editing: false,
+    activeField: {},
+    defaultField: {
+      label: 'New Field',
+      type: 'text',
+      weight: 0,
+      metadata: {
+        options: [],
+        required: false
+      }
+    },
+
+
     rules: {
       generic: [v => !!v || 'This field is required']
     }
@@ -317,7 +351,6 @@ export default {
         this.loading = false
       } else {
         this.loading = false
-        // just console log data, that will have the error in case you need to see it
         this.notifDanger('There was an error while uploading')
       }
     },
@@ -415,23 +448,57 @@ export default {
       })
     },
 
+    addNewField() {
+      this.defaultField['appID'] = this.app.id;
+      
+      this.activeField = { ...this.defaultField }
+      this.editing = false
+      this.showFieldModal = true
+    },
+
+    pushField(item) {
+      if (this.editing) {
+        const index = this.app.fields.map(item => item.id).indexOf(item.id)
+        this.app.fields[index] = { ...item }
+      } else {
+        this.app.fields.push(item)
+      }
+      this.showFieldModal = false
+      this.editing = false
+    },
+
+    showDelete(field) {
+      this.message = `Field '${field.label}'`
+      this.showDeleteModal = true
+      this.fieldToDelete = field.id
+    },
+
     deletePanel(id) {
       const index = this.app.tabs[this.activeTab].panels.map(item => item.id).indexOf(id)
       this.app.tabs[this.activeTab].panels.splice(index, 1)
     },
 
     deleteTab() {
+      this.message = `Tab '${this.app.tabs[this.activeTab]['title']}'`
       this.showDeleteModal = true
       this.tabToDelete = this.app.tabs[this.activeTab].id
     },
 
     async confirmDelete(result) {
       if (result) {
-        await this.$store.dispatch('AppBuilder/deleteTab', this.tabToDelete)
-        const index = this.app.tabs.map(item => item.id).indexOf(this.tabToDelete)
-        this.app.tabs.splice(index, 1)
-        this.activeTab = 0
+        if(this.tabToDelete !== null){
+          await this.$store.dispatch('AppBuilder/deleteTab', this.tabToDelete)
+          const index = this.app.tabs.map(item => item.id).indexOf(this.tabToDelete)
+          this.app.tabs.splice(index, 1)
+          this.activeTab = 0
+        }else if(this.fieldToDelete !== null) {
+          await this.$store.dispatch('AppBuilder/deleteField', this.fieldToDelete)
+          const index = this.app.fields.map(item => item.id).indexOf(this.fieldToDelete)
+          this.app.fields.splice(index, 1)
+        }
       }
+      
+      this.fieldToDelete = null
       this.tabToDelete = null
       this.showDeleteModal = false
     }
