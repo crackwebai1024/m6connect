@@ -33,7 +33,11 @@ export default {
       this.change_preview_navigation_drawer(true);
     },
     redirect() {
-      this.$router.push(`/dev/${this.recordData['id']}`)
+      if(this.recordData['record_number']) {
+        this.$router.push(`/record/${this.recordData['id']}`)
+      }else{
+        this.$router.push(`/dev/${this.recordData['id']}`)
+      }
     }
   },
   created(){

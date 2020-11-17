@@ -134,7 +134,7 @@ export default {
     }
   },
   mounted(){
-    this.setFilterTag({key: 'all_apps', value: 'All Apps'});
+    this.setFilterTag({key: 'everyone', value: 'Everyone'});
     this.user = this.cUser;
     this.select('/wo_status').then(res => {
       this.status = res.data;
