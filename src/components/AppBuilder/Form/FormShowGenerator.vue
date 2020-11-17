@@ -73,7 +73,9 @@ export default {
             standard: [ v => !!v || 'This field is required', ]
         },
         loading: false,
-        isEdit: false
+        isEdit: false,
+        typesToIds: {},
+        complexDataStructs: { autocomplete: true, people: true }
     }),
 
     computed: {
@@ -87,7 +89,8 @@ export default {
         ...mapActions('AppBuilder', {
             bulkSaveFieldValues: 'bulkSaveFieldValues',
             getFieldValuesPerPanel: 'getFieldValuesPerPanel',
-            updateSomeFieldValues: 'updateSomeFieldValues'
+            updateSomeFieldValues: 'updateSomeFieldValues',
+            deleteFieldsByIds: 'deleteFieldsByIds'
         }),
 
         ...mapMutations('SnackBarNotif', {
@@ -129,22 +132,34 @@ export default {
             try {
                 this.loading = true 
 
-                const payload = { record_id: this.$route.params.id, fields: [] } 
-                for( let x = 0; x < this.fields.length; x++ ) {
+                const complexTypes = this.fields.filter( f => this.complexDataStructs[f.type] ).map( f => f.id)
+                const newGenericRecord = {...this.genericRecord} 
 
-                    const f = this.fields[x]
-                    const value = this.$h.dg(this.genericRecord, `${f.id}`, '')
-                    
-                    if( !value ) continue
-                    
-                    if( Array.isArray(value) ) {
-                        const res = value.map( v => ({ value: v,  field_id: f.id }) )
-                        payload.fields = [...payload.fields, ...res]
-                    } else {
-                        payload.fields.push({ value, field_id: f.id })
-                    }
-                }
-                const updated = await this.updateSomeFieldValues(payload)
+                complexTypes.forEach( id => {
+                    delete newGenericRecord[id]
+                })
+
+                let deleteArr = []
+                let createObj = {}
+
+                complexTypes.forEach( a => {
+                    const { toDelete, toCreate } = this.findTheDifference( this.typesToIds[a], this.genericRecord[a], a)
+                    const fieldType = this.fields.find( f => f.id == a ).type
+
+                    deleteArr.push({ values: toDelete, fieldType })
+                    createObj[a] = toCreate
+                })
+
+                const payload = { record_id: this.$route.params.id, fields: [] } 
+
+                payload.fields = this.createFieldsPayload(newGenericRecord)
+
+                const payloadToCreate = { record_id: this.$route.params.id, fields: [] }
+                payloadToCreate.fields = this.createFieldsPayload(createObj)
+                
+                await this.updateSomeFieldValues(payload)
+                await this.bulkSaveFieldValues(payloadToCreate)
+                await this.deleteFieldsByIds({ deleteArr })
 
                 this.notifSuccess('The values were updated')
                 this.loading = false 
@@ -152,7 +167,38 @@ export default {
                 this.notifDanger('The was an error while updated')
                 this.loading = false  
             }
+        },
+
+        createFieldsPayload(record) {
+            let fields = [] 
+
+            for( let x = 0; x < this.fields.length; x++ ) {
+
+                const f = this.fields[x]
+                const value = this.$h.dg(record, `${f.id}`, '')
+                
+                if( !value ) continue
+                
+                if( Array.isArray(value) ) {
+                    const res = value.map( v => ({ value: v,  field_id: f.id }) )
+                    fields = [...fields, ...res]
+                } else {
+                    fields.push({ value, field_id: f.id })
+                }
+            }
+
+            return fields
+        },
+
+        findTheDifference(reference, newData, fieldId) {
+            const toDelete = reference.filter( r => !newData.includes( r.value ) )
+
+            const transformedArray = reference.map( r => r.value )                                                                    
+            const toCreate = newData.filter( a => !transformedArray.includes(a)) 
+
+            return { toDelete, toCreate }
         }
+
     },
 
     async mounted() {
@@ -163,15 +209,14 @@ export default {
                 
                 const res = await this.getFieldValuesPerPanel({ recordID: this.$route.params.id, panelID: this.panel.id })
 
-                if( Object.keys(res).length > 0 ) {
-                    this.genericRecord = {...res}
+                if( Object.keys(res.values).length > 0 ) {
+                    this.genericRecord = {...res.values} 
+                    this.typesToIds = res.typesToIds
                     this.isEdit = true
                 }
 
                 this.loading = false
             } catch(e) {
-                console.log('e')
-                console.log(e)
                 this.loading = false
             }
         }

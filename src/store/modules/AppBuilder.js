@@ -231,6 +231,16 @@ const actions = {
       })
       .catch( e => reject(e) )
     })
+  },
+
+  deleteFieldsByIds(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/fieldsByIds`, payload)
+      .then( ({ data }) => {
+        resolve(data)
+      })
+      .catch( e => reject(e) )
+    })
   }
 
 }
