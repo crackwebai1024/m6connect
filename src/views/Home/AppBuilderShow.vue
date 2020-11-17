@@ -1,5 +1,5 @@
 <template>
-    <app-template  :props-dialog="showSelf">
+    <app-template  :props-dialog="showSelf" :isPersistent="$route.name == 'record.show'" >
         <div slot="header" class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
             <div class="d-flex align-center">
                 <img
@@ -14,12 +14,11 @@
                 <v-icon size="180" v-else >mdi-store</v-icon>
 
                 <div class="ml-8">
-                    <p class="font-weight-regular text-h5 mb-1">{{ app.title }}</p>
-                    <p>{{ currentCompany.legalCompanyName }}</p>
+                    <p class="font-weight-regular text-h5 mb-1">{{ record.title }}</p>
+                    <p></p>
                 </div>
             </div>
             <div>
-
             </div>
         </div>
         <div slot="tabs" class="d-flex align-center">
@@ -101,8 +100,12 @@ export default {
         }),
 
         ...mapState('RecordsInstance', {
-            currentRecord: 'currentRecord',
+            record: 'currentRecord',
             showSelf: 'displayAppBuilderShow'
+        }),
+
+        ...mapState('AppBuilder', {
+            app: 'app'
         }),
 
         panelsByColumn() {
@@ -112,27 +115,17 @@ export default {
 
     methods: {
         ...mapActions('AppBuilder', {
-            getRecordById: 'getRecordById',
             getApp: 'getApp'
         }),
         ...mapMutations('RecordsInstance', {
             displayAppBuilderShow: 'displayAppBuilderShow'
-        })
+        }),
     },
 
     data: () => ({
         tabs: [],
         currentTab: 0,
-        app: {}
     }),
-
-    async mounted() {
-        try {
-            this.app = await this.getApp(1)
-        } catch(e) {
-
-        }
-    }
 
 }
 </script>
