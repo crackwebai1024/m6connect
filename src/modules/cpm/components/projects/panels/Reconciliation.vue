@@ -176,7 +176,7 @@
             class="pl-20 text-center"
           >
             <v-row justify="center">
-              <v-col class="shrink">
+              <v-col class="align-center d-flex text-nowrap">
                 {{ formatDateToText(props.item.completionDate) || '' }}
               </v-col>
             </v-row>
@@ -621,7 +621,7 @@ export default {
           value: 'POReceived',
           text: 'We have received the Total PO Amount',
           color: 'success',
-          icon: 'done_all'
+          icon: 'mdi-check-all'
         }
       ],
       selectedCommitment: null,

@@ -286,7 +286,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.invoiceNumber') }}
                       </v-col>
                       <v-col class="shrink">
@@ -312,7 +312,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $tc('cpm.projects.commitment', 2) }}
                       </v-col>
                       <v-col class="shrink" />
@@ -349,7 +349,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('cpm.projects.budgetCategory') }}
                       </v-col>
                       <v-col class="shrink">
@@ -374,7 +374,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.dateOpened') }}
                       </v-col>
                     </v-row>
@@ -440,7 +440,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.datePaid') }}
                       </v-col>
                       <v-col class="shrink">
@@ -508,7 +508,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.description') }}
                       </v-col>
                     </v-row>
@@ -533,7 +533,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('general.attachments') }}
                     </v-col>
                     <v-col class="shrink">
@@ -626,7 +626,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('general.filesToAdd') }}
                     </v-col>
                   </v-row>

@@ -32,7 +32,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Title
                     </v-col>
                   </v-row>
@@ -54,7 +54,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Vendor
                     </v-col>
                   </v-row>
@@ -93,7 +93,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Commitment Account
                     </v-col>
                   </v-row>
@@ -111,7 +111,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Line number
                     </v-col>
                   </v-row>
@@ -132,7 +132,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Fiscal year
                     </v-col>
                   </v-row>
@@ -153,7 +153,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Amount
                     </v-col>
                   </v-row>
@@ -174,7 +174,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Cost per item
                     </v-col>
                   </v-row>
@@ -195,7 +195,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Invoice total
                     </v-col>
                   </v-row>
@@ -216,7 +216,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Quantity
                     </v-col>
                   </v-row>
@@ -234,7 +234,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Quantity amount
                     </v-col>
                   </v-row>
@@ -255,7 +255,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Tax amount
                     </v-col>
                   </v-row>
@@ -276,7 +276,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Total open amount with tax
                     </v-col>
                   </v-row>
@@ -297,7 +297,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Total PO line amount
                     </v-col>
                   </v-row>
@@ -318,7 +318,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Description
                     </v-col>
                   </v-row>
@@ -339,7 +339,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Start Date
                     </v-col>
                   </v-row>
@@ -381,7 +381,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Delivery Date
                     </v-col>
                   </v-row>

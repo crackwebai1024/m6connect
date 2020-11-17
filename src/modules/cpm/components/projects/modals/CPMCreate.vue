@@ -46,7 +46,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Project Title
                       </v-col>
                     </v-row>
@@ -67,7 +67,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Campus
                       </v-col>
                     </v-row>
@@ -93,7 +93,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Project Manager
                       </v-col>
                     </v-row>
@@ -121,7 +121,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Capital Type
                       </v-col>
                     </v-row>
@@ -143,7 +143,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Budget Status
                       </v-col>
                     </v-row>
@@ -201,7 +201,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Start Date
                       </v-col>
                     </v-row>
@@ -248,7 +248,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         End Date
                       </v-col>
                     </v-row>
@@ -335,7 +335,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Total Plan Budget
                       </v-col>
                     </v-row>

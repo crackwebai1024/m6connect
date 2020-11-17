@@ -413,6 +413,7 @@ import CPMCreate from './modals/CPMCreate'
 import ListFiltering from './modals/ListFiltering'
 import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
+  name: 'List',
   components: {
     'cpm-create': CPMCreate,
     'list-filtering': ListFiltering
@@ -448,11 +449,11 @@ export default {
     campusOption: 'All',
     pmOption: 'All',
     search: '',
-    view: { label: 'Grid', val: 'grid_view', icon: 'view_module' },
+    view: { label: 'Grid', val: 'grid_view', icon: 'mdi-view-module' },
     views: [
-      { label: 'Grid', val: 'grid_view', icon: 'view_module' },
-      { label: 'Table', val: 'view_list', icon: 'view_list' },
-      { label: 'Favorites', val: 'favorites_view', icon: 'favorite' }
+      { label: 'Grid', val: 'grid_view', icon: 'mdi-view-module' },
+      { label: 'Table', val: 'view_list', icon: 'mdi-view-list' },
+      { label: 'Favorites', val: 'favorites_view', icon: 'mdi-heart' }
     ],
     headers: [
       { text: '', value: 'picture' },
@@ -1047,7 +1048,7 @@ export default {
             this.view =
               data.view && data.view.label
                 ? data.view
-                : { label: 'Grid', val: 'grid_view', icon: 'view_module' }
+                : { label: 'Grid', val: 'grid_view', icon: 'mdi-view-module' }
             this.searchOption = data.searchOption || 'All'
           }
         })
