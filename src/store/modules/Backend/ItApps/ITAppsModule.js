@@ -31,6 +31,12 @@ export default {
           cont.state.itappsRecords = convertApps.toM6Apps(response['data']);
           generalListModule.state.general_list = cont.state.itappsRecords;
         },
+        async get_filter_builder_apps(cont, data){
+          let response = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/filter/builder-apps`,data);
+          
+          cont.state.itappsRecords = response['data'];
+          generalListModule.state.general_list = cont.state.itappsRecords;
+        },
         async get_select_apps(){
           return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/apps/selects`);
         },

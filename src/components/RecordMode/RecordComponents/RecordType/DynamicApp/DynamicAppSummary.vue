@@ -1,7 +1,7 @@
 <template>
     <v-container class="py-5 d-flex flex-wrap relative justify-start white rounded card-custom-shadow panel-container">
         <div class="card-content__tag absolute red white--text d-flex justify-center align-center text-body-1 font-weight-regular">
-          {{ apps.filter(app => app.id === info['app_id'])[0]['prefix'] }}
+          {{ info['prefix'] ? info['prefix'] : apps.filter(app => app.id === info['app_id'])[0]['prefix'] }}
         </div>
         <div class="d-flex">
           <div class="pl-5">

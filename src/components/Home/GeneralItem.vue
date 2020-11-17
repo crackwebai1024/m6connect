@@ -1,6 +1,10 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card elevation="0" class="rounded mx-auto transparent" tile :class="{ 'on-hover': !hover }" @click="updateInfo()">
+    <v-card 
+      elevation="0" 
+      class="rounded mx-auto transparent" 
+      tile :class="{ 'on-hover': !hover }" 
+      @click=" recordData['prefix'] !== null ? redirect() : updateInfo()">
       <component v-bind:is="compData" :info="recordData" ></component>
     </v-card>
   </v-hover>
@@ -27,6 +31,9 @@ export default {
     updateInfo() {
       this.push_data_to_active(this.recordData);
       this.change_preview_navigation_drawer(true);
+    },
+    redirect() {
+      this.$router.push(`/dev/${this.recordData['id']}`)
     }
   },
   created(){

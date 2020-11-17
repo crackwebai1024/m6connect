@@ -28,8 +28,12 @@ export default {
       commit('PUSH_APP_ID', data);
     },
     async get_all_apps_by_id({}, app){
-      let apps = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/${app}`)
+      let apps = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/by/${app}`)
       generalListModule.state.general_list = convertApps.toM6Apps(apps['data']);
+    },
+    async get_apps({}){
+      let apps = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`);
+      return apps['data'];
     }
   }
 };

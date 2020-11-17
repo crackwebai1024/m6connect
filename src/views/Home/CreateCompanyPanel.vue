@@ -239,7 +239,7 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch('AppBuilder/getApp', this.getAppId).then(res => {
+    this.$store.dispatch('AppBuilder/getApp', this.$route.params.id).then(res => {
       this.app = res;
 
       if( Object.keys( this.app ).length === 0)     this.$router.push(`/`);
