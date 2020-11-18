@@ -197,29 +197,35 @@ export default {
             const toCreate = newData.filter( a => !transformedArray.includes(a)) 
 
             return { toDelete, toCreate }
+        },
+
+        async loadingData() {
+            if( this.$route.name == 'record.show' ){
+                try {
+                    this.loading = true 
+                    
+                    const res = await this.getFieldValuesPerPanel({ recordID: this.$route.params.id, panelID: this.panel.id })
+                    this.genericRecord = {...res.values} 
+                    this.typesToIds = res.typesToIds
+                    this.isEdit = true
+
+                    this.loading = false
+                } catch(e) {
+                    this.loading = false
+                }
+            }
         }
 
     },
 
-    async mounted() {
-        
-        if( this.$route.name == 'record.show' ){
-            try {
-                this.loading = true 
-                
-                const res = await this.getFieldValuesPerPanel({ recordID: this.$route.params.id, panelID: this.panel.id })
-
-                if( Object.keys(res.values).length > 0 ) {
-                    this.genericRecord = {...res.values} 
-                    this.typesToIds = res.typesToIds
-                    this.isEdit = true
-                }
-
-                this.loading = false
-            } catch(e) {
-                this.loading = false
-            }
+    watch: {
+        $route(oldVal, newVal) {
+            this.loadingData()
         }
+    },
+
+    mounted() {
+       this.loadingData()
     },
 
 }
