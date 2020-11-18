@@ -14,7 +14,7 @@ const mutations = {
         state.displayAppBuilderShow = !state.displayAppBuilderShow
     },
     setCurrentRecord(state, record) {
-        state.currentRecord = record
+        state.currentRecord = {...record}
     }
 }
 

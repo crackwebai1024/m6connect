@@ -64,8 +64,8 @@ export default {
         rules: {
             generic: [ v => !!v || 'Item is required' ]
         },
-        record: recordDefault,
-        recordDefault: recordDefault 
+        record: {...recordDefault},
+        recordDefault: {...recordDefault}
 
     }),
 
@@ -90,11 +90,10 @@ export default {
         },
 
         close(){
-            this.setCurrentRecord({...this.record})
-            this.setDisplayAppBuilderShow()
-
+            const recordId = this.record.id
+            
             this.record = {...this.recordDefault}
-            this.$emit('closingGenericRecord')
+            this.$router.push({ name: "record.show", params: { id: recordId } })
         },
 
         async saveRecord() {
