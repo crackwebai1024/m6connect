@@ -648,13 +648,16 @@ export default {
 
       this.mappedFields.forEach(item => {
         if (item.includes('projects_id_number') !== false) {
+          console.log('Projects', item)
           projectsCheck = true
         }
 
-        if (item.includes('commitments_id_number') !== false) {
+        if (item.includes('commitments_id_number') !== false && item.includes('spendingLineItem_commitment_id_number') === false) {
+          console.log('commitmentes', item)
           commitmentsToCheck = true
         }
         if (item.includes('spendings_id_number') !== false) {
+          console.log('spendings', item)
           spendingsToCheck = true
         }
       })
@@ -692,6 +695,7 @@ export default {
             project = await this.createProject(formatedData)
             await this.storeForRevert('project', project.id)
           } else {
+            console.log('Using Existing project')
             project = project[0]
           }
 
@@ -721,14 +725,18 @@ export default {
               commitment = commitment[0]
             }
 
-            // Verify if the line item already exists
-            const checkLineItem = await this.getCommitmentLineItem(project.id, commitment.id, formatedData.commitmentLineItem_line_number)
-            if (!checkLineItem) {
-              console.log('Creating Line Item')
-              const newCommitmentLineItem = await this.createCommitmentLineItem(project.id, commitment.id, formatedData)
-              await this.storeForRevert('commitmentLineItem', newCommitmentLineItem.id)
+            if (formatedData.commitmentLineItem_line_number) {
+              // Verify if the line item already exists
+              const checkLineItem = await this.getCommitmentLineItem(project.id, commitment.id, formatedData.commitmentLineItem_line_number)
+              if (!checkLineItem) {
+                console.log('Creating Line Item')
+                const newCommitmentLineItem = await this.createCommitmentLineItem(project.id, commitment.id, formatedData)
+                await this.storeForRevert('commitmentLineItem', newCommitmentLineItem.id)
+              } else {
+                console.log('Skipping Line Item, already exists')
+              }
             } else {
-              console.log('Skipping Line Item, already exists')
+              console.log('Missing Commitment Line item number')
             }
           } else if (this.types.includes('spendings')) {
             const number = formatedData.spendings_id_number
@@ -748,20 +756,24 @@ export default {
               // Commitment not exists
               spending = await this.createSpending(project.id, formatedData)
               await this.storeForRevert('spending', spending.id)
-              console.log('Creating Commitment')
+              console.log('Creating Spending')
             } else {
-              console.log('Using Existing Commitment')
+              console.log('Using Existing Spending')
               spending = spending[0]
             }
 
             // Verify if the line item already exists
-            const checkLineItem = await this.getSpendingLineItem(project.id, spending.id, formatedData.spendingLineItem_line_number)
-            if (!checkLineItem) {
-              console.log('Creating Line Item')
-              const newSpendingLineItem = await this.createCommitmentLineItem(project.id, spending.id, formatedData)
-              await this.storeForRevert('spendingLineItem', newSpendingLineItem.id)
+            if (formatedData.spendingLineItem_line_number) {
+              const checkLineItem = await this.getSpendingLineItem(project.id, spending.id, formatedData.spendingLineItem_line_number)
+              if (!checkLineItem) {
+                console.log('Creating Line Item')
+                const newSpendingLineItem = await this.createCommitmentLineItem(project.id, spending.id, formatedData)
+                await this.storeForRevert('spendingLineItem', newSpendingLineItem.id)
+              } else {
+                console.log('Skipping Line Item, already exists')
+              }
             } else {
-              console.log('Skipping Line Item, already exists')
+              console.log('Missing Spending Line item number')
             }
           }
         }
@@ -796,6 +808,8 @@ export default {
       }))
     },
     async getCommitment(projectID, number) {
+      console.log(projectID)
+      console.log(number)
       const docs = await db.collection('cpm_projects')
         .doc(projectID)
         .collection('commitments')
