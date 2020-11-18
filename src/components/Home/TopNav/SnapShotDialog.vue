@@ -60,7 +60,7 @@
                                                 draggable: true,
                                                 width: 20,
                                                 height: 20,
-                                                fill: 'red',
+                                                fill: $h.dg( ratingChosen, 'color', '#37474F' ), // blue-grey darken-3
                                                 shadowBlur: 10,
                                                 opacity: 0.5
                                             }"
@@ -90,7 +90,20 @@
                                     </v-btn>
                                 </div>
                                 <v-textarea outlined  label="Description" v-model="rapidItem.items[i].text" />
-
+                                <div class="inline" >
+                                    <v-btn 
+                                        v-for="(u, i) in userReactions" 
+                                        :key="`user-${i}`" 
+                                        fab 
+                                        x-small 
+                                        @click="pickingEmoji(u)"
+                                    >
+                                        <span 
+                                            v-html="u.emoji" 
+                                            class="emoji-font-size"
+                                        />
+                                    </v-btn>
+                                </div>
                             </div>
 
                         </v-col>
@@ -144,6 +157,10 @@ export default {
         imageTest: {
             type: String,
             default: '' 
+        },
+        ratingChosen: {
+            type: Object,
+            default: () => ({})
         }
     },
 
@@ -157,7 +174,15 @@ export default {
             width: width,
             height: height
         },
-        loading: false
+        loading: false,
+        userReactions: [
+            { emoji: "&#128578;", level: 5, text: 'Ok' }, //smiley face
+            { emoji: "&#128577;", level: 4, text: 'Not Ok' }, //frowney face
+            { emoji: "&#128580;", level: 3, text: "Help" }, //rolling eyes face
+            { emoji: "&#129301;", level: 2, text: "Quick" }, //bandaged face
+            { emoji: "&#129298;", level: 1, text: "Help Please" }, //sick face with thermometer
+            { emoji: "&#129324;", level: 0, text: "Angry!" } //angry cursing face
+        ]
     }),
 
     methods: {
@@ -266,6 +291,9 @@ export default {
 
               const blob = new Blob(byteArrays, {type: contentType});
               return blob;
+        },
+
+        pickingEmoji(reaction) {
         }
         
     },
@@ -305,4 +333,8 @@ export default {
     display: -webkit-flex;
     justify-content: space-between;
 }
+.emoji-font-size{
+    font-size:30px;
+}
+
 </style>
