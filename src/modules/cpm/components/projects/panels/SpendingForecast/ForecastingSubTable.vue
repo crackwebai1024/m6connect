@@ -1,6 +1,5 @@
 <template>
   <v-data-table
-    :expand="true"
     :headers="headers"
     hide-actions
     item-key="code"

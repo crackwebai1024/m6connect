@@ -130,7 +130,6 @@
     <m6-data-table
       :align-actions="alignActions"
       class="elevation-0"
-      :expand="false"
       fixed-header
       :headers="headers"
       :items="resources"
@@ -288,7 +287,6 @@
           <v-col cols="11">
             <v-data-table
               class="elevation-1"
-              :expand="false"
               :headers="subheaders"
               hide-actions
               :items="props.item.spending"
@@ -399,20 +397,18 @@
                       <td class="pa-0 text-center">
                         <v-col>
                           <v-icon
-                            class="ml-0 mr-2"
+                            class="ml-0 mr-2 pointer"
                             color="#757575"
                             size="20"
-                            style="cursor: pointer"
                             @click="openEditLineItem(props.item)"
                           >
                             mdi-pencil
                           </v-icon>
 
                           <v-icon
-                            class="ml-0 mr-0"
+                            class="ml-0 mr-0 pointer"
                             color="#f44336"
                             size="20"
-                            style="cursor: pointer"
                             @click="deleteExpandedSpendingLineItem(props.item)"
                           >
                             mdi-delete

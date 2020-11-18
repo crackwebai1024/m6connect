@@ -45,10 +45,9 @@
 
           <td class="text-right">
             <v-icon
-              class="ml-0 mr-1"
+              class="ml-0 mr-1 pointer"
               color="#757575"
               size="20"
-              style="cursor: pointer"
               text
               @click="editItem(risk)"
             >

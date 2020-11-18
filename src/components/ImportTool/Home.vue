@@ -245,6 +245,36 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+      v-model="percentageDialog"
+      max-width="600px"
+      persistent
+    >
+      <v-card>
+        <v-card-text class="py-4">
+          <v-progress-linear
+            height="25"
+            stream
+            :value="percentage"
+          >
+            <strong class="white--text">{{ Math.ceil(percentage) === 100 ? 'Done!' : `${Math.ceil(percentage)}%` }}</strong>
+          </v-progress-linear>
+        </v-card-text>
+        <v-card-actions class="px-6 py-0">
+          <v-spacer />
+          <v-btn
+            v-show="Math.ceil(percentage) >= 100"
+            class="mb-3"
+            color="blue darken-1"
+            text
+            @click="percentageDialog = false"
+          >
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -479,7 +509,9 @@ export default {
       types: [],
       showStep2Loader: false,
       budgetCategories: [],
-      rowNumber: 0
+      rowNumber: 0,
+      percentage: 0,
+      percentageDialog: false
     }
   },
   computed: {
@@ -640,7 +672,11 @@ export default {
       }
     },
     async startImport() {
-      for (let index = 1; index < this.fileData.data.length; index++) {
+      this.percentage = 0
+      this.percentageDialog = true
+
+      // for (let index = 0; index < this.fileData.data.length; index++) {
+      for (let index = 0; index < 50; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
@@ -729,7 +765,11 @@ export default {
             }
           }
         }
+
+        // this.percentage = (index * 100) / this.fileData.data.length
+        this.percentage = (index * 100) / 50
       }
+      this.percentage = 100
     },
     formatData(item) {
       const formated = {}
@@ -1017,9 +1057,11 @@ export default {
       const day = ('0' + (start.getDate())).slice(-2).toString()
 
       db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).add({
-        id
+        id,
+        companyID: this.currentCompany.id
       })
-    }
+    },
+    async rollBack() {}
   }
 }
 </script>
