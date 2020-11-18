@@ -254,8 +254,9 @@
       <v-card>
         <v-card-text class="py-4">
           <v-progress-linear
-            v-model="percentage"
             height="25"
+            stream
+            :value="percentage"
           >
             <strong class="white--text">{{ Math.ceil(percentage) === 100 ? 'Done!' : `${Math.ceil(percentage)}%` }}</strong>
           </v-progress-linear>
@@ -674,7 +675,8 @@ export default {
       this.percentage = 0
       this.percentageDialog = true
 
-      for (let index = 0; index < this.fileData.data.length; index++) {
+      // for (let index = 0; index < this.fileData.data.length; index++) {
+      for (let index = 0; index < 50; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
@@ -764,8 +766,10 @@ export default {
           }
         }
 
-        this.percentage = (index * 100) / this.fileData.data.length
+        // this.percentage = (index * 100) / this.fileData.data.length
+        this.percentage = (index * 100) / 50
       }
+      this.percentage = 100
     },
     formatData(item) {
       const formated = {}
@@ -1056,7 +1060,8 @@ export default {
         id,
         companyID: this.currentCompany.id
       })
-    }
+    },
+    async rollBack() {}
   }
 }
 </script>
