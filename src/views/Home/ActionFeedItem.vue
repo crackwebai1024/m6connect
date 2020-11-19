@@ -234,16 +234,21 @@ export default {
     },
     setPost() {
       const { record, colorTag, id } = this.notification
+      const props = {
+        id: id,
+        record: record,
+        colorTag: colorTag,
+        wo_assignments: this.users
+      }
+
+      if (this.notification.type && this.notification.type.fields) {
+        props.fields = this.notification.type.fields
+      }
 
       this.setActPost({
         room: 'work_order',
         id: this.notification.post_id,
-        props: {
-          id: id,
-          record: record,
-          colorTag: colorTag,
-          wo_assignments: this.users
-        }
+        props
       })
     },
     diffNow(date) {
