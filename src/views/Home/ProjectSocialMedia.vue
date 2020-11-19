@@ -81,7 +81,7 @@
                 hide-input
                 multiple
                 prepend-icon="mdi-image-outline"
-                @change="onImagesChange($event)"
+                @change="onImagesChange"
                 :disabled="postListShow"
               />
               <!--              <v-icon class="red&#45;&#45;text text&#45;&#45;lighten-1">-->
@@ -195,6 +195,9 @@ export default {
   },
   methods: {
     ...mapActions('SocialNetworkModule', ['filter_posts']),
+    ...mapActions('AppAttachments', {
+      setPostsFiles: 'set_posts_attachments'
+    }),
     printSc(msg) {
       this.titlePage = `${msg}`;
     },
@@ -240,7 +243,20 @@ export default {
       }
       
       this.activityText = ''
-      this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+
+      this.$store.dispatch('GSFeed/addActivity', activity).then(res => {
+        
+        this.imageFiles.forEach(image => {
+          this.setPostsFiles({
+            files: image,
+            headers: {
+                'Content-Type': image['type'],
+                'Content-Name': image['name'],
+                'Post-Id': res['data']['results'][0]['id']
+            }
+          });
+        })
+        
         this.reloadFeed();
         this.showSkeletonPost = false
       })
@@ -248,8 +264,11 @@ export default {
     async reloadFeed(){
       await this.$store.dispatch('GSFeed/retrieveFeed')
     },
-    onImagesChange(e) {
-      this.imageFiles = e
+    onImagesChange(files) {
+      files.forEach(file => {
+        this.imageFiles.push(file)
+      })
+      
     },
     removeImage(index) {
       this.imageFiles.splice(index, 1)

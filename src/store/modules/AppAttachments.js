@@ -1,20 +1,36 @@
 import axios from "axios";
 
+const state = {
+}
+const getters = {
+}
+const mutations = {
+}
+const actions = {
+    async post_attachment({}, data){
+        let res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder`, data['file'], {
+            headers: data['headers']
+        });
+
+        return res['data'];
+    },
+    async set_posts_attachments({}, data) {
+        let res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/post`, data['files'], {
+            headers: data['headers']
+        });
+
+        return res['data'];
+    },
+    async get_post_file_url({}, postId) {
+        let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/post/${postId}`);
+        return res['data'];
+    }
+}
+
 export default{
     namespaced: true,
-    state: {
-    },
-    getters: {
-    },
-    mutations: {
-    },
-    actions: {
-        async post_attachment({}, data){
-            let res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder`, data['file'], {
-                headers: data['headers']
-            });
-
-            return res['data'];
-        }
-    }
+    state,
+    getters,
+    mutations,
+    actions
 }

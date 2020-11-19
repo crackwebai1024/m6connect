@@ -192,55 +192,53 @@
           </v-row>
         </div>
       </div>
-      <!--IMAGES-->
-      <!--      <div>-->
-      <!--        <div class="px-5 py-4">-->
-      <!--          <v-btn-->
-      <!--            v-if="all_images && data.images.length>4"-->
-      <!--            class="float-button"-->
-      <!--            color="primary"-->
-      <!--            outlined-->
-      <!--            @click="showAll"-->
-      <!--          >-->
-      <!--            Show less-->
-      <!--          </v-btn>-->
-      <!--          <v-row-->
-      <!--            v-if="data.images.length !== 0"-->
-      <!--            no-gutters-->
-      <!--          >-->
-      <!--            <v-col-->
-      <!--              v-for="(image, index) of picture_items"-->
-      <!--              :key="index"-->
-      <!--              :cols="widthCols()"-->
-      <!--            >-->
-      <!--              <v-img-->
-      <!--                aspect-ratio="1.7"-->
-      <!--                class="mx-1 my-1 pointer"-->
-      <!--                :src="image.url"-->
-      <!--                @click="previewImage(image)"-->
-      <!--              />-->
-      <!--            </v-col>-->
-      <!--          </v-row>-->
-      <!--          <v-btn-->
-      <!--            v-if="!all_images && data.images.length>4"-->
-      <!--            block-->
-      <!--            class="mt-2"-->
-      <!--            color="primary"-->
-      <!--            outlined-->
-      <!--            @click="showAll"-->
-      <!--          >-->
-      <!--            Show All-->
-      <!--          </v-btn>-->
-      <!--          <div-->
-      <!--            v-line-clamp="5"-->
-      <!--            class="black&#45;&#45;text size-14 text-style"-->
-      <!--            :class="data.images.length !== 0 ? 'mt-3' : ''"-->
-      <!--          >-->
-      <!--            {{ data.contain }}-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--END IMAGES-->
+      <div>
+        <div class="px-5 py-4">
+          <v-btn
+            v-if="all_images && images.length>4"
+            class="float-button"
+            color="primary"
+            outlined
+            @click="showAll"
+          >
+            Show less
+          </v-btn>
+          <v-row
+            v-if="images.length !== 0"
+            no-gutters
+          >
+            <v-col
+              v-for="(image, index) of picture_items"
+              :key="index"
+              :cols="widthCols()"
+            >
+              <v-img
+                aspect-ratio="1.7"
+                class="mx-1 my-1 pointer"
+                :src="image"
+                @click="previewImage(image)"
+              />
+            </v-col>
+          </v-row>
+          <v-btn
+            v-if="!all_images && images.length>4"
+            block
+            class="mt-2"
+            color="primary"
+            outlined
+            @click="showAll"
+          >
+            Show All
+          </v-btn>
+          <div
+            v-line-clamp="5"
+            class="black&#45;&#45;text size-14 text-style"
+            :class="images.length !== 0 ? 'mt-3' : ''"
+          >
+            {{ data.contain }}
+          </div>
+        </div>
+      </div>
 
 
       <!--      <div-->
@@ -499,6 +497,7 @@ export default {
       assignment_list: [],
       preview_list:[]
     },
+    images:[],
 
     showBtnsPost: false,
     showComments: false,
@@ -538,7 +537,14 @@ export default {
     }
   },
   mounted() {
-    // this.picture_items = this.data.images.slice(0, 4)
+    this.getPostsUrl(this.data.id).then(
+      res => {
+        res.forEach( url => {
+          this.images.push(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}${url}`)
+        })
+        this.picture_items = this.images.slice(0, 4)
+      }
+    );
     this.user = this.currentUser;
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
@@ -552,6 +558,7 @@ export default {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
     ...mapActions("WorkOrderModule", { records: "getRecords", putAct: "putAction", deleteAct: "deleteAction" }),
+    ...mapActions("AppAttachments", { getPostsUrl: "get_post_file_url" }),
 
     isAuthor(){
       return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
@@ -579,15 +586,15 @@ export default {
       })
     },
     widthCols() {
-      return this.data.images.length === 1 ? 12 : 6
+      return this.images.length === 1 ? 12 : 6
     },
     contLikes() {
       return this.$h.dg(this.data, 'reaction_counts.like', '0')
     },
     showAll() {
       this.picture_items = this.all_images
-        ? this.data.images.slice(0, 4)
-        : this.data.images
+        ? this.images.slice(0, 4)
+        : this.images
       this.all_images = !this.all_images
     },
     showCommentsPost() {
