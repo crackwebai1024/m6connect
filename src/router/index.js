@@ -16,6 +16,7 @@ const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 const AppBuilderSHow = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShow.vue')
 const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
+const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/CloneTool')
 
 import store from '../store/';
 Vue.use(VueRouter);
@@ -110,7 +111,12 @@ const router = new VueRouter({
       path: "/record/:id",
       name: "record.show",
       component: AppBuilderSHow
-    }
+    },
+    {
+      path: "/apps/tools/cpm/clone",
+      name: "tools.cpm.clone",
+      component: CloneTool
+    },
   ],
 });
 
