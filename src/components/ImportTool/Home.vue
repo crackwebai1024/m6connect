@@ -808,8 +808,6 @@ export default {
       }))
     },
     async getCommitment(projectID, number) {
-      console.log(projectID)
-      console.log(number)
       const docs = await db.collection('cpm_projects')
         .doc(projectID)
         .collection('commitments')
