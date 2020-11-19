@@ -1,20 +1,39 @@
 <template>
 <v-container>
-    <v-file-input
-        @change="selectFile"
-        :label="label"
-        filled
-        prepend-icon="mdi-file-document-outline"
-        counter
-        outlined
-        dense
-        show-size
-        truncate-length="20"
-    />
+    <v-card class="d-flex flex-column" v-if="!edit" >
+        <v-card-title class="my-0 py-0">
+            <span class="pointer" @click="openFile">
+                {{file['file_name']}}
+            </span>
+            <v-spacer></v-spacer>
+            <v-btn icon @click="edit = !edit">
+                <v-icon color="primary" >mdi-pencil</v-icon>
+            </v-btn>
+        </v-card-title>
+    </v-card>
+    
+    <div v-else>
+        <v-file-input
+            @change="selectFile"
+            :label="label"
+            filled
+            prepend-icon="mdi-file-document-outline"
+            append-outer-icon="mdi-cancel"
+            @click:append-outer="edit = !edit"
+            counter
+            outlined
+            dense
+            show-size
+            truncate-length="20"
+        />
+    </div>
 </v-container>
 </template>
 
 <script>
+import axios from 'axios'
+import { mapActions } from "vuex";
+
 export default {
     name:"AppAttachment",
     props: {
@@ -25,6 +44,9 @@ export default {
         chips:     { type: Boolean, default: false },
         clearable: { type: Boolean, default: false }
     },
+    data: () => ({
+        edit: false,
+    }),
     computed: {
         file: {
             get() {
@@ -36,6 +58,16 @@ export default {
         },
     },
     methods: {
+        ...mapActions("AppAttachments", {
+            setApp: "post_attachment"
+        }),
+        openFile(){
+            let path = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder/${this.file.id}`;
+            console.log(this.file.id);
+            
+            window.open(path,'_blank');
+            
+        },
         selectFile(file) {
             if (file['name'].match(/\.[0-9a-z]+$/i) && file['size'] < 50000000){
                 let localFile = {
@@ -48,8 +80,16 @@ export default {
                 };
                 this.file = {...localFile};
 
-                console.log(this.file);
-                
+                this.setApp({
+                    file: file,
+                    headers: {
+                        'Content-Type': localFile['file_type'],
+                        'Content-Name': localFile['file_name_full']
+                    }
+                }).then(file => {
+                    this.file['value']= file['attachId']
+                    this.file['id']= file['attachId']
+                })
             }
         },
     }
