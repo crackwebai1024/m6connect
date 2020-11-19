@@ -61,8 +61,8 @@
                                                 width: 20,
                                                 height: 20,
                                                 fill: $h.dg( ratingChosen, 'color', '#37474F' ), // blue-grey darken-3
-                                                shadowBlur: 10,
-                                                opacity: 0.5
+                                                shadowBlur: 25,
+                                                opacity: 0.9
                                             }"
                                         />
                                     </v-layer> 
@@ -116,6 +116,17 @@
             
             <v-card-actions>
 
+                <v-btn
+                    v-for="(r, i) in ratings"
+                    :key="`rate-btn-${i}`"
+                    :color="r.color"
+                    fab
+                    x-small
+                    @click=" $emit('changingColor', r) "
+                >
+                    <span v-if="r.color === ratingChosen.color" style="font-size: 1.7rem; color: white;" >&#10004;</span>
+                </v-btn>
+
                 <v-spacer />
 
                 <v-btn color="red" text @click="closing" > 
@@ -159,6 +170,10 @@ export default {
             default: '' 
         },
         ratingChosen: {
+            type: Object,
+            default: () => ({})
+        },
+        ratings: {
             type: Object,
             default: () => ({})
         }

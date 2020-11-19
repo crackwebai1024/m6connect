@@ -41,6 +41,8 @@
             :imageTest="imageTest"
             :ratingChosen="ratingChosen"
             @closing="showDialog = false"
+            :ratings="ratings"
+            @changingColor=" e => ratingChosen = e "
         />
 
         <m6-loading :loading="loading" />
