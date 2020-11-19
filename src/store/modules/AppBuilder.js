@@ -1,13 +1,20 @@
 import axios from 'axios'
-const defaultState = {}
+const defaultState = {
+  app: {}
+}
 const state = () => defaultState
 const getters = {}
-const mutations = {}
+const mutations = {
+  setCurrentApp(state, payload) {
+    state.app = payload
+  }
+}
 
 const actions = {
-  getApp(_, payload) {
+  getApp({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`).then(({ data }) => {
+        commit('setCurrentApp', data)
         resolve(data)
       }).catch(e => reject(e))
     })
@@ -195,21 +202,42 @@ const actions = {
     })
   },
 
-  getRecordById(_, id) {
-    return new Promise( (resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${id}`).then( ({ data }) => {
-        resolve(data)
-      })
-      .catch(e => reject(e))
-    })
-  },
-
   bulkSaveFieldValues(_, payload) {
     return new Promise( (resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values`, payload).then( ({ data }) => {
         resolve(data)
       })
       .catch(err => resolve(err))
+    })
+  },
+
+  getFieldValuesPerPanel(_, { recordID, panelID } = {}) {
+    return new Promise( (resolve, reject) => { 
+      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`)
+      .then( ({ data }) => {
+        resolve(data)
+      })
+      .catch( e => reject(e) )
+    })
+  },
+
+  updateSomeFieldValues(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/some`, payload)
+      .then( ({ data }) => {
+        resolve(data)
+      })
+      .catch( e => reject(e) )
+    })
+  },
+
+  deleteFieldsByIds(_, payload) {
+    return new Promise( (resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/fieldsByIds`, payload)
+      .then( ({ data }) => {
+        resolve(data)
+      })
+      .catch( e => reject(e) )
     })
   }
 

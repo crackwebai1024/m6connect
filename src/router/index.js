@@ -12,9 +12,10 @@ const UserSettings = () => import(/* webpackChunkName: 'UserSettings' */ "@/view
 
 const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components/Companies')
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
+const AppsBuilderList = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps/AppBuilder')
 const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
-const AppBuilderSHow = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShow.vue')
+const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShowBlank.vue')
 const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
 const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/CloneTool')
 
@@ -77,6 +78,11 @@ const router = new VueRouter({
       component: Apps
     },
     {
+      path: "/apps/app-builder",
+      name: "app-builder",
+      component: AppsBuilderList
+    },
+    {
       path: "/companies",
       name: "companies",
       component: Companies
@@ -87,7 +93,7 @@ const router = new VueRouter({
       component: UserSettings
     },
     {
-      path: "/dev",
+      path: "/dev/:id",
       name: "dev",
       component: Dev,
       meta: {
@@ -110,7 +116,7 @@ const router = new VueRouter({
     {
       path: "/record/:id",
       name: "record.show",
-      component: AppBuilderSHow
+      component: AppBuilderShowBlank
     },
     {
       path: "/apps/tools/cpm/clone",

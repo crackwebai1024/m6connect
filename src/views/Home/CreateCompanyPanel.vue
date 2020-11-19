@@ -3,8 +3,21 @@
     class="relative"
     tile
   >
+    <v-btn
+      absolute
+      color="primary"
+      dark
+      fab
+      left
+      small
+      style="top: 25px"
+      top
+      @click="showActions = !showActions"
+    >
+      <v-icon>mdi-account-hard-hat</v-icon>
+    </v-btn>
     <div
-      class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
+      class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative w-full"
     >
       <div class="align-center d-flex">
         <div class="grey lighten-3 pa-16">
@@ -16,17 +29,31 @@
           </v-icon>
         </div>
         <div class="ml-8">
-          <v-text-field
-            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
-            label="Record Title"
-          />
-          <v-btn
-            class="blue--text capitalize px-1"
-            color="transparent"
-            elevation="0"
-          >
-            Add field
-          </v-btn>
+          <p class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl">
+            Record Title
+          </p><p />
+          <add-field @addNewField="addNewField" />
+          <v-list>
+            <v-list-item
+              v-for="field in app.fields"
+              :key="field.id"
+              class="my-0 py-0"
+            >
+              <v-list-item-content @click="editField(field)">
+                <v-list-item-title>{{ field.label }}</v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action class="my-0 py-0">
+                <v-btn
+                  icon
+                  @click="showDelete(field)"
+                >
+                  <v-icon color="red lighten-3">
+                    mdi-delete
+                  </v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
         </div>
       </div>
       <div
@@ -72,167 +99,176 @@
     </div>
 
     <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
-
-    <div class="align-center d-flex justify-space-between max-w-lg mx-auto w-full">
-      <div class="align-center d-flex">
-        activeTab {{ activeTab }}
-        <v-tabs
-          v-if="appLoaded"
-          v-model="activeTab"
-          active-class="font-weight-black blue--text active-tab-company"
-        >
-          <v-tab
-            v-for="(tab, index) in app.tabs"
-            :key="index"
-            class="blue--text capitalize"
+    <template v-if="showActions">
+      <div class="align-center d-flex justify-space-between max-w-lg mx-auto relative w-full">
+        <div class="align-center d-flex">
+          <app-activities />
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <div class="align-center d-flex justify-space-between max-w-lg mx-auto relative w-full">
+        <div class="align-center d-flex">
+          <v-tabs
+            v-if="appLoaded"
+            v-model="activeTab"
+            active-class="font-weight-black blue--text active-tab-company"
           >
-            <template v-if="activeTab === index && !tab.readOnly">
-              <v-btn
-                color="green darken-2"
-                dark
-                icon
-                @click="editingTab(tab)"
-              >
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn
-                color="red darken-2"
-                dark
-                icon
-                @click="deleteTab"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </template>
+            <v-tab
+              v-for="(tab, index) in app.tabs"
+              :key="index"
+              class="blue--text capitalize"
+            >
+              <template v-if="activeTab === index && !tab.readOnly">
+                <v-btn
+                  color="green darken-2"
+                  dark
+                  icon
+                  @click="editingTab(tab)"
+                >
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn
+                  color="red darken-2"
+                  dark
+                  icon
+                  @click="deleteTab"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </template>
 
-            <span>{{ tab.title }}</span>
+              <span>{{ tab.title }}</span>
 
-            <template v-if="activeTab === index && !tab.readOnly">
-              <v-btn
-                class="white--text"
-                color="blue darken-2"
-                :disabled="index === 0"
-                icon
-                @click="moveTabs(app.tabs[index], app.tabs[index-1])"
-              >
-                <v-icon>mdi-arrow-left-thick</v-icon>
-              </v-btn>
-              <v-btn
-                class="white--text"
-                color="blue darken-2"
-                :disabled="$h.dg(app, 'tabs', []).length - 1 === index"
-                icon
-                @click="moveTabs(app.tabs[index], app.tabs[index+1])"
-              >
-                <v-icon>mdi-arrow-right-thick</v-icon>
-              </v-btn>
-            </template>
-          </v-tab>
-        </v-tabs>
-        <add-tab @addNewTab="addNewTab" />
-      </div>
-      <div class="align-center d-flex">
-        <v-btn
-          class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
-          elevation="0"
-          light
-        >
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-      </div>
-    </div>
-    <div
-      v-if="appLoaded"
-      class="details-content grey h-fit lighten-3 pt-2 pb-5"
-      style="height: 59vh; overflow-y: auto;"
-    >
-      <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
-        <v-col
-          class="d-flex flex-column justify-center pa-0 pr-1"
-          cols="5"
-        >
-          <!--                <div class="mb-3 panel px-4 py-3 white">-->
-          <!--                  <h3 class="font-weight-bold grey&#45;&#45;text spacing-tight text&#45;&#45;darken-1">-->
-          <!--                    Information-->
-          <!--                  </h3>-->
-          <!--                  <div class="align-start d-flex">-->
-          <!--                    <v-icon class="border mr-2 pt-2 rounded">-->
-          <!--                      mdi-alert-circle-->
-          <!--                    </v-icon>-->
-          <!--                    <div class="overflow-hidden w-full">-->
-          <!--                      <v-textarea-->
-          <!--                        class="grey lighten-3 pt-1 px-4"-->
-          <!--                        color="grey lighten-3"-->
-          <!--                      >-->
-          <!--                        <template v-slot:label>-->
-          <!--                          Description-->
-          <!--                        </template>-->
-          <!--                      </v-textarea>-->
-          <!--                      <v-btn-->
-          <!--                        class="blue&#45;&#45;text capitalize px-1"-->
-          <!--                        color="transparent"-->
-          <!--                        elevation="0"-->
-          <!--                      >-->
-          <!--                        Add field-->
-          <!--                      </v-btn>-->
-          <!--                    </div>-->
-          <!--                  </div>-->
-          <!--                </div>-->
-
-          <panel
-            v-for="panel in leftPanels"
-            :key="panel.id"
-            :panel="panel"
-            @deletePanel="deletePanel"
-            @updatePanel="updatePanel"
+              <template v-if="activeTab === index && !tab.readOnly">
+                <v-btn
+                  class="white--text"
+                  color="blue darken-2"
+                  :disabled="index === 0"
+                  icon
+                  @click="moveTabs(app.tabs[index], app.tabs[index-1])"
+                >
+                  <v-icon>mdi-arrow-left-thick</v-icon>
+                </v-btn>
+                <v-btn
+                  class="white--text"
+                  color="blue darken-2"
+                  :disabled="$h.dg(app, 'tabs', []).length - 1 === index"
+                  icon
+                  @click="moveTabs(app.tabs[index], app.tabs[index+1])"
+                >
+                  <v-icon>mdi-arrow-right-thick</v-icon>
+                </v-btn>
+              </template>
+            </v-tab>
+          </v-tabs>
+          <add-tab @addNewTab="addNewTab" />
+          <field
+            v-if="showFieldModal"
+            :editing="editing"
+            :field="activeField"
+            :show="showFieldModal"
+            @close="showFieldModal = false"
+            @result="pushField"
           />
-          <add-panel @addNewPanel="addNewPanel(0)" />
-        </v-col>
-        <v-col
-          class="pa-0 pl-1"
-          cols="7"
-          v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
-        >
-          <panel
-            v-for="panel in rightPanels"
-            :key="panel.id"
-            :panel="panel"
-            @deletePanel="deletePanel"
-            @updatePanel="updatePanel"
-          />
-          <add-panel @addNewPanel="addNewPanel(1)" />
-        </v-col>
+        </div>
+      </div>
+      <div
+        v-if="appLoaded"
+        class="details-content grey h-fit lighten-3 pb-5 pt-2"
+        style="height: 59vh; overflow-y: auto;"
+      >
+        <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
+          <v-col
+            class="d-flex flex-column justify-center pa-0 pr-1"
+            cols="5"
+          >
+            <!--                <div class="mb-3 panel px-4 py-3 white">-->
+            <!--                  <h3 class="font-weight-bold grey&#45;&#45;text spacing-tight text&#45;&#45;darken-1">-->
+            <!--                    Information-->
+            <!--                  </h3>-->
+            <!--                  <div class="align-start d-flex">-->
+            <!--                    <v-icon class="border mr-2 pt-2 rounded">-->
+            <!--                      mdi-alert-circle-->
+            <!--                    </v-icon>-->
+            <!--                    <div class="overflow-hidden w-full">-->
+            <!--                      <v-textarea-->
+            <!--                        class="grey lighten-3 pt-1 px-4"-->
+            <!--                        color="grey lighten-3"-->
+            <!--                      >-->
+            <!--                        <template v-slot:label>-->
+            <!--                          Description-->
+            <!--                        </template>-->
+            <!--                      </v-textarea>-->
+            <!--                      <v-btn-->
+            <!--                        class="blue&#45;&#45;text capitalize px-1"-->
+            <!--                        color="transparent"-->
+            <!--                        elevation="0"-->
+            <!--                      >-->
+            <!--                        Add field-->
+            <!--                      </v-btn>-->
+            <!--                    </div>-->
+            <!--                  </div>-->
+            <!--                </div>-->
 
-        <v-col
-          v-else
-          class="pa-0 pl-1"
-          cols="7"
-        >
-          <project-social-media class="opacity-social-media" postListShow />
-        </v-col>
-      </v-row>
-    </div>
+            <panel
+              v-for="panel in leftPanels"
+              :key="panel.id"
+              :panel="panel"
+              @deletePanel="deletePanel"
+              @updatePanel="updatePanel"
+            />
+            <add-panel @addNewPanel="addNewPanel(0)" />
+          </v-col>
+          <v-col
+            v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
+            class="pa-0 pl-1"
+            cols="7"
+          >
+            <panel
+              v-for="panel in rightPanels"
+              :key="panel.id"
+              :panel="panel"
+              @deletePanel="deletePanel"
+              @updatePanel="updatePanel"
+            />
+            <add-panel @addNewPanel="addNewPanel(1)" />
+          </v-col>
 
-    <v-dialog
-      v-model="showDeleteModal"
-      width="500"
-    >
-      <delete-dialog
-        element="Tab"
-        @closeDeleteModal="confirmDelete"
+          <v-col
+            v-else
+            class="pa-0 pl-1"
+            cols="7"
+          >
+            <project-social-media
+              class="opacity-social-media"
+              post-list-show
+            />
+          </v-col>
+        </v-row>
+      </div>
+
+      <v-dialog
+        v-model="showDeleteModal"
+        width="500"
+      >
+        <delete-dialog
+          :element="message"
+          @closeDeleteModal="confirmDelete"
+        />
+      </v-dialog>
+
+      <tab-updates
+        :dialog="showTabEditDialog"
+        :tab-to-edit="tabToEdit"
+        @closing="closingTabUpdates"
+        @updateTab="updatingTab"
       />
-    </v-dialog>
 
-    <tab-updates
-      :dialog="showTabEditDialog"
-      :tab-to-edit="tabToEdit"
-      @closing="closingTabUpdates"
-      @updateTab="updatingTab"
-    />
-
-    <m6-loading
-      :loading="loading"
-    />
+      <m6-loading
+        :loading="loading"
+      />
+    </template>
   </v-card>
 </template>
 
@@ -241,37 +277,64 @@
 import AddPanel from '@/components/AppBuilder/Buttons/AddPanel'
 import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
+import AddField from '@/components/AppBuilder/Buttons/AddField'
+import Field from '@/components/AppBuilder/Modals/Field'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
-import { mapActions, mapMutations } from 'vuex'
+import AppActivities from '@/views/AppBuilder/AppActivities'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   name: 'CreateCompanyPanel',
   components: {
     DeleteDialog,
     AddPanel,
+    AddField,
     AddTab,
+    Field,
     Panel,
     TabUpdates,
-    ProjectSocialMedia
+    ProjectSocialMedia,
+    AppActivities
   },
 
   data: () => ({
     app: {},
+    message: 'Tab',
     appLoaded: false,
     showDeleteModal: false,
     tabToDelete: null,
+    fieldToDelete: null,
     activeTab: 0,
     showTabEditDialog: false,
     tabToEdit: {},
     loading: false,
+    showActions: false,
+    showFieldModal: false,
+    editing: false,
+    activeField: {},
+    defaultField: {
+      label: 'New Field',
+      type: 'text',
+      weight: 0,
+      metadata: {
+        options: [],
+        required: false
+      }
+    },
+
+
     rules: {
       generic: [v => !!v || 'This field is required']
     }
   }),
 
   computed: {
+    ...mapGetters('DynamicAppsModule', {
+      getAppId: 'getAppId'
+    }),
+
     leftPanels() {
       return this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
     },
@@ -280,9 +343,13 @@ export default {
     }
   },
 
-  async mounted() {
-    this.app = await this.$store.dispatch('AppBuilder/getApp', 1)
-    this.appLoaded = true
+  mounted() {
+    this.$store.dispatch('AppBuilder/getApp', this.$route.params.id).then(res => {
+      this.app = res
+
+      if (Object.keys(this.app).length === 0) this.$router.push('/')
+      this.appLoaded = true
+    })
   },
 
   methods: {
@@ -309,7 +376,6 @@ export default {
         this.loading = false
       } else {
         this.loading = false
-        // just console log data, that will have the error in case you need to see it
         this.notifDanger('There was an error while uploading')
       }
     },
@@ -407,23 +473,57 @@ export default {
       })
     },
 
+    addNewField() {
+      this.defaultField['appID'] = this.app.id
+
+      this.activeField = { ...this.defaultField }
+      this.editing = false
+      this.showFieldModal = true
+    },
+
+    pushField(item) {
+      if (this.editing) {
+        const index = this.app.fields.map(item => item.id).indexOf(item.id)
+        this.app.fields[index] = { ...item }
+      } else {
+        this.app.fields.push(item)
+      }
+      this.showFieldModal = false
+      this.editing = false
+    },
+
+    showDelete(field) {
+      this.message = `Field '${field.label}'`
+      this.showDeleteModal = true
+      this.fieldToDelete = field.id
+    },
+
     deletePanel(id) {
       const index = this.app.tabs[this.activeTab].panels.map(item => item.id).indexOf(id)
       this.app.tabs[this.activeTab].panels.splice(index, 1)
     },
 
     deleteTab() {
+      this.message = `Tab '${this.app.tabs[this.activeTab]['title']}'`
       this.showDeleteModal = true
       this.tabToDelete = this.app.tabs[this.activeTab].id
     },
 
     async confirmDelete(result) {
       if (result) {
-        await this.$store.dispatch('AppBuilder/deleteTab', this.tabToDelete)
-        const index = this.app.tabs.map(item => item.id).indexOf(this.tabToDelete)
-        this.app.tabs.splice(index, 1)
-        this.activeTab = 0
+        if (this.tabToDelete !== null) {
+          await this.$store.dispatch('AppBuilder/deleteTab', this.tabToDelete)
+          const index = this.app.tabs.map(item => item.id).indexOf(this.tabToDelete)
+          this.app.tabs.splice(index, 1)
+          this.activeTab = 0
+        } else if (this.fieldToDelete !== null) {
+          await this.$store.dispatch('AppBuilder/deleteField', this.fieldToDelete)
+          const index = this.app.fields.map(item => item.id).indexOf(this.fieldToDelete)
+          this.app.fields.splice(index, 1)
+        }
       }
+
+      this.fieldToDelete = null
       this.tabToDelete = null
       this.showDeleteModal = false
     }

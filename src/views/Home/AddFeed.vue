@@ -2,135 +2,170 @@
   <div>
     <div
       v-if="!showInput"
-      @click="showInput = !showInput"
       class="pointer"
+      @click="showInput = !showInput"
     >
-      <slot name="btn"/>
+      <slot name="btn" />
     </div>
     <v-dialog
-        v-model="showInput"
-        max-width="500"
+      v-model="showInput"
+      max-width="500"
     >
       <v-card>
         <v-card-title class="headline">
           New Action
         </v-card-title>
         <v-card-text>
-          <v-container class="px-0 py-0 mt-2 white">
-            <v-form @submit.prevent ref="form" v-model="valid">
-              <v-row class="w-full ma-0">
-                <v-col cols="12" class="py-0">
+          <v-container class="mt-2 px-0 py-0 white">
+            <v-form
+              ref="form"
+              v-model="valid"
+              @submit.prevent
+            >
+              <v-row class="ma-0 w-full">
+                <v-col
+                  class="py-0"
+                  cols="12"
+                >
+                  <treeselect
+                    v-model="itemInfo.type"
+                    :multiple="false"
+                    :normalizer="normalizer"
+                    :options="options.type"
+                    placeholder="Activity"
+                  />
+                </v-col>
+                <v-col
+                  class="py-0"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="itemInfo.application_id"
+                    item-text="title"
+                    item-value="id"
+                    :items="availableApps"
+                    label="Application"
+                    @change="changeRecord($event)"
+                  />
+                </v-col>
+                <v-col
+                  class="py-0"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="itemInfo.record_id"
+                    :class="{ disabled: itemInfo.application_id === null }"
+                    item-value="id"
+                    :items="options.records"
+                    label="Record"
+                  >
+                    <template
+                      slot="selection"
+                      slot-scope="data"
+                    >
+                      <!-- HTML that describe how select should render selected items -->
+                      {{ data.item.record_number }} - {{ data.item.title }}
+                    </template>
+                    <template
+                      slot="item"
+                      slot-scope="data"
+                    >
+                      <!-- HTML that describe how select should render items when the select is open -->
+                      {{ data.item.record_number }} - {{ data.item.title }}
+                    </template>
+                  </v-select>
+                </v-col>
+                <v-col
+                  class="py-0"
+                  cols="12"
+                >
                   <v-text-field
                     ref="inputFeed"
-                    :rules="textRules"
                     v-model="itemInfo.title"
                     class="h-full outline-none text-body-1"
                     placeholder="Title"
+                    :rules="textRules"
                   />
                 </v-col>
-                <v-col cols="12" class="py-0">
+                <v-col
+                  class="py-0"
+                  cols="12"
+                >
                   <v-text-field
                     ref="inputFeed"
-                    :rules="textRules"
                     v-model="itemInfo.description"
                     class="h-full outline-none text-body-1"
                     placeholder="Summary"
+                    :rules="textRules"
                   />
                 </v-col>
-                <v-col cols="12" class="py-0">
+                <v-col
+                  class="py-0"
+                  cols="12"
+                >
                   <v-menu
                     v-model="res.due_date"
                     :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
                     min-width="290px"
+                    :nudge-right="40"
+                    offset-y
+                    transition="scale-transition"
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
                         v-model="itemInfo.due_date"
-                        :rules="textRules"
+                        v-bind="attrs"
                         label="Due Date"
                         readonly
-                        v-bind="attrs"
+                        :rules="textRules"
                         v-on="on"
-                      ></v-text-field>
+                      />
                     </template>
                     <v-date-picker
                       v-model="itemInfo.due_date"
                       @input="res.due_date = false"
-                    ></v-date-picker>
+                    />
                   </v-menu>
                 </v-col>
-                <v-col cols="12" class="py-0">
-                  <v-select
-                    v-model="itemInfo.type"
-                    :rules="selectRules"
-                    label="Request Type"
-                    :items="options.type"
-                    item-value="id"
-                    item-text="value"
-                  ></v-select>
-                </v-col>
-                <v-col cols="4" class="py-0">
-                  <v-select
-                    v-on:change="changeRecord($event)"
-                    v-model="record_type"
-                    label="Record Type"
-                    :items="records_type"
-                  >
-                  </v-select>
-                </v-col>
-                <v-col cols="8" class="py-0">
-                  <v-select
-                    :class="{ disabled: record_type === null }"
-                    v-model="itemInfo.record_id"
-                    label="Record"
-                    :items="options.records"
-                    item-value="id"
-                  >
-                    <template slot="selection" slot-scope="data">
-                      <!-- HTML that describe how select should render selected items -->
-                      {{ data.item.app_type }} - {{ data.item.title }}
-                    </template>
-                    <template slot="item" slot-scope="data">
-                      <!-- HTML that describe how select should render items when the select is open -->
-                      {{ data.item.app_type }} - {{ data.item.title }}
-                    </template>
-                  </v-select>
-                </v-col>
-                <v-col cols="0" class="py-0">
+                <v-col
+                  class="py-0"
+                  cols="0"
+                >
                   <v-autocomplete
-                    :items="companyUsers"
                     v-model="itemInfo.assignment_list"
-                    color="green"
                     chips
-                    label="People"
-                    item-value="user.id"
-                    hide-details
+                    color="green"
                     deletable-chips
+                    hide-details
                     hide-no-data
-                    item-text="user.firstName"
                     hide-selected
+                    item-text="user.firstName"
+                    item-value="user.id"
+                    :items="companyUsers"
+                    label="People"
                     multiple
                     single-line
                   >
-                    <template slot="item" slot-scope="data">
+                    <template
+                      slot="item"
+                      slot-scope="data"
+                    >
                       <!-- HTML that describe how select should render items when the select is open -->
                       <span> {{ data.item.user.firstName }} {{ data.item.user.lastName }} </span>
                     </template>
                   </v-autocomplete>
                 </v-col>
               </v-row>
-              <v-row class="w-full ma-0 px-3 py-2">
+              <v-row class="ma-0 px-3 py-2 w-full">
                 <v-btn
-                  color="green darken-2"
-                  class="white--text text-xl font-weight-bold"
-                  @click="post()"
-                  :disabled="!valid"
                   block
-                  >Submit</v-btn
+                  class="font-weight-bold text-xl white--text"
+                  color="green darken-2"
+                  :disabled="!valid"
+                  @click="post"
                 >
+                  Submit
+                </v-btn>
               </v-row>
             </v-form>
           </v-container>
@@ -141,13 +176,32 @@
 </template>
 
 <script>
-import { validations } from "@/mixins/form-validations";
-import { mapActions, mapGetters } from "vuex";
+import { validations } from '@/mixins/form-validations'
+import { mapActions, mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
-  name: "AddFeed",
+  name: 'AddFeed',
   mixins: [validations],
   data: () => ({
+    testValue: null,
+    testOptions: [{
+      id: 'a',
+      label: 'a',
+      children: [{
+        id: 'aa',
+        label: 'aa'
+      }, {
+        id: 'ab',
+        label: 'ab'
+      }]
+    }, {
+      id: 'b',
+      label: 'b'
+    }, {
+      id: 'c',
+      label: 'c'
+    }],
     showInput: false,
     itemInfo: {
       author: null,
@@ -156,51 +210,81 @@ export default {
       description: null,
       title: null,
       type: null,
-      record_id: null,
+      application_id: null,
+      record_id: null
     },
     res: {
-      due_date: false,
+      due_date: false
     },
     options: {
       records: [],
-      type: [],
+      type: []
     },
-    record_type: null,
-    records_type: ['ITApps'],
+    availableApps: [{
+      id: -1,
+      title: 'ITApps'
+    }],
     imageFiles: [],
     docFiles: [],
     minimized: false,
-    offset: true,
+    offset: true
   }),
+  computed: {
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
+    ...mapGetters('Auth', { user: 'getUser' })
+  },
+  mounted() {
+    this.itemInfo['author'] = this.user.id
+    this.selects({ params: ['wo_request_type'], nesting: 1 }).then(res => {
+      this.options['type'] = res['data']['wo_request_type']
+    })
+    // TODO: The available apps list should be on a global list on the store.
+    axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`).then(response => {
+      response.data.map(app => {
+        this.availableApps.push({
+          id: app.id,
+          title: app.title
+        })
+      })
+    })
+  },
   methods: {
-    ...mapActions("ITAppsModule", { selects: "get_all_selects" }),
-    ...mapActions("WorkOrderModule", { records: "getRecords", postAction: "postAction", workOrder: "setWorkOrder"}),
-    changeRecord(event){
-      switch( event ){
-        case 'ITApps':
-          this.records('itapps').then(res => { this.options['records'] = res['data']; });
-          break;
+    ...mapActions('ITAppsModule', { selects: 'get_all_selects' }),
+    ...mapActions('WorkOrderModule', {
+      records: 'getRecords',
+      postAction: 'postAction',
+      workOrder: 'setWorkOrder'
+    }),
+    changeRecord(event) {
+      if (event === -1) {
+        this.records('itapps').then(res => {
+          this.options['records'] = res['data']
+        })
+      } else {
+        axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/by/${event}`).then(response => {
+          this.options['records'] = response.data
+        })
       }
     },
     onImagesChange(e) {
-      this.imageFiles = e;
-      this.$refs.inputFeed.focus();
+      this.imageFiles = e
+      this.$refs.inputFeed.focus()
     },
     onDocsChange(e) {
-      this.docFiles = e;
-      this.$refs.inputFeed.focus();
+      this.docFiles = e
+      this.$refs.inputFeed.focus()
     },
     post() {
       this.itemInfo['activity'] = {
         userID: this.user.id,
         data: {
           actor: JSON.stringify({
-            created_at:new Date(),
-            updated_at:new Date(),
+            created_at: new Date(),
+            updated_at: new Date(),
             id: this.user.id,
-            data:{
-              image:this.user.profilePic,
-              name:`${this.user.firstName} ${this.user.lastName}`
+            data: {
+              image: this.user.profilePic,
+              name: `${this.user.firstName} ${this.user.lastName}`
             }
           }),
           foreign_id: `${Date.now()}-post-${Math.floor(Math.random() * 9999999)}`,
@@ -209,26 +293,21 @@ export default {
           verb: 'action',
           object: 1
         }
-      };
-      this.itemInfo['start_date']     = new Date().toISOString().slice(0,10);
-      this.itemInfo['requested_date'] = new Date().toISOString().slice(0,10);
-      this.showInput  = false;
+      }
+      this.itemInfo['start_date'] = new Date().toISOString().slice(0, 10)
+      this.itemInfo['requested_date'] = new Date().toISOString().slice(0, 10)
+      this.showInput = false
       this.postAction(this.itemInfo).then(() => {
-        this.workOrder();
-      });
+        this.workOrder()
+      })
     },
-  },
-  computed: {
-    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
-    ...mapGetters('Auth',      { user:         'getUser'                }),
-  },
-  mounted() {
-    this.itemInfo['author'] = this.user.id;
-    this.selects({ params: ["wo_request_type"] }).then((res) => {
-      this.options["type"] = res["data"]["wo_request_type"];
-    });
-  },
-};
+    normalizer(node) {
+      return {
+        label: node.value
+      }
+    }
+  }
+}
 </script>
 
 <style>

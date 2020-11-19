@@ -31,12 +31,13 @@
                 </v-col>                    
             </v-row>
             <v-row>
-                <v-col cols="12" class="float-right" >
                     <v-spacer></v-spacer>
+                    <v-btn color="error" @click="cancel()" class="white--text mr-4">
+                        Cancel
+                    </v-btn>
                     <v-btn color="green darken-2" class="white--text" @click="saveRecord">
                         save 
                     </v-btn>
-                </v-col>
             </v-row>
         </v-container>
         <m6-loading :loading="loading" />
@@ -63,8 +64,8 @@ export default {
         rules: {
             generic: [ v => !!v || 'Item is required' ]
         },
-        record: recordDefault,
-        recordDefault: recordDefault 
+        record: {...recordDefault},
+        recordDefault: {...recordDefault}
 
     }),
 
@@ -84,12 +85,15 @@ export default {
             setCurrentRecord: 'setCurrentRecord'
         }),
 
-        close(){
-            this.setCurrentRecord({...this.record})
-            this.setDisplayAppBuilderShow()
-
-            this.record = {...this.recordDefault}
+        cancel(){
             this.$emit('closingGenericRecord')
+        },
+
+        close(){
+            const recordId = this.record.id
+            
+            this.record = {...this.recordDefault}
+            this.$router.push({ name: "record.show", params: { id: recordId } })
         },
 
         async saveRecord() {

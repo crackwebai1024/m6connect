@@ -55,8 +55,8 @@
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-show="isAuthor()"
-                icon
                 v-bind="attrs"
+                icon
                 v-on="on"
               >
                 <v-icon>mdi-dots-vertical</v-icon>
@@ -64,56 +64,87 @@
             </template>
 
             <v-list class="grey lighten-4">
-              <v-list-item @click="openPostEdit()">
-                <v-list-item-title>Edit Post</v-list-item-title>                
+              <v-list-item @click="openPostEdit">
+                <v-list-item-title>Edit Post</v-list-item-title>
               </v-list-item>
               <v-list-item @click="deleteDiaLog = true">
-                <v-list-item-title>Delete Post</v-list-item-title>                
+                <v-list-item-title>Delete Post</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
         </v-row>
-        <v-btn v-if="data.props" @click="closeAction()" class="ml-2" icon color="red">
-          <v-icon size="22">mdi-close</v-icon>
+        <v-btn
+          v-if="data.props"
+          class="ml-2"
+          color="red"
+          icon
+          @click="closeAction"
+        >
+          <v-icon size="22">
+            mdi-close
+          </v-icon>
         </v-btn>
       </v-card-title>
 
       <div>
-        <div class="px-5 pt-4">
+        <div class="pt-4 px-5">
           <template v-if="!updatePostShow">
             {{ data.message }}
-            <slot name="record"></slot>
-            <slot name="assignments"></slot>
+            <slot name="record" />
+
+            <template v-if="recordFields">
+              <form-show-generator :fields="recordFields" />
+            </template>
+
+            <slot name="assignments" />
           </template>
-          <div 
+          <div
             v-else
             class="d-flex"
           >
             <v-textarea
-              class="mb-0"
-              outlined
-              name="input-7-4"
-              label="Edit Post Message"
-              @keyup.esc="cancelMessage"
-              @keyup.enter="editMessage('inputMessage-' + index)"
               v-model="updateMessage"
-            ></v-textarea>
-            <div v-if="!data['props']" class="d-flex flex-column">
+              class="mb-0"
+              label="Edit Post Message"
+              name="input-7-4"
+              outlined
+              @keyup.enter="editMessage('inputMessage-' + index)"
+              @keyup.esc="cancelMessage"
+            />
+            <div
+              v-if="!data['props']"
+              class="d-flex flex-column"
+            >
               <v-btn
                 class="ml-2"
-                icon
                 color="grey"
+                icon
                 @click="toogleDialogEmoji"
               >
                 <v-icon size="22">
                   mdi-emoticon-happy-outline
                 </v-icon>
               </v-btn>
-              <v-btn @click="cancelUpdate" class="ml-2" icon color="red">
-                <v-icon size="22">mdi-close</v-icon>
+              <v-btn
+                class="ml-2"
+                color="red"
+                icon
+                @click="cancelUpdate"
+              >
+                <v-icon size="22">
+                  mdi-close
+                </v-icon>
               </v-btn>
-              <v-btn @click="updatePost(data)" :disabled="data.message == updateMessage" class="ml-2" icon color="green accent-3">
-                <v-icon size="22">mdi-checkbox-marked-circle-outline</v-icon>
+              <v-btn
+                class="ml-2"
+                color="green accent-3"
+                :disabled="data.message == updateMessage"
+                icon
+                @click="updatePost(data)"
+              >
+                <v-icon size="22">
+                  mdi-checkbox-marked-circle-outline
+                </v-icon>
               </v-btn>
             </div>
             <!-- Emoji Picker -->
@@ -130,30 +161,41 @@
             </div>
           </div>
           <v-row v-if="updatePostShow && data['props']">
-            <v-col cols="4" class="py-0">
+            <v-col
+              class="py-0"
+              cols="4"
+            >
               <v-select
-                v-on:change="changeRecord($event)"
                 v-model="record_type"
-                item-value="value"
                 item-text="label"
-                label="Record Type"
+                item-value="value"
                 :items="records_type"
-              >
-              </v-select>
+                label="Record Type"
+                @change="changeRecord($event)"
+              />
             </v-col>
-            <v-col cols="8" class="py-0">
+            <v-col
+              class="py-0"
+              cols="8"
+            >
               <v-select
-                :class="{ disabled: record_type === null }"
                 v-model="updateInfo.record_id"
-                label="Record"
-                :items="options.records"
+                :class="{ disabled: record_type === null }"
                 item-value="id"
+                :items="options.records"
+                label="Record"
               >
-                <template slot="selection" slot-scope="data">
+                <template
+                  slot="selection"
+                  slot-scope="data"
+                >
                   <!-- HTML that describe how select should render selected items -->
                   {{ data.item.app_type }} - {{ data.item.title }}
                 </template>
-                <template slot="item" slot-scope="data">
+                <template
+                  slot="item"
+                  slot-scope="data"
+                >
                   <!-- HTML that describe how select should render items when the select is open -->
                   {{ data.item.app_type }} - {{ data.item.title }}
                 </template>
@@ -161,22 +203,28 @@
             </v-col>
             <v-col cols="12">
               <v-autocomplete
-                :items="companyUsers"
                 v-model="updateInfo.assignment_list"
                 chips
-                label="People"
-                item-value="user.id"
-                hide-details
                 deletable-chips
+                hide-details
                 hide-no-data
-                item-text="user.firstName"
                 hide-selected
+                item-text="user.firstName"
+                item-value="user.id"
+                :items="companyUsers"
+                label="People"
                 multiple
                 single-line
               >
-                <template slot="item" slot-scope="data">
-                  <v-avatar size="25" class="mr-3">
-                    <v-img :src="data.item.user.profilePic"></v-img>
+                <template
+                  slot="item"
+                  slot-scope="data"
+                >
+                  <v-avatar
+                    class="mr-3"
+                    size="25"
+                  >
+                    <v-img :src="data.item.user.profilePic" />
                   </v-avatar>
                   <span> {{ data.item.user.firstName }} {{ data.item.user.lastName }} </span>
                 </template>
@@ -184,11 +232,26 @@
             </v-col>
           </v-row>
           <v-row v-if="updatePostShow && data['props']">
-            <v-spacer></v-spacer>
-            <v-btn @click="cancelUpdate"   class="white grey--text" width="120px" elevation="0">Cancel</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn @click="updateActivity(data)" color="green darken-1" outlined width="120px" elevation="0">Save</v-btn>
-            <v-spacer></v-spacer>
+            <v-spacer />
+            <v-btn
+              class="grey--text white"
+              elevation="0"
+              width="120px"
+              @click="cancelUpdate"
+            >
+              Cancel
+            </v-btn>
+            <v-spacer />
+            <v-btn
+              color="green darken-1"
+              elevation="0"
+              outlined
+              width="120px"
+              @click="updateActivity(data)"
+            >
+              Save
+            </v-btn>
+            <v-spacer />
           </v-row>
         </div>
       </div>
@@ -333,10 +396,10 @@
             {{ contLikes() }}
             <v-progress-circular
               v-show="progressLike"
+              indeterminate
               size="10"
               width="1"
-              indeterminate
-            ></v-progress-circular>
+            />
           </div>
           <v-spacer />
           <div
@@ -402,7 +465,10 @@
           </v-col>
         </v-row>
       </v-card-actions>
-      <v-divider v-if="showComments" class="mx-4" />
+      <v-divider
+        v-if="showComments"
+        class="mx-4"
+      />
 
       <v-col
         v-if="showComments"
@@ -445,24 +511,27 @@
           v-for="(comment, index) of data.latest_reactions.comment.slice().reverse()"
           :key="index"
           :comment="comment"
+          :feed-activity="data.props ? true : false"
           :reply="true"
-          :feedActivity="data.props ? true : false"
           :size="48"
-          :userData="client.currentUser.data"
+          :user-data="client.currentUser.data"
         />
       </div>
       <v-skeleton-loader
         v-if="showComments && showSkeleton"
-        class="post-item px-1 my-1"
+        class="my-1 post-item px-1"
         type="list-item-avatar-two-line"
-      ></v-skeleton-loader>
+      />
     </div>
     <v-dialog
       v-model="deleteDiaLog"
-      persistent
       max-width="350"
+      persistent
     >
-      <delete-dialog :element="`post: '${data.message}'`" @closeDeleteModal="$event ? deletePost(data) : deleteDiaLog = false" />
+      <delete-dialog
+        :element="`post: '${data.message}'`"
+        @closeDeleteModal="$event ? deletePost(data) : deleteDiaLog = false"
+      />
     </v-dialog>
   </v-container>
 </template>
@@ -472,13 +541,15 @@ import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
 
 export default {
   name: 'PostItem',
   components: {
     DeleteDialog,
     PostComments,
-    VEmojiPicker
+    VEmojiPicker,
+    FormShowGenerator
   },
   props: {
     data: {
@@ -488,16 +559,17 @@ export default {
   },
   data: () => ({
     records_type: [
-      { label: 'ITApps', value:'itapps' }
+      { label: 'ITApps', value: 'itapps' }
     ],
+    recordFields: [],
     record_type: null,
     options: {
-      records: [],
+      records: []
     },
     updateInfo: {
       record_id: null,
       assignment_list: [],
-      preview_list:[]
+      preview_list: []
     },
 
     showBtnsPost: false,
@@ -518,8 +590,8 @@ export default {
     progressLike: false
   }),
   computed: {
-    ...mapGetters('Companies',  { companyUsers: 'getCurrentCompanyUsers' }),
-    ...mapGetters('Auth',       { currentUser: 'getUser' }),
+    ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
+    ...mapGetters('Auth', { currentUser: 'getUser' }),
     ...mapGetters('GSFeed', {
       timeline: 'getTimeline',
       feed: 'getFeed',
@@ -533,49 +605,59 @@ export default {
     },
     authorPostItem() {
       let authorPostData = this.data.actor
-      if(typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
+      if (typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
       return authorPostData
     }
   },
   mounted() {
     // this.picture_items = this.data.images.slice(0, 4)
-    this.user = this.currentUser;
+    this.user = this.currentUser
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
-    if(typeof this.data.actor === 'string'){
-      this.data.actor = JSON.parse(this.data.actor);
+    if (typeof this.data.actor === 'string') {
+      this.data.actor = JSON.parse(this.data.actor)
     }
     this.updateMessage = this.data.message
+
+    if (this.data.props && this.data.props.fields) {
+      this.recordFields = this.data.props.fields.map(field => field.app_field)
+    }
   },
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
-    ...mapActions("WorkOrderModule", { records: "getRecords", putAct: "putAction", deleteAct: "deleteAction" }),
+    ...mapActions('WorkOrderModule', {
+      records: 'getRecords',
+      putAct: 'putAction',
+      deleteAct: 'deleteAction'
+    }),
 
-    isAuthor(){
+    isAuthor() {
       return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
-        : this.data.actor.id === this.user.id;
+        : this.data.actor.id === this.user.id
     },
-    changeRecord(event){
-      switch( event ){
+    changeRecord(event) {
+      switch (event) {
         case 'itapps':
-          this.records(event).then(res => { this.options['records'] = res['data']; });
-          break;
+          this.records(event).then(res => {
+            this.options['records'] = res['data']
+          })
+          break
       }
     },
-    updateActivity(activity){
-      this.updateInfo['description'] = this.updateMessage;
-      this.activity = activity;
+    updateActivity(activity) {
+      this.updateInfo['description'] = this.updateMessage
+      this.activity = activity
       this.putAct({
         id: activity['props']['id'],
         query: this.updateInfo
-      }).then(() =>{
-        this.updateInfo['preview_list'] = this.updateInfo['assignment_list'];
+      }).then(() => {
+        this.updateInfo['preview_list'] = this.updateInfo['assignment_list']
         this.updatePost(activity).then(() => {
-          this.$store.dispatch('WorkOrderModule/setWorkOrder');
-        });
-        this.cancelUpdate();
+          this.$store.dispatch('WorkOrderModule/setWorkOrder')
+        })
+        this.cancelUpdate()
       })
     },
     widthCols() {
@@ -604,11 +686,11 @@ export default {
         id: activity.id,
         type: 'like',
         whoNotify: activity.actor.id
-      };
+      }
 
       if (this.data.own_reactions.like) {
-        let activ = this.data.own_reactions.like.find( i =>  i.user_id === this.user.id )
-        if( activ ){
+        const activ = this.data.own_reactions.like.find(i => i.user_id === this.user.id)
+        if (activ) {
           await this.$store.dispatch('GSFeed/removeReaction', activ.id)
           this.likeState = false
         } else {
@@ -619,11 +701,11 @@ export default {
         await this.$store.dispatch('GSFeed/addReaction', payload)
         this.likeState = true
       }
-      if( activity.props ){
+      if (activity.props) {
         await this.$store.dispatch('GSFeed/setActionPost')
-        await this.$store.dispatch('WorkOrderModule/setWorkOrder');
-      } else{
-        await this.$store.dispatch('GSFeed/retrieveFeed');
+        await this.$store.dispatch('WorkOrderModule/setWorkOrder')
+      } else {
+        await this.$store.dispatch('GSFeed/retrieveFeed')
       }
 
       this.progressLike = false
@@ -639,11 +721,11 @@ export default {
       }
 
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-        if( activity.props ){
+        if (activity.props) {
           await this.$store.dispatch('GSFeed/setActionPost')
-          await this.$store.dispatch('WorkOrderModule/setWorkOrder');
-        }else{
-          await this.$store.dispatch('GSFeed/retrieveFeed');
+          await this.$store.dispatch('WorkOrderModule/setWorkOrder')
+        } else {
+          await this.$store.dispatch('GSFeed/retrieveFeed')
         }
         this.showSkeleton = false
       })
@@ -655,27 +737,27 @@ export default {
     },
     async deletePost(activity) {
       await this.$store.dispatch('GSFeed/removeActivity', activity.id)
-      if(activity.props){
-        await this.deleteAct(activity.props.id);
+      if (activity.props) {
+        await this.deleteAct(activity.props.id)
 
-        this.$store.dispatch('GSFeed/setEmptyActionPost');
-        this.$store.dispatch('WorkOrderModule/setWorkOrder');
+        this.$store.dispatch('GSFeed/setEmptyActionPost')
+        this.$store.dispatch('WorkOrderModule/setWorkOrder')
       }
       this.deleteDiaLog = false
       await this.$store.dispatch('GSFeed/retrieveFeed')
     },
-    closeAction(){
-      this.$store.dispatch('GSFeed/setEmptyActionPost');
+    closeAction() {
+      this.$store.dispatch('GSFeed/setEmptyActionPost')
     },
     async updatePost(activity) {
-      if( typeof activity['actor'] === 'string'){
+      if (typeof activity['actor'] === 'string') {
         activity['actor'] = JSON.parse(activity['actor'])
       }
-      
+
       activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
       activity['actor']['data']['image'] = this.user.profilePic
-      activity.message = this.updateMessage;
-      
+      activity.message = this.updateMessage
+
       this.$store.dispatch('GSFeed/updateActivity', activity)
       this.updatePostShow = false
       this.updateMessage = this.data.message
@@ -683,27 +765,27 @@ export default {
     openPostEdit() {
       this.updatePostShow = true
       this.updateMessage = this.data.message
-      if(this.data.props){
-        if(this.data.props.record) {
+      if (this.data.props) {
+        if (this.data.props.record) {
           this.records(this.data.props.record.app_type).then(res => {
-            this.options['records'] = res['data'];
+            this.options['records'] = res['data']
 
             this.record_type = this.data['props']['record']['app_type']
             this.updateInfo['record_id'] = this.data['props']['record']['id']
-          });
+          })
         }
-        if(this.data['props']['wo_assignments'].length > 0) {
+        if (this.data['props']['wo_assignments'].length > 0) {
           this.data['props']['wo_assignments'].forEach(user => {
-            this.updateInfo['assignment_list'].push(user.id);
-          });
-          this.updateInfo['preview_list'] = this.updateInfo['assignment_list'];
+            this.updateInfo['assignment_list'].push(user.id)
+          })
+          this.updateInfo['preview_list'] = this.updateInfo['assignment_list']
         }
       }
     },
     cancelUpdate() {
       this.updatePostShow = false
       this.updateMessage = this.data.message
-      this.updateInfo.assignment_list = [];
+      this.updateInfo.assignment_list = []
     },
     previewImage(selected) {
       this.set_image_preview_overlay([this.picture_items, selected])
