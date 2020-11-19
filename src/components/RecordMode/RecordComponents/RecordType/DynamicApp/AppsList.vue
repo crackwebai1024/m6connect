@@ -1,23 +1,26 @@
 <template class="mx-0">
-    <v-container >
-    <header-component hasslot :info="{title:'Search All Apps', icon:''}" 
-      class="max-w-tight mb-3 card-custom-shadow rounded w-full mx-auto h-auto">
+  <v-container>
+    <header-component
+      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded w-full"
+      hasslot
+      :info="{title: 'Search All Apps', icon: ''}"
+    >
       <template v-slot:input>
         <v-text-field
-          class="font-weight-bold"
-          height="40"
-          label="Start Typing to Search"
-          @change="changeEvent"
-          rounded
-          flat
-          dense
           v-model="searchInput"
-          single-line
+          class="font-weight-bold"
+          dense
+          flat
+          height="40"
           hide-details
+          label="Start Typing to Search"
+          rounded
+          single-line
           solo-inverted
+          @change="changeEvent"
         >
           <template v-slot:append>
-            <v-row class="d-flex align-center">
+            <v-row class="align-center d-flex">
               <v-icon>mdi-magnify</v-icon>
             </v-row>
           </template>
@@ -26,92 +29,116 @@
     </header-component>
     <div v-if="!loading">
       <div
-        :key="index"
         v-for="(item, index) of apps"
+        :key="index"
         :class="Object.keys(apps).length !== index + 1 ? 'mb-3' : ''"
       >
-        <general-item :recordData="item" />
+        <general-item :record-data="item" />
       </div>
-      <div class="w-full max-w-tight mx-auto py-3" v-if="apps.length === 0">No results found</div>
+      <div
+        v-if="apps.length === 0"
+        class="max-w-tight mx-auto py-3 w-full"
+      >
+        No results found
+      </div>
     </div>
     <v-container v-else>
       <v-progress-circular
-        style="margin-left: 45%;"
-        indeterminate
         color="primary"
-      ></v-progress-circular>
+        indeterminate
+        style="margin-left: 45%;"
+      />
     </v-container>
   </v-container>
 </template>
+
 <script>
-import { mapGetters, mapActions } from "vuex";
-import GeneralItem from "@/components/Home/GeneralItem";
-import HeaderComponent from "@/components/Home/HeaderComponent";
-import NewRecordDialog from "@/components/Dialogs/NewRecordDialog";
+import { mapGetters, mapActions } from 'vuex'
+import GeneralItem from '@/components/Home/GeneralItem'
+import HeaderComponent from '@/components/Home/HeaderComponent'
+import NewRecordDialog from '@/components/Dialogs/NewRecordDialog'
 
 export default {
+  name: 'AppsBuilderList',
   components: {
     GeneralItem,
     NewRecordDialog,
-    HeaderComponent,
+    HeaderComponent
   },
-  name: "AppsBuilderList",
   data: () => ({
     loading: true,
     areas2: [],
     perPage: 8,
     apps: [],
     dialog: false,
-    searchInput: "",
+    searchInput: ''
   }),
   computed: {
-    ...mapGetters("GeneralListModule", {
-      list: "get_general_list"
+    ...mapGetters('GeneralListModule', {
+      list: 'get_general_list'
     }),
-    ...mapGetters("ITAppsModule", {
-      filter: "getFilter"
+    ...mapGetters('ITAppsModule', {
+      filter: 'getFilter'
     }),
-    areas(){ 
+    areas() {
       return [
-        { text: "All Apps",     type: "subtitle", function: () => { this.setFilterTag({key: 'everyone', value: 'All Apps' }); this.reload();}},
-        { text: "Applications", type: "title",    function: () => {                                                                         }},
-        { text: "ITApps",       type: "subtitle", function: () => { this.setFilterTag({key: 'itapps',   value: 'ITApps'   }); this.reload();}}
+        {
+          text: 'All Apps',
+          type: 'subtitle',
+          function: () => {
+            this.setFilterTag({ key: 'everyone', value: 'All Apps' })
+            this.reload()
+          }
+        },
+        {
+          text: 'Applications',
+          type: 'title',
+          function: () => {}
+        },
+        {
+          text: 'ITApps',
+          type: 'subtitle',
+          function: () => {
+            this.setFilterTag({ key: 'itapps', value: 'ITApps' })
+            this.reload()
+          }
+        }
       ]
     }
   },
   methods: {
-    ...mapActions("ITAppsModule", {
-      filterApps: "get_filter_builder_apps",
+    ...mapActions('ITAppsModule', {
+      filterApps: 'get_filter_builder_apps'
     }),
-    ...mapActions("DynamicAppsModule", {
+    ...mapActions('DynamicAppsModule', {
       setDynamicApps: 'set_apps',
-      getApps: "get_apps",
+      getApps: 'get_apps'
     }),
-    changeEvent(event){
-      this.apps = [];
-      this.loading = true;
+    changeEvent(event) {
+      this.apps = []
+      this.loading = true
       this.filterApps({ param: event }).then(() => {
-        this.apps = this.list();
-        this.loading = false;
-      });
+        this.apps = this.list()
+        this.loading = false
+      })
     },
-    reload(){
-      this.loading = true;
-      this.apps = [];
-      this.getApps().then( 
+    reload() {
+      this.loading = true
+      this.apps = []
+      this.getApps().then(
         apps => (this.apps = this.list(), this.loading = false)
-      );
-    },
+      )
+    }
   },
   mounted() {
     this.setDynamicApps().then(() => {
-        this.getApps().then(apps => {
-            this.apps = apps;
-            this.loading = false;
-        });
+      this.getApps().then(apps => {
+        this.apps = apps
+        this.loading = false
+      })
     })
-  },
-};
+  }
+}
 </script>
 
 <style lang="scss">
