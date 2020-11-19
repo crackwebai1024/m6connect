@@ -1,15 +1,27 @@
 <template>
 <v-container>
+    <p class="text-h5 py-0 my-0 text-center">{{label}}</p>
     <v-card class="d-flex flex-column" v-if="!edit" >
         <v-card-title class="my-0 py-0">
             <span class="pointer" @click="openFile">
-                {{file['file_name']}}
+                {{file['file_name_full']}}
             </span>
             <v-spacer></v-spacer>
             <v-btn icon @click="edit = !edit">
                 <v-icon color="primary" >mdi-pencil</v-icon>
             </v-btn>
         </v-card-title>
+        <v-card-text v-if="file['file_type'] && file['file_type'].substring(0,5) === 'image'">
+            <v-img
+                alt="Project Image"
+                width="w-full"
+                :src="getURL()"
+            />
+        </v-card-text>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <p>{{getSize()}}</p>
+        </v-card-actions>
     </v-card>
     
     <div v-else>
@@ -61,12 +73,21 @@ export default {
         ...mapActions("AppAttachments", {
             setApp: "post_attachment"
         }),
+        getURL(){
+            return `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder/${this.file.id}`;
+        },
+        getSize(){
+            let bytes = this.file['file_size'];
+            if (bytes >= 1048576)    { bytes = (bytes / 1048576).toFixed(2) + " MB"; }
+            else if (bytes >= 1024)  { bytes = (bytes / 1024).toFixed(2) + " KB"; }
+            else if (bytes > 1)      { bytes = bytes + " bytes"; }
+            else if (bytes == 1)     { bytes = bytes + " byte"; }
+            else                     { bytes = "0 bytes"; }
+            return bytes;
+        },
         openFile(){
             let path = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder/${this.file.id}`;
-            console.log(this.file.id);
-            
             window.open(path,'_blank');
-            
         },
         selectFile(file) {
             if (file['name'].match(/\.[0-9a-z]+$/i) && file['size'] < 50000000){
