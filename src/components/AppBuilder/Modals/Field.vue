@@ -120,6 +120,7 @@ export default {
         { label: 'Date',            value: 'timestamp'    },
         { label: 'People',          value: 'people'       },
         { label: 'Multiple Choice', value: 'autocomplete' },
+        { label: 'Attachment',      value: 'attachment' },
         { label: 'Yes / No',        value: 'boolean'      }
       ]
     }
