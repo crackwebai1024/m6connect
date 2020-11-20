@@ -722,6 +722,7 @@ export default {
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
+    
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
@@ -741,6 +742,10 @@ export default {
   },
   methods: {
     ...mapActions('GSChat', ['removeMessage', 'updateMessage']),
+    ...mapActions('AppAttachments', {
+      getFileUrl:     'get_message_file_url',
+      setStreamFiles: 'set_stream_attachments'
+    }),
     closeModal() {
       this.deleteDialog = false
     },
@@ -869,17 +874,10 @@ export default {
         const dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 86400000)
         switch (dayCurrentWeekDifference) {
           case 0:
-            result.value = currentMessageTime.toString().substr(0, 15)
+            result.value = 'Today'
             break
           case 1:
             result.value = 'Yesterday'
-            break
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-            result.value = this.days[currentMessageTime.getDay()]
             break
           default:
             result.value = (currentMessageTime.getMonth() + 1) + '/' + currentMessageTime.getDate() + '/' + currentMessageTime.getFullYear()
@@ -901,17 +899,47 @@ export default {
         this.toogleDialogEmoji()
       }
     },
-    sendMessage() {
+    async sendMessage() {
+      let urls = [];
+
       if (this.valueInput.trim().length === 0) {
         this.valueInput = ''
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
 
-      this.$store.dispatch('GSChat/sendMessage', {
+      let message = await this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
         message: this.valueInput
-      }).catch(e => console.error(e))
+      });
+
+      if ( this.imageFiles.length > 0 ) {
+        this.imageFiles.forEach(async image => {
+          await this.setStreamFiles({
+            files: image,
+            headers: {
+                'Content-Type': image['type'],
+                'Content-Name': image['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+            }
+          });
+        });
+
+        let files = await this.getFileUrl(message['message']['id']);
+        
+        files.forEach(url => {
+          urls.push(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}${url}`);
+        })
+
+        this.updateMessage({
+          id: message['message']['id'],
+          text: message['message']['text'],
+          images: urls
+        })
+      }
+
+      
 
       this.valueInput = ''
       this.imageFiles = []

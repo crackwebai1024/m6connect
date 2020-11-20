@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const state = {
-}
+};
 const getters = {
-}
+};
 const mutations = {
-}
+};
 const actions = {
     async post_attachment({}, data){
         let res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder`, data['file'], {
@@ -14,8 +14,8 @@ const actions = {
 
         return res['data'];
     },
-    async set_posts_attachments({}, data) {
-        let res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/post`, data['files'], {
+    async set_stream_attachments({}, data) {
+        let res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/stream`, data['files'], {
             headers: data['headers']
         });
 
@@ -23,6 +23,10 @@ const actions = {
     },
     async get_post_file_url({}, postId) {
         let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/post/${postId}`);
+        return res['data'];
+    },
+    async get_message_file_url({}, postId) {
+        let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/message/${postId}`);
         return res['data'];
     }
 }
@@ -33,4 +37,4 @@ export default{
     getters,
     mutations,
     actions
-}
+};

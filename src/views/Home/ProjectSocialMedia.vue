@@ -196,7 +196,7 @@ export default {
   methods: {
     ...mapActions('SocialNetworkModule', ['filter_posts']),
     ...mapActions('AppAttachments', {
-      setPostsFiles: 'set_posts_attachments'
+      setStreamFiles: 'set_stream_attachments'
     }),
     printSc(msg) {
       this.titlePage = `${msg}`;
@@ -247,12 +247,13 @@ export default {
       this.$store.dispatch('GSFeed/addActivity', activity).then(res => {
         
         this.imageFiles.forEach(image => {
-          this.setPostsFiles({
+          this.setStreamFiles({
             files: image,
             headers: {
                 'Content-Type': image['type'],
                 'Content-Name': image['name'],
-                'Post-Id': res['data']['results'][0]['id']
+                'Stream-Id': res['data']['results'][0]['id'],
+                'Stream-type': 'post'
             }
           });
         })
