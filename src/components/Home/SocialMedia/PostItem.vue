@@ -537,14 +537,10 @@ export default {
     }
   },
   mounted() {
-    this.getPostsUrl(this.data.id).then(
-      res => {
-        res.forEach( url => {
-          this.images.push(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}${url}`)
-        })
-        this.picture_items = this.images.slice(0, 4)
-      }
-    );
+    this.getPostsUrl(this.data.id).then( res => {
+      this.images = res;
+      this.picture_items = this.images.slice(0, 4)
+    });
     this.user = this.currentUser;
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true

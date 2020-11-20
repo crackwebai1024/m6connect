@@ -332,6 +332,19 @@
                   >
                 </div>
               </div>
+              <div
+                v-if="message.files"
+                class="d-flex ml-auto w-fit"
+              >
+                <div
+                  v-for="(file, index) in message.files"
+                  :key="'filemsg-' + index"
+                  class="mt-1 mx-1 relative w-fit text-subtitle-1 font-weight-black py-0 my-0 text-center pointer"
+                  @click="redirect(file)"
+                >
+                  {{file.substring(file.lastIndexOf('/')+1)}}
+                </div>
+              </div>
             </div>
             <v-icon
               :class="[message.read ? 'blue--text' : 'grey--text']"
@@ -746,6 +759,9 @@ export default {
       getFileUrl:     'get_message_file_url',
       setStreamFiles: 'set_stream_attachments'
     }),
+    redirect(file){
+      window.open(file,'_blank')
+    },
     closeModal() {
       this.deleteDialog = false
     },
@@ -900,8 +916,6 @@ export default {
       }
     },
     async sendMessage() {
-      let urls = [];
-
       if (this.valueInput.trim().length === 0) {
         this.valueInput = ''
         this.$nextTick(() => this.$refs.inputMessage.focus())
@@ -926,20 +940,36 @@ export default {
           });
         });
 
-        let files = await this.getFileUrl(message['message']['id']);
-        
-        files.forEach(url => {
-          urls.push(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}${url}`);
-        })
+        let images = await this.getFileUrl(message['message']['id']);
 
         this.updateMessage({
           id: message['message']['id'],
           text: message['message']['text'],
-          images: urls
+          images: images
         })
       }
-
       
+      if (this.docFiles.length > 0) {
+        this.docFiles.forEach(async file => {
+          await this.setStreamFiles({
+            files: file,
+            headers: {
+                'Content-Type': file['type'],
+                'Content-Name': file['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+            }
+          });
+        });
+
+        let files = await this.getFileUrl(message['message']['id']);
+
+        this.updateMessage({
+          id: message['message']['id'],
+          text: message['message']['text'],
+          files: files
+        })
+      }
 
       this.valueInput = ''
       this.imageFiles = []
