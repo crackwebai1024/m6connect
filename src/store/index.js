@@ -25,6 +25,7 @@ import AppAttachments from './modules/AppAttachments'
 import hideCpmPanels from '@/modules/cpm/store/hide-cpm-panels'
 import ganttSettings from '@/modules/cpm/store/gantt-settings'
 import gantt from '@/modules/cpm/store/gantt'
+import cpm from '@/modules/cpm/store'
 
 import companies from '@/modules/cpm/store/companies'
 import ImportCPM from './modules/ImportCPM'
@@ -187,6 +188,7 @@ export default new Vuex.Store({
     ganttSettings,
     gantt,
     ImportCPM,
-    RecordsInstance
+    RecordsInstance,
+    cpm
   }
 })

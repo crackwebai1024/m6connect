@@ -46,6 +46,27 @@
                 />
               </v-col>
             </v-row>
+            
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      CPA
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-text-field
+                  v-model="lineItem.cpa"
+                  color="blue"
+                />
+              </v-col>
+            </v-row>           
 
             <v-row
               align="center"
@@ -94,6 +115,27 @@
                 <div class="font-weight-black subheading">
                   <v-row>
                     <v-col class="shrink">
+                      Vendor ID
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-text-field
+                  v-model="lineItem.vendorId"
+                  color="blue"                  
+                />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
                       Commitment Account
                     </v-col>
                   </v-row>
@@ -101,6 +143,27 @@
               </v-col>
               <v-col cols="7">
                 <v-text-field v-model="lineItem.account" />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      PO Number
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-text-field
+                  v-model="lineItem.po_number"
+                  color="blue"
+                />
               </v-col>
             </v-row>
 
@@ -121,6 +184,70 @@
                 <v-text-field
                   v-model="lineItem.line_number"
                   color="blue"
+                />
+              </v-col>
+            </v-row>
+
+            
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      Paid to Date
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-menu
+                  v-model="paidToDateMenu"
+                  :close-on-content-click="false"
+                  full-width
+                  lazy
+                  min-width="290px"
+                  :nudge-right="40"
+                  offset-y
+                  transition="scale-transition"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="lineItem.paidToDateText"
+                      append-icon="mdi-calendar"
+                      color="blue"
+                      label="Paid to Date"
+                      mask="date"
+                      v-on="on"
+                    />
+                  </template>
+                  <v-date-picker
+                    v-model="lineItem.paidToDate"
+                    @change="setPaidToDate"
+                  />
+                </v-menu>
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      Accrual
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <money
+                  v-model="lineItem.accrual"
+                  v-bind="money"
                 />
               </v-col>
             </v-row>
@@ -164,6 +291,70 @@
                   v-model="lineItem.amount"
                   v-bind="money"
                 />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      PO Remaining (Open) with Accrual
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <money
+                  :disabled="true"
+                  v-model="lineItem.poRemainingWithAccrual"
+                  v-bind="money"
+                />
+              </v-col>
+            </v-row>
+           
+           <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      Document Date
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-menu
+                  v-model="documentDateMenu"
+                  :close-on-content-click="false"
+                  full-width
+                  lazy
+                  min-width="290px"
+                  :nudge-right="40"
+                  offset-y
+                  transition="scale-transition"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="lineItem.documentDateText"
+                      append-icon="mdi-calendar"
+                      color="blue"
+                      label="Document Date"
+                      mask="date"
+                      v-on="on"
+                    />
+                  </template>
+                  <v-date-picker
+                    v-model="lineItem.documentDate"
+                    @change="setDocumentDate"
+                  />
+                </v-menu>
               </v-col>
             </v-row>
 
@@ -319,7 +510,7 @@
                 <div class="font-weight-black subheading">
                   <v-row>
                     <v-col class="shrink">
-                      Description
+                      PO Line Item description 1
                     </v-col>
                   </v-row>
                 </div>
@@ -327,6 +518,90 @@
               <v-col cols="7">
                 <v-textarea
                   v-model="lineItem.description"
+                  color="blue"
+                />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      PO Line Item description 2
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-textarea
+                  v-model="lineItem.description2"
+                  color="blue"
+                />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      Company Code
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-text-field
+                  v-model="lineItem.companyCode"
+                  color="blue"
+                />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      GL Account #
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-text-field
+                  v-model="lineItem.glAccount"
+                  color="blue"
+                />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      WBS Element
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-text-field
+                  v-model="lineItem.wbsElement"
                   color="blue"
                 />
               </v-col>
@@ -359,7 +634,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="lineItem.startDateText"
-                      append-icon="calendar_today"
+                      append-icon="mdi-calendar"
                       color="blue"
                       label="Start Date"
                       mask="date"
@@ -401,7 +676,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="lineItem.deliveryDateText"
-                      append-icon="calendar_today"
+                      append-icon="mdi-calendar"
                       color="blue"
                       label="Delivery Date"
                       mask="date"
@@ -468,6 +743,8 @@ export default {
       showLoading: false,
       startDateMenu: false,
       deliveryDateMenu: false,
+      paidToDateMenu: false,
+      documentDateMenu: false,
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
       titleRules: [v => !!v || 'Title is required'],
       money: {
@@ -592,7 +869,22 @@ export default {
       const [year, month, day] = this.lineItem.deliveryDate.split('-')
       const newFormat = `${month}/${day}/${year}`
       this.lineItem.deliveryDateText = newFormat
+    },
+    setPaidToDate() {
+      this.paidToDateMenu = false
+      const [year, month, day] = this.lineItem.paidToDate.split('-')
+      const newFormat = `${month}/${day}/${year}`
+      this.lineItem.paidToDateText = newFormat
+    },
+    setDocumentDate() {
+      this.documentDateMenu = false
+      const [year, month, day] = this.lineItem.documentDate.split('-')
+      const newFormat = `${month}/${day}/${year}`
+      this.lineItem.documentDateText = newFormat
     }
+  },
+  mounted() {
+    console.log(this.$store.getters)
   }
 }
 </script>

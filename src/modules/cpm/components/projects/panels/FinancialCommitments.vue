@@ -17,6 +17,7 @@
             light
             text
             @click="cardDialogClick"
+            v-on="on"
           >
             mdi-launch
           </v-icon>
@@ -338,7 +339,7 @@
       This commitment has associated spending
       <ul>
         <li
-          v-for="(spendingName, index) in associatedSpending"
+          v-for="spendingName in associatedSpending"
           :key="spendingName"
         >
           {{ spendingName }}
