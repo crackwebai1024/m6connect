@@ -65,6 +65,7 @@
                             
 
                             <v-combobox
+                                v-if="showCompanyComboBox"
                                 dark
                                 :items="companiesList"
                                 item-text="name"
@@ -86,8 +87,6 @@
                                 :type="showPass ? 'text' : 'password'"
                                 @click:append="onPasswordClick"
                             />
-                            
-                            
 
                             <v-text-field
                                 dark
@@ -126,6 +125,7 @@ export default {
     components: {
         AuthLayout
     },
+
     data: () => ({
         codeConfirm: "",
         loading: false,
@@ -137,7 +137,7 @@ export default {
             lastName: '',
             email: '',
             password: '',
-            passwordConfirm: '',
+            passwordConfirm: ''
         },
         reg: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/,
         showPass: false,
@@ -150,7 +150,9 @@ export default {
                 v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
             ],
         },
+        showCompanyComboBox: false
     }),
+
     methods: {
         ...mapActions('Companies', {
             listCompanies: 'getList',
@@ -164,7 +166,6 @@ export default {
             notifDanger: 'notifDanger',
             notifSuccess: 'notifSuccess'
         }),
-        emailTest(){},
         onPasswordClick() {
             this.showPass = !this.showPass
         },
@@ -244,11 +245,25 @@ export default {
         }
 
     },
+
     computed: {
         ...mapState('Companies', {
             companiesList: 'list',
         })
     },
+
+    watch: {
+        companiesList(val) {
+            const selectedCompany = val.find( v => v.id === process.env.VUE_APP_CURRENT_COMPANY_ID )
+
+            if( selectedCompany ) {
+                this.user.company = { ...selectedCompany }
+            } else {
+                this.showCompanyComboBox = true
+            }
+        }
+    },
+
     mounted() {
         this.getDataFromQuery()
         this.listCompanies()
