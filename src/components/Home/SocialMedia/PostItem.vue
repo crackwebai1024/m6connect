@@ -193,7 +193,31 @@
         </div>
       </div>
       <div>
-        <div class="px-5 py-4">
+        <v-row class="my-2" v-if="data['files'] && data['files'].length > 0">
+          <v-col
+            cols="12"
+            class="my-0 py-0 mx-5"
+            v-for="(file, index) of data['files']"
+            :key="index+'-file'"
+          >
+            <v-icon
+              @click="redirect(file)"
+            >
+              mdi-file-document-outline
+            </v-icon>
+            <p
+              class="text-subtitle-1 font-weight-bold text-left pointer mx-2 my-0 py-0"
+              @click="redirect(file)"
+            >
+              {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+            </p>
+          </v-col>
+        </v-row>
+        
+        <div 
+          v-if="images.length !== 0"
+          class="px-5 py-4"
+        >
           <v-btn
             v-if="all_images && images.length>4"
             class="float-button"
@@ -537,10 +561,8 @@ export default {
     }
   },
   mounted() {
-    this.getPostsUrl(this.data.id).then( res => {
-      this.images = res;
-      this.picture_items = this.images.slice(0, 4)
-    });
+    this.images = this.data.images;
+    this.picture_items = this.images.slice(0, 4);
     this.user = this.currentUser;
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
@@ -566,6 +588,9 @@ export default {
           this.records(event).then(res => { this.options['records'] = res['data']; });
           break;
       }
+    },
+    redirect(file){
+      window.open(file,'_blank')
     },
     updateActivity(activity){
       this.updateInfo['description'] = this.updateMessage;
@@ -734,6 +759,9 @@ export default {
 </script>
 
 <style>
+v-icon, p {
+  display: inline-block;
+}
 .repeating-gradient {
   background-color: rgba(38, 38, 38, 0.7);
 }

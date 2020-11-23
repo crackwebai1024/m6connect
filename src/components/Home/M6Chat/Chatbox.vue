@@ -336,14 +336,26 @@
                 v-if="message.files"
                 class="d-flex ml-auto w-fit"
               >
-                <div
-                  v-for="(file, index) in message.files"
-                  :key="'filemsg-' + index"
-                  class="mt-1 mx-1 relative w-fit text-subtitle-1 font-weight-black py-0 my-0 text-center pointer"
-                  @click="redirect(file)"
-                >
-                  {{file.substring(file.lastIndexOf('/')+1)}}
-                </div>
+                <v-row class="my-2 px-1" v-if="message['files'] && message['files'].length > 0">
+                  <v-col
+                    cols="12"
+                    class="my-0 py-0"
+                    v-for="(file, index) of message['files']"
+                    :key="index+'-file'"
+                  >
+                    <v-icon
+                      @click="redirect(file)"
+                    >
+                      mdi-file-document-outline
+                    </v-icon>
+                    <p
+                      class="text-subtitle-1 font-weight-bold pointer mx-1 my-0 py-0"
+                      @click="redirect(file)"
+                    >
+                      {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+                    </p>
+                  </v-col>
+                </v-row>
               </div>
             </div>
             <v-icon
@@ -1013,6 +1025,9 @@ export default {
 </script>
 
 <style>
+v-icon, p {
+  display: inline-block;
+}
 .chat-box {
   width: 335px;
   max-height: 455px;
