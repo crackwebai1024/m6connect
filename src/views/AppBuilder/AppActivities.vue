@@ -47,6 +47,19 @@
                       label="Activity Name"
                     />
                   </v-col>
+                  <v-col
+                    cols="12"
+                  >
+                    <v-select
+                      v-model="editedItem.fields"
+                      chips
+                      item-text="label"
+                      item-value="id"
+                      :items="fieldList"
+                      label="Field"
+                      multiple
+                    />
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -141,14 +154,21 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false }
     ],
     activities: [],
+    fieldList: [],
     editedIndex: -1,
     editedItem: {
       value: '',
-      fields: []
+      fields: [{
+        id: null,
+        label: null
+      }]
     },
     defaultItem: {
       value: '',
-      fields: []
+      fields: [{
+        id: null,
+        label: null
+      }]
     }
   }),
 
@@ -175,6 +195,12 @@ export default {
     initialize() {
       axios.get(`${this.server}/api/apps_settings/m6works/${this.$route.params.id}/activities`).then(response => {
         this.activities = response.data
+      })
+
+      axios.post(`${this.server}/api/app-builder/field/list/all`, {
+        appId: parseInt(this.$route.params.id)
+      }).then(response => {
+        this.fieldList = response.data
       })
     },
 
@@ -217,11 +243,10 @@ export default {
     },
 
     save() {
-      // Save to DB then update
-      // field, value, app_type, app_id
       if (this.editedIndex > -1) {
         axios.put(`${this.server}/api/apps_settings/${this.editedItem.id}`, {
-          value: this.editedItem.value
+          value: this.editedItem.value,
+          woFields: this.editedItem.fields
         }).then(() => {
           Object.assign(this.activities[this.editedIndex], this.editedItem)
           this.close()
@@ -231,7 +256,8 @@ export default {
           field: 'wo_request_type',
           value: this.editedItem.value,
           app_type: 'dynamic_app_' + this.$route.params.id,
-          app_id: parseInt(this.$route.params.id)
+          app_id: parseInt(this.$route.params.id),
+          woFields: this.editedItem.fields
         }).then(response => {
           this.activities.push(response.data.app_setting)
           this.close()
