@@ -276,6 +276,73 @@
             </p>
           </v-col>
         </v-row>
+
+        <div v-if="data['record_url'] && data['record_url']['id']" class="py-0 my-0 px-5">
+          <p class="pointer text-subtitle-1 font-weight-bold blue--text" @click="redirect(data['record_url']['url'])">
+            {{data['record_url']['url']}}
+          </p>
+
+          <v-row 
+            no-gutters
+            class="px-1 mx-2 py-0 my-0" 
+            style="borderLeft: thick solid rgb(238 238 238);" 
+            align="center"
+          >
+            <v-col cols="2">
+              <v-img
+                v-if="data['record_url']['img']"
+                width="50" height="50"
+                aspect-ratio="1.7"
+                class="mx-1 my-1 rounded"
+                :src="data['record_url']['image']"
+                @click="previewImage(image)"
+              />
+              <v-icon v-else
+                size="50"
+              >
+                mdi-store
+              </v-icon>
+            </v-col>
+            <v-col cols="10">
+              <p 
+                class="py-0 my-0 font-weight-medium text--blue-grey"
+              >
+                {{data['record_url']['title']}}
+              </p>
+              <v-spacer></v-spacer>
+              <p 
+                class="py-0 my-0 font-weight-medium text--blue-grey"
+              >
+                {{data['record_url']['subtitle']}}
+              </p>
+              
+            </v-col>
+            <v-col cols="12">
+              <p 
+                class="py-0 my-1 font-weight-medium text--blue-grey"
+              >
+                {{data['record_url']['description']}}
+              </p>
+            </v-col>
+            <v-card class="mx-5 my-7 px-2" width="50%">
+              <v-card-title class="font-weight-regular my-0 pt-3 pb-0 mx-2">
+                  {{data['record_url']['panel_title']}}
+              </v-card-title>
+              <v-row>
+                <v-col 
+                  v-for="(value, index) of data['record_url']['panel']"
+                  :key="index+'-panel'"  cols="12"
+                >
+                  <p class="font-weight-light my-0 py-0 mx-2">
+                    {{value['name']}}
+                  </p>
+                  <v-spacer></v-spacer>
+                  <p class="my-0 py-0 mx-2">{{value['value']}}</p>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-row>
+        </div>
         
         <div 
           v-if="images.length !== 0"
@@ -326,77 +393,6 @@
           </div>
         </div>
       </div>
-
-
-      <!--      <div-->
-      <!--        v-if="data['postType'] === 'request'"-->
-      <!--        class="border-1 ma-4 mt-0"-->
-      <!--      >-->
-      <!--        <div :class="'text-h6 py-2 px-3 font-weight-regular ' + this.tagColor + '&#45;&#45;text'">-->
-      <!--          {{ data['request'].title }}-->
-      <!--        </div>-->
-      <!--        <v-divider />-->
-      <!--        &lt;!&ndash; post component reference&ndash;&gt;-->
-      <!--        <template v-if="data['componentName']">-->
-      <!--          <component-->
-      <!--            :is="data['componentName']"-->
-      <!--            class="pa-0 profile-component"-->
-      <!--          />-->
-      <!--        </template>-->
-      <!--        <div class="align-center d-flex justify-space-between pa-3 pt-0">-->
-      <!--          <div>-->
-      <!--            <div class="align-center d-flex pb-2 pt-6">-->
-      <!--              <div-->
-      <!--                v-for="(userRequest, index) in data['request'].users"-->
-      <!--                :key="index+'userrequest'"-->
-      <!--                class="d-flex"-->
-      <!--              >-->
-      <!--                <v-badge-->
-      <!--                  :bordered="userRequest.approval ? false : true"-->
-      <!--                  :color="userRequest.approval ? 'green accent-3' : 'white black&#45;&#45;text'"-->
-      <!--                  :dark="userRequest.approval ? false : true"-->
-      <!--                  :icon="userRequest.approval ? 'mdi-check' : 'mdi-help'"-->
-      <!--                  offset-x="12"-->
-      <!--                  offset-y="12"-->
-      <!--                  top-->
-      <!--                >-->
-      <!--                  <v-avatar size="35">-->
-      <!--                    <v-img :src="userRequest.imgSrc" />-->
-      <!--                  </v-avatar>-->
-      <!--                </v-badge>-->
-      <!--                <template v-if="index !== data['request'].users.length - 1">-->
-      <!--                  <span-->
-      <!--                    :class="lineColor(userRequest.approval) + 'my-auto'"-->
-      <!--                    style="height: 5px; width: 25px;"-->
-      <!--                  />-->
-      <!--                </template>-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--            <div-->
-      <!--              v-if="pendingApprovals(data['request'].users) > 0"-->
-      <!--              class="black&#45;&#45;text text-caption"-->
-      <!--            >-->
-      <!--              {{ pendingApprovals(data['request'].users ) }} Pending Approvals-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--          <div class="d-flex justify-end">-->
-      <!--            <v-btn-->
-      <!--              class="capitalize mr-2 my-2 px-6"-->
-      <!--              color="grey darken-3"-->
-      <!--              text-->
-      <!--            >-->
-      <!--              Deny-->
-      <!--            </v-btn>-->
-      <!--            <v-btn-->
-      <!--              class="capitalize my-2 px-8"-->
-      <!--              color="green accent-4"-->
-      <!--              outlined-->
-      <!--            >-->
-      <!--              Approve-->
-      <!--            </v-btn>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
 
       <v-card-actions class="px-5">
         <v-row
@@ -583,6 +579,7 @@ export default {
     records_type: [
       { label: 'ITApps', value: 'itapps' }
     ],
+    infoPanel: {},
     recordFields: [],
     record_type: null,
     options: {

@@ -26,6 +26,12 @@ export default {
         });
       }
     },
+    async getActionsFeed({}, payload) {
+      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/by/${payload}`);
+    },
+    async getAvailableApps(){
+      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`);
+    },
     setWorkFilter({ commit }, data){
       commit('SET_WORK_FILTER', data);
     },
