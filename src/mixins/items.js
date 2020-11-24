@@ -30,26 +30,26 @@ export const items = {
   }),
   computed: {
     titleDialog() {
-      return !this.dialogMode ? 'Update ' + this.itemsName + ' info' : 'Create ' + this.itemsName
+      return !this.dialogMode ? 'Update ' + this.itemsName + ' info' : 'Create ' + this.itemsName;
     },
     titleAction() {
-      return !this.dialogMode ? 'Update' : 'Save'
+      return !this.dialogMode ? 'Update' : 'Save';
     }
   },
   methods: {
     clickAction() {
-      this.dialogMode ? this.saveItem() : this.updateItem()
+      this.dialogMode ? this.saveItem() : this.updateItem();
     },
     saveItem() {
       if(this.valid) {
-        let id = parseInt(Date.now() * Math.random())
-        let newItem = {}
+        let id = parseInt(Date.now() * Math.random());
+        let newItem = {};
         let info = [newItem,this.itemInfo];
         newItem = Object.assign(...info);
-        newItem.id = id
-        this.items.push(newItem)
-        this.closeDialog()
-        this.post()
+        newItem.id = id;
+        this.items.push(newItem);
+        this.closeDialog();
+        this.post();
       }
     },
     updateItem() {
@@ -60,30 +60,30 @@ export const items = {
               item = Object.assign(...info);
           }
         });
-        this.closeDialog()
-        this.put()
+        this.closeDialog();
+        this.put();
       }
     },
     customFilter (item, queryText) {
-      const textOne = item.value.toLowerCase()
-      const searchText = queryText.toLowerCase()
-      return textOne.indexOf(searchText) > -1
+      const textOne = item.value.toLowerCase();
+      const searchText = queryText.toLowerCase();
+      return textOne.indexOf(searchText) > -1;
     },
     showUpdateDialog(data) {
       let info = [this.itemInfo,data];
       this.itemInfo = Object.assign(...info);
-      this.dialog = true
-      this.dialogMode = false
+      this.dialog = true;
+      this.dialogMode = false;
     },
     deleteItem() {
-      let indexDeletedItem = this.items.findIndex((element) => element.id == this.itemInfo.id)
+      let indexDeletedItem = this.items.findIndex((element) => element.id == this.itemInfo.id);
       this.items.splice(indexDeletedItem, 1);
       this.closeDialog();
       this.delete();
     },
     closeDialog() {
-      this.reset()
-      this.dialog = false
+      this.reset();
+      this.dialog = false;
     }
   }
 };
