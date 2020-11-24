@@ -12,7 +12,7 @@
       </v-tabs>
 
       <div class="align-center d-flex justify-end w-side">
-
+        <snap-shot-nav />
         <v-menu
             class="mt-3"
             :close-on-content-click="false"
@@ -93,8 +93,6 @@
             </v-list-item>
             </v-list>
         </v-menu>
-
-        <snap-shot-nav /> 
 
         <user-options />
 
