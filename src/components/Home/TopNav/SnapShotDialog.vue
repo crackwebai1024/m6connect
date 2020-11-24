@@ -298,8 +298,6 @@ export default {
       this.loading = true
       try {
         // const res = await this.createRapidTicket(this.rapidItem)
-        console.log('this.rapidItem')
-        console.log(this.rapidItem)
         this.loading = false
       } catch (e) {
         this.loading = false
