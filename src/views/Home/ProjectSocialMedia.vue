@@ -76,12 +76,21 @@
               <!--                mdi-file-document-outline-->
               <!--              </v-icon>-->
               <v-file-input
+                accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
+                class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
+                hide-input
+                multiple
+                prepend-icon="mdi-file-document-outline"
+                @change="onDocsChange"
+                :disabled="postListShow"
+              />
+              <v-file-input
                 accept="image/png, image/jpeg, image/bmp"
                 class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
                 hide-input
                 multiple
                 prepend-icon="mdi-image-outline"
-                @change="onImagesChange($event)"
+                @change="onImagesChange"
                 :disabled="postListShow"
               />
               <!--              <v-icon class="red&#45;&#45;text text&#45;&#45;lighten-1">-->
@@ -129,6 +138,30 @@
                 </div>
               </div>
             </template>
+            <template v-if="docsFiles.length > 0">
+              <div class="d-flex images-container mx-1 px-0 py-3">
+                <div
+                  v-for="(doc, index) in docsFiles"
+                  :key="'doc-' + index"
+                  class="mx-1 relative w-fit"
+                >
+                  <p>{{doc.name}}</p>
+                  <v-btn
+                    class="absolute btn-chat-shadow ml-2 right-0 top-0"
+                    color="grey lighten-2"
+                    fab
+                    style="height:15px; width:15px;"
+                    @click="removeFile(index)"
+                  >
+                    <v-icon
+                      size="12"
+                    >
+                      mdi-close
+                    </v-icon>
+                  </v-btn>
+                </div>
+              </div>
+            </template>
           </template>
         </v-text-field>
       </template>
@@ -156,6 +189,7 @@ export default {
   data: () => ({
     titlePage: '',
     activityText: '',
+    docsFiles: [],
     imageFiles: [],
     posts_list: [{}],
     showSkeletonPost: false
@@ -195,8 +229,17 @@ export default {
   },
   methods: {
     ...mapActions('SocialNetworkModule', ['filter_posts']),
+    ...mapActions("AppAttachments", { getPostsUrl: "get_post_file_url" }),
+    ...mapActions('AppAttachments', {
+      setStreamFiles: 'set_stream_attachments'
+    }),
     printSc(msg) {
       this.titlePage = `${msg}`;
+    },
+    onDocsChange(docs){
+      docs.forEach(doc => {
+        this.docsFiles.push(doc);
+      });
     },
     async privateState() {
       this.titlePage = 'Private';
@@ -240,7 +283,62 @@ export default {
       }
       
       this.activityText = ''
-      this.$store.dispatch('GSFeed/addActivity', activity).then(() => {
+
+      this.$store.dispatch('GSFeed/addActivity', activity).then(async res => {
+        if (this.imageFiles.length > 0) {
+          this.imageFiles.forEach(async image => {
+            await this.setStreamFiles({
+              files: image,
+              headers: {
+                'Content-Type': image['type'],
+                'Content-Name': image['name'],
+                'Stream-Id': res['data']['results'][0]['id'],
+                'Stream-type': 'post'
+              }
+            });
+          });
+
+          let activity = res['data']['results'][0];
+          this.getPostsUrl(activity['id']).then( urls => {
+            if( typeof activity['actor'] === 'string'){
+              activity['actor'] = JSON.parse(activity['actor'])
+            }
+            
+            activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
+            activity['actor']['data']['image'] = this.user.profilePic
+            activity['images'] = urls;
+            
+            this.$store.dispatch('GSFeed/updateActivity', activity)
+          });
+        }
+
+        if ( this.docsFiles.length > 0 ) {
+          this.docsFiles.forEach(async file => {
+            await this.setStreamFiles({
+              files: file,
+              headers: {
+                'Content-Type': file['type'],
+                'Content-Name': file['name'],
+                'Stream-Id': res['data']['results'][0]['id'],
+                'Stream-type': 'post'
+              }
+            });
+          });
+
+          let activity = res['data']['results'][0];
+          this.getPostsUrl(activity['id']).then( urls => {
+            if( typeof activity['actor'] === 'string'){
+              activity['actor'] = JSON.parse(activity['actor'])
+            }
+            
+            activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
+            activity['actor']['data']['image'] = this.user.profilePic
+            activity['files'] = urls;
+            
+            this.$store.dispatch('GSFeed/updateActivity', activity)
+          });
+        }
+        
         this.reloadFeed();
         this.showSkeletonPost = false
       })
@@ -248,11 +346,17 @@ export default {
     async reloadFeed(){
       await this.$store.dispatch('GSFeed/retrieveFeed')
     },
-    onImagesChange(e) {
-      this.imageFiles = e
+    onImagesChange(files) {
+      files.forEach(file => {
+        this.imageFiles.push(file)
+      })
+      
     },
     removeImage(index) {
       this.imageFiles.splice(index, 1)
+    },
+    removeFile(index) {
+      this.docsFiles.splice(index, 1)
     }
   },
   mounted() {

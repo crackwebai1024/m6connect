@@ -74,7 +74,7 @@ export default {
             setApp: "post_attachment"
         }),
         getURL(){
-            return `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder/${this.file.id}`;
+            return `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${this.file.id}`;
         },
         getSize(){
             let bytes = this.file['file_size'];
@@ -86,7 +86,7 @@ export default {
             return bytes;
         },
         openFile(){
-            let path = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/app-builder/${this.file.id}`;
+            let path = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${this.file.id}`;
             window.open(path,'_blank');
         },
         selectFile(file) {

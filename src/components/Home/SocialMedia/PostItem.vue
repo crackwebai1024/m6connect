@@ -255,55 +255,77 @@
           </v-row>
         </div>
       </div>
-      <!--IMAGES-->
-      <!--      <div>-->
-      <!--        <div class="px-5 py-4">-->
-      <!--          <v-btn-->
-      <!--            v-if="all_images && data.images.length>4"-->
-      <!--            class="float-button"-->
-      <!--            color="primary"-->
-      <!--            outlined-->
-      <!--            @click="showAll"-->
-      <!--          >-->
-      <!--            Show less-->
-      <!--          </v-btn>-->
-      <!--          <v-row-->
-      <!--            v-if="data.images.length !== 0"-->
-      <!--            no-gutters-->
-      <!--          >-->
-      <!--            <v-col-->
-      <!--              v-for="(image, index) of picture_items"-->
-      <!--              :key="index"-->
-      <!--              :cols="widthCols()"-->
-      <!--            >-->
-      <!--              <v-img-->
-      <!--                aspect-ratio="1.7"-->
-      <!--                class="mx-1 my-1 pointer"-->
-      <!--                :src="image.url"-->
-      <!--                @click="previewImage(image)"-->
-      <!--              />-->
-      <!--            </v-col>-->
-      <!--          </v-row>-->
-      <!--          <v-btn-->
-      <!--            v-if="!all_images && data.images.length>4"-->
-      <!--            block-->
-      <!--            class="mt-2"-->
-      <!--            color="primary"-->
-      <!--            outlined-->
-      <!--            @click="showAll"-->
-      <!--          >-->
-      <!--            Show All-->
-      <!--          </v-btn>-->
-      <!--          <div-->
-      <!--            v-line-clamp="5"-->
-      <!--            class="black&#45;&#45;text size-14 text-style"-->
-      <!--            :class="data.images.length !== 0 ? 'mt-3' : ''"-->
-      <!--          >-->
-      <!--            {{ data.contain }}-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--END IMAGES-->
+      <div>
+        <v-row class="my-2" v-if="data['files'] && data['files'].length > 0">
+          <v-col
+            cols="12"
+            class="my-0 py-0 mx-5"
+            v-for="(file, index) of data['files']"
+            :key="index+'-file'"
+          >
+            <v-icon
+              @click="redirect(file)"
+            >
+              mdi-file-document-outline
+            </v-icon>
+            <p
+              class="text-subtitle-1 font-weight-bold text-left pointer mx-2 my-0 py-0"
+              @click="redirect(file)"
+            >
+              {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+            </p>
+          </v-col>
+        </v-row>
+        
+        <div 
+          v-if="images.length !== 0"
+          class="px-5 py-4"
+        >
+          <v-btn
+            v-if="all_images && images.length>4"
+            class="float-button"
+            color="primary"
+            outlined
+            @click="showAll"
+          >
+            Show less
+          </v-btn>
+          <v-row
+            v-if="images.length !== 0"
+            no-gutters
+          >
+            <v-col
+              v-for="(image, index) of picture_items"
+              :key="index"
+              :cols="widthCols()"
+            >
+              <v-img
+                aspect-ratio="1.7"
+                class="mx-1 my-1 pointer"
+                :src="image"
+                @click="previewImage(image)"
+              />
+            </v-col>
+          </v-row>
+          <v-btn
+            v-if="!all_images && images.length>4"
+            block
+            class="mt-2"
+            color="primary"
+            outlined
+            @click="showAll"
+          >
+            Show All
+          </v-btn>
+          <div
+            v-line-clamp="5"
+            class="black&#45;&#45;text size-14 text-style"
+            :class="images.length !== 0 ? 'mt-3' : ''"
+          >
+            {{ data.contain }}
+          </div>
+        </div>
+      </div>
 
 
       <!--      <div-->
@@ -571,6 +593,7 @@ export default {
       assignment_list: [],
       preview_list: []
     },
+    images:[],
 
     showBtnsPost: false,
     showComments: false,
@@ -610,8 +633,9 @@ export default {
     }
   },
   mounted() {
-    // this.picture_items = this.data.images.slice(0, 4)
-    this.user = this.currentUser
+    this.images = this.data.images;
+    this.picture_items = this.images.slice(0, 4);
+    this.user = this.currentUser;
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
@@ -627,11 +651,8 @@ export default {
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
-    ...mapActions('WorkOrderModule', {
-      records: 'getRecords',
-      putAct: 'putAction',
-      deleteAct: 'deleteAction'
-    }),
+    ...mapActions("WorkOrderModule", { records: "getRecords", putAct: "putAction", deleteAct: "deleteAction" }),
+    ...mapActions("AppAttachments", { getPostsUrl: "get_post_file_url" }),
 
     isAuthor() {
       return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
@@ -646,9 +667,12 @@ export default {
           break
       }
     },
-    updateActivity(activity) {
-      this.updateInfo['description'] = this.updateMessage
-      this.activity = activity
+    redirect(file){
+      window.open(file,'_blank')
+    },
+    updateActivity(activity){
+      this.updateInfo['description'] = this.updateMessage;
+      this.activity = activity;
       this.putAct({
         id: activity['props']['id'],
         query: this.updateInfo
@@ -661,15 +685,15 @@ export default {
       })
     },
     widthCols() {
-      return this.data.images.length === 1 ? 12 : 6
+      return this.images.length === 1 ? 12 : 6
     },
     contLikes() {
       return this.$h.dg(this.data, 'reaction_counts.like', '0')
     },
     showAll() {
       this.picture_items = this.all_images
-        ? this.data.images.slice(0, 4)
-        : this.data.images
+        ? this.images.slice(0, 4)
+        : this.images
       this.all_images = !this.all_images
     },
     showCommentsPost() {
@@ -787,8 +811,9 @@ export default {
       this.updateMessage = this.data.message
       this.updateInfo.assignment_list = []
     },
-    previewImage(selected) {
-      this.set_image_preview_overlay([this.picture_items, selected])
+    async previewImage(selected) {
+      await this.$store.dispatch('GSFeed/setPreviewPost', this.data['id']);
+      this.set_image_preview_overlay([this.data.images, selected]);
     },
     lineColor(approval) {
       return approval ? 'green accent-3 ' : 'grey '
@@ -813,6 +838,9 @@ export default {
 </script>
 
 <style>
+v-icon, p {
+  display: inline-block;
+}
 .repeating-gradient {
   background-color: rgba(38, 38, 38, 0.7);
 }

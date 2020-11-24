@@ -11,10 +11,13 @@ import './plugins'
 import './modules/cpm/plugins'
 import VueTelInputVuetify from 'vue-tel-input-vuetify/lib'
 import VueKonva from 'vue-konva'
+import VueCarousel from 'vue-carousel';
 
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 Vue.component('treeselect', Treeselect)
+
+Vue.use(VueCarousel);
 
 Vue.use(Helpers)
 

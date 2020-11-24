@@ -229,6 +229,7 @@ export default {
         text: this.updatedComment
       });
       await this.$store.dispatch('GSFeed/retrieveFeed')
+      await this.$store.dispatch('GSFeed/setPreviewPost', this.comment.activity_id);
 
       this.updateCommentShow = false
     },
@@ -245,7 +246,8 @@ export default {
     },
     async deleteComment() {
       await this.$store.dispatch('GSFeed/removeReaction', this.comment.id);
-      await this.$store.dispatch('GSFeed/retrieveFeed');
+      await this.$store.dispatch('GSFeed/retrieveFeed')
+      await this.$store.dispatch('GSFeed/setPreviewPost', this.comment.activity_id);
       
       this.deleteCommentDiaLog = false;
     },
@@ -255,8 +257,12 @@ export default {
       
       if(replyData.trim() == '') return true
       await this.$store.dispatch('GSFeed/addChildReactionComment', {comment: this.comment, text: replyData});
-      this.feedActivity ? await this.$store.dispatch('GSFeed/setActionPost') 
-        : await this.$store.dispatch('GSFeed/retrieveFeed')
+      if (this.feedActivity) {
+        await this.$store.dispatch('GSFeed/setActionPost')
+      }else {
+        await this.$store.dispatch('GSFeed/retrieveFeed')
+        await this.$store.dispatch('GSFeed/setPreviewPost', this.comment.activity_id);
+      }
       
       this.showReplyMessage = true
     },
@@ -270,6 +276,7 @@ export default {
           filteredLikesByCurrentUser.forEach(async item => {
             await this.$store.dispatch('GSFeed/removeReaction', item.id);
             await this.$store.dispatch('GSFeed/retrieveFeed')
+            await this.$store.dispatch('GSFeed/setPreviewPost', this.comment.activity_id);
             
             this.likeState = false
           });
@@ -283,6 +290,7 @@ export default {
       if(addLike) {
         this.$store.dispatch('GSFeed/addChildReaction', this.comment).then(async () => {
           await this.$store.dispatch('GSFeed/retrieveFeed')
+          await this.$store.dispatch('GSFeed/setPreviewPost', this.comment.activity_id);
           this.likeState = true
         })
       }
