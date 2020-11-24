@@ -23,7 +23,7 @@
             :items="types"
             label="Field Type"
           />
-          <v-text-field 
+          <v-text-field
             v-model="field.machine_name"
             label="Machine Name: Optional"
           />
@@ -71,6 +71,14 @@
               Add Option
             </v-btn>
           </template>
+          <template v-if="field.type === 'reference'">
+            <treeselect
+              v-model="field.referenced_field"
+              :multiple="false"
+              :options="fieldList"
+              placeholder="Referenced Field"
+            />
+          </template>
           <v-checkbox
             v-model="field.metadata.required"
             color="red"
@@ -94,6 +102,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'Field',
@@ -121,27 +130,46 @@ export default {
         'dd/mm/YYYY H:m:s'
       ],
       types: [
-        { label: 'Text',            value: 'text'         },
-        { label: 'Number',          value: 'number'       },
-        { label: 'Date',            value: 'timestamp'    },
-        { label: 'People',          value: 'people'       },
+        { label: 'Text', value: 'text' },
+        { label: 'Number', value: 'number' },
+        { label: 'Date', value: 'timestamp' },
+        { label: 'People', value: 'people' },
         { label: 'Multiple Choice', value: 'autocomplete' },
-        { label: 'Attachment',      value: 'attachment' },
-        { label: 'Yes / No',        value: 'boolean'      }
-      ]
+        { label: 'Attachment', value: 'attachment' },
+        { label: 'Yes / No', value: 'boolean' },
+        { label: 'Reference Field', value: 'referenced' }
+      ],
+      fieldList: []
     }
   },
+  computed: {
+    ...mapState('AppBuilder', {
+      currentApp: 'app'
+    })
+  },
+
+  mounted() {
+    // TODO: The available apps list should be on a global list on the store.
+    axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`).then(response => {
+      response.data.map(app => {
+        this.fieldList.push({
+          id: app.id,
+          label: app.title
+        })
+      })
+    })
+  },
+
   methods: {
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
-      notifSuccess: 'notifSuccess' 
+      notifSuccess: 'notifSuccess'
     }),
     deleteField() {},
     removeOption(index, item) {
       item.splice(index, 1)
     },
     async saveField(field) {
-      console.log()
       try {
         field.appID = this.currentApp.id
         if (this.editing) {
@@ -153,9 +181,9 @@ export default {
           this.notifSuccess('The Field Was Created')
           this.$emit('result', data)
         }
-      } catch(e) {
+      } catch (e) {
         let msg = 'There was an error.'
-        if(field.machine_name) msg += ' Remember that the Machine Name Must Be Unique'
+        if (field.machine_name) msg += ' Remember that the Machine Name Must Be Unique'
         this.notifDanger(msg)
       }
     },
@@ -170,13 +198,12 @@ export default {
         this.field.metadata.options = []
       }
       this.field.metadata.options.push('New Option')
+    },
+    normalizer(node) {
+      return {
+        label: node.value
+      }
     }
-  },
-
-  computed: {
-    ...mapState('AppBuilder', {
-      currentApp: 'app'
-    })
   }
 }
 </script>
