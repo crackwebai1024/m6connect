@@ -1,6 +1,6 @@
-import { connect } from 'getstream'
-import axios from 'axios'
-import auth from './Auth'
+import { connect } from 'getstream';
+import axios from 'axios';
+import auth from './Auth';
 
 const defaultState = {
   room: '',
@@ -9,14 +9,17 @@ const defaultState = {
   feed: {},
   actionPost: {},
   feedNotification: {},
+  preview_post: {},
   timeline: [],
   appGsId: process.env.VUE_APP_GS_ID,
   appId: process.env.VUE_APP_ID
-}
+};
+
 const state = () => defaultState;
 
 const getters = {
   getFeedNotification: state => state.feedNotification,
+  getPreviewPost: state => state.preview_post,
   getTimeline: state => state.timeline,
   getActionPost: state => state.actionPost,
   getFeed: state => state.feed,
@@ -54,6 +57,7 @@ const mutations = {
   },
   SET_ROOM: (state, payload) => state.room = payload,
   SET_TIMELINE: (state, payload) => state.timeline = payload,
+  SET_PREVIEW_POST: (state, payload) => state.preview_post = payload,
   SET_USER: async (state, payload) => {
     await state.client.setUser(
       payload,
@@ -101,6 +105,11 @@ const actions = {
         });
       });
     });
+  },
+  async setPreviewPost({ state, commit }, payload) {
+    let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/get_feed/${payload}/${state.room}`);
+
+    commit('SET_PREVIEW_POST', res['data']);
   },
   addReaction({ state }, { type, id, whoNotify, options = null }) {
     return new Promise(resolve => {

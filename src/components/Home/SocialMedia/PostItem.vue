@@ -733,8 +733,9 @@ export default {
       this.updateMessage = this.data.message
       this.updateInfo.assignment_list = [];
     },
-    previewImage(selected) {
-      this.set_image_preview_overlay([this.picture_items, selected])
+    async previewImage(selected) {
+      await this.$store.dispatch('GSFeed/setPreviewPost', this.data['id']);
+      this.set_image_preview_overlay([this.data.images, selected]);
     },
     lineColor(approval) {
       return approval ? 'green accent-3 ' : 'grey '
