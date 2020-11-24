@@ -166,6 +166,17 @@
                       </template>
                     </v-select>
                   </v-list-item>
+                  <v-list-item>
+                    <v-select
+                      v-model="itemInfo.panel"
+                      :class="{ disabled: itemInfo.application_id === null }"
+                      :item-value="Object"
+                      item-text="label"
+                      :items="options.panles"
+                      label="Panel"
+                      @change="selectPanel($event)"
+                    />
+                  </v-list-item>
                 </v-list>
               </v-menu>
               <v-btn
@@ -268,11 +279,13 @@ export default {
     urlInfo: {},
     itemInfo: {
       application_id: null,
-      record_id: null
+      record_id: null,
+      panel: null
     },
     showSkeletonPost: false,
     options: {
       records: [],
+      panles: [],
       type: []
     },
     availableApps: [],
@@ -330,12 +343,33 @@ export default {
     },
     async selectRecord($event){
       let panel = [];
+      this.itemInfo['panel'] = null;
+      this.options['panles'] = [];
 
       let app = await this.$store.dispatch('AppBuilder/getApp', $event['app']['id']);
-      let panelId = app['tabs'][0]['panels'][0]['fields'][0]['panel_id'];
-      let values = await this.getFieldValues({ recordID: $event.id, panelID: panelId });
       
-      app['tabs'][0]['panels'][0]['fields'].forEach( field => {
+      app['tabs'].forEach(tab => {
+        tab.panels.forEach(panel => {
+          this.options['panles'].push({
+            id: $event['id'],
+            recordTitle: $event.title,
+            label: `${tab['title']} - ${panel['title']}`,
+            panelTitle: panel['title'],
+            fields: panel['fields'],
+            panelId: panel['id'],
+            subtitle: $event.app.title,
+            image: $event.app.iconLink,
+            description: $event.description
+          });
+        });
+      });
+    },
+    async selectPanel($event){
+      let values = await this.getFieldValues({ recordID: $event['id'], panelID: $event['panelId'] });
+      
+      let panel = [];
+
+      $event['fields'].forEach( field => {
         panel.push({name:field.label, value: values['values'][field.id]} );
       });
 
@@ -343,11 +377,11 @@ export default {
         url: `${new URL(location.href)['href']}record/${$event.id}`,
         id: $event.id,
         panel: panel,
-        panel_title: app['tabs'][0]['panels'][0]['title'],
-        title: $event.title,
-        subtitle: $event.app.title,
-        image: $event.app.iconLink,
-        description: $event.description
+        description: $event['description'],
+        panel_title: $event['panelTitle'],
+        subtitle: $event['subtitle'],
+        title: $event['recordTitle'],
+        image: $event['image']
       }
       this.menu = false;
     },
@@ -463,6 +497,7 @@ export default {
         this.urlInfo = {};
         this.itemInfo.application_id = null;
         this.itemInfo.record_id = null;
+        this.itemInfo.panel = null;
         this.showSkeletonPost = false;
       })
     },
