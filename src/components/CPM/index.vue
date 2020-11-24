@@ -1,24 +1,11 @@
 <template>
-  <v-container class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-main-content">
+  <v-container class="container--fluid d-flex dont-show-scroll h-full vertical-scroll w-main-content">
     <!-- General use list component-->
-    <template v-if="getScreenStatus()">
-      <record-container
-        class="main-content mx-auto"
-        :data="getRecordFullScreen()"
-      />
-    </template>
-    <template v-else>
-      <!-- Companies List Component (add main-content class)-->
-      <app-template
-        :edit-panel="true"
+    <!-- Companies List Component (add main-content class)-->
+    <v-row>
+      <app-template-plain
+        :props-dialog="true"
       >
-        <v-btn
-          slot="actionbtn"
-          class="capitalize white"
-          text
-        >
-          Capital Projects
-        </v-btn>
         <div
           slot="header"
           class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
@@ -179,16 +166,21 @@
                 <financial-spendings />
               </template>
             </panel-full>
+            <panel-full>
+              <template slot="content">
+                <budgets />
+              </template>
+            </panel-full>
             <v-spacer />
-            <!--            <panel-two-columns>-->
-            <!--              <div-->
-            <!--                slot="leftPanel"-->
-            <!--              />-->
+          <!--            <panel-two-columns>-->
+          <!--              <div-->
+          <!--                slot="leftPanel"-->
+          <!--              />-->
 
-            <!--              <div-->
-            <!--                slot="rightPanel"-->
-            <!--              />-->
-            <!--            </panel-two-columns>-->
+          <!--              <div-->
+          <!--                slot="rightPanel"-->
+          <!--              />-->
+          <!--            </panel-two-columns>-->
           </template>
           <!--FINANCIALS-->
 
@@ -224,22 +216,23 @@
               </template>
             </panel-full>
           </template>
-          <!--SCHEDULE-->
+        <!--SCHEDULE-->
         </div>
-      </app-template>
-    </template>
+      </app-template-plain>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
-import AppTemplate from '@/views/Home/AppTemplate'
+import AppTemplatePlain from '@/views/Home/AppTemplatePlain'
 import PanelFull from '@/components/AppBuilder/Content/PanelFull'
 import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import M6Show from '@/modules/cpm/_layouts/M6Show.vue'
 
 import FinancialCostSummary from '@/modules/cpm/components/projects/panels/FinancialCostSummary'
+import Budgets from '@/modules/cpm/components/projects/panels/Financial/Budgets'
 import Reconciliation from '@/modules/cpm/components/projects/panels/Reconciliation'
 import FinancialCommitments from '@/modules/cpm/components/projects/panels/FinancialCommitments'
 import FinancialSpendings from '@/modules/cpm/components/projects/panels/FinancialSpendings'
@@ -257,7 +250,7 @@ export default {
   name: 'Apps',
   components: {
     RecordContainer,
-    AppTemplate,
+    AppTemplatePlain,
     PanelFull,
     PanelTwoColumns,
     Milestones,
@@ -267,7 +260,8 @@ export default {
     FinancialCommitments,
     FinancialSpendings,
     Schedule,
-    Forecasts
+    Forecasts,
+    Budgets
 
   },
   data: () => ({

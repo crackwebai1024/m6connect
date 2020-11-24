@@ -27,6 +27,23 @@
             <v-btn @click="useHistorical">
               Historical Spendings
             </v-btn>
+
+            <v-btn @click="rollBack('spending')">
+              Rollback Spendings
+            </v-btn>
+
+            <v-btn @click="rollBack('spendingLineItem')">
+              Rollback Spendings
+            </v-btn>
+
+            <v-btn @click="rollBack('commitment')">
+              Rollback Commitments
+            </v-btn>
+
+            <v-btn @click="rollBack('project')">
+              Rollback Projects
+            </v-btn>
+
             <v-divider class="grey lighten-3 my-2 z-index" />
             <!-- File Upload Errors -->
             <template v-show="!showStep2Loader">
@@ -452,10 +469,10 @@ export default {
             name: 'Cost Code Number',
             description: ''
           },
-          {
-            name: 'Commitment ID/Number',
-            description: ''
-          },
+          // {
+          //   name: 'Commitment ID/Number',
+          //   description: ''
+          // },
           {
             name: 'Status',
             description: ''
@@ -711,7 +728,7 @@ export default {
           if (project === false) {
             console.log('Creating Project')
             project = await this.createProject(formatedData)
-            await this.storeForRevert('project', project.id)
+            await this.storeForRevert('project', project.id, project)
           } else {
             console.log('Using Existing project')
             project = project[0]
@@ -736,7 +753,7 @@ export default {
             if (!commitment) {
               // Commitment not exists
               commitment = await this.createCommitment(project.id, formatedData)
-              await this.storeForRevert('commitment', commitment.id)
+              await this.storeForRevert('commitment', commitment.id, commitment)
               console.log('Creating Commitment')
             } else {
               console.log('Using Existing Commitment')
@@ -749,7 +766,7 @@ export default {
               if (!checkLineItem) {
                 console.log('Creating Line Item')
                 const newCommitmentLineItem = await this.createCommitmentLineItem(project.id, commitment.id, formatedData)
-                await this.storeForRevert('commitmentLineItem', newCommitmentLineItem.id)
+                await this.storeForRevert('commitmentLineItem', newCommitmentLineItem.id, newCommitmentLineItem)
               } else {
                 console.log('Skipping Line Item, already exists')
               }
@@ -773,7 +790,7 @@ export default {
             if (!spending) {
               // Commitment not exists
               spending = await this.createSpending(project.id, formatedData)
-              await this.storeForRevert('spending', spending.id)
+              await this.storeForRevert('spending', spending.id, spending)
               console.log('Creating Spending')
             } else {
               console.log('Using Existing Spending')
@@ -786,7 +803,7 @@ export default {
               if (!checkLineItem) {
                 console.log('Creating Spending Line Item')
                 const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
-                await this.storeForRevert('spendingLineItem', newSpendingLineItem.id)
+                await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
               } else {
                 console.log('Skipping Line Item, already exists')
               }
@@ -1081,7 +1098,7 @@ export default {
       const newBC = await db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets').collection('budget_categories').add(code)
       return { id: newBC.id, ref: newBC.ref, ...code }
     },
-    async storeForRevert(type, id) {
+    async storeForRevert(type, id, ref) {
       const start = new Date()
       const year = start.getFullYear().toString()
       const month = ('0' + (start.getMonth() + 1)).slice(-2).toString()
@@ -1089,10 +1106,31 @@ export default {
 
       db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).add({
         id,
-        companyID: this.currentCompany.id
+        companyID: this.currentCompany.id,
+        ref
       })
     },
-    async rollBack() {}
+    async rollBack(type) {
+      const start = new Date()
+      const year = start.getFullYear().toString()
+      const month = ('0' + (start.getMonth() + 1)).slice(-2).toString()
+      const day = ('0' + (start.getDate())).slice(-2).toString()
+
+      const snap = await db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).get()
+      snap.docs.map(async i => {
+        const data = await i.data()
+        if (data.ref) {
+          const doc = await data.ref.get()
+          if (doc.exists) {
+            console.log(await doc.ref.delete())
+            i.ref.delete()
+          } else {
+            console.log('DOC DOESNT EXISTS')
+            i.ref.delete()
+          }
+        }
+      })
+    }
   }
 }
 </script>

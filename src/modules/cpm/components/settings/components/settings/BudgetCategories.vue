@@ -22,35 +22,35 @@
             class="mainList"
             dense
           >
-            <v-list-tile class="myListHeader">
-              <v-list-tile-content>Name</v-list-tile-content>
-              <v-list-tile-action>Action</v-list-tile-action>
-            </v-list-tile>
+            <v-list-item class="myListHeader">
+              <v-list-item-content>Name</v-list-item-content>
+              <v-list-item-action>Action</v-list-item-action>
+            </v-list-item>
 
             <draggable
               v-model="budgetCategories"
               @end="drag = false"
               @start="drag = true"
             >
-              <v-list-tile
+              <v-list-item
                 v-for="(item, key) in budgetCategories"
                 :key="key"
                 class="myList"
               >
-                <v-list-tile-avatar>
+                <v-list-item-avatar>
                   <v-icon
                     color="blue"
                     small
                   >
                     mdi-drag-variant
                   </v-icon>
-                </v-list-tile-avatar>
+                </v-list-item-avatar>
 
-                <v-list-tile-content>
+                <v-list-item-content>
                   {{ item.code ? item.code + ' -' : '' }} {{ item.name }}
-                </v-list-tile-content>
+                </v-list-item-content>
 
-                <v-list-tile-action
+                <v-list-item-action
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-icon
@@ -61,8 +61,8 @@
                   >
                     mdi-pencil
                   </v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </draggable>
           </v-list>
         </div>
@@ -154,12 +154,6 @@ export default {
 
   data() {
     return {
-      budgetCategoriesRef: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection('settings')
-        .doc('budgets')
-        .collection('budget_categories'),
       settings: [],
       loading: false,
       name: '',
@@ -194,6 +188,14 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     }),
+    budgetCategoriesRef: function () {
+      return db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc('budgets')
+        .collection('budget_categories')
+    },
     classOption: function () {
       const classes = []
       if (this.highLight) {

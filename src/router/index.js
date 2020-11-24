@@ -104,9 +104,6 @@ const router = new VueRouter({
       path: "/cpm/:id",
       name: "cpm",
       component: CPM,
-      meta: {
-        public: true
-      }
     },
     {
       path: "/cpm/import/tool",
