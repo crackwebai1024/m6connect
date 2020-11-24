@@ -23,6 +23,10 @@
             :items="types"
             label="Field Type"
           />
+          <v-text-field 
+            v-model="field.machine_name"
+            label="Machine Name: Optional"
+          />
 
           <v-divider class="my-2" />
           <h3>
@@ -89,6 +93,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'Field',
   props: {
@@ -120,22 +126,37 @@ export default {
         { label: 'Date',            value: 'timestamp'    },
         { label: 'People',          value: 'people'       },
         { label: 'Multiple Choice', value: 'autocomplete' },
+        { label: 'Attachment',      value: 'attachment' },
         { label: 'Yes / No',        value: 'boolean'      }
       ]
     }
   },
   methods: {
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess' 
+    }),
     deleteField() {},
     removeOption(index, item) {
       item.splice(index, 1)
     },
     async saveField(field) {
-      if (this.editing) {
-        const data = await this.$store.dispatch('AppBuilder/updateField', field)
-        this.$emit('result', data)
-      } else {
-        const data = await this.$store.dispatch('AppBuilder/saveField', field)
-        this.$emit('result', data)
+      console.log()
+      try {
+        field.appID = this.currentApp.id
+        if (this.editing) {
+          const data = await this.$store.dispatch('AppBuilder/updateField', field)
+          this.notifSuccess('The Field Was Updated')
+          this.$emit('result', data)
+        } else {
+          const data = await this.$store.dispatch('AppBuilder/saveField', field)
+          this.notifSuccess('The Field Was Created')
+          this.$emit('result', data)
+        }
+      } catch(e) {
+        let msg = 'There was an error.'
+        if(field.machine_name) msg += ' Remember that the Machine Name Must Be Unique'
+        this.notifDanger(msg)
       }
     },
     confirmDelete(field) {
@@ -150,6 +171,12 @@ export default {
       }
       this.field.metadata.options.push('New Option')
     }
+  },
+
+  computed: {
+    ...mapState('AppBuilder', {
+      currentApp: 'app'
+    })
   }
 }
 </script>

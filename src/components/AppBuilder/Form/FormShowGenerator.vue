@@ -35,6 +35,7 @@
 import { VTextField, VAutocomplete } from 'vuetify/lib'
 import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
 import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOptions.vue'
+import AppAttachment from '@/components/AppBuilder/Form/Components/Attachment.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
@@ -42,6 +43,7 @@ export default {
     components: {
         VTextField,
         DatePicker,
+        AppAttachment,
         VAutocomplete,
         RadioBtnOptions,            
         PeopleAutocomplete
@@ -61,12 +63,13 @@ export default {
 
     data: () => ({
         typeToComponentMapping: {
-            'text': { component: 'v-text-field' },
-            'number': { component: 'v-text-field', type: 'number' },
-            'timestamp': { component: 'date-picker' },
-            'autocomplete': { component: 'v-autocomplete' ,multiple: true, chips: true, clearable: true },
-            'boolean': { component: 'radio-btn-options' },
-            'people': { component: 'people-autocomplete', multiple: true, chips: true, clearable: true }
+            'timestamp':    { component: 'date-picker'       },
+            'text':         { component: 'v-text-field'      },
+            'attachment':   { component: 'app-attachment'    },
+            'boolean':      { component: 'radio-btn-options' },
+            'number':       { component: 'v-text-field',        type: 'number' },
+            'autocomplete': { component: 'v-autocomplete',      multiple: true, chips: true, clearable: true },
+            'people':       { component: 'people-autocomplete', multiple: true, chips: true, clearable: true }
         },
         genericRecord: {},
         formRules: {

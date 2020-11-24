@@ -21,12 +21,12 @@ import M6Codes from './modules/M6Codes'
 import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
 import RapidTicket from './modules/RapidTicket'
 import RecordsInstance from './modules/RecordsInstance'
+import AppAttachments from './modules/AppAttachments'
 import hideCpmPanels from '@/modules/cpm/store/hide-cpm-panels'
 import ganttSettings from '@/modules/cpm/store/gantt-settings'
 import gantt from '@/modules/cpm/store/gantt'
 
 import companies from '@/modules/cpm/store/companies'
-import cpm from '@/modules/cpm/store'
 import ImportCPM from './modules/ImportCPM'
 
 Vue.use(Vuex)
@@ -167,6 +167,7 @@ export default new Vuex.Store({
     GeneralListModule,
     NavigationStack,
     WorkOrderModule,
+    AppAttachments,
     ITAppsModule,
     TablesModule,
     InfoModule,
@@ -186,7 +187,6 @@ export default new Vuex.Store({
     ganttSettings,
     gantt,
     ImportCPM,
-    RapidTicket,
     RecordsInstance
   }
 })
