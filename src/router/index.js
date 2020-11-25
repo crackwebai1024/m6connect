@@ -14,6 +14,7 @@ const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
 const AppsBuilderList = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps/AppBuilder')
 const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
+const Projects = () => import(/* webpackChunkName: 'Store' */ '@/views/Projects/index')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShowBlank.vue')
 const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
@@ -104,6 +105,11 @@ const router = new VueRouter({
       path: "/cpm/:id",
       name: "cpm",
       component: CPM,
+    },
+    {
+      path: "/app/cpm",
+      name: "app.cpm",
+      component: Projects,
     },
     {
       path: "/cpm/import/tool",

@@ -12,11 +12,11 @@
         >
           <div class="align-center d-flex">
             <div>
-              <v-img
+              <!-- <v-img
                 alt="Project Image"
                 height="150"
                 :src="project.projectImage"
-              />
+              /> -->
             </div>
             <div class="ml-8">
               <h2>{{ $h.dg(project, 'title', '') }}</h2>
@@ -172,15 +172,14 @@
               </template>
             </panel-full>
             <v-spacer />
-          <!--            <panel-two-columns>-->
-          <!--              <div-->
-          <!--                slot="leftPanel"-->
-          <!--              />-->
-
-          <!--              <div-->
-          <!--                slot="rightPanel"-->
-          <!--              />-->
-          <!--            </panel-two-columns>-->
+            <!-- <panel-two-columns>
+                <div
+                  slot="leftPanel"
+                />
+                <div
+                  slot="rightPanel"
+                />
+              </panel-two-columns> -->
           </template>
           <!--FINANCIALS-->
 
@@ -216,7 +215,7 @@
               </template>
             </panel-full>
           </template>
-        <!--SCHEDULE-->
+          <!--SCHEDULE-->
         </div>
       </app-template-plain>
     </v-row>
@@ -276,7 +275,7 @@ export default {
     showColumnRight: true,
     project: {},
     type: 'project',
-    tabs: ['Home', 'Financials', 'Schedule'],
+    tabs: ['Home', 'Financials'],
     activeTab: 0
   }),
   computed: {

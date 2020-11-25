@@ -116,7 +116,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $tc('general.project', 1) }}
                       {{ $t('general.number') }}
                     </v-col>
@@ -136,7 +136,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $tc('general.project', 1) }}
                       {{ $tc('general.title', 1) }}
                     </v-col>
@@ -159,7 +159,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.editProjectTeam') }}
                     </v-col>
                   </v-row>
@@ -259,7 +259,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $tc('general.project', 1) }}
                       {{ $t('general.description') }}
                     </v-col>
@@ -282,7 +282,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.budget') }}
                     </v-col>
                   </v-row>
@@ -310,7 +310,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.budget') }}
                       {{ $t('general.status') }}
                     </v-col>
@@ -354,30 +354,32 @@
               </v-flex>
             </v-layout>
             -->
-            <v-row
+            <div
               v-for="(fy, index) in fiscalYears"
-              v-if="fy.show"
-
-              align="center"
-              justify="center"
+              :key="'fiscalYear-' + index"
             >
-              <v-col cols="3">
-                <div class="font-weight-black subheading">
-                  <v-row>
-                    <v-col class="shrink">
-                      {{ $t('cpm.projects.proposedSpend') }} {{ fy.name }}
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-col>
+              <v-row
+                v-if="fy.show"
+                class="align-center d-flex justify-center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
+                        {{ $t('cpm.projects.proposedSpend') }} {{ fy.name }}
+                      </v-col>
+                    </v-row>
+                  </div>
+                </v-col>
 
-              <v-col cols="7">
-                <money
-                  v-model="fy.amount"
-                  v-bind="money"
-                />
-              </v-col>
-            </v-row>
+                <v-col cols="7">
+                  <money
+                    v-model="fy.amount"
+                    v-bind="money"
+                  />
+                </v-col>
+              </v-row>
+            </div>
 
             <v-row
               align="center"
@@ -386,7 +388,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.generalContractor') }}
                     </v-col>
                   </v-row>
@@ -417,7 +419,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Contractor List
                     </v-col>
                   </v-row>
@@ -462,7 +464,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       % {{ $t('general.complete') }}
                     </v-col>
                   </v-row>
@@ -489,7 +491,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.phase') }}
                     </v-col>
                   </v-row>
@@ -516,7 +518,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.phaseTargetDate') }}
                     </v-col>
                   </v-row>
@@ -566,7 +568,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.projectType') }}
                     </v-col>
                   </v-row>
@@ -596,7 +598,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('general.campus') }}
                     </v-col>
                   </v-row>
@@ -621,7 +623,7 @@
               <v-col cols="7">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.addressSamecampus') }}
                     </v-col>
                   </v-row>
@@ -643,7 +645,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $tc('general.category', 1) }}
                     </v-col>
                   </v-row>
@@ -670,7 +672,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.squareFootage') }}
                     </v-col>
                   </v-row>
@@ -693,7 +695,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('general.regulatory') }}
                     </v-col>
                   </v-row>
@@ -717,7 +719,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.fyApproved') }}
                     </v-col>
                   </v-row>
@@ -746,7 +748,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('general.risk') }}
                     </v-col>
                   </v-row>
@@ -770,7 +772,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpmSettings.settings.projOptions.covid19Risk') }}
                     </v-col>
                   </v-row>
@@ -824,7 +826,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.projectAddress') }}
                     </v-col>
                   </v-row>
@@ -859,7 +861,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('cpm.projects.projectCreator') }}
                     </v-col>
                   </v-row>
