@@ -8,12 +8,20 @@ const getters = {}
 const mutations = {}
 
 const actions = {
-    createRapidTicket({ commit }, rapidTicket) {
+    createRapidTickets( _, rapidTickets ) {
         return new Promise( (resolve, reject) => {
-            axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/rapid/ticket`, { rapidTicket })
-            .then(resolve)
-            .catch(reject)
+            axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/rapid/ticket`, { rapidTickets })
+            .then( ({ data }) => resolve(data))
+            .catch( e => reject(e) )
             
+        })
+    },
+
+    getList(_) {
+        return new Promise( (resolve, reject) => {
+            axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/rapid`)
+            .then( ({data}) => resolve(data))
+            .catch( e => reject(e) )
         })
     }
 }
