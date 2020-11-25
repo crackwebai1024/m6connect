@@ -454,7 +454,11 @@ export default {
             description: ''
           },
           {
-            name: 'Budget Category',
+            name: 'Budget Category Code',
+            description: ''
+          },
+          {
+            name: 'Budget Category Name',
             description: ''
           },
           {
@@ -519,7 +523,11 @@ export default {
             description: ''
           },
           {
-            name: 'Vendor',
+            name: 'Vendor Name',
+            description: ''
+          },
+          {
+            name: 'Vendor Code',
             description: ''
           }
         ]
@@ -950,14 +958,14 @@ export default {
     },
     async createCommitment(projectID, item) {
       let bc = {}
-      if (item.commitments_budget_category) {
+      if (item.commitments_budget_category_code || item.commitments_budget_category_name) {
         if (this.budgetCategories.length > 0) {
           // eslint-disable-next-line eqeqeq
-          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category || s.code == item.commitments_budget_category)
+          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category_name || s.code == item.commitments_budget_category_code)
           if (!bc) {
             bc = this.createBudgetCategory({
-              code: item.commitments_budget_category || item.commitments_budget_category,
-              name: item.commitments_budget_category || item.commitments_budget_category
+              code: item.commitments_budget_category_code || item.commitments_budget_category_name,
+              name: item.commitments_budget_category_name || item.commitments_budget_category_code
             })
           }
         }
@@ -1010,16 +1018,17 @@ export default {
     },
     async createSpending(projectID, item) {
       let bc = {}
-      if (item.commitments_budget_category) {
+      if (item.spendings_budget_category_name || item.spendings_budget_category_code) {
         if (this.budgetCategories.length > 0) {
           // eslint-disable-next-line eqeqeq
-          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category || s.code == item.commitments_budget_category)
+          bc = this.budgetCategories.find(s => s.name == item.spendings_budget_category_name || s.code == item.spendings_budget_category_code)
           if (!bc) {
             bc = this.createBudgetCategory({
-              code: item.commitments_budget_category || item.commitments_budget_category,
-              name: item.commitments_budget_category || item.commitments_budget_category
+              code: item.spendings_budget_category_code || item.spendings_budget_category_name,
+              name: item.spendings_budget_category_name || item.spendings_budget_category_code
             })
           }
+          console.log(bc)
         }
       }
 
@@ -1028,18 +1037,36 @@ export default {
       }
 
       const newSpending = {
-        number: item.spendings_id_number.toString(),
-        total_po_amount: 0,
-        total_open_po_w_tax: 0,
         amount: 0,
-        invoiceTotal: 0,
-        vendor: {},
-        createdAt: new Date(),
-        createdBy: 'm6works_import_tool',
         budgetCategory: bc.name || '', // Name
         budget_category: {
           ref: bc.ref || '' // reference
-        }
+        },
+        commitment: '',
+        contingency: '' || false,
+        costCode: '',
+        costCodeNumber: '',
+        costCodeText: '',
+        createdAt: new Date(),
+        createdBy: 'm6works_import_tool',
+        dateOpenedText: item.spendingLineItem_start_date || '',
+        dateOpened: new Date(item.spendingLineItem_start_date).getTime() || '',
+        invoiceTotal: 0,
+        number: item.spendings_id_number.toString(),
+        paidDateText: '',
+        paymentStatus: '',
+        po_number: item.spendingLineItem_commitment_id_number || '',
+        total_po_amount: 0,
+        total_open_po_w_tax: 0,
+        vendors: [
+          {
+            field_vendor_id_value: '',
+            nid: '',
+            preferred: '',
+            title: item.spendingLineItem_vendor_name || '',
+            custom_id: item.spendingLineItem_vendor_code || ''
+          }
+        ]
       }
 
       return new Promise(resolve => {
@@ -1054,8 +1081,13 @@ export default {
         client_capital_id: item || '',
         number: item.spendings_id_number.toString() || '',
         po_number: item.spendingLineItem_commitment_id_number.toString() || '',
-        vendors: [],
-        vendor: {},
+        vendor: {
+          field_vendor_id_value: '',
+          nid: '',
+          preferred: '',
+          title: item.spendingLineItem_vendor_name || '',
+          custom_id: item.spendingLineItem_vendor_code || ''
+        },
         line_number: item.spendingLineItem_line_number.toString() || '',
         line_description: item.spendingLineItem_description || '',
         dateText: item.spendingLineItem_start_date || '',
@@ -1077,6 +1109,18 @@ export default {
         dis_sub_acct: '',
         dist_seq_nbr: ''
       }
+
+      // Update amount
+      const spending = await db.collection('cpm_projects')
+        .doc(projectID)
+        .collection('spendings')
+        .doc(spendingID)
+        .get()
+
+      const data = spending.data()
+      const newAmount = data.amount + parseFloat(item.spendingLineItem_amount) || 0
+      spending.ref.update({ amount: newAmount })
+
       return new Promise(resolve => {
         const spendingLineItem = db.collection('cpm_projects')
           .doc(projectID)
