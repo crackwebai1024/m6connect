@@ -283,7 +283,7 @@
         </div>
         <div
           class="d-flex"
-          :class="[user.id === message.user.id ? 'ml-8' : 'mr-8' ]"
+          :class="[message['panel'] && message['panel']['id'] ? 'mx-0' : user.id === message.user.id ? 'ml-8' : 'mr-8' ]"
         >
           <template v-if="user.id === message.user.id">
             <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
@@ -314,7 +314,8 @@
             </div>
             <div
               v-else
-              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 px-3 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+              :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
               {{ message.text }}
               <div
@@ -427,7 +428,10 @@
               height="30"
               width="30"
             />
-            <div class="arrow-down blue mb-3 message-arrow mr-1 mt-1 px-3 py-1 relative text-body-2 text-left w-fit white--text">
+            <div 
+              class="arrow-down blue mb-3 message-arrow mr-1 mt-1 py-1 relative text-body-2 text-left w-fit white--text" 
+              :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
+            >
               {{ message.text }}
               <div
                 v-if="message.images"
@@ -444,10 +448,40 @@
                   >
                 </div>
               </div>
+              <div
+                v-if="message.files"
+                class="d-flex ml-auto w-fit"
+              >
+                <v-row class="my-2 px-1" v-if="message['files'] && message['files'].length > 0">
+                  <v-col
+                    cols="12"
+                    class="my-0 py-0"
+                    v-for="(file, index) of message['files']"
+                    :key="index+'-file'"
+                  >
+                    <v-icon
+                      @click="redirect(file)"
+                    >
+                      mdi-file-document-outline
+                    </v-icon>
+                    <p
+                      class="text-subtitle-1 font-weight-bold pointer mx-1 my-0 py-0"
+                      @click="redirect(file)"
+                    >
+                      {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+                    </p>
+                  </v-col>
+                </v-row>
+              </div>
             </div>
             <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
           </template>
         </div>
+        <record-url 
+          v-if="message['panel'] && message['panel']['id']" 
+          :recordInfo="message['panel']"
+          :type = "'message'"
+        />
       </div>
     </div>
     <!-- Emoji Picker -->
@@ -540,6 +574,7 @@
         :close-on-content-click="false"
         elevation="0"
         :offset-y="offset"
+        content-class="elevation-0"
         top
       >
         <template v-slot:activator="{ on, attrs }">
@@ -559,7 +594,100 @@
           </v-btn>
         </template>
 
-        <v-list class="mb-2 pa-0 transparent">
+        <v-list 
+          elevation="0" color="transparent" class="mb-2 pa-0 "
+        >
+          <v-list-item class="ma-0 pa-0 uploadfile-btn" elevation="20" >
+            <v-tooltip
+              class="tooltip-upload-file"
+              left
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <div
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-menu
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :offset-x="offset"
+                    right
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-avatar
+                        color="indigo darken-1"
+                        style="box-shadow: 1px 1px 4px #000000;"
+                        class="mr-2"
+                        size="25"
+                      >
+                        <v-icon
+                          color="white"
+                          class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                          hide-input
+                          dark
+                          size="20"
+                          icon
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          mdi-apps
+                        </v-icon>
+                      </v-avatar>
+                    </template>
+                    <v-list>
+                      <v-list-item>
+                        <v-select
+                          v-model="itemInfo.application_id"
+                          item-text="title"
+                          item-value="id"
+                          :items="availableApps"
+                          label="Application"
+                          @change="changeApp($event)"
+                        />
+                      </v-list-item>
+                      <v-list-item>
+                        <v-select
+                          v-model="itemInfo.record_id"
+                          :class="{ disabled: itemInfo.application_id === null }"
+                          :item-value="Object"
+                          :items="options.records"
+                          label="Record"
+                          @change="selectRecord($event)"
+                        >
+                          <template
+                            slot="selection"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render selected items -->
+                            {{ data.item.record_number }} - {{ data.item.title }}
+                          </template>
+                          <template
+                            slot="item"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render items when the select is open -->
+                            {{ data.item.record_number }} - {{ data.item.title }}
+                          </template>
+                        </v-select>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-select
+                          v-model="itemInfo.panel"
+                          :class="{ disabled: itemInfo.application_id === null }"
+                          :item-value="Object"
+                          item-text="label"
+                          :items="options.panles"
+                          label="Panel"
+                          @change="selectPanel($event)"
+                        />
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </template>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Record</span>
+            </v-tooltip>
+          </v-list-item>
           <v-list-item class="ma-0 pa-0 uploadfile-btn">
             <v-tooltip
               class="tooltip-upload-file"
@@ -656,6 +784,7 @@ import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
 import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
+import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 
 export default {
   name: 'Chatbox',
@@ -664,7 +793,8 @@ export default {
     InfoUsersDialog,
     AddUserDialog,
     DeleteDialog,
-    VEmojiPicker
+    VEmojiPicker,
+    RecordUrl
   },
   props: {
     channel: {
@@ -675,6 +805,7 @@ export default {
   data: () => ({
     deleteDialog: false,
     hover: false,
+    menu: false,
     input: '',
     display: true,
     whoTyping: {},
@@ -690,11 +821,23 @@ export default {
       channel: {}
     },
     valueInput: '',
+    itemInfo:{
+      application_id: null,
+      record_id: null,
+      panel: null
+    },
     showDialog: false,
     imageFiles: [],
     docFiles: [],
     offset: true,
     minimized: false,
+    urlInfo: {},
+    options: {
+      records: [],
+      panles: [],
+      type: []
+    },
+    availableApps: [],
     days: [
       'Sunday',
       'Monday',
@@ -747,11 +890,21 @@ export default {
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
+
+    
     
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
 
+    this.getApps().then(response => {
+      response.data.map(app => {
+        this.availableApps.push({
+          id: app.id,
+          title: app.title
+        })
+      })
+    });
     this.client.on('typing.start', r => {
       if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
         this.whoTyping = r.user
@@ -771,6 +924,62 @@ export default {
       getFileUrl:     'get_message_file_url',
       setStreamFiles: 'set_stream_attachments'
     }),
+    ...mapActions('AppBuilder', {
+      getFieldValues: 'getFieldValuesPerPanel'
+    }),
+    ...mapActions('WorkOrderModule', {
+      getApps: 'getAvailableApps',
+      getActions: 'getActionsFeed'
+    }),
+    changeApp(event) {
+      this.getActions(event).then(response => {
+        this.options['records'] = response.data
+      });
+    },
+    async selectRecord($event){
+      let panel = [];
+      this.itemInfo['panel'] = null;
+      this.options['panles'] = [];
+
+      let app = await this.$store.dispatch('AppBuilder/getApp', $event['app']['id']);
+      
+      app['tabs'].forEach(tab => {
+        tab.panels.forEach(panel => {
+          this.options['panles'].push({
+            id: $event['id'],
+            recordTitle: $event.title,
+            label: `${tab['title']} - ${panel['title']}`,
+            panelTitle: panel['title'],
+            fields: panel['fields'],
+            panelId: panel['id'],
+            subtitle: $event.app.title,
+            image: $event.app.iconLink,
+            description: $event.description
+          });
+        });
+      });
+    },
+    async selectPanel($event){
+      let values = await this.getFieldValues({ recordID: $event['id'], panelID: $event['panelId'] });
+      
+      let panel = [];
+
+      $event['fields'].forEach( field => {
+        panel.push({name:field.label, value: values['values'][field.id]} );
+      });
+
+      this.urlInfo = {
+        url: `${new URL(location.href)['href']}record/${$event.id}`,
+        id: $event.id,
+        panel: panel,
+        description: $event['description'],
+        panel_title: $event['panelTitle'],
+        subtitle: $event['subtitle'],
+        title: $event['recordTitle'],
+        image: $event['image']
+      }
+      this.menu = false;
+    },
     redirect(file){
       window.open(file,'_blank')
     },
@@ -960,6 +1169,15 @@ export default {
           images: images
         })
       }
+
+      if ( this.itemInfo['panel'] ) {
+        this.updateMessage({
+          id: message['message']['id'],
+          text: message['message']['text'],
+          panel: this.urlInfo
+        })
+      }
+
       
       if (this.docFiles.length > 0) {
         this.docFiles.forEach(async file => {
@@ -1150,8 +1368,8 @@ v-icon, p {
   height: 25px;
   border-radius: 100%;
   cursor: pointer;
+  box-shadow: 1px 1px 4px #000000;
   background: #366AF5 !important;
-  box-shadow: none;
 }
 .uploadfile-btn .v-input__prepend-outer {
   padding: 0;

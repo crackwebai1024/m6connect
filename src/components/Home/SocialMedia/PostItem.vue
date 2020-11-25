@@ -276,7 +276,7 @@
             </p>
           </v-col>
         </v-row>
-        
+        <record-url v-if="data['record_url'] && data['record_url']['id']" :recordInfo="data['record_url']" />
         <div 
           v-if="images.length !== 0"
           class="px-5 py-4"
@@ -326,77 +326,6 @@
           </div>
         </div>
       </div>
-
-
-      <!--      <div-->
-      <!--        v-if="data['postType'] === 'request'"-->
-      <!--        class="border-1 ma-4 mt-0"-->
-      <!--      >-->
-      <!--        <div :class="'text-h6 py-2 px-3 font-weight-regular ' + this.tagColor + '&#45;&#45;text'">-->
-      <!--          {{ data['request'].title }}-->
-      <!--        </div>-->
-      <!--        <v-divider />-->
-      <!--        &lt;!&ndash; post component reference&ndash;&gt;-->
-      <!--        <template v-if="data['componentName']">-->
-      <!--          <component-->
-      <!--            :is="data['componentName']"-->
-      <!--            class="pa-0 profile-component"-->
-      <!--          />-->
-      <!--        </template>-->
-      <!--        <div class="align-center d-flex justify-space-between pa-3 pt-0">-->
-      <!--          <div>-->
-      <!--            <div class="align-center d-flex pb-2 pt-6">-->
-      <!--              <div-->
-      <!--                v-for="(userRequest, index) in data['request'].users"-->
-      <!--                :key="index+'userrequest'"-->
-      <!--                class="d-flex"-->
-      <!--              >-->
-      <!--                <v-badge-->
-      <!--                  :bordered="userRequest.approval ? false : true"-->
-      <!--                  :color="userRequest.approval ? 'green accent-3' : 'white black&#45;&#45;text'"-->
-      <!--                  :dark="userRequest.approval ? false : true"-->
-      <!--                  :icon="userRequest.approval ? 'mdi-check' : 'mdi-help'"-->
-      <!--                  offset-x="12"-->
-      <!--                  offset-y="12"-->
-      <!--                  top-->
-      <!--                >-->
-      <!--                  <v-avatar size="35">-->
-      <!--                    <v-img :src="userRequest.imgSrc" />-->
-      <!--                  </v-avatar>-->
-      <!--                </v-badge>-->
-      <!--                <template v-if="index !== data['request'].users.length - 1">-->
-      <!--                  <span-->
-      <!--                    :class="lineColor(userRequest.approval) + 'my-auto'"-->
-      <!--                    style="height: 5px; width: 25px;"-->
-      <!--                  />-->
-      <!--                </template>-->
-      <!--              </div>-->
-      <!--            </div>-->
-      <!--            <div-->
-      <!--              v-if="pendingApprovals(data['request'].users) > 0"-->
-      <!--              class="black&#45;&#45;text text-caption"-->
-      <!--            >-->
-      <!--              {{ pendingApprovals(data['request'].users ) }} Pending Approvals-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--          <div class="d-flex justify-end">-->
-      <!--            <v-btn-->
-      <!--              class="capitalize mr-2 my-2 px-6"-->
-      <!--              color="grey darken-3"-->
-      <!--              text-->
-      <!--            >-->
-      <!--              Deny-->
-      <!--            </v-btn>-->
-      <!--            <v-btn-->
-      <!--              class="capitalize my-2 px-8"-->
-      <!--              color="green accent-4"-->
-      <!--              outlined-->
-      <!--            >-->
-      <!--              Approve-->
-      <!--            </v-btn>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
 
       <v-card-actions class="px-5">
         <v-row
@@ -564,10 +493,12 @@ import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
+import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 
 export default {
   name: 'PostItem',
   components: {
+    RecordUrl,
     DeleteDialog,
     PostComments,
     VEmojiPicker,
@@ -583,6 +514,7 @@ export default {
     records_type: [
       { label: 'ITApps', value: 'itapps' }
     ],
+    infoPanel: {},
     recordFields: [],
     record_type: null,
     options: {
