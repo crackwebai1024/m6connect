@@ -2,20 +2,25 @@
   <div>
     <v-card>
       <v-card-title class="relative">
-        <v-btn
-          absolute
-          color="blue"
-          dark
-          fab
-          right
-          small
-          @click="newL1"
-        >
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+        <portal
+          v-if="included"
+          to="budget-1">
+          <v-btn
+            absolute
+            class='mt-3'
+            color="white"
+            dark
+            fab
+            right
+            small
+            @click="newL1"
+          >
+            <v-icon color="blue">mdi-plus</v-icon>
+          </v-btn>
+        </portal>
       </v-card-title>
 
-      <v-card-text class="vertical-scroll">
+      <v-card-text>
         <div class="form-group">
           <label>Budget Categories</label>
           <v-list

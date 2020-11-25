@@ -621,7 +621,7 @@ export default {
           value: 'POReceived',
           text: 'We have received the Total PO Amount',
           color: 'success',
-          icon: 'done_all'
+          icon: 'mdi-check-all'
         }
       ],
       selectedCommitment: null,

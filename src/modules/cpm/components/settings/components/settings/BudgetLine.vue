@@ -8,6 +8,7 @@
         >
           <v-btn
             absolute
+            class='mt-3'
             color="white"
             dark
             fab
@@ -33,7 +34,7 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text class="vertical-scroll">
+      <v-card-text>
         <div class="form-group">
           <label v-if="!included">Current Budget Categories</label>
           <v-data-table
@@ -73,7 +74,6 @@
       v-model="showForm"
       max-width="800px"
       persistent
-      scrollable
     >
       <v-card class="mt-2">
         <v-card-title class="headline px-6 py-4 white">
@@ -94,8 +94,9 @@
               type="hidden"
             >
             <v-btn
-              color="blue"
-              outline
+              outlined
+              color='grey'
+              class='mr-2'
               @click="cancel"
             >
               Cancel
