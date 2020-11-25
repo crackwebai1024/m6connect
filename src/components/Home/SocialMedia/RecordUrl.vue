@@ -60,7 +60,16 @@
                 {{ value["name"] }}
               </p>
               <v-spacer></v-spacer>
-              <p class="my-0 py-0">{{ value["value"] }}</p>
+              <div
+                v-if="value['value'],hasOwnProperty('id')"
+              >
+                <v-img
+                  :src="'http://localhost:8000/api/file/url/'+value['value']['id']"
+                  aspect-ratio="1.7"
+                  class="mx-1 my-1"
+                />
+              </div>
+              <p class="my-0 py-0" v-else>{{ value["value"] }}</p>
             </v-col>
           </v-row>
         </v-card-text>
@@ -80,6 +89,10 @@ export default {
       type: String,
       default: 'post'
     }
+  },
+  mounted(){
+    console.log(this.recordInfo)
+    
   },
   methods: {
     redirect(file){

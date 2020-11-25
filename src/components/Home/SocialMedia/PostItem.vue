@@ -276,7 +276,14 @@
             </p>
           </v-col>
         </v-row>
-        <record-url v-if="data['record_url'] && data['record_url']['id']" :recordInfo="data['record_url']" />
+        <record-url 
+          v-if="data['record_url'] && data['record_url']['id']" 
+          :recordInfo="data['record_url']" 
+        />
+        <external-url 
+          v-if="data['external_url'] && data['external_url'].length > 0" 
+          :urls="data['external_url']" 
+        />
         <div 
           v-if="images.length !== 0"
           class="px-5 py-4"
@@ -493,12 +500,14 @@ import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
+import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 
 export default {
   name: 'PostItem',
   components: {
     RecordUrl,
+    ExternalUrl,
     DeleteDialog,
     PostComments,
     VEmojiPicker,

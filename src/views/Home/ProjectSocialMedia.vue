@@ -411,6 +411,7 @@ export default {
       }
       this.showSkeletonPost = true
       let comp = this.user.companies.items.find(item => item.active === true);
+      let urls = this.urlify();
 
       const activity = {
         req:{
@@ -426,6 +427,7 @@ export default {
               }
             }),
             message: this.activityText,
+            external_url: urls,
             record_url: this.urlInfo,
             verb: 'post',
             object: 1,
@@ -436,8 +438,7 @@ export default {
       }
 
       this.activityText = ''
-
-
+      
       this.$store.dispatch('GSFeed/addActivity', activity).then(async res => {
         if (this.imageFiles.length > 0) {
           this.imageFiles.forEach(async image => {
@@ -500,6 +501,14 @@ export default {
         this.itemInfo.panel = null;
         this.showSkeletonPost = false;
       })
+    },
+    urlify() {
+      let urlRegex = /(https?:\/\/[^\s]+)/g;
+      let res = [];
+      this.activityText.replace(urlRegex, function(url) {
+        res.push(url);
+      })
+      return res
     },
     async reloadFeed(){
       await this.$store.dispatch('GSFeed/retrieveFeed')
