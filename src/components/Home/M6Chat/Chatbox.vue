@@ -936,10 +936,6 @@ export default {
         this.options['records'] = response.data
       });
     },
-    print(event) {
-      console.log(event)
-      
-    },
     async selectRecord($event){
       let panel = [];
       this.itemInfo['panel'] = null;
