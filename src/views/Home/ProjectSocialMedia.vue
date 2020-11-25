@@ -127,7 +127,7 @@
                     v-bind="attrs"
                     v-on="on"
                   >
-                    <v-icon>mdi-file-table-box-multiple-outline</v-icon>
+                    <v-icon>mdi-apps</v-icon>
                   </v-btn>
                 </template>
                 <v-list>

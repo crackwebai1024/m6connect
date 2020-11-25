@@ -276,74 +276,7 @@
             </p>
           </v-col>
         </v-row>
-
-        <div v-if="data['record_url'] && data['record_url']['id']" class="py-0 my-0 px-5">
-          <p class="pointer text-subtitle-1 font-weight-bold blue--text" @click="redirect(data['record_url']['url'])">
-            {{data['record_url']['url']}}
-          </p>
-
-          <v-row 
-            no-gutters
-            class="px-1 mx-2 py-0 my-0" 
-            style="borderLeft: thick solid rgb(238 238 238);" 
-            align="center"
-          >
-            <v-col cols="2">
-              <v-img
-                v-if="data['record_url']['img']"
-                width="50" height="50"
-                aspect-ratio="1.7"
-                class="mx-1 my-1 rounded"
-                :src="data['record_url']['image']"
-                @click="previewImage(image)"
-              />
-              <v-icon v-else
-                size="50"
-              >
-                mdi-store
-              </v-icon>
-            </v-col>
-            <v-col cols="10">
-              <p 
-                class="py-0 my-0 font-weight-medium text--blue-grey"
-              >
-                {{data['record_url']['title']}}
-              </p>
-              <v-spacer></v-spacer>
-              <p 
-                class="py-0 my-0 font-weight-medium text--blue-grey"
-              >
-                {{data['record_url']['subtitle']}}
-              </p>
-              
-            </v-col>
-            <v-col cols="12">
-              <p 
-                class="py-0 my-1 font-weight-medium text--blue-grey"
-              >
-                {{data['record_url']['description']}}
-              </p>
-            </v-col>
-            <v-card class="mx-5 my-7 px-2" width="50%">
-              <v-card-title class="font-weight-regular my-0 pt-3 pb-0 mx-2">
-                  {{data['record_url']['panel_title']}}
-              </v-card-title>
-              <v-row>
-                <v-col 
-                  v-for="(value, index) of data['record_url']['panel']"
-                  :key="index+'-panel'"  cols="12"
-                >
-                  <p class="font-weight-light my-0 py-0 mx-2">
-                    {{value['name']}}
-                  </p>
-                  <v-spacer></v-spacer>
-                  <p class="my-0 py-0 mx-2">{{value['value']}}</p>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-row>
-        </div>
-        
+        <record-url v-if="data['record_url'] && data['record_url']['id']" :recordInfo="data['record_url']" />
         <div 
           v-if="images.length !== 0"
           class="px-5 py-4"
@@ -560,10 +493,12 @@ import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
+import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 
 export default {
   name: 'PostItem',
   components: {
+    RecordUrl,
     DeleteDialog,
     PostComments,
     VEmojiPicker,
