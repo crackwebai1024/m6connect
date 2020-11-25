@@ -42,13 +42,13 @@
                       v-for="item in rapidItem.items"
                       :key="item.id"
                       :config=" {
-                        x: item.x,
-                        y: item.y,
+                        x: item.rapid_x,
+                        y: item.rapid_y,
                         id: item.id,
                         draggable: true,
                         width: 20,
                         height: 20,
-                        fill: $h.dg( item, 'rating.color', '#37474F' ), // blue-grey darken-3
+                        fill: ratings.find( r => r.level == item.rapid_color_rating).color || '#37474F', // blue-grey darken-3
                         shadowBlur: 25,
                         opacity: 0.9
                       }"
@@ -76,10 +76,10 @@
                           <template v-slot:activatorBtn>
                             <v-avatar
                               class="mr-2"
-                              :color="$h.dg(n, 'rating.color', '#37474F')"
+                              :color="ratings.find( r => r.level == n.rapid_color_rating).color"
                               size="28"
                             >
-                              <span class="subtitle-2 white--text">{{ generatePriorityScore( generatePriorityScore(n) ) }}</span>
+                              <span class="subtitle-2 white--text">{{ generatePriorityScore(n) }}</span>
                             </v-avatar>
                           </template>
                           <template v-slot:options>
@@ -96,18 +96,19 @@
                                   fab
                                   small
                                   v-on="on"
-                                  @click="n.rating = r"
+                                  @click="n.rapid_color_rating = r.level"
                                 />
                               </template>
                               <span class="pa-2 white--text">{{ r.text }}</span>
                             </v-tooltip>
                           </template>
                         </speed-dial>
+
                         <speed-dial v-if="colorPickerSwitchShow">
                           <template v-slot:activatorBtn>
                             <span
                               style="font-size: 1.5rem;"
-                              v-html="n.reaction.emoji"
+                              v-html="userReactions.find( u => u.level == n.rapid_reaction).emoji"
                             />
                           </template>
                           <template v-slot:options>
@@ -122,7 +123,7 @@
                                   fab
                                   x-small
                                   v-on="on"
-                                  @click="n.reaction = u"
+                                  @click="n.rapid_reaction = u.level"
                                 >
                                   <span
                                     class="emoji-font-size"
@@ -136,7 +137,7 @@
                         </speed-dial>
                       </div>
                       <v-text-field
-                        v-model="rapidItem.items[i].title"
+                        v-model="rapidItem.items[i].rapid_title"
                         label="Title"
                         outlined
                       />
@@ -150,10 +151,29 @@
                       </v-btn>
                     </div>
                     <v-textarea
-                      v-model="rapidItem.items[i].text"
+                      v-model="rapidItem.items[i].rapid_description"
                       label="Description"
                       outlined
                     />
+
+                    <people-autocomplete 
+                      label="Pick Your Maestro"
+                      v-model="rapidItem.items[i].rapid_maestro"
+                    />
+
+                    <people-autocomplete 
+                      label="Pick a Developer"
+                      v-model="rapidItem.items[i].rapid_developer"
+                    />
+
+                    <date-picker label="Due Date" v-model="rapidItem.items[i].rapid_dueDate" />
+
+                    <v-autocomplete
+                      label="Status"
+                      v-model="rapidItem.items[i].rapid_status"
+                      :items="statusItems"
+                    />
+
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -190,29 +210,36 @@
 
 <script>
 
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import SpeedDial from '@/components/_partials/SpeedDial.vue'
+import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
+import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
+
 const width = window.innerWidth * .7
 const height = window.innerHeight * .7
+
 const noteModel = {
-  title: '',
-  text: '',
-  x: Math.floor(width / 2),
-  y: Math.floor(height / 2),
+  rapid_record_number: "",
+  rapid_title: '',
+  rapid_description: '',
+  rapid_x: Math.floor(width / 2),
+  rapid_y: Math.floor(height / 2),
   rotation: 180,
   selected: false,
-  rating: { color: '#2E7D32', level: 5, text: 'Experience Is Awesome' },
-  reaction: { emoji: '&#128578;', level: 5, text: 'Ok' },
-  user: {},
-  company: {},
-  url: ''
+  rapid_color_rating: 1,
+  rapid_reaction: 1,
+  rapid_url: '',
+  rapid_status: 'Pending'
 }
-const rapidItemDefault = { items: [], company: {}, user: {}, imgLink: '' }
+
+const rapidItemDefault = { items: [], imgLink: '' }
 
 export default {
 
   components: {
-    SpeedDial
+    SpeedDial,
+    PeopleAutocomplete,
+    DatePicker
   },
 
   props: {
@@ -239,11 +266,7 @@ export default {
     loading: false,
     userReactions: [
       { emoji: '&#129324;', level: 6, text: 'Upset' }, // angry cursing face
-      {
-        emoji: '&#129298;',
-        level: 5,
-        text: 'Frustrated'
-      }, // sick face with thermometer
+      { emoji: '&#129298;', level: 5, text: 'Frustrated' }, // sick face with thermometer
       { emoji: '&#128580;', level: 4, text: 'Not Sure' }, // rolling eyes face
       { emoji: '&#128577;', level: 3, text: 'Sad' }, // frowney face
       { emoji: '&#129319;', level: 2, text: 'Looking Good' }, // bandaged face
@@ -253,26 +276,24 @@ export default {
       { color: '#C62828', level: 6, text: 'Stopped Working' }, // red darken-3
       { color: '#EF6C00', level: 5, text: 'Clunky' }, // orange darken-3
       { color: '#F9A825', level: 4, text: 'It Works' }, // yellow darken-3
-      {
-        color: '#1565C0',
-        level: 3,
-        text: 'I Wish You Could'
-      }, // blue darken-3
+      { color: '#1565C0', level: 3, text: 'I Wish You Could' }, // blue darken-3
       { color: '#2E7D32', level: 2, text: 'Good' }, // green darken-3
-      {
-        color: '#6A1B9A',
-        level: 1,
-        text: 'Experience Is Awesome'
-      } // purple darken-3
+      { color: '#6A1B9A', level: 1, text: 'Experience Is Awesome' } // purple darken-3
     ],
     colorPickerSwitchShow: true,
     ratingChosen: {},
-    panelModel: null
+    panelModel: null,
+    statusItems: [ 'Pending', 'In Progress', 'Code Review', 'Done', 'Deprecated' ]
   }),
 
   methods: {
     ...mapActions('RapidTicket', {
-      createRapidTicket: 'createRapidTicket'
+      createRapidTickets: 'createRapidTickets'
+    }),
+
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess' 
     }),
 
     colorPickerBool(bool) {
@@ -280,26 +301,26 @@ export default {
     },
 
     async saving() {
-      this.rapidItem.user = {
-        id: this.currentUser.id,
-        email: this.currentUser.email,
-        firstName: this.currentUser.firstName,
-        lastName: this.currentUser.lastName
-      }
 
-      this.rapidItem.company = {
-        id: this.currentCompany.id,
-        email: this.currentCompany.email,
-        legalCompanyName: this.currentCompany.legalCompanyName,
-        name: this.currentCompany.name,
-        phone: this.currentCompany.phone
-      }
+      const rapidItems = this.rapidItem.items.map( 
+        i => ({ 
+          ...i, 
+          rapid_user: this.currentUser.id,
+          rapid_imageLink: this.rapidItem.imageLink,
+          rapid_priority: ( i.rapid_color_rating + i.rapid_reaction ) / 2,
+          rapid_company: this.currentCompany.id
+        })
+      )
 
       this.loading = true
+
       try {
-        // const res = await this.createRapidTicket(this.rapidItem)
+        const res = await this.createRapidTickets(rapidItems)
+        this.notifSuccess('The Rapid Tickets were created')
         this.loading = false
+        this.closing()
       } catch (e) {
+        this.notifDanger('There was an error while creating the ticket')
         this.loading = false
       }
     },
@@ -318,9 +339,10 @@ export default {
       const coords = this.getRandCoordinates()
       const note = {
         id,
+        rapid_record_number: + new Date(),
         ...this.defaultNote,
         ...coords,
-        url: window.location.href
+        rapid_url: window.location.href
       }
       this.rapidItem.items.push(note)
     },
@@ -343,8 +365,8 @@ export default {
       }))
       const item = this.rapidItem.items.find(i => i.id === this.dragItemId)
 
-      item.x = e.target.attrs.x
-      item.y = e.target.attrs.y
+      item.rapid_x = e.target.attrs.x
+      item.rapid_y = e.target.attrs.y
       item.selected = true
 
       this.notes = this.rapidItem.items.map(n => n.id !== item.id ? n : item)
@@ -353,8 +375,8 @@ export default {
 
     getRandCoordinates() {
       return {
-        x: Math.floor(Math.random() * (width / 2.3 - width / 3) + width / 3),
-        y: Math.floor(Math.random() * (width / 2.3 - width / 3) + width / 3)
+        rapid_x: Math.floor(Math.random() * (width / 2.3 - width / 3) + width / 3),
+        rapid_y: Math.floor(Math.random() * (width / 2.3 - width / 3) + width / 3)
       }
     },
 
@@ -394,7 +416,7 @@ export default {
 
     generatePriorityScore(item) {
       return (
-        this.$h.dg(item, 'reaction.level', 0) + this.$h.dg(item, 'rating.level', 0)
+        this.$h.dg(item, 'rapid_reaction', 0) + this.$h.dg(item, 'rapid_color_rating', 0)
       ) / 2
     }
 
