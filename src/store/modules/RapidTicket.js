@@ -15,6 +15,14 @@ const actions = {
             .catch( e => reject(e) )
             
         })
+    },
+
+    getList(_) {
+        return new Promise( (resolve, reject) => {
+            axios.get(`http://${process.env.VUE_APP_ENDPOINT}/api/rapid`)
+            .then( ({data}) => resolve(data))
+            .catch( e => reject(e) )
+        })
     }
 }
 

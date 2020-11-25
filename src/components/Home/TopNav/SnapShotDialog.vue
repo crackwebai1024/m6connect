@@ -75,7 +75,6 @@
                         <speed-dial @expanding="colorPickerBool">
                           <template v-slot:activatorBtn>
                             <v-avatar
-                              class="mr-2"
                               :color="ratings.find( r => r.level == n.rapid_color_rating).color"
                               size="28"
                             >
