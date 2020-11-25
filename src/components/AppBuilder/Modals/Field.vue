@@ -309,6 +309,11 @@ export default {
 
     normalizeNested(tabs) {
       return tabs.map(tab => {
+        // TODO: Improve validation for fields without a panel.
+        if (!tab.panels && tab.type) {
+          tab.label = 'Field: ' + tab.label
+          return tab
+        }
         tab.label = 'Tab: ' + tab.title
         tab.id = tab.title + tab.id
         tab.children = tab.panels.map(panel => {
