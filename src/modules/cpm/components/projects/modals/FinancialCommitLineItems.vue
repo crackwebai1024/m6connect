@@ -3,7 +3,6 @@
     v-model="show"
     max-width="800px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline px-6 py-4 white">
@@ -22,8 +21,8 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text class="vertical-scroll">
-        <v-container fluid>
+      <v-card-text :style="viewPortStyles" class="vertical-scroll">
+        <v-container>
           <v-form ref="form">
             <v-row
               align="center"
@@ -162,8 +161,7 @@
               <v-col cols="7">
                 <money
                   v-model="lineItem.amount"
-                  v-bind="money"
-                />
+                  v-bind="money"/>
               </v-col>
             </v-row>
 
@@ -359,12 +357,15 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="lineItem.startDateText"
-                      append-icon="calendar_today"
                       color="blue"
                       label="Start Date"
                       mask="date"
                       v-on="on"
-                    />
+                    >
+                    <template #append>
+                      <v-icon>mdi-calendar-today</v-icon>
+                    </template> 
+                    </v-text-field>
                   </template>
                   <v-date-picker
                     v-model="startDate"
@@ -401,7 +402,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="lineItem.deliveryDateText"
-                      append-icon="calendar_today"
+                      append-icon="mdi-calendar-today"
                       color="blue"
                       label="Delivery Date"
                       mask="date"
@@ -477,7 +478,12 @@ export default {
         precision: 2,
         masked: false
       },
-      lineItem: {}
+      lineItem: {},
+      viewPortHeight:
+        Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        ) * 0.6
     }
   },
   firestore() {
@@ -494,6 +500,9 @@ export default {
     return aux
   },
   computed: {
+    viewPortStyles() {
+      return {height: `${this.viewPortHeight}px !important`}
+    },
     startDate: {
       get: function () {
         if (this.lineItem.startDate && this.lineItem.startDate > 0) {
@@ -598,6 +607,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-money{
+  padding: 5px;
+  width: 100%;
+  border-bottom: 1px solid gray
+}
+
+.v-money:focus {
+  border-bottom: 1px solid var(--v-primary-base)
+}
 .v-avatar {
   left: 50%;
   transform: translate(-50%);
