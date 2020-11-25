@@ -702,7 +702,6 @@ export const en = {
       networkConnection: 'Network Connection',
       networkZoneType: 'Network Zone Type',
       notes: 'Notes',
-      notes: 'Notes',
       operatingSystem: 'Operating System',
       patchingMethod: 'Patching Method',
       patchingResponsibility: 'Patching Responsibility',
@@ -1522,7 +1521,7 @@ export const en = {
       startUp: 'Start up and Kick off',
       successfullyFileSend: 'The file has been sent.',
       templateMail:
-        '<div><div><p>{by}, has shared a document with you.</p><p>If you need technical assistance, please reach out directly to M6Connect by clicking on the green ‘Get Support’ button on the right-hand side of the website or by email at <a href="support@m6connect.com">support@m6connect.com</a>. </p></div><div style="padding: 10px 20px; border: 1px solid #0277bd; margin: 50px 20px"><div style="text-align: center"><h2 style="margin-top: 0">Document Shared</h2></div><div><p>You have been invited to download the following file(s). The file(s) will be available until {expire}. <p>{custom}</p> To open a file, please click on each button.</p></div><div style="text-align: center;">{buttons}</div></div></div>',
+        '<div><div><p>{by}, has shared a document with you.</p><p>If you need technical assistance, please reach out directly to M6Connect by clicking on the green ‘Get Support’ button on the right-hand side of the website or by email at <a href="mailto:support@m6connect.com">support@m6connect.com</a>. </p></div><div style="padding: 10px 20px; border: 1px solid #0277bd; margin: 50px 20px"><div style="text-align: center"><h2 style="margin-top: 0">Document Shared</h2></div><div><p>You have been invited to download the following file(s). The file(s) will be available until {expire}. <p>{custom}</p> To open a file, please click on each button.</p></div><div style="text-align: center;">{buttons}</div></div></div>',
       teamMembers: 'Team Members',
       titleDestination: 'Please select destination folder',
       totalAllocated: 'Total Allocated',
