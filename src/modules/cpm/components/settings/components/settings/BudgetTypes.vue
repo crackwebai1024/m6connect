@@ -8,6 +8,7 @@
         >
           <v-btn
             absolute
+            class='mt-3'
             color="white"
             dark
             fab
@@ -35,7 +36,7 @@
         </v-btn>
       </v-card-title>
 
-      <v-card-text class="vertical-scroll">
+      <v-card-text>
         <div class="form-group">
           <label v-if="!included">Current Budget Categories</label>
           <v-data-table
