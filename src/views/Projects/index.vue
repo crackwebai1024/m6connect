@@ -1,6 +1,9 @@
 <template>
-  <v-container fluid>
-    <v-row class="ma-0 text-center">
+  <v-container
+    class="pt-0"
+    fluid
+  >
+    <v-row class="ma-0 pt-0 text-center">
       <v-col cols="12">
         <list-projects />
       </v-col>

@@ -1,7 +1,10 @@
 <template>
-  <v-container fluid>
+  <v-container
+    class="pt-0"
+    fluid
+  >
     <m6-list
-      class="fluid it-apps-index max-w-container"
+      class="fluid it-apps-index max-w-container pt-0"
       label="Search"
       :loading="loading"
       :on-input-search="debounceSearch"
@@ -9,14 +12,11 @@
       :without-results="false"
     >
       <template v-slot:before:search>
-        <v-col class="shrink">
+        <v-col class="d-flex shrink">
           <v-tooltip left>
             <template v-slot:activator="{ on }">
               <v-btn
-                v-if="
-                  isPlanned &&
-                    (view.val === 'view_list' || view.val === 'favorites_view')
-                "
+                class="mr-2"
                 color="#0277BD"
                 dark
                 fab
@@ -24,7 +24,9 @@
                 v-on="on"
                 @click="showAllMileStones = !showAllMileStones"
               >
-                <v-icon>mdi-calendar</v-icon>
+                <v-icon size="20">
+                  mdi-calendar
+                </v-icon>
               </v-btn>
             </template>
 
@@ -34,28 +36,35 @@
           </v-tooltip>
 
           <v-btn
-            v-if="resources && resources.length"
             id="step1"
+            class="mr-2"
             color="#0277BD"
             dark
             fab
             small
             @click="downloadCSV"
           >
-            <v-icon light>
+            <v-icon
+              light
+              size="20"
+            >
               mdi-cloud
             </v-icon>
           </v-btn>
 
           <v-btn
             id="step2"
+            class="mr-2"
             color="#0277BD"
             dark
             fab
             small
             @click="showCreateModal = true"
           >
-            <v-icon light>
+            <v-icon
+              light
+              size="20"
+            >
               mdi-plus
             </v-icon>
           </v-btn>
@@ -65,7 +74,7 @@
       <template v-slot:after:search>
         <v-col
           id="step4"
-          class="align-center shrink"
+          class="align-center mx-4 shrink"
         >
           <list-filtering
             :default-filters-values="{}"
@@ -77,6 +86,7 @@
         <v-col
           id="step5"
           class="shrink"
+          cols="2"
         >
           <v-select
             v-model="view"
@@ -88,7 +98,9 @@
               slot="selection"
               slot-scope="{ item }"
             >
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon class="mr-2">
+                {{ item.icon }}
+              </v-icon>
               {{ item.label }}
             </template>
 
@@ -96,7 +108,9 @@
               slot="item"
               slot-scope="{ item }"
             >
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon class="mr-2 my-1">
+                {{ item.icon }}
+              </v-icon>
               {{ item.label }}
             </template>
           </v-select>
