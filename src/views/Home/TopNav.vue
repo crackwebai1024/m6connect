@@ -12,18 +12,18 @@
       </v-tabs>
 
       <div class="align-center d-flex justify-end w-side">
-        <snap-shot-nav />
         <v-menu
-            class="mt-3"
-            :close-on-content-click="false"
-            elevation="0"
-            offset-y
-            bottom
+          content-class="elevation-0"
+          class="mt-3"
+          :close-on-content-click="false"
+          elevation="0"
+          offset-y
+          bottom
         >
             <template v-slot:activator="{ on, attrs }">
             <v-btn
                 v-bind="attrs"
-                class="align-center btns-message d-flex justify-center white--text"
+                class="align-center btns-message d-flex justify-center white--text mr-1"
                 elevation="0"
                 fab
                 height="25"
@@ -38,59 +38,78 @@
             </template>
 
             <v-list class="mb-2 pa-0 transparent">
-            <v-list-item class="ma-0 pa-0 uploadfile-btn">
-                <v-tooltip
-                class="tooltip-upload-file"
-                left
-                >
-                <template v-slot:activator="{ on, attrs }">
-                    <div
-                    class="mt-3"
-                    v-bind="attrs"
-                    v-on="on"
+              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
+                  <v-tooltip
+                  class="tooltip-upload-file"
+                  left
+                  >
+                  <template v-slot:activator="{ on, attrs }">
+                    <add-feed class="w-full">
+                      <v-btn
+                        slot="btn"
+                        block
+                        @click="modal = 'app-builder'"
+                        color="yellow darken-1"
+                        class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                      >
+                        Add Action
+                      </v-btn>
+                    </add-feed>
+                  </template>
+                  <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">New Action</span>
+                  </v-tooltip>
+              </v-list-item>
+              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
+                  <v-tooltip
+                  class="tooltip-upload-file"
+                  left
+                  >
+                  <template v-slot:activator="{ on, attrs }">
+                    <create-app class="w-full">
+                        <v-btn
+                            slot="btn"
+                            block
+                            color="green darken-1"
+                            class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                        >
+                            Add Application
+                        </v-btn>
+                    </create-app>
+                  </template>
+                  <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
+                  </v-tooltip>
+              </v-list-item>
+              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
+                  <v-tooltip
+                  class="tooltip-upload-file"
+                  left
+                  >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-dialog
+                      v-model="dialog"
+                      width="800"
+                      persistent
                     >
-                      <add-feed>
-                          <v-btn
-                              slot="btn"
-                              block
-                              @click="modal = 'app-builder'"
-                              color="yellow darken-1"
-                              class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
-                          >
-                              New Action
-                          </v-btn>
-                      </add-feed>
-                    </div>
-                </template>
-                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">New Action</span>
-                </v-tooltip>
-            </v-list-item>
-            <v-list-item class="ma-0 pa-0 uploadfile-btn">
-                <v-tooltip
-                class="tooltip-upload-file"
-                left
-                >
-                <template v-slot:activator="{ on, attrs }">
-                    <div
-                    class="mt-3"
-                    v-bind="attrs"
-                    v-on="on"
-                    >
-                      <create-app>
-                          <v-btn
-                              slot="btn"
-                              block
-                              color="green darken-1"
-                              class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
-                          >
-                              Add New Application
-                          </v-btn>
-                      </create-app>
-                    </div>
-                </template>
-                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
-                </v-tooltip>
-            </v-list-item>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          color="blue lighten-2 w-full mx-auto"
+                          class="max-w-tight"
+                          dark
+                          v-bind="attrs"
+                          v-on="on"
+                        >
+                          Add Record
+                        </v-btn>
+                      </template>
+                      <new-record-dialog @closeModal="dialog = false" />
+                    </v-dialog>
+                  </template>
+                  <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
+                  </v-tooltip>
+              </v-list-item>
+              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
+                  <snap-shot-nav class="w-full" />
+              </v-list-item>
             </v-list>
         </v-menu>
 
@@ -120,6 +139,7 @@ import UserOptions from "@/components/Home/TopNav/UserOptions";
 import CreateApp from "@/components/Dialogs/CreateAppDialog";
 import AddFeed from "./AddFeed";
 import CompanyHome from './CompanyHome'
+import NewRecordDialog from "@/components/Dialogs/NewRecordDialog";
 import AppBuilderShow from './AppBuilderShow'
 
 export default {
@@ -127,6 +147,7 @@ export default {
   components: {
     UserOptions,
     SnapShotNav,
+    NewRecordDialog,
     // AppTemplate,
     // ProjectSocialMedia,
     // PanelFull,
@@ -157,6 +178,7 @@ export default {
       name: "John Doe",
       imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg"
     },
+    dialog: false,
     modal: '',
     company: {
       name: "Sharp Healthcare"
