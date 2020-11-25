@@ -354,7 +354,7 @@
                 </tr>
               </template>
 
-              <template v-slot:expand="props">
+              <template>
                 <v-card elevation="0">
                   <v-progress-circular
                     v-show="loadingExpandedSpendingLineItems"
