@@ -122,56 +122,235 @@
         <div
           v-for="i in 7"
           :key="'fakedata'+i"
-          class="ma-0 my-3 pa-0 px-3 rounded"
+          class="ma-0 my-2 pa-0 px-2 rounded"
           style="width: 25%;"
         >
-          <div class="card-custom-shadow rounded white">
-            <div class="align-center d-flex flex-column pb-2 pt-4">
-              <img
-                slot="actionbtn"
-                :alt="currentCompany.name"
-                class="rounded-circle"
-                height="80"
-                :src="currentCompany.logo"
-                width="80"
+          <app-template>
+            <div
+              slot="actionbtn"
+              class="card-custom-shadow pointer rounded white"
+            >
+              <div class="align-center d-flex flex-column pb-2 pt-4">
+                <img
+                  slot="actionbtn"
+                  :alt="currentCompany.name"
+                  class="rounded-circle"
+                  height="80"
+                  :src="currentCompany.logo"
+                  width="80"
+                >
+                <p class="font-weight-bold mb-1 pa-3 text-h6">
+                  Advanced Vendor & Project Reporting
+                </p>
+                <p class="font-weight-bold grey--text ma-0 pa-0 text-caption">
+                  PRJ-00017-2020
+                </p>
+                <p class="grey--text ma-0 pa-0 text-caption">
+                  (SHC) Sharp Healthcare
+                </p>
+                <v-chip
+                  class="my-2 pointer"
+                  pill
+                  v-on="on"
+                >
+                  <v-avatar left>
+                    <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
+                  </v-avatar>
+                  John Leider
+                </v-chip>
+              </div>
+              <div class="d-flex ma-0 pa-0">
+                <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                  Budget Status
+                </div>
+                <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                  Start Date
+                </div>
+              </div>
+              <div class="d-flex ma-0 pa-0">
+                <div class="blue lighten-2 py-2 text-center w-half white--text">
+                  Roadmap
+                </div>
+                <div class="blue py-2 text-center w-half white--text">
+                  07/5/2021
+                </div>
+              </div>
+            </div>
+            <div
+              slot="header"
+              class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
+            >
+              <div class="align-center d-flex">
+                <img
+                  v-if="currentCompany.logo"
+                  :alt="currentCompany.name"
+                  class="pointer rounded"
+                  height="150"
+                  :src="currentCompany.logo"
+                  width="180"
+                >
+                <div class="ml-8">
+                  <p class="font-weight-regular mb-1 text-h5">
+                    {{ currentCompany.name }}
+                  </p>
+                  <p>{{ currentCompany.legalCompanyName }}</p>
+                </div>
+              </div>
+              <div>
+                <v-btn
+                  class="blue font-weight-black left-0 ml-3 mt-1 px-8 py-6 white--text"
+                  light
+                  text
+                >
+                  Connect
+                </v-btn>
+              </div>
+            </div>
+            <div
+              slot="tabs"
+              class="align-center d-flex"
+            >
+              <v-tabs
+                active-class="font-weight-black blue--text active-tab-company"
+                :hide-slider="true"
               >
-              <p class="font-weight-bold mb-1 pa-3 text-h6">
-                Advanced Vendor & Project Reporting
-              </p>
-              <p class="font-weight-bold grey--text ma-0 pa-0 text-caption">
-                PRJ-00017-2020
-              </p>
-              <p class="grey--text ma-0 pa-0 text-caption">
-                (SHC) Sharp Healthcare
-              </p>
-              <v-chip
-                class="my-2"
-                pill
-                v-on="on"
+                <v-tab class="blue--text capitalize">
+                  Home
+                </v-tab>
+                <v-tab class="blue--text capitalize">
+                  People
+                </v-tab>
+                <v-tab class="blue--text capitalize">
+                  Topics
+                </v-tab>
+                <v-tab class="blue--text capitalize">
+                  Store
+                </v-tab>
+              </v-tabs>
+            </div>
+            <div
+              slot="btns"
+              class="align-center d-flex"
+            >
+              <v-btn
+                class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-3 text--darken-3"
+                light
+                text
               >
-                <v-avatar left>
-                  <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
-                </v-avatar>
-                John Leider
-              </v-chip>
+                Follow
+              </v-btn>
+              <v-btn
+                class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-3 text--darken-3"
+                light
+                text
+              >
+                Message
+              </v-btn>
+              <v-btn
+                class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
+                elevation="0"
+                light
+              >
+                <v-icon>mdi-magnify</v-icon>
+              </v-btn>
             </div>
-            <div class="d-flex ma-0 pa-0">
-              <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                Budget Status
-              </div>
-              <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                Start Date
-              </div>
+            <div
+              slot="content"
+              class="w-full"
+            >
+              <panel-full>
+                <v-card slot="content">
+                  <div class="green lighten-1 px-4 py-2 white--text">
+                    Cost Summary
+                  </div>
+                  <v-container fluid>
+                    <v-data-table />
+                  </v-container>
+                </v-card>
+              </panel-full>
+              <panel-two-columns>
+                <div
+                  slot="leftPanel"
+                  class="mb-3 panel px-4 py-3 white"
+                >
+                  <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
+                    Information
+                  </h3>
+                  <div class="overflow-hidden">
+                    <div class="align-center d-flex my-3">
+                      <v-icon
+                        class="grey--text text--darken-3"
+                        size="22"
+                      >
+                        mdi-clipboard-file-outline
+                      </v-icon>
+                      <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                        {{ currentCompany.legalCompanyName }}
+                      </p>
+                    </div>
+                    <div class="align-center d-flex my-3">
+                      <v-icon
+                        class="grey--text text--darken-3"
+                        size="22"
+                      >
+                        mdi-email-outline
+                      </v-icon>
+                      <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                        {{ currentCompany.email }}
+                      </p>
+                    </div>
+                    <div class="align-center d-flex my-3">
+                      <v-icon
+                        class="grey--text text--darken-3"
+                        size="22"
+                      >
+                        mdi-clipboard-file-outline
+                      </v-icon>
+                      <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                        {{ currentCompany.name }}
+                      </p>
+                    </div>
+                    <div class="align-center d-flex my-3">
+                      <v-icon
+                        class="grey--text text--darken-3"
+                        size="22"
+                      >
+                        mdi-phone
+                      </v-icon>
+                      <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                        {{ currentCompany.phone }}
+                      </p>
+                    </div>
+                    <div class="align-center d-flex my-3">
+                      <v-icon
+                        class="grey--text text--darken-3"
+                        size="22"
+                      >
+                        mdi-earth
+                      </v-icon>
+                      <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                        {{ currentCompany.website }}
+                      </p>
+                    </div>
+                    <div class="align-center d-flex my-3">
+                      <v-icon
+                        class="grey--text text--darken-3"
+                        size="24"
+                      >
+                        mdi-heart
+                      </v-icon>
+                      <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                        {{ currentCompany.legalCompanyName }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div slot="rightPanel">
+                  <project-social-media class="main-content px-0" />
+                </div>
+              </panel-two-columns>
             </div>
-            <div class="d-flex ma-0 pa-0">
-              <div class="blue lighten-2 py-2 text-center w-half white--text">
-                Roadmap
-              </div>
-              <div class="blue py-2 text-center w-half white--text">
-                07/5/2021
-              </div>
-            </div>
-          </div>
+          </app-template>
         </div>
       </div>
 
@@ -635,6 +814,7 @@
 </template>
 
 <script>
+import AppTemplate from '@/views/Home/AppTemplate'
 import { format } from 'date-fns'
 import { mapState, mapActions } from 'vuex'
 import Excel from 'exceljs'
@@ -659,7 +839,8 @@ export default {
     'list-filtering': ListFiltering,
     M6Info,
     M6List,
-    'm6-no-results': M6NoResults
+    'm6-no-results': M6NoResults,
+    AppTemplate
   },
   mixins: [mixins],
 
