@@ -115,30 +115,13 @@ export default {
         'dd/mm/YYYY H:m:s'
       ],
       types: [
-        {
-          label: 'Text',
-          value: 'text'
-        },
-        {
-          label: 'Number',
-          value: 'number'
-        },
-        {
-          label: 'Date',
-          value: 'timestamp'
-        },
-        {
-          label: 'People',
-          value: 'people'
-        },
-        {
-          label: 'Multiple Choice',
-          value: 'autocomplete'
-        },
-        {
-          label: 'Yes / No',
-          value: 'boolean'
-        }
+        { label: 'Text',            value: 'text'         },
+        { label: 'Number',          value: 'number'       },
+        { label: 'Date',            value: 'timestamp'    },
+        { label: 'People',          value: 'people'       },
+        { label: 'Multiple Choice', value: 'autocomplete' },
+        { label: 'Attachment',      value: 'attachment' },
+        { label: 'Yes / No',        value: 'boolean'      }
       ]
     }
   },

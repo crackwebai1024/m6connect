@@ -332,6 +332,31 @@
                   >
                 </div>
               </div>
+              <div
+                v-if="message.files"
+                class="d-flex ml-auto w-fit"
+              >
+                <v-row class="my-2 px-1" v-if="message['files'] && message['files'].length > 0">
+                  <v-col
+                    cols="12"
+                    class="my-0 py-0"
+                    v-for="(file, index) of message['files']"
+                    :key="index+'-file'"
+                  >
+                    <v-icon
+                      @click="redirect(file)"
+                    >
+                      mdi-file-document-outline
+                    </v-icon>
+                    <p
+                      class="text-subtitle-1 font-weight-bold pointer mx-1 my-0 py-0"
+                      @click="redirect(file)"
+                    >
+                      {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+                    </p>
+                  </v-col>
+                </v-row>
+              </div>
             </div>
             <v-icon
               :class="[message.read ? 'blue--text' : 'grey--text']"
@@ -722,6 +747,7 @@ export default {
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
+    
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
@@ -741,6 +767,13 @@ export default {
   },
   methods: {
     ...mapActions('GSChat', ['removeMessage', 'updateMessage']),
+    ...mapActions('AppAttachments', {
+      getFileUrl:     'get_message_file_url',
+      setStreamFiles: 'set_stream_attachments'
+    }),
+    redirect(file){
+      window.open(file,'_blank')
+    },
     closeModal() {
       this.deleteDialog = false
     },
@@ -869,17 +902,10 @@ export default {
         const dayCurrentWeekDifference = Math.floor((dateNow.getTime() - currentMessageTime.getTime()) / 86400000)
         switch (dayCurrentWeekDifference) {
           case 0:
-            result.value = currentMessageTime.toString().substr(0, 15)
+            result.value = 'Today'
             break
           case 1:
             result.value = 'Yesterday'
-            break
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-            result.value = this.days[currentMessageTime.getDay()]
             break
           default:
             result.value = (currentMessageTime.getMonth() + 1) + '/' + currentMessageTime.getDate() + '/' + currentMessageTime.getFullYear()
@@ -901,17 +927,61 @@ export default {
         this.toogleDialogEmoji()
       }
     },
-    sendMessage() {
+    async sendMessage() {
       if (this.valueInput.trim().length === 0) {
         this.valueInput = ''
         this.$nextTick(() => this.$refs.inputMessage.focus())
         return true
       }
 
-      this.$store.dispatch('GSChat/sendMessage', {
+      let message = await this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
         message: this.valueInput
-      }).catch(e => console.error(e))
+      });
+
+      if ( this.imageFiles.length > 0 ) {
+        this.imageFiles.forEach(async image => {
+          await this.setStreamFiles({
+            files: image,
+            headers: {
+                'Content-Type': image['type'],
+                'Content-Name': image['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+            }
+          });
+        });
+
+        let images = await this.getFileUrl(message['message']['id']);
+
+        this.updateMessage({
+          id: message['message']['id'],
+          text: message['message']['text'],
+          images: images
+        })
+      }
+      
+      if (this.docFiles.length > 0) {
+        this.docFiles.forEach(async file => {
+          await this.setStreamFiles({
+            files: file,
+            headers: {
+                'Content-Type': file['type'],
+                'Content-Name': file['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+            }
+          });
+        });
+
+        let files = await this.getFileUrl(message['message']['id']);
+
+        this.updateMessage({
+          id: message['message']['id'],
+          text: message['message']['text'],
+          files: files
+        })
+      }
 
       this.valueInput = ''
       this.imageFiles = []
@@ -955,6 +1025,9 @@ export default {
 </script>
 
 <style>
+v-icon, p {
+  display: inline-block;
+}
 .chat-box {
   width: 335px;
   max-height: 455px;

@@ -11,6 +11,7 @@
         hide-overlay
         scrollable
         transition="dialog-bottom-transition"
+        :persistent="isPersistent"
       >
         <v-card
           class="grey lighten-3 relative"
@@ -46,6 +47,10 @@ export default {
   },
   props: {
     propsDialog: {
+      type: Boolean,
+      default: false
+    },
+    isPersistent: {
       type: Boolean,
       default: false
     }

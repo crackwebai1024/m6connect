@@ -82,10 +82,10 @@ export default {
   },
 
   methods: {
-    formatDate(date) {
+    formatDate(date = "") {
       if (!date) return null
-
-      const [year, month, day] = date.split('-')
+      
+      const [year, month, day] = this.$h.dg( date.split(' '), '0', [] ).split('-') 
       const res = `${month}/${day}/${year}`
       this.$emit('input', date)
       return res

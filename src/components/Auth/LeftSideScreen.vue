@@ -2,7 +2,7 @@
     <div class="height-width-100 left-background text-xs-center">
         <div class="pt-5 d-flex justify-center" >
             <span class="display-1 white--text" >
-              {{  $t('leftSideScreen.title') }}
+              {{ $h.dg(currentCompany, 'name', '') || $t('leftSideScreen.title') }}
               </span>
         </div>
         <div class="d-flex justify-center" >
@@ -11,17 +11,43 @@
             </span>
         </div>
         <div class="d-flex justify-center" >
-          <plan-organize-icon class="size" />
+          <img 
+            v-if="$h.dg(currentCompany, 'logo', '').length" 
+            class="size mt-5" 
+            :src="$h.dg(currentCompany, 'logo', '')" 
+            alt="Company Logo"
+          >
+
+          <plan-organize-icon v-else class="size" />
         </div>  
     </div>
 </template>
 
 <script>
 import PlanOrganizeIcon from '@/assets/svgs/PlanOrganizeIcon'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     PlanOrganizeIcon
+  },
+
+  computed: {
+    ...mapState('Companies', {
+      companiesList: 'list',
+    })
+  },
+
+  data: () => ({
+    currentCompany: {}
+  }),
+
+  watch: {
+    companiesList(val) {
+      const selectedCompany = val.find( v => v.id === process.env.VUE_APP_CURRENT_COMPANY_ID )
+
+      if( selectedCompany ) this.currentCompany = { ...selectedCompany }
+    }
   },
 }
 </script>

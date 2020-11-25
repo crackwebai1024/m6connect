@@ -40,7 +40,7 @@
           <v-data-table
             :headers="headers"
             :items="settings.status"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>

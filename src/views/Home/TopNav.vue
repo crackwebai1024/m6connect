@@ -53,8 +53,9 @@
                           <v-btn
                               slot="btn"
                               block
+                              @click="modal = 'app-builder'"
                               color="yellow darken-1"
-                              class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"                              
+                              class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
                           >
                               New Action
                           </v-btn>
@@ -62,6 +63,32 @@
                     </div>
                 </template>
                 <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">New Action</span>
+                </v-tooltip>
+            </v-list-item>
+            <v-list-item class="ma-0 pa-0 uploadfile-btn">
+                <v-tooltip
+                class="tooltip-upload-file"
+                left
+                >
+                <template v-slot:activator="{ on, attrs }">
+                    <div
+                    class="mt-3"
+                    v-bind="attrs"
+                    v-on="on"
+                    >
+                      <create-app>
+                          <v-btn
+                              slot="btn"
+                              block
+                              color="green darken-1"
+                              class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                          >
+                              Add New Application
+                          </v-btn>
+                      </create-app>
+                    </div>
+                </template>
+                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
                 </v-tooltip>
             </v-list-item>
             </v-list>
@@ -77,7 +104,7 @@
 
         <company-home />
 
-        <app-builder-show /> 
+        <app-builder-show />
 
       </div>
     </div>
@@ -92,6 +119,7 @@ import UserOptions from "@/components/Home/TopNav/UserOptions";
 // import ProjectSocialMedia from "./ProjectSocialMedia";
 // import PanelFull from "@/components/AppBuilder/Content/PanelFull";
 // import PanelTwoColumns from "@/components/AppBuilder/Content/PanelTwoColumns";
+import CreateApp from "@/components/Dialogs/CreateAppDialog";
 import AddFeed from "./AddFeed";
 import CompanyHome from './CompanyHome'
 import AppBuilderShow from './AppBuilderShow'
@@ -106,6 +134,7 @@ export default {
     // PanelFull,
     // PanelTwoColumns,
     AddFeed,
+    CreateApp,
     CompanyHome,
     AppBuilderShow
   },
@@ -130,15 +159,16 @@ export default {
       name: "John Doe",
       imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg"
     },
+    modal: '',
     company: {
       name: "Sharp Healthcare"
     },
     quickAccessLinks: [
-      { url: "/", icon: "home" },
-      { url: "/apps", icon: "view-comfy" },
-      { url: "/companies", icon: "office-building" },
-      { url: "/store", icon: "storefront" },
-      { url: "/user/settings", icon: "cog" }
+      { url: "/",              icon: "home"            },
+      { url: "/apps",          icon: "view-comfy"      },
+      { url: "/companies",     icon: "office-building" },
+      { url: "/store",         icon: "storefront"      },
+      { url: "/user/settings", icon: "cog"             }
     ]
   }),
   methods: {}
