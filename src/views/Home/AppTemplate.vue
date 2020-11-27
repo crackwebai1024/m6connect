@@ -9,9 +9,9 @@
         class="dont-show-scroll vertical-scroll"
         fullscreen
         hide-overlay
+        :persistent="isPersistent"
         scrollable
         transition="dialog-bottom-transition"
-        :persistent="isPersistent"
       >
         <v-card
           class="grey lighten-3 relative"
@@ -53,6 +53,10 @@ export default {
     isPersistent: {
       type: Boolean,
       default: false
+    },
+    openDialog: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -63,6 +67,9 @@ export default {
     propsDialog(val) {
       this.dialog = val
     }
+  },
+  created() {
+    this.dialog = this.openDialog
   }
 }
 </script>
