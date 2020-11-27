@@ -100,17 +100,20 @@ export default {
                     file: file
                 };
                 this.file = {...localFile};
-
-                this.setApp({
-                    file: file,
-                    headers: {
-                        'Content-Type': localFile['file_type'],
-                        'Content-Name': localFile['file_name_full']
-                    }
-                }).then(file => {
-                    this.file['value']= file['attachId']
-                    this.file['id']= file['attachId']
-                })
+                
+                console.log(this.value)
+                
+                // this.setApp({
+                //     file: file,
+                //     headers: {
+                //         'Content-Type': localFile['file_type'],
+                //         'path': `/`
+                //         'Content-Name': localFile['file_name_full']
+                //     }
+                // }).then(file => {
+                //     this.file['value']= file['attachId']
+                //     this.file['id']= file['attachId']
+                // })
             }
         },
     }
