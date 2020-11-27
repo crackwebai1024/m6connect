@@ -13,7 +13,7 @@
                 <v-img
                     v-if="record.image"
                     :alt="record.image" 
-                    class="rounded pointer" 
+                    class="rounded" 
                     width="180" 
                     height="150" 
                     :src="record.image"
@@ -33,13 +33,13 @@
                     <v-img
                         v-if="app.iconLink"
                         :alt="app.iconLink" 
-                        class="rounded pointer d-inline-block" 
+                        class="rounded d-inline-block" 
                         width="50" 
                         height="70" 
                         :src="app.iconLink"
                     />
 
-                    <v-icon size="180" v-else class="d-inline-block">mdi-store</v-icon>
+                    <v-icon size="100" v-else class="d-inline-block">mdi-store</v-icon>
                 </v-col>
                 <v-col cols="3">
                     <span class="ml-5 d-inline-block">{{app['title']}}</span>
