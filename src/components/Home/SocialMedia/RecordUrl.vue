@@ -90,10 +90,6 @@ export default {
       default: 'post'
     }
   },
-  mounted(){
-    console.log(this.recordInfo)
-    
-  },
   methods: {
     redirect(file){
       window.open(file,'_blank')

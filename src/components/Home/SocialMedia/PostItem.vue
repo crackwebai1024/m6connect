@@ -89,7 +89,7 @@
       <div>
         <div class="pt-4 px-5">
           <template v-if="!updatePostShow">
-            {{ data.message }}
+            <p class="pa-0 ma-0" v-html="urlify(data.message)"></p>
             <slot name="record" />
 
             <template v-if="recordFields">
@@ -623,6 +623,14 @@ export default {
           this.$store.dispatch('WorkOrderModule/setWorkOrder')
         })
         this.cancelUpdate()
+      })
+    },
+    urlify(text) {
+      var urlRegex = /(https?:\/\/[^\s]+)/g;
+      return text.replace(urlRegex, function(url) {
+          let pat = new URL(url)
+          
+          return '<a href="'+ url +'" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + pat.origin + '</a>';
       })
     },
     widthCols() {
