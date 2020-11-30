@@ -101,19 +101,17 @@ export default {
                 };
                 this.file = {...localFile};
                 
-                console.log(this.value)
-                
-                // this.setApp({
-                //     file: file,
-                //     headers: {
-                //         'Content-Type': localFile['file_type'],
-                //         'path': `/`
-                //         'Content-Name': localFile['file_name_full']
-                //     }
-                // }).then(file => {
-                //     this.file['value']= file['attachId']
-                //     this.file['id']= file['attachId']
-                // })
+                this.setApp({
+                    file: file,
+                    headers: {
+                        'Content-Type': localFile['file_type'],
+                        'path': `record/`,
+                        'Content-Name': localFile['file_name_full']
+                    }
+                }).then(file => {
+                    this.file['value']= file['attachId']
+                    this.file['id']= file['attachId']
+                })
             }
         },
     }

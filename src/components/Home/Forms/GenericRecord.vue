@@ -168,8 +168,6 @@ export default {
           appID: this.app.id,
         };
 
-        console.log(this.imageFiles[0])
-
         if (this.imageFiles[0]['name'].match(/\.[0-9a-z]+$/i) && this.imageFiles[0]['size'] < 50000000){
           let getImg = await this.setApp({
             file: this.imageFiles[0],
@@ -185,8 +183,6 @@ export default {
         }
 
         this.record['image'] = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${this.imageFiles[0]['id']}`;
-
-        console.log(this.record)
 
         this.record = await this.createRecord(this.record);
 
