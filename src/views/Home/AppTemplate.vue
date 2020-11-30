@@ -70,6 +70,7 @@ export default {
   },
   created() {
     this.dialog = this.openDialog
+    this.isPersistent = this.openDialog
   }
 }
 </script>

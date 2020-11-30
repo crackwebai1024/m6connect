@@ -565,11 +565,11 @@ export default {
       this.project.phaseTargetDateText = this.parseDate(newVal)
     },
 
-    settings() {
+    async settings() {
       let projectNumber = this.$h.dg(this.settings, 'nextProjectNumber', 0)
       if (!projectNumber) {
         projectNumber = 1
-        db.collection('settings')
+        await db.collection('settings')
           .doc(this.currentCompany.id)
           .collection(`${this.settingCollectionName}`)
           .doc('projects')
@@ -770,7 +770,7 @@ export default {
       user.value = window.Drupal.settings.m6_platform.uid
       return user
     },
-    create() {
+    async create() {
       if (this.project.startDate) {
         this.project.startDate = new Date(this.project.startDate).toISOString()
       }
@@ -1079,7 +1079,7 @@ export default {
             project.selectedGantt = forecasted
           }
         }
-        db.collection('cpm_projects')
+        await db.collection('cpm_projects')
           .add(project)
           .then(doc => {
             this.project.id = doc.id
@@ -1127,10 +1127,10 @@ export default {
         this.$snotify.error('please fill all required fields', 'Error')
       }
     },
-    updateNextProjectNumber() {
+    async updateNextProjectNumber() {
       let currentNumber = this.$h.dg(this.settings, 'nextProjectNumber', 0)
       const nextProjectNumber = ++currentNumber
-      db.collection('settings')
+      await db.collection('settings')
         .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('projects')
@@ -1138,19 +1138,18 @@ export default {
         .catch(console.error)
     }
   },
-  firestore() {
-    return {
-      users: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('users'),
-      roles: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('roles')
-    }
+  async firestore() {
+    users = await db
+      .collection('settings')
+      .doc(this.currentCompany.id)
+      .collection(`${this.settingCollectionName}`)
+      .doc('users'),
+    roles = await db
+      .collection('settings')
+      .doc(this.currentCompany.id)
+      .collection(`${this.settingCollectionName}`)
+      .doc('roles')
+    return true
   }
 }
 </script>

@@ -3,10 +3,10 @@
     class="pt-0"
     fluid
   >
+    <!-- loading -->
     <m6-list
       class="fluid it-apps-index max-w-container pt-0"
       label="Search"
-      :loading="loading"
       :on-input-search="debounceSearch"
       :search="search"
       :without-results="false"
@@ -185,10 +185,10 @@
       </div>
 
       <!--GRID VIEW-->
+      <!-- :footer-props="rowsPerPageItems" -->
       <v-data-iterator
-        v-if="true"
+        v-if="isGridView"
         class="fullWidth"
-        :footer-props.items-per-page-options="rowsPerPageItems"
         :items="resources"
         :options.sync="pagination"
         row
@@ -390,7 +390,7 @@
       >
         <v-col cols="12">
           <m6-data-table
-            :footer-props.items-per-page-options="rowsPerPageItems"
+            :footer-props="rowsPerPageItems"
             :headers="headers"
             :items="resources"
             :pagination="5"
@@ -645,7 +645,7 @@
 
 <script>
 import { format } from 'date-fns'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import Excel from 'exceljs'
 import { saveAs } from 'file-saver'
 
@@ -656,9 +656,9 @@ import ListFiltering from '@/modules/cpm/components/projects/modals/ListFilterin
 
 import M6Info from '@/modules/cpm/components/projects/_partials/M6Info'
 import M6List from '@/modules/cpm/_layouts/M6List'
-import M6NoResults from '@/modules/cpm/_layouts/M6List'
+import M6NoResults from '@/modules/cpm/_partials/M6NoResults'
 
-import mixins from '@/modules/cpm/_partials/M6NoResults'
+import mixins from '@/modules/cpm/_mixins/index'
 // TODO: need to transfer all the api requests to firebase over to graphql...
 
 export default {
@@ -700,7 +700,6 @@ export default {
     favorites: [],
     firstTime: true,
     showDeleteIconApplication: null,
-    // userId: window.Drupal.settings.m6_platform.uid,
     searchOption: 'All',
     campusOption: 'All',
     pmOption: 'All',
@@ -765,6 +764,12 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     }),
+    ...mapGetters('Auth', {
+      currentUser: 'user'
+    }),
+    userId() {
+      return this.currentUser.id
+    },
     isGridView() {
       return this.view.val === 'grid_view'
     },
@@ -1607,7 +1612,7 @@ export default {
     getUser() {
       return new Promise((resolve, reject) => {
         db.collection('m6user')
-          .doc(this.userId)
+          .doc(this.currentUser.id)
           .get()
           .then(document => {
             const user = document.data()
@@ -1632,7 +1637,7 @@ export default {
       }
 
       db.collection('m6user')
-        .doc(this.userId)
+        .doc(this.currentUser.id)
         .update({
           optionsFilter: this.lastSearch
         })
@@ -1726,22 +1731,20 @@ export default {
     }
   },
 
-  firestore() {
-    return {
-      user: db.collection('m6user').doc(this.userId),
+  async firestore() {
+    user = await db.collection('m6user').doc(this.currentUser.id)
+    settingsProject = await db
+      .collection('settings')
+      .doc(this.currentCompany.id)
+      .collection(`${this.settingCollectionName}`)
+      .doc('projects'),
 
-      settingsProject: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('projects'),
-
-      settingsUsers: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('users')
-    }
+    settingsUsers = await db
+      .collection('settings')
+      .doc(this.currentCompany.id)
+      .collection(`${this.settingCollectionName}`)
+      .doc('users')
+    return true
   }
 }
 </script>

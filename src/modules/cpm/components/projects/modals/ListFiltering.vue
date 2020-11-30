@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { db } from '@/utils/Firebase'
 
 export default {
@@ -112,6 +113,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('Auth', {
+      currentUser: 'user'
+    }),
     isPlanned() {
       return this.$route.name === 'cpm.forecasting.index'
     },
@@ -143,9 +147,9 @@ export default {
     }
   },
 
-  mounted() {
-    db.collection('m6user')
-      .doc(window.Drupal.settings.m6_platform.uid)
+  async mounted() {
+    await db.collection('m6user')
+      .doc(this.currentUser.id)
       .collection('search')
       .doc(this.isPlanned ? 'planned' : 'projects')
       .get()
