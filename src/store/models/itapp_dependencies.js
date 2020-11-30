@@ -35,9 +35,9 @@ function fromAPI(value) {
   value.forEach(item => {
     Object.keys(item).forEach(key => {
       if (typeof item[key] === 'object' && item[key] === null) {
-        item[key] = { id: undefined, value: undefined, fields: undefined };
+        item[key] = { id: undefined, value: undefined, fields: undefined }
       }
-    });
+    })
     asa.push(cast(item, r('DepFromAPI')))
   })
   return asa
