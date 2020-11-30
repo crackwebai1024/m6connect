@@ -61,12 +61,15 @@
               class="sidebar-custom"
               sm="3"
             >
-              <v-expansion-panels accordion v-model="panelModel" >
+              <v-expansion-panels
+                v-model="panelModel"
+                accordion
+              >
                 <v-expansion-panel
                   v-for="(n, i) in rapidItem.items"
                   :key="`notes-${n.id}-${i}`"
                 >
-                  <v-expansion-panel-header color="grey lighten-4" >
+                  <v-expansion-panel-header color="grey lighten-4">
                     {{ i + 1 }}: RAP-{{ i + 1 }}-{{ new Date().getFullYear() }}
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
@@ -82,11 +85,11 @@
                             </v-avatar>
                           </template>
                           <template v-slot:options>
-                            <v-tooltip 
-                              right
+                            <v-tooltip
                               v-for="(r, i) in ratings"
                               :key="`rating-${i}`"
                               color="grey darken-1"
+                              right
                             >
                               <template v-slot:activator="{ on }">
                                 <v-btn
@@ -155,24 +158,26 @@
                       outlined
                     />
 
-                    <people-autocomplete 
-                      label="Pick Your Maestro"
+                    <people-autocomplete
                       v-model="rapidItem.items[i].rapid_maestro"
+                      label="Pick Your Maestro"
                     />
 
-                    <people-autocomplete 
-                      label="Pick a Developer"
+                    <people-autocomplete
                       v-model="rapidItem.items[i].rapid_developer"
+                      label="Pick a Developer"
                     />
 
-                    <date-picker label="Due Date" v-model="rapidItem.items[i].rapid_dueDate" />
+                    <date-picker
+                      v-model="rapidItem.items[i].rapid_dueDate"
+                      label="Due Date"
+                    />
 
                     <v-autocomplete
-                      label="Status"
                       v-model="rapidItem.items[i].rapid_status"
                       :items="statusItems"
+                      label="Status"
                     />
-
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -213,12 +218,13 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import SpeedDial from '@/components/_partials/SpeedDial.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
+import axios from 'axios'
 
 const width = window.innerWidth * .7
 const height = window.innerHeight * .7
 
 const noteModel = {
-  rapid_record_number: "",
+  rapid_record_number: '',
   rapid_title: '',
   rapid_description: '',
   rapid_x: Math.floor(width / 2),
@@ -266,7 +272,13 @@ export default {
     colorPickerSwitchShow: true,
     ratingChosen: {},
     panelModel: null,
-    statusItems: [ 'Pending', 'In Progress', 'Code Review', 'Done', 'Deprecated' ]
+    statusItems: [
+      'Pending',
+      'In Progress',
+      'Code Review',
+      'Done',
+      'Deprecated'
+    ]
   }),
 
   methods: {
@@ -276,28 +288,98 @@ export default {
 
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
-      notifSuccess: 'notifSuccess' 
+      notifSuccess: 'notifSuccess'
     }),
 
     colorPickerBool(bool) {
       this.colorPickerSwitchShow = !bool
     },
 
-    async saving() {
+    prepareUpload(obj, name) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const fileTypePartial = obj.type.split('/')[0]
+          const data = {
+            folder: fileTypePartial,
+            fileType: obj.type,
+            fileName: `${name}.${fileTypePartial}`
+          }
 
-      const rapidItems = this.rapidItem.items.map( 
-        i => ({ 
-          ...i, 
-          rapid_user: this.currentUser.id,
-          rapid_imageLink: this.rapidItem.imageLink,
-          rapid_priority: ( i.rapid_color_rating + i.rapid_reaction ) / 2,
-          rapid_company: this.currentCompany.id
+          const response = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/upload`, data)
+          const url = response.data.url
+
+          let objectUploaded = null
+
+          objectUploaded = await this.uploadingFile(url, obj)
+
+          await this.processFetch(objectUploaded, false)
+
+          const objUrl = this.getUrlForObj(url)
+
+          resolve(objUrl)
+        } catch (e) {
+          reject(e)
+        }
+      })
+    },
+
+    processFetch(responseFetch, returnJson = true) {
+      return new Promise((resolve, reject) => {
+        if (responseFetch.ok && returnJson) {
+          responseFetch.json().then(res => {
+            resolve(res)
+          })
+        } else if (responseFetch.ok) {
+          resolve()
+        } else {
+          responseFetch.json().then(err => {
+            reject(err)
+          })
+        }
+      })
+    },
+
+    getUrlForObj(url) {
+      return url.split('?')[0]
+    },
+
+    uploadingFile(url, obj) {
+      return new Promise((resolve, reject) => {
+        const newHeaders = new Headers()
+        newHeaders.append('x-amz-acl', 'public-read')
+        newHeaders.append('Content-Type', obj.type)
+        fetch(url, {
+          method: 'PUT',
+          mode: 'cors',
+          body: obj,
+          headers: newHeaders
         })
-      )
+          .then(res => resolve(res))
+          .catch(err => reject(err))
+      })
+    },
 
+    async saving() {
       this.loading = true
 
       try {
+        const { data, contentType } = this.processingB64(this.imageTest)
+
+        const obj = this.b64toBlob(data, contentType)
+
+        const imageLink = await this.prepareUpload(obj, 'rapid_snapshot')
+
+        const rapidItems = this.rapidItem.items.map(
+          i => ({
+            ...i,
+            rapid_user: this.currentUser.id,
+            rapid_imageLink: imageLink,
+            rapid_priority: ( i.rapid_color_rating + i.rapid_reaction ) / 2,
+            rapid_company: this.currentCompany.id
+          })
+        )
+
+      
         const res = await this.createRapidTickets(rapidItems)
         this.notifSuccess('The Rapid Tickets were created')
         this.loading = false
@@ -322,7 +404,7 @@ export default {
       const coords = this.getRandCoordinates()
       const note = {
         id,
-        rapid_record_number: + new Date(),
+        rapid_record_number: +new Date(),
         ...this.defaultNote,
         ...coords,
         rapid_url: window.location.href
@@ -337,7 +419,7 @@ export default {
         ...n,
         selected: false
       }))
-      
+
       this.panelModel = this.rapidItem.items.map(i => i.id).indexOf(this.dragItemId)
     },
 
@@ -353,7 +435,6 @@ export default {
       item.selected = true
 
       this.notes = this.rapidItem.items.map(n => n.id !== item.id ? n : item)
-
     },
 
     getRandCoordinates() {
@@ -370,7 +451,7 @@ export default {
       // get the real base64 content of the file
       const realData = block[1].split(',')[1]// In this case "R0lGODlhPQBEAPeoAJosM...."
 
-      return { data, contentType }
+      return { data: realData, contentType }
     },
 
     b64toBlob(b64Data, contentType, sliceSize) {
