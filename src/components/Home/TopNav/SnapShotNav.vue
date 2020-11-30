@@ -1,8 +1,12 @@
 <template>
     <div class="pa-0" >
-
-        <v-btn color="yellow darken-2" fab x-small dark @click="executeHtml2Canvas">
-            <span class="r-btn white--text" >R</span>
+        <v-btn 
+            color="teal darken-2" 
+            block 
+            dark 
+            @click="executeHtml2Canvas"
+        >
+            Add Rapid
         </v-btn>
         
         <SnapShotDialog 

@@ -100,11 +100,12 @@ export default {
                     file: file
                 };
                 this.file = {...localFile};
-
+                
                 this.setApp({
                     file: file,
                     headers: {
                         'Content-Type': localFile['file_type'],
+                        'path': `record/`,
                         'Content-Name': localFile['file_name_full']
                     }
                 }).then(file => {

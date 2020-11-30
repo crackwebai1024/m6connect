@@ -42,24 +42,6 @@
         </v-text-field>
       </template>
     </header-component>
-    <v-dialog
-      v-model="dialog"
-      width="800"
-      persistent
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="blue lighten-2 w-full mx-auto"
-          class="max-w-tight"
-          dark
-          v-bind="attrs"
-          v-on="on"
-        >
-          Add new Record
-        </v-btn>
-      </template>
-      <new-record-dialog @closeModal="closeModal" />
-    </v-dialog>
     <div v-if="!loading">
       <div
         :key="index"
@@ -83,12 +65,10 @@
 import { mapGetters, mapActions } from "vuex";
 import GeneralItem from "@/components/Home/GeneralItem";
 import HeaderComponent from "@/components/Home/HeaderComponent";
-import NewRecordDialog from "@/components/Dialogs/NewRecordDialog";
 
 export default {
   components: {
     GeneralItem,
-    NewRecordDialog,
     HeaderComponent,
   },
   name: "GeneralList",
@@ -97,7 +77,6 @@ export default {
     areas2: [],
     perPage: 8,
     records: [],
-    dialog: false,
     searchInput: "",
   }),
   computed: {
@@ -155,9 +134,6 @@ export default {
           this.perPage - (this.perPage * this.pages - this.recordsLength);
       }
       return remaining;
-    },
-    closeModal(){
-      this.dialog = false;
     },
     getIndex(i, index) {
       let ind = i * this.perPage + index - 1;

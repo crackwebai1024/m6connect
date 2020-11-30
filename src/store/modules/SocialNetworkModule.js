@@ -19,10 +19,6 @@ export default{
         set_filter_data(state, data){
             state.filter_data = data;
         },
-        test(state, data){
-            console.log(state.posts_data);
-            console.log(data);
-        },
         set_companies_info_data(state, data){
             state.companies_data = data;
         },
