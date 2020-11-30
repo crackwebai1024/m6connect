@@ -61,13 +61,19 @@
               </p>
               <v-spacer></v-spacer>
               <div
-                v-if="value['value'],hasOwnProperty('id')"
+                v-if="value['value'] && value['value']['id']"
               >
                 <v-img
                   :src="'http://localhost:8000/api/file/url/'+value['value']['id']"
                   aspect-ratio="1.7"
                   class="mx-1 my-1"
                 />
+              </div>
+              <div v-else-if="value['value'] && value['value'].length > 1">
+                <div v-for="(item, index) in value['value']" :key="'multi-'+index" >
+                  <p v-if="item.value" class="d-inline-block my-0 py-0"> {{item.value}} </p>
+                  <p v-else class="d-inline-block my-0 py-0">{{item}}</p>
+                </div>
               </div>
               <p class="my-0 py-0" v-else>{{ value["value"] }}</p>
             </v-col>
