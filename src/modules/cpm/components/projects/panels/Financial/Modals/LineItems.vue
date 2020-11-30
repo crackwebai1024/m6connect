@@ -7,7 +7,6 @@
         </span>
         <v-spacer />
         <v-btn
-          class="justify-end"
           color="blue darken-2"
           dark
           fab

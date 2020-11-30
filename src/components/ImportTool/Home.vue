@@ -1028,7 +1028,7 @@ export default {
               name: item.spendings_budget_category_name || item.spendings_budget_category_code
             })
           }
-          console.log(bc)
+          
         }
       }
 
