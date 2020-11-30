@@ -64,7 +64,7 @@
                 v-if="value['value'] && value['value']['id']"
               >
                 <v-img
-                  :src="'http://localhost:8000/api/file/url/'+value['value']['id']"
+                  :src="getURL(value['value']['id'])"
                   aspect-ratio="1.7"
                   class="mx-1 my-1"
                 />
@@ -100,6 +100,9 @@ export default {
     redirect(file){
       window.open(file,'_blank')
     },
+    getURL(id){
+      return `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${id}`
+    }
   }
 }
 </script>
