@@ -89,7 +89,7 @@
       <div>
         <div class="pt-4 px-5">
           <template v-if="!updatePostShow">
-            <p class="pa-0 ma-0" v-html="urlify(data.message)"></p>
+            <p class="pa-0 ma-0" v-html="urlify(data.message)['text']"></p>
             <slot name="record" />
 
             <template v-if="recordFields">
@@ -281,8 +281,8 @@
           :recordInfo="data['record_url']" 
         />
         <external-url 
-          v-if="data['external_url'] && data['external_url'].length > 0" 
-          :urls="data['external_url']" 
+          v-if="urlify(data.message)['urls'].length > 0" 
+          :urls="urlify(data.message)['urls']" 
         />
         <div 
           v-if="images.length !== 0"
@@ -626,12 +626,14 @@ export default {
       })
     },
     urlify(text) {
-      var urlRegex = /(https?:\/\/[^\s]+)/g;
-      return text.replace(urlRegex, function(url) {
-          let pat = new URL(url)
-          
-          return '<a href="'+ url +'" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + pat.origin + '</a>';
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      let textUrls = [];
+      let res = text.replace(urlRegex, function(url) {
+        let path = new URL(url)          
+        textUrls.push(url);
+        return '<a href="'+ url +'" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>';
       })
+      return { text: res, urls: textUrls };
     },
     widthCols() {
       return this.images.length === 1 ? 12 : 6

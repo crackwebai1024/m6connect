@@ -5,7 +5,7 @@
             :filled="filled"
             :label="label"
             item-text="fullname"
-            item-value="id"
+            item-value="user.id"
             :items="processedUser"
             :multiple="multiple"
             :chips="chips"
