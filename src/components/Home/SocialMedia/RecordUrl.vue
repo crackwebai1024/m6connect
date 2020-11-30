@@ -69,11 +69,22 @@
                   class="mx-1 my-1"
                 />
               </div>
-              <div v-else-if="value['value'] && value['value'].length > 1">
+              <div v-else-if="value['value'] && typeof value['value'] === 'object' && value['value'][0]['firstName']">
                 <div v-for="(item, index) in value['value']" :key="'multi-'+index" >
-                  <p v-if="item.value" class="d-inline-block my-0 py-0"> {{item.value}} </p>
-                  <p v-else class="d-inline-block my-0 py-0">{{item}}</p>
+                  <p class="d-inline-block my-0 py-0"> {{`${item.firstName} ${item.lastName}`}} </p>
                 </div>
+              </div>
+              <div v-else-if="value['value'] && typeof value['value'] === 'object' && typeof value['value'][0] === 'object'">
+                <div v-for="(item, index) in value['value']" :key="'multi-'+index" >
+                  <p class="d-inline-block my-0 py-0"> {{item.value}} </p>
+                </div>
+              </div>
+              <div v-else-if="value['value'] && typeof value['value'] === 'object' && typeof value['value'][0] === 'string'">
+                <v-progress-circular
+                  style="margin-left: 45%;"
+                  indeterminate
+                  color="primary"
+                ></v-progress-circular>
               </div>
               <p class="my-0 py-0" v-else>{{ value["value"] }}</p>
             </v-col>
@@ -83,9 +94,14 @@
     </v-row>
   </div>
 </template>
+
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'RecordUrl',
+  data: () => ({
+    peopleFields: {},
+  }),
   props: {
     recordInfo: {
       type: Object,
@@ -97,12 +113,29 @@ export default {
     }
   },
   methods: {
+    ...mapActions('WorkOrderModule', {
+      getUsers: 'getUsersList'
+    }),
     redirect(file){
       window.open(file,'_blank')
     },
     getURL(id){
       return `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${id}`
+    },
+    async getUserData(usersArray){
+      let res = await this.getUsers(usersArray);
+
+      return res.data;
     }
+  },
+  mounted(){
+    this.recordInfo.panel.forEach((field, index) => {
+      if(field.value && typeof field.value === 'object' && typeof field.value[0] === 'string' ) {
+        this.getUserData(field.value).then(res => {
+          this.recordInfo.panel[index]['value'] = res;
+        });
+      }
+    })
   }
 }
 </script>

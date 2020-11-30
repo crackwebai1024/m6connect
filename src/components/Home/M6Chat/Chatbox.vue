@@ -317,7 +317,7 @@
               class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-right w-fit"
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
-              {{ message.text }}
+              <p class="pa-0 ma-0" v-html="urlify(message.text)['text']"></p>
               <div
                 v-if="message.images"
                 class="d-flex ml-auto w-fit"
@@ -432,7 +432,7 @@
               class="arrow-down blue mb-3 message-arrow mr-1 mt-1 py-1 relative text-body-2 text-left w-fit white--text" 
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
-              {{ message.text }}
+              <p class="pa-0 ma-0" v-html="urlify(message.text)['text']"></p>
               <div
                 v-if="message.images"
                 class="d-flex mr-auto w-fit"
@@ -481,6 +481,10 @@
           v-if="message['panel'] && message['panel']['id']" 
           :recordInfo="message['panel']"
           :type = "'message'"
+        />
+        <external-url 
+          v-if="urlify(message.text)['urls'].length > 0" 
+          :urls="urlify(message.text)['urls']" 
         />
       </div>
     </div>
@@ -784,6 +788,7 @@ import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
 import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
+import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 
 export default {
@@ -794,6 +799,7 @@ export default {
     AddUserDialog,
     DeleteDialog,
     VEmojiPicker,
+    ExternalUrl,
     RecordUrl
   },
   props: {
@@ -1048,6 +1054,16 @@ export default {
         `Last connection: ${
           item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2, '0') : item.getHours().toString().padStart(2, '0')
         }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
+    },
+    urlify(text) {
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      let textUrls = [];
+      let res = text.replace(urlRegex, function(url) {
+        let path = new URL(url)          
+        textUrls.push(url);
+        return '<a href="'+ url +'" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>';
+      })
+      return { text: res, urls: textUrls };
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
