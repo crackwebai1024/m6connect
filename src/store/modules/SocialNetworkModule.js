@@ -1,4 +1,5 @@
 import MockData from "../MockData";
+import axios from "axios";
 
 export default{
     namespaced: true,
@@ -24,6 +25,14 @@ export default{
         },
     },
     actions: {
+        get_url_description({}, data){
+            return new Promise(async resolve => {
+                const res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/get_url_data`, {
+                    ...data
+                });
+                resolve(res['data']['description'] ? res['data']['description'] : '');
+            });
+        },
         set_posts_data({commit}){
             let data = MockData.fake_posts;
             commit('set_posts_info_data', data);
