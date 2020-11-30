@@ -159,7 +159,7 @@ const typeMap = {
         { json: "image",                js: "image",                typ: u(undefined, "") },
         { json: "created_at",           js: "created_at",           typ: u(undefined, Date) },
         { json: "updated_at",           js: "updated_at",           typ: u(undefined, Date) },
-        { json: "prefix",               js: "prefix",               typ: u(undefined, null) },
+        { json: "prefix",               js: "prefix",               typ: u(undefined, u( null, "" )) },
         { json: "image_info",           js: "image_info",           typ: u(undefined, r("ImageInfo")) },
         { json: "general_info",         js: "general_info",         typ: u(undefined, r("GeneralInfo")) },
         { json: "app_id",               js: "app_id",               typ: u(undefined, 0) },
@@ -192,7 +192,7 @@ const typeMap = {
     "ImageInfo": o([
         { json: "id",                   js: "id",                   typ: u(undefined, 0) },
         { json: "app_id",               js: "app_id",               typ: u(undefined, 0) },
-        { json: "image_url",            js: "image_url",            typ: u(undefined, null) },
+        { json: "image_url",            js: "image_url",            typ: u(undefined, u(null, "")) },
         { json: "created_at",           js: "created_at",           typ: u(undefined, Date) },
         { json: "updated_at",           js: "updated_at",           typ: u(undefined, Date) },
     ], false),
