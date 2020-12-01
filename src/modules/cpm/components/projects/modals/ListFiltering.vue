@@ -114,7 +114,7 @@ export default {
 
   computed: {
     ...mapGetters('Auth', {
-      currentUser: 'user'
+      currentUser: 'getUser'
     }),
     isPlanned() {
       return this.$route.name === 'cpm.forecasting.index'
@@ -191,7 +191,7 @@ export default {
       const { pmOption, campusOption, searchOption } = this
 
       db.collection('m6user')
-        .doc(window.Drupal.settings.m6_platform.uid)
+        .doc(this.currentUser.id)
         .collection('search')
         .doc(this.isPlanned ? 'planned' : 'projects')
         .set({
@@ -206,7 +206,7 @@ export default {
     },
     loadFilters() {
       db.collection('m6user')
-        .doc(window.Drupal.settings.m6_platform.uid)
+        .doc(this.currentUser.id)
         .collection('search')
         .doc(this.isPlanned ? 'planned' : 'projects')
         .get()

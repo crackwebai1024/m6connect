@@ -3,10 +3,10 @@
     class="pt-0"
     fluid
   >
-    <!-- loading -->
     <m6-list
       class="fluid it-apps-index max-w-container pt-0"
       label="Search"
+      :loading="loading"
       :on-input-search="debounceSearch"
       :search="search"
       :without-results="false"
@@ -122,15 +122,13 @@
         </v-col>
       </template>
 
-      <!-- FAKE DATA PROJECTS -->
-      <div class="d-flex flex-wrap w-full">
+      <!-- <div class="d-flex flex-wrap w-full">
         <div
           v-for="i in 7"
           :key="'fakedata'+i"
           class="ma-0 my-2 pa-0 px-2 rounded"
           style="width: 25%;"
         >
-          <!-- ACTION BTN DIV -->
           <div
             class="card-custom-shadow pointer rounded white"
             @click="seeProjectPanel('123')"
@@ -182,10 +180,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!--GRID VIEW-->
-      <!-- :footer-props="rowsPerPageItems" -->
       <v-data-iterator
         v-if="isGridView"
         class="fullWidth"
@@ -471,7 +468,6 @@
               </td>
 
               <template v-if="isPlanned">
-                <!-- FISCAL YEARS -->
                 <td
                   v-for="(fy, index) in fiscalYears"
                   :key="index"
@@ -587,10 +583,10 @@
       </v-row>
     </m6-list>
 
-    <cpm-create
+    <!-- <cpm-create
       :show="showCreateModal"
       @close="showCreateModal = false"
-    />
+    /> -->
 
     <m6-confirm-delete
       :message="deleteProjectMessage"
@@ -765,7 +761,7 @@ export default {
       currentCompany: 'currentCompany'
     }),
     ...mapGetters('Auth', {
-      currentUser: 'user'
+      currentUser: 'getUser'
     }),
     userId() {
       return this.currentUser.id
@@ -1194,7 +1190,7 @@ export default {
   },
 
   mounted() {
-    const uid = window.Drupal.settings.m6_platform.uid
+    const uid = this.currentUser.id
     this.fetchM6User(uid)
       .then(response => {
         this.hasSeenTheTour = this.$h.dg(response, 'tours.cpmProjects')
@@ -1213,7 +1209,7 @@ export default {
         console.error(error)
       })
     db.collection('m6user')
-      .doc(window.Drupal.settings.m6_platform.uid)
+      .doc(uid)
       .collection('pagination')
       .doc(this.isPlanned ? 'planned' : 'projects')
       .get().then(doc => {
@@ -1728,22 +1724,36 @@ export default {
     seeProjectPanel(id) {
       console.log(`/app/cpm/${id}`)
       this.$router.push(`/app/cpm/${id}`)
+    },
+    checkCompany() {
+      const self = this
+      setTimeout(function () {
+        if (self.currentCompany !== undefined) {
+          self.continueFirestore()
+          return true
+        } else {
+          self.checkCompany()
+        }
+      }, 500)
+    },
+    async continueFirestore() {
+      this.settingsProject = await db
+        .collection('settings')
+        .doc(this.currentCompany.id.toString())
+        .collection(`${this.settingCollectionName}`)
+        .doc(this.isPlanned ? 'planned' : 'projects')
+
+      this.settingsUsers = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('users')
     }
   },
 
   async firestore() {
-    user = await db.collection('m6user').doc(this.currentUser.id)
-    settingsProject = await db
-      .collection('settings')
-      .doc(this.currentCompany.id)
-      .collection(`${this.settingCollectionName}`)
-      .doc('projects'),
-
-    settingsUsers = await db
-      .collection('settings')
-      .doc(this.currentCompany.id)
-      .collection(`${this.settingCollectionName}`)
-      .doc('users')
+    this.user = await db.collection('m6user').doc(this.currentUser.id)
+    this.checkCompany()
     return true
   }
 }
