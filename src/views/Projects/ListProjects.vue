@@ -16,6 +16,10 @@
           <v-tooltip left>
             <template v-slot:activator="{ on }">
               <v-btn
+                v-if="
+                  isPlanned &&
+                    (view.val === 'view_list' || view.val === 'favorites_view')
+                "
                 class="mr-2"
                 color="#0277BD"
                 dark
@@ -36,6 +40,7 @@
           </v-tooltip>
 
           <v-btn
+            v-if="resources && resources.length"
             id="step1"
             class="mr-2"
             color="#0277BD"
@@ -117,69 +122,10 @@
         </v-col>
       </template>
 
-      <!-- FAKE DATA PROJECTS -->
-      <div class="d-flex flex-wrap w-full">
-        <div
-          v-for="i in 7"
-          :key="'fakedata'+i"
-          class="ma-0 my-3 pa-0 px-3 rounded"
-          style="width: 25%;"
-        >
-          <div class="card-custom-shadow rounded white">
-            <div class="align-center d-flex flex-column pb-2 pt-4">
-              <img
-                slot="actionbtn"
-                :alt="currentCompany.name"
-                class="rounded-circle"
-                height="80"
-                :src="currentCompany.logo"
-                width="80"
-              >
-              <p class="font-weight-bold mb-1 pa-3 text-h6">
-                Advanced Vendor & Project Reporting
-              </p>
-              <p class="font-weight-bold grey--text ma-0 pa-0 text-caption">
-                PRJ-00017-2020
-              </p>
-              <p class="grey--text ma-0 pa-0 text-caption">
-                (SHC) Sharp Healthcare
-              </p>
-              <v-chip
-                class="my-2"
-                pill
-                v-on="on"
-              >
-                <v-avatar left>
-                  <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
-                </v-avatar>
-                John Leider
-              </v-chip>
-            </div>
-            <div class="d-flex ma-0 pa-0">
-              <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                Budget Status
-              </div>
-              <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                Start Date
-              </div>
-            </div>
-            <div class="d-flex ma-0 pa-0">
-              <div class="blue lighten-2 py-2 text-center w-half white--text">
-                Roadmap
-              </div>
-              <div class="blue py-2 text-center w-half white--text">
-                07/5/2021
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!--GRID VIEW-->
       <v-data-iterator
-        v-if="true"
+        v-if="isGridView"
         class="fullWidth"
-        :footer-props.items-per-page-options="rowsPerPageItems"
         :items="resources"
         :options.sync="pagination"
         row
@@ -193,6 +139,66 @@
         </template>
 
         <template v-slot:item="{ index, item }">
+          <!-- fake data -->
+          <div class="d-flex flex-wrap w-full">
+            <div
+              v-for="i in 7"
+              :key="'fakedata'+i"
+              class="ma-0 my-2 pa-0 px-2 rounded"
+              style="width: 25%;"
+            >
+              <div
+                class="card-custom-shadow pointer rounded white"
+                @click="seeProjectPanel('123')"
+              >
+                <div class="align-center d-flex flex-column pb-2 pt-4">
+                  <img
+                    slot="actionbtn"
+                    :alt="currentCompany.name"
+                    class="rounded-circle"
+                    height="80"
+                    :src="currentCompany.logo"
+                    width="80"
+                  >
+                  <p class="font-weight-bold mb-1 pa-3 text-h6">
+                    Advanced Vendor & Project Reporting
+                  </p>
+                  <p class="font-weight-bold grey--text ma-0 pa-0 text-caption">
+                    PRJ-00017-2020
+                  </p>
+                  <p class="grey--text ma-0 pa-0 text-caption">
+                    (SHC) Sharp Healthcare
+                  </p>
+                  <v-chip
+                    class="my-2 pointer"
+                    pill
+                    v-on="on"
+                  >
+                    <v-avatar left>
+                      <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
+                    </v-avatar>
+                    John Leider
+                  </v-chip>
+                </div>
+                <div class="d-flex ma-0 pa-0">
+                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                    Budget Status
+                  </div>
+                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                    Start Date
+                  </div>
+                </div>
+                <div class="d-flex ma-0 pa-0">
+                  <div class="blue lighten-2 py-2 text-center w-half white--text">
+                    Roadmap
+                  </div>
+                  <div class="blue py-2 text-center w-half white--text">
+                    07/5/2021
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <v-col
             cols="12"
             lg="3"
@@ -381,7 +387,7 @@
       >
         <v-col cols="12">
           <m6-data-table
-            :footer-props.items-per-page-options="rowsPerPageItems"
+            :footer-props="rowsPerPageItems"
             :headers="headers"
             :items="resources"
             :pagination="5"
@@ -462,7 +468,6 @@
               </td>
 
               <template v-if="isPlanned">
-                <!-- FISCAL YEARS -->
                 <td
                   v-for="(fy, index) in fiscalYears"
                   :key="index"
@@ -636,20 +641,20 @@
 
 <script>
 import { format } from 'date-fns'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import Excel from 'exceljs'
 import { saveAs } from 'file-saver'
 
-// import { db } from '@/utils/Firebase'
+import { db } from '@/utils/Firebase'
 
 import CPMCreate from '@/modules/cpm/components/projects/modals/CPMCreate'
 import ListFiltering from '@/modules/cpm/components/projects/modals/ListFiltering'
 
 import M6Info from '@/modules/cpm/components/projects/_partials/M6Info'
 import M6List from '@/modules/cpm/_layouts/M6List'
-import M6NoResults from '@/modules/cpm/_layouts/M6List'
+import M6NoResults from '@/modules/cpm/_partials/M6NoResults'
 
-import mixins from '@/modules/cpm/_partials/M6NoResults'
+import mixins from '@/modules/cpm/_mixins/index'
 // TODO: need to transfer all the api requests to firebase over to graphql...
 
 export default {
@@ -691,7 +696,6 @@ export default {
     favorites: [],
     firstTime: true,
     showDeleteIconApplication: null,
-    // userId: window.Drupal.settings.m6_platform.uid,
     searchOption: 'All',
     campusOption: 'All',
     pmOption: 'All',
@@ -756,9 +760,15 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     }),
-    // isGridView() {
-    //   return this.view.val === 'grid_view'
-    // },
+    ...mapGetters('Auth', {
+      currentUser: 'getUser'
+    }),
+    userId() {
+      return this.currentUser.id
+    },
+    isGridView() {
+      return this.view.val === 'grid_view'
+    },
 
     rowsPerPageItems() {
       if (true) {
@@ -768,282 +778,282 @@ export default {
       return [5, 10, 25, { text: 'All', value: 10000 }]
     },
 
-    // headers() {
-    //   let headers = [
-    //     {
-    //       text: '',
-    //       value: 'picture',
-    //       unexportable: true,
-    //       sortable: false,
-    //       fixed: true,
-    //       width: this.headersWidth[0]
-    //     },
-    //     {
-    //       text: this.$t('general.projectNumber'),
-    //       value: 'number',
-    //       fixed: true,
-    //       width: this.headersWidth[1]
-    //     }
-    //   ]
+    headers() {
+      let headers = [
+        {
+          text: '',
+          value: 'picture',
+          unexportable: true,
+          sortable: false,
+          fixed: true,
+          width: this.headersWidth[0]
+        },
+        {
+          text: this.$t('general.projectNumber'),
+          value: 'number',
+          fixed: true,
+          width: this.headersWidth[1]
+        }
+      ]
 
-    //   if (!this.isPlanned) {
-    //     headers = headers.concat([
-    //       { text: this.$t('general.status'), value: 'status' },
-    //       { text: 'Status Comments', sorteable: false }
-    //     ])
-    //   }
+      if (!this.isPlanned) {
+        headers = headers.concat([
+          { text: this.$t('general.status'), value: 'status' },
+          { text: 'Status Comments', sorteable: false }
+        ])
+      }
 
-    //   headers = headers.concat([
-    //     {
-    //       text: this.$t('general.campus'),
-    //       value: 'campus'
-    //       // fixed: true,
-    //       // width: this.headersWidth[this.isPlanned ? 2 : 4]
-    //     },
-    //     {
-    //       text: this.$tc('general.title', 1),
-    //       value: 'title'
-    //       // fixed: true,
-    //       // width: this.headersWidth[this.isPlanned ? 3 : 5]
-    //     }
-    //   ])
+      headers = headers.concat([
+        {
+          text: this.$t('general.campus'),
+          value: 'campus'
+          // fixed: true,
+          // width: this.headersWidth[this.isPlanned ? 2 : 4]
+        },
+        {
+          text: this.$tc('general.title', 1),
+          value: 'title'
+          // fixed: true,
+          // width: this.headersWidth[this.isPlanned ? 3 : 5]
+        }
+      ])
 
-    //   if (!this.isPlanned) {
-    //     headers = headers.concat([
-    //       {
-    //         text: this.$t('general.description'),
-    //         value: 'description',
-    //         sortable: false
-    //       },
-    //       { text: this.$t('general.projectManager'), value: 'managerLabel' }
-    //     ])
-    //   }
+      if (!this.isPlanned) {
+        headers = headers.concat([
+          {
+            text: this.$t('general.description'),
+            value: 'description',
+            sortable: false
+          },
+          { text: this.$t('general.projectManager'), value: 'managerLabel' }
+        ])
+      }
 
-    //   if (this.isPlanned) {
-    //     headers = headers.concat(
-    //       this.fiscalYears.map(year => ({
-    //         text: year.name,
-    //         value: `budgetsByFiscalYear.${year.name.toLowerCase()}`
-    //       }))
-    //     )
-    //   }
+      if (this.isPlanned) {
+        headers = headers.concat(
+          this.fiscalYears.map(year => ({
+            text: year.name,
+            value: `budgetsByFiscalYear.${year.name.toLowerCase()}`
+          }))
+        )
+      }
 
-    //   headers.push({
-    //     text: this.$t('cpm.totalBudget'),
-    //     value: 'budget',
-    //     sortable: false
-    //   })
+      headers.push({
+        text: this.$t('cpm.totalBudget'),
+        value: 'budget',
+        sortable: false
+      })
 
-    //   if (this.isPlanned) {
-    //     headers = headers.concat([
-    //       {
-    //         text: this.$t('cpm.rfpReleaseDate'),
-    //         value: 'RFP Date',
-    //         sortable: false
-    //       },
-    //       {
-    //         text: 'Board Approval/Kick-Off',
-    //         value: 'kick-off',
-    //         sortable: false
-    //       }
-    //     ])
+      if (this.isPlanned) {
+        headers = headers.concat([
+          {
+            text: this.$t('cpm.rfpReleaseDate'),
+            value: 'RFP Date',
+            sortable: false
+          },
+          {
+            text: 'Board Approval/Kick-Off',
+            value: 'kick-off',
+            sortable: false
+          }
+        ])
 
-    //     if (!this.showAllMileStones) {
-    //       headers.push({
-    //         text: this.$t('cpm.projectDuration'),
-    //         value: 'duration',
-    //         sortable: false
-    //       })
-    //     } else {
-    //       headers = headers.concat([
-    //         {
-    //           text: this.$t('general.startDate'),
-    //           value: 'startDate',
-    //           sortable: false
-    //         },
-    //         {
-    //           text: this.$t('cpm.rfqRelease'),
-    //           value: 'RFQ Release',
-    //           sortable: false
-    //         },
-    //         {
-    //           text: this.$t('cpm.oneOnOne'),
-    //           value: 'oneOnOne',
-    //           sortable: false
-    //         },
-    //         { text: this.$t('cpm.rfpDue'), value: 'RFP Due', sortable: false },
-    //         {
-    //           text: this.$tc('general.interview', 2),
-    //           value: 'interviews',
-    //           sortable: false
-    //         },
-    //         {
-    //           text: this.$t('cpm.draftBoardMemo'),
-    //           value: 'memo',
-    //           sortable: false
-    //         },
-    //         {
-    //           text: this.$t('cpm.contractNotice'),
-    //           value: 'signing/notice',
-    //           sortable: false
-    //         },
-    //         {
-    //           text: this.$t('cpm.finalCompletion'),
-    //           value: 'finalCompletion',
-    //           sortable: false
-    //         },
-    //         { text: this.$t('cpm.goLive'), value: 'goLive', sortable: false },
-    //         {
-    //           text: this.$t('cpm.projectDuration'),
-    //           value: 'duration',
-    //           sortable: false
-    //         } // computed/function
-    //       ])
-    //     }
-    //   }
+        if (!this.showAllMileStones) {
+          headers.push({
+            text: this.$t('cpm.projectDuration'),
+            value: 'duration',
+            sortable: false
+          })
+        } else {
+          headers = headers.concat([
+            {
+              text: this.$t('general.startDate'),
+              value: 'startDate',
+              sortable: false
+            },
+            {
+              text: this.$t('cpm.rfqRelease'),
+              value: 'RFQ Release',
+              sortable: false
+            },
+            {
+              text: this.$t('cpm.oneOnOne'),
+              value: 'oneOnOne',
+              sortable: false
+            },
+            { text: this.$t('cpm.rfpDue'), value: 'RFP Due', sortable: false },
+            {
+              text: this.$tc('general.interview', 2),
+              value: 'interviews',
+              sortable: false
+            },
+            {
+              text: this.$t('cpm.draftBoardMemo'),
+              value: 'memo',
+              sortable: false
+            },
+            {
+              text: this.$t('cpm.contractNotice'),
+              value: 'signing/notice',
+              sortable: false
+            },
+            {
+              text: this.$t('cpm.finalCompletion'),
+              value: 'finalCompletion',
+              sortable: false
+            },
+            { text: this.$t('cpm.goLive'), value: 'goLive', sortable: false },
+            {
+              text: this.$t('cpm.projectDuration'),
+              value: 'duration',
+              sortable: false
+            } // computed/function
+          ])
+        }
+      }
 
-    //   if (!this.isPlanned) {
-    //     headers = headers.concat([
-    //       {
-    //         text: this.$t('cpm.budgetComments'),
-    //         sortable: false
-    //       },
-    //       { text: this.$t('cpm.projects.spending'), sortable: false },
+      if (!this.isPlanned) {
+        headers = headers.concat([
+          {
+            text: this.$t('cpm.budgetComments'),
+            sortable: false
+          },
+          { text: this.$t('cpm.projects.spending'), sortable: false },
 
-    //       {
-    //         text: this.$t('cpm.projects.projectedFinalCost'),
-    //         value: 'projectFinalCost'
-    //       },
-    //       { text: this.$t('cpm.projectStart'), sortable: false },
-    //       { text: 'Construction Star', sortable: false },
-    //       { text: 'Construction End', sortable: false }
-    //     ])
-    //   }
+          {
+            text: this.$t('cpm.projects.projectedFinalCost'),
+            value: 'projectFinalCost'
+          },
+          { text: this.$t('cpm.projectStart'), sortable: false },
+          { text: 'Construction Star', sortable: false },
+          { text: 'Construction End', sortable: false }
+        ])
+      }
 
-    //   headers.push({
-    //     text: this.$t('general.actions'),
-    //     value: 'name',
-    //     sortable: false,
-    //     unexportable: true
-    //   })
+      headers.push({
+        text: this.$t('general.actions'),
+        value: 'name',
+        sortable: false,
+        unexportable: true
+      })
 
-    //   return headers
-    // },
+      return headers
+    },
 
-    // getDuration() {
-    //   return item => {
-    //     const budgetsByFiscalYear = this.gettingBudget(item) || []
+    getDuration() {
+      return item => {
+        const budgetsByFiscalYear = this.gettingBudget(item) || []
 
-    //     let years = 0
-    //     for (let x = 0; x < budgetsByFiscalYear.length; x++) {
-    //       if (budgetsByFiscalYear[x].plan > 0) years++
-    //     }
+        let years = 0
+        for (let x = 0; x < budgetsByFiscalYear.length; x++) {
+          if (budgetsByFiscalYear[x].plan > 0) years++
+        }
 
-    //     return years * 12 // to get months
-    //   }
-    // },
-    // getDates() {
-    //   return (id, which, mStones = {}) => {
-    //     let temp = ''
-    //     const listMilestones =
-    //       Object.keys(mStones).length > 0 ? mStones : this.mileStones
+        return years * 12 // to get months
+      }
+    },
+    getDates() {
+      return (id, which, mStones = {}) => {
+        let temp = ''
+        const listMilestones =
+          Object.keys(mStones).length > 0 ? mStones : this.mileStones
 
-    //     if (listMilestones[id]) {
-    //       temp = listMilestones[id].find(
-    //         m => m.title === this.milestoneOptions[which]
-    //       )
-    //     }
+        if (listMilestones[id]) {
+          temp = listMilestones[id].find(
+            m => m.title === this.milestoneOptions[which]
+          )
+        }
 
-    //     if (!temp) return ''
+        if (!temp) return ''
 
-    //     const date = temp.original
-    //     return new Date(date).toLocaleDateString().split(',')[0]
-    //   }
-    // },
-    // gettingBudget() {
-    //   return item => {
-    //     const budgetsToShow = this.fiscalYears.map(fy => ({ fy, plan: 0 }))
+        const date = temp.original
+        return new Date(date).toLocaleDateString().split(',')[0]
+      }
+    },
+    gettingBudget() {
+      return item => {
+        const budgetsToShow = this.fiscalYears.map(fy => ({ fy, plan: 0 }))
 
-    //     const budgetsByFiscalYear = !item.budgetsByFiscalYear
-    //       ? {}
-    //       : item.budgetsByFiscalYear
+        const budgetsByFiscalYear = !item.budgetsByFiscalYear
+          ? {}
+          : item.budgetsByFiscalYear
 
-    //     Object.keys(budgetsByFiscalYear).forEach(key => {
-    //       const budget = budgetsToShow.find(b => b.fy === key.toUpperCase())
-    //       if (budget) budget.plan = budgetsByFiscalYear[key]
-    //     })
+        Object.keys(budgetsByFiscalYear).forEach(key => {
+          const budget = budgetsToShow.find(b => b.fy === key.toUpperCase())
+          if (budget) budget.plan = budgetsByFiscalYear[key]
+        })
 
-    //     return budgetsToShow
-    //   }
-    // },
-    // getBudgetTotal() {
-    //   return item => {
-    //     let sum = 0
+        return budgetsToShow
+      }
+    },
+    getBudgetTotal() {
+      return item => {
+        let sum = 0
 
-    //     const budgetsByFiscalYear = this.gettingBudget(item)
+        const budgetsByFiscalYear = this.gettingBudget(item)
 
-    //     for (let x = 0; x < budgetsByFiscalYear.length; x++) {
-    //       sum += budgetsByFiscalYear[x].plan
-    //     }
+        for (let x = 0; x < budgetsByFiscalYear.length; x++) {
+          sum += budgetsByFiscalYear[x].plan
+        }
 
-    //     return sum
-    //   }
-    // },
+        return sum
+      }
+    },
     isPlanned() {
       return this.$route.name === 'cpm.forecasting.index'
     },
-    // indexParameters() {
-    //   const parameters = {
-    //     companyId: this.currentCompany.id,
-    //     userId: this.$h.dg(window, 'Drupal.settings.m6_platform.uid'),
-    //     filter: { forecasted: this.type === 'forecasted' },
-    //     page: this.pagination.page,
-    //     search: this.search || '',
-    //     sort: this.pagination.descending ? 'DESC' : 'ASC',
-    //     sortBy: this.pagination.sortBy,
-    //     limit: this.pagination.rowsPerPage
-    //   }
+    indexParameters() {
+      const parameters = {
+        companyId: this.currentCompany.id,
+        userId: this.$h.dg(window, 'Drupal.settings.m6_platform.uid'),
+        filter: { forecasted: this.type === 'forecasted' },
+        page: this.pagination.page,
+        search: this.search || '',
+        sort: this.pagination.descending ? 'DESC' : 'ASC',
+        sortBy: this.pagination.sortBy,
+        limit: this.pagination.rowsPerPage
+      }
 
-    //   if (this.campusOption && this.campusOption !== 'All') {
-    //     parameters.filter['campus'] = this.$h.dg(
-    //       this,
-    //       'campusOption.name',
-    //       this.campusOption
-    //     )
-    //   }
+      if (this.campusOption && this.campusOption !== 'All') {
+        parameters.filter['campus'] = this.$h.dg(
+          this,
+          'campusOption.name',
+          this.campusOption
+        )
+      }
 
-    //   if (this.pmOption && this.pmOption !== 'All') {
-    //     parameters.filter['manager'] = this.$h.dg(
-    //       this,
-    //       'pmOption.value',
-    //       this.pmOption
-    //     )
-    //   }
+      if (this.pmOption && this.pmOption !== 'All') {
+        parameters.filter['manager'] = this.$h.dg(
+          this,
+          'pmOption.value',
+          this.pmOption
+        )
+      }
 
-    //   if (this.$h.dg(this, 'searchOption', []).length) {
-    //     parameters.filter['status'] = {
-    //       operator: 'in',
-    //       value: this.searchOption
-    //     }
-    //   }
+      if (this.$h.dg(this, 'searchOption', []).length) {
+        parameters.filter['status'] = {
+          operator: 'in',
+          value: this.searchOption
+        }
+      }
 
-    //   if (this.view.val === 'favorites_view') {
-    //     parameters.filter['id'] = { operator: 'in', value: this.favorites }
-    //   }
+      if (this.view.val === 'favorites_view') {
+        parameters.filter['id'] = { operator: 'in', value: this.favorites }
+      }
 
-    //   return parameters
-    // },
+      return parameters
+    },
 
-    // getColor() {
-    //   return key =>
-    //     this.settingsProject.projectColors
-    //       ? this.settingsProject.projectColors.find(p => p.key === key).color
-    //       : this.defaultColors[key]
-    // },
+    getColor() {
+      return key =>
+        this.settingsProject.projectColors
+          ? this.settingsProject.projectColors.find(p => p.key === key).color
+          : this.defaultColors[key]
+    },
 
-    // onSearchHooks() {
-    //   return [this.updateFilterUserOptions]
-    // },
+    onSearchHooks() {
+      return [this.updateFilterUserOptions]
+    },
 
     searchOptions() {
       return this.$h.dg(this, 'settingsProject.status', []).sort()
@@ -1110,116 +1120,116 @@ export default {
       aux.unshift('All')
 
       return aux
-    }
-    // settingCollectionName() {
-    //   if (this.$route.name.includes('forecasting')) {
-    //     return 'planned_settings'
-    //   } else {
-    //     return 'settings'
-    //   }
-    // },
+    },
+    settingCollectionName() {
+      if (this.$route.name.includes('forecasting')) {
+        return 'planned_settings'
+      } else {
+        return 'settings'
+      }
+    },
 
-    // fiscalYears() {
-    //   return this.$h.dg(this.settingsProject, 'fiscalYears', [])
-    // }
+    fiscalYears() {
+      return this.$h.dg(this.settingsProject, 'fiscalYears', [])
+    }
   },
 
   watch: {
-    // isGridView(v) {
-    //   this.pagination.rowsPerPage = v ? 8 : 5
-    // },
+    isGridView(v) {
+      this.pagination.rowsPerPage = v ? 8 : 5
+    },
 
-    // 'pagination.page': async function () {
-    //   if (this.isPlanned) {
-    //     await this.getMileStones(this.resources)
-    //   }
-    // },
-    // 'pagination.rowsPerPage': async function (value) {
-    //   if (this.isGridView) {
-    //     db.collection('m6user')
-    //       .doc(window.Drupal.settings.m6_platform.uid)
-    //       .collection('pagination')
-    //       .doc(this.isPlanned ? 'planned' : 'projects')
-    //       .set({
-    //         rowsPerPage: this.pagination.rowsPerPage
-    //       })
-    //   }
-    // },
-    // view(newVal) {
-    //   const { pmOption, campusOption, searchOption } = this
-    //   db.collection('m6user')
-    //     .doc(window.Drupal.settings.m6_platform.uid)
-    //     .collection('search')
-    //     .doc(this.isPlanned ? 'planned' : 'projects')
-    //     .set({
-    //       pmOption: pmOption || 'All',
-    //       campusOption: campusOption || 'All',
-    //       searchOption: searchOption || ['All'],
-    //       view: newVal
-    //     })
-    // },
+    'pagination.page': async function () {
+      if (this.isPlanned) {
+        await this.getMileStones(this.resources)
+      }
+    },
+    'pagination.rowsPerPage': async function (value) {
+      if (this.isGridView) {
+        db.collection('m6user')
+          .doc(window.Drupal.settings.m6_platform.uid)
+          .collection('pagination')
+          .doc(this.isPlanned ? 'planned' : 'projects')
+          .set({
+            rowsPerPage: this.pagination.rowsPerPage
+          })
+      }
+    },
+    view(newVal) {
+      const { pmOption, campusOption, searchOption } = this
+      db.collection('m6user')
+        .doc(window.Drupal.settings.m6_platform.uid)
+        .collection('search')
+        .doc(this.isPlanned ? 'planned' : 'projects')
+        .set({
+          pmOption: pmOption || 'All',
+          campusOption: campusOption || 'All',
+          searchOption: searchOption || ['All'],
+          view: newVal
+        })
+    },
 
-    // user(newVal) {
-    //   if (newVal.favProjects) this.favorites = [...newVal.favProjects]
-    // },
+    user(newVal) {
+      if (newVal.favProjects) this.favorites = [...newVal.favProjects]
+    },
 
-    // async resources(newVal) {
-    //   const ids = this.getIds(newVal)
-    //   this.getImages(ids)
-    //   if (this.isPlanned) {
-    //     await this.getMileStones(newVal)
-    //   }
+    async resources(newVal) {
+      const ids = this.getIds(newVal)
+      this.getImages(ids)
+      if (this.isPlanned) {
+        await this.getMileStones(newVal)
+      }
 
-    //   this.firstProjectId = this.$h.dg(newVal, '0.id')
-    //   if (!this.hasSeenTheTour) {
-    //     setTimeout(() => {
-    //       this.startTour()
-    //     }, 1500)
-    //   }
-    // }
+      this.firstProjectId = this.$h.dg(newVal, '0.id')
+      if (!this.hasSeenTheTour) {
+        setTimeout(() => {
+          this.startTour()
+        }, 1500)
+      }
+    }
   },
 
   mounted() {
-    // const uid = window.Drupal.settings.m6_platform.uid
-    // this.fetchM6User(uid)
-    //   .then(response => {
-    //     this.hasSeenTheTour = this.$h.dg(response, 'tours.cpmProjects')
-    //     if (!this.hasSeenTheTour) {
-    //       const tours = {
-    //         cpmProjects: true
-    //       }
-    //       db.collection('m6user')
-    //         .doc(uid)
-    //         .update({
-    //           tours
-    //         })
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.error(error)
-    //   })
-    // db.collection('m6user')
-    //   .doc(window.Drupal.settings.m6_platform.uid)
-    //   .collection('pagination')
-    //   .doc(this.isPlanned ? 'planned' : 'projects')
-    //   .get().then(doc => {
-    //     if (doc.exists) {
-    //       const data = doc.data()
-    //       if (data.rowsPerPage) {
-    //         this.pagination.rowsPerPage = data.rowsPerPage
-    //       }
-    //     }
-    //   })
+    const uid = this.currentUser.id
+    this.fetchM6User(uid)
+      .then(response => {
+        this.hasSeenTheTour = this.$h.dg(response, 'tours.cpmProjects')
+        if (!this.hasSeenTheTour) {
+          const tours = {
+            cpmProjects: true
+          }
+          db.collection('m6user')
+            .doc(uid)
+            .update({
+              tours
+            })
+        }
+      })
+      .catch(error => {
+        console.error(error)
+      })
+    db.collection('m6user')
+      .doc(uid)
+      .collection('pagination')
+      .doc(this.isPlanned ? 'planned' : 'projects')
+      .get().then(doc => {
+        if (doc.exists) {
+          const data = doc.data()
+          if (data.rowsPerPage) {
+            this.pagination.rowsPerPage = data.rowsPerPage
+          }
+        }
+      })
   },
 
   methods: {
-    // ...mapActions('companies/cpmProjects', {
-    //   indexResource: 'index',
-    //   destroyResource: 'destroy'
-    // }),
-    // ...mapActions('companies/cpmProjects/general', {
-    //   fetchM6User: 'fetchM6User'
-    // }),
+    ...mapActions('companies/cpmProjects', {
+      indexResource: 'index',
+      destroyResource: 'destroy'
+    }),
+    ...mapActions('companies/cpmProjects/general', {
+      fetchM6User: 'fetchM6User'
+    }),
     startTour() {
       this.$intro().exit()
       if (!this.firstProjectId) return
@@ -1288,69 +1298,69 @@ export default {
           }
         })
     },
-    // getMileStones(projects, gettingCsv = false) {
-    //   return new Promise(async (resolve, reject) => {
-    //     try {
-    //       const milestones = gettingCsv ? {} : this.mileStones
-    //       const ids = projects.map(p => p.id)
+    getMileStones(projects, gettingCsv = false) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const milestones = gettingCsv ? {} : this.mileStones
+          const ids = projects.map(p => p.id)
 
-    //       for (let x = 0; x < ids.length; x++) {
-    //         await db
-    //           .collection('cpm_projects')
-    //           .doc(ids[x])
-    //           .collection('milestones')
-    //           .orderBy('title')
-    //           .get()
-    //           .then(snapshot => {
-    //             milestones[ids[x]] = []
-    //             for (let i = 0; i < snapshot.docs.length; i++) {
-    //               milestones[ids[x]].push(snapshot.docs[i].data())
-    //             }
-    //           })
-    //       }
-    //       resolve(milestones)
-    //     } catch (e) {
-    //       reject(e)
-    //     }
-    //   })
-    // },
+          for (let x = 0; x < ids.length; x++) {
+            await db
+              .collection('cpm_projects')
+              .doc(ids[x])
+              .collection('milestones')
+              .orderBy('title')
+              .get()
+              .then(snapshot => {
+                milestones[ids[x]] = []
+                for (let i = 0; i < snapshot.docs.length; i++) {
+                  milestones[ids[x]].push(snapshot.docs[i].data())
+                }
+              })
+          }
+          resolve(milestones)
+        } catch (e) {
+          reject(e)
+        }
+      })
+    },
 
-    // getBudgets(projects, gettingCsv = false) {
-    //   return new Promise(async (resolve, reject) => {
-    //     try {
-    //       const ids = projects.map(p => p.id)
-    //       const budgetsFiltered = gettingCsv ? [] : this.budgets
-    //       for (let x = 0; x < ids.length; x++) {
-    //         await db
-    //           .collection('cpm_projects')
-    //           .doc(ids[x])
-    //           .collection('budgets')
-    //           .orderBy('title')
-    //           .get()
-    //           .then(snapshot => {
-    //             budgetsFiltered[ids[x]] = []
-    //             for (let i = 0; i < snapshot.docs.length; i++) {
-    //               budgetsFiltered[ids[x]].push(snapshot.docs[i].data())
-    //             }
-    //           })
-    //       }
+    getBudgets(projects, gettingCsv = false) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const ids = projects.map(p => p.id)
+          const budgetsFiltered = gettingCsv ? [] : this.budgets
+          for (let x = 0; x < ids.length; x++) {
+            await db
+              .collection('cpm_projects')
+              .doc(ids[x])
+              .collection('budgets')
+              .orderBy('title')
+              .get()
+              .then(snapshot => {
+                budgetsFiltered[ids[x]] = []
+                for (let i = 0; i < snapshot.docs.length; i++) {
+                  budgetsFiltered[ids[x]].push(snapshot.docs[i].data())
+                }
+              })
+          }
 
-    //       resolve(budgetsFiltered)
-    //     } catch (e) {
-    //       reject(e)
-    //     }
-    //   })
-    // },
+          resolve(budgetsFiltered)
+        } catch (e) {
+          reject(e)
+        }
+      })
+    },
 
-    // assignResourcesData({ data, meta: { lastPage, total } } = {}) {
-    //   if (lastPage && this.pagination.page > lastPage) {
-    //     this.pagination.page = 1
-    //     return this.fetchResources()
-    //   }
+    assignResourcesData({ data, meta: { lastPage, total } } = {}) {
+      if (lastPage && this.pagination.page > lastPage) {
+        this.pagination.page = 1
+        return this.fetchResources()
+      }
 
-    //   this.resourcesRaw = data
-    //   this.pagination.totalItems = total
-    // },
+      this.resourcesRaw = data
+      this.pagination.totalItems = total
+    },
 
     onFiltered(filter) {
       if (filter.campusOption) this.campusOption = filter.campusOption
@@ -1371,36 +1381,36 @@ export default {
       }
     },
 
-    // async deleteProject(project) {
-    //   this.showLoading = true
-    //   this.deleteProjectMessage = this.$t('general.sureDeleteResource', {
-    //     resource: project.title
-    //   })
+    async deleteProject(project) {
+      this.showLoading = true
+      this.deleteProjectMessage = this.$t('general.sureDeleteResource', {
+        resource: project.title
+      })
 
-    //   const rfpDocs = await db.collection('proposals').where('projectId', '==', project.id).get()
+      const rfpDocs = await db.collection('proposals').where('projectId', '==', project.id).get()
 
-    //   if (!rfpDocs.empty) {
-    //     this.rfpModalTitle = this.$t('cpm.projects.rfpModalTitle', {
-    //       title: project.title,
-    //       number: project.number
-    //     })
-    //     this.rfpModalMessage = this.$t('cpm.projects.rfpModalMessage', {
-    //       title: project.title,
-    //       number: project.number
-    //     })
-    //     this.deleteProjectMessage = '<strong>You have RFPs associated with this project.</strong> Are you sure you want to delete this project?'
-    //     this.associatedRfps = rfpDocs.docs.map(rfp => ({
-    //       id: rfp.id,
-    //       ...rfp.data()
-    //     }))
-    //     this.showAssociatedRfpsModal = true
-    //   } else {
-    //     this.resourceToDelete = project
-    //     this.showDeleteModal = true
-    //   }
+      if (!rfpDocs.empty) {
+        this.rfpModalTitle = this.$t('cpm.projects.rfpModalTitle', {
+          title: project.title,
+          number: project.number
+        })
+        this.rfpModalMessage = this.$t('cpm.projects.rfpModalMessage', {
+          title: project.title,
+          number: project.number
+        })
+        this.deleteProjectMessage = '<strong>You have RFPs associated with this project.</strong> Are you sure you want to delete this project?'
+        this.associatedRfps = rfpDocs.docs.map(rfp => ({
+          id: rfp.id,
+          ...rfp.data()
+        }))
+        this.showAssociatedRfpsModal = true
+      } else {
+        this.resourceToDelete = project
+        this.showDeleteModal = true
+      }
 
-    //   this.showLoading = false
-    // },
+      this.showLoading = false
+    },
 
     cancelDelete() {
       this.resourceToDelete = {}
@@ -1430,306 +1440,322 @@ export default {
           )
         )
         .then(this.cancelDelete)
+    },
+
+    getDate(startDate) {
+      if (!startDate) {
+        return 'N/A'
+      }
+
+      return format(new Date(startDate), 'MM/d/YYYY')
+    },
+
+    goToProject(proj, newTab) {
+      let path = ''
+
+      if (this.$route.fullPath.search('/cpm/projects') !== -1) {
+        path = window.location.origin + `/m6apps#/cpm/projects/${proj.id}`
+      } else if (this.$route.fullPath.search('/cpm/forecasting') !== -1) {
+        path = window.location.origin + `/m6apps#/cpm/forecasting/${proj.id}`
+      } else {
+        path = `/m6apps#/cpm/projects/${proj.id}`
+      }
+
+      if (!newTab) {
+        window.location.href = path
+      } else {
+        window.open(path, '_blank')
+      }
+    },
+
+    async downloadCSV() {
+      this.loading = true
+
+      // TODO: move to api
+      // export to csv
+      this.indexResource({ ...this.indexParameters, limit: 10000 })
+        .then(async data => {
+          const headersToExport = this.headers.filter(
+            ({ unexportable }) => !unexportable
+          )
+
+          const headers = headersToExport.map(({ text }) => text)
+
+          const rows = data.data.map(async item => {
+            const obj = {}
+            headersToExport.map(header => {
+              obj[header.text] = item[header.value] || ''
+            })
+
+            if (this.isPlanned) {
+              // const budgets = await this.getBudgets([item], true)
+              const milestones = await this.getMileStones([item], true)
+
+              this.gettingBudget(item).forEach(fy => {
+                obj[fy.fy] = isNaN(fy.plan) ? 0 : fy.plan
+              })
+
+              obj['Total Budget'] = this.getBudgetTotal(item)
+
+              obj['RFP Release Date'] = this.getDates(
+                item.id,
+                'RFP',
+                milestones
+              )
+              obj['Board Approval/Kick-Off'] = this.getDates(
+                item.id,
+                'Board Approval',
+                milestones
+              )
+
+              if (this.showAllMileStones) {
+                obj['Start Date'] = this.getDates(
+                  item.id,
+                  'startDate',
+                  milestones
+                )
+                obj['RFQ Release'] = this.getDates(item.id, 'RFQ', milestones)
+                obj['One On One Meeting'] = this.getDates(
+                  item.id,
+                  'meeting',
+                  milestones
+                )
+                obj['RFP Due'] = this.getDates(item.id, 'RFP Due', milestones)
+                obj['Interviews'] = this.getDates(
+                  item.id,
+                  'interviews',
+                  milestones
+                )
+                obj['Draft Board Memo'] = this.getDates(
+                  item.id,
+                  'draft',
+                  milestones
+                )
+                obj['Contract Signing/Notice to Proceed'] = this.getDates(
+                  item.id,
+                  'contract',
+                  milestones
+                )
+                obj['Final Completion'] = this.getDates(
+                  item.id,
+                  'final',
+                  milestones
+                )
+                obj['Go Live'] = this.getDates(item.id, 'live', milestones)
+              }
+
+              obj['Project Duration'] = this.getDuration(item) + ' Months'
+            }
+
+            obj['Project Manager'] = this.getManagerLabel(item)
+            obj['Campus'] = this.getCampus(item.campus)
+
+            return obj
+          })
+
+          Promise.all(rows)
+            .then(values =>
+              this.exportCSVFile(headers, values, 'export', headersToExport)
+            )
+            .catch(() =>
+              this.snotifyError(this.$t('general.thereErrorExporting'))
+            )
+            .then(() => (this.loading = false))
+        })
+        .catch(() => (this.loading = false))
+    },
+
+    exportCSVFile(header, items, fileName, headersToExport) {
+      const newHeader = headersToExport.map(h => ({
+        header: h.text,
+        key: h.value,
+        width: h.width || 16,
+        style: { font: { name: 'Arial', size: 12 } }
+      }))
+
+      const workbook = new Excel.Workbook()
+      const sheet = workbook.addWorksheet('sheet')
+      sheet.columns = newHeader
+
+      const firstRow = sheet.getRow(1)
+      firstRow.height = 40
+      firstRow.eachCell({ includeEmpty: false }, cell => {
+        cell.font = { bold: true, name: 'Arial', size: 12 }
+        cell.alignment = { horizontal: 'center', wrapText: true }
+        cell.border = { bottom: { style: 'thin' } }
+      })
+
+      if (this.isPlanned) {
+        for (let x = 4; x < 10; x++) {
+          sheet.getColumn(x).numFmt = this.numFmt
+        }
+      }
+
+      items.forEach(item => {
+        const arr = this._.values(item)
+        sheet.addRow(arr)
+      })
+
+      workbook.xlsx.writeBuffer().then(function (data) {
+        const blob = new Blob([data], {
+          type:
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        })
+        saveAs(blob, `${fileName}.xlsx`)
+      })
+    },
+
+    getUser() {
+      return new Promise((resolve, reject) => {
+        db.collection('m6user')
+          .doc(this.currentUser.id)
+          .get()
+          .then(document => {
+            const user = document.data()
+            this.lastSearch = user.optionsFilter ? user.optionsFilter : {}
+            this.search = this.$h.dg(
+              user,
+              this.isPlanned ? 'optionsFilter.searchPlannedList' : 'optionsFilter.searchProjectList',
+              this.search
+            )
+
+            resolve()
+          })
+          .catch(reject)
+      })
+    },
+
+    updateFilterUserOptions() {
+      if (this.isPlanned) {
+        this.lastSearch.searchPlannedList = this.search
+      } else {
+        this.lastSearch.searchProjectList = this.search
+      }
+
+      db.collection('m6user')
+        .doc(this.currentUser.id)
+        .update({
+          optionsFilter: this.lastSearch
+        })
+    },
+
+    getManagerLabel(item) {
+      if (item.manager) {
+        return item.manager.label
+      }
+      if (!item.teamMembers || item.teamMembers.length <= 0) {
+        return ''
+      }
+      let auxString = ''
+      item.teamMembers.map((member, index) => {
+        if (member.role === 'Project Coordinator') {
+          auxString += member.user
+          if (index !== item.teamMembers.length - 1) {
+            auxString += ','
+          }
+        }
+      })
+      return auxString
+    },
+
+    getCampus(campus) {
+      if (campus) {
+        // if not undefined or array not empty
+        if (campus[0]) {
+          return campus[0].name || ''
+        } else {
+          return campus.name || ''
+        }
+      } else {
+        return ''
+      }
+    },
+
+    getAvatar(teamMember) {
+      let image = this.defaultImage
+      if (teamMember && this.images[teamMember.value]) {
+        image = this.images[teamMember.value].user_image
+      }
+
+      return image
+    },
+
+    getIds(projects = []) {
+      const idsToGet = []
+
+      for (let i = 0; i < projects.length; i++) {
+        const element = projects[i]
+        if (element.manager && !isNaN(parseInt(element.manager.value))) {
+          idsToGet.push(parseInt(element.manager.value))
+        }
+      }
+
+      return idsToGet
+    },
+
+    getImages(usersId = []) {
+      if (!usersId.length) {
+        return
+      }
+
+      this.axios
+        .post('/m6-platform/api/user_profile_images', {
+          usersId
+        })
+        .then(response => {
+          const results = response.data
+          const data = {}
+          usersId.forEach(userId => {
+            if (results[userId]) {
+              data[userId] = { user_image: results[userId] }
+            } else {
+              data[userId] = {
+                user_image: this.defaultImage
+              }
+            }
+          })
+
+          this.images = { ...data }
+        })
+    },
+    goToProposal() {
+      window.open(`${window.location.origin}/m6-rfp/#/`, '_blank')
+    },
+    seeProjectPanel(id) {
+      console.log(`/app/cpm/${id}`)
+      this.$router.push(`/app/cpm/${id}`)
+    },
+    checkCompany() {
+      const self = this
+      setTimeout(function () {
+        if (self.currentCompany !== undefined) {
+          self.continueFirestore()
+          return true
+        } else {
+          self.checkCompany()
+        }
+      }, 500)
+    },
+    async continueFirestore() {
+      this.settingsProject = await db
+        .collection('settings')
+        .doc(this.currentCompany.id.toString())
+        .collection(`${this.settingCollectionName}`)
+        .doc(this.isPlanned ? 'planned' : 'projects')
+
+      this.settingsUsers = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('users')
     }
+  },
 
-    // getDate(startDate) {
-    //   if (!startDate) {
-    //     return 'N/A'
-    //   }
-
-    //   return format(new Date(startDate), 'MM/d/YYYY')
-    // },
-
-    // goToProject(proj, newTab) {
-    //   let path = ''
-
-    //   if (this.$route.fullPath.search('/cpm/projects') !== -1) {
-    //     path = window.location.origin + `/m6apps#/cpm/projects/${proj.id}`
-    //   } else if (this.$route.fullPath.search('/cpm/forecasting') !== -1) {
-    //     path = window.location.origin + `/m6apps#/cpm/forecasting/${proj.id}`
-    //   } else {
-    //     path = `/m6apps#/cpm/projects/${proj.id}`
-    //   }
-
-    //   if (!newTab) {
-    //     window.location.href = path
-    //   } else {
-    //     window.open(path, '_blank')
-    //   }
-    // },
-
-    // async downloadCSV() {
-    //   this.loading = true
-
-    //   // TODO: move to api
-    //   // export to csv
-    //   this.indexResource({ ...this.indexParameters, limit: 10000 })
-    //     .then(async data => {
-    //       const headersToExport = this.headers.filter(
-    //         ({ unexportable }) => !unexportable
-    //       )
-
-    //       const headers = headersToExport.map(({ text }) => text)
-
-    //       const rows = data.data.map(async item => {
-    //         const obj = {}
-    //         headersToExport.map(header => {
-    //           obj[header.text] = item[header.value] || ''
-    //         })
-
-    //         if (this.isPlanned) {
-    //           // const budgets = await this.getBudgets([item], true)
-    //           const milestones = await this.getMileStones([item], true)
-
-    //           this.gettingBudget(item).forEach(fy => {
-    //             obj[fy.fy] = isNaN(fy.plan) ? 0 : fy.plan
-    //           })
-
-    //           obj['Total Budget'] = this.getBudgetTotal(item)
-
-    //           obj['RFP Release Date'] = this.getDates(
-    //             item.id,
-    //             'RFP',
-    //             milestones
-    //           )
-    //           obj['Board Approval/Kick-Off'] = this.getDates(
-    //             item.id,
-    //             'Board Approval',
-    //             milestones
-    //           )
-
-    //           if (this.showAllMileStones) {
-    //             obj['Start Date'] = this.getDates(
-    //               item.id,
-    //               'startDate',
-    //               milestones
-    //             )
-    //             obj['RFQ Release'] = this.getDates(item.id, 'RFQ', milestones)
-    //             obj['One On One Meeting'] = this.getDates(
-    //               item.id,
-    //               'meeting',
-    //               milestones
-    //             )
-    //             obj['RFP Due'] = this.getDates(item.id, 'RFP Due', milestones)
-    //             obj['Interviews'] = this.getDates(
-    //               item.id,
-    //               'interviews',
-    //               milestones
-    //             )
-    //             obj['Draft Board Memo'] = this.getDates(
-    //               item.id,
-    //               'draft',
-    //               milestones
-    //             )
-    //             obj['Contract Signing/Notice to Proceed'] = this.getDates(
-    //               item.id,
-    //               'contract',
-    //               milestones
-    //             )
-    //             obj['Final Completion'] = this.getDates(
-    //               item.id,
-    //               'final',
-    //               milestones
-    //             )
-    //             obj['Go Live'] = this.getDates(item.id, 'live', milestones)
-    //           }
-
-    //           obj['Project Duration'] = this.getDuration(item) + ' Months'
-    //         }
-
-    //         obj['Project Manager'] = this.getManagerLabel(item)
-    //         obj['Campus'] = this.getCampus(item.campus)
-
-    //         return obj
-    //       })
-
-    //       Promise.all(rows)
-    //         .then(values =>
-    //           this.exportCSVFile(headers, values, 'export', headersToExport)
-    //         )
-    //         .catch(() =>
-    //           this.snotifyError(this.$t('general.thereErrorExporting'))
-    //         )
-    //         .then(() => (this.loading = false))
-    //     })
-    //     .catch(() => (this.loading = false))
-    // },
-
-    // exportCSVFile(header, items, fileName, headersToExport) {
-    //   const newHeader = headersToExport.map(h => ({
-    //     header: h.text,
-    //     key: h.value,
-    //     width: h.width || 16,
-    //     style: { font: { name: 'Arial', size: 12 } }
-    //   }))
-
-    //   const workbook = new Excel.Workbook()
-    //   const sheet = workbook.addWorksheet('sheet')
-    //   sheet.columns = newHeader
-
-    //   const firstRow = sheet.getRow(1)
-    //   firstRow.height = 40
-    //   firstRow.eachCell({ includeEmpty: false }, cell => {
-    //     cell.font = { bold: true, name: 'Arial', size: 12 }
-    //     cell.alignment = { horizontal: 'center', wrapText: true }
-    //     cell.border = { bottom: { style: 'thin' } }
-    //   })
-
-    //   if (this.isPlanned) {
-    //     for (let x = 4; x < 10; x++) {
-    //       sheet.getColumn(x).numFmt = this.numFmt
-    //     }
-    //   }
-
-    //   items.forEach(item => {
-    //     const arr = this._.values(item)
-    //     sheet.addRow(arr)
-    //   })
-
-    //   workbook.xlsx.writeBuffer().then(function (data) {
-    //     const blob = new Blob([data], {
-    //       type:
-    //         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    //     })
-    //     saveAs(blob, `${fileName}.xlsx`)
-    //   })
-    // },
-
-    // getUser() {
-    //   return new Promise((resolve, reject) => {
-    //     db.collection('m6user')
-    //       .doc(this.userId)
-    //       .get()
-    //       .then(document => {
-    //         const user = document.data()
-    //         this.lastSearch = user.optionsFilter ? user.optionsFilter : {}
-    //         this.search = this.$h.dg(
-    //           user,
-    //           this.isPlanned ? 'optionsFilter.searchPlannedList' : 'optionsFilter.searchProjectList',
-    //           this.search
-    //         )
-
-    //         resolve()
-    //       })
-    //       .catch(reject)
-    //   })
-    // },
-
-    // updateFilterUserOptions() {
-    //   if (this.isPlanned) {
-    //     this.lastSearch.searchPlannedList = this.search
-    //   } else {
-    //     this.lastSearch.searchProjectList = this.search
-    //   }
-
-    //   db.collection('m6user')
-    //     .doc(this.userId)
-    //     .update({
-    //       optionsFilter: this.lastSearch
-    //     })
-    // },
-
-    // getManagerLabel(item) {
-    //   if (item.manager) {
-    //     return item.manager.label
-    //   }
-    //   if (!item.teamMembers || item.teamMembers.length <= 0) {
-    //     return ''
-    //   }
-    //   let auxString = ''
-    //   item.teamMembers.map((member, index) => {
-    //     if (member.role === 'Project Coordinator') {
-    //       auxString += member.user
-    //       if (index !== item.teamMembers.length - 1) {
-    //         auxString += ','
-    //       }
-    //     }
-    //   })
-    //   return auxString
-    // },
-
-    // getCampus(campus) {
-    //   if (campus) {
-    //     // if not undefined or array not empty
-    //     if (campus[0]) {
-    //       return campus[0].name || ''
-    //     } else {
-    //       return campus.name || ''
-    //     }
-    //   } else {
-    //     return ''
-    //   }
-    // },
-
-    // getAvatar(teamMember) {
-    //   let image = this.defaultImage
-    //   if (teamMember && this.images[teamMember.value]) {
-    //     image = this.images[teamMember.value].user_image
-    //   }
-
-    //   return image
-    // },
-
-    // getIds(projects = []) {
-    //   const idsToGet = []
-
-    //   for (let i = 0; i < projects.length; i++) {
-    //     const element = projects[i]
-    //     if (element.manager && !isNaN(parseInt(element.manager.value))) {
-    //       idsToGet.push(parseInt(element.manager.value))
-    //     }
-    //   }
-
-    //   return idsToGet
-    // },
-
-    // getImages(usersId = []) {
-    //   if (!usersId.length) {
-    //     return
-    //   }
-
-    //   this.axios
-    //     .post('/m6-platform/api/user_profile_images', {
-    //       usersId
-    //     })
-    //     .then(response => {
-    //       const results = response.data
-    //       const data = {}
-    //       usersId.forEach(userId => {
-    //         if (results[userId]) {
-    //           data[userId] = { user_image: results[userId] }
-    //         } else {
-    //           data[userId] = {
-    //             user_image: this.defaultImage
-    //           }
-    //         }
-    //       })
-
-    //       this.images = { ...data }
-    //     })
-    // },
-    // goToProposal() {
-    //   window.open(`${window.location.origin}/m6-rfp/#/`, '_blank')
-    // }
+  async firestore() {
+    this.user = await db.collection('m6user').doc(this.currentUser.id)
+    this.checkCompany()
+    return true
   }
-
-  // firestore() {
-  //   return {
-  //     user: db.collection('m6user').doc(this.userId),
-
-  //     settingsProject: db
-  //       .collection('settings')
-  //       .doc(this.currentCompany.id)
-  //       .collection(`${this.settingCollectionName}`)
-  //       .doc('projects'),
-
-  //     settingsUsers: db
-  //       .collection('settings')
-  //       .doc(this.currentCompany.id)
-  //       .collection(`${this.settingCollectionName}`)
-  //       .doc('users')
-  //   }
-  // }
 }
 </script>
 

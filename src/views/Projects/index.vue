@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="pt-0"
+    class="dont-show-scroll pt-0 vertical-scroll"
     fluid
   >
     <v-row class="ma-0 pt-0 text-center">
@@ -14,6 +14,10 @@
 <script>
 import { mapMutations, mapState } from 'vuex'
 import ListProjects from './ListProjects'
+import {
+  newFirebaseInit,
+  doFirebaseAuth
+} from '@/utils/Firebase'
 
 export default {
   components: {
@@ -29,6 +33,11 @@ export default {
       secondColumnComponent: 'secondColumnComponent',
       thirdColumnComponent: 'thirdColumnComponent'
     })
+  },
+  async created() {
+    // Init Firebase
+    await newFirebaseInit()
+    await doFirebaseAuth()
   },
   mounted() {
     this.setShowSidePanels(false)

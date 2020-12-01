@@ -3,7 +3,6 @@
     v-model="show"
     max-width="800px"
     persistent
-    style='height: 100px'
   >
     <v-card>
       <v-card-title class="headline px-6 py-4 white">
