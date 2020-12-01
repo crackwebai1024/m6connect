@@ -2,17 +2,17 @@
   <v-dialog
     v-model="dialog"
     max-width="1200px"
-    persistent
-    scrollable
-  >
-    <v-card class="licensing-edit-modal">
+    persistent>
+    <v-card
+      class="licensing-edit-modal">
       <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           {{ $t('cpm.projects.budgetPanel.editBudget.budget') }}:
           {{ $h.dg(budget, 'title', '') }}
         </span>
         <v-btn
-          class="justify-end"
+          absolute
+          right
           color="blue darken-2"
           dark
           fab
@@ -26,10 +26,10 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text class="vertical-scroll">
-        <v-row>
+      <v-card-text 
+      :style='viewportHeight' class='vertical-scroll'>
+        <v-row class='d-flex'>
           <v-col
-            class="mr-3"
             cols="4"
           >
             <v-row class="budget-title">
@@ -170,12 +170,7 @@
             </v-form>
           </v-col>
 
-          <v-divider
-            inset
-            vertical
-          />
           <v-col
-            class="ml-3"
             cols="8"
           >
             <div class="form-group margin-top-25">
@@ -223,7 +218,6 @@
                   </span>
                   <v-spacer />
                   <v-btn
-                    class="justify-end"
                     color="blue darken-2"
                     dark
                     fab
@@ -414,6 +408,15 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     }),
+    viewportHeight() {
+      let height =
+        Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        ) * 0.6
+        height = height - 5
+        return {'height' : `${height}px !important`}
+    },
     dialog: {
       get() {
         return this.value

@@ -623,15 +623,23 @@ export default {
     view: {
       label: vm.$t('general.grid'),
       val: 'grid_view',
-      icon: 'view_module'
+      icon: 'mdi-view-module'
     },
     views: [
-      { label: vm.$t('general.grid'), val: 'grid_view', icon: 'view_module' },
-      { label: vm.$t('general.table'), val: 'view_list', icon: 'view_list' },
+      {
+        label: vm.$t('general.grid'),
+        val: 'grid_view',
+        icon: 'mdi-view-module'
+      },
+      {
+        label: vm.$t('general.table'),
+        val: 'view_list',
+        icon: 'mdi-view-list'
+      },
       {
         label: vm.$tc('general.favorite', 2),
         val: 'favorites_view',
-        icon: 'favorite'
+        icon: 'mdi-heart'
       }
     ],
     pagination: {

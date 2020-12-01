@@ -3,7 +3,6 @@
     v-model="show"
     max-width="800px"
     persistent
-    scrollable
   >
     <v-card class="contact-edit-modal">
       <v-card-title class="headline px-6 py-4 white">
@@ -22,8 +21,8 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text class="vertical-scroll">
-        <v-container fluid>
+      <v-card-text :style="viewPortStyles" class="vertical-scroll">
+        <v-container>
           <v-form ref="form">
             <v-row
               align="center"
@@ -32,7 +31,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Title
                     </v-col>
                   </v-row>
@@ -54,7 +53,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Vendor
                     </v-col>
                   </v-row>
@@ -93,7 +92,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Commitment Account
                     </v-col>
                   </v-row>
@@ -111,7 +110,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Line number
                     </v-col>
                   </v-row>
@@ -132,7 +131,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Fiscal year
                     </v-col>
                   </v-row>
@@ -153,7 +152,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Amount
                     </v-col>
                   </v-row>
@@ -162,8 +161,7 @@
               <v-col cols="7">
                 <money
                   v-model="lineItem.amount"
-                  v-bind="money"
-                />
+                  v-bind="money"/>
               </v-col>
             </v-row>
 
@@ -174,7 +172,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Cost per item
                     </v-col>
                   </v-row>
@@ -195,7 +193,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Invoice total
                     </v-col>
                   </v-row>
@@ -216,7 +214,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Quantity
                     </v-col>
                   </v-row>
@@ -234,7 +232,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Quantity amount
                     </v-col>
                   </v-row>
@@ -255,7 +253,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Tax amount
                     </v-col>
                   </v-row>
@@ -276,7 +274,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Total open amount with tax
                     </v-col>
                   </v-row>
@@ -297,7 +295,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Total PO line amount
                     </v-col>
                   </v-row>
@@ -318,7 +316,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Description
                     </v-col>
                   </v-row>
@@ -339,7 +337,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Start Date
                     </v-col>
                   </v-row>
@@ -359,12 +357,15 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="lineItem.startDateText"
-                      append-icon="calendar_today"
                       color="blue"
                       label="Start Date"
                       mask="date"
                       v-on="on"
-                    />
+                    >
+                    <template #append>
+                      <v-icon>mdi-calendar-today</v-icon>
+                    </template> 
+                    </v-text-field>
                   </template>
                   <v-date-picker
                     v-model="startDate"
@@ -381,7 +382,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Delivery Date
                     </v-col>
                   </v-row>
@@ -401,7 +402,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       v-model="lineItem.deliveryDateText"
-                      append-icon="calendar_today"
+                      append-icon="mdi-calendar-today"
                       color="blue"
                       label="Delivery Date"
                       mask="date"
@@ -477,7 +478,12 @@ export default {
         precision: 2,
         masked: false
       },
-      lineItem: {}
+      lineItem: {},
+      viewPortHeight:
+        Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        ) * 0.6
     }
   },
   firestore() {
@@ -494,6 +500,9 @@ export default {
     return aux
   },
   computed: {
+    viewPortStyles() {
+      return {height: `${this.viewPortHeight}px !important`}
+    },
     startDate: {
       get: function () {
         if (this.lineItem.startDate && this.lineItem.startDate > 0) {
@@ -598,6 +607,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-money{
+  padding: 5px;
+  width: 100%;
+  border-bottom: 1px solid gray
+}
+
+.v-money:focus {
+  border-bottom: 1px solid var(--v-primary-base)
+}
 .v-avatar {
   left: 50%;
   transform: translate(-50%);

@@ -40,8 +40,8 @@ export default {
   /* eslint-disable no-console */
   data() {
     return {
-      from: 'UrEjqmDeTIpYojXd3Td4',
-      to: 'usIzRyTXgJrqUJ4t5qKY',
+      from: '',
+      to: '',
       type: 'commitments',
       types: ['commitments', 'spendings'],
       loading: false

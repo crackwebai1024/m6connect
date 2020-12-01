@@ -80,7 +80,7 @@ const actions = {
               'number',
               'paidDateText',
               'po_number',
-              { files: ['name', 'url', 'file', 'size', 'path'] },
+              //{ files: ['name', 'url', 'file', 'size', 'path'] },
               { commitment: ['id', 'number', 'vendor'] },
               { budget_category: ['id', 'name', 'code'] }
             ]

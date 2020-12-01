@@ -1,35 +1,28 @@
 <template>
-  <v-container class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-main-content">
+  <v-container class="container--fluid d-flex dont-show-scroll h-full vertical-scroll w-main-content">
     <!-- General use list component-->
-    <template v-if="getScreenStatus()">
-      <record-container
-        class="main-content mx-auto"
-        :data="getRecordFullScreen()"
-      />
-    </template>
-    <template v-else>
-      <!-- Companies List Component (add main-content class)-->
-      <app-template
-        :edit-panel="true"
+    <!-- Companies List Component (add main-content class)-->
+    <v-row>
+      <app-template-plain
+        :props-dialog="true"
       >
-        <v-btn
-          slot="actionbtn"
-          class="capitalize white"
-          text
-        >
-          Capital Projects
-        </v-btn>
         <div
           slot="header"
           class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
         >
           <div class="align-center d-flex">
             <div>
-              <v-img
+              <v-img v-if="project.projectImage"
                 alt="Project Image"
                 height="150"
                 :src="project.projectImage"
               />
+              <div v-else style='width: 150px; height: 150px; border-radius: 5px'
+                  class="ml-16 mr-8 grey lighten-3 d-flex justify-center items-center">
+                <v-icon color='grey lighten-1' size='38'>
+                  mdi-image-filter-hdr
+                </v-icon>
+              </div>
             </div>
             <div class="ml-8">
               <h2>{{ $h.dg(project, 'title', '') }}</h2>
@@ -85,9 +78,90 @@
                 class="card-custom-shadow mb-3 px-6 py-5 rounded white"
               >
                 <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
-                  Information
+                  Project Information
                 </h3>
-                <div class="overflow-hidden">
+                <v-row>
+                  <v-col>
+                    <v-input class='mb-4' prepend-icon='mdi-clipboard-multiple' messages='Budget Status'>
+                      <b class="grey--text text--darken-3">Active</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-percent-outline' messages='Completed'>
+                      <b class="grey--text text--darken-3">0 %</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='Type'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='Phase'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-clipboard-account' messages='Creator'>
+                      <b class="grey--text text--darken-3">D C4</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-domain' messages='Campus'>
+                      <b class="grey--text text--darken-3">A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-office-building-marker-outline' messages='Address'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-shape-outline' messages='Category'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-ruler-square' messages='Square Footage'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-briefcase-account-outline' messages='General Contractor'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='Regulatory'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='FY Approved'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                  </v-col>
+                </v-row>
+                <v-divider></v-divider>
+                <v-row>
+                  <v-col>
+                    <v-input class='mb-4' prepend-icon='mdi-calendar-clock' messages='Start Date'>
+                      <b class="grey--text text--darken-3">10/31/2020</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-calendar-multiple-check' messages='End Date'>
+                      <b class="grey--text text--darken-3">12/30/2020</b>
+                    </v-input>
+                  </v-col>
+                </v-row>
+                <v-divider></v-divider>
+                <v-row>
+                  <v-col>
+                    <v-input class='mb-4' prepend-icon='mdi-calendar-clock' messages='Construction Start Date'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-calendar-cursor' messages='Phase Target Date'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-percent-outline' messages='% Complete Budget'>
+                      <b class="grey--text text--darken-3">0</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-calendar-multiple-check' messages='Construction End Date'>
+                      <b class="grey--text text--darken-3">N/A</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-calendar-cursor' messages='Current FY Proposed Date'>
+                      <b class="grey--text text--darken-3">$ 0.00</b>
+                    </v-input>
+                    <v-input class='mb-4' prepend-icon='mdi-percent-outline' messages='% Complete Schedule'>
+                      <b class="grey--text text--darken-3">46</b>
+                    </v-input>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-input messages='Description'>
+                      <b class="grey--text text--darken-3 text--lighten-2">N/A</b>
+                    </v-input>
+                  </v-col>
+                </v-row>
+                <div class="overflow-hidden" style='display:none'>
                   <div class="align-center d-flex my-3">
                     <v-icon
                       class="grey--text text--darken-3"
@@ -95,7 +169,7 @@
                     >
                       mdi-clipboard-file-outline
                     </v-icon>
-                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
                       Company Name
                     </p>
                   </div>
@@ -106,7 +180,7 @@
                     >
                       mdi-email-outline
                     </v-icon>
-                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
                       company@gmail.com
                     </p>
                   </div>
@@ -117,7 +191,7 @@
                     >
                       mdi-clipboard-file-outline
                     </v-icon>
-                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
                       Company Last Name
                     </p>
                   </div>
@@ -128,7 +202,7 @@
                     >
                       mdi-phone
                     </v-icon>
-                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
                       (+51) 9874363722
                     </p>
                   </div>
@@ -139,7 +213,7 @@
                     >
                       mdi-earth
                     </v-icon>
-                    <p class="black--text font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
                       www.company.com
                     </p>
                   </div>
@@ -179,16 +253,20 @@
                 <financial-spendings />
               </template>
             </panel-full>
+            <panel-full>
+              <template slot="content">
+                <budgets />
+              </template>
+            </panel-full>
             <v-spacer />
-            <!--            <panel-two-columns>-->
-            <!--              <div-->
-            <!--                slot="leftPanel"-->
-            <!--              />-->
-
-            <!--              <div-->
-            <!--                slot="rightPanel"-->
-            <!--              />-->
-            <!--            </panel-two-columns>-->
+            <!-- <panel-two-columns>
+                <div
+                  slot="leftPanel"
+                />
+                <div
+                  slot="rightPanel"
+                />
+              </panel-two-columns> -->
           </template>
           <!--FINANCIALS-->
 
@@ -226,20 +304,21 @@
           </template>
           <!--SCHEDULE-->
         </div>
-      </app-template>
-    </template>
+      </app-template-plain>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
-import AppTemplate from '@/views/Home/AppTemplate'
+import AppTemplatePlain from '@/views/Home/AppTemplatePlain'
 import PanelFull from '@/components/AppBuilder/Content/PanelFull'
 import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import M6Show from '@/modules/cpm/_layouts/M6Show.vue'
 
 import FinancialCostSummary from '@/modules/cpm/components/projects/panels/FinancialCostSummary'
+import Budgets from '@/modules/cpm/components/projects/panels/Financial/Budgets'
 import Reconciliation from '@/modules/cpm/components/projects/panels/Reconciliation'
 import FinancialCommitments from '@/modules/cpm/components/projects/panels/FinancialCommitments'
 import FinancialSpendings from '@/modules/cpm/components/projects/panels/FinancialSpendings'
@@ -257,7 +336,7 @@ export default {
   name: 'Apps',
   components: {
     RecordContainer,
-    AppTemplate,
+    AppTemplatePlain,
     PanelFull,
     PanelTwoColumns,
     Milestones,
@@ -267,7 +346,8 @@ export default {
     FinancialCommitments,
     FinancialSpendings,
     Schedule,
-    Forecasts
+    Forecasts,
+    Budgets
 
   },
   data: () => ({
@@ -282,7 +362,7 @@ export default {
     showColumnRight: true,
     project: {},
     type: 'project',
-    tabs: ['Home', 'Financials', 'Schedule'],
+    tabs: ['Home', 'Financials'],
     activeTab: 0
   }),
   computed: {

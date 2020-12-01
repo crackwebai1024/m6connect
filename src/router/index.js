@@ -14,6 +14,7 @@ const Companies = () => import(/* webpackChunkName: 'Companies' */ '@/components
 const Apps = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps')
 const AppsBuilderList = () => import(/* webpackChunkName: 'Apps' */ '@/components/Apps/AppBuilder')
 const CPM = () => import(/* webpackChunkName: 'Store' */ '@/components/CPM')
+const Projects = () => import(/* webpackChunkName: 'Store' */ '@/views/Projects/index')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShowBlank.vue')
 const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
@@ -104,9 +105,11 @@ const router = new VueRouter({
       path: "/cpm/:id",
       name: "cpm",
       component: CPM,
-      meta: {
-        public: true
-      }
+    },
+    {
+      path: "/app/cpm",
+      name: "app.cpm",
+      component: Projects,
     },
     {
       path: "/cpm/import/tool",
@@ -144,19 +147,19 @@ router.beforeEach(async (to, from, next) => {
       const { data: userLogged } = await store.dispatch('Auth/getUserData')
 
       // Start GSChat
-      await store.dispatch('GSChat/getGSToken', userLogged)
-      const user = {
-        id: userLogged.id,
-        name: `${userLogged.firstName} ${userLogged.lastName}`,
-        image: userLogged.profilePic
-      }
-      await store.dispatch('GSChat/setUser', user)
-      await store.dispatch('GSChat/retrieveChats', userLogged.id)
+      // await store.dispatch('GSChat/getGSToken', userLogged)
+      // const user = {
+      //   id: userLogged.id,
+      //   name: `${userLogged.firstName} ${userLogged.lastName}`,
+      //   image: userLogged.profilePic
+      // }
+      // await store.dispatch('GSChat/setUser', user)
+      // await store.dispatch('GSChat/retrieveChats', userLogged.id)
 
       // Start GSFeed
-      await store.dispatch('GSFeed/getGSFeedToken', userLogged)
-      await store.dispatch('GSFeed/setUser', user)
-      await store.dispatch('GSFeed/setCompanyFeed', userLogged.id)
+      // await store.dispatch('GSFeed/getGSFeedToken', userLogged)
+      // await store.dispatch('GSFeed/setUser', user)
+      // await store.dispatch('GSFeed/setCompanyFeed', userLogged.id)
     }
   }
 

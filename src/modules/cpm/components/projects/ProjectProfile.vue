@@ -296,10 +296,10 @@
         <v-btn
           v-if="!showPanelProject"
           class="btn-ticket"
-          text
           :loading="loading"
           small
           target="_new"
+          text
           @click="showApprovalModal = true"
         >
           Approve Project
@@ -307,9 +307,9 @@
 
         <v-btn
           class="btn-ticket"
-          text
           small
           target="_new"
+          text
           @click="dialogSoon = true"
         >
           Print
@@ -524,19 +524,19 @@ export default {
       return [
         {
           title: this.$t('cpm.projectProfile.sidebar.financials'),
-          icon: 'account_balance',
+          icon: 'mdi-scale-balance',
           group: 'financials',
           access: this.access.financials
         },
         {
           title: this.$t('cpm.projectProfile.sidebar.schedule'),
-          icon: 'calendar_today',
+          icon: 'mdi-calendar',
           group: 'schedule',
           access: this.access.schedule
         },
         {
           title: this.$t('cpm.projectProfile.sidebar.files'),
-          icon: 'folder_open',
+          icon: 'mdi-folder-open',
           id: 'step11',
           group: 'files',
           access: this.access.files

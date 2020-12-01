@@ -35,11 +35,11 @@
         mdi-plus
       </v-icon>
 
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="pointer"
+            class="cursor grey--text ml-2 text--darken-2"
             color="white"
             v-on="on"
             @click="openSettingModal"
@@ -47,7 +47,7 @@
             mdi-cog
           </v-icon>
         </template>
-        <span>{{ $t('cpm.projects.budgetPanel.settings') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('cpm.projects.budgetPanel.settings') }}</span>
       </v-tooltip>
     </template>
 
@@ -65,9 +65,9 @@
     </v-row>
 
     <v-data-table
+      :footer-props="fProps"
       :headers="headers"
       :items="budgets"
-      :rows-per-page-items="[5, 10, 25, { text: 'All', value: -1 }]"
     >
       <template v-slot:items="props">
         <td>{{ props.item.title }}</td>
@@ -92,6 +92,7 @@
 
     <!--DELETE MODAL-->
     <m6-confirm-delete
+      v-if="showBudgetDeleteModal"
       :message="$t('cpm.projects.budgetPanel.confirmBudget')"
       :show="showBudgetDeleteModal"
       :title="$t('cpm.projects.budgetPanel.deleteBudget')"
@@ -146,6 +147,9 @@ export default {
 
   data() {
     return {
+      fProps: {
+        'items-per-page-options': [5, 10, 25, 100, { text: 'All', value: -1 }]
+      },
       isAdmin: true,
       showSettings: false,
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),

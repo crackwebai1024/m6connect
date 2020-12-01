@@ -3,23 +3,20 @@
     v-model="show"
     max-width="800px"
     persistent
-    scrollable
   >
     <v-card>
       <v-card-title class="headline px-6 py-4 white">
-        <span class="grey--text text--darken-1">
+        <span class="grey--text text--darken-1 text-center w-full">
           Budget Settings
         </span>
-        <v-spacer />
         <portal-target :name="`budget-${tab}`" />
       </v-card-title>
       <v-divider class="grey lighten-3" />
       <v-tabs
         v-model="tab"
         centered
-        color="#006699"
-        dark
         fixed-tabs
+        color="primary"
       >
         <v-tab>Budget Status</v-tab>
         <v-tab>Budget Categories</v-tab>
@@ -30,6 +27,7 @@
       <v-card-text
         class="pa-0 vertical-scroll"
         :style="{ height: getViewPortHeight }"
+        
       >
         <v-container
           class="pa-0"
@@ -102,3 +100,7 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+$dialog-max-height: 70%
+</style>
