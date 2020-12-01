@@ -565,11 +565,11 @@ export default {
       this.project.phaseTargetDateText = this.parseDate(newVal)
     },
 
-    settings() {
+    async settings() {
       let projectNumber = this.$h.dg(this.settings, 'nextProjectNumber', 0)
       if (!projectNumber) {
         projectNumber = 1
-        db.collection('settings')
+        await db.collection('settings')
           .doc(this.currentCompany.id)
           .collection(`${this.settingCollectionName}`)
           .doc('projects')
@@ -629,14 +629,41 @@ export default {
     }
   },
   mounted() {
-    Promise.all([
-      this.getSettings(),
-      this.getVendors(),
-      this.getStandards(),
-      this.getGanttSettings()
-    ])
+    this.checkCompany('settings')
   },
   methods: {
+    async continueFirestore() {
+      this.users = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('users'),
+      this.roles = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('roles')
+    },
+    getAllSettings() {
+      Promise.all([
+        this.getSettings(),
+        this.getVendors(),
+        this.getStandards(),
+        this.getGanttSettings()
+      ])
+    },
+    checkCompany(type) {
+      const self = this
+      setTimeout(function () {
+        if (self.currentCompany !== undefined) {
+          type == 'firestore' ? self.continueFirestore() : self.getAllSettings()
+          self.getAllSettings()
+          return true
+        } else {
+          self.checkCompany()
+        }
+      }, 500)
+    },
     getGanttSettings() {
       return new Promise(async (resolve, reject) => {
         try {
@@ -680,7 +707,7 @@ export default {
         try {
           const snap = await db
             .collection('settings')
-            .doc(this.currentCompany.id)
+            .doc(this.currentCompany.id.toString())
             .collection(`${this.settingCollectionName}`)
             .doc('projects')
             .get()
@@ -770,7 +797,7 @@ export default {
       user.value = window.Drupal.settings.m6_platform.uid
       return user
     },
-    create() {
+    async create() {
       if (this.project.startDate) {
         this.project.startDate = new Date(this.project.startDate).toISOString()
       }
@@ -1079,7 +1106,7 @@ export default {
             project.selectedGantt = forecasted
           }
         }
-        db.collection('cpm_projects')
+        await db.collection('cpm_projects')
           .add(project)
           .then(doc => {
             this.project.id = doc.id
@@ -1127,10 +1154,10 @@ export default {
         this.$snotify.error('please fill all required fields', 'Error')
       }
     },
-    updateNextProjectNumber() {
+    async updateNextProjectNumber() {
       let currentNumber = this.$h.dg(this.settings, 'nextProjectNumber', 0)
       const nextProjectNumber = ++currentNumber
-      db.collection('settings')
+      await db.collection('settings')
         .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('projects')
@@ -1138,19 +1165,9 @@ export default {
         .catch(console.error)
     }
   },
-  firestore() {
-    return {
-      users: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('users'),
-      roles: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('roles')
-    }
+  async firestore() {
+    this.checkCompany('firestore')
+    return true
   }
 }
 </script>
