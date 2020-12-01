@@ -742,7 +742,12 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
+        <v-card-text class="vertical-scroll"
+          :style="{
+            height: getViewPortHeight,
+            height: method === 'add' ? '78vh' : '70vh',
+            overflow: 'auto'
+          }">
           <v-form
             ref="formLineItem"
             v-model="validLineItem"
@@ -1149,13 +1154,13 @@
             {{ $tc('cpm.projects.lineItem', 1) }}
           </span>
           <v-chip
-            class="absolute headling px-3 py-1 text-center white--text"
-            color="blue darken-4"
-            dark
+            class="absolute headling px-3 py-1 text-center blue darken-4"
             style="left: 43%;"
           >
-            {{ $tc('general.invoice', 1) }}# :
-            {{ spendingToShow.number }}
+            <b class="white--text">
+              {{ $tc('general.invoice', 1) }}# :
+              {{ spendingToShow.number }}
+            </b>
           </v-chip>
           <v-spacer />
           <v-btn
@@ -1248,7 +1253,7 @@
           </v-container>
         </v-card-text>
 
-        <v-card-actions>
+        <v-card-actions class='px-5'>
           <v-spacer />
 
           <v-btn
@@ -1605,7 +1610,7 @@ export default {
     },
 
     getViewPortHeight() {
-      return `${this.viewPortHeight}px`
+      return `${this.viewPortHeight}px !important`
     },
     budgetCategoryErrors() {
       if (

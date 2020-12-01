@@ -1,51 +1,59 @@
 <template>
     <app-template  :props-dialog="showSelf" :isPersistent="$route.name == 'record.show'" >
-        <div slot="header" class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
-            
+        
+        <div slot="header">
             <v-btn 
                 icon
-                color="red darken-1"
+                absolute
+                left
+                top
+                class='grey lighten-2'
+                color="grey darken-2"
                 :to="{ name: 'apps', params: {} }"
             >
                 <v-icon>mdi-close</v-icon>
             </v-btn>
-            <div class="d-flex align-center">
-                <v-img
-                    v-if="record.image"
-                    :alt="record.image" 
-                    class="rounded" 
-                    width="180" 
-                    height="150" 
-                    :src="record.image"
-                />
-
-                <v-icon size="180" v-else >mdi-store</v-icon>
-
-                <div class="ml-8">
-                    <p class="font-weight-regular text-h7 mb-1">{{record['record_number']}}</p>
-                    <v-spacer></v-spacer>
-                    <p class="font-weight-regular text-h5 mb-1">{{ record.title }}</p>
-                </div>
-            </div>
-            <v-row align="center" no-gutters>
-                <v-col cols="7"></v-col>
-                <v-col cols="2">
+            <div style='position: relative' class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
+                <v-col cols='3' class='d-flex pa-0 pt-2 align-center' style='position: absolute; top: 0; right: 0'>
+                    <div class='d-flex align-center flex-grow-1 justify-end'>
+                        <div class="d-flex align-center">
+                            <v-img
+                            v-if="app.iconLink"
+                            :alt="app.iconLink"
+                            class="rounded d-inline-block" 
+                            width="50" 
+                            height="50" 
+                            :src="app.iconLink"
+                            />
+                            <v-icon size="50" v-else class="grey lighten-2 rounded d-inline-block">mdi-store</v-icon>
+                        </div>      
+                    </div>
+                    <div class='d-flex justify-right px-2'>
+                        <p class='align-self-center font-weight-bold ma-0'>{{app['title'] || 'APP title'}}</p>
+                    </div>
+                </v-col>
+                <div class="d-flex align-center">
                     <v-img
-                        v-if="app.iconLink"
-                        :alt="app.iconLink" 
-                        class="rounded d-inline-block" 
-                        width="50" 
-                        height="70" 
-                        :src="app.iconLink"
+                        v-if="record.image"
+                        :alt="record.image" 
+                        class="rounded" 
+                        width="180" 
+                        height="150" 
+                        :src="record.image"
                     />
 
-                    <v-icon size="100" v-else class="d-inline-block">mdi-store</v-icon>
-                </v-col>
-                <v-col cols="3">
-                    <span class="ml-5 d-inline-block">{{app['title']}}</span>
-                </v-col>
+                    <v-icon size="180" v-else >mdi-store</v-icon>
 
-            </v-row>
+                    <div class="ml-8">
+                        <p class="font-weight-regular text-h7 mb-1">{{record['record_number']}}</p>
+                        <v-spacer></v-spacer>
+                        <p class="font-weight-regular text-h5 mb-1">{{ record.title }}</p>
+                    </div>
+                </div>
+                <v-row align="center" no-gutters>
+                    <v-col cols="7"></v-col>
+                </v-row>
+            </div>
         </div>
         <div slot="tabs" class="d-flex align-center">
             <v-tabs
@@ -142,7 +150,7 @@ export default {
     methods: {
         ...mapActions('AppBuilder', {
             getApp: 'getApp'
-        }),
+        })
         ...mapMutations('RecordsInstance', {
             displayAppBuilderShow: 'displayAppBuilderShow'
         }),

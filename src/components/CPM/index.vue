@@ -58,14 +58,6 @@
           slot="btns"
           class="align-center d-flex"
         >
-          <v-btn
-            class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
-            elevation="0"
-            icon
-            light
-          >
-            <v-icon>mdi-magnify</v-icon>
-          </v-btn>
         </div>
         <div
           slot="content"
