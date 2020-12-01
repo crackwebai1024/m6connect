@@ -187,7 +187,7 @@ const typeMap = {
     {
       json: 'image',
       js: 'image',
-      typ: u(undefined, '')
+      typ: u(undefined, u(null, ''))
     },
     {
       json: 'created_at',
