@@ -12,14 +12,21 @@
         >
           <div class="align-center d-flex">
             <div>
-              <v-img v-if="project.projectImage"
+              <v-img
+                v-if="project.projectImage"
                 alt="Project Image"
                 height="150"
                 :src="project.projectImage"
               />
-              <div v-else style='width: 150px; height: 150px; border-radius: 5px'
-                  class="ml-16 mr-8 grey lighten-3 d-flex justify-center items-center">
-                <v-icon color='grey lighten-1' size='38'>
+              <div
+                v-else
+                class="d-flex grey items-center justify-center lighten-3 ml-16 mr-8"
+                style="width: 150px; height: 150px; border-radius: 5px"
+              >
+                <v-icon
+                  color="grey lighten-1"
+                  size="38"
+                >
                   mdi-image-filter-hdr
                 </v-icon>
               </div>
@@ -82,86 +89,169 @@
                 </h3>
                 <v-row>
                   <v-col>
-                    <v-input class='mb-4' prepend-icon='mdi-clipboard-multiple' messages='Budget Status'>
+                    <v-input
+                      class="mb-4"
+                      messages="Budget Status"
+                      prepend-icon="mdi-clipboard-multiple"
+                    >
                       <b class="grey--text text--darken-3">Active</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-percent-outline' messages='Completed'>
+                    <v-input
+                      class="mb-4"
+                      messages="Completed"
+                      prepend-icon="mdi-percent-outline"
+                    >
                       <b class="grey--text text--darken-3">0 %</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='Type'>
+                    <v-input
+                      class="mb-4"
+                      messages="Type"
+                      prepend-icon="mdi-information-outline"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='Phase'>
+                    <v-input
+                      class="mb-4"
+                      messages="Phase"
+                      prepend-icon="mdi-information-outline"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-clipboard-account' messages='Creator'>
+                    <v-input
+                      class="mb-4"
+                      messages="Creator"
+                      prepend-icon="mdi-clipboard-account"
+                    >
                       <b class="grey--text text--darken-3">D C4</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-domain' messages='Campus'>
+                    <v-input
+                      class="mb-4"
+                      messages="Campus"
+                      prepend-icon="mdi-domain"
+                    >
                       <b class="grey--text text--darken-3">A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-office-building-marker-outline' messages='Address'>
+                    <v-input
+                      class="mb-4"
+                      messages="Address"
+                      prepend-icon="mdi-office-building-marker-outline"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-shape-outline' messages='Category'>
+                    <v-input
+                      class="mb-4"
+                      messages="Category"
+                      prepend-icon="mdi-shape-outline"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-ruler-square' messages='Square Footage'>
+                    <v-input
+                      class="mb-4"
+                      messages="Square Footage"
+                      prepend-icon="mdi-ruler-square"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-briefcase-account-outline' messages='General Contractor'>
+                    <v-input
+                      class="mb-4"
+                      messages="General Contractor"
+                      prepend-icon="mdi-briefcase-account-outline"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='Regulatory'>
+                    <v-input
+                      class="mb-4"
+                      messages="Regulatory"
+                      prepend-icon="mdi-information-outline"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-information-outline' messages='FY Approved'>
+                    <v-input
+                      class="mb-4"
+                      messages="FY Approved"
+                      prepend-icon="mdi-information-outline"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
                   </v-col>
                 </v-row>
-                <v-divider></v-divider>
+                <v-divider />
                 <v-row>
                   <v-col>
-                    <v-input class='mb-4' prepend-icon='mdi-calendar-clock' messages='Start Date'>
+                    <v-input
+                      class="mb-4"
+                      messages="Start Date"
+                      prepend-icon="mdi-calendar-clock"
+                    >
                       <b class="grey--text text--darken-3">10/31/2020</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-calendar-multiple-check' messages='End Date'>
+                    <v-input
+                      class="mb-4"
+                      messages="End Date"
+                      prepend-icon="mdi-calendar-multiple-check"
+                    >
                       <b class="grey--text text--darken-3">12/30/2020</b>
                     </v-input>
                   </v-col>
                 </v-row>
-                <v-divider></v-divider>
+                <v-divider />
                 <v-row>
                   <v-col>
-                    <v-input class='mb-4' prepend-icon='mdi-calendar-clock' messages='Construction Start Date'>
+                    <v-input
+                      class="mb-4"
+                      messages="Construction Start Date"
+                      prepend-icon="mdi-calendar-clock"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-calendar-cursor' messages='Phase Target Date'>
+                    <v-input
+                      class="mb-4"
+                      messages="Phase Target Date"
+                      prepend-icon="mdi-calendar-cursor"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-percent-outline' messages='% Complete Budget'>
+                    <v-input
+                      class="mb-4"
+                      messages="% Complete Budget"
+                      prepend-icon="mdi-percent-outline"
+                    >
                       <b class="grey--text text--darken-3">0</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-calendar-multiple-check' messages='Construction End Date'>
+                    <v-input
+                      class="mb-4"
+                      messages="Construction End Date"
+                      prepend-icon="mdi-calendar-multiple-check"
+                    >
                       <b class="grey--text text--darken-3">N/A</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-calendar-cursor' messages='Current FY Proposed Date'>
+                    <v-input
+                      class="mb-4"
+                      messages="Current FY Proposed Date"
+                      prepend-icon="mdi-calendar-cursor"
+                    >
                       <b class="grey--text text--darken-3">$ 0.00</b>
                     </v-input>
-                    <v-input class='mb-4' prepend-icon='mdi-percent-outline' messages='% Complete Schedule'>
+                    <v-input
+                      class="mb-4"
+                      messages="% Complete Schedule"
+                      prepend-icon="mdi-percent-outline"
+                    >
                       <b class="grey--text text--darken-3">46</b>
                     </v-input>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col>
-                    <v-input messages='Description'>
+                    <v-input messages="Description">
                       <b class="grey--text text--darken-3 text--lighten-2">N/A</b>
                     </v-input>
                   </v-col>
                 </v-row>
-                <div class="overflow-hidden" style='display:none'>
+                <div
+                  class="overflow-hidden"
+                  style="display:none"
+                >
                   <div class="align-center d-flex my-3">
                     <v-icon
                       class="grey--text text--darken-3"
@@ -169,7 +259,7 @@
                     >
                       mdi-clipboard-file-outline
                     </v-icon>
-                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="font-weight-ligshten grey--text mb-0 ml-3 text--darken-3 text-body-2 w-4/5">
                       Company Name
                     </p>
                   </div>
@@ -180,7 +270,7 @@
                     >
                       mdi-email-outline
                     </v-icon>
-                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="font-weight-ligshten grey--text mb-0 ml-3 text--darken-3 text-body-2 w-4/5">
                       company@gmail.com
                     </p>
                   </div>
@@ -191,7 +281,7 @@
                     >
                       mdi-clipboard-file-outline
                     </v-icon>
-                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="font-weight-ligshten grey--text mb-0 ml-3 text--darken-3 text-body-2 w-4/5">
                       Company Last Name
                     </p>
                   </div>
@@ -202,7 +292,7 @@
                     >
                       mdi-phone
                     </v-icon>
-                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="font-weight-ligshten grey--text mb-0 ml-3 text--darken-3 text-body-2 w-4/5">
                       (+51) 9874363722
                     </p>
                   </div>
@@ -213,7 +303,7 @@
                     >
                       mdi-earth
                     </v-icon>
-                    <p class="grey--text text--darken-3 font-weight-ligshten mb-0 ml-3 text-body-2 w-4/5">
+                    <p class="font-weight-ligshten grey--text mb-0 ml-3 text--darken-3 text-body-2 w-4/5">
                       www.company.com
                     </p>
                   </div>

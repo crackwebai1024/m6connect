@@ -647,7 +647,7 @@ export default {
     getAllSettings() {
       Promise.all([
         this.getSettings(),
-        this.getVendors(),
+        // this.getVendors(),
         this.getStandards(),
         this.getGanttSettings()
       ])
@@ -731,26 +731,26 @@ export default {
         1}/${newDate.getDate()}/${newDate.getFullYear()}`
     },
 
-    getVendors() {
-      const aux = new Promise(async (resolve, reject) => {
-        try {
-          const response = await axios.post(
-            `/vendor_profiles_o/all/${this.serverParams.page - 1}`,
-            this.serverParams
-          )
-          if (response.data.result) {
-            if (response.data.result) {
-              this.vendors = response.data.result
-            }
-          }
+    // getVendors() {
+    //   const aux = new Promise(async (resolve, reject) => {
+    //     try {
+    //       const response = await axios.post(
+    //         `/vendor_profiles_o/all/${this.serverParams.page - 1}`,
+    //         this.serverParams
+    //       )
+    //       if (response.data.result) {
+    //         if (response.data.result) {
+    //           this.vendors = response.data.result
+    //         }
+    //       }
 
-          resolve(true)
-        } catch (error) {
-          reject(error)
-        }
-      })
-      return aux
-    },
+    //       resolve(true)
+    //     } catch (error) {
+    //       reject(error)
+    //     }
+    //   })
+    //   return aux
+    // },
     getStandards() {
       const aux = new Promise(async (resolve, reject) => {
         try {

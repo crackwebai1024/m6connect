@@ -120,7 +120,7 @@
       :items="resources"
       :options.sync="pagination"
       :server-items-length="pagination.totalItems"
-      @update:pagination="debounceSearch(search, false)"
+      @pagination="debounceSearch(search, false)"
     >
       <template
         slot="item"
