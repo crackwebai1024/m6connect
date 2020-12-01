@@ -49,6 +49,7 @@
     "vue-lodash": "^2.1.2",
     "vue-portal": "^1.0.0",
     "vue-router": "^3.4.3",
+    "vue-select": "^3.10.8",
     "vue-snotify": "^3.2.1",
     "vue-tel-input-vuetify": "^1.2.13",
     "vue2-editor": "^2.10.2",

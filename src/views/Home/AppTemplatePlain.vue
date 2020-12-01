@@ -21,7 +21,7 @@
     <div class="w-full white">
       <slot name="header" />
       <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
-      <div class="align-center d-flex justify-space-between max-w-lg mx-auto py-1 w-full">
+      <div class="align-center d-flex justify-space-between max-w-lg mx-auto px-3 py-1 w-full">
         <slot name="tabs" />
         <v-spacer />
         <slot name="btns" />

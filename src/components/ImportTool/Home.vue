@@ -13,6 +13,30 @@
           </v-card-title>
           <v-divider class="grey lighten-3 z-index" />
           <v-card-text class="pb-5 px-6">
+            <div>
+              <h5>Developer Tools</h5>
+              <v-btn @click="useHistorical">
+                Historical Spendings
+              </v-btn>
+
+              <v-btn @click="rollBack('spending')">
+                Rollback Spendings
+              </v-btn>
+
+              <v-btn @click="rollBack('spendingLineItem')">
+                Rollback Spendings
+              </v-btn>
+
+              <v-btn @click="rollBack('commitment')">
+                Rollback Commitments
+              </v-btn>
+
+              <v-btn @click="rollBack('project')">
+                Rollback Projects
+              </v-btn>
+              <v-divider class="grey lighten-3 mt-5 z-index" />
+            </div>
+
             <!-- Upload Document -->
             <v-form>
               <p class="blue--text mb-1 text--lighten-1">
@@ -24,25 +48,6 @@
                 @change="onFileChange"
               >
             </v-form>
-            <v-btn @click="useHistorical">
-              Historical Spendings
-            </v-btn>
-
-            <v-btn @click="rollBack('spending')">
-              Rollback Spendings
-            </v-btn>
-
-            <v-btn @click="rollBack('spendingLineItem')">
-              Rollback Spendings
-            </v-btn>
-
-            <v-btn @click="rollBack('commitment')">
-              Rollback Commitments
-            </v-btn>
-
-            <v-btn @click="rollBack('project')">
-              Rollback Projects
-            </v-btn>
 
             <v-divider class="grey lighten-3 my-2 z-index" />
             <!-- File Upload Errors -->
@@ -1100,7 +1105,7 @@ export default {
         aoc_code: item.spendingLineItem_paid_date || '',
         status: item.spendingLineItem_status || '',
         amount: item.spendingLineItem_amount || '',
-        account_category: item.spendingLineItem_account_category || '',
+        account_category: item.spendingLineItem_account_category || item.spendings_budget_category_code || '',
         cancel_seq: '',
         suffix: '',
         po_code: '',
