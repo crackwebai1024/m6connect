@@ -303,6 +303,42 @@
             </panel-full>
           </template>
           <!--SCHEDULE-->
+
+          <!--DOCUMENT MANAGER-->
+          <template v-if="activeTab === 3">
+            <panel-full>
+              <template slot="content">
+                <project-files />
+              </template>
+            </panel-full>
+          </template>
+          <!--DOCUMENT MANAGER-->
+
+          <!--REPORTS-->
+          <template v-if="activeTab === 4">
+            <panel-full>
+              <template slot="content">
+                <v-row
+                  v-if="!panelSettings.mileSchedule"
+                  class="mt-2"
+                >
+                  <v-col cols="12">
+                    <schedule :type="type" />
+                  </v-col>
+                </v-row>
+
+                <v-row
+                  v-if="isPlannedProject"
+                  class="mt-2"
+                >
+                  <v-col cols="12">
+                    <forecasts />
+                  </v-col>
+                </v-row>
+              </template>
+            </panel-full>
+          </template>
+          <!--REPORTS-->
         </div>
       </app-template-plain>
     </v-row>
@@ -326,6 +362,7 @@ import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia'
 import Milestones from '@/modules/cpm/components/projects/panels/schedule/Milestones'
 import Schedule from '@/modules/cpm/components/projects/panels/schedule/SchedulePanel'
 import Forecasts from '@/modules/cpm/components/projects/panels/Forecasts/ForecastsPanel'
+import ProjectFiles from '@/modules/cpm/components/projects/panels/ProjectFiles'
 import {
   db,
   newFirebaseInit,
@@ -347,7 +384,8 @@ export default {
     FinancialSpendings,
     Schedule,
     Forecasts,
-    Budgets
+    Budgets,
+    ProjectFiles
 
   },
   data: () => ({
@@ -362,7 +400,7 @@ export default {
     showColumnRight: true,
     project: {},
     type: 'project',
-    tabs: ['Home', 'Financials'],
+    tabs: ['Home', 'Financials', 'Schedule', 'Document Manager', 'Reports'],
     activeTab: 0
   }),
   computed: {
