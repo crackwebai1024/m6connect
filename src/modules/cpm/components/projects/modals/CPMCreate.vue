@@ -629,14 +629,41 @@ export default {
     }
   },
   mounted() {
-    Promise.all([
-      this.getSettings(),
-      this.getVendors(),
-      this.getStandards(),
-      this.getGanttSettings()
-    ])
+    this.checkCompany('settings')
   },
   methods: {
+    async continueFirestore() {
+      this.users = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('users'),
+      this.roles = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('roles')
+    },
+    getAllSettings() {
+      Promise.all([
+        this.getSettings(),
+        this.getVendors(),
+        this.getStandards(),
+        this.getGanttSettings()
+      ])
+    },
+    checkCompany(type) {
+      const self = this
+      setTimeout(function () {
+        if (self.currentCompany !== undefined) {
+          type == 'firestore' ? self.continueFirestore() : self.getAllSettings()
+          self.getAllSettings()
+          return true
+        } else {
+          self.checkCompany()
+        }
+      }, 500)
+    },
     getGanttSettings() {
       return new Promise(async (resolve, reject) => {
         try {
@@ -680,7 +707,7 @@ export default {
         try {
           const snap = await db
             .collection('settings')
-            .doc(this.currentCompany.id)
+            .doc(this.currentCompany.id.toString())
             .collection(`${this.settingCollectionName}`)
             .doc('projects')
             .get()
@@ -1139,16 +1166,7 @@ export default {
     }
   },
   async firestore() {
-    users = await db
-      .collection('settings')
-      .doc(this.currentCompany.id)
-      .collection(`${this.settingCollectionName}`)
-      .doc('users'),
-    roles = await db
-      .collection('settings')
-      .doc(this.currentCompany.id)
-      .collection(`${this.settingCollectionName}`)
-      .doc('roles')
+    this.checkCompany('firestore')
     return true
   }
 }
