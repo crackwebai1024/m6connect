@@ -126,258 +126,202 @@
       <v-data-iterator
         v-if="isGridView"
         class="fullWidth"
+        content-tag="v-layout"
         :items="resources"
         :options.sync="pagination"
-        row
         :server-items-length="pagination.totalItems"
         sort-by
         wrap
-        @update:pagination="initialized ? debounceSearch(search) : null"
+        @pagination="initialized ? debounceSearch(search) : null"
       >
         <template v-slot:no-data>
           <m6-no-results />
         </template>
 
-        <template v-slot:item="{ index, item }">
-          <!-- fake data -->
-          <div class="d-flex flex-wrap w-full">
-            <div
-              v-for="i in 7"
-              :key="'fakedata'+i"
-              class="ma-0 my-2 pa-0 px-2 rounded"
-              style="width: 25%;"
+        <template v-slot:default="props">
+          <v-row>
+            <v-col
+              v-for=" (item, index) in props.items"
+              :key="item.id"
+              cols="12"
+              lg="3"
+              md="4"
+              sm="6"
             >
-              <div
-                class="card-custom-shadow pointer rounded white"
-                @click="seeProjectPanel('123')"
+              <v-card
+                id="step6"
+                v-intro-if="index === 0"
+                class="cpmCard pointer"
+                @mouseleave="showDeleteIconApplication = null"
+                @mouseover="showDeleteIconApplication = index"
               >
-                <div class="align-center d-flex flex-column pb-2 pt-4">
-                  <img
-                    slot="actionbtn"
-                    :alt="currentCompany.name"
-                    class="rounded-circle"
-                    height="80"
-                    :src="currentCompany.logo"
-                    width="80"
-                  >
-                  <p class="font-weight-bold mb-1 pa-3 text-h6">
-                    Advanced Vendor & Project Reporting
-                  </p>
-                  <p class="font-weight-bold grey--text ma-0 pa-0 text-caption">
-                    PRJ-00017-2020
-                  </p>
-                  <p class="grey--text ma-0 pa-0 text-caption">
-                    (SHC) Sharp Healthcare
-                  </p>
-                  <v-chip
-                    class="my-2 pointer"
-                    pill
-                    v-on="on"
-                  >
-                    <v-avatar left>
-                      <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
-                    </v-avatar>
-                    John Leider
-                  </v-chip>
-                </div>
-                <div class="d-flex ma-0 pa-0">
-                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                    Budget Status
-                  </div>
-                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                    Start Date
-                  </div>
-                </div>
-                <div class="d-flex ma-0 pa-0">
-                  <div class="blue lighten-2 py-2 text-center w-half white--text">
-                    Roadmap
-                  </div>
-                  <div class="blue py-2 text-center w-half white--text">
-                    07/5/2021
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <v-col
-            cols="12"
-            lg="3"
-            md="4"
-            sm="6"
-          >
-            <v-card
-              id="step6"
-              v-intro-if="index === 0"
-              class="cpmCard pointer"
-              @mouseleave="showDeleteIconApplication = null"
-              @mouseover="showDeleteIconApplication = index"
-            >
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    v-if="showDeleteIconApplication === index"
-                    absolute
-                    class="deleteBtn"
-                    color="red"
-                    fab
-                    light
-                    small
-                    v-on="on"
-                    @click="deleteProject(item)"
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                </template>
-
-                <span>{{ $t('cpm.deleteProject') }}</span>
-              </v-tooltip>
-
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    v-if="showDeleteIconApplication === index"
-                    absolute
-                    class="newTabBtn"
-                    color="purple"
-                    fab
-                    small
-                    v-on="on"
-                    @click="goToProject(item, true)"
-                  >
-                    <v-icon>mdi-folder-plus</v-icon>
-                  </v-btn>
-                </template>
-
-                <span>{{ $t('cpm.openNewTab') }}</span>
-              </v-tooltip>
-
-              <v-col
-                class="text-center"
-                cols="12"
-                @click="goToProject(item, false)"
-              >
-                <v-row class="justify-center pt-3">
-                  <v-badge>
-                    <v-avatar
-                      color="grey lighten-4"
-                      size="100"
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      v-if="showDeleteIconApplication === index"
+                      absolute
+                      class="deleteBtn"
+                      color="red"
+                      fab
+                      light
+                      small
+                      v-on="on"
+                      @click="deleteProject(item)"
                     >
-                      <img
-                        v-if="item.projectImage"
-                        :src="item.projectImage"
-                      >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </template>
 
-                      <v-icon
-                        v-else
+                  <span>{{ $t('cpm.deleteProject') }}</span>
+                </v-tooltip>
+
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      v-if="showDeleteIconApplication === index"
+                      absolute
+                      class="newTabBtn"
+                      color="purple"
+                      fab
+                      small
+                      v-on="on"
+                      @click="goToProject(item, true)"
+                    >
+                      <v-icon>mdi-folder-plus</v-icon>
+                    </v-btn>
+                  </template>
+
+                  <span>{{ $t('cpm.openNewTab') }}</span>
+                </v-tooltip>
+
+                <v-col
+                  class="text-center"
+                  cols="12"
+                  @click="goToProject(item, false)"
+                >
+                  <v-row class="justify-center pt-3">
+                    <v-badge>
+                      <v-avatar
+                        color="grey lighten-4"
                         size="100"
                       >
-                        mdi-image
-                      </v-icon>
-                    </v-avatar>
-                  </v-badge>
-                </v-row>
-              </v-col>
+                        <img
+                          v-if="item.projectImage"
+                          :src="item.projectImage"
+                        >
 
-              <v-card-text
-                class="vertical-scroll"
-                @click="goToProject(item, false)"
-              >
-                <div class="mb-2 text-center">
-                  <v-menu
-                    offset-y
-                    open-on-hover
-                    top
-                  >
-                    <template v-slot:activator="{ on }">
-                      <p
-                        class="font-weight-bold headline text-truncate"
-                        v-on="on"
-                      >
+                        <v-icon
+                          v-else
+                          size="100"
+                        >
+                          mdi-image
+                        </v-icon>
+                      </v-avatar>
+                    </v-badge>
+                  </v-row>
+                </v-col>
+
+                <v-card-text
+                  class="vertical-scroll"
+                  @click="goToProject(item, false)"
+                >
+                  <div class="mb-2 text-center">
+                    <v-menu
+                      offset-y
+                      open-on-hover
+                      top
+                    >
+                      <template v-slot:activator="{ on }">
+                        <p
+                          class="font-weight-bold headline text-truncate"
+                          v-on="on"
+                        >
+                          {{ item.title || 'N/A' }}
+                        </p>
+                      </template>
+
+                      <div class="pa-2 white">
                         {{ item.title || 'N/A' }}
-                      </p>
-                    </template>
+                      </div>
+                    </v-menu>
 
-                    <div class="pa-2 white">
-                      {{ item.title || 'N/A' }}
+                    <div class="m6-gray-text">
+                      <span v-if="item.number">
+                        <strong>{{ item.number || 'N/A' }}</strong>
+                      </span>
                     </div>
-                  </v-menu>
 
-                  <div class="m6-gray-text">
-                    <span v-if="item.number">
-                      <strong>{{ item.number || 'N/A' }}</strong>
-                    </span>
-                  </div>
-
-                  <div class="m6-gray-text">
-                    <span v-if="item.campus">
-                      {{ getCampus(item.campus) }}
-                    </span>
-                    <span v-else>&nbsp;</span>
-                  </div>
-
-                  <div
-                    class="customHeight2p5rem m6-gray-text"
-                  >
-                    <span v-if="getManagerLabel(item)">
-                      <v-chip color="grey lighten-4">
-                        <v-avatar>
-                          <img :src="getAvatar(item.manager)">
-                        </v-avatar>
-                        {{ getManagerLabel(item) }}
-                      </v-chip>
-                    </span>
-
-                    <span
-                      v-else
-                      class="size3rem"
-                    >
-                      &nbsp;
-                    </span>
-                  </div>
-                </div>
-              </v-card-text>
-
-              <v-card-actions class="overflow-hidden text-center">
-                <v-row>
-                  <v-col
-                    class="pa-0"
-                    cols="6"
-                  >
-                    <small>{{ $t('cpm.budgetStatus') }}</small>
-
-                    <v-card
-                      class="card-footer"
-                      :color="getColor('listStatus')"
-                      text
-                      tile
-                    >
-                      <span class="py-2 subheading white--text">
-                        {{ item.status || 'N/A' }}
+                    <div class="m6-gray-text">
+                      <span v-if="item.campus">
+                        {{ getCampus(item.campus) }}
                       </span>
-                    </v-card>
-                  </v-col>
+                      <span v-else>&nbsp;</span>
+                    </div>
 
-                  <v-col
-                    class="pa-0"
-                    cols="6"
-                  >
-                    <small>{{ $t('general.startDate') }}</small>
-
-                    <v-card
-                      class="card-footer pt-1"
-                      :color="getColor('listStartDate')"
-                      text
-                      tile
+                    <div
+                      class="customHeight2p5rem m6-gray-text"
                     >
-                      <span class="py-2 subheading white--text">
-                        {{ getDate(item.startDate) }}
+                      <span v-if="getManagerLabel(item)">
+                        <v-chip color="grey lighten-4">
+                          <v-avatar>
+                            <img :src="getAvatar(item.manager)">
+                          </v-avatar>
+                          {{ getManagerLabel(item) }}
+                        </v-chip>
                       </span>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-card-actions>
-            </v-card>
-          </v-col>
+
+                      <span
+                        v-else
+                        class="size3rem"
+                      >
+                        &nbsp;
+                      </span>
+                    </div>
+                  </div>
+                </v-card-text>
+
+                <v-card-actions class="overflow-hidden text-center">
+                  <v-row>
+                    <v-col
+                      class="pa-0"
+                      cols="6"
+                    >
+                      <small>{{ $t('cpm.budgetStatus') }}</small>
+
+                      <v-card
+                        class="card-footer"
+                        :color="getColor('listStatus')"
+                        text
+                        tile
+                      >
+                        <span class="py-2 subheading white--text">
+                          {{ item.status || 'N/A' }}
+                        </span>
+                      </v-card>
+                    </v-col>
+
+                    <v-col
+                      class="pa-0"
+                      cols="6"
+                    >
+                      <small>{{ $t('general.startDate') }}</small>
+
+                      <v-card
+                        class="card-footer pt-1"
+                        :color="getColor('listStartDate')"
+                        text
+                        tile
+                      >
+                        <span class="py-2 subheading white--text">
+                          {{ getDate(item.startDate) }}
+                        </span>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-card-actions>
+              </v-card>
+            </v-col>
+          </v-row>
         </template>
       </v-data-iterator>
 
@@ -387,15 +331,16 @@
       >
         <v-col cols="12">
           <m6-data-table
+            @update:column:
             :footer-props="rowsPerPageItems"
             :headers="headers"
             :items="resources"
             :pagination="5"
             :server-items-length="pagination.totalItems"
-            @update:column:width="
+            width="
               ({ index, width }) => (headersWidth[index] = width)
             "
-            @update:pagination="debounceSearch(search)"
+            @update:options="debounceSearch(search)"
           >
             <template
               slot="items"
@@ -688,8 +633,8 @@ export default {
     numFmt: '"$"#,##0.00;[Red]-"$"#,##0.00',
     showAllMileStones: false,
     defaultColors: { listStatus: '#FF0000', listStartDate: '#008000' },
-    autoInit: false,
-    initialized: false,
+    autoInit: true,
+    initialized: true,
     images: {},
     defaultImage: '/sites/all/themes/m6connect/images/default_userpdf.png',
     user: {},
@@ -724,7 +669,7 @@ export default {
     pagination: {
       sortBy: 'title',
       descending: false,
-      rowsPerPage: 8,
+      itemsPerPage: 8,
       totalItems: 0,
       page: 1
     },
@@ -771,13 +716,8 @@ export default {
     },
 
     rowsPerPageItems() {
-      if (true) {
-        return [8, 16, 24, { text: 'All', value: 10000 }]
-      }
-
-      return [5, 10, 25, { text: 'All', value: 10000 }]
+      return [8, 16, 24, { text: 'All', value: 10000 }]
     },
-
     headers() {
       let headers = [
         {
@@ -1005,7 +945,7 @@ export default {
     indexParameters() {
       const parameters = {
         companyId: this.currentCompany.id,
-        userId: this.$h.dg(window, 'Drupal.settings.m6_platform.uid'),
+        userId: this.currentUser.id,
         filter: { forecasted: this.type === 'forecasted' },
         page: this.pagination.page,
         search: this.search || '',
@@ -1453,12 +1393,12 @@ export default {
     goToProject(proj, newTab) {
       let path = ''
 
-      if (this.$route.fullPath.search('/cpm/projects') !== -1) {
-        path = window.location.origin + `/m6apps#/cpm/projects/${proj.id}`
+      if (this.$route.fullPath.search('/app/cpm') !== -1) {
+        path = window.location.origin + `/cpm/${proj.id}`
       } else if (this.$route.fullPath.search('/cpm/forecasting') !== -1) {
-        path = window.location.origin + `/m6apps#/cpm/forecasting/${proj.id}`
+        path = window.location.origin + `/cpm/forecast/${proj.id}`
       } else {
-        path = `/m6apps#/cpm/projects/${proj.id}`
+        path = `/cpm/${proj.id}`
       }
 
       if (!newTab) {
