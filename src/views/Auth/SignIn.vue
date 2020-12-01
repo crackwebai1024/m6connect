@@ -27,10 +27,11 @@
     </template>
     <template #body>
       <v-form ref="form">
-        <v-container>
+        <v-container class="pb-0" >
           <v-row justify="center">
             <v-col
               cols="10"
+              class="pb-0"
             >
               <v-flex>
                 <v-text-field
@@ -56,12 +57,7 @@
                 />
               </v-flex>
 
-              <v-btn
-                color="#a4ceea"
-                @click="SignIn"
-              >
-                <span class="black--text">{{ $t('SignIn.login') }}</span>
-              </v-btn>
+
             </v-col>
           </v-row>
         </v-container>
@@ -69,6 +65,18 @@
 
       <m6-loading :loading="loading" />
 
+    </template>
+
+    <template #action-btn>
+      <div class="flex-center ">
+        <v-btn
+          color="#a4ceea"
+          @click="SignIn"
+          block
+        >
+          <span class="black--text">{{ $t('SignIn.login') }}</span>
+        </v-btn>
+      </div>
     </template>
   </auth-layout>
 </template>
@@ -183,4 +191,17 @@ export default {
 .float-right {
     float: right;
 }
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  justify-content: center;
+  .v-btn--block {
+    display: block;
+    flex: 0;
+    min-width: 70% !important;
+  }
+}
+
 </style>
