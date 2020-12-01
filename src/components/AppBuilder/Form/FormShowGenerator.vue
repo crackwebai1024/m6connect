@@ -1,34 +1,68 @@
 <template>
-    <v-form ref="form" >
-        <v-container fluid>
-            <v-row>
-                <v-col cols="12" v-for="f in fields" :key="`custom-field-${f.id}`">
-                    <component 
-                        filled
-                        outlined
-                        :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')" 
-                        :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
-                        :label=" $h.dg( f, 'label', '' ) "
-                        :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []" 
-                        v-model="genericRecord[`${f.id}`]"
-                        :items="$h.dg( f, 'metadata.options', [] )"
-                        :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
-                        :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
-                        :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
-                    />
-                </v-col>
-            </v-row>
+  <v-form ref="form">
+    <v-container fluid>
+      <v-row>
+        <v-col
+          v-for="f in fields"
+          :key="`custom-field-${f.id}`"
+          cols="12"
+        >
+          <component
+            :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
+            v-if="f.type === 'referenced'"
+            v-model="genericRecord[`${f.id}`]"
+            :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
+            :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
+            disabled
+            filled
+            :items="$h.dg( f, 'metadata.options', [] )"
+            :label=" $h.dg( f, 'label', '' ) "
+            :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
+            outlined
+            :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+            :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
+          />
+          <component
+            :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')"
+            v-else
+            v-model="genericRecord[`${f.id}`]"
+            :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
+            :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
+            filled
+            :items="$h.dg( f, 'metadata.options', [] )"
+            :label=" $h.dg( f, 'label', '' ) "
+            :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
+            outlined
+            :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+            :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
+          />
+        </v-col>
+      </v-row>
 
-            <v-row v-if="fields.length > 0" >
-                <v-col cols="12" >
-                    <v-spacer></v-spacer>
-                    <v-btn v-if="isEdit" color="green" class="white--text" @click="updating" >update</v-btn>
-                    <v-btn v-else color="green" class="white--text" @click="creating" >save</v-btn>
-                </v-col>
-            </v-row>
-        </v-container>
-        <m6-loading :loading="loading" />
-    </v-form>
+      <v-row v-if="fields.length > 0">
+        <v-col cols="12">
+          <v-spacer />
+          <v-btn
+            v-if="isEdit"
+            class="white--text"
+            color="green"
+            @click="updating"
+          >
+            update
+          </v-btn>
+          <v-btn
+            v-else
+            class="white--text"
+            color="green"
+            @click="creating"
+          >
+            save
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+    <m6-loading :loading="loading" />
+  </v-form>
 </template>
 
 <script>
@@ -40,196 +74,229 @@ import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAu
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
-    components: {
-        VTextField,
-        DatePicker,
-        AppAttachment,
-        VAutocomplete,
-        RadioBtnOptions,            
-        PeopleAutocomplete
+  components: {
+    VTextField,
+    DatePicker,
+    AppAttachment,
+    VAutocomplete,
+    RadioBtnOptions,
+    PeopleAutocomplete
+  },
+
+  props: {
+    fields: {
+      type: Array,
+      default: () => ([])
     },
 
-    props: {
-        fields: {
-            type: Array,
-            default: () => ([])
-        },
+    panel: {
+      type: Object,
+      default: () => ({})
+    }
+  },
 
-        panel: {
-            type: Object,
-            default: () => ({})
-        }
+  data: () => ({
+    typeToComponentMapping: {
+      'timestamp': { component: 'date-picker' },
+      'text': { component: 'v-text-field' },
+      'attachment': { component: 'app-attachment' },
+      'boolean': { component: 'radio-btn-options' },
+      'number': {
+        component: 'v-text-field',
+        type: 'number'
+      },
+      'autocomplete': {
+        component: 'v-autocomplete',
+        multiple: true,
+        chips: true,
+        clearable: true
+      },
+      'people': {
+        component: 'people-autocomplete',
+        multiple: true,
+        chips: true,
+        clearable: true
+      }
     },
+    genericRecord: {},
+    formRules: {
+      standard: [v => !!v || 'This field is required']
+    },
+    loading: false,
+    isEdit: false,
+    typesToIds: {},
+    complexDataStructs: { autocomplete: true, people: true }
+  }),
 
-    data: () => ({
-        typeToComponentMapping: {
-            'timestamp':    { component: 'date-picker'       },
-            'text':         { component: 'v-text-field'      },
-            'attachment':   { component: 'app-attachment'    },
-            'boolean':      { component: 'radio-btn-options' },
-            'number':       { component: 'v-text-field',        type: 'number' },
-            'autocomplete': { component: 'v-autocomplete',      multiple: true, chips: true, clearable: true },
-            'people':       { component: 'people-autocomplete', multiple: true, chips: true, clearable: true }
-        },
-        genericRecord: {},
-        formRules: {
-            standard: [ v => !!v || 'This field is required', ]
-        },
-        loading: false,
-        isEdit: false,
-        typesToIds: {},
-        complexDataStructs: { autocomplete: true, people: true }
+  computed: {
+    ...mapState('RecordsInstance', {
+      currentRecord: 'currentRecord',
+      showSelf: 'displayAppBuilderShow'
+    })
+  },
+
+  methods: {
+    ...mapActions('AppBuilder', {
+      bulkSaveFieldValues: 'bulkSaveFieldValues',
+      getFieldValuesPerPanel: 'getFieldValuesPerPanel',
+      updateSomeFieldValues: 'updateSomeFieldValues',
+      deleteFieldsByIds: 'deleteFieldsByIds'
     }),
 
-    computed: {
-        ...mapState('RecordsInstance', {
-            currentRecord: 'currentRecord',
-            showSelf: 'displayAppBuilderShow'
-        }),
-    },
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess'
+    }),
 
-    methods: {
-        ...mapActions('AppBuilder', {
-            bulkSaveFieldValues: 'bulkSaveFieldValues',
-            getFieldValuesPerPanel: 'getFieldValuesPerPanel',
-            updateSomeFieldValues: 'updateSomeFieldValues',
-            deleteFieldsByIds: 'deleteFieldsByIds'
-        }),
+    async creating() {
+      try {
+        this.loading = true
 
-        ...mapMutations('SnackBarNotif', {
-            notifDanger: 'notifDanger',
-            notifSuccess: 'notifSuccess' 
-        }),
+        const payload = {
+          record_id: this.currentRecord.id || this.$route.params.id,
+          fields: []
+        }
+        for (let x = 0; x < this.fields.length; x++) {
+          const f = this.fields[x]
+          const value = this.$h.dg(this.genericRecord, `${f.id}`, '')
 
-        async creating() {
-            try {
-                this.loading = true 
+          if (!value) continue
 
-                const payload = { record_id: this.currentRecord.id || this.$route.params.id, fields: [] } 
-                for( let x = 0; x < this.fields.length; x++ ) {
-
-                    const f = this.fields[x]
-                    const value = this.$h.dg(this.genericRecord, `${f.id}`, '')
-                    
-                    if( !value ) continue
-                    
-                    if( Array.isArray(value) ) {
-                        const res = value.map( v => ({ value: v,  field_id: f.id }) )
-                        payload.fields = [...payload.fields, ...res]
-                    } else {
-                        payload.fields.push({ value, field_id: f.id })
-                    }
-                }
-
-                await this.bulkSaveFieldValues(payload)
-
-                this.notifSuccess('The values were saved')
-                this.loading = false 
-            } catch(e) {
-                this.notifDanger('The was an error while saving')
-               this.loading = false  
-            }
-        },
-
-        async updating() {
-            try {
-                this.loading = true 
-
-                const complexTypes = this.fields.filter( f => this.complexDataStructs[f.type] ).map( f => f.id)
-                const newGenericRecord = {...this.genericRecord} 
-
-                complexTypes.forEach( id => {
-                    delete newGenericRecord[id]
-                })
-
-                let deleteArr = []
-                let createObj = {}
-
-                complexTypes.forEach( a => {
-                    const { toDelete, toCreate } = this.findTheDifference( this.typesToIds[a], this.genericRecord[a], a)
-                    const fieldType = this.fields.find( f => f.id == a ).type
-
-                    deleteArr.push({ values: toDelete, fieldType })
-                    createObj[a] = toCreate
-                })
-
-                const payload = { record_id: this.$route.params.id, fields: [] } 
-
-                payload.fields = this.createFieldsPayload(newGenericRecord)
-
-                const payloadToCreate = { record_id: this.$route.params.id, fields: [] }
-                payloadToCreate.fields = this.createFieldsPayload(createObj)
-
-                await this.updateSomeFieldValues(payload)
-                await this.bulkSaveFieldValues(payloadToCreate)
-                if( deleteArr.length ) await this.deleteFieldsByIds({ deleteArr })
-
-                this.notifSuccess('The values were updated')
-                this.loading = false 
-            } catch(e) {
-                this.notifDanger('The was an error while updated')
-                this.loading = false  
-            }
-        },
-
-        createFieldsPayload(record) {
-            let fields = [] 
-
-            for( let x = 0; x < this.fields.length; x++ ) {
-
-                const f = this.fields[x]
-                const value = this.$h.dg(record, `${f.id}`, '')
-                
-                if( !value ) continue
-                
-                if( Array.isArray(value) ) {
-                    const res = value.map( v => ({ value: v,  field_id: f.id }) )
-                    fields = [...fields, ...res]
-                } else {
-                    fields.push({ value, field_id: f.id })
-                }
-            }
-
-            return fields
-        },
-
-        findTheDifference(reference, newData, fieldId) {
-            const toDelete = reference.filter( r => !newData.includes( r.value ) )
-
-            const transformedArray = reference.map( r => r.value )                                                                    
-            const toCreate = newData.filter( a => !transformedArray.includes(a)) 
-
-            return { toDelete, toCreate }
-        },
-
-        async loadingData() {
-            if( this.$route.name == 'record.show' ){
-                try {
-                    this.loading = true 
-                    
-                    const res = await this.getFieldValuesPerPanel({ recordID: this.$route.params.id, panelID: this.panel.id })
-                    this.genericRecord = {...res.values} 
-                    this.typesToIds = res.typesToIds
-                    this.isEdit = true
-
-                    this.loading = false
-                } catch(e) {
-                    this.loading = false
-                }
-            }
+          if (Array.isArray(value)) {
+            const res = value.map(v => ({
+              value: v,
+              field_id: f.id
+            }))
+            payload.fields = [...payload.fields, ...res]
+          } else {
+            payload.fields.push({ value, field_id: f.id })
+          }
         }
 
+        await this.bulkSaveFieldValues(payload)
+
+        this.notifSuccess('The values were saved')
+        this.loading = false
+      } catch (e) {
+        this.notifDanger('The was an error while saving')
+        this.loading = false
+      }
     },
 
-    watch: {
-        $route(oldVal, newVal) {
-            this.loadingData()
+    async updating() {
+      try {
+        this.loading = true
+
+        const complexTypes = this.fields.filter(f => this.complexDataStructs[f.type]).map(f => f.id)
+        const newGenericRecord = { ...this.genericRecord }
+
+        complexTypes.forEach(id => {
+          delete newGenericRecord[id]
+        })
+
+        const deleteArr = []
+        const createObj = {}
+
+        complexTypes.forEach(a => {
+          const { toDelete, toCreate } = this.findTheDifference(this.typesToIds[a], this.genericRecord[a], a)
+          const fieldType = this.fields.find(f => f.id == a).type
+
+          deleteArr.push({ values: toDelete, fieldType })
+          createObj[a] = toCreate
+        })
+
+        const payload = {
+          record_id: this.$route.params.id,
+          fields: []
         }
+
+        payload.fields = this.createFieldsPayload(newGenericRecord)
+
+        const payloadToCreate = {
+          record_id: this.$route.params.id,
+          fields: []
+        }
+        payloadToCreate.fields = this.createFieldsPayload(createObj)
+
+        await this.updateSomeFieldValues(payload)
+        await this.bulkSaveFieldValues(payloadToCreate)
+        if (deleteArr.length) {
+          await this.deleteFieldsByIds({
+            deleteArr
+          })
+        }
+
+        this.notifSuccess('The values were updated')
+        this.loading = false
+      } catch (e) {
+        this.notifDanger('The was an error while updated')
+        this.loading = false
+      }
     },
 
-    mounted() {
-       this.loadingData()
+    createFieldsPayload(record) {
+      let fields = []
+
+      for (let x = 0; x < this.fields.length; x++) {
+        const f = this.fields[x]
+        const value = this.$h.dg(record, `${f.id}`, '')
+
+        if (!value) continue
+
+        if (Array.isArray(value)) {
+          const res = value.map(v => ({
+            value: v,
+            field_id: f.id
+          }))
+          fields = [...fields, ...res]
+        } else {
+          fields.push({ value, field_id: f.id })
+        }
+      }
+
+      return fields
     },
+
+    findTheDifference(reference, newData, fieldId) {
+      const toDelete = reference.filter(r => !newData.includes(r.value))
+
+      const transformedArray = reference.map(r => r.value)
+      const toCreate = newData.filter(a => !transformedArray.includes(a))
+
+      return { toDelete, toCreate }
+    },
+
+    async loadingData() {
+      if (this.$route.name == 'record.show') {
+        try {
+          this.loading = true
+
+          const res = await this.getFieldValuesPerPanel({
+            recordID: this.$route.params.id,
+            panelID: this.panel.id
+          })
+          this.genericRecord = { ...res.values }
+          this.typesToIds = res.typesToIds
+          this.isEdit = true
+
+          this.loading = false
+        } catch (e) {
+          this.loading = false
+        }
+      }
+    }
+
+  },
+
+  watch: {
+    $route(oldVal, newVal) {
+      this.loadingData()
+    }
+  },
+
+  mounted() {
+    this.loadingData()
+  }
 
 }
 </script>

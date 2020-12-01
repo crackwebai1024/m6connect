@@ -63,11 +63,6 @@
                                 :type="showPass ? 'text' : 'password'"
                                 @click:append="onPasswordClick"
                             />
-                            <div class="d-flex justify-center">
-                                <v-btn :color="customBlue" @click="reset" >
-                                    <span class="black--text" >{{ $t('ResetPassword.confirmBtn') }}</span>
-                                </v-btn>
-                            </div>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -75,6 +70,14 @@
 
             <m6-loading :loading="loading" />
             
+        </template>
+
+        <template #action-btn >
+            <div class="flex-center">
+                <v-btn :color="customBlue" @click="reset" block >
+                    <span class="black--text" >{{ $t('ResetPassword.confirmBtn') }}</span>
+                </v-btn>
+            </div>
         </template>
     </auth-layout>
 </template>

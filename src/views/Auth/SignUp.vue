@@ -100,12 +100,6 @@
                                 @click:append="onPasswordClick"
                             />
 
-                            <div class="d-flex justify-center" >
-                                <v-btn :color="customBlue" @click="signUp" >
-                                    <span class="black--text" >{{ $t('SignUp.signup') }}</span>
-                                </v-btn>
-                            </div>
-
                         </v-col>
                     </v-row>
                 </v-container>
@@ -113,6 +107,14 @@
 
             <m6-loading :loading="loading" />
 
+        </template>
+
+        <template #action-btn >
+            <div class="flex-center" >
+                <v-btn :color="customBlue" @click="signUp" block >
+                    <span class="black--text" >{{ $t('SignUp.signup') }}</span>
+                </v-btn>
+            </div>
         </template>
     </auth-layout>
 </template>
@@ -287,5 +289,17 @@ input[type=password] {
 }
 .float-right {
     float: right;
+}
+
+.flex-center {
+  display: flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  justify-content: center;
+  .v-btn--block {
+    display: block;
+    flex: 0;
+    min-width: 70% !important;
+  }
 }
 </style>

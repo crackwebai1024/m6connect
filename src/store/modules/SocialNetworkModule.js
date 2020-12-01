@@ -1,4 +1,5 @@
 import MockData from "../MockData";
+import axios from "axios";
 
 export default{
     namespaced: true,
@@ -19,15 +20,19 @@ export default{
         set_filter_data(state, data){
             state.filter_data = data;
         },
-        test(state, data){
-            console.log(state.posts_data);
-            console.log(data);
-        },
         set_companies_info_data(state, data){
             state.companies_data = data;
         },
     },
     actions: {
+        get_url_description({}, data){
+            return new Promise(async resolve => {
+                const res = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/get_url_data`, {
+                    ...data
+                });
+                resolve(res['data']['description'] ? res['data']['description'] : '');
+            });
+        },
         set_posts_data({commit}){
             let data = MockData.fake_posts;
             commit('set_posts_info_data', data);

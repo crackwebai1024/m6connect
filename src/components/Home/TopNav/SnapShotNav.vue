@@ -1,8 +1,12 @@
 <template>
     <div class="pa-0" >
-        
-        <v-btn color="yellow darken-2" dark icon @click="executeHtml2Canvas">
-            <v-icon>mdi-help-circle</v-icon>
+        <v-btn 
+            color="teal darken-2" 
+            block 
+            dark 
+            @click="executeHtml2Canvas"
+        >
+            Add Rapid
         </v-btn>
         
         <SnapShotDialog 
@@ -29,20 +33,27 @@ export default {
     data: () => ({
         imageTest: "",
         showDialog: false,
-        loading: false
+        loading: false,
+        expandOptions: false,
     }),
 
     methods: {
-
-        executeHtml2Canvas(){
+        executeHtml2Canvas(ratingChosen){
             this.loading = true 
-            html2canvas(document.body).then((canvas) => {
-                this.imageTest = canvas.toDataURL()
-                this.showDialog = true 
-                this.loading = false 
+            this.$nextTick( () => {
+                html2canvas(document.body).then((canvas) => {
+                    this.imageTest = canvas.toDataURL()
+                    this.showDialog = true 
+                    this.loading = false 
+                })
             })
         }
-
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.r-btn {
+    font-size: 1.4rem;
+}
+</style>

@@ -1,25 +1,51 @@
 <template>
     <app-template  :props-dialog="showSelf" :isPersistent="$route.name == 'record.show'" >
         <div slot="header" class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
+            
+            <v-btn 
+                icon
+                color="red darken-1"
+                :to="{ name: 'apps', params: {} }"
+            >
+                <v-icon>mdi-close</v-icon>
+            </v-btn>
             <div class="d-flex align-center">
-                <img
-                    v-if="app.iconLink"
-                    :alt="app.iconLink" 
-                    class="rounded pointer" 
+                <v-img
+                    v-if="record.image"
+                    :alt="record.image" 
+                    class="rounded" 
                     width="180" 
                     height="150" 
-                    :src="currentCompany.logo"
-                >
+                    :src="record.image"
+                />
 
                 <v-icon size="180" v-else >mdi-store</v-icon>
 
                 <div class="ml-8">
+                    <p class="font-weight-regular text-h7 mb-1">{{record['record_number']}}</p>
+                    <v-spacer></v-spacer>
                     <p class="font-weight-regular text-h5 mb-1">{{ record.title }}</p>
-                    <p></p>
                 </div>
             </div>
-            <div>
-            </div>
+            <v-row align="center" no-gutters>
+                <v-col cols="7"></v-col>
+                <v-col cols="2">
+                    <v-img
+                        v-if="app.iconLink"
+                        :alt="app.iconLink" 
+                        class="rounded d-inline-block" 
+                        width="50" 
+                        height="70" 
+                        :src="app.iconLink"
+                    />
+
+                    <v-icon size="100" v-else class="d-inline-block">mdi-store</v-icon>
+                </v-col>
+                <v-col cols="3">
+                    <span class="ml-5 d-inline-block">{{app['title']}}</span>
+                </v-col>
+
+            </v-row>
         </div>
         <div slot="tabs" class="d-flex align-center">
             <v-tabs

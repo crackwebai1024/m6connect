@@ -20,7 +20,7 @@ const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCom
 const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShowBlank.vue')
 const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
 const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/CloneTool')
-
+const RapidTable = () => import(/* webpackChunkName: 'RapidTable' */ '@/views/Rapid/RapidTable')
 import store from '../store/';
 Vue.use(VueRouter);
 
@@ -132,6 +132,11 @@ const router = new VueRouter({
       name: "tools.cpm.clone",
       component: CloneTool
     },
+    {
+      path: "/rapid/table",
+      name: "rapid.index",
+      component: RapidTable
+    }
   ],
 });
 

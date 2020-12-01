@@ -5,7 +5,7 @@
             :filled="filled"
             :label="label"
             item-text="fullname"
-            item-value="id"
+            item-value="user.id"
             :items="processedUser"
             :multiple="multiple"
             :chips="chips"
@@ -21,7 +21,7 @@ import { mapGetters } from 'vuex'
 export default {
     props: {
         value: {
-            type: Array,
+            type: [ String, Array ],
             default: () => ([])
         },
 

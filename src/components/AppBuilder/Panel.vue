@@ -81,7 +81,15 @@
         :key="field.id"
       >
         <v-list-item-content @click="editField(field)">
-          <v-list-item-title>{{ field.label }}</v-list-item-title>
+          <v-list-item-title :class="field.type === 'referenced' ? 'referenced-field' : ''">
+            {{ field.label }}
+          </v-list-item-title>
+          <v-list-item-subtitle
+            v-if="field.type === 'referenced'"
+            class="font-italic"
+          >
+            Reference {{ field.metadata.originalReference.label }}
+          </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
           <v-btn
@@ -156,19 +164,22 @@ export default {
       panelToDelete: null,
       activeField: {},
       defaultField: {
-        panelID: this.panel.id,
+        // eslint-disable-next-line camelcase
+        panel_id: this.panel.id,
         label: 'New Field',
         type: 'text',
         weight: 0,
         metadata: {
           options: [],
           required: false
-        }
+        },
+        // eslint-disable-next-line camelcase
+        referenced_field: null
       },
       loading: false
     }
   },
-  
+
   methods: {
     ...mapActions('AppBuilder', {
       updatePanel: 'updatePanel'
@@ -176,21 +187,21 @@ export default {
 
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
-      notifSuccess: 'notifSuccess' 
+      notifSuccess: 'notifSuccess'
     }),
 
-    async updatingPanel(){
+    async updatingPanel() {
       try {
         this.loading = true
-        const res = await this.updatePanel(this.clonePanel)
+        await this.updatePanel(this.clonePanel)
         this.notifSuccess('Panel updated!')
 
-        this.panelEdit = false 
-        this.loading = false 
+        this.panelEdit = false
+        this.loading = false
         this.$emit('updatePanel', this.clonePanel)
-      } catch(e) {
+      } catch (e) {
         this.notifDanger('There was an error while updating the panel')
-        this.loading = false 
+        this.loading = false
       }
     },
 
@@ -226,7 +237,7 @@ export default {
       this.panelToDelete = null
       this.showDeleteModal = false
     },
-    
+
     editPanel() {
       this.panelEdit = !this.panelEdit
       this.clonePanel = { ...this.panel }
@@ -247,7 +258,13 @@ export default {
       this.showFieldModal = false
       this.editing = false
     }
-
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.referenced-field {
+  color: #0f75bc;
+  font-style: italic;
+}
+</style>
