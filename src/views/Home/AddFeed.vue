@@ -239,7 +239,7 @@ export default {
       this.options['type'] = res['data']['wo_request_type']
     })
     // TODO: The available apps list should be on a global list on the store.
-    axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`).then(response => {
+    this.getApps().then(response => {
       response.data.map(app => {
         this.availableApps.push({
           id: app.id,
@@ -252,7 +252,9 @@ export default {
     ...mapActions('ITAppsModule', { selects: 'get_all_selects' }),
     ...mapActions('WorkOrderModule', {
       records: 'getRecords',
+      getApps: 'getAvailableApps',
       postAction: 'postAction',
+      getActions: 'getActionsFeed',
       workOrder: 'setWorkOrder'
     }),
     changeRecord(event) {
@@ -261,9 +263,9 @@ export default {
           this.options['records'] = res['data']
         })
       } else {
-        axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/by/${event}`).then(response => {
+        this.getActions(event).then(response => {
           this.options['records'] = response.data
-        })
+        });
       }
     },
     onImagesChange(e) {

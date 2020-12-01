@@ -20,20 +20,20 @@ const actions = {
     })
   },
 
-  getAppList(_, payload) {
-    return new Promise( (resolve, reject) => {
+  getAppList() {
+    return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/list`).then(({ data }) => {
         resolve(data)
       })
-      .catch(e => reject(e))
+        .catch(e => reject(e))
     })
   },
-  
+
   updateApp(_, payload) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app`, payload)
-      .then(resolve)
-      .catch(reject)
+        .then(resolve)
+        .catch(reject)
     })
   },
 
@@ -84,18 +84,20 @@ const actions = {
   },
 
   updateTab(_, { id, tabToEdit }) {
-    return new Promise( (resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/tab/${id}`, { tabToEdit }).then(({ data }) => {
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/tab/${id}`, {
+        tabToEdit
+      }).then(({ data }) => {
         resolve(data)
       }).catch(e => reject(e))
     })
   },
 
   switchOrderTabs(_, payload) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/tab/switch-order`, payload)
-      .then(resolve)
-      .catch(reject)
+        .then(resolve)
+        .catch(reject)
     })
   },
 
@@ -122,8 +124,8 @@ const actions = {
   },
 
   getLatestRecordNumber(_, payload) {
-    return new  Promise( (resolve, reject) => {
-        axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/latest`, payload).then( ({ data }) => {
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/latest`, payload).then(({ data }) => {
         resolve(data)
       }).catch(e => reject(e))
     })
@@ -144,6 +146,7 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
+
   updateField(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/field/${payload.id}/update`, payload).then(({ data }) => {
@@ -151,6 +154,7 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
+
   updateRecord(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${payload.id}`, payload).then(({ data }) => {
@@ -203,41 +207,41 @@ const actions = {
   },
 
   bulkSaveFieldValues(_, payload) {
-    return new Promise( (resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values`, payload).then( ({ data }) => {
+    return new Promise(resolve => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values`, payload).then(({ data }) => {
         resolve(data)
       })
-      .catch(err => resolve(err))
+        .catch(err => resolve(err))
     })
   },
 
   getFieldValuesPerPanel(_, { recordID, panelID } = {}) {
-    return new Promise( (resolve, reject) => { 
+    return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`)
-      .then( ({ data }) => {
-        resolve(data)
-      })
-      .catch( e => reject(e) )
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
     })
   },
 
   updateSomeFieldValues(_, payload) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/some`, payload)
-      .then( ({ data }) => {
-        resolve(data)
-      })
-      .catch( e => reject(e) )
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
     })
   },
 
   deleteFieldsByIds(_, payload) {
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/fieldsByIds`, payload)
-      .then( ({ data }) => {
-        resolve(data)
-      })
-      .catch( e => reject(e) )
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
     })
   }
 

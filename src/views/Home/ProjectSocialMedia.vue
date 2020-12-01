@@ -72,30 +72,113 @@
         >
           <template v-slot:append>
             <v-row class="align-center d-flex">
-              <!--              <v-icon class="blue&#45;&#45;text text&#45;&#45;lighten-1">-->
-              <!--                mdi-file-document-outline-->
-              <!--              </v-icon>-->
-              <v-file-input
-                accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
-                class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
-                hide-input
-                multiple
-                prepend-icon="mdi-file-document-outline"
-                @change="onDocsChange"
-                :disabled="postListShow"
-              />
-              <v-file-input
-                accept="image/png, image/jpeg, image/bmp"
-                class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
-                hide-input
-                multiple
-                prepend-icon="mdi-image-outline"
-                @change="onImagesChange"
-                :disabled="postListShow"
-              />
-              <!--              <v-icon class="red&#45;&#45;text text&#45;&#45;lighten-1">-->
-              <!--                mdi-link-variant-->
-              <!--              </v-icon>-->
+              <v-menu
+                open-on-hover
+                bottom
+                offset-y
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    dark
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-file-plus-outline</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-file-input
+                      accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
+                      class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
+                      hide-input
+                      multiple
+                      prepend-icon="mdi-file-document-outline"
+                      @change="onDocsChange"
+                      :disabled="postListShow"
+                    />
+                  </v-list-item>
+                  <v-list-item>
+                    <v-file-input
+                      accept="image/png, image/jpeg, image/bmp"
+                      class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
+                      hide-input
+                      multiple
+                      prepend-icon="mdi-image-outline"
+                      @change="onImagesChange"
+                      :disabled="postListShow"
+                    />
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+              <v-menu
+                v-model="menu"
+                :close-on-content-click="false"
+                bottom
+                offset-y
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    dark
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-icon>mdi-apps</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-select
+                      v-model="itemInfo.application_id"
+                      item-text="title"
+                      item-value="id"
+                      :items="availableApps"
+                      label="Application"
+                      @change="changeApp($event)"
+                    />
+                  </v-list-item>
+                  <v-list-item>
+                    <v-select
+                      v-model="itemInfo.record_id"
+                      :class="{ disabled: itemInfo.application_id === null }"
+                      :item-value="Object"
+                      :items="options.records"
+                      label="Record"
+                      @change="selectRecord($event)"
+                    >
+                      <template
+                        slot="selection"
+                        slot-scope="data"
+                      >
+                        <!-- HTML that describe how select should render selected items -->
+                        {{ data.item.record_number }} - {{ data.item.title }}
+                      </template>
+                      <template
+                        slot="item"
+                        slot-scope="data"
+                      >
+                        <!-- HTML that describe how select should render items when the select is open -->
+                        {{ data.item.record_number }} - {{ data.item.title }}
+                      </template>
+                    </v-select>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-select
+                      v-model="itemInfo.panel"
+                      :class="{ disabled: itemInfo.application_id === null }"
+                      :item-value="Object"
+                      item-text="label"
+                      :items="options.panles"
+                      label="Panel"
+                      @change="selectPanel($event)"
+                    />
+                  </v-list-item>
+                </v-list>
+              </v-menu>
               <v-btn
                 icon
                 @click="addActivity"
@@ -188,11 +271,24 @@ export default {
   },
   data: () => ({
     titlePage: '',
+    menu: false,
     activityText: '',
     docsFiles: [],
     imageFiles: [],
     posts_list: [{}],
-    showSkeletonPost: false
+    urlInfo: {},
+    itemInfo: {
+      application_id: null,
+      record_id: null,
+      panel: null
+    },
+    showSkeletonPost: false,
+    options: {
+      records: [],
+      panles: [],
+      type: []
+    },
+    availableApps: [],
   }),
 
   props: {
@@ -233,6 +329,62 @@ export default {
     ...mapActions('AppAttachments', {
       setStreamFiles: 'set_stream_attachments'
     }),
+    ...mapActions('WorkOrderModule', {
+      getApps: 'getAvailableApps',
+      getActions: 'getActionsFeed'
+    }),
+    ...mapActions('AppBuilder', {
+      getFieldValues: 'getFieldValuesPerPanel'
+    }),
+    changeApp(event) {
+      this.getActions(event).then(response => {
+        this.options['records'] = response.data
+      });
+    },
+    async selectRecord($event){
+      let panel = [];
+      this.itemInfo['panel'] = null;
+      this.options['panles'] = [];
+
+      let app = await this.$store.dispatch('AppBuilder/getApp', $event['app']['id']);
+      
+      app['tabs'].forEach(tab => {
+        tab.panels.forEach(panel => {
+          this.options['panles'].push({
+            id: $event['id'],
+            recordTitle: $event.title,
+            label: `${tab['title']} - ${panel['title']}`,
+            panelTitle: panel['title'],
+            fields: panel['fields'],
+            panelId: panel['id'],
+            subtitle: $event.app.title,
+            image: $event.app.iconLink,
+            description: $event.description
+          });
+        });
+      });
+    },
+    async selectPanel($event){
+      let values = await this.getFieldValues({ recordID: $event['id'], panelID: $event['panelId'] });
+      
+      let panel = [];
+
+      $event['fields'].forEach( field => {
+        panel.push({name:field.label, value: values['values'][field.id]} );
+      });
+
+      this.urlInfo = {
+        url: `${new URL(location.href)['href']}record/${$event.id}`,
+        id: $event.id,
+        panel: panel,
+        description: $event['description'],
+        panel_title: $event['panelTitle'],
+        subtitle: $event['subtitle'],
+        title: $event['recordTitle'],
+        image: $event['image']
+      }
+      this.menu = false;
+    },
     printSc(msg) {
       this.titlePage = `${msg}`;
     },
@@ -259,6 +411,7 @@ export default {
       }
       this.showSkeletonPost = true
       let comp = this.user.companies.items.find(item => item.active === true);
+      let urls = this.urlify();
 
       const activity = {
         req:{
@@ -274,6 +427,8 @@ export default {
               }
             }),
             message: this.activityText,
+            external_url: urls,
+            record_url: this.urlInfo,
             verb: 'post',
             object: 1,
             images: this.imageFiles
@@ -281,9 +436,9 @@ export default {
         },
         compID: comp.company.id
       }
-      
-      this.activityText = ''
 
+      this.activityText = ''
+      
       this.$store.dispatch('GSFeed/addActivity', activity).then(async res => {
         if (this.imageFiles.length > 0) {
           this.imageFiles.forEach(async image => {
@@ -340,8 +495,20 @@ export default {
         }
         
         this.reloadFeed();
-        this.showSkeletonPost = false
+        this.urlInfo = {};
+        this.itemInfo.application_id = null;
+        this.itemInfo.record_id = null;
+        this.itemInfo.panel = null;
+        this.showSkeletonPost = false;
       })
+    },
+    urlify() {
+      let urlRegex = /(https?:\/\/[^\s]+)/g;
+      let res = [];
+      this.activityText.replace(urlRegex, function(url) {
+        res.push(url);
+      })
+      return res
     },
     async reloadFeed(){
       await this.$store.dispatch('GSFeed/retrieveFeed')
@@ -361,6 +528,15 @@ export default {
   },
   mounted() {
     this.companyState();
+
+    this.getApps().then(response => {
+      response.data.map(app => {
+        this.availableApps.push({
+          id: app.id,
+          title: app.title
+        })
+      })
+    });
   }
 }
 </script>
