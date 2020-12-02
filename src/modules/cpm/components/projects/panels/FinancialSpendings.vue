@@ -119,7 +119,7 @@
       :headers="headersSpendings"
       :items="resources"
       :options.sync="pagination"
-      :server-items-length="pagination.totalItems"
+      :server-items-length="10000"
       @update:options="debounceSearch(search, false)"
     >
       <template
@@ -1196,6 +1196,7 @@
                   :headers="headersLineItems"
                   hide-default-footer
                   :items="spendingToShow.lineItems"
+                  :server-items-length="10000"
                 >
                   <template
                     slot="item"
