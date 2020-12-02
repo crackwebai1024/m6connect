@@ -64,8 +64,7 @@
         <div
           slot="btns"
           class="align-center d-flex"
-        >
-        </div>
+        />
         <div
           slot="content"
           class="w-full"
@@ -341,14 +340,6 @@
               </template>
             </panel-full>
             <v-spacer />
-            <!-- <panel-two-columns>
-                <div
-                  slot="leftPanel"
-                />
-                <div
-                  slot="rightPanel"
-                />
-              </panel-two-columns> -->
           </template>
           <!--FINANCIALS-->
 
@@ -361,7 +352,7 @@
                 <milestones :type="type" />
               </template>
             </panel-full> -->
-            <panel-full v-if="!panelSettings.mileSchedule">
+            <!-- <panel-full v-if="!panelSettings.mileSchedule">
               <template slot="content">
                 <schedule :type="type" />
               </template>
@@ -370,7 +361,7 @@
               <template slot="content">
                 <forecasts />
               </template>
-            </panel-full>
+            </panel-full> -->
           </template>
           <!--SCHEDULE-->
 
@@ -384,9 +375,18 @@
           </template>
           <!--DOCUMENT MANAGER-->
 
-          <!--REPORTS-->
+          <!-- UPDATES -->
           <template v-if="activeTab === 4">
-            <panel-full v-if="!panelSettings.mileSchedule">
+            <panel-two-columns>
+              <budget-comment slot="leftPanel" />
+              <status-comment slot="rightPanel" />
+            </panel-two-columns>
+          </template>
+          <!-- UPDATES -->
+
+          <!--REPORTS-->
+          <template v-if="activeTab === 5">
+            <!-- <panel-full v-if="!panelSettings.mileSchedule">
               <template slot="content">
                 <schedule :type="type" />
               </template>
@@ -395,7 +395,7 @@
               <template slot="content">
                 <forecasts />
               </template>
-            </panel-full>
+            </panel-full> -->
           </template>
           <!--REPORTS-->
         </div>
@@ -428,6 +428,9 @@ import {
   doFirebaseAuth,
   destroyFirebase
 } from '@/utils/Firebase'
+import StatusComment from '../../modules/cpm/components/projects/panels/StatusComment.vue'
+import BudgetComment from '../../modules/cpm/components/projects/panels/BudgetComment.vue'
+
 export default {
   name: 'Apps',
   components: {
@@ -444,7 +447,9 @@ export default {
     Schedule,
     Forecasts,
     Budgets,
-    ProjectFiles
+    ProjectFiles,
+    StatusComment,
+    BudgetComment
 
   },
   data: () => ({
@@ -459,7 +464,14 @@ export default {
     showColumnRight: true,
     project: {},
     type: 'project',
-    tabs: ['Home', 'Financials', 'Schedule', 'Document Manager', 'Reports'],
+    tabs: [
+      'Home',
+      'Financials',
+      'Schedule',
+      'Document Manager',
+      'Updates',
+      'Reports'
+    ],
     activeTab: 0
   }),
   computed: {
