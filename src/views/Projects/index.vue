@@ -4,7 +4,10 @@
     fluid
   >
     <v-row class="ma-0 pt-0 text-center">
-      <v-col cols="12">
+      <v-col
+        class="pa-0"
+        cols="12"
+      >
         <list-projects />
       </v-col>
     </v-row>
