@@ -134,7 +134,7 @@
       :headers="headers"
       :items="resources"
       :options="pagination"
-      :server-items-length="pagination.totalItems"
+      :server-items-length="10000"
       @update:options="debounceSearch(search, false)"
     >
       <template v-slot:item="props">
@@ -288,7 +288,7 @@
             <v-data-table
               class="elevation-1"
               :headers="subheaders"
-              hide-actions
+              hide-default-footer
               :items="props.item.spending"
             >
               <template v-slot:headers="headerProps">
@@ -365,7 +365,7 @@
                   <v-data-table
                     v-show="!loadingExpandedSpendingLineItems"
                     :headers="headersLineItems"
-                    hide-actions
+                    hide-default-footer-footer
                     :items="commitmentSpendingExpanded.lineItems"
                   >
                     <template
@@ -684,7 +684,7 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: false,
-        rowsPerPage: 10,
+        itemsPerPage: 8,
         totalItems: 0,
         page: 1
       },
@@ -737,7 +737,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
     },
     isFullScreenPage() {

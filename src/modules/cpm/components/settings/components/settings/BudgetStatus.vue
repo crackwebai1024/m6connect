@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card flat>
       <v-card-title class="relative">
         <portal
           v-if="included"
@@ -8,7 +8,7 @@
         >
           <v-btn
             absolute
-            class='mt-3'
+            class="mt-3"
             color="white"
             dark
             fab
@@ -42,28 +42,31 @@
             :headers="headers"
             :items="settings.status"
             :options.sync="pagination"
+            :server-items-length="10000"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item }}</td>
-              <td class="text-right">
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#757575"
-                  size="20"
-                  @click.prevent="editElement(props.index, props.item)"
-                >
-                  mdi-pencil
-                </v-icon>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item }}</td>
+                <td class="text-right">
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#757575"
+                    size="20"
+                    @click.prevent="editElement(props.index, props.item)"
+                  >
+                    mdi-pencil
+                  </v-icon>
 
-                <v-icon
-                  class="ml-0 mr-0 pointer"
-                  color="#f44336"
-                  size="20"
-                  @click.prevent="deleteElement(props.index, props.item)"
-                >
-                  mdi-delete
-                </v-icon>
-              </td>
+                  <v-icon
+                    class="ml-0 mr-0 pointer"
+                    color="#f44336"
+                    size="20"
+                    @click.prevent="deleteElement(props.index, props.item)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>
@@ -73,18 +76,17 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="400px"
       persistent
-      scrollable
     >
-      <v-card class="mt-2">
+      <v-card>
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Budget Status
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
+        <v-card-text>
           <v-form ref="form">
             <v-text-field
               v-model="element"
@@ -95,21 +97,26 @@
               v-model="currentElement"
               type="hidden"
             >
-            <v-btn
-              color="blue"
-              outline
-              @click="cancel"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="blue"
-              dark
-              type="submit"
-              @click="save"
-            >
-              {{ submitLoading ? 'Saving...' : 'Save' }}
-            </v-btn>
+            <div class="d-flex justify-end w-full">
+              <v-btn
+                class="grey--text text--darken-3"
+                flat
+                outline
+                text
+                @click="cancel"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                class="ml-2"
+                color="blue"
+                dark
+                type="submit"
+                @click="save"
+              >
+                {{ submitLoading ? 'Saving...' : 'Save' }}
+              </v-btn>
+            </div>
           </v-form>
         </v-card-text>
       </v-card>

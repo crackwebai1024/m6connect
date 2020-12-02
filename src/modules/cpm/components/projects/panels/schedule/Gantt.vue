@@ -341,7 +341,7 @@
     </v-container>
 
     <v-row
-      class="gantt-header mx-0"
+      class="gantt-header mx-0 py-2"
     >
       <v-col
         class="align-center gantt-header-item py-0 shrink"

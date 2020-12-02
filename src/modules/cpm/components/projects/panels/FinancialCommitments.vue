@@ -16,8 +16,8 @@
           <v-icon
             light
             text
-            @click="cardDialogClick"
             v-on="on"
+            @click="cardDialogClick"
           >
             mdi-launch
           </v-icon>
@@ -132,8 +132,8 @@
       :headers="headers"
       :items="resources"
       :options.sync="pagination"
-      :server-items-length="pagination.totalItems"
-      @update:pagination="debounceSearch(search, false)"
+      :server-items-length="10000"
+      @update:options="debounceSearch(search, false)"
     >
       <template
         slot="item"
@@ -236,7 +236,7 @@
             <v-data-table
               class="elevation-1"
               :headers="subheaders"
-              hide-actions
+              hide-default-footer
               :items="props.item.spending"
             >
               <template v-slot:items="props">
@@ -466,7 +466,7 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: true,
-        rowsPerPage: 10,
+        itemsPerPage: 10,
         totalItems: 0,
         page: 1
       }
@@ -480,7 +480,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
     },
 

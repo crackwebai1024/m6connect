@@ -1,13 +1,14 @@
 <template>
   <div>
-    <v-card>
+    <v-card flat>
       <v-card-title class="relative">
         <portal
           v-if="included"
-          to="budget-1">
+          to="budget-1"
+        >
           <v-btn
             absolute
-            class='mt-3'
+            class="mt-3"
             color="white"
             dark
             fab
@@ -15,7 +16,9 @@
             small
             @click="newL1"
           >
-            <v-icon color="blue">mdi-plus</v-icon>
+            <v-icon color="blue">
+              mdi-plus
+            </v-icon>
           </v-btn>
         </portal>
       </v-card-title>

@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="pt-0"
+    class="pa-0"
     fluid
   >
     <m6-list
@@ -125,7 +125,7 @@
       <!--GRID VIEW-->
       <v-data-iterator
         v-if="isGridView"
-        class="fullWidth"
+        class="w-full"
         content-tag="v-layout"
         :items="resources"
         :options.sync="pagination"
@@ -139,19 +139,83 @@
         </template>
 
         <template v-slot:default="props">
-          <v-row>
+          <!-- <v-row class="d-flex flex-wrap ma-0 w-full">
             <v-col
-              v-for=" (item, index) in props.items"
+              v-for="i in 2"
+              :key="'fakedata'+i"
+              class="ma-0 my-2 pa-0 px-2 rounded"
+              cols="12"
+              lg="3"
+              md="4"
+              sm="6"
+            >
+              <div
+                class="card-custom-shadow pointer rounded white"
+                @click="seeProjectPanel('123')"
+              >
+                <div class="align-center d-flex flex-column pb-2 pt-4">
+                  <img
+                    :alt="currentCompany.name"
+                    class="rounded-circle"
+                    height="80"
+                    :src="currentCompany.logo"
+                    width="80"
+                  >
+                  <p class="font-weight-bold mb-1 pa-3 text-h6">
+                    Advanced Vendor & Project Reporting
+                  </p>
+                  <p class="font-weight-bold grey--text ma-0 pa-0 text-caption">
+                    PRJ-00017-2020
+                  </p>
+                  <p class="grey--text ma-0 pa-0 text-caption">
+                    (SHC) Sharp Healthcare
+                  </p>
+                  <v-chip
+                    class="my-2 pointer"
+                    pill
+                    v-on="on"
+                  >
+                    <v-avatar left>
+                      <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
+                    </v-avatar>
+                    John Leider
+                  </v-chip>
+                </div>
+                <div class="d-flex ma-0 pa-0">
+                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                    Budget Status
+                  </div>
+                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                    Start Date
+                  </div>
+                </div>
+                <div class="d-flex ma-0 pa-0">
+                  <div class="blue lighten-2 py-2 text-center w-half white--text">
+                    Roadmap
+                  </div>
+                  <div class="blue py-2 text-center w-half white--text">
+                    07/5/2021
+                  </div>
+                </div>
+              </div>
+            </v-col>
+          </v-row> -->
+
+
+          <v-row class="d-flex flex-wrap ma-0 w-full">
+            <v-col
+              v-for="(item, index) in props.items"
               :key="item.id"
+              class="ma-0 my-2 pa-0 px-2 rounded"
               cols="12"
               lg="3"
               md="4"
               sm="6"
             >
               <v-card
-                id="step6"
                 v-intro-if="index === 0"
-                class="cpmCard pointer"
+                class="card-custom-shadow pointer rounded white"
+                @click="goToProject(item, false)"
                 @mouseleave="showDeleteIconApplication = null"
                 @mouseover="showDeleteIconApplication = index"
               >
@@ -195,12 +259,15 @@
                 </v-tooltip>
 
                 <v-col
-                  class="text-center"
+                  class="mb-0 pb-0 text-center"
                   cols="12"
                   @click="goToProject(item, false)"
                 >
-                  <v-row class="justify-center pt-3">
-                    <v-badge>
+                  <v-row class="justify-center pb-0 pt-3">
+                    <v-badge
+                      offset-x="21"
+                      offset-y="25"
+                    >
                       <v-avatar
                         color="grey lighten-4"
                         size="100"
@@ -220,105 +287,62 @@
                     </v-badge>
                   </v-row>
                 </v-col>
+                <div class="align-center d-flex flex-column pb-2 pt-1">
+                  <p class="font-weight-bold mb-0 pa-3 text-h5">
+                    {{ item.title || 'N/A' }}
+                  </p>
+                  <p
+                    v-if="item.number"
+                    class="font-weight-bold grey--text ma-0 pa-0 text-caption"
+                  >
+                    {{ item.number || 'N/A' }}
+                  </p>
+                  <p
+                    v-if="item.campus"
+                    class="grey--text ma-0 pa-0 text-caption"
+                  >
+                    {{ getCampus(item.campus) }}
+                  </p>
+                  <v-chip
+                    v-if="getManagerLabel(item)"
+                    class="my-2"
+                    pill
+                    pointer
+                    v-on="on"
+                  >
+                    <v-avatar left>
+                      <v-img :src="getAvatar(item.manager)" />
+                    </v-avatar>
+                    {{ getManagerLabel(item) }}
+                  </v-chip>
+                </div>
 
-                <v-card-text
-                  class="vertical-scroll"
-                  @click="goToProject(item, false)"
-                >
-                  <div class="mb-2 text-center">
-                    <v-menu
-                      offset-y
-                      open-on-hover
-                      top
-                    >
-                      <template v-slot:activator="{ on }">
-                        <p
-                          class="font-weight-bold headline text-truncate"
-                          v-on="on"
-                        >
-                          {{ item.title || 'N/A' }}
-                        </p>
-                      </template>
-
-                      <div class="pa-2 white">
-                        {{ item.title || 'N/A' }}
-                      </div>
-                    </v-menu>
-
-                    <div class="m6-gray-text">
-                      <span v-if="item.number">
-                        <strong>{{ item.number || 'N/A' }}</strong>
-                      </span>
-                    </div>
-
-                    <div class="m6-gray-text">
-                      <span v-if="item.campus">
-                        {{ getCampus(item.campus) }}
-                      </span>
-                      <span v-else>&nbsp;</span>
-                    </div>
-
-                    <div
-                      class="customHeight2p5rem m6-gray-text"
-                    >
-                      <span v-if="getManagerLabel(item)">
-                        <v-chip color="grey lighten-4">
-                          <v-avatar>
-                            <img :src="getAvatar(item.manager)">
-                          </v-avatar>
-                          {{ getManagerLabel(item) }}
-                        </v-chip>
-                      </span>
-
-                      <span
-                        v-else
-                        class="size3rem"
-                      >
-                        &nbsp;
-                      </span>
-                    </div>
+                <div class="d-flex ma-0 pa-0">
+                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                    {{ $t('cpm.budgetStatus') }}
                   </div>
-                </v-card-text>
-
-                <v-card-actions class="overflow-hidden text-center">
-                  <v-row>
-                    <v-col
-                      class="pa-0"
-                      cols="6"
-                    >
-                      <small>{{ $t('cpm.budgetStatus') }}</small>
-
-                      <v-card
-                        class="card-footer"
-                        :color="getColor('listStatus')"
-                        text
-                        tile
-                      >
-                        <span class="py-2 subheading white--text">
-                          {{ item.status || 'N/A' }}
-                        </span>
-                      </v-card>
-                    </v-col>
-
-                    <v-col
-                      class="pa-0"
-                      cols="6"
-                    >
-                      <small>{{ $t('general.startDate') }}</small>
-
-                      <v-card
-                        class="card-footer pt-1"
-                        :color="getColor('listStartDate')"
-                        text
-                        tile
-                      >
-                        <span class="py-2 subheading white--text">
-                          {{ getDate(item.startDate) }}
-                        </span>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                </v-card-actions>
+                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
+                    {{ $t('general.startDate') }}
+                  </div>
+                </div>
+                <div class="d-flex ma-0 pa-0">
+                  <v-card
+                    class="py-2 text-center w-half white--text"
+                    :color="getColor('listStatus')"
+                    flat
+                    tile
+                  >
+                    {{ item.status || 'N/A' }}
+                  </v-card>
+                  <v-card
+                    class="py-2 text-center w-half white--text"
+                    :color="getColor('listStartDate')"
+                    flat
+                    tile
+                  >
+                    {{ getDate(item.startDate) }}
+                  </v-card>
+                </div>
               </v-card>
             </v-col>
           </v-row>
@@ -1736,9 +1760,6 @@ export default {
   display: block;
 }
 .cpmCard {
-  padding-bottom: 2rem;
-  height: 100%;
-
   .v-card__actions {
     position: absolute;
     width: 100%;
@@ -1763,10 +1784,6 @@ export default {
 .card-footer {
   padding-top: 3px !important;
   height: 100%;
-}
-
-.fullWidth {
-  width: 100%
 }
 
 .customHeight2p5rem {

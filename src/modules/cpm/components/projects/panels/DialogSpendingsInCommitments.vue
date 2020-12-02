@@ -21,6 +21,7 @@
               <v-data-table
                 :headers="headers"
                 :items="spendings"
+                :server-items-length="10000"
               >
                 <template
                   slot="item"

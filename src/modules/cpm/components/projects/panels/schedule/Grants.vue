@@ -2,7 +2,7 @@
   <div class="main-content">
     <v-data-table
       :headers="headers"
-      hide-actions
+      hide-default-footer
       :items="grants"
     >
       <template

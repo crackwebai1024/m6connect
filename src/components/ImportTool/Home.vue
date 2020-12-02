@@ -1165,6 +1165,7 @@ export default {
       const day = ('0' + (start.getDate())).slice(-2).toString()
 
       const snap = await db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).get()
+      console.log(snap)
       snap.docs.map(async i => {
         const data = await i.data()
         if (data.ref) {

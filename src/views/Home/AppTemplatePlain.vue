@@ -15,6 +15,7 @@
   <!--    >-->
   <v-card
     class="grey lighten-3 relative"
+    flat
     tile
     width="100%"
   >
