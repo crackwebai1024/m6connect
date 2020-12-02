@@ -69,24 +69,26 @@
       :headers="headers"
       :items="budgets"
     >
-      <template v-slot:items="props">
-        <td>{{ props.item.title }}</td>
-        <td>{{ props.item.active ? $t('general.yes') : $t('general.no') }}</td>
-        <td>{{ props.item.status }}</td>
-        <td>{{ props.item.type }}</td>
-        <td class="text-right">
-          {{ !props.item.plan ? 0 : props.item.plan | currency }}
-        </td>
-        <td class="text-right">
-          {{ !props.item.total ? 0 : props.item.total | currency }}
-        </td>
-        <td class="text-center">
-          <m6-dropdown-actions
-            :options="dropdownOptions"
-            @delete="deleteBudget(props.item)"
-            @edit="editBudget(props.item)"
-          />
-        </td>
+      <template v-slot:item="props">
+        <tr>
+          <td>{{ props.item.title }}</td>
+          <td>{{ props.item.active ? $t('general.yes') : $t('general.no') }}</td>
+          <td>{{ props.item.status }}</td>
+          <td>{{ props.item.type }}</td>
+          <td class="text-right">
+            {{ !props.item.plan ? 0 : props.item.plan | currency }}
+          </td>
+          <td class="text-right">
+            {{ !props.item.total ? 0 : props.item.total | currency }}
+          </td>
+          <td class="text-center">
+            <m6-dropdown-actions
+              :options="dropdownOptions"
+              @delete="deleteBudget(props.item)"
+              @edit="editBudget(props.item)"
+            />
+          </td>
+        </tr>
       </template>
     </v-data-table>
 
@@ -213,12 +215,12 @@ export default {
     dropdownOptions() {
       return [
         {
-          icon: 'remove_red_eye',
+          icon: 'mdi-eye',
           title: this.$t('general.show'),
           event: 'edit'
         },
         {
-          icon: 'delete',
+          icon: 'mdi-delete',
           title: this.$t('general.delete'),
           event: 'delete'
         }

@@ -16,8 +16,8 @@
           <v-icon
             light
             text
-            @click="cardDialogClick"
             v-on="on"
+            @click="cardDialogClick"
           >
             mdi-launch
           </v-icon>
