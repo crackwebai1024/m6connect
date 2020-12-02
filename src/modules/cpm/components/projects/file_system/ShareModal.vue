@@ -276,6 +276,7 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     }),
+    ...mapGetters('Auth', { currentUser: 'getUser' }),
     expireDate() {
       return this.fromDateVal
         ? this.formatDate(this.fromDateVal)
@@ -286,9 +287,9 @@ export default {
     },
     sender() {
       return (
-        window.Drupal.settings.m6_platform.user.name +
+        this.currentUser.firstName +
         ' ' +
-        window.Drupal.settings.m6_platform.user.lastName
+        this.currentUser.lastName
       )
     }
   },
