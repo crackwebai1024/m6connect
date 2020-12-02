@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card flat>
       <v-card-title class="relative">
         <portal
           v-if="included"
@@ -8,7 +8,7 @@
         >
           <v-btn
             absolute
-            class='mt-3'
+            class="mt-3"
             color="white"
             dark
             fab
@@ -94,9 +94,9 @@
               type="hidden"
             >
             <v-btn
-              outlined
-              color='grey'
-              class='mr-2'
+              class="mr-2"
+              color="grey"
+              outline
               @click="cancel"
             >
               Cancel

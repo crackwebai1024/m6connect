@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    hide-actions
+    hide-default-footer
     item-key="code"
     :items="items"
   >

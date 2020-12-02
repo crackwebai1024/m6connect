@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card flat>
       <v-card-title class="relative">
         <portal
           v-if="included"
@@ -8,7 +8,7 @@
         >
           <v-btn
             absolute
-            class='mt-3'
+            class="mt-3"
             color="white"
             dark
             fab

@@ -80,7 +80,7 @@
               <v-data-table
                 v-if="spending.line_items"
                 :headers="lineItemsSpendingsHeaders"
-                hide-actions
+                hide-default-footer
                 :items="spending.line_items"
                 :search="search"
               >

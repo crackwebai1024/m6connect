@@ -43,7 +43,7 @@
             :options.sync="pagination"
           >
             <template v-slot:items="props">
-              <td>{{ props.item }}</td>
+              <td>{{ props.item }}jsjskj</td>
               <td class="text-right">
                 <v-icon
                   class="mr-2 pointer"
@@ -168,6 +168,7 @@ export default {
       .doc('commitments')
       .get()
       .then(settings => {
+        console.log(settings)
         if (!settings.exists) {
           db.collection('settings')
             .doc(this.currentCompany.id)

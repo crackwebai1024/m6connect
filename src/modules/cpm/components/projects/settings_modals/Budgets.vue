@@ -15,8 +15,8 @@
       <v-tabs
         v-model="tab"
         centered
-        fixed-tabs
         color="primary"
+        fixed-tabs
       >
         <v-tab>Budget Status</v-tab>
         <v-tab>Budget Categories</v-tab>
@@ -27,7 +27,6 @@
       <v-card-text
         class="pa-0 vertical-scroll"
         :style="{ height: getViewPortHeight }"
-        
       >
         <v-container
           class="pa-0"

@@ -236,7 +236,7 @@
             <v-data-table
               class="elevation-1"
               :headers="subheaders"
-              hide-actions
+              hide-default-footer
               :items="props.item.spending"
             >
               <template v-slot:items="props">
