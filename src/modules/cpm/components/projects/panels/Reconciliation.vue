@@ -684,7 +684,7 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: false,
-        rowsPerPage: 10,
+        itemsPerPage: 8,
         totalItems: 0,
         page: 1
       },
@@ -737,7 +737,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
     },
     isFullScreenPage() {
