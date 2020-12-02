@@ -56,7 +56,7 @@
               <v-expansion-panel-content
                 v-for="(item, index) in settings.tasks"
                 :key="index"
-                :hide-actions="!(item.cat_1 && item.cat_1.length > 0)"
+                :hide-default-footer="!(item.cat_1 && item.cat_1.length > 0)"
                 :style="getStyle(item)"
               >
                 <v-card
@@ -110,7 +110,7 @@
                       <v-expansion-panel-content
                         v-for="(itemL2, indexL2) in item.cat_1"
                         :key="indexL2"
-                        hide-actions
+                        hide-default-footer
                         :style="getStyle(itemL2)"
                       >
                         <v-card
@@ -364,7 +364,7 @@
                           <v-col md="12">
                             <v-data-table
                               :headers="headers"
-                              hide-actions
+                              hide-default-footer
                               :items="ganttsInTask"
                             >
                               <template v-slot:items="props">

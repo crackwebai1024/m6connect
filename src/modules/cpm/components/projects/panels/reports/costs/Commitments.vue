@@ -121,7 +121,7 @@
               <v-data-table
                 v-if="commitment.line_items"
                 :headers="headers"
-                hide-actions
+                hide-default-footer
                 :items="commitment.line_items"
                 :search="search"
               >

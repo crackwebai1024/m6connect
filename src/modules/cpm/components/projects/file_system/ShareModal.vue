@@ -23,7 +23,7 @@
               id="step16"
               :key="'btnsforitems' + index"
               class="ma-2"
-              outlined
+              outline
               tile
             >
               <img
@@ -131,7 +131,7 @@
                         id="step19"
                         class="ma-2"
                         :disabled="!expire"
-                        outlined
+                        outline
                         tile
                         v-on="on"
                       >

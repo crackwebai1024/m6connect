@@ -8,7 +8,7 @@
       >
         <div
           slot="header"
-          class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
+          class="align-center d-flex justify-space-between max-w-lg mx-auto px-8 py-5 w-full"
         >
           <div class="align-center d-flex">
             <div>
@@ -20,7 +20,7 @@
               />
               <div
                 v-else
-                class="d-flex grey items-center justify-center lighten-3 ml-16 mr-8"
+                class="d-flex grey items-center justify-center lighten-3 mr-6"
                 style="width: 150px; height: 150px; border-radius: 5px"
               >
                 <v-icon
@@ -31,7 +31,7 @@
                 </v-icon>
               </div>
             </div>
-            <div class="ml-8">
+            <div>
               <h2>{{ $h.dg(project, 'title', '') }}</h2>
               <p
                 class="mb-0"
@@ -354,33 +354,21 @@
 
           <!--SCHEDULE-->
           <template v-if="activeTab === 2">
-            <panel-full>
+            <!-- <panel-full
+              v-if="!panelSettings.mileTracker"
+            >
               <template slot="content">
-                <v-row
-                  v-if="!panelSettings.mileTracker"
-                >
-                  <v-col cols="12">
-                    <milestones :type="type" />
-                  </v-col>
-                </v-row>
-
-                <v-row
-                  v-if="!panelSettings.mileSchedule"
-                  class="mt-2"
-                >
-                  <v-col cols="12">
-                    <schedule :type="type" />
-                  </v-col>
-                </v-row>
-
-                <v-row
-                  v-if="isPlannedProject"
-                  class="mt-2"
-                >
-                  <v-col cols="12">
-                    <forecasts />
-                  </v-col>
-                </v-row>
+                <milestones :type="type" />
+              </template>
+            </panel-full> -->
+            <panel-full v-if="!panelSettings.mileSchedule">
+              <template slot="content">
+                <schedule :type="type" />
+              </template>
+            </panel-full>
+            <panel-full v-if="isPlannedProject">
+              <template slot="content">
+                <forecasts />
               </template>
             </panel-full>
           </template>
@@ -398,25 +386,14 @@
 
           <!--REPORTS-->
           <template v-if="activeTab === 4">
-            <panel-full>
+            <panel-full v-if="!panelSettings.mileSchedule">
               <template slot="content">
-                <v-row
-                  v-if="!panelSettings.mileSchedule"
-                  class="mt-2"
-                >
-                  <v-col cols="12">
-                    <schedule :type="type" />
-                  </v-col>
-                </v-row>
-
-                <v-row
-                  v-if="isPlannedProject"
-                  class="mt-2"
-                >
-                  <v-col cols="12">
-                    <forecasts />
-                  </v-col>
-                </v-row>
+                <schedule :type="type" />
+              </template>
+            </panel-full>
+            <panel-full v-if="isPlannedProject">
+              <template slot="content">
+                <forecasts />
               </template>
             </panel-full>
           </template>
