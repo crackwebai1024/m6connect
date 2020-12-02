@@ -1,9 +1,12 @@
 <template>
-  <v-app id="complete-app" >
-    <div class="grey lighten-3 h-viewport">
+  <v-app id="complete-app">
+    <div class="grey h-viewport lighten-3">
       <template v-if="loggedIn && !$route.meta.public">
         <top-nav />
-        <v-row no-gutters class="central-content max-w-container mx-auto top-60 relative w-full flex flex-nowrap grey lighten-3 justify-space-between">
+        <v-row
+          class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
+          no-gutters
+        >
           <action-feed v-show="showSidePanels" />
           <!-- Home / Company Profile -->
           <router-view />
@@ -58,18 +61,18 @@ export default {
       showSidePanels: 'showSidePanels'
     }),
     ...mapState('SnackBarNotif', {
-      notifShow : 'notifShow',
-      notifSuccess : 'notifSuccess',
-      notifDanger : 'notifDanger',
-      notifText : 'notifText'
+      notifShow: 'notifShow',
+      notifSuccess: 'notifSuccess',
+      notifDanger: 'notifDanger',
+      notifText: 'notifText'
     })
   },
   methods: {
     ...mapMutations('SnackBarNotif', {
       notifClose: 'notifClose'
     })
-  },
-};
+  }
+}
 </script>
 
 <style>
