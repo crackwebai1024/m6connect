@@ -298,7 +298,7 @@
             v-if="all_images && images.length>4"
             class="float-button"
             color="primary"
-            outline
+            outlined
             @click="showAll"
           >
             Show less
