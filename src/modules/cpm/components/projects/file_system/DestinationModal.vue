@@ -3,7 +3,6 @@
     v-model="show"
     max-width="600"
     persistent
-    scrollable
   >
     <v-card>
       <v-card-title class="headline px-6 py-4 white">
@@ -68,8 +67,10 @@
       </v-card-text>
       <v-card-actions>
         <v-row>
-          <v-col cols="8" />
-          <v-col cols="6">
+          <v-col
+            class="d-flex justify-end px-6"
+            cols="12"
+          >
             <v-btn
               text
               @click="$emit('close')"
@@ -77,6 +78,8 @@
               {{ $t('general.cancel') }}
             </v-btn>
             <v-btn
+              class="blue ml-2"
+              color="white"
               text
               @click="selectFolder"
             >

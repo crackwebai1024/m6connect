@@ -362,13 +362,13 @@
 
           <!--SCHEDULE-->
           <template v-if="activeTab === 2">
-            <panel-full
+            <!-- <panel-full
               v-if="!panelSettings.mileTracker"
             >
               <template slot="content">
                 <milestones :type="type" />
               </template>
-            </panel-full>
+            </panel-full> -->
             <panel-full v-if="!panelSettings.mileSchedule">
               <template slot="content">
                 <schedule :type="type" />
