@@ -89,7 +89,10 @@
       <div>
         <div class="pt-4 px-5">
           <template v-if="!updatePostShow">
-            <p class="pa-0 ma-0" v-html="urlify(data.message)['text']"></p>
+            <p
+              class="ma-0 pa-0"
+              v-html="urlify(data.message)['text']"
+            />
             <slot name="record" />
 
             <template v-if="recordFields">
@@ -245,7 +248,7 @@
             <v-btn
               color="green darken-1"
               elevation="0"
-              outlined
+              outline
               width="120px"
               @click="updateActivity(data)"
             >
@@ -256,12 +259,15 @@
         </div>
       </div>
       <div>
-        <v-row class="my-2" v-if="data['files'] && data['files'].length > 0">
+        <v-row
+          v-if="data['files'] && data['files'].length > 0"
+          class="my-2"
+        >
           <v-col
-            cols="12"
-            class="my-0 py-0 mx-5"
             v-for="(file, index) of data['files']"
             :key="index+'-file'"
+            class="mx-5 my-0 py-0"
+            cols="12"
           >
             <v-icon
               @click="redirect(file)"
@@ -269,22 +275,22 @@
               mdi-file-document-outline
             </v-icon>
             <p
-              class="text-subtitle-1 font-weight-bold text-left pointer mx-2 my-0 py-0"
+              class="font-weight-bold mx-2 my-0 pointer py-0 text-left text-subtitle-1"
               @click="redirect(file)"
             >
-              {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+              {{ file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')') }}
             </p>
           </v-col>
         </v-row>
-        <record-url 
-          v-if="data['record_url'] && data['record_url']['id']" 
-          :recordInfo="data['record_url']" 
+        <record-url
+          v-if="data['record_url'] && data['record_url']['id']"
+          :record-info="data['record_url']"
         />
-        <external-url 
-          v-if="urlify(data.message)['urls'].length > 0" 
-          :urls="urlify(data.message)['urls']" 
+        <external-url
+          v-if="urlify(data.message)['urls'].length > 0"
+          :urls="urlify(data.message)['urls']"
         />
-        <div 
+        <div
           v-if="images.length !== 0"
           class="px-5 py-4"
         >
@@ -292,7 +298,7 @@
             v-if="all_images && images.length>4"
             class="float-button"
             color="primary"
-            outlined
+            outline
             @click="showAll"
           >
             Show less
@@ -319,7 +325,7 @@
             block
             class="mt-2"
             color="primary"
-            outlined
+            outline
             @click="showAll"
           >
             Show All
@@ -534,7 +540,7 @@ export default {
       assignment_list: [],
       preview_list: []
     },
-    images:[],
+    images: [],
 
     showBtnsPost: false,
     showComments: false,
@@ -574,9 +580,9 @@ export default {
     }
   },
   mounted() {
-    this.images = this.data.images;
-    this.picture_items = this.images.slice(0, 4);
-    this.user = this.currentUser;
+    this.images = this.data.images
+    this.picture_items = this.images.slice(0, 4)
+    this.user = this.currentUser
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
     }
@@ -592,8 +598,12 @@ export default {
   methods: {
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     ...mapActions(['set_image_preview_overlay']),
-    ...mapActions("WorkOrderModule", { records: "getRecords", putAct: "putAction", deleteAct: "deleteAction" }),
-    ...mapActions("AppAttachments", { getPostsUrl: "get_post_file_url" }),
+    ...mapActions('WorkOrderModule', {
+      records: 'getRecords',
+      putAct: 'putAction',
+      deleteAct: 'deleteAction'
+    }),
+    ...mapActions('AppAttachments', { getPostsUrl: 'get_post_file_url' }),
 
     isAuthor() {
       return typeof this.data.actor === 'string' ? JSON.parse(this.data.actor)['id'] === this.user.id
@@ -608,12 +618,12 @@ export default {
           break
       }
     },
-    redirect(file){
-      window.open(file,'_blank')
+    redirect(file) {
+      window.open(file, '_blank')
     },
-    updateActivity(activity){
-      this.updateInfo['description'] = this.updateMessage;
-      this.activity = activity;
+    updateActivity(activity) {
+      this.updateInfo['description'] = this.updateMessage
+      this.activity = activity
       this.putAct({
         id: activity['props']['id'],
         query: this.updateInfo
@@ -626,14 +636,14 @@ export default {
       })
     },
     urlify(text) {
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-      let textUrls = [];
-      let res = text.replace(urlRegex, function(url) {
-        let path = new URL(url)          
-        textUrls.push(url);
-        return '<a href="'+ url +'" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>';
+      const urlRegex = /(https?:\/\/[^\s]+)/g
+      const textUrls = []
+      const res = text.replace(urlRegex, function (url) {
+        const path = new URL(url)
+        textUrls.push(url)
+        return '<a href="' + url + '" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>'
       })
-      return { text: res, urls: textUrls };
+      return { text: res, urls: textUrls }
     },
     widthCols() {
       return this.images.length === 1 ? 12 : 6
@@ -763,8 +773,8 @@ export default {
       this.updateInfo.assignment_list = []
     },
     async previewImage(selected) {
-      await this.$store.dispatch('GSFeed/setPreviewPost', this.data['id']);
-      this.set_image_preview_overlay([this.data.images, selected]);
+      await this.$store.dispatch('GSFeed/setPreviewPost', this.data['id'])
+      this.set_image_preview_overlay([this.data.images, selected])
     },
     lineColor(approval) {
       return approval ? 'green accent-3 ' : 'grey '

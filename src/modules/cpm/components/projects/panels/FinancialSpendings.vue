@@ -193,7 +193,7 @@
             <v-data-table
               v-show="!loadingExpandedSpendingLineItems"
               :headers="headersLineItems"
-              hide-actions
+              hide-default-footer
               :items="expandedSpending.lineItems || []"
             >
               <template
@@ -1189,7 +1189,7 @@
               <v-col md="12">
                 <v-data-table
                   :headers="headersLineItems"
-                  hide-actions
+                  hide-default-footer
                   :items="spendingToShow.lineItems"
                 >
                   <template
