@@ -120,7 +120,7 @@
       :items="resources"
       :options.sync="pagination"
       :server-items-length="pagination.totalItems"
-      @update:pagination="debounceSearch(search, false)"
+      @update:options="debounceSearch(search, false)"
     >
       <template
         slot="item"
@@ -1479,7 +1479,7 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: true,
-        rowsPerPage: 10,
+        itemsPerPage: 8,
         totalItems: 0,
         page: 1
       },
@@ -1518,7 +1518,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
     },
 
@@ -1718,6 +1718,9 @@ export default {
   },
 
   methods: {
+    testPagination(v){
+      console.log(v)
+    },
     ...mapActions('companies/cpmProjects/spendings', {
       indexResource: 'indexELK'
     }),

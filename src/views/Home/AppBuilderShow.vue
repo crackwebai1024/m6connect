@@ -150,7 +150,7 @@ export default {
     methods: {
         ...mapActions('AppBuilder', {
             getApp: 'getApp'
-        })
+        }),
         ...mapMutations('RecordsInstance', {
             displayAppBuilderShow: 'displayAppBuilderShow'
         }),
