@@ -43,6 +43,28 @@
               />
             </div>
           </div>
+          <div class="absolute mr-3 mt-3 right-0 top-0">
+            <div class="relative">
+              <v-tooltip
+                v-model="show"
+                left
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    icon
+                    v-on="on"
+                    @click="$router.go(-1)"
+                  >
+                    <v-icon color="blue lighten-1">
+                      mdi-keyboard-return
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span class="grey lighten-4 px-3 py-2 rounded">Project List</span>
+              </v-tooltip>
+            </div>
+          </div>
         </div>
         <div
           slot="tabs"
