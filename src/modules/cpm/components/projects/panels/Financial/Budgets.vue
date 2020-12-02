@@ -73,8 +73,8 @@
         <tr>
           <td>{{ props.item.title }}</td>
           <td>{{ props.item.active ? $t('general.yes') : $t('general.no') }}</td>
-          <td>{{ props.item.status }}</td>
-          <td>{{ props.item.type }}</td>
+          <td>{{ props.item.status || '-' }}</td>
+          <td>{{ props.item.type || '-' }}</td>
           <td class="text-right">
             {{ !props.item.plan ? 0 : props.item.plan | currency }}
           </td>

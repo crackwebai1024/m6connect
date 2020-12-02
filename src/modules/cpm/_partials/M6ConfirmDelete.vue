@@ -92,8 +92,11 @@ export default {
   }),
 
   watch: {
-    show(v) {
-      this.showing = v
+    show: {
+      immediate: true,
+      handler: function (v) {
+        this.showing = v
+      }
     },
 
     showing(v) {
