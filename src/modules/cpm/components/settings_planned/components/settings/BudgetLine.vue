@@ -30,6 +30,7 @@
     <v-container class="pt-0">
       <v-data-table
         :headers="headers"
+        :server-items-length="10000"
         :items="settings.lineItemTypes"
       >
         <template v-slot:items="props">

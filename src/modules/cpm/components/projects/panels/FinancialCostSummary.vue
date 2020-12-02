@@ -35,7 +35,7 @@
       item-key="name"
       :items="filteredCategories"
       :options="pagination"
-      :server-items-length="totalParents"
+      :server-items-length="10000"
     >
       <template
         slot="item"

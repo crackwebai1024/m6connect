@@ -68,6 +68,7 @@
       :footer-props="fProps"
       :headers="headers"
       :items="budgets"
+      :server-items-length="10000"
     >
       <template v-slot:item="props">
         <tr>

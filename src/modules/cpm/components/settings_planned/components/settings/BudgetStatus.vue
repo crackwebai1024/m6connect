@@ -35,6 +35,7 @@
       <v-data-table
         :headers="headers"
         :items="settings.status"
+        :server-items-length="10000"
       >
         <template v-slot:items="props">
           <td>{{ props.item }}</td>
