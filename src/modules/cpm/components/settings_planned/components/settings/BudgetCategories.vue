@@ -17,7 +17,7 @@
         v-if="settings"
         :headers="headers"
         :items="settings.costCodes"
-        :server-items-length="10000"
+        :items-per-page-options="[5,10,15,200]"
       >
         <template v-slot:items="props">
           <td>

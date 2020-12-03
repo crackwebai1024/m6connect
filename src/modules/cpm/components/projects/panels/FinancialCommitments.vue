@@ -131,8 +131,8 @@
       class="elevation-0"
       :headers="headers"
       :items="resources"
+      :items-per-page-options="[5,10,15,200]"
       :options.sync="pagination"
-      :server-items-length="10000"
       @update:options="debounceSearch(search, false)"
     >
       <template
