@@ -42,7 +42,6 @@
             :headers="headers"
             :items="settings.status"
             :options.sync="pagination"
-            :server-items-length="10000"
           >
             <template v-slot:item="props">
               <tr>

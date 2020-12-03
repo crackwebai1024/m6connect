@@ -43,7 +43,6 @@
           :headers="headers"
           item-key="category.name"
           :items="budgetCategories"
-          :server-items-length="10000"
         >
           <template v-slot:items="props">
             <tr
@@ -81,7 +80,6 @@
                   class="elevation-1"
                   :headers="subHeaders"
                   :items="selectedBudgetCategory.items"
-                  :server-items-length="10000"
                 >
                   <template v-slot:items="props">
                     <tr style="background-color: rgba(0, 0, 0, 0.05);">

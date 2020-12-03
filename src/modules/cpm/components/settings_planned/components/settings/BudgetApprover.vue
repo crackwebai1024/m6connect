@@ -36,7 +36,6 @@
       <v-data-table
         :headers="headers"
         :items="settings.budgetApprover"
-        :server-items-length="10000"
       >
         <template v-slot:items="props">
           <td>{{ props.item.label }}</td>

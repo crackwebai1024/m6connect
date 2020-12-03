@@ -119,7 +119,7 @@
       :headers="headersSpendings"
       :items="resources"
       :options.sync="pagination"
-      :server-items-length="10000"
+      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template
@@ -742,12 +742,14 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll"
+        <v-card-text
+          class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
             height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
-          }">
+          }"
+        >
           <v-form
             ref="formLineItem"
             v-model="validLineItem"
@@ -1154,7 +1156,7 @@
             {{ $tc('cpm.projects.lineItem', 1) }}
           </span>
           <v-chip
-            class="absolute headling px-3 py-1 text-center blue darken-4"
+            class="absolute blue darken-4 headling px-3 py-1 text-center"
             style="left: 43%;"
           >
             <b class="white--text">
@@ -1196,7 +1198,6 @@
                   :headers="headersLineItems"
                   hide-default-footer
                   :items="spendingToShow.lineItems"
-                  :server-items-length="10000"
                 >
                   <template
                     slot="item"
@@ -1254,7 +1255,7 @@
           </v-container>
         </v-card-text>
 
-        <v-card-actions class='px-5'>
+        <v-card-actions class="px-5">
           <v-spacer />
 
           <v-btn
@@ -1719,7 +1720,7 @@ export default {
   },
 
   methods: {
-    testPagination(v){
+    testPagination(v) {
       console.log(v)
     },
     ...mapActions('companies/cpmProjects/spendings', {

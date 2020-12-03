@@ -48,7 +48,6 @@
                 v-if="commitment.line_items"
                 :headers="headers"
                 :items="commitment.line_items"
-                :server-items-length="10000"
               >
                 <template
                   slot="item"

@@ -46,7 +46,6 @@
           <div class="absolute mr-3 mt-3 right-0 top-0">
             <div class="relative">
               <v-tooltip
-                v-model="show"
                 left
               >
                 <template v-slot:activator="{ on, attrs }">
@@ -482,8 +481,6 @@ export default {
       'Details'
     ],
     currentTab: 0,
-    showColumnLeft: true,
-    showColumnRight: true,
     project: {},
     type: 'project',
     tabs: [

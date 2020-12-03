@@ -132,7 +132,7 @@
       :headers="headers"
       :items="resources"
       :options.sync="pagination"
-      :server-items-length="10000"
+      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template
