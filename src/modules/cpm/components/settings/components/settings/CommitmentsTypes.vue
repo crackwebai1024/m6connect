@@ -40,8 +40,8 @@
           <v-data-table
             :headers="headers"
             :items="settings.types"
+            :items-per-page-options="[5,10,15,200]"
             :options.sync="pagination"
-            :server-items-length="10000"
           >
             <template v-slot:item="props">
               <tr>

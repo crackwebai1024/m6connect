@@ -133,8 +133,8 @@
       fixed-header
       :headers="headers"
       :items="resources"
+      :items-per-page-options="[5,10,15,200]"
       :options="pagination"
-      :server-items-length="10000"
       @update:options="debounceSearch(search, false)"
     >
       <template v-slot:item="props">
