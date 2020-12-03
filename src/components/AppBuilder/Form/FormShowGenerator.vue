@@ -2,20 +2,20 @@
   <v-form ref="form">
     <v-container fluid>
       <v-row>
-        <v-col v-if="showStandardFields" >
-          <v-autocomplete 
-            label="Record Status"
+        <v-col v-if="showStandardFields">
+          <v-autocomplete
             v-model="recordToEdit.status"
-            outlined
             filled
             :items="statusOptions"
+            label="Record Status"
+            outlined
           />
 
-          <v-textarea 
-            label="Record Description" 
+          <v-textarea
             v-model="recordToEdit.description"
-            outlined
             filled
+            label="Record Description"
+            outlined
           />
         </v-col>
         <v-col
@@ -90,6 +90,7 @@ import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAu
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
+  name: 'FormShowGenerator',
   components: {
     VTextField,
     DatePicker,
@@ -112,8 +113,8 @@ export default {
 
     showStandardFields: {
       type: Boolean,
-      default: false 
-    },
+      default: false
+    }
 
   },
 
@@ -150,14 +151,14 @@ export default {
     typesToIds: {},
     complexDataStructs: { autocomplete: true, people: true },
     recordToEdit: {},
-    statusOptions: [ 'Draft', 'In Progress', 'Done', 'Backlog', 'Under Review']
+    statusOptions: ['Draft', 'In Progress', 'Done', 'Backlog', 'Under Review']
   }),
 
   computed: {
     ...mapState('RecordsInstance', {
       currentRecord: 'currentRecord',
       showSelf: 'displayAppBuilderShow'
-    }),
+    })
 
   },
 
@@ -179,11 +180,11 @@ export default {
     }),
 
     saveStandardFields() {
-      if(this.showStandardFields) {
-        return new Promise( (resolve, reject) => {
-          this.updateRecord( this.recordToEdit )
-          .then(res => resolve(res))
-          .catch( e => reject(e))
+      if (this.showStandardFields) {
+        return new Promise((resolve, reject) => {
+          this.updateRecord(this.recordToEdit)
+            .then(res => resolve(res))
+            .catch(e => reject(e))
         })
       }
 
@@ -242,7 +243,7 @@ export default {
 
         complexTypes.forEach(a => {
           const { toDelete, toCreate } = this.findTheDifference(this.typesToIds[a], this.genericRecord[a], a)
-          const fieldType = this.fields.find(f => f.id == a).type
+          const fieldType = this.fields.find(f => f.id === a).type
 
           deleteArr.push({ values: toDelete, fieldType })
           createObj[a] = toCreate
@@ -311,7 +312,7 @@ export default {
     },
 
     async loadingData() {
-      if (this.$route.name == 'record.show') {
+      if (this.$route.name === 'record.show') {
         try {
           this.loading = true
 
@@ -340,7 +341,7 @@ export default {
 
   mounted() {
     this.loadingData()
-    this.recordToEdit = {...this.currentRecord}
+    this.recordToEdit = { ...this.currentRecord }
   }
 
 }

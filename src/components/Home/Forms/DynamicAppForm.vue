@@ -121,7 +121,7 @@ export default {
   computed: {
     ...mapState('Auth', {
       currentUser: 'user'
-    }),
+    })
   },
 
   methods: {
@@ -171,7 +171,7 @@ export default {
     },
     radioRules(model) {
       return [
-        model != null || 'At least one item should be selected'
+        model !== null || 'At least one item should be selected'
       ]
     },
     stringsRules(name) {

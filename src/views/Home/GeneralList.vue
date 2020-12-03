@@ -1,7 +1,10 @@
 <template>
-  <v-container fluid class="pa-0" >
+  <v-container
+    class="pa-0"
+    fluid
+  >
     <header-component
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded "
+      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
       hasslot
       :info="{title: 'Search All Apps', icon: ''}"
     >
@@ -9,7 +12,7 @@
         <v-switch
           v-model="tableView"
           :append-icon=" tableView ? 'mdi-table' : 'mdi-arrange-bring-forward' "
-        ></v-switch>
+        />
         <v-menu
           bottom
           offset-y
@@ -66,10 +69,10 @@
       </template>
     </header-component>
     <div v-if="!loading">
-      <template v-if="tableView" >
+      <template v-if="tableView">
         <records-table :items="testItems" />
       </template>
-      <template v-else >
+      <template v-else>
         <div
           v-for="(item, index) of records"
           :key="index"
@@ -181,9 +184,9 @@ export default {
         this.records = this.list()
         this.loading = false
       })
-      .catch(e => {
-        this.loading = false
-      })
+        .catch(e => {
+          this.loading = false
+        })
     },
     reload() {
       this.loading = true
@@ -208,8 +211,7 @@ export default {
       try {
         this.testItems = await this.getRecordsByApp(app['prefix'])
         app.function()
-      } catch(e) {
-      }
+      } catch (e) {}
     }
   },
 
@@ -224,9 +226,9 @@ export default {
   mounted() {
     this.setDynamicApps()
     this.setFilterTag({ key: 'everyone', value: 'All Apps' })
-    this.getApps().then( () => {
-        this.records = this.list() 
-        this.loading = false
+    this.getApps().then(() => {
+      this.records = this.list()
+      this.loading = false
     })
     this.selectApp().then(res => {
       res['data'].forEach(app => {
