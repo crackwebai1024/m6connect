@@ -88,6 +88,19 @@
       >
         mdi-plus-circle
       </v-icon>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon
+            class="cursor grey--text ml-2 text--darken-2"
+            color="white"
+            v-on="on"
+            @click="showSettings = true"
+          >
+            mdi-cog
+          </v-icon>
+        </template>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.settings') }}</span>
+      </v-tooltip>
     </template>
 
     <v-row
@@ -118,8 +131,8 @@
       :align-actions="alignActions"
       :headers="headersSpendings"
       :items="resources"
-      :options.sync="pagination"
       :items-per-page-options="[5,10,15,200]"
+      :options.sync="pagination"
       @update:options="debounceSearch(search, false)"
     >
       <template
@@ -337,6 +350,40 @@
                       {{ item.number }} - {{ item.title }} -
                       {{ item.amount | currency }}
                       {{ item.vendor ? `- ${item.vendor.title}` : '' }}
+                    </template>
+                  </v-select>
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('cpm.projects.glaccount') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-select
+                    ref="glaccount"
+                    v-model="dialogProperties.glaccount"
+                    clearable
+                    item-text="name"
+                    item-value="code"
+                    :items="glaccount.codes"
+                    return-object
+                  >
+                    <template
+                      slot="item"
+                      slot-scope="{ item }"
+                    >
+                      {{ item.name }} - {{ item.code }}
                     </template>
                   </v-select>
                 </v-col>
@@ -577,7 +624,7 @@
                         item.file === 'image/jpeg' || item.file === 'image/png'
                       "
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
                       mdi-file-pdf-box
@@ -1313,6 +1360,12 @@
     />
 
     <m6-loading :loading="showLoading" />
+
+    <settings-modal
+      v-if="showSettings"
+      :show="showSettings"
+      @close="showSettings = false"
+    />
   </m6-card-dialog>
 </template>
 
@@ -1328,6 +1381,7 @@ import mixins from '@/modules/cpm/_mixins/index'
 import FirebaseReportComponent from './FirebaseReportComponent.vue'
 import SearchingModal from '../modals/SearchingModal'
 import BudgetCategorySelect from '../_partials/BudgetCategorySelect'
+import settingsModal from '../settings_modals/FinancialSpendings.vue'
 
 const defaultLineItemSpending = {
   number: '',
@@ -1357,7 +1411,8 @@ export default {
   name: 'FinancialSpendings',
   components: {
     searching: SearchingModal,
-    BudgetCategorySelect
+    BudgetCategorySelect,
+    settingsModal
   },
 
   extends: FirebaseReportComponent,
@@ -1384,6 +1439,7 @@ export default {
         }
       },
       commitments: [],
+      glaccount: [],
       autoInit: true,
       dialogSpendingPaidDateText: false,
       dialogSpendingDateOpenedText: false,
@@ -1488,7 +1544,8 @@ export default {
       },
       formWasValidated: false,
       expandedSpending: {},
-      loadingExpandedSpendingLineItems: false
+      loadingExpandedSpendingLineItems: false,
+      showSettings: false
     }
   },
 
@@ -1503,7 +1560,12 @@ export default {
       commitments: db
         .collection('cpm_projects')
         .doc(this.projectId)
-        .collection('commitments')
+        .collection('commitments'),
+      glaccount: db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc('glaccount')
     }
   },
 
