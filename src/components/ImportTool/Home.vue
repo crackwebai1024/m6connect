@@ -13,7 +13,7 @@
           </v-card-title>
           <v-divider class="grey lighten-3 z-index" />
           <v-card-text class="pb-5 px-6">
-            <div>
+            <div v-if="$route.query.dev === 'dev'">
               <h5>Developer Tools</h5>
               <v-btn @click="useHistorical">
                 Historical Spendings
@@ -393,15 +393,7 @@ export default {
             description: ''
           },
           {
-            name: 'Budget Category',
-            description: ''
-          },
-          {
             name: 'Cost Code Number',
-            description: ''
-          },
-          {
-            name: 'Vendor',
             description: ''
           }
         ],
@@ -448,7 +440,20 @@ export default {
           {
             name: 'Title',
             description: ''
+          },
+          {
+            name: 'Description',
+            description: ''
+          },
+          {
+            name: 'Description 2',
+            description: ''
+          },
+          {
+            name: 'WBS Element',
+            description: ''
           }
+
         ],
         spendings: [
           {
@@ -459,29 +464,9 @@ export default {
             description: ''
           },
           {
-            name: 'Budget Category Code',
-            description: ''
-          },
-          {
-            name: 'Budget Category Name',
-            description: ''
-          },
-          {
             name: 'Contingency',
             description: ''
           },
-          {
-            name: 'Cost Code Text',
-            description: ''
-          },
-          {
-            name: 'Cost Code Number',
-            description: ''
-          },
-          // {
-          //   name: 'Commitment ID/Number',
-          //   description: ''
-          // },
           {
             name: 'Status',
             description: ''
@@ -525,6 +510,39 @@ export default {
           },
           {
             name: 'Commitment ID/Number',
+            description: ''
+          }
+        ],
+        others: [
+          {
+            header: 'Others'
+          },
+          {
+            name: 'Cost Code Text',
+            description: ''
+          },
+          {
+            name: 'Cost Code Number',
+            description: ''
+          },
+          {
+            name: 'WBS Element',
+            description: ''
+          },
+          {
+            name: 'GL Account Number',
+            description: ''
+          },
+          {
+            name: 'GL Account Code',
+            description: ''
+          },
+          {
+            name: 'Budget Category Code',
+            description: ''
+          },
+          {
+            name: 'Budget Category Name',
             description: ''
           },
           {
@@ -963,14 +981,14 @@ export default {
     },
     async createCommitment(projectID, item) {
       let bc = {}
-      if (item.commitments_budget_category_code || item.commitments_budget_category_name) {
+      if (item.others_budget_category_code || item.others_budget_category_name) {
         if (this.budgetCategories.length > 0) {
           // eslint-disable-next-line eqeqeq
-          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category_name || s.code == item.commitments_budget_category_code)
+          bc = this.budgetCategories.find(s => s.name === item.others_budget_category_name || s.code === item.others_budget_category_code)
           if (!bc) {
             bc = this.createBudgetCategory({
-              code: item.commitments_budget_category_code || item.commitments_budget_category_name,
-              name: item.commitments_budget_category_name || item.commitments_budget_category_code
+              code: item.others_budget_category_code || item.others_budget_category_name,
+              name: item.others_budget_category_name || item.others_budget_category_code
             })
           }
         }
@@ -1009,7 +1027,10 @@ export default {
         cost_per_item: item.commitmentLineItem_cost_per_item || '',
         total_po_line_amount: item.commitmentLineItem_amount || '',
         amount: item.commitmentLineItem_amount || '',
-        open_po_amount: ''
+        open_po_amount: '',
+        description: item.commitmentLineItem_description || '',
+        description2: item.commitmentLineItem_description_2 || '',
+        wbsElement: item.commitmentLineItem_wbs_element
       }
       return new Promise(resolve => {
         const spending = db.collection('cpm_projects')
@@ -1023,16 +1044,14 @@ export default {
     },
     async createSpending(projectID, item) {
       let bc = {}
-      if (item.spendings_budget_category_name || item.spendings_budget_category_code) {
-        if (this.budgetCategories.length > 0) {
-          // eslint-disable-next-line eqeqeq
-          bc = this.budgetCategories.find(s => s.name == item.spendings_budget_category_name || s.code == item.spendings_budget_category_code)
-          if (!bc) {
-            bc = this.createBudgetCategory({
-              code: item.spendings_budget_category_code || item.spendings_budget_category_name,
-              name: item.spendings_budget_category_name || item.spendings_budget_category_code
-            })
-          }
+      if (item.others_budget_category_name || item.others_budget_category_code) {
+        bc = this.budgetCategories.find(s => s.name === this.$h.dg(item, 'others_budget_category_name', '').trim() || s.code === this.$h.dg(item, 'others_budget_category_code', '').trim())
+        if (!bc) {
+          bc = await this.createBudgetCategory({
+            code: item.others_budget_category_code || item.others_budget_category_name,
+            name: item.others_budget_category_name || item.others_budget_category_code
+          })
+          this.budgetCategories.push(bc)
         }
       }
 
@@ -1062,13 +1081,15 @@ export default {
         po_number: item.spendingLineItem_commitment_id_number || '',
         total_po_amount: 0,
         total_open_po_w_tax: 0,
+        glAccountNumber: item.spendings_gl_account_number || '',
+        glAccountCode: item.spendings_gl_account_code || '',
         vendors: [
           {
             field_vendor_id_value: '',
             nid: '',
             preferred: '',
-            title: item.spendingLineItem_vendor_name || '',
-            custom_id: item.spendingLineItem_vendor_code || ''
+            title: item.others_vendor_name || '',
+            custom_id: item.others_vendor_code || ''
           }
         ]
       }
@@ -1089,8 +1110,8 @@ export default {
           field_vendor_id_value: '',
           nid: '',
           preferred: '',
-          title: item.spendingLineItem_vendor_name || '',
-          custom_id: item.spendingLineItem_vendor_code || ''
+          title: item.others_vendor_name || '',
+          custom_id: item.others_vendor_code || ''
         },
         line_number: item.spendingLineItem_line_number.toString() || '',
         line_description: item.spendingLineItem_description || '',
@@ -1104,7 +1125,7 @@ export default {
         aoc_code: item.spendingLineItem_paid_date || '',
         status: item.spendingLineItem_status || '',
         amount: item.spendingLineItem_amount || '',
-        account_category: item.spendingLineItem_account_category || item.spendings_budget_category_code || '',
+        account_category: item.spendingLineItem_account_category || item.others_budget_category_code || '',
         cancel_seq: '',
         suffix: '',
         po_code: '',
