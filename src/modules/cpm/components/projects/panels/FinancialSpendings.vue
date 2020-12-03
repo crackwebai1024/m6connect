@@ -363,6 +363,40 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('cpm.projects.glaccount') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-select
+                    ref="glaccount"
+                    v-model="dialogProperties.glaccount"
+                    clearable
+                    item-text="name"
+                    item-value="code"
+                    :items="glaccount.codes"
+                    return-object
+                  >
+                    <template
+                      slot="item"
+                      slot-scope="{ item }"
+                    >
+                      {{ item.name }} - {{ item.code }}
+                    </template>
+                  </v-select>
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('cpm.projects.budgetCategory') }}
                       </v-col>
                       <v-col class="shrink">
@@ -1405,6 +1439,7 @@ export default {
         }
       },
       commitments: [],
+      glaccount: [],
       autoInit: true,
       dialogSpendingPaidDateText: false,
       dialogSpendingDateOpenedText: false,
@@ -1525,7 +1560,12 @@ export default {
       commitments: db
         .collection('cpm_projects')
         .doc(this.projectId)
-        .collection('commitments')
+        .collection('commitments'),
+      glaccount: db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc('glaccount')
     }
   },
 
