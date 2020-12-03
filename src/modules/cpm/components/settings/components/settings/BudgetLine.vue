@@ -41,6 +41,7 @@
             :headers="headers"
             :items="settings.lineItemTypes"
             :pagination.sync="pagination"
+            :server-items-length="[5,10,15,200]"
           >
             <template v-slot:items="props">
               <td>{{ props.item }}</td>

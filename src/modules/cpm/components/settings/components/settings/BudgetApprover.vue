@@ -40,6 +40,7 @@
             :headers="headers"
             :items="settings.budgetApprover"
             :pagination.sync="pagination"
+            :server-items-length="[5,10,15,200]"
           >
             <template v-slot:items="props">
               <td>{{ props.item.label }}</td>

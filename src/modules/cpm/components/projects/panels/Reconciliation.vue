@@ -134,7 +134,7 @@
       :headers="headers"
       :items="resources"
       :options="pagination"
-      :server-items-length="pagination.totalItems"
+      :server-items-length="[5,10,15,200]"
       @update:options="debounceSearch(search, false)"
     >
       <template v-slot:item="props">
