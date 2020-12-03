@@ -50,7 +50,18 @@ const settings = [
       {
         name: 'types',
         value: ['Default Type']
+      },
+      {
+        name: 'costCodes',
+        value: [
+          {
+            cat_1: [],
+            code: '00',
+            name: 'New cost code'
+          }
+        ]
       }
+
     ]
   },
   {

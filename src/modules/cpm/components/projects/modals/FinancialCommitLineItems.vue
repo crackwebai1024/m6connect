@@ -21,7 +21,10 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text :style="viewPortStyles" class="vertical-scroll">
+      <v-card-text
+        class="vertical-scroll"
+        :style="viewPortStyles"
+      >
         <v-container>
           <v-form ref="form">
             <v-row
@@ -288,7 +291,8 @@
               <v-col cols="7">
                 <money
                   v-model="lineItem.amount"
-                  v-bind="money"/>
+                  v-bind="money"
+                />
               </v-col>
             </v-row>
 
@@ -307,14 +311,14 @@
               </v-col>
               <v-col cols="7">
                 <money
-                  :disabled="true"
                   v-model="lineItem.poRemainingWithAccrual"
                   v-bind="money"
+                  :disabled="true"
                 />
               </v-col>
             </v-row>
 
-           <v-row
+            <v-row
               align="center"
               justify="center"
             >
@@ -637,9 +641,9 @@
                       mask="date"
                       v-on="on"
                     >
-                    <template #append>
-                      <v-icon>mdi-calendar-today</v-icon>
-                    </template>
+                      <template #append>
+                        <v-icon>mdi-calendar-today</v-icon>
+                      </template>
                     </v-text-field>
                   </template>
                   <v-date-picker
@@ -778,7 +782,7 @@ export default {
   },
   computed: {
     viewPortStyles() {
-      return {height: `${this.viewPortHeight}px !important`}
+      return { height: `${this.viewPortHeight}px !important` }
     },
     startDate: {
       get: function () {
@@ -891,9 +895,6 @@ export default {
       const newFormat = `${month}/${day}/${year}`
       this.lineItem.documentDateText = newFormat
     }
-  },
-  mounted() {
-    console.log(this.$store.getters)
   }
 }
 </script>
