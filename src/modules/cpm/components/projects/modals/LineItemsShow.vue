@@ -48,7 +48,7 @@
                 v-if="commitment.line_items"
                 :headers="headers"
                 :items="commitment.line_items"
-                :server-items-length="[5,10,15,200]"
+                :items-per-page-options="[5,10,15,200]"
               >
                 <template
                   slot="item"

@@ -31,7 +31,7 @@
       <v-data-table
         :headers="headers"
         :items="settings.lineItemTypes"
-        :server-items-length="[5,10,15,200]"
+        :items-per-page-options="[5,10,15,200]"
       >
         <template v-slot:items="props">
           <td>{{ props.item }}</td>
