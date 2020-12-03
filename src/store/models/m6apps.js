@@ -187,7 +187,7 @@ const typeMap = {
     {
       json: 'image',
       js: 'image',
-      typ: u(undefined, '')
+      typ: u(undefined, u(null, ''))
     },
     {
       json: 'created_at',
@@ -237,6 +237,63 @@ const typeMap = {
     {
       json: 'metadata',
       js: 'metadata',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'app',
+      js: 'app',
+      typ: u(undefined, u(null, r('App')))
+    }
+  ], false),
+  'App': o([
+    {
+      json: 'id',
+      js: 'id',
+      typ: u(undefined, 0)
+    },
+    {
+      json: 'app_number',
+      js: 'app_number',
+      typ: u(undefined, u(null, ''))
+    },
+    {
+      json: 'app_type',
+      js: 'app_type',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'title',
+      js: 'title',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'author',
+      js: 'author',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'description',
+      js: 'description',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'created_at',
+      js: 'created_at',
+      typ: u(undefined, Date)
+    },
+    {
+      json: 'updated_at',
+      js: 'updated_at',
+      typ: u(undefined, Date)
+    },
+    {
+      json: 'iconLink',
+      js: 'iconLink',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'prefix',
+      js: 'prefix',
       typ: u(undefined, '')
     }
   ], false),

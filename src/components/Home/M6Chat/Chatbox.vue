@@ -66,6 +66,7 @@
           >
             {{ users[0].user.name }}
           </p>
+          <v-spacer />
           <p
             v-if="users[0].user.online"
             class="font-weight-medium ma-0 pa-0 text-caption"
@@ -928,12 +929,12 @@ export default {
       })
     })
     this.client.on('typing.start', r => {
-      if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
+      if (r.user.id !== this.user.id && r['channel_id'] === this.channel['id']) {
         this.whoTyping = r.user
       }
     })
     this.client.on('typing.stop', r => {
-      if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
+      if (r.user.id !== this.user.id && r['channel_id'] === this.channel['id']) {
         this.whoTyping = ''
       }
     })

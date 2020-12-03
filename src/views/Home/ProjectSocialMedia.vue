@@ -286,6 +286,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import HeaderComponent from '@/components/Home/HeaderComponent'
 import PostsList from '@/components/Home/SocialMedia/PostsList'
 import { mapActions, mapGetters } from 'vuex'
@@ -612,7 +613,7 @@ export default {
           })
         }
 
-        if (this.imageFiles.length > 0 && this.docsFiles.length > 0) {
+        if (this.imageFiles.length === 0 && this.docsFiles.length === 0) {
           this.showLoading = false
         }
 
