@@ -8,7 +8,7 @@
         class="pa-0"
         cols="12"
       >
-        <list-projects />
+        <list-projects v-if="!loading" />
       </v-col>
     </v-row>
   </v-container>
@@ -22,9 +22,16 @@ import {
   doFirebaseAuth
 } from '@/utils/Firebase'
 
+import defaultSettings from '@/modules/cpm/config/defaultSettings'
+
 export default {
   components: {
     ListProjects
+  },
+  data() {
+    return {
+      loading: true
+    }
   },
   methods: {
     ...mapMutations('PageControl', {
@@ -32,6 +39,9 @@ export default {
     })
   },
   computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
     ...mapState('UserSettingsControl', {
       secondColumnComponent: 'secondColumnComponent',
       thirdColumnComponent: 'thirdColumnComponent'
@@ -41,6 +51,8 @@ export default {
     // Init Firebase
     await newFirebaseInit()
     await doFirebaseAuth()
+    await defaultSettings(this.currentCompany.id)
+    this.loading = false
   },
   mounted() {
     this.setShowSidePanels(false)
