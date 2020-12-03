@@ -2,6 +2,22 @@
   <v-form ref="form">
     <v-container fluid>
       <v-row>
+        <v-col v-if="showStandardFields" >
+          <v-autocomplete 
+            label="Record Status"
+            v-model="recordToEdit.status"
+            outlined
+            filled
+            :items="statusOptions"
+          />
+
+          <v-textarea 
+            label="Record Description" 
+            v-model="recordToEdit.description"
+            outlined
+            filled
+          />
+        </v-col>
         <v-col
           v-for="f in fields"
           :key="`custom-field-${f.id}`"
@@ -92,10 +108,17 @@ export default {
     panel: {
       type: Object,
       default: () => ({})
-    }
+    },
+
+    showStandardFields: {
+      type: Boolean,
+      default: false 
+    },
+
   },
 
   data: () => ({
+    standardFields: {},
     typeToComponentMapping: {
       'timestamp': { component: 'date-picker' },
       'text': { component: 'v-text-field' },
@@ -125,14 +148,17 @@ export default {
     loading: false,
     isEdit: false,
     typesToIds: {},
-    complexDataStructs: { autocomplete: true, people: true }
+    complexDataStructs: { autocomplete: true, people: true },
+    recordToEdit: {},
+    statusOptions: [ 'Draft', 'In Progress', 'Done', 'Backlog', 'Under Review']
   }),
 
   computed: {
     ...mapState('RecordsInstance', {
       currentRecord: 'currentRecord',
       showSelf: 'displayAppBuilderShow'
-    })
+    }),
+
   },
 
   methods: {
@@ -147,6 +173,22 @@ export default {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+
+    ...mapActions('AppBuilder', {
+      updateRecord: 'updateRecord'
+    }),
+
+    saveStandardFields() {
+      if(this.showStandardFields) {
+        return new Promise( (resolve, reject) => {
+          this.updateRecord( this.recordToEdit )
+          .then(res => resolve(res))
+          .catch( e => reject(e))
+        })
+      }
+
+      return new Promise.resolve()
+    },
 
     async creating() {
       try {
@@ -174,6 +216,7 @@ export default {
         }
 
         await this.bulkSaveFieldValues(payload)
+        await this.saveStandardFields()
 
         this.notifSuccess('The values were saved')
         this.loading = false
@@ -225,6 +268,7 @@ export default {
             deleteArr
           })
         }
+        await this.saveStandardFields()
 
         this.notifSuccess('The values were updated')
         this.loading = false
@@ -296,6 +340,7 @@ export default {
 
   mounted() {
     this.loadingData()
+    this.recordToEdit = {...this.currentRecord}
   }
 
 }

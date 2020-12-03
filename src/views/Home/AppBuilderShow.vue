@@ -80,8 +80,7 @@
                         class="white py-3 px-4 mb-3 panel"
                     >
                         <h3>{{ panel.title }}</h3>
-
-                        <form-show-generator :panel="panel" :fields="$h.dg(panel, 'fields', [])" />
+                        <form-show-generator :showStandardFields="tab.readOnly && index == 0" :panel="panel" :fields="$h.dg(panel, 'fields', [])" />
                     </div>
                 </div>
 
