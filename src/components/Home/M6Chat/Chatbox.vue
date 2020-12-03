@@ -88,9 +88,9 @@
           v-model="deleteDialog"
           width="50%"
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-hover
-              v-slot:default="{ hover }"
+              v-slot="{ hover }"
             >
               <div class="relative">
                 <v-card
@@ -182,9 +182,9 @@
           v-model="deleteDialog"
           width="50%"
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-hover
-              v-slot:default="{ hover }"
+              v-slot="{ hover }"
             >
               <div class="relative">
                 <v-card
@@ -317,7 +317,10 @@
               class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-right w-fit"
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
-              <p class="pa-0 ma-0" v-html="urlify(message.text)['text']"></p>
+              <p
+                class="ma-0 pa-0"
+                v-html="urlify(message.text)['text']"
+              />
               <div
                 v-if="message.images"
                 class="d-flex ml-auto w-fit"
@@ -337,12 +340,15 @@
                 v-if="message.files"
                 class="d-flex ml-auto w-fit"
               >
-                <v-row class="my-2 px-1" v-if="message['files'] && message['files'].length > 0">
+                <v-row
+                  v-if="message['files'] && message['files'].length > 0"
+                  class="my-2 px-1"
+                >
                   <v-col
-                    cols="12"
+                    v-for="(file, messIndex) of message['files']"
+                    :key="messIndex+'-file'"
                     class="my-0 py-0"
-                    v-for="(file, index) of message['files']"
-                    :key="index+'-file'"
+                    cols="12"
                   >
                     <v-icon
                       @click="redirect(file)"
@@ -350,10 +356,10 @@
                       mdi-file-document-outline
                     </v-icon>
                     <p
-                      class="text-subtitle-1 font-weight-bold pointer mx-1 my-0 py-0"
+                      class="font-weight-bold mx-1 my-0 pointer py-0 text-subtitle-1"
                       @click="redirect(file)"
                     >
-                      {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+                      {{ file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')') }}
                     </p>
                   </v-col>
                 </v-row>
@@ -369,9 +375,9 @@
               v-model="deleteDialog"
               width="500"
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template #activator="{ on, attrs }">
                 <v-hover
-                  v-slot:default="{ hover }"
+                  v-slot="{ hover }"
                 >
                   <div class="pointer relative">
                     <v-card
@@ -428,18 +434,21 @@
               height="30"
               width="30"
             />
-            <div 
-              class="arrow-down blue mb-3 message-arrow mr-1 mt-1 py-1 relative text-body-2 text-left w-fit white--text" 
+            <div
+              class="arrow-down blue mb-3 message-arrow mr-1 mt-1 py-1 relative text-body-2 text-left w-fit white--text"
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
-              <p class="pa-0 ma-0" v-html="urlify(message.text)['text']"></p>
+              <p
+                class="ma-0 pa-0 white--text"
+                v-html="urlify(message.text)['text']"
+              />
               <div
                 v-if="message.images"
                 class="d-flex mr-auto w-fit"
               >
                 <div
-                  v-for="(image, index) in message.images"
-                  :key="'imagemsg-' + index"
+                  v-for="(image, messIndex) in message.images"
+                  :key="'imagemsg-' + messIndex"
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
@@ -452,12 +461,15 @@
                 v-if="message.files"
                 class="d-flex ml-auto w-fit"
               >
-                <v-row class="my-2 px-1" v-if="message['files'] && message['files'].length > 0">
+                <v-row
+                  v-if="message['files'] && message['files'].length > 0"
+                  class="my-2 px-1"
+                >
                   <v-col
-                    cols="12"
+                    v-for="(file, messIndex) of message['files']"
+                    :key="messIndex+'-file'"
                     class="my-0 py-0"
-                    v-for="(file, index) of message['files']"
-                    :key="index+'-file'"
+                    cols="12"
                   >
                     <v-icon
                       @click="redirect(file)"
@@ -465,10 +477,10 @@
                       mdi-file-document-outline
                     </v-icon>
                     <p
-                      class="text-subtitle-1 font-weight-bold pointer mx-1 my-0 py-0"
+                      class="font-weight-bold mx-1 my-0 pointer py-0 text-subtitle-1 white--text"
                       @click="redirect(file)"
                     >
-                      {{file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')')}}
+                      {{ file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')') }}
                     </p>
                   </v-col>
                 </v-row>
@@ -477,14 +489,14 @@
             <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
           </template>
         </div>
-        <record-url 
-          v-if="message['panel'] && message['panel']['id']" 
-          :recordInfo="message['panel']"
-          :type = "'message'"
+        <record-url
+          v-if="message['panel'] && message['panel']['id']"
+          :record-info="message['panel']"
+          :type="'message'"
         />
-        <external-url 
-          v-if="urlify(message.text)['urls'].length > 0" 
-          :urls="urlify(message.text)['urls']" 
+        <external-url
+          v-if="urlify(message.text)['urls'].length > 0"
+          :urls="urlify(message.text)['urls']"
         />
       </div>
     </div>
@@ -576,12 +588,12 @@
     >
       <v-menu
         :close-on-content-click="false"
+        content-class="elevation-0"
         elevation="0"
         :offset-y="offset"
-        content-class="elevation-0"
         top
       >
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
           <v-btn
             v-bind="attrs"
             class="align-center btns-message d-flex justify-center white--text"
@@ -598,15 +610,20 @@
           </v-btn>
         </template>
 
-        <v-list 
-          elevation="0" color="transparent" class="mb-2 pa-0 "
+        <v-list
+          class="mb-2 pa-0"
+          color="transparent"
+          elevation="0"
         >
-          <v-list-item class="ma-0 pa-0 uploadfile-btn" elevation="20" >
+          <v-list-item
+            class="ma-0 pa-0 uploadfile-btn"
+            elevation="20"
+          >
             <v-tooltip
               class="tooltip-upload-file"
               left
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template #activator="{ on, attrs }">
                 <div
                   v-bind="attrs"
                   v-on="on"
@@ -617,21 +634,21 @@
                     :offset-x="offset"
                     right
                   >
-                    <template v-slot:activator="{ on, attrs }">
+                    <template #activator="{ on, attrs }">
                       <v-avatar
-                        color="indigo darken-1"
-                        style="box-shadow: 1px 1px 4px #000000;"
                         class="mr-2"
+                        color="indigo darken-1"
                         size="25"
+                        style="box-shadow: 1px 1px 4px #000000;"
                       >
                         <v-icon
-                          color="white"
-                          class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
-                          hide-input
-                          dark
-                          size="20"
-                          icon
                           v-bind="attrs"
+                          class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
+                          color="white"
+                          dark
+                          hide-input
+                          icon
+                          size="20"
                           v-on="on"
                         >
                           mdi-apps
@@ -678,8 +695,8 @@
                         <v-select
                           v-model="itemInfo.panel"
                           :class="{ disabled: itemInfo.application_id === null }"
-                          :item-value="Object"
                           item-text="label"
+                          :item-value="Object"
                           :items="options.panles"
                           label="Panel"
                           @change="selectPanel($event)"
@@ -697,7 +714,7 @@
               class="tooltip-upload-file"
               left
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template #activator="{ on, attrs }">
                 <div
                   v-bind="attrs"
                   v-on="on"
@@ -720,7 +737,7 @@
               class="tooltip-upload-file"
               left
             >
-              <template v-slot:activator="{ on, attrs }">
+              <template #activator="{ on, attrs }">
                 <div
                   v-bind="attrs"
                   v-on="on"
@@ -827,7 +844,7 @@ export default {
       channel: {}
     },
     valueInput: '',
-    itemInfo:{
+    itemInfo: {
       application_id: null,
       record_id: null,
       panel: null
@@ -897,8 +914,7 @@ export default {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
 
-    
-    
+
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
@@ -910,7 +926,7 @@ export default {
           title: app.title
         })
       })
-    });
+    })
     this.client.on('typing.start', r => {
       if (r.user.id != this.user.id && r['channel_id'] === this.channel['id']) {
         this.whoTyping = r.user
@@ -923,11 +939,14 @@ export default {
     })
 
     this.dataReady = true
+    this.$nextTick(() => {
+      this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+    })
   },
   methods: {
     ...mapActions('GSChat', ['removeMessage', 'updateMessage']),
     ...mapActions('AppAttachments', {
-      getFileUrl:     'get_message_file_url',
+      getFileUrl: 'get_message_file_url',
       setStreamFiles: 'set_stream_attachments'
     }),
     ...mapActions('AppBuilder', {
@@ -940,15 +959,14 @@ export default {
     changeApp(event) {
       this.getActions(event).then(response => {
         this.options['records'] = response.data
-      });
+      })
     },
-    async selectRecord($event){
-      let panel = [];
-      this.itemInfo['panel'] = null;
-      this.options['panles'] = [];
+    async selectRecord($event) {
+      this.itemInfo['panel'] = null
+      this.options['panles'] = []
 
-      let app = await this.$store.dispatch('AppBuilder/getApp', $event['app']['id']);
-      
+      const app = await this.$store.dispatch('AppBuilder/getApp', $event['app']['id'])
+
       app['tabs'].forEach(tab => {
         tab.panels.forEach(panel => {
           this.options['panles'].push({
@@ -961,18 +979,21 @@ export default {
             subtitle: $event.app.title,
             image: $event.app.iconLink,
             description: $event.description
-          });
-        });
-      });
+          })
+        })
+      })
     },
-    async selectPanel($event){
-      let values = await this.getFieldValues({ recordID: $event['id'], panelID: $event['panelId'] });
-      
-      let panel = [];
+    async selectPanel($event) {
+      const values = await this.getFieldValues({
+        recordID: $event['id'],
+        panelID: $event['panelId']
+      })
 
-      $event['fields'].forEach( field => {
-        panel.push({name:field.label, value: values['values'][field.id]} );
-      });
+      const panel = []
+
+      $event['fields'].forEach(field => {
+        panel.push({ name: field.label, value: values['values'][field.id] })
+      })
 
       this.urlInfo = {
         url: `${new URL(location.href)['href']}record/${$event.id}`,
@@ -984,10 +1005,10 @@ export default {
         title: $event['recordTitle'],
         image: $event['image']
       }
-      this.menu = false;
+      this.menu = false
     },
-    redirect(file){
-      window.open(file,'_blank')
+    redirect(file) {
+      window.open(file, '_blank')
     },
     closeModal() {
       this.deleteDialog = false
@@ -1013,7 +1034,7 @@ export default {
         }
       }
     },
-    removeUser(event) {
+    removeUser() {
       this.deleteDialog = false
       this.hover = false
     },
@@ -1056,14 +1077,14 @@ export default {
         }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
     urlify(text) {
-      const urlRegex = /(https?:\/\/[^\s]+)/g;
-      let textUrls = [];
-      let res = text.replace(urlRegex, function(url) {
-        let path = new URL(url)          
-        textUrls.push(url);
-        return '<a href="'+ url +'" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>';
+      const urlRegex = /(https?:\/\/[^\s]+)/g
+      const textUrls = []
+      const res = text.replace(urlRegex, function (url) {
+        const path = new URL(url)
+        textUrls.push(url)
+        return '<a href="' + url + '" target="_blank" class=" white--text pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>'
       })
-      return { text: res, urls: textUrls };
+      return { text: res, urls: textUrls }
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
@@ -1076,7 +1097,7 @@ export default {
       this.messageEdit = ''
       this.messageEditInput = ''
     },
-    editMessage(nameReference) {
+    editMessage() {
       if (this.messageEditInput !== '') {
         this.updateMessage({
           id: this.messageEdit,
@@ -1101,7 +1122,7 @@ export default {
       await this.$store.dispatch('GSChat/removeChat', this.state.channel.id)
       await this.channel.markRead()
     },
-    firstCommentBeforeAnswer(authorId, index, messages) {
+    firstCommentBeforeAnswer(authorId, index) {
       if (index === 0) {
         return true
       } else {
@@ -1159,25 +1180,25 @@ export default {
         return true
       }
 
-      let message = await this.$store.dispatch('GSChat/sendMessage', {
+      const message = await this.$store.dispatch('GSChat/sendMessage', {
         channel: this.channel,
         message: this.valueInput
-      });
+      })
 
-      if ( this.imageFiles.length > 0 ) {
+      if (this.imageFiles.length > 0) {
         this.imageFiles.forEach(async image => {
           await this.setStreamFiles({
             files: image,
             headers: {
-                'Content-Type': image['type'],
-                'Content-Name': image['name'],
-                'Stream-Id': message['message']['id'],
-                'Stream-type': 'message'
+              'Content-Type': image['type'],
+              'Content-Name': image['name'],
+              'Stream-Id': message['message']['id'],
+              'Stream-type': 'message'
             }
-          });
-        });
+          })
+        })
 
-        let images = await this.getFileUrl(message['message']['id']);
+        const images = await this.getFileUrl(message['message']['id'])
 
         this.updateMessage({
           id: message['message']['id'],
@@ -1186,7 +1207,7 @@ export default {
         })
       }
 
-      if ( this.itemInfo['panel'] ) {
+      if (this.itemInfo['panel']) {
         this.updateMessage({
           id: message['message']['id'],
           text: message['message']['text'],
@@ -1194,21 +1215,21 @@ export default {
         })
       }
 
-      
+
       if (this.docFiles.length > 0) {
         this.docFiles.forEach(async file => {
           await this.setStreamFiles({
             files: file,
             headers: {
-                'Content-Type': file['type'],
-                'Content-Name': file['name'],
-                'Stream-Id': message['message']['id'],
-                'Stream-type': 'message'
+              'Content-Type': file['type'],
+              'Content-Name': file['name'],
+              'Stream-Id': message['message']['id'],
+              'Stream-type': 'message'
             }
-          });
-        });
+          })
+        })
 
-        let files = await this.getFileUrl(message['message']['id']);
+        const files = await this.getFileUrl(message['message']['id'])
 
         this.updateMessage({
           id: message['message']['id'],
