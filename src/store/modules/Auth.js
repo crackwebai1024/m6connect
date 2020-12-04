@@ -146,7 +146,7 @@ const actions = {
         .then(res => {
           const data = res.data
 
-          if (state.user.id == data.id) {
+          if (state.user.id === data.id) {
             data.companies = state.user.companies
             commit('setUser', data)
           } else {
