@@ -260,10 +260,7 @@
                     </v-input>
                   </v-col>
                 </v-row>
-                <div
-                  class="overflow-hidden"
-                  style="display:none"
-                >
+                <div class="d-none overflow-hidden">
                   <div class="align-center d-flex my-3">
                     <v-icon
                       class="grey--text text--darken-3"
@@ -511,8 +508,11 @@ export default {
     await newFirebaseInit()
     await doFirebaseAuth()
 
-    db.collection('cpm_projects').doc(this.$route.params.id).get().then(response => {
+    db.collection('cpm_projects').doc(this.$route.params.id).get().then(async response => {
       this.project = response.data()
+      await this.$store.dispatch('GSFeed/setRoom', 'cpm')
+      await this.$store.dispatch('GSFeed/setCpmFeed', this.project._id)
+      await this.$store.dispatch('GSFeed/retrieveFeed')
     })
     await this.getPanelSettings()
   },

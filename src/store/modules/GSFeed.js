@@ -5,11 +5,12 @@ import auth from './Auth'
 const defaultState = {
   room: '',
   gsToken: '',
-  client: {},
+  foreignId: '',
   feed: {},
+  client: {},
   actionPost: {},
-  feedNotification: {},
   previewPost: {},
+  feedNotification: {},
   timeline: [],
   appGsId: process.env.VUE_APP_GS_ID,
   appId: process.env.VUE_APP_ID
@@ -52,6 +53,19 @@ const mutations = {
     state.feed = await state.client.feed(
       'companies',
       feedID,
+      state.gsToken
+    )
+  },
+  SET_CPM_FEED: async (state, cpmID) => {
+    state.foreignId = cpmID
+    state.feedNotification = await state.client.feed(
+      'notification',
+      cpmID,
+      state.gsToken
+    )
+    state.feed = await state.client.feed(
+      'cpm',
+      cpmID,
       state.gsToken
     )
   },
@@ -131,6 +145,9 @@ const actions = {
       if (state.room === 'companies') {
         payload['req']['data']['to'] = ['companies:global']
         payload['req']['data']['company'] = payload['compID']
+      } else if (state.room === 'cpm') {
+        payload['req']['data']['to'] = ['cpm:global']
+        payload['req']['data']['cpm'] = state.foreignId
       }
 
       const activity = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, {
@@ -189,6 +206,13 @@ const actions = {
           commit('SET_TIMELINE', res.data)
           resolve(true)
         }).catch(e => reject(e))
+      } else if (state.room === 'cpm') {
+        const url = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/cpm/${state.foreignId}`
+        axios.get(url).then(res => {
+          state.timeline = []
+          commit('SET_TIMELINE', res.data)
+          resolve(true)
+        }).catch(e => reject(e))
       } else {
         state.feed.get({
           reactions: { own: true, recent: true, counts: true }
@@ -235,6 +259,12 @@ const actions = {
   setCompanyFeed({ commit }, payload) {
     return new Promise(resolve => {
       commit('SET_COMPANIES_FEED', payload)
+      resolve(true)
+    })
+  },
+  setCpmFeed({ commit }, payload) {
+    return new Promise(resolve => {
+      commit('SET_CPM_FEED', payload)
       resolve(true)
     })
   },
