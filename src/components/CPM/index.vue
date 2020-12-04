@@ -511,7 +511,7 @@ export default {
     const res = await db.collection('cpm_projects').doc(this.$route.params.id).get()
     this.project = res.data()
     await this.$store.dispatch('GSFeed/setRoom', 'cpm')
-    await this.$store.dispatch('GSFeed/setCpmFeed', this.project._id)
+    await this.$store.dispatch('GSFeed/setCpmFeed', this.$route.params.id)
     await this.$store.dispatch('GSFeed/retrieveFeed')
 
     await this.getPanelSettings()
