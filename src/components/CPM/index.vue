@@ -99,14 +99,22 @@
                 <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
                   Project Information
                 </h3>
-                <v-col :key='index' v-for='(section,index) in projectInformation'>
-                  <v-row :key='index' v-for='(item, index) in section'>
-                    <v-col class="flex-shrink-0 flex-grow-0 align-center d-flex">
-                      <v-icon color='grey lighten-1'>{{item.icon || 'mdi-information'}}</v-icon>
+                <v-col
+                  v-for="(section,index) in projectInformation"
+                  :key="index"
+                >
+                  <v-row
+                    v-for="(item, index) in section"
+                    :key="index"
+                  >
+                    <v-col class="align-center d-flex flex-grow-0 flex-shrink-0">
+                      <v-icon color="grey lighten-1">
+                        {{ item.icon || 'mdi-information' }}
+                      </v-icon>
                     </v-col>
                     <v-col class="flex-grow-1 flex-shrink-0">
                       <v-input :messages="item.label">
-                        <b class="grey--text text--darken-3 text--lighten-2">{{item.value || item.default}}</b>
+                        <b class="grey--text text--darken-3 text--lighten-2">{{ item.value || item.default }}</b>
                       </v-input>
                     </v-col>
                   </v-row>
@@ -287,7 +295,7 @@ import AppTemplatePlain from '@/views/Home/AppTemplatePlain'
 import PanelFull from '@/components/AppBuilder/Content/PanelFull'
 import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import M6Show from '@/modules/cpm/_layouts/M6Show.vue'
-
+import axios from 'axios'
 import FinancialCostSummary from '@/modules/cpm/components/projects/panels/FinancialCostSummary'
 import Budgets from '@/modules/cpm/components/projects/panels/Financial/Budgets'
 import Reconciliation from '@/modules/cpm/components/projects/panels/Reconciliation'
@@ -330,63 +338,63 @@ export default {
   },
   data: () => ({
     projectInformation: [
-     [
-       {
-         label: 'Project Manager',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-badge-account'
-       },
-       {
-         label: 'Status',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-list-status'
-       },
-       {
-         label: 'CPA',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-label'
+      [
+        {
+          label: 'Project Manager',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-badge-account'
+        },
+        {
+          label: 'Status',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-list-status'
+        },
+        {
+          label: 'CPA',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-label'
 
-       },
-       {
-         label: 'Project Title',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-information'
-       },
-       {
-         label: 'Category 1',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-subtitles-outline'
-       },
-       {
-         label: 'YTD Actuals Capitals',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-       {
-         label: 'YTD Actuals Expenses',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-       {
-         label: 'CPA Capital',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-       {
-         label: 'CPA Capital With Cont',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-     ] 
+        },
+        {
+          label: 'Project Title',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-information'
+        },
+        {
+          label: 'Category 1',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-subtitles-outline'
+        },
+        {
+          label: 'YTD Actuals Capitals',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+        {
+          label: 'YTD Actuals Expenses',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+        {
+          label: 'CPA Capital',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+        {
+          label: 'CPA Capital With Cont',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        }
+      ]
     ],
     tab: null,
     items: [
