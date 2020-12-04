@@ -1,11 +1,18 @@
 <template>
-  <v-container class="d-flex flex-wrap pa-0">
+  <v-container
+    class="pa-0"
+    fluid
+  >
     <header-component
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded w-full"
+      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
       hasslot
       :info="{title: 'Search All Apps', icon: ''}"
     >
       <template #select>
+        <v-switch
+          v-model="tableView"
+          :append-icon=" tableView ? 'mdi-table' : 'mdi-arrange-bring-forward' "
+        />
         <v-menu
           bottom
           offset-y
@@ -31,7 +38,7 @@
             >
               <v-list-item-title
                 :class="item.type === 'title' ? 'grey--text' : 'black--text pointer'"
-                @click="item.function"
+                @click="changingApps(item)"
               >
                 {{ item.text }}
               </v-list-item-title>
@@ -62,19 +69,24 @@
       </template>
     </header-component>
     <div v-if="!loading">
-      <div
-        v-for="(item, index) of records"
-        :key="index"
-        :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-      >
-        <general-item :record-data="item" />
-      </div>
-      <div
-        v-if="records.length === 0"
-        class="max-w-tight mx-auto py-3 w-full"
-      >
-        No results found
-      </div>
+      <template v-if="tableView">
+        <records-table :items="testItems" />
+      </template>
+      <template v-else>
+        <div
+          v-for="(item, index) of records"
+          :key="index"
+          :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+        >
+          <general-item :record-data="item" />
+        </div>
+        <div
+          v-if="records.length === 0"
+          class="max-w-tight mx-auto py-3 w-full"
+        >
+          No results found
+        </div>
+      </template>
     </div>
     <v-container v-else>
       <v-progress-circular
@@ -87,22 +99,26 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
 import HeaderComponent from '@/components/Home/HeaderComponent'
+import RecordsTable from '@/components/RecordsTable'
 
 export default {
   name: 'GeneralList',
   components: {
     GeneralItem,
-    HeaderComponent
+    HeaderComponent,
+    RecordsTable
   },
   data: () => ({
     loading: true,
     areas2: [],
     perPage: 8,
     records: [],
-    searchInput: ''
+    searchInput: '',
+    tableView: false,
+    testItems: []
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -148,6 +164,12 @@ export default {
       getDynamicApps: 'get_all_apps_by_id',
       setDynamicApps: 'set_apps'
     }),
+    ...mapMutations('PageControl', {
+      setShowSidePanels: 'setShowSidePanels'
+    }),
+    ...mapActions('RecordsInstance', {
+      getRecordsByApp: 'getRecordsByApp'
+    }),
     changeEvent(event) {
       this.records = []
       this.loading = true
@@ -162,6 +184,9 @@ export default {
         this.records = this.list()
         this.loading = false
       })
+        .catch(e => {
+          this.loading = false
+        })
     },
     reload() {
       this.loading = true
@@ -181,20 +206,36 @@ export default {
     getIndex(i, index) {
       const ind = i * this.perPage + index - 1
       return ind
+    },
+    async changingApps(app) {
+      try {
+        this.testItems = await this.getRecordsByApp(app['prefix'])
+        app.function()
+      } catch (e) {}
     }
   },
+
+  watch: {
+    tableView(val) {
+      this.setShowSidePanels(!val)
+      this.$emit('tableView', val)
+    }
+  },
+
   // eslint-disable-next-line vue/order-in-components
   mounted() {
     this.setDynamicApps()
     this.setFilterTag({ key: 'everyone', value: 'All Apps' })
-    this.getApps().then(
-      () => (this.records = this.list(), this.loading = false)
-    )
+    this.getApps().then(() => {
+      this.records = this.list()
+      this.loading = false
+    })
     this.selectApp().then(res => {
       res['data'].forEach(app => {
         this.areas2.push(
           {
             text: app['title'],
+            prefix: app['prefix'],
             type: 'subtitle',
             function: () => {
               this.setFilterTag({ key: 'dynamicApp', value: app['title'] })
@@ -204,11 +245,16 @@ export default {
         )
       })
     })
+  },
+
+  beforeDestroy() {
+    this.setShowSidePanels(true)
+    this.$emit('tableView', false)
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .v-text-field .v-input__control {
   min-height: auto !important;
   display: flex !important;
@@ -219,4 +265,6 @@ export default {
   display: flex !important;
   align-items: center !important;
 }
+
+
 </style>
