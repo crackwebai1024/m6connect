@@ -19,6 +19,13 @@ const mutations = {
 }
 
 const actions = {
+    getRecordsByApp(_, appPrefix="RAP") {
+        return new Promise( (resolve, reject) => {
+           axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/records/byApp/${appPrefix}`)
+            .then( ({ data }) => resolve(data))
+            .catch(err => reject(err))
+        })
+    },
     getRecordById({ commit }, id) {
         return new Promise( (resolve, reject) => {
             axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${id}`).then( ({ data }) => {

@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'DynamicAppForm',
@@ -117,6 +117,13 @@ export default {
       { label: 'No', value: false }
     ]
   }),
+
+  computed: {
+    ...mapState('Auth', {
+      currentUser: 'user'
+    })
+  },
+
   methods: {
     ...mapActions('DynamicAppsModule', {
       post_app: 'post_app',
@@ -133,6 +140,8 @@ export default {
       this.itemInfo['image'] = {
         image_url: this.appImage === '' ? null : this.appImage
       }
+      this.itemInfo.author = this.currentUser.id
+
       this.post_app(this.itemInfo).then(res => {
         this.pushAppId(res['data']['id'])
         this.$router.push(`/dev/${res['data']['id']}`)
@@ -162,7 +171,7 @@ export default {
     },
     radioRules(model) {
       return [
-        model != null || 'At least one item should be selected'
+        model !== null || 'At least one item should be selected'
       ]
     },
     stringsRules(name) {
