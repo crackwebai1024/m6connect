@@ -8,26 +8,28 @@
         <v-data-table
           :headers="headers"
           :items="colors"
-          :pagination.sync="pagination"
+          :options.sync="pagination"
         >
-          <template v-slot:items="props">
-            <td>{{ props.item.label }}</td>
-            <td>
-              <v-tooltip right>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    :color="props.item.color"
-                    fab
-                    small
-                    v-on="on"
-                    @click="pickingColor(props.item)"
-                  >
-                    <label for="" />
-                  </v-btn>
-                </template>
-                <span>Click to pick a color</span>
-              </v-tooltip>
-            </td>
+          <template v-slot:item="props">
+            <tr>
+              <td>{{ props.item.label }}</td>
+              <td>
+                <v-tooltip right>
+                  <template v-slot:activator="{ on }">
+                    <v-btn
+                      :color="props.item.color"
+                      fab
+                      small
+                      v-on="on"
+                      @click="pickingColor(props.item)"
+                    >
+                      <label for="" />
+                    </v-btn>
+                  </template>
+                  <span>Click to pick a color</span>
+                </v-tooltip>
+              </td>
+            </tr>
           </template>
         </v-data-table>
       </v-card-text>

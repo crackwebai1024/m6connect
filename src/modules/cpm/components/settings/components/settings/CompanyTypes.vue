@@ -309,7 +309,7 @@ export default {
         easing: 'easeInOutCubic'
       },
       // easings: Object.keys(easings),
-      CompanyTypes: db
+      companyTypes: db
         .collection('settings')
         .doc(this.currentCompany.id)
         .collection('settings')
@@ -318,7 +318,7 @@ export default {
   },
   firestore() {
     return {
-      settings: this.CompanyTypes
+      settings: this.companyTypes
     }
   },
   computed: {

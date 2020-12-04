@@ -58,7 +58,7 @@
           <v-col md="2">
             <v-btn
               color="blue"
-              outline
+              outlined
               @click="cancelMilestone"
             >
               Cancel
@@ -97,31 +97,31 @@
             class="mainList"
             dense
           >
-            <v-list-tile class="myListHeader">
-              <v-list-tile-content>Name</v-list-tile-content>
-              <v-list-tile-action>Action</v-list-tile-action>
-            </v-list-tile>
+            <v-list-item class="myListHeader">
+              <v-list-item-content>Name</v-list-item-content>
+              <v-list-item-action>Action</v-list-item-action>
+            </v-list-item>
             <draggable
               v-model="settings.gantts"
               @end="drag = false"
               @start="drag = true"
               @update="saveOrder"
             >
-              <v-list-tile
+              <v-list-item
                 v-for="(item, key) in settings.gantts"
                 :key="key"
                 class="myList"
               >
-                <v-list-tile-avatar>
+                <v-list-item-avatar>
                   <v-icon
                     color="blue"
                     small
                   >
                     mdi-drag-variant
                   </v-icon>
-                </v-list-tile-avatar>
-                <v-list-tile-content>{{ item.name }}</v-list-tile-content>
-                <v-list-tile-action
+                </v-list-item-avatar>
+                <v-list-item-content>{{ item.name }}</v-list-item-content>
+                <v-list-item-action
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-btn
@@ -140,8 +140,8 @@
                   >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </draggable>
           </v-list>
         </div>
@@ -296,7 +296,7 @@
               <v-col md="4">
                 <v-btn
                   color="blue"
-                  outline
+                  outlined
                   @click="cancel"
                 >
                   Cancel

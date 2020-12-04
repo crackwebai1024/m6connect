@@ -3,15 +3,15 @@
     <v-card-text class="vertical-scroll">
       <v-list>
         <template v-for="(item, index) in options">
-          <v-list-tile
+          <v-list-item
             :key="index"
             :class="optSelected === item.name ? 'm6_optActive' : ''"
             @click="selectOption(item)"
           >
-            <v-list-tile-content>
-              <v-list-tile-title v-html="item.name" />
-            </v-list-tile-content>
-          </v-list-tile>
+            <v-list-item-content>
+              <v-list-item-title v-html="item.name" />
+            </v-list-item-content>
+          </v-list-item>
           <v-divider :key="'divider' + index" />
         </template>
       </v-list>

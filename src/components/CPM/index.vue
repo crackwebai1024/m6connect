@@ -270,6 +270,13 @@
             </panel-full> -->
           </template>
           <!--REPORTS-->
+
+          <!--SETTINGS-->
+          <template v-if='activeTab === 6'>
+            <panel-full>
+              <settings-tab slot='content'/>
+            </panel-full>
+          </template>
         </div>
       </app-template-plain>
     </v-row>
@@ -298,6 +305,7 @@ import Milestones from '@/modules/cpm/components/projects/panels/schedule/Milest
 import Schedule from '@/modules/cpm/components/projects/panels/schedule/SchedulePanel'
 import Forecasts from '@/modules/cpm/components/projects/panels/Forecasts/ForecastsPanel'
 import ProjectFiles from '@/modules/cpm/components/projects/panels/ProjectFiles'
+import SettingsTab from '@/modules/cpm/components/settings/Settings.vue'
 import {
   db,
   newFirebaseInit,
@@ -322,6 +330,7 @@ export default {
     FinancialSpendings,
     Schedule,
     Forecasts,
+    SettingsTab,
     Budgets,
     ProjectFiles,
     StatusComment,
@@ -403,7 +412,8 @@ export default {
       'Schedule',
       'Document Manager',
       'Updates',
-      'Reports'
+      'Reports',
+      'Settings'
     ],
     activeTab: 0
   }),
