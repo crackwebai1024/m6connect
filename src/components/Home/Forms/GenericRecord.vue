@@ -168,7 +168,7 @@ export default {
           appID: this.app.id,
         };
 
-        if (this.imageFiles[0]['name'].match(/\.[0-9a-z]+$/i) && this.imageFiles[0]['size'] < 50000000){
+        if ( this.$h.dg(this.imageFiles, '0.name', '').match(/\.[0-9a-z]+$/i) && this.$h.dg(imageFiles, '0.size', 0) < 50000000){
           let getImg = await this.setApp({
             file: this.imageFiles[0],
             headers: {
@@ -180,9 +180,10 @@ export default {
 
           this.imageFiles[0]['value']= getImg['attachId']
           this.imageFiles[0]['id']= getImg['attachId']
+
+          this.record['image'] = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${this.imageFiles[0]['id']}`;
         }
 
-        this.record['image'] = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${this.imageFiles[0]['id']}`;
 
         this.record = await this.createRecord(this.record);
 
