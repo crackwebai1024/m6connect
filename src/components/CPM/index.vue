@@ -79,167 +79,18 @@
                 <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
                   Project Information
                 </h3>
-                <v-row>
-                  <v-col>
-                    <v-input
-                      class="mb-4"
-                      messages="Budget Status"
-                      prepend-icon="mdi-clipboard-multiple"
-                    >
-                      <b class="grey--text text--darken-3">Active</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Completed"
-                      prepend-icon="mdi-percent-outline"
-                    >
-                      <b class="grey--text text--darken-3">0 %</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Type"
-                      prepend-icon="mdi-information-outline"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Phase"
-                      prepend-icon="mdi-information-outline"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Creator"
-                      prepend-icon="mdi-clipboard-account"
-                    >
-                      <b class="grey--text text--darken-3">D C4</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Campus"
-                      prepend-icon="mdi-domain"
-                    >
-                      <b class="grey--text text--darken-3">A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Address"
-                      prepend-icon="mdi-office-building-marker-outline"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Category"
-                      prepend-icon="mdi-shape-outline"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Square Footage"
-                      prepend-icon="mdi-ruler-square"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="General Contractor"
-                      prepend-icon="mdi-briefcase-account-outline"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Regulatory"
-                      prepend-icon="mdi-information-outline"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="FY Approved"
-                      prepend-icon="mdi-information-outline"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                  </v-col>
-                </v-row>
-                <v-divider />
-                <v-row>
-                  <v-col>
-                    <v-input
-                      class="mb-4"
-                      messages="Start Date"
-                      prepend-icon="mdi-calendar-clock"
-                    >
-                      <b class="grey--text text--darken-3">10/31/2020</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="End Date"
-                      prepend-icon="mdi-calendar-multiple-check"
-                    >
-                      <b class="grey--text text--darken-3">12/30/2020</b>
-                    </v-input>
-                  </v-col>
-                </v-row>
-                <v-divider />
-                <v-row>
-                  <v-col>
-                    <v-input
-                      class="mb-4"
-                      messages="Construction Start Date"
-                      prepend-icon="mdi-calendar-clock"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Phase Target Date"
-                      prepend-icon="mdi-calendar-cursor"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="% Complete Budget"
-                      prepend-icon="mdi-percent-outline"
-                    >
-                      <b class="grey--text text--darken-3">0</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Construction End Date"
-                      prepend-icon="mdi-calendar-multiple-check"
-                    >
-                      <b class="grey--text text--darken-3">N/A</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="Current FY Proposed Date"
-                      prepend-icon="mdi-calendar-cursor"
-                    >
-                      <b class="grey--text text--darken-3">$ 0.00</b>
-                    </v-input>
-                    <v-input
-                      class="mb-4"
-                      messages="% Complete Schedule"
-                      prepend-icon="mdi-percent-outline"
-                    >
-                      <b class="grey--text text--darken-3">46</b>
-                    </v-input>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <v-input messages="Description">
-                      <b class="grey--text text--darken-3 text--lighten-2">N/A</b>
-                    </v-input>
-                  </v-col>
-                </v-row>
+                <v-col :key='index' v-for='(section,index) in projectInformation'>
+                  <v-row :key='index' v-for='(item, index) in section'>
+                    <v-col class="flex-shrink-0 flex-grow-0 align-center d-flex">
+                      <v-icon color='grey lighten-1'>{{item.icon || 'mdi-information'}}</v-icon>
+                    </v-col>
+                    <v-col class="flex-grow-1 flex-shrink-0">
+                      <v-input :messages="item.label">
+                        <b class="grey--text text--darken-3 text--lighten-2">{{item.value || item.default}}</b>
+                      </v-input>
+                    </v-col>
+                  </v-row>
+                </v-col>
                 <div
                   class="overflow-hidden"
                   style="display:none"
@@ -405,6 +256,10 @@
 </template>
 
 <script>
+const defaults = {
+  money: '0.00',
+  text: 'N/A'
+}
 import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
 import AppTemplatePlain from '@/views/Home/AppTemplatePlain'
@@ -448,6 +303,65 @@ export default {
 
   },
   data: () => ({
+    projectInformation: [
+     [
+       {
+         label: 'Project Manager',
+         value: '',
+         default: defaults.text,
+         icon: 'mdi-badge-account'
+       },
+       {
+         label: 'Status',
+         value: '',
+         default: defaults.text,
+         icon: 'mdi-list-status'
+       },
+       {
+         label: 'CPA',
+         value: '',
+         default: defaults.text,
+         icon: 'mdi-label'
+
+       },
+       {
+         label: 'Project Title',
+         value: '',
+         default: defaults.text,
+         icon: 'mdi-information'
+       },
+       {
+         label: 'Category 1',
+         value: '',
+         default: defaults.text,
+         icon: 'mdi-subtitles-outline'
+       },
+       {
+         label: 'YTD Actuals Capitals',
+         value: '',
+         default: defaults.money,
+         icon: 'mdi-currency-usd'
+       },
+       {
+         label: 'YTD Actuals Expenses',
+         value: '',
+         default: defaults.money,
+         icon: 'mdi-currency-usd'
+       },
+       {
+         label: 'CPA Capital',
+         value: '',
+         default: defaults.money,
+         icon: 'mdi-currency-usd'
+       },
+       {
+         label: 'CPA Capital With Cont',
+         value: '',
+         default: defaults.money,
+         icon: 'mdi-currency-usd'
+       },
+     ] 
+    ],
     tab: null,
     items: [
       'Profile',
