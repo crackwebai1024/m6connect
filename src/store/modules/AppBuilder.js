@@ -123,14 +123,6 @@ const actions = {
     })
   },
 
-  getLatestRecordNumber(_, payload) {
-    return new Promise((resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/latest`, payload).then(({ data }) => {
-        resolve(data)
-      }).catch(e => reject(e))
-    })
-  },
-
   saveFieldValue(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/fieldValue`, payload).then(({ data }) => {
