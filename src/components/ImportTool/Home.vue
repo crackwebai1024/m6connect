@@ -448,12 +448,7 @@ export default {
           {
             name: 'Description 2',
             description: ''
-          },
-          {
-            name: 'WBS Element',
-            description: ''
           }
-
         ],
         spendings: [
           {
@@ -552,6 +547,14 @@ export default {
           {
             name: 'Vendor Code',
             description: ''
+          },
+          {
+            name: 'Fiscal Year',
+            description: ''
+          },
+          {
+            name: 'Period',
+            description: ''
           }
         ]
       },
@@ -562,7 +565,8 @@ export default {
       budgetCategories: [],
       rowNumber: 0,
       percentage: 0,
-      percentageDialog: false
+      percentageDialog: false,
+      glAccountNumbers: []
     }
   },
   computed: {
@@ -1030,7 +1034,9 @@ export default {
         open_po_amount: '',
         description: item.commitmentLineItem_description || '',
         description2: item.commitmentLineItem_description_2 || '',
-        wbsElement: item.commitmentLineItem_wbs_element
+        wbsElement: item.commitmentLineItem_wbs_element,
+        fiscalYear: item.others_fiscal_year || '',
+        period: item.others_period || ''
       }
       return new Promise(resolve => {
         const spending = db.collection('cpm_projects')
@@ -1059,6 +1065,8 @@ export default {
         await this.getCommitment(projectID, item.spendingLineItem_commitment_id_number)
       }
 
+      const gl = {}
+
       const newSpending = {
         amount: 0,
         budgetCategory: bc.name || '', // Name
@@ -1081,8 +1089,10 @@ export default {
         po_number: item.spendingLineItem_commitment_id_number || '',
         total_po_amount: 0,
         total_open_po_w_tax: 0,
-        glAccountNumber: item.spendings_gl_account_number || '',
-        glAccountCode: item.spendings_gl_account_code || '',
+        glAccount: {
+          name: gl.name || '',
+          code: gl.code || ''
+        },
         vendors: [
           {
             field_vendor_id_value: '',
@@ -1132,7 +1142,9 @@ export default {
         dist_company: '',
         dist_acct_unit: '',
         dis_sub_acct: '',
-        dist_seq_nbr: ''
+        dist_seq_nbr: '',
+        fiscalYear: item.others_fiscal_year || '',
+        period: item.others_period || ''
       }
 
       // Update amount
@@ -1161,6 +1173,13 @@ export default {
       this.budgetCategories = await Promise.all(response.docs.map(async item => {
         const data = await item.data()
         return { id: item.id, ref: item.ref, ...data }
+      }))
+    },
+    async getGLAccount() {
+      const response = await db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('glaccount').get()
+      this.glAccountNumbers = await Promise.all(response.docs.map(async item => {
+        const data = await item.data()
+        return data.codes
       }))
     },
     async createBudgetCategory(code) {
