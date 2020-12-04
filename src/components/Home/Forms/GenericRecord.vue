@@ -156,10 +156,7 @@ export default {
           return;
         }
         this.loading = true;
-        const res = await this.getLatestRecordNumber({ appId: this.app.id });
-        const recordNumber = `${this.app.prefix}#${
-          res.count
-        }-${new Date().getFullYear()}`;
+        const recordNumber = await this.getLatestRecordNumber({ appId: this.app.id, prefix: this.app.prefix });
 
         this.record = {
           ...this.record,
