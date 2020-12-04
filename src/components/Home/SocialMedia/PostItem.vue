@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-template-shadow -->
   <v-container class="px-0 py-0 relative">
     <div class="card-custom-shadow mb-4 rounded white">
       <div
@@ -29,8 +30,7 @@
             </v-avatar>
             <div class="d-flex flex-column">
               <div
-                class="cursor-hover font-weight-bold line-height-1 size-15 underline"
-                style="margin-bottom: 2px;"
+                class="cursor-hover font-weight-bold line-height-1 mb-2 size-15 underline"
               >
                 {{ authorPostItem.data.name }}
               </div>
@@ -141,12 +141,12 @@
               <v-btn
                 class="ml-2"
                 color="green accent-3"
-                :disabled="data.message == updateMessage"
+                :disabled="data.message === updateMessage"
                 icon
                 @click="updatePost(data)"
               >
                 <v-icon size="22">
-                  mdi-checkbox-marked-circle-outline
+                  mdi-checkbox-marked-circle-outlined
                 </v-icon>
               </v-btn>
             </div>
@@ -169,10 +169,10 @@
               cols="4"
             >
               <v-select
-                v-model="record_type"
+                v-model="recordType"
                 item-text="label"
                 item-value="value"
-                :items="records_type"
+                :items="recordsType"
                 label="Record Type"
                 @change="changeRecord($event)"
               />
@@ -183,7 +183,7 @@
             >
               <v-select
                 v-model="updateInfo.record_id"
-                :class="{ disabled: record_type === null }"
+                :class="{ disabled: recordType === null }"
                 item-value="id"
                 :items="options.records"
                 label="Record"
@@ -248,7 +248,7 @@
             <v-btn
               color="green darken-1"
               elevation="0"
-              outline
+              outlined
               width="120px"
               @click="updateActivity(data)"
             >
@@ -295,7 +295,7 @@
           class="px-5 py-4"
         >
           <v-btn
-            v-if="all_images && images.length>4"
+            v-if="allIages && images.length>4"
             class="float-button"
             color="primary"
             outlined
@@ -308,7 +308,7 @@
             no-gutters
           >
             <v-col
-              v-for="(image, index) of picture_items"
+              v-for="(image, index) of pictureItems"
               :key="index"
               :cols="widthCols()"
             >
@@ -321,11 +321,11 @@
             </v-col>
           </v-row>
           <v-btn
-            v-if="!all_images && images.length>4"
+            v-if="!allIages && images.length>4"
             block
             class="mt-2"
             color="primary"
-            outline
+            outlined
             @click="showAll"
           >
             Show All
@@ -456,7 +456,7 @@
         </v-badge>
         <v-text-field
           ref="currentUserComment"
-          v-model="comment_data"
+          v-model="commentData"
           class="black--text"
           dense
           filled
@@ -501,6 +501,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
@@ -526,12 +527,12 @@ export default {
     }
   },
   data: () => ({
-    records_type: [
+    recordsType: [
       { label: 'ITApps', value: 'itapps' }
     ],
     infoPanel: {},
     recordFields: [],
-    record_type: null,
+    recordType: null,
     options: {
       records: []
     },
@@ -544,11 +545,11 @@ export default {
 
     showBtnsPost: false,
     showComments: false,
-    picture_items: [],
+    pictureItems: [],
     likeState: false,
     profileImaga: '',
-    all_images: false,
-    comment_data: '',
+    allIages: false,
+    commentData: '',
     rotate: '',
     user: {},
     deleteDiaLog: false,
@@ -581,7 +582,7 @@ export default {
   },
   mounted() {
     this.images = this.data.images
-    this.picture_items = this.images.slice(0, 4)
+    this.pictureItems = this.images.slice(0, 4)
     this.user = this.currentUser
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
@@ -652,10 +653,10 @@ export default {
       return this.$h.dg(this.data, 'reaction_counts.like', '0')
     },
     showAll() {
-      this.picture_items = this.all_images
+      this.pictureItems = this.allIages
         ? this.images.slice(0, 4)
         : this.images
-      this.all_images = !this.all_images
+      this.allIages = !this.allIages
     },
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
@@ -672,7 +673,6 @@ export default {
         type: 'like',
         whoNotify: activity.actor.id
       }
-
       if (this.data.own_reactions.like) {
         const activ = this.data.own_reactions.like.find(i => i.user_id === this.user.id)
         if (activ) {
@@ -701,11 +701,11 @@ export default {
         id: activity.id,
         type: 'comment',
         options: {
-          text: this.comment_data
+          text: this.commentData
         }
       }
 
-      this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
+      this.$store.dispatch('GSFeed/addReaction', payload).then(async () => {
         if (activity.props) {
           await this.$store.dispatch('GSFeed/setActionPost')
           await this.$store.dispatch('WorkOrderModule/setWorkOrder')
@@ -718,7 +718,7 @@ export default {
       if (!this.data.comments) {
         this.data.comments = []
       }
-      this.comment_data = ''
+      this.commentData = ''
     },
     async deletePost(activity) {
       await this.$store.dispatch('GSFeed/removeActivity', activity.id)
@@ -755,7 +755,7 @@ export default {
           this.records(this.data.props.record.app_type).then(res => {
             this.options['records'] = res['data']
 
-            this.record_type = this.data['props']['record']['app_type']
+            this.recordType = this.data['props']['record']['app_type']
             this.updateInfo['record_id'] = this.data['props']['record']['id']
           })
         }
@@ -770,7 +770,7 @@ export default {
     cancelUpdate() {
       this.updatePostShow = false
       this.updateMessage = this.data.message
-      this.updateInfo.assignment_list = []
+      this.updateInfo['assignment_list'] = []
     },
     async previewImage(selected) {
       await this.$store.dispatch('GSFeed/setPreviewPost', this.data['id'])

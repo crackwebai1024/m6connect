@@ -260,10 +260,7 @@
                     </v-input>
                   </v-col>
                 </v-row>
-                <div
-                  class="overflow-hidden"
-                  style="display:none"
-                >
+                <div class="d-none overflow-hidden">
                   <div class="align-center d-flex my-3">
                     <v-icon
                       class="grey--text text--darken-3"
@@ -326,7 +323,7 @@
                 slot="rightPanel"
                 class="mb-4 panel px-0"
               >
-                <project-social-media class="px-0" />
+                <project-social-media :external="true" class="px-0" />
               </div>
             </panel-two-columns>
           </template>
@@ -511,9 +508,12 @@ export default {
     await newFirebaseInit()
     await doFirebaseAuth()
 
-    db.collection('cpm_projects').doc(this.$route.params.id).get().then(response => {
-      this.project = response.data()
-    })
+    const res = await db.collection('cpm_projects').doc(this.$route.params.id).get()
+    this.project = res.data()
+    await this.$store.dispatch('GSFeed/setRoom', 'cpm')
+    await this.$store.dispatch('GSFeed/setCpmFeed', this.$route.params.id)
+    await this.$store.dispatch('GSFeed/retrieveFeed')
+
     await this.getPanelSettings()
   },
   beforeDestroy() {},
