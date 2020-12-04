@@ -30,7 +30,7 @@
     <v-container class="pt-0">
       <v-data-table
         :headers="headers"
-        :server-items-length="10000"
+        :footer-props="footerProps"
         :items="settings.lineItemTypes"
       >
         <template v-slot:items="props">
@@ -127,6 +127,9 @@ export default {
   },
   data() {
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       element: '',
       currentElement: '',
       settings: {},

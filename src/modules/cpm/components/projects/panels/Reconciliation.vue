@@ -134,7 +134,8 @@
       :headers="headers"
       :items="resources"
       :options="pagination"
-      :server-items-length="10000"
+      :server-items-length="pagination.totalItems"
+      :footer-props='footerProps'
       @update:options="debounceSearch(search, false)"
     >
       <template v-slot:item="props">
@@ -289,6 +290,7 @@
               class="elevation-1"
               :headers="subheaders"
               hide-default-footer
+              :footer-props='footerProps'
               :items="props.item.spending"
             >
               <template v-slot:headers="headerProps">
@@ -365,6 +367,7 @@
                   <v-data-table
                     v-show="!loadingExpandedSpendingLineItems"
                     :headers="headersLineItems"
+                    :footerProps='footerProps'
                     hide-default-footer-footer
                     :items="commitmentSpendingExpanded.lineItems"
                   >
@@ -580,6 +583,9 @@ export default {
   data() {
     const projectId = this.pid ? this.pid : this.$route.params.id
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       commitmentProp: null,
       showReconciliationModal: false,
       verifiedStatus: [

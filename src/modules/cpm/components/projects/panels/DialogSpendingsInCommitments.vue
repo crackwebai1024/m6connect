@@ -21,7 +21,7 @@
               <v-data-table
                 :headers="headers"
                 :items="spendings"
-                :server-items-length="10000"
+                :footer-props="footerProps"
               >
                 <template
                   slot="item"
@@ -119,6 +119,9 @@ export default {
   },
   data() {
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       resourceToDelete: {},
       showDeleteModal: false,
       spendings: [],

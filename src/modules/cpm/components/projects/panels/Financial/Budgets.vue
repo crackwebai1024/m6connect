@@ -65,10 +65,9 @@
     </v-row>
 
     <v-data-table
-      :footer-props="fProps"
+      :footer-props="footerProps"
       :headers="headers"
       :items="budgets"
-      :server-items-length="10000"
     >
       <template v-slot:item="props">
         <tr>
@@ -150,6 +149,9 @@ export default {
 
   data() {
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       fProps: {
         'items-per-page-options': [5, 10, 25, 100, { text: 'All', value: -1 }]
       },

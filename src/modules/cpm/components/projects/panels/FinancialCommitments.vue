@@ -132,7 +132,8 @@
       :headers="headers"
       :items="resources"
       :options.sync="pagination"
-      :server-items-length="10000"
+      :footer-props='footerProps'
+      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template
@@ -237,6 +238,8 @@
               class="elevation-1"
               :headers="subheaders"
               hide-default-footer
+              :footer-props="footerProps"
+              :server-items-length="pagination.totalItems"
               :items="props.item.spending"
             >
               <template v-slot:items="props">
@@ -399,6 +402,9 @@ export default {
     const projectId = this.pid ? this.pid : this.$route.params.id
 
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       infoTitle: '',
       showInfo: false,
       associatedSpending: [],

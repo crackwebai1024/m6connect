@@ -48,7 +48,7 @@
                 v-if="commitment.line_items"
                 :headers="headers"
                 :items="commitment.line_items"
-                :server-items-length="10000"
+                :footer-props="footerProps"
               >
                 <template
                   slot="item"
@@ -163,6 +163,9 @@ export default {
   },
   data() {
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
       viewPortHeight:
         Math.max(

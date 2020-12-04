@@ -41,9 +41,9 @@
         />
         <v-data-table
           :headers="headers"
+          :footer-props='footerProps'
           item-key="category.name"
           :items="budgetCategories"
-          :server-items-length="10000"
         >
           <template v-slot:items="props">
             <tr
@@ -81,7 +81,7 @@
                   class="elevation-1"
                   :headers="subHeaders"
                   :items="selectedBudgetCategory.items"
-                  :server-items-length="10000"
+                  :footer-props='footerProps'
                 >
                   <template v-slot:items="props">
                     <tr style="background-color: rgba(0, 0, 0, 0.05);">
@@ -155,6 +155,9 @@ export default {
 
   data() {
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       budgetCategories: [],
       expand: false,
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),

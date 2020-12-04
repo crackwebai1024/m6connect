@@ -119,7 +119,8 @@
       :headers="headersSpendings"
       :items="resources"
       :options.sync="pagination"
-      :server-items-length="10000"
+      :footer-props='footerProps'
+      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template
@@ -1196,7 +1197,7 @@
                   :headers="headersLineItems"
                   hide-default-footer
                   :items="spendingToShow.lineItems"
-                  :server-items-length="10000"
+                  :footer-props="footerProps"
                 >
                   <template
                     slot="item"
@@ -1373,6 +1374,9 @@ export default {
     const projectId = this.pid || this.$route.params.id
 
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       defaultItemSpending: {
         number: '',
         costCodeText: '',

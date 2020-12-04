@@ -17,7 +17,7 @@
         v-if="settings"
         :headers="headers"
         :items="settings.costCodes"
-        :server-items-length="10000"
+        :footer-props="footerProps"
       >
         <template v-slot:items="props">
           <td>
@@ -276,6 +276,9 @@ export default {
   },
   data() {
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       l1Item: {},
       showSubCatL2: false,
       showSubCatL3: false,

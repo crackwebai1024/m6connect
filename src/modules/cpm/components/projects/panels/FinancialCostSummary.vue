@@ -35,7 +35,8 @@
       item-key="name"
       :items="filteredCategories"
       :options="pagination"
-      :server-items-length="10000"
+      :server-items-length="totalParents"
+      :footer-props='footerProps'
     >
       <template
         slot="item"
@@ -152,6 +153,7 @@
               class="elevation-1"
               :headers="commitmentHeaders"
               :items="selectedRow.totalRefs"
+              :footer-props='footerProps'
             >
               <template
                 slot="items"
@@ -251,6 +253,9 @@ export default {
     const projectId = this.pid ? this.pid : this.$route.params.id
 
     return {
+      footerProps:{
+        'items-per-page-options': [5, 10, 15, 10000]
+      },
       isCollapsed: true,
       filteredCategories: [],
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
