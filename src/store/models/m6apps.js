@@ -240,9 +240,29 @@ const typeMap = {
       typ: u(undefined, '')
     },
     {
+      json: 'class',
+      js: 'class',
+      typ: u(undefined, null)
+    },
+    {
+      json: 'category',
+      js: 'category',
+      typ: u(undefined, null)
+    },
+    {
+      json: 'type',
+      js: 'type',
+      typ: u(undefined, null)
+    },
+    {
+      json: 'state',
+      js: 'state',
+      typ: u(undefined, null)
+    },
+    {
       json: 'app',
       js: 'app',
-      typ: u(undefined, u(null, r('App')))
+      typ: u(undefined, r('App'))
     }
   ], false),
   'App': o([

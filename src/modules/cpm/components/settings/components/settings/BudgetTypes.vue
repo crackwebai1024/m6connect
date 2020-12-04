@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card>
+    <v-card flat>
       <v-card-title class="relative">
         <portal
           v-if="included"
@@ -8,6 +8,7 @@
         >
           <v-btn
             absolute
+            class="mt-3"
             color="white"
             dark
             fab
@@ -35,36 +36,39 @@
         </v-btn>
       </v-card-title>
 
-      <v-card-text class="vertical-scroll">
+      <v-card-text>
         <div class="form-group">
           <label v-if="!included">Current Budget Categories</label>
           <v-data-table
             :headers="headers"
             :items="settings.types"
-            :pagination.sync="pagination"
+            :items-per-page-options="[5,10,15,200]"
+            :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item }}</td>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item }}</td>
 
-              <td class="text-right">
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#757575"
-                  size="20"
-                  @click.prevent="editElement(props.index, props.item)"
-                >
-                  mdi-pencil
-                </v-icon>
+                <td class="text-right">
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#757575"
+                    size="20"
+                    @click.prevent="editElement(props.index, props.item)"
+                  >
+                    mdi-pencil
+                  </v-icon>
 
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#f44336"
-                  size="20"
-                  @click.prevent="deleteElement(props.index, props.item)"
-                >
-                  mdi-delete
-                </v-icon>
-              </td>
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#f44336"
+                    size="20"
+                    @click.prevent="deleteElement(props.index, props.item)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>

@@ -25,31 +25,9 @@
     </template>
 
     <v-row
-      class="pa-3 white"
+      class="ma-0 px-3 py-0 white"
       column
     >
-      <v-row>
-        <v-btn
-          v-show="filtering"
-          class="ma-0 mb-2"
-          color="warning"
-          @click="clearFilters"
-        >
-          Clear Filters
-        </v-btn>
-
-        <v-spacer />
-
-        <v-btn
-          v-show="counter"
-          class="ma-0 mb-2"
-          color="success"
-          @click="applyFilters"
-        >
-          Apply
-        </v-btn>
-      </v-row>
-
       <v-col>
         <v-select
           v-model="campusOption"
@@ -84,10 +62,31 @@
         />
       </v-col>
     </v-row>
+    <v-row class="d-flex justify-end ma-0 pb-3 pt-0 px-6 white">
+      <v-btn
+        v-show="filtering"
+        class="ma-0 mb-2 mr-2"
+        color="white"
+        elevation="0"
+        @click="clearFilters"
+      >
+        Clear Filters
+      </v-btn>
+
+      <v-btn
+        v-show="counter"
+        class="ma-0 mb-2 white--text"
+        color="blue lighten-2"
+        @click="applyFilters"
+      >
+        Apply
+      </v-btn>
+    </v-row>
   </v-menu>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { db } from '@/utils/Firebase'
 
 export default {
@@ -114,6 +113,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters('Auth', {
+      currentUser: 'getUser'
+    }),
     isPlanned() {
       return this.$route.name === 'cpm.forecasting.index'
     },
@@ -145,9 +147,9 @@ export default {
     }
   },
 
-  mounted() {
-    db.collection('m6user')
-      .doc(window.Drupal.settings.m6_platform.uid)
+  async mounted() {
+    await db.collection('m6user')
+      .doc(this.currentUser.id)
       .collection('search')
       .doc(this.isPlanned ? 'planned' : 'projects')
       .get()
@@ -189,7 +191,7 @@ export default {
       const { pmOption, campusOption, searchOption } = this
 
       db.collection('m6user')
-        .doc(window.Drupal.settings.m6_platform.uid)
+        .doc(this.currentUser.id)
         .collection('search')
         .doc(this.isPlanned ? 'planned' : 'projects')
         .set({
@@ -204,7 +206,7 @@ export default {
     },
     loadFilters() {
       db.collection('m6user')
-        .doc(window.Drupal.settings.m6_platform.uid)
+        .doc(this.currentUser.id)
         .collection('search')
         .doc(this.isPlanned ? 'planned' : 'projects')
         .get()

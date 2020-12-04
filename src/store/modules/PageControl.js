@@ -7,7 +7,9 @@ const state = {
 const getters = {}
 
 const mutations = {
-    setShowSidePanels: (state, payload) => state.showSidePanels = payload
+    setShowSidePanels(state, payload) {
+        state.showSidePanels = payload
+    }
 }
 
 const actions = {

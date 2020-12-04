@@ -114,7 +114,7 @@
                 <v-col cols="4">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Start Date
                       </v-col>
                       <v-col class="shrink">
@@ -164,7 +164,7 @@
                 <v-col cols="4">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Lost Time Accidents (LTA)
                       </v-col>
                     </v-row>
@@ -187,7 +187,7 @@
                 <v-col cols="4">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Minor
                       </v-col>
                     </v-row>
@@ -210,7 +210,7 @@
                 <v-col cols="4">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Hours This Period
                       </v-col>
                       <v-col class="shrink">
@@ -237,7 +237,7 @@
                 <v-col cols="4">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         End Date
                       </v-col>
                       <v-col class="shrink">
@@ -287,7 +287,7 @@
                 <v-col cols="4">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Status
                       </v-col>
                     </v-row>
@@ -310,7 +310,7 @@
                 <v-col cols="4">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Comment
                       </v-col>
                     </v-row>

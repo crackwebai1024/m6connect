@@ -46,7 +46,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Project Title
                       </v-col>
                     </v-row>
@@ -67,7 +67,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Campus
                       </v-col>
                     </v-row>
@@ -93,7 +93,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Project Manager
                       </v-col>
                     </v-row>
@@ -121,7 +121,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Capital Type
                       </v-col>
                     </v-row>
@@ -143,7 +143,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Budget Status
                       </v-col>
                     </v-row>
@@ -201,7 +201,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Start Date
                       </v-col>
                     </v-row>
@@ -248,7 +248,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         End Date
                       </v-col>
                     </v-row>
@@ -296,7 +296,7 @@
                   <v-data-table
                     class="elevation-1"
                     :headers="headers"
-                    hide-actions
+                    hide-default-footer
                     :items="budgets"
                   >
                     <template v-slot:items="props">
@@ -335,7 +335,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         Total Plan Budget
                       </v-col>
                     </v-row>
@@ -565,11 +565,11 @@ export default {
       this.project.phaseTargetDateText = this.parseDate(newVal)
     },
 
-    settings() {
+    async settings() {
       let projectNumber = this.$h.dg(this.settings, 'nextProjectNumber', 0)
       if (!projectNumber) {
         projectNumber = 1
-        db.collection('settings')
+        await db.collection('settings')
           .doc(this.currentCompany.id)
           .collection(`${this.settingCollectionName}`)
           .doc('projects')
@@ -629,14 +629,41 @@ export default {
     }
   },
   mounted() {
-    Promise.all([
-      this.getSettings(),
-      this.getVendors(),
-      this.getStandards(),
-      this.getGanttSettings()
-    ])
+    this.checkCompany('settings')
   },
   methods: {
+    async continueFirestore() {
+      this.users = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('users'),
+      this.roles = await db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection(`${this.settingCollectionName}`)
+        .doc('roles')
+    },
+    getAllSettings() {
+      Promise.all([
+        this.getSettings(),
+        // this.getVendors(),
+        this.getStandards(),
+        this.getGanttSettings()
+      ])
+    },
+    checkCompany(type) {
+      const self = this
+      setTimeout(function () {
+        if (self.currentCompany !== undefined) {
+          type == 'firestore' ? self.continueFirestore() : self.getAllSettings()
+          self.getAllSettings()
+          return true
+        } else {
+          self.checkCompany()
+        }
+      }, 500)
+    },
     getGanttSettings() {
       return new Promise(async (resolve, reject) => {
         try {
@@ -680,7 +707,7 @@ export default {
         try {
           const snap = await db
             .collection('settings')
-            .doc(this.currentCompany.id)
+            .doc(this.currentCompany.id.toString())
             .collection(`${this.settingCollectionName}`)
             .doc('projects')
             .get()
@@ -704,26 +731,26 @@ export default {
         1}/${newDate.getDate()}/${newDate.getFullYear()}`
     },
 
-    getVendors() {
-      const aux = new Promise(async (resolve, reject) => {
-        try {
-          const response = await axios.post(
-            `/vendor_profiles_o/all/${this.serverParams.page - 1}`,
-            this.serverParams
-          )
-          if (response.data.result) {
-            if (response.data.result) {
-              this.vendors = response.data.result
-            }
-          }
+    // getVendors() {
+    //   const aux = new Promise(async (resolve, reject) => {
+    //     try {
+    //       const response = await axios.post(
+    //         `/vendor_profiles_o/all/${this.serverParams.page - 1}`,
+    //         this.serverParams
+    //       )
+    //       if (response.data.result) {
+    //         if (response.data.result) {
+    //           this.vendors = response.data.result
+    //         }
+    //       }
 
-          resolve(true)
-        } catch (error) {
-          reject(error)
-        }
-      })
-      return aux
-    },
+    //       resolve(true)
+    //     } catch (error) {
+    //       reject(error)
+    //     }
+    //   })
+    //   return aux
+    // },
     getStandards() {
       const aux = new Promise(async (resolve, reject) => {
         try {
@@ -770,7 +797,7 @@ export default {
       user.value = window.Drupal.settings.m6_platform.uid
       return user
     },
-    create() {
+    async create() {
       if (this.project.startDate) {
         this.project.startDate = new Date(this.project.startDate).toISOString()
       }
@@ -1079,7 +1106,7 @@ export default {
             project.selectedGantt = forecasted
           }
         }
-        db.collection('cpm_projects')
+        await db.collection('cpm_projects')
           .add(project)
           .then(doc => {
             this.project.id = doc.id
@@ -1127,10 +1154,10 @@ export default {
         this.$snotify.error('please fill all required fields', 'Error')
       }
     },
-    updateNextProjectNumber() {
+    async updateNextProjectNumber() {
       let currentNumber = this.$h.dg(this.settings, 'nextProjectNumber', 0)
       const nextProjectNumber = ++currentNumber
-      db.collection('settings')
+      await db.collection('settings')
         .doc(this.currentCompany.id)
         .collection(`${this.settingCollectionName}`)
         .doc('projects')
@@ -1138,19 +1165,9 @@ export default {
         .catch(console.error)
     }
   },
-  firestore() {
-    return {
-      users: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('users'),
-      roles: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection(`${this.settingCollectionName}`)
-        .doc('roles')
-    }
+  async firestore() {
+    this.checkCompany('firestore')
+    return true
   }
 }
 </script>

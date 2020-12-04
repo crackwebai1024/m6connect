@@ -199,11 +199,15 @@
         color="blue"
         dark
       >
-        <v-card-text class="vertical-scroll">
+        <v-card-text class="pt-4">
           {{ $t('general.uploadingFilesMessage') }}
-
-          <p>{{ uploadStatusText }}</p>
-
+          <div class="align-center d-flex justify-center my-1">
+            <v-divider class="grey lighten-1" />
+            <p class="grey--text mb-0 mx-2 text--lighten-1">
+              {{ uploadStatusText }}
+            </p>
+            <v-divider class="grey lighten-1" />
+          </div>
           <v-progress-linear
             class="mb-0"
             color="white"

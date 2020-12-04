@@ -1,11 +1,18 @@
 <template>
-  <v-container class="d-flex flex-wrap pa-0">
+  <v-container
+    class="pa-0"
+    fluid
+  >
     <header-component
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded w-full"
+      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
       hasslot
       :info="{title: 'Search All Apps', icon: ''}"
     >
       <template #select>
+        <v-switch
+          v-model="tableView"
+          :append-icon=" tableView ? 'mdi-table' : 'mdi-arrange-bring-forward' "
+        />
         <v-menu
           bottom
           offset-y
@@ -31,7 +38,7 @@
             >
               <v-list-item-title
                 :class="item.type === 'title' ? 'grey--text' : 'black--text pointer'"
-                @click="item.function"
+                @click="changingApps(item)"
               >
                 {{ item.text }}
               </v-list-item-title>
@@ -61,26 +68,33 @@
         </v-text-field>
       </template>
     </header-component>
-    <v-row
-      v-if="!loading"
-      class="w-full"
-    >
-      <v-col
-        v-for="(item, index) of records"
-        :key="index"
-        :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-        cols="12"
-      >
-        <general-item :record-data="item" />
-      </v-col>
-      <v-col
-        v-if="records.length === 0"
-        class="max-w-tight mx-auto py-3 w-full"
-        cols="12"
-      >
-        No results found
-      </v-col>
-    </v-row>
+    <div v-if="!loading">
+      <template v-if="tableView">
+        <records-table :items="testItems" />
+      </template>
+      <template v-else>
+        <v-row
+          v-if="!loading"
+          class="w-full"
+        >
+          <v-col
+            v-for="(item, index) of records"
+            :key="index"
+            :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+            cols="12"
+          >
+            <general-item :record-data="item" />
+          </v-col>
+          <v-col
+            v-if="records.length === 0"
+            class="max-w-tight mx-auto py-3 w-full"
+            cols="12"
+          >
+            No results found
+          </v-col>
+        </v-row>
+      </template>
+    </div>
     <v-container v-else>
       <v-progress-circular
         color="primary"
@@ -91,22 +105,26 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
 import HeaderComponent from '@/components/Home/HeaderComponent'
+import RecordsTable from '@/components/RecordsTable'
 
 export default {
   name: 'GeneralList',
   components: {
     GeneralItem,
-    HeaderComponent
+    HeaderComponent,
+    RecordsTable
   },
   data: () => ({
     loading: true,
     areas2: [],
     perPage: 8,
     records: [],
-    searchInput: ''
+    searchInput: '',
+    tableView: false,
+    testItems: []
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -141,11 +159,18 @@ export default {
       ]
     }
   },
+  watch: {
+    tableView(val) {
+      this.setShowSidePanels(!val)
+      this.$emit('tableView', val)
+    }
+  },
   mounted() {
     this.setDynamicApps()
     this.setFilterTag({ key: 'everyone', value: 'All Apps' })
     this.getApps().then(() => {
-      this.records = this.list(), this.loading = false
+      this.records = this.list()
+      this.loading = false
     }
     )
     this.selectApp().then(res => {
@@ -153,6 +178,7 @@ export default {
         this.areas2.push(
           {
             text: app['title'],
+            prefix: app['prefix'],
             type: 'subtitle',
             function: () => {
               this.setFilterTag({ key: 'dynamicApp', value: app['title'] })
@@ -162,6 +188,10 @@ export default {
         )
       })
     })
+  },
+  beforeDestroy() {
+    this.setShowSidePanels(true)
+    this.$emit('tableView', false)
   },
   methods: {
     ...mapActions('ITAppsModule', {
@@ -173,6 +203,12 @@ export default {
     ...mapActions('DynamicAppsModule', {
       getDynamicApps: 'get_all_apps_by_id',
       setDynamicApps: 'set_apps'
+    }),
+    ...mapMutations('PageControl', {
+      setShowSidePanels: 'setShowSidePanels'
+    }),
+    ...mapActions('RecordsInstance', {
+      getRecordsByApp: 'getRecordsByApp'
     }),
     changeEvent(event) {
       this.records = []
@@ -187,15 +223,15 @@ export default {
       this.getDynamicApps(appId).then(() => {
         this.records = this.list()
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
     reload() {
       this.loading = true
       this.records = []
       this.getApps().then(
-        () => {
-          this.records = this.list(), this.loading = false
-        }
+        () => (this.records = this.list(), this.loading = false)
       )
     },
     remainingPerPage(page) {
@@ -209,12 +245,20 @@ export default {
     getIndex(i, index) {
       const ind = (i * this.perPage) + index - 1
       return ind
+    },
+    async changingApps(app) {
+      try {
+        this.testItems = await this.getRecordsByApp(app['prefix'])
+        app.function()
+      } catch (e) {
+        // Empty
+      }
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .v-text-field .v-input__control {
   min-height: auto !important;
   display: flex !important;

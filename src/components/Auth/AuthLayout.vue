@@ -44,15 +44,21 @@
 
                 <slot name="body"  />
 
-                <v-flex class="d-flex justify-center pa-0" >
-                  <powered-by-m6 class="bottom-logo" />
-                </v-flex>
+
                 <v-flex class="d-flex justify-center" >
                   <router-link :to="{ name: 'auth.ForgotPassword' }" class="text-dec-none" >
                     <v-btn text class="custom-blue-text" >
                       Forgot Your Password?
                     </v-btn>
                   </router-link>
+                </v-flex>
+
+                <v-flex>
+                  <slot name="action-btn" />
+                </v-flex>
+
+                <v-flex class="d-flex justify-center pa-0" >
+                  <powered-by-m6 class="bottom-logo mt-6" />
                 </v-flex>
               </v-flex>
             </v-layout>
@@ -66,12 +72,27 @@
 <script>
 import LeftSideScreen from './LeftSideScreen'
 import PoweredByM6 from './PoweredByM6'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   components: {
     LeftSideScreen,
     PoweredByM6
   },
+
+  methods: {
+    ...mapActions('Companies', {
+      getCompanyByID: 'getCompanyByID'
+    })
+  },
+
+  async mounted() {
+    try {
+      await this.getCompanyByID(process.env.VUE_APP_CURRENT_COMPANY_ID)
+    } catch(e) {
+
+    }
+  }
 }
 </script>
 
@@ -80,7 +101,7 @@ export default {
   background-color: #191e24;
 }
 .bottom-logo {
-  width: 25%;
+  width: 30%;
   height: auto;
 }
 .text-dec-none {

@@ -13,6 +13,30 @@
           </v-card-title>
           <v-divider class="grey lighten-3 z-index" />
           <v-card-text class="pb-5 px-6">
+            <div v-if="$route.query.dev === 'dev'">
+              <h5>Developer Tools</h5>
+              <v-btn @click="useHistorical">
+                Historical Spendings
+              </v-btn>
+
+              <v-btn @click="rollBack('spending')">
+                Rollback Spendings
+              </v-btn>
+
+              <v-btn @click="rollBack('spendingLineItem')">
+                Rollback Spendings
+              </v-btn>
+
+              <v-btn @click="rollBack('commitment')">
+                Rollback Commitments
+              </v-btn>
+
+              <v-btn @click="rollBack('project')">
+                Rollback Projects
+              </v-btn>
+              <v-divider class="grey lighten-3 mt-5 z-index" />
+            </div>
+
             <!-- Upload Document -->
             <v-form>
               <p class="blue--text mb-1 text--lighten-1">
@@ -24,6 +48,7 @@
                 @change="onFileChange"
               >
             </v-form>
+
             <v-divider class="grey lighten-3 my-2 z-index" />
             <!-- File Upload Errors -->
             <template v-show="!showStep2Loader">
@@ -368,15 +393,7 @@ export default {
             description: ''
           },
           {
-            name: 'Budget Category',
-            description: ''
-          },
-          {
             name: 'Cost Code Number',
-            description: ''
-          },
-          {
-            name: 'Vendor',
             description: ''
           }
         ],
@@ -423,6 +440,14 @@ export default {
           {
             name: 'Title',
             description: ''
+          },
+          {
+            name: 'Description',
+            description: ''
+          },
+          {
+            name: 'Description 2',
+            description: ''
           }
         ],
         spendings: [
@@ -434,23 +459,7 @@ export default {
             description: ''
           },
           {
-            name: 'Budget Category',
-            description: ''
-          },
-          {
             name: 'Contingency',
-            description: ''
-          },
-          {
-            name: 'Cost Code Text',
-            description: ''
-          },
-          {
-            name: 'Cost Code Number',
-            description: ''
-          },
-          {
-            name: 'Commitment ID/Number',
             description: ''
           },
           {
@@ -497,9 +506,54 @@ export default {
           {
             name: 'Commitment ID/Number',
             description: ''
+          }
+        ],
+        others: [
+          {
+            header: 'Others'
           },
           {
-            name: 'Vendor',
+            name: 'Cost Code Text',
+            description: ''
+          },
+          {
+            name: 'Cost Code Number',
+            description: ''
+          },
+          {
+            name: 'WBS Element',
+            description: ''
+          },
+          {
+            name: 'GL Account Number',
+            description: ''
+          },
+          {
+            name: 'GL Account Code',
+            description: ''
+          },
+          {
+            name: 'Budget Category Code',
+            description: ''
+          },
+          {
+            name: 'Budget Category Name',
+            description: ''
+          },
+          {
+            name: 'Vendor Name',
+            description: ''
+          },
+          {
+            name: 'Vendor Code',
+            description: ''
+          },
+          {
+            name: 'Fiscal Year',
+            description: ''
+          },
+          {
+            name: 'Period',
             description: ''
           }
         ]
@@ -511,7 +565,8 @@ export default {
       budgetCategories: [],
       rowNumber: 0,
       percentage: 0,
-      percentageDialog: false
+      percentageDialog: false,
+      glAccountNumbers: []
     }
   },
   computed: {
@@ -634,6 +689,22 @@ export default {
         this.showStep2Loader = false
       })
     },
+    useHistorical() {
+      this.axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/cpm-import/parse/txt`).then(({ data } = {}) => {
+        const noEmptyHeaders = data.headers.filter(header => header !== null)
+        const noEmptyFields = data.data.filter(field => field !== null)
+        if (noEmptyHeaders.length === 0 && noEmptyFields.length === 0) {
+          this.fileErrors = ['There are no headers in this file']
+        } else {
+          this.fileData = data
+          this.fileErrors = []
+        }
+        this.showStep2Loader = false
+      }).catch(error => {
+        this.fileErrors = [error.message]
+        this.showStep2Loader = false
+      })
+    },
     setHeaders(headers) {
       this.importHeaders = headers
       this.showStep3 = true
@@ -653,11 +724,11 @@ export default {
         }
 
         if (item.includes('commitments_id_number') !== false && item.includes('spendingLineItem_commitment_id_number') === false) {
-          console.log('commitmentes', item)
+          console.log('COMMITMENTS')
           commitmentsToCheck = true
         }
         if (item.includes('spendings_id_number') !== false) {
-          console.log('spendings', item)
+          console.log('SPENDINGS')
           spendingsToCheck = true
         }
       })
@@ -678,8 +749,7 @@ export default {
       this.percentage = 0
       this.percentageDialog = true
 
-      // for (let index = 0; index < this.fileData.data.length; index++) {
-      for (let index = 0; index < 50; index++) {
+      for (let index = 0; index < this.fileData.data.length; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
@@ -693,7 +763,7 @@ export default {
           if (project === false) {
             console.log('Creating Project')
             project = await this.createProject(formatedData)
-            await this.storeForRevert('project', project.id)
+            await this.storeForRevert('project', project.id, project)
           } else {
             console.log('Using Existing project')
             project = project[0]
@@ -718,7 +788,7 @@ export default {
             if (!commitment) {
               // Commitment not exists
               commitment = await this.createCommitment(project.id, formatedData)
-              await this.storeForRevert('commitment', commitment.id)
+              await this.storeForRevert('commitment', commitment.id, commitment)
               console.log('Creating Commitment')
             } else {
               console.log('Using Existing Commitment')
@@ -731,7 +801,7 @@ export default {
               if (!checkLineItem) {
                 console.log('Creating Line Item')
                 const newCommitmentLineItem = await this.createCommitmentLineItem(project.id, commitment.id, formatedData)
-                await this.storeForRevert('commitmentLineItem', newCommitmentLineItem.id)
+                await this.storeForRevert('commitmentLineItem', newCommitmentLineItem.id, newCommitmentLineItem)
               } else {
                 console.log('Skipping Line Item, already exists')
               }
@@ -755,7 +825,7 @@ export default {
             if (!spending) {
               // Commitment not exists
               spending = await this.createSpending(project.id, formatedData)
-              await this.storeForRevert('spending', spending.id)
+              await this.storeForRevert('spending', spending.id, spending)
               console.log('Creating Spending')
             } else {
               console.log('Using Existing Spending')
@@ -766,9 +836,9 @@ export default {
             if (formatedData.spendingLineItem_line_number) {
               const checkLineItem = await this.getSpendingLineItem(project.id, spending.id, formatedData.spendingLineItem_line_number)
               if (!checkLineItem) {
-                console.log('Creating Line Item')
-                const newSpendingLineItem = await this.createCommitmentLineItem(project.id, spending.id, formatedData)
-                await this.storeForRevert('spendingLineItem', newSpendingLineItem.id)
+                console.log('Creating Spending Line Item')
+                const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
+                await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
               } else {
                 console.log('Skipping Line Item, already exists')
               }
@@ -778,8 +848,7 @@ export default {
           }
         }
 
-        // this.percentage = (index * 100) / this.fileData.data.length
-        this.percentage = (index * 100) / 50
+        this.percentage = (index * 100) / this.fileData.data.length
       }
       this.percentage = 100
     },
@@ -811,7 +880,7 @@ export default {
       const docs = await db.collection('cpm_projects')
         .doc(projectID)
         .collection('commitments')
-        .where('number', '==', number)
+        .where('number', '==', number.toString())
         .get()
       if (docs.empty) {
         return false
@@ -843,13 +912,13 @@ export default {
       }
       return await Promise.all(docs.docs.map(async item => item))
     },
-    async getSpendingLineItem(projectID, commitmentID, number) {
+    async getSpendingLineItem(projectID, spendingID, number) {
       const docs = await db.collection('cpm_projects')
         .doc(projectID)
         .collection('spendings')
-        .doc(commitmentID)
+        .doc(spendingID)
         .collection('line_items')
-        .where('line_number', '==', number)
+        .where('line_number', '==', number.toString())
         .get()
       if (docs.empty) {
         return false
@@ -875,7 +944,7 @@ export default {
         nextInvoiceNumber: 1,
         nextTaskNumber: 1,
         soft_delete: 0,
-        number: item.projects_id_number || '',
+        number: item.projects_id_number.toString() || '',
         phase: item.projects_phase || '',
         phaseTargetDate: item.projects_phaseTargetDate || '',
         phaseTargetDateText: item.projects_phaseTargetDateText || '',
@@ -894,7 +963,7 @@ export default {
         startDateText: item.projects_startDateText || '',
         status: item.projects_status || '',
         teamMembers: item.projects_teamMembers || '',
-        title: item.projects_title || item.projects_id_number || 'New Project',
+        title: item.projects_title || item.projects_id_number.toString() || 'New Project',
         forecasted: false,
         creator: {},
         spendingsByPeriod: {},
@@ -916,20 +985,20 @@ export default {
     },
     async createCommitment(projectID, item) {
       let bc = {}
-      if (item.commitments_budget_category) {
+      if (item.others_budget_category_code || item.others_budget_category_name) {
         if (this.budgetCategories.length > 0) {
           // eslint-disable-next-line eqeqeq
-          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category || s.code == item.commitments_budget_category)
+          bc = this.budgetCategories.find(s => s.name === item.others_budget_category_name || s.code === item.others_budget_category_code)
           if (!bc) {
             bc = this.createBudgetCategory({
-              code: item.commitments_budget_category || item.commitments_budget_category,
-              name: item.commitments_budget_category || item.commitments_budget_category
+              code: item.others_budget_category_code || item.others_budget_category_name,
+              name: item.others_budget_category_name || item.others_budget_category_code
             })
           }
         }
       }
       const newCommitment = {
-        number: item.commitments_id_number,
+        number: item.commitments_id_number.toString(),
         total_po_amount: 0,
         total_open_po_w_tax: 0,
         amount: 0,
@@ -949,7 +1018,7 @@ export default {
     async createCommitmentLineItem(projectID, commitmentID, item) {
       const newCommitmentLineItem = {
         number: item.commitmentLineItem_amount || '',
-        line_number: item.commitmentLineItem_line_number || '',
+        line_number: item.commitmentLineItem_line_number.toString() || '',
         title: item.commitmentLineItem_title || '',
         startDateText: item.commitmentLineItem_startDate || '',
         startDate: new Date(item.commitmentLineItem_startDate).getTime() || '',
@@ -962,7 +1031,12 @@ export default {
         cost_per_item: item.commitmentLineItem_cost_per_item || '',
         total_po_line_amount: item.commitmentLineItem_amount || '',
         amount: item.commitmentLineItem_amount || '',
-        open_po_amount: ''
+        open_po_amount: '',
+        description: item.commitmentLineItem_description || '',
+        description2: item.commitmentLineItem_description_2 || '',
+        wbsElement: item.commitmentLineItem_wbs_element,
+        fiscalYear: item.others_fiscal_year || '',
+        period: item.others_period || ''
       }
       return new Promise(resolve => {
         const spending = db.collection('cpm_projects')
@@ -976,30 +1050,58 @@ export default {
     },
     async createSpending(projectID, item) {
       let bc = {}
-      if (item.commitments_budget_category) {
-        if (this.budgetCategories.length > 0) {
-          // eslint-disable-next-line eqeqeq
-          bc = this.budgetCategories.find(s => s.name == item.commitments_budget_category || s.code == item.commitments_budget_category)
-          if (!bc) {
-            bc = this.createBudgetCategory({
-              code: item.commitments_budget_category || item.commitments_budget_category,
-              name: item.commitments_budget_category || item.commitments_budget_category
-            })
-          }
+      if (item.others_budget_category_name || item.others_budget_category_code) {
+        bc = this.budgetCategories.find(s => s.name === this.$h.dg(item, 'others_budget_category_name', '').trim() || s.code === this.$h.dg(item, 'others_budget_category_code', '').trim())
+        if (!bc) {
+          bc = await this.createBudgetCategory({
+            code: item.others_budget_category_code || item.others_budget_category_name,
+            name: item.others_budget_category_name || item.others_budget_category_code
+          })
+          this.budgetCategories.push(bc)
         }
       }
 
+      if (item.spendingLineItem_commitment_id_number) {
+        await this.getCommitment(projectID, item.spendingLineItem_commitment_id_number)
+      }
+
+      const gl = {}
+
       const newSpending = {
-        number: item.spendings_id_number,
-        total_po_amount: 0,
-        total_open_po_w_tax: 0,
         amount: 0,
-        invoiceTotal: 0,
-        vendor: {},
+        budgetCategory: bc.name || '', // Name
+        budget_category: {
+          ref: bc.ref || '' // reference
+        },
+        commitment: '',
+        contingency: '' || false,
+        costCode: '',
+        costCodeNumber: '',
+        costCodeText: '',
         createdAt: new Date(),
         createdBy: 'm6works_import_tool',
-        budgetCategory: bc.name || '', // Name
-        budget_category: bc.ref || {} // reference
+        dateOpenedText: item.spendingLineItem_start_date || '',
+        dateOpened: new Date(item.spendingLineItem_start_date).getTime() || '',
+        invoiceTotal: 0,
+        number: item.spendings_id_number.toString(),
+        paidDateText: '',
+        paymentStatus: '',
+        po_number: item.spendingLineItem_commitment_id_number || '',
+        total_po_amount: 0,
+        total_open_po_w_tax: 0,
+        glAccount: {
+          name: gl.name || '',
+          code: gl.code || ''
+        },
+        vendors: [
+          {
+            field_vendor_id_value: '',
+            nid: '',
+            preferred: '',
+            title: item.others_vendor_name || '',
+            custom_id: item.others_vendor_code || ''
+          }
+        ]
       }
 
       return new Promise(resolve => {
@@ -1008,19 +1110,20 @@ export default {
       })
     },
     async createSpendingLineItem(projectID, spendingID, item) {
-      if (item.spendingLineItem_commitment_id_number) {
-        this.getCommitment(item.spendingLineItem_commitment_id_number)
-      }
-
       const newSpendingLineItem = {
         createdAt: new Date(),
         createdBy: 'm6works_import_tool',
         client_capital_id: item || '',
-        number: item.spendings_id_number || '',
-        po_number: item.spendings_commitment_id_number || '',
-        vendors: [],
-        vendor: {},
-        line_number: item.spendingLineItem_line_number || '',
+        number: item.spendings_id_number.toString() || '',
+        po_number: item.spendingLineItem_commitment_id_number.toString() || '',
+        vendor: {
+          field_vendor_id_value: '',
+          nid: '',
+          preferred: '',
+          title: item.others_vendor_name || '',
+          custom_id: item.others_vendor_code || ''
+        },
+        line_number: item.spendingLineItem_line_number.toString() || '',
         line_description: item.spendingLineItem_description || '',
         dateText: item.spendingLineItem_start_date || '',
         date: new Date(item.spendingLineItem_start_date).getTime() || '',
@@ -1032,19 +1135,33 @@ export default {
         aoc_code: item.spendingLineItem_paid_date || '',
         status: item.spendingLineItem_status || '',
         amount: item.spendingLineItem_amount || '',
-        account_category: item.spendingLineItem_account_category || '',
+        account_category: item.spendingLineItem_account_category || item.others_budget_category_code || '',
         cancel_seq: '',
         suffix: '',
         po_code: '',
         dist_company: '',
         dist_acct_unit: '',
         dis_sub_acct: '',
-        dist_seq_nbr: ''
+        dist_seq_nbr: '',
+        fiscalYear: item.others_fiscal_year || '',
+        period: item.others_period || ''
       }
+
+      // Update amount
+      const spending = await db.collection('cpm_projects')
+        .doc(projectID)
+        .collection('spendings')
+        .doc(spendingID)
+        .get()
+
+      const data = spending.data()
+      const newAmount = data.amount + parseFloat(item.spendingLineItem_amount) || 0
+      spending.ref.update({ amount: newAmount })
+
       return new Promise(resolve => {
         const spendingLineItem = db.collection('cpm_projects')
           .doc(projectID)
-          .collection('commitments')
+          .collection('spendings')
           .doc(spendingID)
           .collection('line_items')
           .add(newSpendingLineItem)
@@ -1058,11 +1175,18 @@ export default {
         return { id: item.id, ref: item.ref, ...data }
       }))
     },
+    async getGLAccount() {
+      const response = await db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('glaccount').get()
+      this.glAccountNumbers = await Promise.all(response.docs.map(async item => {
+        const data = await item.data()
+        return data.codes
+      }))
+    },
     async createBudgetCategory(code) {
       const newBC = await db.collection('settings').doc(this.currentCompany.id).collection('settings').doc('budgets').collection('budget_categories').add(code)
       return { id: newBC.id, ref: newBC.ref, ...code }
     },
-    async storeForRevert(type, id) {
+    async storeForRevert(type, id, ref) {
       const start = new Date()
       const year = start.getFullYear().toString()
       const month = ('0' + (start.getMonth() + 1)).slice(-2).toString()
@@ -1070,10 +1194,32 @@ export default {
 
       db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).add({
         id,
-        companyID: this.currentCompany.id
+        companyID: this.currentCompany.id,
+        ref
       })
     },
-    async rollBack() {}
+    async rollBack(type) {
+      const start = new Date()
+      const year = start.getFullYear().toString()
+      const month = ('0' + (start.getMonth() + 1)).slice(-2).toString()
+      const day = ('0' + (start.getDate())).slice(-2).toString()
+
+      const snap = await db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).get()
+      console.log(snap)
+      snap.docs.map(async i => {
+        const data = await i.data()
+        if (data.ref) {
+          const doc = await data.ref.get()
+          if (doc.exists) {
+            console.log(await doc.ref.delete())
+            i.ref.delete()
+          } else {
+            console.log('DOC DOESNT EXISTS')
+            i.ref.delete()
+          }
+        }
+      })
+    }
   }
 }
 </script>

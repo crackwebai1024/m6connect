@@ -133,8 +133,8 @@
       fixed-header
       :headers="headers"
       :items="resources"
+      :items-per-page-options="[5,10,15,200]"
       :options="pagination"
-      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template v-slot:item="props">
@@ -176,7 +176,7 @@
             class="pl-20 text-center"
           >
             <v-row justify="center">
-              <v-col class="shrink">
+              <v-col class="align-center d-flex text-nowrap">
                 {{ formatDateToText(props.item.completionDate) || '' }}
               </v-col>
             </v-row>
@@ -288,7 +288,7 @@
             <v-data-table
               class="elevation-1"
               :headers="subheaders"
-              hide-actions
+              hide-default-footer
               :items="props.item.spending"
             >
               <template v-slot:headers="headerProps">
@@ -354,7 +354,7 @@
                 </tr>
               </template>
 
-              <template v-slot:expand="props">
+              <template>
                 <v-card elevation="0">
                   <v-progress-circular
                     v-show="loadingExpandedSpendingLineItems"
@@ -365,7 +365,7 @@
                   <v-data-table
                     v-show="!loadingExpandedSpendingLineItems"
                     :headers="headersLineItems"
-                    hide-actions
+                    hide-default-footer-footer
                     :items="commitmentSpendingExpanded.lineItems"
                   >
                     <template
@@ -621,7 +621,7 @@ export default {
           value: 'POReceived',
           text: 'We have received the Total PO Amount',
           color: 'success',
-          icon: 'done_all'
+          icon: 'mdi-check-all'
         }
       ],
       selectedCommitment: null,
@@ -684,7 +684,7 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: false,
-        rowsPerPage: 10,
+        itemsPerPage: 8,
         totalItems: 0,
         page: 1
       },
@@ -737,7 +737,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
     },
     isFullScreenPage() {

@@ -26,6 +26,28 @@
             fluid
             grid-list-md
           >
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="shrink">
+                      CPA
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <v-text-field
+                  v-model="lineItem.cpa"
+                  color="blue"
+                />
+              </v-col>
+            </v-row>
+            
             <v-row>
               <v-col
                 md="6"

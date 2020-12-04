@@ -1438,6 +1438,7 @@ export const en = {
       fyApproved: 'FY Approved',
       generalContractor: 'General Contractor',
       generate: 'Generate',
+      glaccount: 'GL Account Number',
       heatMap: 'Project Heat Map',
       icraIlsmAndPcra: 'ICRA, ILSM and PCRA',
       imageDeleted: 'The Image has been deleted',

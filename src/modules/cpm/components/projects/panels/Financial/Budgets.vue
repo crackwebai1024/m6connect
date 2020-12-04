@@ -35,11 +35,11 @@
         mdi-plus
       </v-icon>
 
-      <v-tooltip left>
+      <v-tooltip bottom>
         <template v-slot:activator="{ on }">
           <v-icon
             v-if="isAdmin"
-            class="pointer"
+            class="cursor grey--text ml-2 text--darken-2"
             color="white"
             v-on="on"
             @click="openSettingModal"
@@ -47,7 +47,7 @@
             mdi-cog
           </v-icon>
         </template>
-        <span>{{ $t('cpm.projects.budgetPanel.settings') }}</span>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('cpm.projects.budgetPanel.settings') }}</span>
       </v-tooltip>
     </template>
 
@@ -65,33 +65,37 @@
     </v-row>
 
     <v-data-table
+      :footer-props="fProps"
       :headers="headers"
       :items="budgets"
-      :rows-per-page-items="[5, 10, 25, { text: 'All', value: -1 }]"
+      :items-per-page-options="[5,10,15,200]"
     >
-      <template v-slot:items="props">
-        <td>{{ props.item.title }}</td>
-        <td>{{ props.item.active ? $t('general.yes') : $t('general.no') }}</td>
-        <td>{{ props.item.status }}</td>
-        <td>{{ props.item.type }}</td>
-        <td class="text-right">
-          {{ !props.item.plan ? 0 : props.item.plan | currency }}
-        </td>
-        <td class="text-right">
-          {{ !props.item.total ? 0 : props.item.total | currency }}
-        </td>
-        <td class="text-center">
-          <m6-dropdown-actions
-            :options="dropdownOptions"
-            @delete="deleteBudget(props.item)"
-            @edit="editBudget(props.item)"
-          />
-        </td>
+      <template v-slot:item="props">
+        <tr>
+          <td>{{ props.item.title }}</td>
+          <td>{{ props.item.active ? $t('general.yes') : $t('general.no') }}</td>
+          <td>{{ props.item.status || '-' }}</td>
+          <td>{{ props.item.type || '-' }}</td>
+          <td class="text-right">
+            {{ !props.item.plan ? 0 : props.item.plan | currency }}
+          </td>
+          <td class="text-right">
+            {{ !props.item.total ? 0 : props.item.total | currency }}
+          </td>
+          <td class="text-center">
+            <m6-dropdown-actions
+              :options="dropdownOptions"
+              @delete="deleteBudget(props.item)"
+              @edit="editBudget(props.item)"
+            />
+          </td>
+        </tr>
       </template>
     </v-data-table>
 
     <!--DELETE MODAL-->
     <m6-confirm-delete
+      v-if="showBudgetDeleteModal"
       :message="$t('cpm.projects.budgetPanel.confirmBudget')"
       :show="showBudgetDeleteModal"
       :title="$t('cpm.projects.budgetPanel.deleteBudget')"
@@ -146,6 +150,9 @@ export default {
 
   data() {
     return {
+      fProps: {
+        'items-per-page-options': [5, 10, 25, 100, { text: 'All', value: -1 }]
+      },
       isAdmin: true,
       showSettings: false,
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
@@ -209,12 +216,12 @@ export default {
     dropdownOptions() {
       return [
         {
-          icon: 'remove_red_eye',
+          icon: 'mdi-eye',
           title: this.$t('general.show'),
           event: 'edit'
         },
         {
-          icon: 'delete',
+          icon: 'mdi-delete',
           title: this.$t('general.delete'),
           event: 'delete'
         }

@@ -7,5 +7,8 @@ module.exports = {
         prependData: '@import "@/scss/_global.scss";'
       }
     }
+  },
+  devServer: {
+    disableHostCheck: true
   }
 }

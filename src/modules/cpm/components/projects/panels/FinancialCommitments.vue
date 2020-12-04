@@ -16,6 +16,7 @@
           <v-icon
             light
             text
+            v-on="on"
             @click="cardDialogClick"
           >
             mdi-launch
@@ -130,9 +131,9 @@
       class="elevation-0"
       :headers="headers"
       :items="resources"
+      :items-per-page-options="[5,10,15,200]"
       :options.sync="pagination"
-      :server-items-length="pagination.totalItems"
-      @update:pagination="debounceSearch(search, false)"
+      @update:options="debounceSearch(search, false)"
     >
       <template
         slot="item"
@@ -202,7 +203,7 @@
             class="pl-20 text-center"
           >
             <v-row justify="center">
-              <v-col class="shrink">
+              <v-col class="align-center d-flex text-nowrap">
                 {{ formatDateToText(props.item.completionDate) }}
               </v-col>
             </v-row>
@@ -235,7 +236,7 @@
             <v-data-table
               class="elevation-1"
               :headers="subheaders"
-              hide-actions
+              hide-default-footer
               :items="props.item.spending"
             >
               <template v-slot:items="props">
@@ -338,7 +339,7 @@
       This commitment has associated spending
       <ul>
         <li
-          v-for="(spendingName, index) in associatedSpending"
+          v-for="spendingName in associatedSpending"
           :key="spendingName"
         >
           {{ spendingName }}
@@ -465,7 +466,7 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: true,
-        rowsPerPage: 10,
+        itemsPerPage: 10,
         totalItems: 0,
         page: 1
       }
@@ -479,7 +480,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
     },
 

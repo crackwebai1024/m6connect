@@ -11,7 +11,7 @@
       >
         <v-text-field
           id="search"
-          append-icon="search"
+          append-icon="mdi-magnify"
           clearable
           :label="label"
           :value="search"

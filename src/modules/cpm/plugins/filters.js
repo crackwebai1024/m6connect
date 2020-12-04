@@ -14,9 +14,15 @@ Vue.filter('formatPhoneNumber', function (phoneNumberString) {
 Vue.filter('normalizeDate', (date, formatType = 'yyyy-MM-dd') =>
   format(date, formatType)
 )
-Vue.filter('monthDayYear', (date, formatType = 'MM/dd/yyyy') =>
-  format(date, formatType)
-)
+Vue.filter('monthDayYear', (date, formatType = 'MM/dd/yyyy') => {
+  try {
+    return format(date, formatType)
+  } catch (e) {
+    console.log(e)
+    console.log(date)
+  }
+})
+
 Vue.filter('phone', (phone = '') =>
   phone.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')
 )

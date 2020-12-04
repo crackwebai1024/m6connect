@@ -123,14 +123,6 @@ const actions = {
     })
   },
 
-  getLatestRecordNumber(_, payload) {
-    return new Promise((resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/latest`, payload).then(({ data }) => {
-        resolve(data)
-      }).catch(e => reject(e))
-    })
-  },
-
   saveFieldValue(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/fieldValue`, payload).then(({ data }) => {
@@ -157,7 +149,7 @@ const actions = {
 
   updateRecord(_, payload) {
     return new Promise((resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${payload.id}`, payload).then(({ data }) => {
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${payload.id}`, payload).then(({ data }) => {
         resolve(data)
       }).catch(e => reject(e))
     })

@@ -88,6 +88,19 @@
       >
         mdi-plus-circle
       </v-icon>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon
+            class="cursor grey--text ml-2 text--darken-2"
+            color="white"
+            v-on="on"
+            @click="showSettings = true"
+          >
+            mdi-cog
+          </v-icon>
+        </template>
+        <span class="grey lighten-3 pa-1 rounded">{{ $t('general.settings') }}</span>
+      </v-tooltip>
     </template>
 
     <v-row
@@ -118,9 +131,9 @@
       :align-actions="alignActions"
       :headers="headersSpendings"
       :items="resources"
+      :items-per-page-options="[5,10,15,200]"
       :options.sync="pagination"
-      :server-items-length="pagination.totalItems"
-      @update:pagination="debounceSearch(search, false)"
+      @update:options="debounceSearch(search, false)"
     >
       <template
         slot="item"
@@ -193,7 +206,7 @@
             <v-data-table
               v-show="!loadingExpandedSpendingLineItems"
               :headers="headersLineItems"
-              hide-actions
+              hide-default-footer
               :items="expandedSpending.lineItems || []"
             >
               <template
@@ -286,7 +299,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.invoiceNumber') }}
                       </v-col>
                       <v-col class="shrink">
@@ -312,7 +325,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $tc('cpm.projects.commitment', 2) }}
                       </v-col>
                       <v-col class="shrink" />
@@ -349,7 +362,41 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('cpm.projects.glaccount') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-select
+                    ref="glaccount"
+                    v-model="dialogProperties.glaccount"
+                    clearable
+                    item-text="name"
+                    item-value="code"
+                    :items="glaccount.codes"
+                    return-object
+                  >
+                    <template
+                      slot="item"
+                      slot-scope="{ item }"
+                    >
+                      {{ item.name }} - {{ item.code }}
+                    </template>
+                  </v-select>
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('cpm.projects.budgetCategory') }}
                       </v-col>
                       <v-col class="shrink">
@@ -374,7 +421,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.dateOpened') }}
                       </v-col>
                     </v-row>
@@ -440,7 +487,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.datePaid') }}
                       </v-col>
                       <v-col class="shrink">
@@ -508,7 +555,7 @@
                 <v-col cols="3">
                   <div class="font-weight-black subheading">
                     <v-row>
-                      <v-col class="shrink">
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.description') }}
                       </v-col>
                     </v-row>
@@ -533,7 +580,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('general.attachments') }}
                     </v-col>
                     <v-col class="shrink">
@@ -577,7 +624,7 @@
                         item.file === 'image/jpeg' || item.file === 'image/png'
                       "
                     >
-                      image
+                      mdi-image
                     </v-icon>
                     <v-icon v-else-if="item.file === 'application/pdf'">
                       mdi-file-pdf-box
@@ -626,7 +673,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       {{ $t('general.filesToAdd') }}
                     </v-col>
                   </v-row>
@@ -742,7 +789,14 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
+        <v-card-text
+          class="vertical-scroll"
+          :style="{
+            height: getViewPortHeight,
+            height: method === 'add' ? '78vh' : '70vh',
+            overflow: 'auto'
+          }"
+        >
           <v-form
             ref="formLineItem"
             v-model="validLineItem"
@@ -1149,13 +1203,13 @@
             {{ $tc('cpm.projects.lineItem', 1) }}
           </span>
           <v-chip
-            class="absolute headling px-3 py-1 text-center white--text"
-            color="blue darken-4"
-            dark
+            class="absolute blue darken-4 headling px-3 py-1 text-center"
             style="left: 43%;"
           >
-            {{ $tc('general.invoice', 1) }}# :
-            {{ spendingToShow.number }}
+            <b class="white--text">
+              {{ $tc('general.invoice', 1) }}# :
+              {{ spendingToShow.number }}
+            </b>
           </v-chip>
           <v-spacer />
           <v-btn
@@ -1189,8 +1243,9 @@
               <v-col md="12">
                 <v-data-table
                   :headers="headersLineItems"
-                  hide-actions
+                  hide-default-footer
                   :items="spendingToShow.lineItems"
+                  :items-per-page-options="[5,10,15,200]"
                 >
                   <template
                     slot="item"
@@ -1248,7 +1303,7 @@
           </v-container>
         </v-card-text>
 
-        <v-card-actions>
+        <v-card-actions class="px-5">
           <v-spacer />
 
           <v-btn
@@ -1305,6 +1360,12 @@
     />
 
     <m6-loading :loading="showLoading" />
+
+    <settings-modal
+      v-if="showSettings"
+      :show="showSettings"
+      @close="showSettings = false"
+    />
   </m6-card-dialog>
 </template>
 
@@ -1320,6 +1381,7 @@ import mixins from '@/modules/cpm/_mixins/index'
 import FirebaseReportComponent from './FirebaseReportComponent.vue'
 import SearchingModal from '../modals/SearchingModal'
 import BudgetCategorySelect from '../_partials/BudgetCategorySelect'
+import settingsModal from '../settings_modals/FinancialSpendings.vue'
 
 const defaultLineItemSpending = {
   number: '',
@@ -1349,7 +1411,8 @@ export default {
   name: 'FinancialSpendings',
   components: {
     searching: SearchingModal,
-    BudgetCategorySelect
+    BudgetCategorySelect,
+    settingsModal
   },
 
   extends: FirebaseReportComponent,
@@ -1376,6 +1439,7 @@ export default {
         }
       },
       commitments: [],
+      glaccount: [],
       autoInit: true,
       dialogSpendingPaidDateText: false,
       dialogSpendingDateOpenedText: false,
@@ -1474,13 +1538,14 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: true,
-        rowsPerPage: 10,
+        itemsPerPage: 8,
         totalItems: 0,
         page: 1
       },
       formWasValidated: false,
       expandedSpending: {},
-      loadingExpandedSpendingLineItems: false
+      loadingExpandedSpendingLineItems: false,
+      showSettings: false
     }
   },
 
@@ -1495,7 +1560,12 @@ export default {
       commitments: db
         .collection('cpm_projects')
         .doc(this.projectId)
-        .collection('commitments')
+        .collection('commitments'),
+      glaccount: db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc('glaccount')
     }
   },
 
@@ -1513,7 +1583,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
     },
 
@@ -1605,7 +1675,7 @@ export default {
     },
 
     getViewPortHeight() {
-      return `${this.viewPortHeight}px`
+      return `${this.viewPortHeight}px !important`
     },
     budgetCategoryErrors() {
       if (
@@ -1713,6 +1783,9 @@ export default {
   },
 
   methods: {
+    testPagination(v) {
+      console.log(v)
+    },
     ...mapActions('companies/cpmProjects/spendings', {
       indexResource: 'indexELK'
     }),

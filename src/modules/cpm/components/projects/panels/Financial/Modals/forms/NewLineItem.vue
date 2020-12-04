@@ -3,16 +3,16 @@
     mode="out-in"
     name="router-anim"
   >
-    <div class="row">
-      <div class="col-xs-12">
+    <v-row>
+      <v-col cols='12'>
         <budget-category-select
           :category="newItem.budget_category.ref"
           :errors="budgetCategoryErrors"
           @newCategory="setBudgetCategory"
         />
-      </div>
+      </v-col>
 
-      <div class="col-xs-12">
+      <v-col cols='12'>
         <v-text-field
           v-model="newItem.costCodeNumber"
           :append-icon="
@@ -22,9 +22,8 @@
           label="Cost Code"
           readonly
         />
-      </div>
-
-      <div class="col-xs-5 margin-top-25">
+      </v-col>
+      <v-col cols='12'>
         <template v-if="newItem.type === 'Amount'">
           <label>{{ newItem.type }}</label>
           <money
@@ -42,11 +41,11 @@
             label="Amount"
           />
         </template>
-      </div>
+      </v-col>
 
-      <div
+      <v-col
         v-if="!checkTypeHide"
-        class="col-xs-7"
+        cols='12'
         style="margin-top: 14px"
       >
         <label>Type</label>
@@ -55,24 +54,26 @@
           clearable
           :items="settings.lineItemTypes"
         />
-      </div>
+      </v-col>
 
-      <div
+      <v-col
         v-if="newItem.type === 'Amount'"
-        class="checkbox-fix col-xs-12 margin-top-10"
+        cols='12'
+        class="checkbox-fix margin-top-10"
       >
         <v-checkbox
           v-model="newItem.belowSubtotal"
           color="blue"
           label="Below Subtotal"
         />
-      </div>
+      </v-col>
 
       <div class="clearfix" />
 
-      <div
+      <v-col
+        cols='12'
         v-if="newItem.type === 'Percentage'"
-        class="checkbox-fix col-xs-6 margin-top-10"
+        class="checkbox-fix margin-top-10"
       >
         <label>Apply To:</label>
         <v-select
@@ -80,10 +81,11 @@
           clearable
           :items="['Subtotal', 'Category']"
         />
-      </div>
-      <div
+      </v-col>
+      <v-col
+        cols='12'
         v-if="newItem.type === 'Percentage'"
-        class="checkbox-fix col-xs-6 margin-top-10"
+        class="checkbox-fix margin-top-10"
       >
         <template v-if="newItem.percentageType === 'Category'">
           <label>Apply To:</label>
@@ -94,9 +96,9 @@
             multiple
           />
         </template>
-      </div>
+      </v-col>
 
-      <div class="col-xs-12 margin-top-25">
+      <v-col cols='12' class="margin-top-25">
         <v-textarea
           v-model="newItem.description"
           auto-grow
@@ -104,11 +106,12 @@
           label="Notes"
           rows="1"
         />
-      </div>
+      </v-col>
 
-      <div class="actions col-xs-12 margin-top-25 text-right">
+      <v-col cols='12' class="actions margin-top-25 text-right">
         <v-btn
-          color="blue"
+          class="mr-3"
+          color="grey lighten-2"
           outline
           @click="cancelLineItem"
         >
@@ -121,10 +124,10 @@
         >
           Save
         </v-btn>
-      </div>
+      </v-col>
       <div class="clearfix" />
       <br>
-    </div>
+    </v-row>
   </transition>
 </template>
 
@@ -377,5 +380,16 @@ export default {
 .budget-cat-select {
   height: 200px;
   overflow-y: scroll;
+}
+input.v-money {
+  padding: 5px;
+  border-bottom: 1px solid gray;
+  width: 100%;
+}
+label {
+  display: block;
+}
+input.v-money:focus {
+  border-color: var(--v-primary-base)
 }
 </style>

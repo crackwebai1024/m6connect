@@ -7,7 +7,10 @@
       hasslot
       :info="{title: 'Create Post', icon: ''}"
     >
-      <template #select>
+      <template
+        v-if="!external"
+        v-slot:select
+      >
         <v-menu
           bottom
           offset-y
@@ -285,7 +288,10 @@
     <M6Loading
       :loading="showLoading"
     />
-    <posts-list v-if="!postListShow" />
+    <posts-list 
+      v-if="!postListShow"
+      :external="external"
+    />
   </v-container>
 </template>
 
@@ -302,8 +308,11 @@ export default {
     HeaderComponent,
     PostsList
   },
-
   props: {
+    external: {
+      type: Boolean,
+      default: false
+    },
     postListShow: {
       type: Boolean,
       default: false
@@ -419,7 +428,9 @@ export default {
     }
   },
   mounted() {
-    this.companyState()
+    if (!this.external) {
+      this.companyState()
+    }
 
     this.getApps().then(response => {
       response.data.map(app => {

@@ -142,7 +142,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Status
                     </v-col>
                   </v-row>
@@ -204,7 +204,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Notes
                     </v-col>
                   </v-row>
@@ -226,7 +226,7 @@
               <v-col cols="3">
                 <div class="font-weight-black subheading">
                   <v-row>
-                    <v-col class="shrink">
+                    <v-col class="align-center d-flex text-nowrap">
                       Files
                     </v-col>
                     <v-col class="shrink">
