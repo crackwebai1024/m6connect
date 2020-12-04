@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable vue/no-template-shadow -->
   <v-container class="px-0 py-0 relative">
     <div class="card-custom-shadow mb-4 rounded white">
       <div
@@ -500,6 +501,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'

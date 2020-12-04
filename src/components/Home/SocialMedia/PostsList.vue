@@ -72,6 +72,12 @@ export default {
   components: {
     PostItem
   },
+  props: {
+    external: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => ({
     busy: false,
     currentIndex: 0
@@ -86,7 +92,19 @@ export default {
     }),
     ...mapGetters('Auth', { user: 'getUser' })
   },
-  mounted() {
+  async mounted() {
+    if (!this.external) {
+      this.set_user_data()
+      this.set_posts_data()
+      await this.$store.dispatch('GSFeed/retrieveFeed')
+
+      this.feed.subscribe(async data => {
+        if (data.new) {
+          await this.$store.dispatch('GSFeed/retrieveFeed')
+        }
+      })
+    }
+
     this.feedNotification.get().then(() => {})
     this.feedNotification.subscribe(data => {
       if (data.new.length > 0) {
@@ -101,17 +119,6 @@ export default {
       }
       if (data.deleted.length > 0) {
         // Empty
-      }
-    })
-  },
-  async created() {
-    this.set_user_data()
-    this.set_posts_data()
-    await this.$store.dispatch('GSFeed/retrieveFeed')
-
-    this.feed.subscribe(async data => {
-      if (data.new) {
-        await this.$store.dispatch('GSFeed/retrieveFeed')
       }
     })
   },

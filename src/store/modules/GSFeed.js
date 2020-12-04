@@ -208,6 +208,7 @@ const actions = {
         }).catch(e => reject(e))
       } else if (state.room === 'cpm') {
         const url = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/cpm/${state.foreignId}`
+
         axios.get(url).then(res => {
           state.timeline = []
           commit('SET_TIMELINE', res.data)

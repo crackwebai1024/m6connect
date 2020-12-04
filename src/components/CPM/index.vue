@@ -323,7 +323,7 @@
                 slot="rightPanel"
                 class="mb-4 panel px-0"
               >
-                <project-social-media class="px-0" />
+                <project-social-media :external="true" class="px-0" />
               </div>
             </panel-two-columns>
           </template>
@@ -508,12 +508,12 @@ export default {
     await newFirebaseInit()
     await doFirebaseAuth()
 
-    db.collection('cpm_projects').doc(this.$route.params.id).get().then(async response => {
-      this.project = response.data()
-      await this.$store.dispatch('GSFeed/setRoom', 'cpm')
-      await this.$store.dispatch('GSFeed/setCpmFeed', this.project._id)
-      await this.$store.dispatch('GSFeed/retrieveFeed')
-    })
+    const res = await db.collection('cpm_projects').doc(this.$route.params.id).get()
+    this.project = res.data()
+    await this.$store.dispatch('GSFeed/setRoom', 'cpm')
+    await this.$store.dispatch('GSFeed/setCpmFeed', this.project._id)
+    await this.$store.dispatch('GSFeed/retrieveFeed')
+
     await this.getPanelSettings()
   },
   beforeDestroy() {},

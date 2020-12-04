@@ -153,19 +153,19 @@ router.beforeEach(async (to, from, next) => {
       const { data: userLogged } = await store.dispatch('Auth/getUserData')
 
       // Start GSChat
-      // await store.dispatch('GSChat/getGSToken', userLogged)
-      // const user = {
-      //   id: userLogged.id,
-      //   name: `${userLogged.firstName} ${userLogged.lastName}`,
-      //   image: userLogged.profilePic
-      // }
-      // await store.dispatch('GSChat/setUser', user)
-      // await store.dispatch('GSChat/retrieveChats', userLogged.id)
+      await store.dispatch('GSChat/getGSToken', userLogged)
+      const user = {
+        id: userLogged.id,
+        name: `${userLogged.firstName} ${userLogged.lastName}`,
+        image: userLogged.profilePic
+      }
+      await store.dispatch('GSChat/setUser', user)
+      await store.dispatch('GSChat/retrieveChats', userLogged.id)
 
       // Start GSFeed
-      // await store.dispatch('GSFeed/getGSFeedToken', userLogged)
-      // await store.dispatch('GSFeed/setUser', user)
-      // await store.dispatch('GSFeed/setCompanyFeed', userLogged.id)
+      await store.dispatch('GSFeed/getGSFeedToken', userLogged)
+      await store.dispatch('GSFeed/setUser', user)
+      await store.dispatch('GSFeed/setCompanyFeed', userLogged.id)
     }
   }
 
