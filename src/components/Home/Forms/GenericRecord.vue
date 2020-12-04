@@ -156,12 +156,12 @@ export default {
           return;
         }
         this.loading = true;
-        const recordNumber = await this.getLatestRecordNumber({ appId: this.app.id, prefix: this.app.prefix });
+        const res = await this.getLatestRecordNumber({ appId: this.app.id, prefix: this.app.prefix });
 
         this.record = {
           ...this.record,
           author: this.currentUser.id,
-          recordNumber,
+          recordNumber: res.record_number,
           appID: this.app.id,
         };
 
