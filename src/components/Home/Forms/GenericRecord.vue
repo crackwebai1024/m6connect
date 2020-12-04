@@ -116,8 +116,7 @@ export default {
 
   methods: {
     ...mapActions("AppBuilder", {
-      createRecord: "createRecord",
-      getLatestRecordNumber: "getLatestRecordNumber",
+      createRecord: "createRecord"
     }),
 
     ...mapActions("AppAttachments", {
@@ -156,13 +155,12 @@ export default {
           return;
         }
         this.loading = true;
-        const res = await this.getLatestRecordNumber({ appId: this.app.id, prefix: this.app.prefix });
 
         this.record = {
           ...this.record,
           author: this.currentUser.id,
-          recordNumber: res.record_number,
           appID: this.app.id,
+          image: ''
         };
 
         if (this.imageFiles[0]['name'].match(/\.[0-9a-z]+$/i) && this.imageFiles[0]['size'] < 50000000){
@@ -181,7 +179,7 @@ export default {
 
         this.record['image'] = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/file/url/${this.imageFiles[0]['id']}`;
 
-        this.record = await this.createRecord(this.record);
+        this.record = await this.createRecord({ record: this.record, appId: this.app.id, prefix: this.app.prefix });
 
         this.notifSuccess("The Record Was Created");
         this.loading = false;
