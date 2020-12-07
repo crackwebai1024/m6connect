@@ -22,7 +22,7 @@
         fixed-tabs
       >
         <v-tab>Budget Status</v-tab>
-        <v-tab>Budget Categories</v-tab>
+        <v-tab>Cost Codes</v-tab>
         <v-tab>Budget Types</v-tab>
         <v-tab>Budget Line Items</v-tab>
       </v-tabs>
