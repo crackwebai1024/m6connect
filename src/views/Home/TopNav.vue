@@ -24,7 +24,10 @@
           class="mb-0 px-13"
           :to="link.url"
         >
-          <apps-btn-drop-down v-if="link.text === 'apps'" :icon="link.icon" />
+          <apps-btn-drop-down
+            v-if="link.text === 'apps'"
+            :icon="link.icon"
+          />
           <v-icon
             v-else
             color="white"
