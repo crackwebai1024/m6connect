@@ -225,7 +225,7 @@ export default {
       currentApp: 'app'
     }),
     appList() {
-      return this.fieldList.filter(row => Number(row.appId) !== Number(this.currentApp.appId))
+      return this.fieldList.filter(row => Number(row.appId) !== Number(this.currentApp.id))
     }
   },
 
