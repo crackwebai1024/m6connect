@@ -3,6 +3,8 @@
     <v-menu
       bottom
       open-on-hover
+      :nudge-width="200"
+      offset-y
     >
       <template v-slot:activator="{ on }">
         <v-icon
