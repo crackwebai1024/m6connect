@@ -94,23 +94,16 @@
             <panel-two-columns>
               <div
                 slot="leftPanel"
-                class="card-custom-shadow mb-3 px-6 py-5 rounded white"
+                class=""
               >
-                <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
-                  Project Information
-                </h3>
-                <v-col
-                  v-for="(section,index) in projectInformation"
-                  :key="index"
-                >
-                  <v-row
-                    v-for="(item, index) in section"
-                    :key="index"
-                  >
-                    <v-col class="align-center d-flex flex-grow-0 flex-shrink-0">
-                      <v-icon color="grey lighten-1">
-                        {{ item.icon || 'mdi-information' }}
-                      </v-icon>
+
+                <v-col class='card-custom-shadow mb-3 px-6 py-5 rounded white' :key='index' v-for='(section,index) in projectInformation'>
+                  <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
+                    {{index}}
+                  </h3>
+                  <v-row :key='index' v-for='(item, index) in section'>
+                    <v-col class="flex-shrink-0 flex-grow-0 align-center d-flex">
+                      <v-icon color='grey lighten-1'>{{item.icon || 'mdi-information'}}</v-icon>
                     </v-col>
                     <v-col class="flex-grow-1 flex-shrink-0">
                       <v-input :messages="item.label">
@@ -275,6 +268,13 @@
             </panel-full> -->
           </template>
           <!--REPORTS-->
+
+          <!--SETTINGS-->
+          <template v-if='activeTab === 6'>
+            <panel-full>
+              <settings-tab slot='content'/>
+            </panel-full>
+          </template>
         </div>
       </app-template-plain>
     </v-row>
@@ -284,7 +284,9 @@
 <script>
 const defaults = {
   money: '0.00',
-  text: 'N/A'
+  text: 'N/A',
+  date: '--/--/----',
+  percent: '0',
 }
 import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
@@ -303,6 +305,7 @@ import Milestones from '@/modules/cpm/components/projects/panels/schedule/Milest
 import Schedule from '@/modules/cpm/components/projects/panels/schedule/SchedulePanel'
 import Forecasts from '@/modules/cpm/components/projects/panels/Forecasts/ForecastsPanel'
 import ProjectFiles from '@/modules/cpm/components/projects/panels/ProjectFiles'
+import SettingsTab from '@/modules/cpm/components/settings/Settings.vue'
 import {
   db,
   newFirebaseInit,
@@ -327,6 +330,7 @@ export default {
     FinancialSpendings,
     Schedule,
     Forecasts,
+    SettingsTab,
     Budgets,
     ProjectFiles,
     StatusComment,
@@ -334,10 +338,15 @@ export default {
 
   },
   data: () => ({
-    projectInformation: [
-      [
+    projectInformation: {
+      "Project Quickview":[
         {
-          label: 'Project Manager',
+          label: 'Project Manager',value: '',
+          default: defaults.text,
+          icon: 'mdi-badge-account'
+        },
+        {
+          label: 'General Contractor',
           value: '',
           default: defaults.text,
           icon: 'mdi-badge-account'
@@ -391,8 +400,72 @@ export default {
           default: defaults.money,
           icon: 'mdi-currency-usd'
         }
+      ],
+      'Schedule & Budget': [
+        {
+          label: 'Phase',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-badge-account'
+        },
+        {
+          label: 'Target Date / Phase',
+          value: '',
+          default: defaults.date,
+          icon: 'mdi-calendar'
+        },
+        {
+          label: 'Construction Start',
+          value: '',
+          default: defaults.date,
+          icon: 'mdi-calendar'
+        },
+        {
+          label: 'Anticipated Construction Finish',
+          value: '',
+          default: defaults.date,
+          icon: 'mdi-calendar'
+        },
+        {
+          label: 'Complete Budget',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Complete Schedule',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Complete',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Budget Status',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Total Project Budget',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+      ],
+      'Commitments & Spendings' : [
+        {
+          label: 'Spent to Date',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
       ]
-    ],
+    },
     tab: null,
     items: [
       'Profile',
@@ -408,7 +481,8 @@ export default {
       'Schedule',
       'Document Manager',
       'Updates',
-      'Reports'
+      'Reports',
+      'Settings'
     ],
     activeTab: 0
   }),

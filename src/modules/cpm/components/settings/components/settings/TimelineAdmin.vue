@@ -22,14 +22,14 @@
             class="mainList"
             dense
           >
-            <v-list-tile class="myListHeader">
-              <v-list-tile-content>
+            <v-list-item class="myListHeader">
+              <v-list-item-content>
                 {{ $t('general.name') }}
-              </v-list-tile-content>
-              <v-list-tile-action>
+              </v-list-item-content>
+              <v-list-item-action>
                 {{ $t('general.action') }}
-              </v-list-tile-action>
-            </v-list-tile>
+              </v-list-item-action>
+            </v-list-item>
 
             <draggable
               v-model="timelineDefault"
@@ -37,25 +37,25 @@
               @end="drag = false"
               @start="drag = true"
             >
-              <v-list-tile
+              <v-list-item
                 v-for="(item, key) in timelineDefault"
                 :key="key"
                 class="myList"
               >
-                <v-list-tile-avatar>
+                <v-list-item-icon>
                   <v-icon
                     color="blue"
                     small
                   >
                     mdi-drag-variant
                   </v-icon>
-                </v-list-tile-avatar>
+                </v-list-item-icon>
 
-                <v-list-tile-content>
+                <v-list-item-content>
                   {{ item.name }}
-                </v-list-tile-content>
+                </v-list-item-content>
 
-                <v-list-tile-action
+                <v-list-item-action
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-icon
@@ -74,8 +74,8 @@
                   >
                     mdi-delete
                   </v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </draggable>
           </v-list>
         </div>

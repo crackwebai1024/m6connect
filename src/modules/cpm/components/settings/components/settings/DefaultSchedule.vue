@@ -227,7 +227,7 @@
                   <v-row class="ma-0">
                     <v-col md="2">
                       <v-btn
-                        outline
+                        outlined
                         @click="showColor = !showColor"
                       >
                         Color
@@ -376,7 +376,7 @@
                                 >
                                   <v-btn
                                     color="blue"
-                                    outline
+                                    outlined
                                     @click="clearGanttDialog"
                                   >
                                     Cancel
@@ -410,28 +410,30 @@
                               hide-default-footer
                               :items="ganttsInTask"
                             >
-                              <template v-slot:items="props">
-                                <td>{{ props.item.gantt.name }}</td>
-                                <td>{{ props.item.duration }}</td>
-                                <td>
-                                  <v-btn
-                                    color="blue"
-                                    dark
-                                    icon
-                                    @click="editGantt(props.item, props.index)"
-                                  >
-                                    <v-icon>mdi-pencil</v-icon>
-                                  </v-btn>
+                              <template v-slot:item="props">
+                                <tr>
+                                  <td>{{ props.item.gantt.name }}</td>
+                                  <td>{{ props.item.duration }}</td>
+                                  <td>
+                                    <v-btn
+                                      color="blue"
+                                      dark
+                                      icon
+                                      @click="editGantt(props.item, props.index)"
+                                    >
+                                      <v-icon>mdi-pencil</v-icon>
+                                    </v-btn>
 
-                                  <v-btn
-                                    color="blue"
-                                    dark
-                                    icon
-                                    @click="deleteGantt(props.index)"
-                                  >
-                                    <v-icon>mdi-delete</v-icon>
-                                  </v-btn>
-                                </td>
+                                    <v-btn
+                                      color="blue"
+                                      dark
+                                      icon
+                                      @click="deleteGantt(props.index)"
+                                    >
+                                      <v-icon>mdi-delete</v-icon>
+                                    </v-btn>
+                                  </td>
+                                </tr>
                               </template>
                             </v-data-table>
                           </v-col>

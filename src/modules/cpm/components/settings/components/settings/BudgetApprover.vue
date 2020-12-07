@@ -40,26 +40,28 @@
             :headers="headers"
             :items="settings.budgetApprover"
             :items-per-page-options="[5,10,15,200]"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item.label }}</td>
-              <td class="text-right">
-                <!--<v-btn-->
-                <!--  small-->
-                <!--  icon-->
-                <!--  @click.prevent="editElement(props.index, props.item)">-->
-                <!--  <v-icon>mdi-pencil</v-icon>-->
-                <!--</v-btn>-->
-                <v-icon
-                  class="ml-0 mr-0 pointer"
-                  color="#f44336"
-                  size="20"
-                  @click.prevent="deleteElement(props.index, props.item.label)"
-                >
-                  mdi-delete
-                </v-icon>
-              </td>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item.label }}</td>
+                <td class="text-right">
+                  <!--<v-btn-->
+                  <!--  small-->
+                  <!--  icon-->
+                  <!--  @click.prevent="editElement(props.index, props.item)">-->
+                  <!--  <v-icon>mdi-pencil</v-icon>-->
+                  <!--</v-btn>-->
+                  <v-icon
+                    class="ml-0 mr-0 pointer"
+                    color="#f44336"
+                    size="20"
+                    @click.prevent="deleteElement(props.index, props.item.label)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>

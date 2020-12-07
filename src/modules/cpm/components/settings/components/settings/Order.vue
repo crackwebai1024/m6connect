@@ -25,7 +25,7 @@
 
       <v-btn
         color="blue"
-        outline
+        outlined
         @click="clear"
       >
         Clear
