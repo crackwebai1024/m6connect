@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <template>
   <v-container
     class="h-full py-0"
@@ -159,12 +160,23 @@
                           :items="availableApps"
                           label="Application"
                           @change="changeApp($event)"
-                        />
+                        >
+                          <template
+                            slot="selection"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render selected items -->
+                            {{ data.item.title.length < 8 ?
+                              data.item.title : data.item.title.substr(0, 7) + '...'
+                            }}
+                          </template>
+                        </v-select>
                       </v-list-item>
                       <v-list-item>
                         <v-select
                           v-model="itemInfo.recordId"
                           :class="{ disabled: itemInfo.applicationId === null }"
+                          height="50"
                           :item-value="Object"
                           :items="options.records"
                           label="Record"
@@ -175,7 +187,9 @@
                             slot-scope="data"
                           >
                             <!-- HTML that describe how select should render selected items -->
-                            {{ data.item.record_number }} - {{ data.item.title }}
+                            {{ data.item.record_number }} - {{ data.item.title.length < 8 ?
+                              data.item.title : data.item.title.substr(0, 7) + '...'
+                            }}
                           </template>
                           <template
                             slot="item"
@@ -190,12 +204,23 @@
                         <v-select
                           v-model="itemInfo.panel"
                           :class="{ disabled: itemInfo.applicationId === null }"
+                          height="50"
                           item-text="label"
                           :item-value="Object"
                           :items="options.panles"
                           label="Panel"
                           @change="selectPanel($event)"
-                        />
+                        >
+                          <template
+                            slot="selection"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render selected items -->
+                            {{ data.item.label.length < 8 ?
+                              data.item.label : data.item.label.substr(0, 7) + '...'
+                            }}
+                          </template>
+                        </v-select>
                       </v-list-item>
                     </v-list>
                   </v-menu>
@@ -216,8 +241,16 @@
           </v-col>
           <v-col cols="12">
             <div class="w-full">
+              <div
+                v-if="srcImageFiles.length > 0"
+                class="align-center d-flex grey--text my-2 text-caption"
+              >
+                <v-divider class="blue-grey lighten-5" />
+                <span class="mx-3">Images</span>
+                <v-divider class="blue-grey lighten-5" />
+              </div>
               <div v-if="srcImageFiles.length > 0">
-                <div class="d-flex images-container mx-1 px-0 py-3">
+                <div class="d-flex images-container mx-1 px-0 py-0">
                   <div
                     v-for="(srcImageFile, index) in srcImageFiles"
                     :key="'previewimage-' + index"
@@ -228,10 +261,9 @@
                       :src="srcImageFile"
                     >
                     <v-btn
-                      class="absolute btn-chat-shadow ml-2 right-0 top-0"
+                      class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
                       color="grey lighten-2"
                       fab
-                      style="height:15px; width:15px;"
                       @click="removeImage(index)"
                     >
                       <v-icon
@@ -243,8 +275,16 @@
                   </div>
                 </div>
               </div>
+              <div
+                v-if="docsFiles.length > 0"
+                class="align-center d-flex grey--text my-2 text-caption"
+              >
+                <v-divider class="blue-grey lighten-5" />
+                <span class="mx-3">Documents</span>
+                <v-divider class="blue-grey lighten-5" />
+              </div>
               <div v-if="docsFiles.length > 0">
-                <div class="d-flex images-container mx-1 px-0 py-3">
+                <div class="d-flex images-container mx-1 my-1 px-0 py-0">
                   <div
                     v-for="(doc, index) in docsFiles"
                     :key="'doc-' + index"
@@ -257,10 +297,9 @@
                       <span class="white--text">{{ doc.name }}</span>
                     </v-chip>
                     <v-btn
-                      class="absolute btn-chat-shadow ml-2 right-0 top-0"
+                      class="absolute btn-chat-shadow ml-2 my-1 right-0 top-0 v-close-btn"
                       color="grey lighten-2"
                       fab
-                      style="height:15px; width:15px;"
                       @click="removeFile(index)"
                     >
                       <v-icon
@@ -272,8 +311,84 @@
                   </div>
                 </div>
               </div>
-              <div v-if="itemInfo['panel']">
-                {{ getRecord(itemInfo['panel']) }}
+              <div
+                v-if="itemInfo['panel']"
+                class="align-center d-flex grey--text my-2 text-caption"
+              >
+                <v-divider class="blue-grey lighten-5" />
+                <span class="mx-3">Panel</span>
+                <v-divider class="blue-grey lighten-5" />
+              </div>
+              <div
+                v-if="itemInfo['panel']"
+                class="mx-1 relative w-full"
+              >
+                <v-row no-gutters>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      App
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['recordId']['app']['title'].length < 30 ?
+                        itemInfo['recordId']['app']['title'] : itemInfo['recordId']['app']['title'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      Record
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['panel']['recordTitle'].length < 30 ?
+                        itemInfo['panel']['recordTitle'] : itemInfo['panel']['recordTitle'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      Tab
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['panel']['tabTitle'].length < 30 ?
+                        itemInfo['panel']['tabTitle'] : itemInfo['panel']['tabTitle'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      Panel
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['panel']['panelTitle'].length < 30 ?
+                        itemInfo['panel']['panelTitle'] : itemInfo['panel']['panelTitle'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                </v-row>
+                <v-btn
+                  class="absolute btn-chat-shadow ml-2 my-1 right-0 top-0 v-close-btn"
+                  color="grey lighten-2"
+                  fab
+                  @click="itemInfo['panel'] = undefined"
+                >
+                  <v-icon
+                    size="12"
+                  >
+                    mdi-close
+                  </v-icon>
+                </v-btn>
               </div>
             </div>
           </v-col>
@@ -288,7 +403,7 @@
     <M6Loading
       :loading="showLoading"
     />
-    <posts-list 
+    <posts-list
       v-if="!postListShow"
       :external="external"
     />
@@ -477,6 +592,7 @@ export default {
             id: $event['id'],
             recordTitle: $event.title,
             label: `${tab['title']} - ${panel['title']}`,
+            tabTitle: tab['title'],
             panelTitle: panel['title'],
             fields: panel['fields'],
             panelId: panel['id'],
@@ -665,3 +781,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-close-btn {
+  height: 15px!important;
+  width: 15px!important;
+}
+.v-select__selections {
+     min-height: 30px
+}
+</style>
