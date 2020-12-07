@@ -101,7 +101,7 @@
               <v-btn
                 class="grey--text text--darken-3"
                 flat
-                outline
+                outlined
                 text
                 @click="cancel"
               >

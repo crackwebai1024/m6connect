@@ -208,7 +208,7 @@
 
             <v-btn
               color="blue"
-              outline
+              outlined
               @click="cancel"
             >
               Cancel
@@ -272,7 +272,7 @@
           <v-spacer />
           <v-btn
             color="blue"
-            outline
+            outlined
             @click.prevent="showValidForm = false"
           >
             Cancel

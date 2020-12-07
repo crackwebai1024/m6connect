@@ -555,6 +555,10 @@ export default {
           {
             name: 'Period',
             description: ''
+          },
+          {
+            name: 'UID',
+            description: ''
           }
         ]
       },
@@ -1007,7 +1011,8 @@ export default {
         createdAt: new Date(),
         createdBy: 'm6works_import_tool',
         budgetCategory: bc.name || '', // Name
-        budget_category: bc.ref || {} // reference
+        budget_category: bc.ref || {}, // reference,
+        api_obj_id: item.others_uid // uid
       }
 
       return new Promise(resolve => {
@@ -1036,7 +1041,8 @@ export default {
         description2: item.commitmentLineItem_description_2 || '',
         wbsElement: item.commitmentLineItem_wbs_element,
         fiscalYear: item.others_fiscal_year || '',
-        period: item.others_period || ''
+        period: item.others_period || '',
+        api_obj_id: item.others_uid // uid
       }
       return new Promise(resolve => {
         const spending = db.collection('cpm_projects')
@@ -1061,9 +1067,9 @@ export default {
         }
       }
 
-      if (item.spendingLineItem_commitment_id_number) {
-        await this.getCommitment(projectID, item.spendingLineItem_commitment_id_number)
-      }
+      // if (item.spendingLineItem_commitment_id_number) {
+      //   await this.getCommitment(projectID, item.spendingLineItem_commitment_id_number)
+      // }
 
       const gl = {}
 
@@ -1073,7 +1079,7 @@ export default {
         budget_category: {
           ref: bc.ref || '' // reference
         },
-        commitment: '',
+        commitment: item.spendingLineItem_commitment_id_number || '',
         contingency: '' || false,
         costCode: '',
         costCodeNumber: '',
@@ -1084,7 +1090,8 @@ export default {
         dateOpened: new Date(item.spendingLineItem_start_date).getTime() || '',
         invoiceTotal: 0,
         number: item.spendings_id_number.toString(),
-        paidDateText: '',
+        paidDateText: item.spendingLineItem_paid_date || '',
+        paidDate: new Date(item.spendingLineItem_paid_date).getTime() || '',
         paymentStatus: '',
         po_number: item.spendingLineItem_commitment_id_number || '',
         total_po_amount: 0,
@@ -1101,7 +1108,8 @@ export default {
             title: item.others_vendor_name || '',
             custom_id: item.others_vendor_code || ''
           }
-        ]
+        ],
+        api_obj_id: item.others_uid // uid
       }
 
       return new Promise(resolve => {
@@ -1144,7 +1152,8 @@ export default {
         dis_sub_acct: '',
         dist_seq_nbr: '',
         fiscalYear: item.others_fiscal_year || '',
-        period: item.others_period || ''
+        period: item.others_period || '',
+        api_obj_id: item.others_uid // uid
       }
 
       // Update amount

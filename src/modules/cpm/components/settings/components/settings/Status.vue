@@ -26,15 +26,15 @@
             class="mainList"
             dense
           >
-            <v-list-tile class="myListHeader">
-              <v-list-tile-content>
+            <v-list-item class="myListHeader">
+              <v-list-item-content>
                 {{ $t('general.name') }}
-              </v-list-tile-content>
+              </v-list-item-content>
 
-              <v-list-tile-action>
+              <v-list-item-action>
                 {{ $t('general.action') }}
-              </v-list-tile-action>
-            </v-list-tile>
+              </v-list-item-action>
+            </v-list-item>
 
             <draggable
               v-model="settings.status"
@@ -43,23 +43,23 @@
               @start="drag = true"
               @update="saveOrder"
             >
-              <v-list-tile
+              <v-list-item
                 v-for="(name, key) in settings.status"
                 :key="key"
                 class="myList"
               >
-                <v-list-tile-avatar>
+                <v-list-item-avatar>
                   <v-icon
                     color="blue"
                     small
                   >
                     mdi-drag-variant
                   </v-icon>
-                </v-list-tile-avatar>
+                </v-list-item-avatar>
 
-                <v-list-tile-content>{{ name }}</v-list-tile-content>
+                <v-list-item-content>{{ name }}</v-list-item-content>
 
-                <v-list-tile-action
+                <v-list-item-action
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-btn
@@ -79,8 +79,8 @@
                   >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </draggable>
           </v-list>
         </div>
@@ -117,7 +117,7 @@
 
           <v-btn
             color="blue"
-            outline
+            outlined
             @click="cancel"
           >
             Cancel

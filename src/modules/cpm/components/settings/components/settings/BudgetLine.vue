@@ -40,30 +40,31 @@
           <v-data-table
             :headers="headers"
             :items="settings.lineItemTypes"
-            :items-per-page-options="[5,10,15,200]"
             :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item }}</td>
-              <td class="text-right">
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#757575"
-                  size="20"
-                  @click.prevent="editElement(props.index, props.item)"
-                >
-                  mdi-pencil
-                </v-icon>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item }}</td>
+                <td class="text-right">
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#757575"
+                    size="20"
+                    @click.prevent="editElement(props.index, props.item)"
+                  >
+                    mdi-pencil
+                  </v-icon>
 
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#f44336"
-                  size="20"
-                  @click.prevent="deleteElement(props.index, props.item)"
-                >
-                  mdi-delete
-                </v-icon>
-              </td>
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#f44336"
+                    size="20"
+                    @click.prevent="deleteElement(props.index, props.item)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>
@@ -97,7 +98,7 @@
             <v-btn
               class="mr-2"
               color="grey"
-              outline
+              outlined
               @click="cancel"
             >
               Cancel
