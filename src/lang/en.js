@@ -155,6 +155,7 @@ export const en = {
     directory: 'Directory',
     distDate: 'Dist Date',
     document: 'Document | Documents',
+    documentNumber: 'Document Number',
     doubleClickSeeMore: 'Double click to see more',
     download: 'Download',
     duration: 'Duration',

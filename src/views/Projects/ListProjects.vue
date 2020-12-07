@@ -130,7 +130,6 @@
       <v-data-iterator
         v-if="isGridView"
         class="w-full"
-        content-tag="v-layout"
         :items="resources"
         :options.sync="pagination"
         :server-items-length="pagination.totalItems"
@@ -360,10 +359,9 @@
         <v-col cols="12">
           <m6-data-table
             @update:column:
-            :footer-props="rowsPerPageItems"
             :headers="headers"
             :items="resources"
-            :pagination="5"
+            :items-per-page-options="[5,10,30,200]"
             :server-items-length="pagination.totalItems"
             width="
               ({ index, width }) => (headersWidth[index] = width)
@@ -1115,7 +1113,7 @@ export default {
     'pagination.rowsPerPage': async function (value) {
       if (this.isGridView) {
         db.collection('m6user')
-          .doc(window.Drupal.settings.m6_platform.uid)
+          .doc(this.currentCompany.id.toString())
           .collection('pagination')
           .doc(this.isPlanned ? 'planned' : 'projects')
           .set({
@@ -1126,7 +1124,7 @@ export default {
     view(newVal) {
       const { pmOption, campusOption, searchOption } = this
       db.collection('m6user')
-        .doc(window.Drupal.settings.m6_platform.uid)
+        .doc(this.currentCompany.id.toString())
         .collection('search')
         .doc(this.isPlanned ? 'planned' : 'projects')
         .set({

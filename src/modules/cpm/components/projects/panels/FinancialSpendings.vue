@@ -116,6 +116,16 @@
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
+      <v-chip
+        color="transparent"
+        disabled
+        text-color="black"
+      >
+        <strong>
+          {{ $t('cpm.projects.spending') }}
+          {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
+        </strong>
+      </v-chip>
     </v-row>
 
     <div class="text-center">
@@ -313,6 +323,30 @@
                     ref="number"
                     v-model="dialogProperties.number"
                     :label="$t('general.invoiceNumber')"
+                    :rules="[rules.required]"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('general.documentNumber') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-text-field
+                    ref="docNumber"
+                    v-model="dialogProperties.docNumber"
+                    :label="$t('general.documentNumber')"
                     :rules="[rules.required]"
                   />
                 </v-col>
@@ -1461,7 +1495,8 @@ export default {
         description: '',
         budget_category: {
           ref: ''
-        }
+        },
+        docNumber: ''
       },
       method: 'add',
       dialogSpending: false,
