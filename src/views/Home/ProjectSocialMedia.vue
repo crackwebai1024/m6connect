@@ -2,7 +2,7 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <template>
   <v-container
-    class="h-full py-0"
+    class="h-full py-0 w-full"
   >
     <header-component
       class="card-custom-shadow h-auto mb-4 rounded"
