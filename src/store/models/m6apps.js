@@ -267,7 +267,7 @@ const typeMap = {
     {
       json: 'app_prefix',
       js: 'app_prefix',
-      typ: u('undefined', null)
+      typ: u(undefined, u(null, ''))
     }
   ], false),
   'App': o([

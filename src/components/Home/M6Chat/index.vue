@@ -1,5 +1,5 @@
 <template>
-  <div class="dont-show-scroll h-full pa-5 vertical-scroll w-side">
+  <div class="dont-show-scroll h-full pa-5 vertical-scroll w-full">
     <template
       v-for="(department, index) in departments"
     >
