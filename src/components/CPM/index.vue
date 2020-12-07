@@ -91,7 +91,10 @@
           class="w-full"
         >
           <template v-if="activeTab === 0">
-            <panel-two-columns>
+            <panel-two-columns
+              left-column="4"
+              right-column="8"
+            >
               <div
                 slot="leftPanel"
                 class="card-custom-shadow mb-3 px-6 py-5 rounded white"
