@@ -283,6 +283,14 @@ export default {
           delete postData.referenced_field
           delete postData.metadata.originalReference
         }
+        if (field.type === 'referencedToApp') {
+          postData.metadata.originalReference = field.referenced_app
+          // eslint-disable-next-line camelcase
+          postData.referenced_app = field.referenced_app.id
+        } else {
+          delete postData.referenced_app
+          delete postData.metadata.originalReference
+        }
         if (this.editing) {
           const data = await this.$store.dispatch('AppBuilder/updateField', postData)
           this.notifSuccess('The Field Was Updated')
