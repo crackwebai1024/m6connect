@@ -511,7 +511,7 @@ export default {
       return this.$h.dg(this.project, 'totals.openCommitmentTotal', 0)
     },
     poAccrual() {
-      console.log(this.$h.dg(this.project, 'totals'))
+      console.log(this.$h.dg(this, 'project', null))
       let openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
       return openWithAccrual
     },

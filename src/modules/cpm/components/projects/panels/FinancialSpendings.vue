@@ -116,6 +116,16 @@
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
+      <v-chip
+        color="transparent"
+        disabled
+        text-color="black"
+      >
+        <strong>
+          {{ $t('cpm.projects.accrual') }}
+          {{ poAccrual | currency }}
+        </strong>
+      </v-chip>
     </v-row>
 
     <div class="text-center">
@@ -1784,6 +1794,11 @@ export default {
     testPagination(v) {
       console.log(v)
     },
+    poAccrual() {
+      console.log(this.$h.dg(this, 'project', null))
+      let openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
+      return openWithAccrual
+    },
     ...mapActions('companies/cpmProjects/spendings', {
       indexResource: 'indexELK'
     }),
@@ -2056,7 +2071,7 @@ export default {
           newLineItem[key] = this.dialogLineItemProperties[key]
         }
       })
-
+      console.log(newLineItem)
       this.loading = true
 
       const spendingReference = db.collection('cpm_projects')
