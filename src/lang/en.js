@@ -89,6 +89,7 @@ export const en = {
     action: 'Action',
     actions: 'Actions',
     activity: 'Activity | Activities',
+    accrual: 'Accrual',
     add: 'Add',
     addNewComment: 'Add new comment | Add new comments',
     address: 'Address',
