@@ -77,7 +77,6 @@
       v-model="showForm"
       max-width="800px"
       persistent
-      scrollable
     >
       <v-card>
         <v-card-title class="headline px-6 py-4 white">
@@ -86,7 +85,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
+        <v-card-text :style='{height: viewportHeight}' class="vertical-scroll">
           <div class="form-group">
             <v-text-field
               v-model="roleName"
@@ -303,7 +302,14 @@ export default {
     ...mapGetters(['appLabel']),
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
-    })
+    }),
+    viewportHeight () {
+      let h = Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        ) * 0.63
+      return `${h}px`
+    }
   },
   mounted() {
     db.collection('settings')

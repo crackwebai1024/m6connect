@@ -1,20 +1,17 @@
 <template>
   <v-container
-    class=''
+    class='pa-0'
   >
-    <v-row
+    <v-row class=""
     >
       <v-col cols="4">
-        <v-card>
+        <v-card class="px-5">
           <v-divider />
           <v-list>
             <v-row v-for="(setting, sindex) in settings"
               :key="sindex">
-              <v-tooltip
               
-              right
-            >
-              <template v-slot:activator="{ on }">
+              <template>
                 <v-list-item
                   :class="activeSetting === setting ? 'settingActive' : ''"
                   v-on="on"
@@ -32,8 +29,6 @@
                   </v-list-item-content>
                 </v-list-item>
               </template>
-              <span>{{ setting.name }}</span>
-            </v-tooltip>
             </v-row>
           </v-list>
         </v-card>

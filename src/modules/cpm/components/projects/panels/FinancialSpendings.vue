@@ -793,7 +793,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -1230,7 +1229,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -1447,7 +1445,7 @@ export default {
         Math.max(
           document.documentElement.clientHeight,
           window.innerHeight || 0
-        ) * 0.63,
+        ) * 0.53,
       projectId,
       showSearchingModal: false,
       projectRef: db.collection('cpm_projects').doc(projectId),
@@ -1675,7 +1673,7 @@ export default {
     },
 
     getViewPortHeight() {
-      return `${this.viewPortHeight}px !important`
+      return `${this.viewPortHeight}px`
     },
     budgetCategoryErrors() {
       if (
