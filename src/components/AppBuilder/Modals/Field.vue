@@ -136,6 +136,18 @@
                     value-format="object"
                   />
                 </v-col>
+                <v-col
+                  v-if="field.type === 'referencedToApp'"
+                  cols="12"
+                >
+                  <v-autocomplete
+                    v-model="field.referenced_app"
+                    item-text="label"
+                    item-value="appId"
+                    :items="appList"
+                    label="Referenced App"
+                  />
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -202,7 +214,8 @@ export default {
         { label: 'Multiple Choice', value: 'autocomplete' },
         { label: 'Attachment', value: 'attachment' },
         { label: 'Yes / No', value: 'boolean' },
-        { label: 'Reference Field', value: 'referenced' }
+        { label: 'Reference Field', value: 'referenced' },
+        { label: 'Reference App', value: 'referencedToApp' }
       ],
       fieldList: []
     }
@@ -210,7 +223,10 @@ export default {
   computed: {
     ...mapState('AppBuilder', {
       currentApp: 'app'
-    })
+    }),
+    appList() {
+      return this.fieldList.filter(row => Number(row.appId) !== Number(this.currentApp.appId))
+    }
   },
 
   mounted() {

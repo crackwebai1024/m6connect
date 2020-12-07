@@ -104,10 +104,14 @@
                           multiple
                           prepend-icon="mdi-file-document-outline"
                           @change="onDocsChange"
-                        />
-                        <p class="my-0 py-0">
-                          File
-                        </p>
+                        >
+                          <p
+                            slot="append-outer"
+                            class="my-0 py-0"
+                          >
+                            File input
+                          </p>
+                        </v-file-input>
                       </v-list-item>
                       <v-list-item class="text-left">
                         <v-file-input
