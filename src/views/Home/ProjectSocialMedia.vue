@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-parsing-error -->
 <template>
   <v-container
     class="h-full py-0"
@@ -16,7 +17,7 @@
           offset-y
           transition="slide-y-transition"
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-btn
               v-bind="attrs"
               class="capitalize font-weight-bold mb-0 pl-1 purple--text px-0 text--darken-1 transparent"
@@ -46,7 +47,7 @@
           </template>
         </v-menu>
       </template>
-      <template v-slot:input>
+      <template #input>
         <v-icon
           v-if="user.profilePic === ''"
           color="primary"
@@ -62,204 +63,345 @@
           :src="user.profilePic"
           width="40"
         >
-
-        <v-text-field
-          v-model="activityText"
-          class="font-weight-bold ml-1"
-          dense
-          :disabled="postListShow"
-          flat
-          height="40"
-          hide-details
-          :label="`Whats on your mind, ${user.firstName}?`"
-          rounded
-          single-line
-          solo-inverted
-          @keyup.enter="addActivity"
-        >
-          <template v-slot:append>
-            <v-row class="align-center d-flex">
-              <v-menu
-                bottom
-                offset-y
-                open-on-hover
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    v-bind="attrs"
-                    color="primary"
-                    dark
-                    icon
-                    v-on="on"
+        <v-row>
+          <v-col cols="12">
+            <v-text-field
+              v-model="activityText"
+              class="font-weight-bold ml-1"
+              dense
+              :disabled="postListShow"
+              flat
+              height="40"
+              hide-details
+              :label="`Whats on your mind, ${user.firstName}?`"
+              rounded
+              single-line
+              solo-inverted
+              @keyup.enter="addActivity"
+            >
+              <template #append>
+                <v-row class="align-center d-flex">
+                  <v-menu
+                    bottom
+                    offset-y
+                    open-on-hover
                   >
-                    <v-icon>mdi-file-plus-outline</v-icon>
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item>
-                    <v-file-input
-                      accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
-                      class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
-                      :disabled="postListShow"
-                      hide-input
-                      multiple
-                      prepend-icon="mdi-file-document-outline"
-                      @change="onDocsChange"
-                    />
-                  </v-list-item>
-                  <v-list-item>
-                    <v-file-input
-                      accept="image/png, image/jpeg, image/bmp"
-                      class="align-center blue--text d-flex justify-center ma-0 pa-0 upload-icon"
-                      :disabled="postListShow"
-                      hide-input
-                      multiple
-                      prepend-icon="mdi-image-outline"
-                      @change="onImagesChange"
-                    />
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-              <v-menu
-                v-model="menu"
-                bottom
-                :close-on-content-click="false"
-                offset-y
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    v-bind="attrs"
-                    color="primary"
-                    dark
-                    icon
-                    v-on="on"
-                  >
-                    <v-icon>mdi-apps</v-icon>
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item>
-                    <v-select
-                      v-model="itemInfo.application_id"
-                      item-text="title"
-                      item-value="id"
-                      :items="availableApps"
-                      label="Application"
-                      @change="changeApp($event)"
-                    />
-                  </v-list-item>
-                  <v-list-item>
-                    <v-select
-                      v-model="itemInfo.record_id"
-                      :class="{ disabled: itemInfo.application_id === null }"
-                      :item-value="Object"
-                      :items="options.records"
-                      label="Record"
-                      @change="selectRecord($event)"
-                    >
-                      <template
-                        slot="selection"
-                        slot-scope="data"
+                    <template #activator="{ on, attrs }">
+                      <v-btn
+                        v-bind="attrs"
+                        color="primary"
+                        dark
+                        icon
+                        v-on="on"
                       >
-                        <!-- HTML that describe how select should render selected items -->
-                        {{ data.item.record_number }} - {{ data.item.title }}
-                      </template>
-                      <template
-                        slot="item"
-                        slot-scope="data"
-                      >
-                        <!-- HTML that describe how select should render items when the select is open -->
-                        {{ data.item.record_number }} - {{ data.item.title }}
-                      </template>
-                    </v-select>
-                  </v-list-item>
-                  <v-list-item>
-                    <v-select
-                      v-model="itemInfo.panel"
-                      :class="{ disabled: itemInfo.application_id === null }"
-                      item-text="label"
-                      :item-value="Object"
-                      :items="options.panles"
-                      label="Panel"
-                      @change="selectPanel($event)"
-                    />
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-              <v-btn
-                :disabled="postListShow"
-                icon
-                @click="addActivity"
-              >
-                <v-icon
-                  class="blue--text text--lighten-1"
-                >
-                  mdi-send
-                </v-icon>
-              </v-btn>
-            </v-row>
-          </template>
-
-          <template v-slot:prepend-inner>
-            <template v-if="srcImageFiles.length > 0">
-              <div class="d-flex images-container mx-1 px-0 py-3">
-                <div
-                  v-for="(srcImageFile, index) in srcImageFiles"
-                  :key="'previewimage-' + index"
-                  class="mx-1 relative w-fit"
-                >
-                  <img
-                    class="image-preview"
-                    :src="srcImageFile"
+                        <v-icon>mdi-file-plus-outline</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item>
+                        <v-file-input
+                          accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
+                          class="align-left blue--text d-flex justify-left ma-0 pa-0 upload-icon"
+                          :disabled="postListShow"
+                          hide-input
+                          label="File"
+                          multiple
+                          prepend-icon="mdi-file-document-outline"
+                          @change="onDocsChange"
+                        >
+                          <p
+                            slot="append-outer"
+                            class="my-0 py-0"
+                          >
+                            File input
+                          </p>
+                        </v-file-input>
+                      </v-list-item>
+                      <v-list-item class="text-left">
+                        <v-file-input
+                          accept="image/png, image/jpeg, image/bmp"
+                          class="align-left blue--text d-flex justify-left ma-0 pa-0 upload-icon"
+                          :disabled="postListShow"
+                          hide-input
+                          label="Image"
+                          multiple
+                          prepend-icon="mdi-image-outline"
+                          @change="onImagesChange"
+                        />
+                        <p class="my-0 py-0">
+                          Image
+                        </p>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                  <v-menu
+                    v-model="menu"
+                    bottom
+                    :close-on-content-click="false"
+                    offset-y
                   >
+                    <template #activator="{ on, attrs }">
+                      <v-btn
+                        v-bind="attrs"
+                        color="primary"
+                        dark
+                        icon
+                        v-on="on"
+                      >
+                        <v-icon>mdi-apps</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list width="256">
+                      <v-list-item>
+                        <v-select
+                          v-model="itemInfo.applicationId"
+                          item-text="title"
+                          item-value="id"
+                          :items="availableApps"
+                          label="Application"
+                          @change="changeApp($event)"
+                        >
+                          <template
+                            slot="selection"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render selected items -->
+                            {{ data.item.title.length < 8 ?
+                              data.item.title : data.item.title.substr(0, 7) + '...'
+                            }}
+                          </template>
+                        </v-select>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-select
+                          v-model="itemInfo.recordId"
+                          :class="{ disabled: itemInfo.applicationId === null }"
+                          height="50"
+                          :item-value="Object"
+                          :items="options.records"
+                          label="Record"
+                          @change="selectRecord($event)"
+                        >
+                          <template
+                            slot="selection"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render selected items -->
+                            {{ data.item.record_number }} - {{ data.item.title.length < 8 ?
+                              data.item.title : data.item.title.substr(0, 7) + '...'
+                            }}
+                          </template>
+                          <template
+                            slot="item"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render items when the select is open -->
+                            {{ data.item.record_number }} - {{ data.item.title }}
+                          </template>
+                        </v-select>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-select
+                          v-model="itemInfo.panel"
+                          :class="{ disabled: itemInfo.applicationId === null }"
+                          height="50"
+                          item-text="label"
+                          :item-value="Object"
+                          :items="options.panles"
+                          label="Panel"
+                          @change="selectPanel($event)"
+                        >
+                          <template
+                            slot="selection"
+                            slot-scope="data"
+                          >
+                            <!-- HTML that describe how select should render selected items -->
+                            {{ data.item.label.length < 8 ?
+                              data.item.label : data.item.label.substr(0, 7) + '...'
+                            }}
+                          </template>
+                        </v-select>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                   <v-btn
-                    class="absolute btn-chat-shadow ml-2 right-0 top-0"
-                    color="grey lighten-2"
-                    fab
-                    style="height:15px; width:15px;"
-                    @click="removeImage(index)"
+                    :disabled="postListShow"
+                    icon
+                    @click="addActivity"
                   >
                     <v-icon
-                      size="12"
+                      class="blue--text text--lighten-1"
                     >
-                      mdi-close
+                      mdi-send
                     </v-icon>
                   </v-btn>
-                </div>
+                </v-row>
+              </template>
+            </v-text-field>
+          </v-col>
+          <v-col cols="12">
+            <div class="w-full">
+              <div
+                v-if="srcImageFiles.length > 0"
+                class="align-center d-flex grey--text my-2 text-caption"
+              >
+                <v-divider class="blue-grey lighten-5" />
+                <span class="mx-3">Images</span>
+                <v-divider class="blue-grey lighten-5" />
               </div>
-            </template>
-            <template v-if="docsFiles.length > 0">
-              <div class="d-flex images-container mx-1 px-0 py-3">
-                <div
-                  v-for="(doc, index) in docsFiles"
-                  :key="'doc-' + index"
-                  class="mx-1 relative w-fit"
-                >
-                  <p>{{ doc.name }}</p>
-                  <v-btn
-                    class="absolute btn-chat-shadow ml-2 right-0 top-0"
-                    color="grey lighten-2"
-                    fab
-                    style="height:15px; width:15px;"
-                    @click="removeFile(index)"
+              <div v-if="srcImageFiles.length > 0">
+                <div class="d-flex images-container mx-1 px-0 py-0">
+                  <div
+                    v-for="(srcImageFile, index) in srcImageFiles"
+                    :key="'previewimage-' + index"
+                    class="mx-1 relative w-fit"
                   >
-                    <v-icon
-                      size="12"
+                    <img
+                      class="image-preview"
+                      :src="srcImageFile"
                     >
-                      mdi-close
-                    </v-icon>
-                  </v-btn>
+                    <v-btn
+                      class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                      color="grey lighten-2"
+                      fab
+                      @click="removeImage(index)"
+                    >
+                      <v-icon
+                        size="12"
+                      >
+                        mdi-close
+                      </v-icon>
+                    </v-btn>
+                  </div>
                 </div>
               </div>
-            </template>
-          </template>
-        </v-text-field>
+              <div
+                v-if="docsFiles.length > 0"
+                class="align-center d-flex grey--text my-2 text-caption"
+              >
+                <v-divider class="blue-grey lighten-5" />
+                <span class="mx-3">Documents</span>
+                <v-divider class="blue-grey lighten-5" />
+              </div>
+              <div v-if="docsFiles.length > 0">
+                <div class="d-flex images-container mx-1 my-1 px-0 py-0">
+                  <div
+                    v-for="(doc, index) in docsFiles"
+                    :key="'doc-' + index"
+                    class="mx-1 relative w-fit"
+                  >
+                    <v-chip
+                      class="ma-2"
+                      color="primary"
+                    >
+                      <span class="white--text">{{ doc.name }}</span>
+                    </v-chip>
+                    <v-btn
+                      class="absolute btn-chat-shadow ml-2 my-1 right-0 top-0 v-close-btn"
+                      color="grey lighten-2"
+                      fab
+                      @click="removeFile(index)"
+                    >
+                      <v-icon
+                        size="12"
+                      >
+                        mdi-close
+                      </v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <div
+                v-if="itemInfo['panel']"
+                class="align-center d-flex grey--text my-2 text-caption"
+              >
+                <v-divider class="blue-grey lighten-5" />
+                <span class="mx-3">Panel</span>
+                <v-divider class="blue-grey lighten-5" />
+              </div>
+              <div
+                v-if="itemInfo['panel']"
+                class="mx-1 relative w-full"
+              >
+                <v-row no-gutters>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      App
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['recordId']['app']['title'].length < 30 ?
+                        itemInfo['recordId']['app']['title'] : itemInfo['recordId']['app']['title'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      Record
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['panel']['recordTitle'].length < 30 ?
+                        itemInfo['panel']['recordTitle'] : itemInfo['panel']['recordTitle'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      Tab
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['panel']['tabTitle'].length < 30 ?
+                        itemInfo['panel']['tabTitle'] : itemInfo['panel']['tabTitle'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                  <v-col
+                    class="pr-3"
+                    cols="3"
+                  >
+                    <p class="grey--text my-0 py-0 text-caption text-center">
+                      Panel
+                    </p>
+                    <v-spacer />
+                    <p class="my-0 py-0">
+                      {{ itemInfo['panel']['panelTitle'].length < 30 ?
+                        itemInfo['panel']['panelTitle'] : itemInfo['panel']['panelTitle'].substr(0, 20) + '...' }}
+                    </p>
+                  </v-col>
+                </v-row>
+                <v-btn
+                  class="absolute btn-chat-shadow ml-2 my-1 right-0 top-0 v-close-btn"
+                  color="grey lighten-2"
+                  fab
+                  @click="itemInfo['panel'] = undefined"
+                >
+                  <v-icon
+                    size="12"
+                  >
+                    mdi-close
+                  </v-icon>
+                </v-btn>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
       </template>
     </header-component>
     <v-skeleton-loader
       v-if="showSkeletonPost"
       class="my-3"
       type="list-item-avatar-three-line, actions"
+    />
+    <M6Loading
+      :loading="showLoading"
     />
     <posts-list
       v-if="!postListShow"
@@ -294,13 +436,14 @@ export default {
   data: () => ({
     titlePage: '',
     menu: false,
+    showLoading: false,
     activityText: '',
     docsFiles: [],
     imageFiles: [],
     urlInfo: {},
     itemInfo: {
-      application_id: null,
-      record_id: null,
+      applicationId: null,
+      recordId: null,
       panel: null
     },
     showSkeletonPost: false,
@@ -431,6 +574,12 @@ export default {
         this.options['records'] = response.data
       })
     },
+    getRecord(label) {
+      const res = `${label['recordTitle'].length < 30
+        ? label['recordTitle'] : label['recordTitle'].substr(0, 20) + '...'} - ${label['label'].length < 30
+        ? label['label'] : label['label'].substr(0, 20) + '...'}`
+      return res
+    },
     async selectRecord($event) {
       this.itemInfo['panel'] = null
       this.options['panles'] = []
@@ -443,6 +592,7 @@ export default {
             id: $event['id'],
             recordTitle: $event.title,
             label: `${tab['title']} - ${panel['title']}`,
+            tabTitle: tab['title'],
             panelTitle: panel['title'],
             fields: panel['fields'],
             panelId: panel['id'],
@@ -498,6 +648,7 @@ export default {
       this.reloadFeed()
     },
     addActivity() {
+      this.showLoading = true
       if (this.activityText.trim() === '') {
         return
       }
@@ -533,8 +684,9 @@ export default {
 
       this.$store.dispatch('GSFeed/addActivity', activity).then(async res => {
         if (this.imageFiles.length > 0) {
-          this.imageFiles.forEach(async image => {
-            await this.setStreamFiles({
+          const urls = []
+          this.imageFiles.forEach(async (image, index) => {
+            const url = await this.setStreamFiles({
               files: image,
               headers: {
                 'Content-Type': image['type'],
@@ -543,25 +695,28 @@ export default {
                 'Stream-type': 'post'
               }
             })
-          })
+            urls.push(url['attachUrl'])
+            if (index === this.imageFiles.length - 1) {
+              this.imageFiles = []
+              this.showLoading = false
+              const activity = res['data']['results'][0]
+              if (typeof activity['actor'] === 'string') {
+                activity['actor'] = JSON.parse(activity['actor'])
+              }
 
-          const activity = res['data']['results'][0]
-          this.getPostsUrl(activity['id']).then(urls => {
-            if (typeof activity['actor'] === 'string') {
-              activity['actor'] = JSON.parse(activity['actor'])
+              activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
+              activity['actor']['data']['image'] = this.user.profilePic
+              activity['images'] = urls
+
+              this.$store.dispatch('GSFeed/updateActivity', activity)
             }
-
-            activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
-            activity['actor']['data']['image'] = this.user.profilePic
-            activity['images'] = urls
-
-            this.$store.dispatch('GSFeed/updateActivity', activity)
           })
         }
 
         if (this.docsFiles.length > 0) {
-          this.docsFiles.forEach(async file => {
-            await this.setStreamFiles({
+          const urls = []
+          this.docsFiles.forEach(async (file, index) => {
+            const url = await this.setStreamFiles({
               files: file,
               headers: {
                 'Content-Type': file['type'],
@@ -570,26 +725,33 @@ export default {
                 'Stream-type': 'post'
               }
             })
-          })
 
-          const activity = res['data']['results'][0]
-          this.getPostsUrl(activity['id']).then(urls => {
-            if (typeof activity['actor'] === 'string') {
-              activity['actor'] = JSON.parse(activity['actor'])
+            urls.push(url['attachUrl'])
+            if (index === this.docsFiles.length - 1) {
+              this.docsFiles = []
+              this.showLoading = false
+              const activity = res['data']['results'][0]
+              if (typeof activity['actor'] === 'string') {
+                activity['actor'] = JSON.parse(activity['actor'])
+              }
+
+              activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
+              activity['actor']['data']['image'] = this.user.profilePic
+              activity['files'] = urls
+
+              this.$store.dispatch('GSFeed/updateActivity', activity)
             }
-
-            activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
-            activity['actor']['data']['image'] = this.user.profilePic
-            activity['files'] = urls
-
-            this.$store.dispatch('GSFeed/updateActivity', activity)
           })
+        }
+
+        if (this.imageFiles.length === 0 && this.docsFiles.length === 0) {
+          this.showLoading = false
         }
 
         this.reloadFeed()
         this.urlInfo = {}
-        this.itemInfo.application_id = null
-        this.itemInfo.record_id = null
+        this.itemInfo.applicationId = null
+        this.itemInfo.recordId = null
         this.itemInfo.panel = null
         this.showSkeletonPost = false
       })
@@ -619,3 +781,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-close-btn {
+  height: 15px!important;
+  width: 15px!important;
+}
+.v-select__selections {
+     min-height: 30px
+}
+</style>

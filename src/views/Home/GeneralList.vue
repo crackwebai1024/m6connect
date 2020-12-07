@@ -73,26 +73,32 @@
         <records-table :items="testItems" />
       </template>
       <template v-else>
-        <div
-          v-for="(item, index) of records"
-          :key="index"
-          :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+        <v-row
+          v-if="!loading"
+          class="w-full"
         >
-          <general-item :record-data="item" />
-        </div>
-        <div
-          v-if="records.length === 0"
-          class="max-w-tight mx-auto py-3 w-full"
-        >
-          No results found
-        </div>
+          <v-col
+            v-for="(item, index) of records"
+            :key="index"
+            :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+            cols="12"
+          >
+            <general-item :record-data="item" />
+          </v-col>
+          <v-col
+            v-if="records.length === 0"
+            class="max-w-tight mx-auto py-3 w-full"
+            cols="12"
+          >
+            No results found
+          </v-col>
+        </v-row>
       </template>
     </div>
     <v-container v-else>
       <v-progress-circular
         color="primary"
         indeterminate
-        style="margin-left: 45%;"
       />
     </v-container>
   </v-container>
@@ -153,6 +159,40 @@ export default {
       ]
     }
   },
+  watch: {
+    tableView(val) {
+      this.setShowSidePanels(!val)
+      this.$emit('tableView', val)
+    }
+  },
+  mounted() {
+    this.setDynamicApps()
+    this.setFilterTag({ key: 'everyone', value: 'All Apps' })
+    this.getApps().then(() => {
+      this.records = this.list()
+      this.loading = false
+    }
+    )
+    this.selectApp().then(res => {
+      res['data'].forEach(app => {
+        this.areas2.push(
+          {
+            text: app['title'],
+            prefix: app['prefix'],
+            type: 'subtitle',
+            function: () => {
+              this.setFilterTag({ key: 'dynamicApp', value: app['title'] })
+              this.getRecords(app.id)
+            }
+          }
+        )
+      })
+    })
+  },
+  beforeDestroy() {
+    this.setShowSidePanels(true)
+    this.$emit('tableView', false)
+  },
   methods: {
     ...mapActions('ITAppsModule', {
       getApps: 'get_all_apps',
@@ -183,10 +223,9 @@ export default {
       this.getDynamicApps(appId).then(() => {
         this.records = this.list()
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-        .catch(e => {
-          this.loading = false
-        })
     },
     reload() {
       this.loading = true
@@ -199,57 +238,22 @@ export default {
       let remaining = this.perPage
       if (page + 1 === this.pages) {
         remaining =
-          this.perPage - (this.perPage * this.pages - this.recordsLength)
+          this.perPage - ((this.perPage * this.pages) - this.recordsLength)
       }
       return remaining
     },
     getIndex(i, index) {
-      const ind = i * this.perPage + index - 1
+      const ind = (i * this.perPage) + index - 1
       return ind
     },
     async changingApps(app) {
       try {
         this.testItems = await this.getRecordsByApp(app['prefix'])
         app.function()
-      } catch (e) {}
+      } catch (e) {
+        // Empty
+      }
     }
-  },
-
-  watch: {
-    tableView(val) {
-      this.setShowSidePanels(!val)
-      this.$emit('tableView', val)
-    }
-  },
-
-  // eslint-disable-next-line vue/order-in-components
-  mounted() {
-    this.setDynamicApps()
-    this.setFilterTag({ key: 'everyone', value: 'All Apps' })
-    this.getApps().then(() => {
-      this.records = this.list()
-      this.loading = false
-    })
-    this.selectApp().then(res => {
-      res['data'].forEach(app => {
-        this.areas2.push(
-          {
-            text: app['title'],
-            prefix: app['prefix'],
-            type: 'subtitle',
-            function: () => {
-              this.setFilterTag({ key: 'dynamicApp', value: app['title'] })
-              this.getRecords(app.id)
-            }
-          }
-        )
-      })
-    })
-  },
-
-  beforeDestroy() {
-    this.setShowSidePanels(true)
-    this.$emit('tableView', false)
   }
 }
 </script>
@@ -265,6 +269,7 @@ export default {
   display: flex !important;
   align-items: center !important;
 }
-
-
+v-progress-circular {
+  margin-left: 45%!important;
+}
 </style>

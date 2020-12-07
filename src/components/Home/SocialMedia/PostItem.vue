@@ -52,7 +52,7 @@
             bottom
             left
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn
                 v-show="isAuthor()"
                 v-bind="attrs"
@@ -282,14 +282,6 @@
             </p>
           </v-col>
         </v-row>
-        <record-url
-          v-if="data['record_url'] && data['record_url']['id']"
-          :record-info="data['record_url']"
-        />
-        <external-url
-          v-if="urlify(data.message)['urls'].length > 0"
-          :urls="urlify(data.message)['urls']"
-        />
         <div
           v-if="images.length !== 0"
           class="px-5 py-4"
@@ -338,6 +330,14 @@
             {{ data.contain }}
           </div>
         </div>
+        <record-url
+          v-if="data['record_url'] && data['record_url']['id']"
+          :record-info="data['record_url']"
+        />
+        <external-url
+          v-if="urlify(data.message)['urls'].length > 0"
+          :urls="urlify(data.message)['urls']"
+        />
       </div>
 
       <v-card-actions class="px-5">

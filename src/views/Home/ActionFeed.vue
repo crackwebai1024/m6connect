@@ -229,6 +229,28 @@ export default {
       })
     }
   },
+  watch: {
+    cUser: function (val) {
+      this.user = val
+      this.loading = true
+      this.workOrder().then(() => {
+        this.loading = false
+      })
+    },
+    actFeed: function (val) {
+      this.currentIndex = 0
+    }
+  },
+  mounted() {
+    this.setFilterTag({ key: 'everyone', value: 'Everyone' })
+    this.user = this.cUser
+    this.select('/wo_status').then(res => {
+      this.status = res.data
+    })
+    this.workOrder().then(() => {
+      this.loading = false
+    })
+  },
   methods: {
     ...mapActions('WorkOrderModule', {
       workOrder: 'setWorkOrder',
@@ -253,28 +275,6 @@ export default {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
     }
-  },
-  watch: {
-    cUser: function (val) {
-      this.user = val
-      this.loading = true
-      this.workOrder().then(() => {
-        this.loading = false
-      })
-    },
-    actFeed: function (val) {
-      this.currentIndex = 0
-    }
-  },
-  mounted() {
-    this.setFilterTag({ key: 'everyone', value: 'Everyone' })
-    this.user = this.cUser
-    this.select('/wo_status').then(res => {
-      this.status = res.data
-    })
-    this.workOrder().then(() => {
-      this.loading = false
-    })
   }
 }
 </script>

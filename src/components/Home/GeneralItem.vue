@@ -1,49 +1,58 @@
 <template>
-  <v-hover v-slot:default="{ hover }">
-    <v-card 
-      elevation="0" 
-      class="rounded mx-auto transparent" 
-      tile :class="{ 'on-hover': !hover }" 
-      @click=" recordData['prefix'] !== null ? redirect() : updateInfo()">
-      <component v-bind:is="compData" :info="recordData" ></component>
+  <v-hover v-slot="{ hover }">
+    <v-card
+      class="mx-auto rounded transparent"
+      :class="{ 'on-hover': !hover }"
+      elevation="0"
+      tile
+      width="100%"
+      @click=" recordData['prefix'] !== null ? redirect() : updateInfo()"
+    >
+      <component
+        :is="compData"
+        :info="recordData"
+      />
     </v-card>
   </v-hover>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import globalDataApp from "../../store/data"
+import { mapActions } from 'vuex'
+import globalDataApp from '../../store/data'
 
 export default {
-  name: "GeneralItem",
-  data: () => ({
-    compData:{}
-  }),
+  name: 'GeneralItem',
   props: {
-    recordData: Object,
+    recordData: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data: () => ({
+    compData: {}
+  }),
+  created() {
+    this.compData = globalDataApp.records_widgets[this.recordData.app_type][0].component
   },
   methods: {
-    ...mapActions("InfoModule", [
-      "set_info_data",
-      "change_preview_navigation_drawer",
+    ...mapActions('InfoModule', [
+      'set_info_data',
+      'change_preview_navigation_drawer'
     ]),
-    ...mapActions("GeneralListModule", ["push_data_to_active"]),
+    ...mapActions('GeneralListModule', ['push_data_to_active']),
     updateInfo() {
-      this.push_data_to_active(this.recordData);
-      this.change_preview_navigation_drawer(true);
+      this.push_data_to_active(this.recordData)
+      this.change_preview_navigation_drawer(true)
     },
     redirect() {
-      if(this.recordData['record_number']) {
+      if (this.recordData['record_number']) {
         this.$router.push(`/record/${this.recordData['id']}`)
-      }else{
+      } else {
         this.$router.push(`/dev/${this.recordData['id']}`)
       }
     }
-  },
-  created(){
-    this.compData = globalDataApp.records_widgets[this.recordData.app_type][0].component;
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
