@@ -9,7 +9,7 @@
             @click="selectOption(item)"
           >
             <v-list-item-content>
-              <v-list-item-title>{{item.name}}</v-list-item-title>
+              <v-list-item-title :class="{'white--text' : optSelected == item.name }">{{item.name}}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>

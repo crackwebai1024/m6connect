@@ -309,16 +309,15 @@ export default {
         easing: 'easeInOutCubic'
       },
       // easings: Object.keys(easings),
-      companyTypes: db
-        .collection('settings')
-        .doc(this.currentCompany.id)
-        .collection('settings')
-        .doc('company_types')
     }
   },
   firestore() {
     return {
-      settings: this.companyTypes
+      settings: db
+        .collection('settings')
+        .doc(this.currentCompany.id)
+        .collection('settings')
+        .doc('company_types')
     }
   },
   computed: {
@@ -407,7 +406,7 @@ export default {
         return
       }
       if (this.action === 'new') {
-        if (!this.settings.company_types) {
+        if (!this.$h.dg(this.settings, 'company_types')) {
           this.settings.company_types = []
         }
         this.settings.company_types.push({

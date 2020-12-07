@@ -9,7 +9,7 @@
             @click="selectOption(item)"
           >
             <v-list-item-content>
-              <v-list-item-title v-html="item.name" />
+              <v-list-item-title class='text--white' v-html="item.name" />
             </v-list-item-content>
           </v-list-item>
           <v-divider :key="'divider' + index" />

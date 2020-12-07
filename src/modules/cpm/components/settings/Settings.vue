@@ -39,13 +39,11 @@
         </v-card>
       </v-col>
 
-      <v-col cols="4" class=''>
+      <v-col v-if="activeSetting !== null" cols="4" class=''>
         <options
-          v-if="activeSetting !== null"
           :options="activeSetting.options"
           @updateOption="updateOption"
         />
-        <v-spacer v-else></v-spacer>
       </v-col>
 
       <v-col cols="4" class=''>

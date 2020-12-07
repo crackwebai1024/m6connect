@@ -94,12 +94,13 @@
             <panel-two-columns>
               <div
                 slot="leftPanel"
-                class="card-custom-shadow mb-3 px-6 py-5 rounded white"
+                class=""
               >
-                <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
-                  Project Information
-                </h3>
-                <v-col :key='index' v-for='(section,index) in projectInformation'>
+                
+                <v-col class='card-custom-shadow mb-3 px-6 py-5 rounded white' :key='index' v-for='(section,index) in projectInformation'>
+                  <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
+                    {{index}}
+                  </h3>
                   <v-row :key='index' v-for='(item, index) in section'>
                     <v-col class="flex-shrink-0 flex-grow-0 align-center d-flex">
                       <v-icon color='grey lighten-1'>{{item.icon || 'mdi-information'}}</v-icon>
@@ -286,7 +287,9 @@
 <script>
 const defaults = {
   money: '0.00',
-  text: 'N/A'
+  text: 'N/A',
+  date: '--/--/----',
+  percent: '0',
 }
 import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
@@ -338,65 +341,136 @@ export default {
 
   },
   data: () => ({
-    projectInformation: [
-     [
-       {
-         label: 'Project Manager',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-badge-account'
-       },
-       {
-         label: 'Status',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-list-status'
-       },
-       {
-         label: 'CPA',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-label'
+    projectInformation: {
+      "Project Quickview":
+      [
+        {
+          label: 'Project Manager',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-badge-account'
+        },
+        {
+          label: 'General Contractor',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-badge-account'
+        },
+        {
+          label: 'Status',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-list-status'
+        },
+        {
+          label: 'CPA',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-label'
 
-       },
-       {
-         label: 'Project Title',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-information'
-       },
-       {
-         label: 'Category 1',
-         value: '',
-         default: defaults.text,
-         icon: 'mdi-subtitles-outline'
-       },
-       {
-         label: 'YTD Actuals Capitals',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-       {
-         label: 'YTD Actuals Expenses',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-       {
-         label: 'CPA Capital',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-       {
-         label: 'CPA Capital With Cont',
-         value: '',
-         default: defaults.money,
-         icon: 'mdi-currency-usd'
-       },
-     ] 
-    ],
+        },
+        {
+          label: 'Project Title',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-information'
+        },
+        {
+          label: 'Category 1',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-subtitles-outline'
+        },
+        {
+          label: 'YTD Actuals Capitals',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+        {
+          label: 'YTD Actuals Expenses',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+        {
+          label: 'CPA Capital',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+        {
+          label: 'CPA Capital With Cont',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+      ],
+      'Schedule & Budget': [
+        {
+          label: 'Phase',
+          value: '',
+          default: defaults.text,
+          icon: 'mdi-badge-account'
+        },
+        {
+          label: 'Target Date / Phase',
+          value: '',
+          default: defaults.date,
+          icon: 'mdi-calendar'
+        },
+        {
+          label: 'Construction Start',
+          value: '',
+          default: defaults.date,
+          icon: 'mdi-calendar'
+        },
+        {
+          label: 'Anticipated Construction Finish',
+          value: '',
+          default: defaults.date,
+          icon: 'mdi-calendar'
+        },
+        {
+          label: 'Complete Budget',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Complete Schedule',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Complete',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Budget Status',
+          value: '',
+          default: defaults.percent,
+          icon: 'mdi-percent'
+        },
+        {
+          label: 'Total Project Budget',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+      ],
+      'Commitments & Spendings' : [
+        {
+          label: 'Spent to Date',
+          value: '',
+          default: defaults.money,
+          icon: 'mdi-currency-usd'
+        },
+      ]
+    },
     tab: null,
     items: [
       'Profile',
