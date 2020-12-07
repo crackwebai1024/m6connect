@@ -347,7 +347,6 @@
                     ref="docNumber"
                     v-model="dialogProperties.docNumber"
                     :label="$t('general.documentNumber')"
-                    :rules="[rules.required]"
                   />
                 </v-col>
               </v-row>
@@ -465,8 +464,6 @@
                   <v-dialog
                     ref="dialogSpendingDateOpenedText"
                     v-model="dialogSpendingDateOpenedText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.dateOpenedText"
                     width="290px"
@@ -534,8 +531,6 @@
                   <v-dialog
                     ref="dialogSpendingPaidDateText"
                     v-model="dialogSpendingPaidDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.paidDateText"
                     width="290px"
@@ -943,8 +938,6 @@
                   <v-dialog
                     ref="dialogLineItemDateText"
                     v-model="dialogLineItemDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.dateText"
                     :rules="[rules.required]"
@@ -996,7 +989,6 @@
                     ref="dialogLineItemPaidDateText"
                     v-model="dialogLineItemPaidDateText"
                     full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.paidDateText"
                     width="290px"
