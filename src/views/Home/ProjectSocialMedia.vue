@@ -1,3 +1,4 @@
+<!--eslint-disable vue/v-on-function-call-->
 <!-- eslint-disable vue/no-parsing-error -->
 <template>
   <v-container
@@ -97,40 +98,26 @@
                         <v-icon>mdi-file-plus-outline</v-icon>
                       </v-btn>
                     </template>
-                    <v-list>
-                      <v-list-item>
-                        <v-file-input
-                          accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
-                          class="align-left blue--text d-flex justify-left ma-0 pa-0 upload-icon"
-                          :disabled="postListShow"
-                          hide-input
-                          label="File"
-                          multiple
-                          prepend-icon="mdi-file-document-outline"
-                          @change="onDocsChange"
-                        >
-                          <p
-                            slot="append-outer"
-                            class="my-0 py-0"
-                          >
-                            File input
-                          </p>
-                        </v-file-input>
+                    <v-list class="mb-2 mt-4 mx-0 pa-0">
+                      <v-list-item @click="$refs.fileInput.click()">
+                        <v-list-item-title>
+                          <v-icon>
+                            mdi-file-document-outline
+                          </v-icon>
+                          <span class="ml-2 my-0 pa-0">
+                            File
+                          </span>
+                        </v-list-item-title>
                       </v-list-item>
-                      <v-list-item class="text-left">
-                        <v-file-input
-                          accept="image/png, image/jpeg, image/bmp"
-                          class="align-left blue--text d-flex justify-left ma-0 pa-0 upload-icon"
-                          :disabled="postListShow"
-                          hide-input
-                          label="Image"
-                          multiple
-                          prepend-icon="mdi-image-outline"
-                          @change="onImagesChange"
-                        />
-                        <p class="my-0 py-0">
-                          Image
-                        </p>
+                      <v-list-item @click="$refs.imageInput.click()">
+                        <v-list-item-title>
+                          <v-icon>
+                            mdi-image-outline
+                          </v-icon>
+                          <span class="ml-2 my-0 pa-0">
+                            Image
+                          </span>
+                        </v-list-item-title>
                       </v-list-item>
                     </v-list>
                   </v-menu>
@@ -241,6 +228,22 @@
           </v-col>
           <v-col cols="12">
             <div class="w-full">
+              <input
+                v-show="false"
+                ref="fileInput"
+                accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
+                multiple
+                type="file"
+                @change="onDocsChange"
+              >
+              <input
+                v-show="false"
+                ref="imageInput"
+                accept="image/*"
+                multiple
+                type="file"
+                @change="onImagesChange"
+              >
               <div
                 v-if="srcImageFiles.length > 0"
                 class="align-center d-flex grey--text my-2 text-caption"
@@ -631,7 +634,7 @@ export default {
       this.titlePage = `${msg}`
     },
     onDocsChange(docs) {
-      docs.forEach(doc => {
+      docs['srcElement']['files'].forEach(doc => {
         this.docsFiles.push(doc)
       })
     },
@@ -768,7 +771,7 @@ export default {
       await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     onImagesChange(files) {
-      files.forEach(file => {
+      files['srcElement']['files'].forEach(file => {
         this.imageFiles.push(file)
       })
     },
