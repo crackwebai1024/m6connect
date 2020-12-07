@@ -95,9 +95,13 @@
         >
           <v-select
             v-model="view"
+            item-text="label"
+            item-value="val"
             :items="views"
-            label="View"
+            label="Select"
+            persistent-hint
             return-object
+            single-line
           >
             <template
               slot="selection"
