@@ -335,7 +335,7 @@
           :record-info="data['record_url']"
         />
         <external-url
-          v-if="urlify(data.message)['urls'].length > 0"
+          v-if="urlify(data.message)['urls'].length > 0 && urlify(data.message)['youtubeUrls'].length === 0"
           :urls="urlify(data.message)['urls']"
         />
         <youtube-video
