@@ -169,10 +169,10 @@
               cols="4"
             >
               <v-select
-                v-model="record_type"
+                v-model="recordType"
                 item-text="label"
                 item-value="value"
-                :items="records_type"
+                :items="recordsType"
                 label="Record Type"
                 @change="changeRecord($event)"
               />
@@ -183,7 +183,7 @@
             >
               <v-select
                 v-model="updateInfo.record_id"
-                :class="{ disabled: record_type === null }"
+                :class="{ disabled: recordType === null }"
                 item-value="id"
                 :items="options.records"
                 label="Record"
@@ -287,7 +287,7 @@
           class="px-5 py-4"
         >
           <v-btn
-            v-if="all_images && images.length>4"
+            v-if="allImages && images.length>4"
             class="float-button"
             color="primary"
             outlined
@@ -300,7 +300,7 @@
             no-gutters
           >
             <v-col
-              v-for="(image, index) of picture_items"
+              v-for="(image, index) of pictureItems"
               :key="index"
               :cols="widthCols()"
             >
@@ -313,7 +313,7 @@
             </v-col>
           </v-row>
           <v-btn
-            v-if="!all_images && images.length>4"
+            v-if="!allImages && images.length>4"
             block
             class="mt-2"
             color="primary"
@@ -472,7 +472,7 @@
         </v-badge>
         <v-text-field
           ref="currentUserComment"
-          v-model="comment_data"
+          v-model="commentData"
           class="black--text"
           dense
           filled
@@ -544,12 +544,12 @@ export default {
     }
   },
   data: () => ({
-    records_type: [
+    recordsType: [
       { label: 'ITApps', value: 'itapps' }
     ],
     infoPanel: {},
     recordFields: [],
-    record_type: null,
+    recordType: null,
     options: {
       records: []
     },
@@ -562,11 +562,11 @@ export default {
 
     showBtnsPost: false,
     showComments: false,
-    picture_items: [],
+    pictureItems: [],
     likeState: false,
     profileImaga: '',
-    all_images: false,
-    comment_data: '',
+    allImages: false,
+    commentData: '',
     rotate: '',
     user: {},
     deleteDiaLog: false,
@@ -604,7 +604,7 @@ export default {
   },
   mounted() {
     this.images = this.data.images
-    this.picture_items = this.images.slice(0, 4)
+    this.pictureItems = this.images.slice(0, 4)
     this.user = this.currentUser
     if (this.data.own_reactions.like !== undefined) {
       this.likeState = true
@@ -679,10 +679,10 @@ export default {
       return this.$h.dg(this.data, 'reaction_counts.like', '0')
     },
     showAll() {
-      this.picture_items = this.all_images
+      this.pictureItems = this.allImages
         ? this.images.slice(0, 4)
         : this.images
-      this.all_images = !this.all_images
+      this.allImages = !this.allImages
     },
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
@@ -728,7 +728,7 @@ export default {
         id: activity.id,
         type: 'comment',
         options: {
-          text: this.comment_data
+          text: this.commentData
         }
       }
 
@@ -745,7 +745,7 @@ export default {
       if (!this.data.comments) {
         this.data.comments = []
       }
-      this.comment_data = ''
+      this.commentData = ''
     },
     async deletePost(activity) {
       await this.$store.dispatch('GSFeed/removeActivity', activity.id)
@@ -782,7 +782,7 @@ export default {
           this.records(this.data.props.record.app_type).then(res => {
             this.options['records'] = res['data']
 
-            this.record_type = this.data['props']['record']['app_type']
+            this.recordType = this.data['props']['record']['app_type']
             this.updateInfo['record_id'] = this.data['props']['record']['id']
           })
         }
