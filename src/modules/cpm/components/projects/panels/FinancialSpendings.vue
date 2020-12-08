@@ -141,7 +141,7 @@
       :align-actions="alignActions"
       :headers="headersSpendings"
       :items="resources"
-      :items-per-page-options="[5,10,15,200]"
+      :footer-props='footerProps'
       :options.sync="pagination"
       @update:options="debounceSearch(search, false)"
     >
@@ -286,7 +286,7 @@
       >
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
-            {{ $t('cpm.projects.spending') }}
+            {{ $t('cpm.projects.spending') }} 
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
@@ -366,7 +366,7 @@
                   </div>
                 </v-col>
                 <v-col cols="7">
-                  <v-text-field
+                  <money
                     ref="accrual"
                     v-model="dialogProperties.accrual"
                     :label="$t('general.accrual')"
@@ -1478,6 +1478,9 @@ export default {
     const projectId = this.pid || this.$route.params.id
 
     return {
+      footerProps: {
+        itemsPerPageOptions: [5,10,15,200]
+      },
       defaultItemSpending: {
         number: '',
         costCodeText: '',
