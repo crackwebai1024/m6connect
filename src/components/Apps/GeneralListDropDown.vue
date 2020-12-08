@@ -7,7 +7,7 @@
         text 
         v-on="on"
       >
-        screen
+        View Option
       </v-btn>
     </template>
     <v-list>
@@ -17,7 +17,7 @@
       >
         <v-list-item-title >
           <v-btn text @click="$emit('input', choice.value)" >
-            {{ choice.text }} <v-icon class="black--text" >{{ choice.icon }}</v-icon>
+            <v-icon class="black--text" >{{ choice.icon }}</v-icon> {{ choice.text }}
           </v-btn>
         </v-list-item-title>
       </v-list-item>
