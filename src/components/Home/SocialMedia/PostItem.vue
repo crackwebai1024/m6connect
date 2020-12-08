@@ -597,9 +597,12 @@ export default {
       return authorPostData
     },
     videoFileList() {
-      if (!this.data.files) return []
-      const regex = /.mp4$|.x-m4v$|.x-matroska$|.mkv$/
-      return this.data.files.filter(row => regex.test(row))
+      try {
+        if (!this.data.files) return []
+        return this.data.files.filter(row => row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO')
+      } catch (error) {
+        return []
+      }
     }
   },
   mounted() {
