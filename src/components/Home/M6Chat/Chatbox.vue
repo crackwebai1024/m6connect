@@ -334,6 +334,7 @@
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
+                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
                     :src="image"
                   >
@@ -455,6 +456,7 @@
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
+                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
                     :src="image"
                   >
@@ -498,9 +500,27 @@
           :type="'message'"
         />
         <external-url
-          v-if="urlify(message.text)['urls'].length > 0"
+          v-if="urlify(message.text)['urls'].length > 0 && urlify(message.text)['youtubeUrls'].length === 0"
           :urls="urlify(message.text)['urls']"
         />
+        <youtube-video
+          v-if="urlify(message.text)['youtubeUrls'].length > 0"
+          :urls="urlify(message.text)['youtubeUrls']"
+        />
+        <div
+          v-for="(row, imageIndex) in message.images"
+          :key="imageIndex"
+          class="video-list__container"
+        >
+          <video
+            v-if="row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
+            controls
+          >
+            <source
+              :src="row"
+            >
+          </video>
+        </div>
       </div>
     </div>
     <!-- Emoji Picker -->
@@ -842,6 +862,7 @@ import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
 import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
+import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 
 export default {
@@ -853,7 +874,8 @@ export default {
     DeleteDialog,
     VEmojiPicker,
     ExternalUrl,
-    RecordUrl
+    RecordUrl,
+    YoutubeVideo
   },
   props: {
     channel: {
@@ -964,7 +986,6 @@ export default {
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
-
 
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
@@ -1129,13 +1150,17 @@ export default {
     },
     urlify(text) {
       const urlRegex = /(https?:\/\/[^\s]+)/g
+      const youtubeUrlRegex = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/
       const textUrls = []
+      let youtubeUrls = []
+
       const res = text.replace(urlRegex, function (url) {
         const path = new URL(url)
         textUrls.push(url)
         return '<a href="' + url + '" target="_blank" class=" white--text pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>'
       })
-      return { text: res, urls: textUrls }
+      youtubeUrls = textUrls.filter(row => youtubeUrlRegex.test(row))
+      return { text: res, urls: textUrls, youtubeUrls: youtubeUrls }
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
