@@ -366,6 +366,7 @@
               </v-row>
 
               <v-row
+                v-if="glaccount"
                 align="center"
                 justify="center"
               >
@@ -386,7 +387,7 @@
                     clearable
                     item-text="name"
                     item-value="code"
-                    :items="glaccount.codes"
+                    :items="glaccount.codes || []"
                     return-object
                   >
                     <template
@@ -1199,6 +1200,7 @@
 
     <!-- show line items modal -->
     <v-dialog
+      v-if="showLineItemsModal"
       v-model="showLineItemsModal"
       max-width="1000px"
       persistent
@@ -1251,7 +1253,6 @@
               <v-col md="12">
                 <v-data-table
                   :headers="headersLineItems"
-                  hide-default-footer
                   :items="spendingToShow.lineItems"
                   :items-per-page-options="[5,10,15,200]"
                 >
