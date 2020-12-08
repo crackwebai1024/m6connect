@@ -5,6 +5,16 @@
       :items="items"
       :items-per-page="5"
     >
+      <template #item.record_number="{ item }" > 
+        <router-link class="router-link" :to="{ name: 'record.show', params: { id: item.id } }" >
+          {{ item.record_number }}
+        </router-link>
+      </template>
+      <template #item.title="{ item }"  >
+        <router-link class="router-link" :to="{ name: 'record.show', params: { id: item.id } }" >
+          {{ item.title }}
+        </router-link>
+      </template>
       <template #item.description_slot="{ item }">
         {{
           $h.dg(item, 'standard_field_description', '').length > 40 ?
@@ -61,7 +71,7 @@ export default {
   data: () => ({
     headers: [
       { text: 'Image', value: 'image' },
-      { text: '#', value: 'record_number' },
+      { text: 'Record #', value: 'record_number' },
       { text: 'App', value: 'app_prefix' },
       { text: 'Title', value: 'title' },
       { text: 'Description', value: 'description' },
@@ -93,7 +103,10 @@ export default {
 
 <style lang="scss" scoped>
 .standard-image {
-    height: 3rem;
-    width: auto;
+  height: 3rem;
+  width: auto;
+}
+.router-link {
+  text-decoration: none;
 }
 </style>

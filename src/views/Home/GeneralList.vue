@@ -9,10 +9,7 @@
       :info="{title: 'Search All Apps', icon: ''}"
     >
       <template #select>
-        <v-switch
-          v-model="tableView"
-          :append-icon=" tableView ? 'mdi-table' : 'mdi-arrange-bring-forward' "
-        />
+        <general-list-drop-down v-model="tableView" />
         <v-menu
           bottom
           offset-y
@@ -109,13 +106,15 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
 import HeaderComponent from '@/components/Home/HeaderComponent'
 import RecordsTable from '@/components/RecordsTable'
+import GeneralListDropDown from '@/components/Apps/GeneralListDropDown'
 
 export default {
   name: 'GeneralList',
   components: {
     GeneralItem,
     HeaderComponent,
-    RecordsTable
+    RecordsTable,
+    GeneralListDropDown
   },
   data: () => ({
     loading: true,

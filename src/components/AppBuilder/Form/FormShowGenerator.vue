@@ -151,7 +151,7 @@ export default {
     typesToIds: {},
     complexDataStructs: { autocomplete: true, people: true },
     recordToEdit: {},
-    statusOptions: ['Draft', 'In Progress', 'Done', 'Backlog', 'Under Review']
+    statusOptions: ['Published', 'Draft', 'Archived']
   }),
 
   computed: {
