@@ -1719,6 +1719,9 @@ export default {
   },
 
   watch: {
+    lineItems: function (v){
+      console.log(v)
+    },
     'project.totals.spendingTotal': function () {
       EventBus.$emit('refresh-commitments-panel-by-spendings')
     },

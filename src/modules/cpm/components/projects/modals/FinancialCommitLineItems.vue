@@ -852,13 +852,13 @@ export default {
         return
       }
       this.showLoading = true
-
       this.createLineItem({
         projectRef: this.projectRef,
         commitmentRef: this.commitmentRef,
         lineItem: this.lineItem
       })
         .then(() => {
+          console.log(doc)
           this.showLoading = false
           this.$snotify.success('The line item was added', 'Success')
           this.$emit('close')
