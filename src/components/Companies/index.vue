@@ -1,46 +1,51 @@
 <template>
-  <v-container class="w-main-content px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
+  <v-container class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full">
     <!-- General use list component-->
-    <template v-if="get_screen_status()">
-      <record-container class="main-content align-content-start" :data="get_record_full_screen()" />
+    <template v-if="screenStatus()">
+      <record-container
+        class="align-content-start main-content"
+        :data="recordFullScreen()"
+      />
     </template>
     <template v-else>
       <!-- Companies List Component -->
-      <companies-list class="main-content align-content-start"/>
+      <companies-list class="align-content-start main-content" />
     </template>
   </v-container>
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
-import CompaniesList from "@/views/Home/CompaniesList"
-import RecordContainer from "@/components/RecordMode/RecordContainer";
+import { mapGetters } from 'vuex'
+import CompaniesList from '@/views/Home/CompaniesList'
+import RecordContainer from '@/components/RecordMode/RecordContainer'
 
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
+  name: 'Apps',
   components: {
     CompaniesList,
-    RecordContainer,
+    RecordContainer
   },
   data: () => ({
     tab: null,
     items: [
-      'Profile', 'People', 'Details',
+      'Profile',
+      'People',
+      'Details'
     ],
     currentTab: 0,
     showColumnLeft: true,
     showColumnRight: true
   }),
-  name: "Apps",
   computed: {
     ...mapGetters({
-      get_screen_status: "GeneralListModule/get_screen_status",
-      get_record_full_screen: "GeneralListModule/get_record_full_screen",
-      get_image_preview_overlay: "get_image_preview_overlay"
-    }),
+      screenStatus: 'GeneralListModule/get_screen_status',
+      recordFullScreen: 'GeneralListModule/get_record_full_screen'
+    })
   },
   methods: {
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

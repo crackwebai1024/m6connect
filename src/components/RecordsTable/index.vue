@@ -12,12 +12,18 @@
             $h.dg(item, 'standard_field_description', '')
         }}
       </template>
+      <template #item.author="{ item }" >
+        {{ getAuthor(item.author) }}
+      </template>
       <template #item.standard_image="{ item }">
         <img
           :alt="item.title"
           class="standard-image"
           :src="item.standard_image"
         >
+      </template>
+      <template #item.created_at="{ item }" >
+        {{ item.created_at.getMonth() + '/' + item.created_at.getDate() + '/' + item.created_at.getFullYear() }}
       </template>
       <template #item.action>
         <v-btn
@@ -42,6 +48,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'RecordsTableIndex',
   props: {
@@ -52,21 +60,34 @@ export default {
   },
   data: () => ({
     headers: [
-      { text: 'Image', value: 'standard_field_image' },
-      { text: '#', value: 'standard_field_record_number' },
+      { text: 'Image', value: 'image' },
+      { text: '#', value: 'record_number' },
       { text: 'App', value: 'app_prefix' },
-      { text: 'Title', value: 'standard_field_title' },
-      { text: 'Description', value: 'description_slot' },
-      { text: 'Creator', value: 'standard_field_author' },
-      { text: 'Created On', value: 'standard_field_created_at' },
-      { text: 'Class', value: 'standard_field_class' },
-      { text: 'Category', value: 'standard_field_category' },
-      { text: 'Type', value: 'standard_field_type' },
-      { text: 'State', value: 'standard_field_state' },
-      { text: 'Status', value: 'standard_field_status' },
+      { text: 'Title', value: 'title' },
+      { text: 'Description', value: 'description' },
+      { text: 'Creator', value: 'author' },
+      { text: 'Created On', value: 'created_at' },
+      { text: 'Class', value: 'class' },
+      { text: 'Category', value: 'category' },
+      { text: 'Type', value: 'type' },
+      { text: 'State', value: 'state' },
+      { text: 'Status', value: 'status' },
       { text: 'Action', value: 'action', sortable: false }
     ]
-  })
+  }),
+
+  computed: {
+    ...mapGetters('Companies', {
+      currentCompanyUsers: "getCurrentCompanyUsers"
+    })
+  },
+
+  methods: {
+    getAuthor(id) {
+      const res = this.currentCompanyUsers.find( u => this.$h.dg(u, 'user.id', '') === id ) 
+      return this.$h.dg(res, 'user.firstName', '') + ' ' + this.$h.dg(res, 'user.lastName', '')
+    },
+  }
 }
 </script>
 

@@ -1,12 +1,12 @@
 <template>
   <v-container
-    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-main-content"
+    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full"
   >
     <!-- General use list component-->
-    <template v-if="get_screen_status()">
+    <template v-if="screenStatus()">
       <record-container
         class="main-content"
-        :data="get_record_full_screen()"
+        :data="recordFullScreen()"
       />
     </template>
     <template v-else>
@@ -29,6 +29,7 @@ import RecordContainer from '@/components/RecordMode/RecordContainer'
 import ImageCarousselOverlay from '@/components/Shared/ImageCarousselOverlay'
 
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'Home',
   components: {
     ProjectSocialMedia,
@@ -37,21 +38,21 @@ export default {
   },
   computed: {
     ...mapGetters({
-      get_screen_status: 'GeneralListModule/get_screen_status',
-      get_record_full_screen: 'GeneralListModule/get_record_full_screen',
-      get_image_preview_overlay: 'get_image_preview_overlay'
+      screenStatus: 'GeneralListModule/get_screen_status',
+      recordFullScreen: 'GeneralListModule/get_record_full_screen',
+      imageOverlay: 'get_image_preview_overlay'
     }),
     ...mapState(['layout']),
     imageArray() {
-      const images = this.get_image_preview_overlay()[0]
+      const images = this.imageOverlay()[0]
       return images
     },
     selectedImage() {
-      const selected = this.get_image_preview_overlay()[1]
+      const selected = this.imageOverlay()[1]
       return selected
     },
     overlayActive() {
-      const selected = this.get_image_preview_overlay()[0].length > 0
+      const selected = this.imageOverlay()[0].length > 0
       return selected
     }
   },

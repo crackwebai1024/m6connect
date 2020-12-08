@@ -7,10 +7,16 @@
           class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
           no-gutters
         >
-          <action-feed v-show="showSidePanels" />
-          <!-- Home / Company Profile -->
-          <router-view />
-          <m6-chat v-show="showSidePanels" />
+          <v-col cols="3">
+            <action-feed v-show="showSidePanels" />
+          </v-col>
+          <v-col cols="6">
+            <!-- Home / Company Profile -->
+            <router-view />
+          </v-col>
+          <v-col cols="3">
+            <m6-chat v-show="showSidePanels" />
+          </v-col>
         </v-row>
         <!-- Preview overlay -->
         <chat-wrapper />

@@ -1,149 +1,176 @@
 <template>
-  <div class="nav-bar px-4 w-full blue darken-3 d-flex justify-center">
-    <div class="nav-content w-full d-flex justify-space-between align-center">
+  <div class="blue d-flex darken-3 justify-center nav-bar px-4 w-full">
+    <div class="align-center d-flex justify-space-between nav-content w-full">
       <div class="align-center d-flex w-side">
-        <img alt="M6Connect" src="@/assets/m6-home-logo.png" height="36px">
+        <img
+          alt="M6Connect"
+          height="36px"
+          src="@/assets/m6-home-logo.png"
+        >
       </div>
 
-      <v-tabs height="60" :value="3" active-class="blue darken-4" background-color="transparent" color="white" :hide-slider="true" class="max-w-content d-flex justify-center align-center">
-        <v-tab v-for="(link,i) in quickAccessLinks" :key="'link' + i" :to="link.url" class="px-13 mb-0">
-            <v-icon color="white" :large="true">mdi-{{ link.icon }}</v-icon>
+      <v-tabs
+        active-class="blue darken-4"
+        background-color="transparent"
+        class="align-center d-flex justify-center max-w-content"
+        color="white"
+        height="60"
+        :hide-slider="true"
+        :value="3"
+      >
+        <v-tab
+          v-for="(link,i) in quickAccessLinks"
+          :key="'link' + i"
+          class="mb-0 px-13"
+          :to="link.url"
+        >
+          <apps-btn-drop-down
+            v-if="link.text === 'apps'"
+            :icon="link.icon"
+          />
+          <v-icon
+            v-else
+            color="white"
+            :large="true"
+          >
+            mdi-{{ link.icon }}
+          </v-icon>
         </v-tab>
       </v-tabs>
 
       <div class="align-center d-flex justify-end w-side">
         <v-menu
-          content-class="elevation-0"
+          bottom
           class="mt-3"
           :close-on-content-click="false"
+          content-class="elevation-0"
           elevation="0"
           offset-y
-          bottom
         >
-            <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-btn
-                v-bind="attrs"
-                class="align-center btns-message d-flex justify-center white--text mr-1"
-                elevation="0"
-                fab
-                height="25"
-                width="25"
-                x-small
-                v-on="on"
+              v-bind="attrs"
+              class="align-center btns-message d-flex justify-center mr-5 white--text"
+              elevation="0"
+              fab
+              height="25"
+              width="25"
+              x-small
+              v-on="on"
             >
-                <v-icon size="19">
+              <v-icon size="19">
                 mdi-plus
-                </v-icon>
+              </v-icon>
             </v-btn>
-            </template>
+          </template>
 
-            <v-list class="mb-2 pa-0 transparent">
-              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
-                  <v-tooltip
-                  class="tooltip-upload-file"
-                  left
-                  >
-                  <template v-slot:activator="{ on, attrs }">
-                    <add-feed class="w-full">
-                      <v-btn
-                        slot="btn"
-                        block
-                        @click="modal = 'app-builder'"
-                        color="yellow darken-1"
-                        class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
-                      >
-                        Add Action
-                      </v-btn>
-                    </add-feed>
-                  </template>
-                  <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">New Action</span>
-                  </v-tooltip>
-              </v-list-item>
-              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
-                  <v-tooltip
-                  class="tooltip-upload-file"
-                  left
-                  >
-                  <template v-slot:activator="{ on, attrs }">
-                    <create-app class="w-full">
-                        <v-btn
-                            slot="btn"
-                            block
-                            color="green darken-1"
-                            class="px-3 pointer align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
-                        >
-                            Add Application
-                        </v-btn>
-                    </create-app>
-                  </template>
-                  <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
-                  </v-tooltip>
-              </v-list-item>
-              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
-                  <v-tooltip
-                  class="tooltip-upload-file"
-                  left
-                  >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-dialog
-                      v-model="dialog"
-                      width="800"
-                      persistent
+          <v-list class="mb-2 pa-0 transparent">
+            <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
+              <v-tooltip
+                class="tooltip-upload-file"
+                left
+              >
+                <template #activator="{ on, attrs }">
+                  <add-feed class="w-full">
+                    <v-btn
+                      slot="btn"
+                      block
+                      class="align-center d-flex justify-center ma-0 pa-0 pointer px-3 upload-icon white--text"
+                      color="yellow darken-1"
+                      @click="modal = 'app-builder'"
                     >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                          color="blue lighten-2 w-full mx-auto"
-                          class="max-w-tight"
-                          dark
-                          v-bind="attrs"
-                          v-on="on"
-                        >
-                          Add Record
-                        </v-btn>
-                      </template>
-                      <new-record-dialog @closeModal="dialog = false" />
-                    </v-dialog>
-                  </template>
-                  <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
-                  </v-tooltip>
-              </v-list-item>
-              <v-list-item class="ma-0 pt-1 pa-0 uploadfile-btn">
-                  <snap-shot-nav class="w-full" />
-              </v-list-item>
-            </v-list>
+                      Add Action
+                    </v-btn>
+                  </add-feed>
+                </template>
+                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">New Action</span>
+              </v-tooltip>
+            </v-list-item>
+            <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
+              <v-tooltip
+                class="tooltip-upload-file"
+                left
+              >
+                <template #activator="{ on, attrs }">
+                  <create-app class="w-full">
+                    <v-btn
+                      slot="btn"
+                      block
+                      class="align-center d-flex justify-center ma-0 pa-0 pointer px-3 upload-icon white--text"
+                      color="green darken-1"
+                    >
+                      Add Application
+                    </v-btn>
+                  </create-app>
+                </template>
+                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
+              </v-tooltip>
+            </v-list-item>
+            <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
+              <v-tooltip
+                class="tooltip-upload-file"
+                left
+              >
+                <template #activator="{ on, attrs }">
+                  <v-dialog
+                    v-model="dialog"
+                    persistent
+                    width="800"
+                  >
+                    <template #activator="{ on, attrs }">
+                      <v-btn
+                        v-bind="attrs"
+                        class="max-w-tight"
+                        color="blue lighten-2 w-full mx-auto"
+                        dark
+                        v-on="on"
+                      >
+                        Add Record
+                      </v-btn>
+                    </template>
+                    <new-record-dialog @closeModal="dialog = false" />
+                  </v-dialog>
+                </template>
+                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
+              </v-tooltip>
+            </v-list-item>
+            <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
+              <snap-shot-nav class="w-full" />
+            </v-list-item>
+          </v-list>
         </v-menu>
 
         <user-options />
 
-        <span class="white--text font-weight-bold">
+        <span class="font-weight-bold white--text">
           {{ $h.dg(currentUser, 'firstName', '') }} {{ $h.dg(currentUser, 'lastName', '') }}
         </span>
 
         <company-home />
 
         <app-builder-show />
-
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import SnapShotNav from "@/components/Home/TopNav/SnapShotNav";
-import UserOptions from "@/components/Home/TopNav/UserOptions";
+import { mapState } from 'vuex'
+import SnapShotNav from '@/components/Home/TopNav/SnapShotNav'
+import UserOptions from '@/components/Home/TopNav/UserOptions'
 // import AppTemplate from "@/views/Home/AppTemplate";
 // import ProjectSocialMedia from "./ProjectSocialMedia";
 // import PanelFull from "@/components/AppBuilder/Content/PanelFull";
 // import PanelTwoColumns from "@/components/AppBuilder/Content/PanelTwoColumns";
-import CreateApp from "@/components/Dialogs/CreateAppDialog";
-import AddFeed from "./AddFeed";
+import CreateApp from '@/components/Dialogs/CreateAppDialog'
+import AddFeed from './AddFeed'
 import CompanyHome from './CompanyHome'
-import NewRecordDialog from "@/components/Dialogs/NewRecordDialog";
+import NewRecordDialog from '@/components/Dialogs/NewRecordDialog'
 import AppBuilderShow from './AppBuilderShow'
+import AppsBtnDropDown from '@/components/Home/TopNav/AppsBtnDropDown'
 
 export default {
-  name: "TopNav",
+  name: 'TopNav',
   components: {
     UserOptions,
     SnapShotNav,
@@ -155,44 +182,43 @@ export default {
     AddFeed,
     CreateApp,
     CompanyHome,
-    AppBuilderShow
+    AppBuilderShow,
+    AppsBtnDropDown
   },
-
-  computed: {
-    ...mapState("Auth", {
-      currentUser: "user"
-    }),
-    ...mapState("Companies", {
-      currentCompany: "currentCompany"
-    }),
-    showLinksMessage: function() {
-      return this.showLinks ? "Less" : "More";
-    },
-    heightShowLinksDiv: function() {
-      return 7 * 35 + "px";
-    }
-  },
-
   data: () => ({
     user: {
-      name: "John Doe",
-      imgSrc: "https://cdn.vuetifyjs.com/images/john.jpg"
+      name: 'John Doe',
+      imgSrc: 'https://cdn.vuetifyjs.com/images/john.jpg'
     },
     dialog: false,
     modal: '',
     company: {
-      name: "Sharp Healthcare"
+      name: 'Sharp Healthcare'
     },
     quickAccessLinks: [
-      { url: "/",              icon: "home"            },
-      { url: "/apps",          icon: "view-comfy"      },
-      { url: "/companies",     icon: "office-building" },
-      { url: "/store",         icon: "storefront"      },
-      { url: "/user/settings", icon: "cog"             }
+      { url: '/', icon: 'home' },
+      { url: '/apps', icon: 'view-comfy', text: 'apps' },
+      { url: '/companies', icon: 'office-building' },
+      { url: '/store', icon: 'storefront' },
+      { url: '/user/settings', icon: 'cog' }
     ]
   }),
+  computed: {
+    ...mapState('Auth', {
+      currentUser: 'user'
+    }),
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    }),
+    showLinksMessage: function () {
+      return this.showLinks ? 'Less' : 'More'
+    },
+    heightShowLinksDiv: function () {
+      return (7 * 35) + 'px'
+    }
+  },
   methods: {}
-};
+}
 </script>
 
 <style lang="scss" scoped>
