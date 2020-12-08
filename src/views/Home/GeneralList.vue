@@ -122,7 +122,7 @@ export default {
     perPage: 8,
     records: [],
     searchInput: '',
-    tableView: false,
+    tableView: false
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
