@@ -81,14 +81,20 @@
         :key="field.id"
       >
         <v-list-item-content @click="editField(field)">
-          <v-list-item-title :class="field.type === 'referenced' ? 'referenced-field' : ''">
+          <v-list-item-title :class="(field.type === 'referenced') || field.type === 'referencedToApp' ? 'referenced-field' : ''">
             {{ field.label }}
           </v-list-item-title>
           <v-list-item-subtitle
             v-if="field.type === 'referenced'"
             class="font-italic"
           >
-            Reference {{ field.metadata.originalReference.label }}
+            Referenced Field {{ field.metadata.originalReference.label }}
+          </v-list-item-subtitle>
+          <v-list-item-subtitle
+            v-if="field.type === 'referencedToApp'"
+            class="font-italic"
+          >
+            Referenced App {{ field.metadata.originalReference.label }}
           </v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>

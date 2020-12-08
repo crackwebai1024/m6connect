@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="mb-8 px-0 py-0"
+    class="mb-8 px-0 py-0 w-full"
   >
     <post-item
       v-if="Object.keys(actionPost).length > 0"

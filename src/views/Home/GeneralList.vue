@@ -70,7 +70,7 @@
     </header-component>
     <div v-if="!loading">
       <template v-if="tableView">
-        <records-table :items="testItems" />
+        <records-table :items="records" />
       </template>
       <template v-else>
         <v-row
@@ -123,8 +123,7 @@ export default {
     perPage: 8,
     records: [],
     searchInput: '',
-    tableView: false,
-    testItems: []
+    tableView: false
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -248,7 +247,6 @@ export default {
     },
     async changingApps(app) {
       try {
-        this.testItems = await this.getRecordsByApp(app['prefix'])
         app.function()
       } catch (e) {
         // Empty
