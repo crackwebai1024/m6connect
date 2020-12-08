@@ -116,6 +116,16 @@
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
+      <v-chip
+        color="transparent"
+        disabled
+        text-color="black"
+      >
+        <strong>
+          {{ $t('cpm.projects.accrual') }}
+          {{ poAccrual | currency }}
+        </strong>
+      </v-chip>
     </v-row>
 
     <div class="text-center">
@@ -836,7 +846,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -1271,7 +1280,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -1487,7 +1495,7 @@ export default {
         Math.max(
           document.documentElement.clientHeight,
           window.innerHeight || 0
-        ) * 0.63,
+        ) * 0.53,
       projectId,
       showSearchingModal: false,
       projectRef: db.collection('cpm_projects').doc(projectId),
@@ -1717,7 +1725,7 @@ export default {
     },
 
     getViewPortHeight() {
-      return `${this.viewPortHeight}px !important`
+      return `${this.viewPortHeight}px`
     },
     budgetCategoryErrors() {
       if (
@@ -1827,6 +1835,11 @@ export default {
   methods: {
     testPagination(v) {
       console.log(v)
+    },
+    poAccrual() {
+      console.log(this.$h.dg(this, 'project', null))
+      let openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
+      return openWithAccrual
     },
     ...mapActions('companies/cpmProjects/spendings', {
       indexResource: 'indexELK'
@@ -2100,7 +2113,7 @@ export default {
           newLineItem[key] = this.dialogLineItemProperties[key]
         }
       })
-
+      console.log(newLineItem)
       this.loading = true
 
       const spendingReference = db.collection('cpm_projects')

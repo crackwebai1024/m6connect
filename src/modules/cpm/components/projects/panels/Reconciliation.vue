@@ -123,6 +123,13 @@
         disabled
         text-color="black"
       >
+        <strong>{{ $t('cpm.projects.accrual') }} {{ (poAccrual || 0) | currency }}</strong>
+      </v-chip>
+      <v-chip
+        color="transparent"
+        disabled
+        text-color="black"
+      >
         <strong>{{ $t('cpm.projects.reconciliationPanel.spent') }} {{ (poSpend || 0) | currency }}</strong>
       </v-chip>
     </v-row>
@@ -755,6 +762,10 @@ export default {
     },
     poTax() {
       return this.$h.dg(this.project, 'totals.openCommitmentTotal', 0)
+    },
+    poAccrual() {
+      let openWithAccrual = this.poAmount - this.$h.dg(this.project, 'totals.accrualAmount', 0)
+      return openWithAccrual
     },
     poSpend() {
       return this.$h.dg(this.project, 'totals.spendingTotal', 0)

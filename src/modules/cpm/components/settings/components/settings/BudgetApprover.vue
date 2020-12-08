@@ -72,11 +72,8 @@
       v-model="showForm"
       max-width="800px"
       persistent
-      scrollable
     >
-      <v-card class="mt-2">
-        class="headline"
-        style="background: #006699; color:#fff"
+      <v-card class="mt-2" :style='{height: viewportHeight}'
         >
         <v-row align="center">
           <label
@@ -169,7 +166,14 @@ export default {
   computed: {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
-    })
+    }),
+    viewportHeight () {
+      let h = Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        ) * 0.63
+      return `${h}px`
+    }
   },
   data() {
     return {
