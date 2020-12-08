@@ -29,6 +29,7 @@
         >
           {{ notification.post.actor.data.name }}
         </p>
+        <v-spacer />
         <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
       </div>
     </div>

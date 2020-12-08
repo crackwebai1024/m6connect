@@ -274,12 +274,12 @@ const typeMap = {
     {
       json: 'app_number',
       js: 'app_number',
-      typ: u(undefined, '')
+      typ: u(undefined, u(null, ''))
     },
     {
       json: 'app_type',
       js: 'app_type',
-      typ: u(undefined, r('AppType'))
+      typ: u(undefined, '')
     },
     {
       json: 'title',
