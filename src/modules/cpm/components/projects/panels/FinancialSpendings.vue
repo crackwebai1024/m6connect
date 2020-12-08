@@ -336,6 +336,52 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('general.documentNumber') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-text-field
+                    ref="docNumber"
+                    v-model="dialogProperties.docNumber"
+                    :label="$t('general.documentNumber')"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('general.accrual') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-text-field
+                    ref="accrual"
+                    v-model="dialogProperties.accrual"
+                    :label="$t('general.accrual')"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $tc('cpm.projects.commitment', 2) }}
                       </v-col>
                       <v-col class="shrink" />
@@ -442,8 +488,6 @@
                   <v-dialog
                     ref="dialogSpendingDateOpenedText"
                     v-model="dialogSpendingDateOpenedText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.dateOpenedText"
                     width="290px"
@@ -511,8 +555,6 @@
                   <v-dialog
                     ref="dialogSpendingPaidDateText"
                     v-model="dialogSpendingPaidDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.paidDateText"
                     width="290px"
@@ -919,8 +961,6 @@
                   <v-dialog
                     ref="dialogLineItemDateText"
                     v-model="dialogLineItemDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.dateText"
                     :rules="[rules.required]"
@@ -972,7 +1012,6 @@
                     ref="dialogLineItemPaidDateText"
                     v-model="dialogLineItemPaidDateText"
                     full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.paidDateText"
                     width="290px"
@@ -1470,7 +1509,9 @@ export default {
         description: '',
         budget_category: {
           ref: ''
-        }
+        },
+        docNumber: '',
+        accrual: ''
       },
       method: 'add',
       dialogSpending: false,

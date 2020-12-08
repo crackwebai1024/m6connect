@@ -53,7 +53,7 @@
                     v-bind="attrs"
                     icon
                     v-on="on"
-                    @click="$router.go(-1)"
+                    @click="$router.replace('/app/cpm')"
                   >
                     <v-icon color="blue lighten-1">
                       mdi-keyboard-return
@@ -91,7 +91,10 @@
           class="w-full"
         >
           <template v-if="activeTab === 0">
-            <panel-two-columns>
+            <panel-two-columns
+              left-column="4"
+              right-column="8"
+            >
               <div
                 slot="leftPanel"
                 class=""
@@ -175,7 +178,10 @@
                 slot="rightPanel"
                 class="mb-4 panel px-0"
               >
-                <project-social-media :external="true" class="px-0" />
+                <project-social-media
+                  class="px-0"
+                  :external="true"
+                />
               </div>
             </panel-two-columns>
           </template>

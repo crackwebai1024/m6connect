@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!loading"
-    class="dont-show-scroll h-full px-4 transparent vertical-scroll w-side"
+    class="dont-show-scroll h-full px-4 transparent vertical-scroll w-full"
   >
     <div class="align-center d-flex justify-space-between mb-1 mt-4 pl-3">
       <p class="font-weight-bold mb-0">
@@ -80,12 +80,11 @@
   </div>
   <v-container
     v-else
-    class="dont-show-scroll h-full px-4 transparent vertical-scroll w-side"
+    class="dont-show-scroll h-full px-4 text-center transparent vertical-scroll w-side"
   >
     <v-progress-circular
       color="primary"
       indeterminate
-      style="margin-left: 45%;"
     />
   </v-container>
 </template>
@@ -229,6 +228,28 @@ export default {
       })
     }
   },
+  watch: {
+    cUser: function (val) {
+      this.user = val
+      this.loading = true
+      this.workOrder().then(() => {
+        this.loading = false
+      })
+    },
+    actFeed: function () {
+      this.currentIndex = 0
+    }
+  },
+  mounted() {
+    this.setFilterTag({ key: 'everyone', value: 'Everyone' })
+    this.user = this.cUser
+    this.select('/wo_status').then(res => {
+      this.status = res.data
+    })
+    this.workOrder().then(() => {
+      this.loading = false
+    })
+  },
   methods: {
     ...mapActions('WorkOrderModule', {
       workOrder: 'setWorkOrder',
@@ -253,28 +274,6 @@ export default {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
     }
-  },
-  watch: {
-    cUser: function (val) {
-      this.user = val
-      this.loading = true
-      this.workOrder().then(() => {
-        this.loading = false
-      })
-    },
-    actFeed: function (val) {
-      this.currentIndex = 0
-    }
-  },
-  mounted() {
-    this.setFilterTag({ key: 'everyone', value: 'Everyone' })
-    this.user = this.cUser
-    this.select('/wo_status').then(res => {
-      this.status = res.data
-    })
-    this.workOrder().then(() => {
-      this.loading = false
-    })
   }
 }
 </script>
