@@ -7,7 +7,7 @@
         text 
         v-on="on"
       >
-        View Option
+        {{ currentChoice }}
       </v-btn>
     </template>
     <v-list>
@@ -16,7 +16,7 @@
         :key="index"
       >
         <v-list-item-title >
-          <v-btn text @click="$emit('input', choice.value)" >
+          <v-btn text @click="pickingView(choice)" >
             <v-icon class="black--text" >{{ choice.icon }}</v-icon> {{ choice.text }}
           </v-btn>
         </v-list-item-title>
@@ -30,10 +30,17 @@
 export default {
   name: "GeneralListDropDown",
   data: () => ({
+    currentChoice: 'Card View',
     choices: [
       { icon: 'mdi-table', text: 'Table View', value: true },
       { icon: 'mdi-arrange-bring-forward', text: 'Card View', value: false }
     ]
-  })
+  }),
+  methods: {
+    pickingView(choice) {
+      this.currentChoice = choice.text
+      $emit('input', choice.value)
+    }
+  }
 }
 </script>
