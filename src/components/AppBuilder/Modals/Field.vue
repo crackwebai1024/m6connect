@@ -259,8 +259,18 @@ export default {
     removeOption(index, item) {
       item.splice(index, 1)
     },
+    verifyMachineName(txt) {
+      let re = new RegExp('^[a-zA-Z0-9_]*$')
+      const res = re.test(txt)
+      return res
+    },
     async saveField(field) {
       try {
+        if( field.machine_name && !this.verifyMachineName(this.$h.dg( field, 'machine_name', '' ) ) ) {
+          this.notifDanger('A Machine Name Should Only Contain: Letters, Numbers or Underscores')
+          return
+        }
+        
         // eslint-disable-next-line camelcase
         const postData = {
           id: field.id,
