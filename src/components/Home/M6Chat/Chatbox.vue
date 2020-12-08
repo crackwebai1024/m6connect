@@ -5,6 +5,9 @@
     :class="[minimized ? 'minimized' : 'h-full']"
     elevation="3"
   >
+    <M6Loading
+      :loading="showLoading"
+    />
     <div
       class="align-center chat-title d-flex justify-space-between px-3"
       :class="[minimized ? 'blue lighten-2' : '']"
@@ -190,8 +193,7 @@
               <div class="relative">
                 <v-card
                   v-if="hover"
-                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
-                  style="margin-bottom: -90px; margin-left: -130px;"
+                  class="absolute left-0 max-w-none pa-1 top-0 w-fit z-20"
                 >
                   <v-btn
                     v-bind="attrs"
@@ -201,7 +203,7 @@
                     v-on="on"
                     @click="messageEdit = channel.data.id + '-channel'"
                   >
-                    Delete Group
+                    Delete Conversation
                   </v-btn>
                 </v-card>
                 <v-btn
@@ -327,8 +329,8 @@
                 class="d-flex ml-auto w-fit"
               >
                 <div
-                  v-for="(image, index) in message.images"
-                  :key="'imagemsg-' + index"
+                  v-for="(image, ind) in message.images"
+                  :key="'imagemsg-' + ind"
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
@@ -562,10 +564,42 @@
             :src="srcImageFile"
           >
           <v-btn
-            class="absolute btn-chat-shadow ml-2 right-0 top-0"
+            class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
             color="grey lighten-2"
             fab
-            style="height:15px; width:15px;"
+            @click="removeImage(index)"
+          >
+            <v-icon
+              size="12"
+            >
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </template>
+    <template v-if="srcVideoFiles.length > 0">
+      <div class="d-flex images-container mx-1 px-0 py-0">
+        <div
+          v-for="(srcVideo, index) in srcVideoFiles"
+          :key="'previewimage-' + index"
+          class="mx-1 relative w-fit"
+        >
+          <video
+            controls
+            height="100"
+            width="100"
+          >
+            <source
+              :src="srcVideo.url"
+              :type="srcVideo.type"
+            >
+            Your browser does not support the video tag.
+          </video>
+          <v-btn
+            class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+            color="grey lighten-2"
+            fab
             @click="removeImage(index)"
           >
             <v-icon
@@ -721,7 +755,7 @@
                   v-on="on"
                 >
                   <v-file-input
-                    accept="image/png, image/jpeg, image/bmp"
+                    accept="image/*, image/heif, image/heic, video/*, video/mp4, video/x-m4v, video/x-matroska, .mkv"
                     class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
                     hide-input
                     multiple
@@ -730,7 +764,7 @@
                   />
                 </div>
               </template>
-              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image</span>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image/Video</span>
             </v-tooltip>
           </v-list-item>
           <v-list-item class="ma-0 pa-0 uploadfile-btn">
@@ -800,6 +834,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
@@ -828,6 +863,7 @@ export default {
   },
   data: () => ({
     deleteDialog: false,
+    showLoading: false,
     hover: false,
     menu: false,
     input: '',
@@ -897,9 +933,23 @@ export default {
     srcImageFiles() {
       const srcImages = []
       this.imageFiles.forEach(imageFile => {
-        srcImages.push(URL.createObjectURL(imageFile))
+        if (imageFile['type'].substr(0, imageFile['type'].indexOf('/')) === 'image') {
+          srcImages.push(URL.createObjectURL(imageFile))
+        }
       })
       return srcImages
+    },
+    srcVideoFiles() {
+      const srcVideo = []
+      this.imageFiles.forEach(file => {
+        if (file['type'].substr(0, file['type'].indexOf('/')) === 'video') {
+          srcVideo.push({
+            url: URL.createObjectURL(file),
+            type: file['type']
+          })
+        }
+      })
+      return srcVideo
     }
   },
   watch: {
@@ -1114,6 +1164,7 @@ export default {
       ), 1)
     },
     updateMsg(event) {
+      this.showLoading = true
       const msgs = this.messages
       const index = msgs.indexOf(msgs.filter(e => e.id === event.message.id)[0])
       this.messages[index] = Object.assign(...[msgs[index], event.message])
@@ -1187,8 +1238,10 @@ export default {
       })
 
       if (this.imageFiles.length > 0) {
-        this.imageFiles.forEach(async image => {
-          await this.setStreamFiles({
+        this.showLoading = true
+        const urls = []
+        this.imageFiles.forEach(async (image, index) => {
+          const url = await this.setStreamFiles({
             files: image,
             headers: {
               'Content-Type': image['type'],
@@ -1197,14 +1250,18 @@ export default {
               'Stream-type': 'message'
             }
           })
-        })
 
-        const images = await this.getFileUrl(message['message']['id'])
-
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          images: images
+          urls.push(url['attachUrl'])
+          if (index === this.imageFiles.length - 1) {
+            await this.updateMessage({
+              id: message['message']['id'],
+              text: message['message']['text'],
+              images: urls
+            }).then(() => {
+              this.showLoading = false
+              this.imageFiles = []
+            })
+          }
         })
       }
 
@@ -1218,8 +1275,10 @@ export default {
 
 
       if (this.docFiles.length > 0) {
-        this.docFiles.forEach(async file => {
-          await this.setStreamFiles({
+        this.showLoading = true
+        const urls = []
+        this.docFiles.forEach(async (file, index) => {
+          const url = await this.setStreamFiles({
             files: file,
             headers: {
               'Content-Type': file['type'],
@@ -1228,20 +1287,22 @@ export default {
               'Stream-type': 'message'
             }
           })
-        })
 
-        const files = await this.getFileUrl(message['message']['id'])
-
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          files: files
+          urls.push(url['attachUrl'])
+          if (this.docFiles.length - 1 === index) {
+            this.updateMessage({
+              id: message['message']['id'],
+              text: message['message']['text'],
+              files: urls
+            }).then(() => {
+              this.showLoading = false
+              this.docFiles = []
+            })
+          }
         })
       }
 
       this.valueInput = ''
-      this.imageFiles = []
-      this.docFiles = []
       this.$nextTick(() => {
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
         this.$refs.inputMessage.focus()
@@ -1259,7 +1320,9 @@ export default {
       this.minimized = !this.minimized
     },
     onImagesChange(e) {
-      this.imageFiles = e
+      e.forEach(item => {
+        this.imageFiles.push(item)
+      })
       this.$refs.inputMessage.focus()
     },
     removeImage(index) {
@@ -1294,6 +1357,10 @@ v-icon, p {
 .chat-title {
   min-height: 60px;
   background: #F7FCFF;
+}
+.v-close-btn {
+  height: 15px!important;
+  width: 15px!important;
 }
 .-rotate-45 {
   transform: rotate(-45deg);
