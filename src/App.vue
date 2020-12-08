@@ -76,7 +76,7 @@ export default {
   methods: {
     ...mapMutations('SnackBarNotif', {
       notifClose: 'notifClose'
-    }),
+    })
   }
 }
 </script>
