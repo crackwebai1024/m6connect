@@ -115,6 +115,7 @@ import Panel from '@/components/AppBuilder/Panel'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'PanelDetailsTemplate',
   components: {
     DeleteDialog,
