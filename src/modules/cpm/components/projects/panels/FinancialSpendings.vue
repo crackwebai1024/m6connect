@@ -1760,7 +1760,7 @@ export default {
   },
 
   watch: {
-    lineItems: function (v){
+    lineItems: function (v) {
       console.log(v)
     },
     'project.totals.spendingTotal': function () {
@@ -1841,7 +1841,7 @@ export default {
     },
     poAccrual() {
       console.log(this.$h.dg(this, 'project', null))
-      let openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
+      const openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
       return openWithAccrual
     },
     ...mapActions('companies/cpmProjects/spendings', {
@@ -1857,7 +1857,8 @@ export default {
       submitDeleteSpending: 'delete',
       createLineItem: 'createLineItem',
       updateLineItem: 'updateLineItem',
-      submitDeleteLineItem: 'deleteLineItem'
+      submitDeleteLineItem: 'deleteLineItem',
+      updateAccrual: 'updateAccrual'
     }),
     cardDialogClick() {
       this.$refs.cardDialog.doubleClick()
@@ -2128,6 +2129,7 @@ export default {
         lineItem: newLineItem,
         projectId: this.projectId
       }).then(() => {
+        this.updateAccrual(this.$route.params.id)
         this.spendingToShow.lineItems.push(newLineItem)
         this.loading = false
         this.$snotify.success(
@@ -2664,6 +2666,7 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async doc => {
+        this.updateAccrual(this.$route.params.id)
         const spendingDoc = await doc.get()
         const spending = {
           id: spendingDoc.id,
@@ -2714,6 +2717,7 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async () => {
+        this.updateAccrual(this.$route.params.id)
         this.updateSpendingTotals()
 
         // adding files

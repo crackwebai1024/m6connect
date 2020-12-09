@@ -130,6 +130,23 @@ const actions = {
     })
   },
 
+  updateAccrual(_, projectId) {
+    db.collection('cpm_projects')
+      .doc(projectId)
+      .collection('commitments')
+      .get().then(async response => {
+        let accrual = 0
+        await Promise.all(response.docs.map(async item => {
+          const lines = await item.ref.collection('line_items').get()
+          await Promise.all(lines.docs.map(async line => {
+            const data = await line.data()
+            accrual += data.accrual || 0
+          }))
+          item.ref.update({ accrual })
+        }))
+      })
+  },
+
   deleteLineItem(_, { projectId, commitmentId, lineItemId }) {
     if (!projectId || !commitmentId || !lineItemId) return Promise.reject('bad request when updating line item')
 
