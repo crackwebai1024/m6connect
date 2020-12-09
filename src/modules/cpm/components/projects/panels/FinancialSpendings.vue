@@ -112,7 +112,7 @@
         text-color="black"
       >
         <strong>
-          {{ $t('cpm.projects.spending') }}
+          {{ $t('cpm.projects.spendingTotal') }}
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>

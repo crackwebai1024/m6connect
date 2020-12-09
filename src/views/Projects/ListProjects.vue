@@ -355,7 +355,6 @@
         :key="view.val"
       >
         <v-col cols="12">
-          <!--            :rows-per-page-items="pagination.itemsPerPage"-->
           <m6-data-table
             :footer-props="{
               'items-per-page-options': [5,10,15]
