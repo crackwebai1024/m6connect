@@ -1,7 +1,6 @@
 <template>
   <v-container
-    class="pa-0"
-    fluid
+    class="pa-0 ma-0 max-w-container"
   >
     <m6-list
       class="fluid it-apps-index max-w-container pt-0"
@@ -131,9 +130,8 @@
         v-if="isGridView"
         class="w-full"
         :items="resources"
-        :options.sync="pagination"
         :server-items-length="pagination.totalItems"
-        sort-by
+        :footer-props='footerProps'
         wrap
         @pagination="initialized ? debounceSearch(search) : null"
       >
@@ -361,7 +359,7 @@
             @update:column:
             :headers="headers"
             :items="resources"
-            :items-per-page-options="[5,10,30,200]"
+            :options.sync='pagination'
             :server-items-length="pagination.totalItems"
             width="
               ({ index, width }) => (headersWidth[index] = width)
@@ -647,6 +645,9 @@ export default {
   },
 
   data: vm => ({
+    footerProps: {
+      itemsPerPageOptions: [8]
+    },
     deleteProjectMessage: '',
     rfpModalTitle: '',
     showAssociatedRfpsModal: false,
@@ -693,7 +694,7 @@ export default {
       }
     ],
     pagination: {
-      sortBy: 'title',
+      sortBy: "title",
       descending: false,
       itemsPerPage: 8,
       totalItems: 0,
@@ -741,7 +742,7 @@ export default {
       return this.view.val === 'grid_view'
     },
 
-    rowsPerPageItems() {
+    itemsPerPageItems() {
       return [8, 16, 24, { text: 'All', value: 10000 }]
     },
     headers() {
@@ -977,7 +978,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
 
       if (this.campusOption && this.campusOption !== 'All') {
@@ -1102,7 +1103,7 @@ export default {
 
   watch: {
     isGridView(v) {
-      this.pagination.rowsPerPage = v ? 8 : 5
+      this.pagination.itemsPerPage = 8
     },
 
     'pagination.page': async function () {
@@ -1110,14 +1111,14 @@ export default {
         await this.getMileStones(this.resources)
       }
     },
-    'pagination.rowsPerPage': async function (value) {
+    'pagination.itemsPerPage': async function (value) {
       if (this.isGridView) {
         db.collection('m6user')
           .doc(this.currentCompany.id.toString())
           .collection('pagination')
           .doc(this.isPlanned ? 'planned' : 'projects')
           .set({
-            rowsPerPage: this.pagination.rowsPerPage
+            itemsPerPage: this.pagination.itemsPerPage
           })
       }
     },
@@ -1181,8 +1182,8 @@ export default {
       .get().then(doc => {
         if (doc.exists) {
           const data = doc.data()
-          if (data.rowsPerPage) {
-            this.pagination.rowsPerPage = data.rowsPerPage
+          if (data.itemsPerPage) {
+            this.pagination.itemsPerPage = data.itemsPerPage
           }
         }
       })
