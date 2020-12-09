@@ -92,21 +92,29 @@
         >
           <template v-if="activeTab === 0">
             <panel-two-columns
-              left-column="4"
-              right-column="8"
+              :left-column="4"
+              :right-column="8"
             >
               <div
                 slot="leftPanel"
                 class=""
               >
-
-                <v-col class='card-custom-shadow mb-3 px-6 py-5 rounded white' :key='index' v-for='(section,index) in projectInformation'>
+                <v-col
+                  v-for="(section,index) in projectInformation"
+                  :key="index"
+                  class="card-custom-shadow mb-3 px-6 py-5 rounded white"
+                >
                   <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
-                    {{index}}
+                    {{ index }}
                   </h3>
-                  <v-row :key='index' v-for='(item, index) in section'>
-                    <v-col class="flex-shrink-0 flex-grow-0 align-center d-flex">
-                      <v-icon color='grey lighten-1'>{{item.icon || 'mdi-information'}}</v-icon>
+                  <v-row
+                    v-for="(item, index) in section"
+                    :key="index"
+                  >
+                    <v-col class="align-center d-flex flex-grow-0 flex-shrink-0">
+                      <v-icon color="grey lighten-1">
+                        {{ item.icon || 'mdi-information' }}
+                      </v-icon>
                     </v-col>
                     <v-col class="flex-grow-1 flex-shrink-0">
                       <v-input :messages="item.label">
@@ -276,9 +284,9 @@
           <!--REPORTS-->
 
           <!--SETTINGS-->
-          <template v-if='activeTab === 6'>
+          <template v-if="activeTab === 6">
             <panel-full>
-              <settings-tab slot='content'/>
+              <settings-tab slot="content" />
             </panel-full>
           </template>
         </div>
@@ -292,7 +300,7 @@ const defaults = {
   money: '0.00',
   text: 'N/A',
   date: '--/--/----',
-  percent: '0',
+  percent: '0'
 }
 import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
@@ -345,9 +353,10 @@ export default {
   },
   data: () => ({
     projectInformation: {
-      "Project Quickview":[
+      'Project Quickview': [
         {
-          label: 'Project Manager',value: '',
+          label: 'Project Manager',
+          value: '',
           default: defaults.text,
           icon: 'mdi-badge-account'
         },
@@ -461,15 +470,15 @@ export default {
           value: '',
           default: defaults.money,
           icon: 'mdi-currency-usd'
-        },
+        }
       ],
-      'Commitments & Spendings' : [
+      'Commitments & Spendings': [
         {
           label: 'Spent to Date',
           value: '',
           default: defaults.money,
           icon: 'mdi-currency-usd'
-        },
+        }
       ]
     },
     tab: null,
