@@ -816,7 +816,8 @@ export default {
   methods: {
     ...mapActions('cpm/projects/commitments', {
       createLineItem: 'createLineItem',
-      updateLineItem: 'updateLineItem'
+      updateLineItem: 'updateLineItem',
+      updateAccrual: 'updateAccrual'
     }),
     update() {
       if (!this.$refs.form.validate()) {
@@ -830,6 +831,7 @@ export default {
         lineItemId: this.lineItemId
       })
         .then(() => {
+          this.updateAccrual(this.$route.params.id)
           this.showLoading = false
           this.$snotify.success(
             'The line item was successfully updated',
@@ -858,7 +860,7 @@ export default {
         lineItem: this.lineItem
       })
         .then(() => {
-          console.log(doc)
+          this.updateAccrual(this.$route.params.id)
           this.showLoading = false
           this.$snotify.success('The line item was added', 'Success')
           this.$emit('close')
