@@ -15,21 +15,31 @@
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <div class="align-center d-flex">
-        <v-img
-          v-if="record.image"
-          :alt="record.image"
-          class="rounded"
-          height="150"
-          :src="record.image"
-          width="180"
-        />
+        <div class="flex-row">
+          <v-img
+            v-if="record.image"
+            :alt="record.image"
+            class="rounded"
+            height="150"
+            :src="record.image"
+            width="180"
+          />
 
-        <v-icon
-          v-else
-          size="180"
-        >
-          mdi-store
-        </v-icon>
+          <v-icon
+            v-else
+            size="180"
+          >
+            mdi-store
+          </v-icon>
+
+          <m6-upload
+            btn-button="purple"
+            @loading="loading = !loading"
+            @response="recordImageRes"
+          >
+            <v-icon>mdi-cloud-upload</v-icon>
+          </m6-upload>
+        </div>
 
         <div class="ml-8">
           <p class="font-weight-regular mb-1 text-h7">
@@ -68,6 +78,8 @@
           <span class="d-inline-block ml-5">{{ app['title'] }}</span>
         </v-col>
       </v-row>
+
+      <m6-loading :loading="loading" />
     </div>
     <div
       slot="tabs"
@@ -163,7 +175,8 @@ export default {
 
   data: () => ({
     tabs: [],
-    currentTab: 0
+    currentTab: 0,
+    loading: false
   }),
 
   computed: {
@@ -195,16 +208,42 @@ export default {
 
   methods: {
     ...mapActions('AppBuilder', {
-      getApp: 'getApp'
+      getApp: 'getApp',
+      updateRecord: 'updateRecord'
     }),
     ...mapMutations('RecordsInstance', {
       displayAppBuilderShow: 'displayAppBuilderShow'
-    })
+    }),
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess'
+    }),
+    async recordImageRes(res) {
+      if (res.ok) {
+        this.record.image = res.data.link
+        try {
+          this.loading = true
+          await this.updateRecord(this.record)
+          this.loading = false
+          this.notifSuccess('Company Updated!')
+        } catch (e) {
+          this.loading = false
+          this.notifDanger('There was an error while saving the file')
+        }
+      } else {
+        this.notifDanger('There was an error while saving the file')
+      }
+    
+    }
   }
 
 }
 </script>
 
-<style lang="scs" scoped>
-
+<style lang="scss" scoped>
+.flex-row {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+}
 </style>
