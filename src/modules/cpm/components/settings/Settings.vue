@@ -1,23 +1,27 @@
 <template>
   <v-container
-    class='pa-0'
+    class="pa-0"
   >
-    <v-row class=""
+    <v-row
+      class="ma-0 pa-0"
     >
-      <v-col cols="4">
-        <v-card class="px-5">
-          <v-divider />
+      <v-col
+        class="pa-0 pr-1"
+        cols="4"
+      >
+        <v-card class="card-custom-shadow px-5">
           <v-list>
-            <v-row v-for="(setting, sindex) in settings"
-              :key="sindex">
-              
+            <v-row
+              v-for="(setting, sindex) in settings"
+              :key="sindex"
+            >
               <template>
                 <v-list-item
                   :class="activeSetting === setting ? 'settingActive' : ''"
                   @click="activateSettingFn(setting)"
                 >
                   <v-list-item-icon>
-                    <v-icon size='30'>
+                    <v-icon size="30">
                       {{ setting.icon }}
                     </v-icon>
                   </v-list-item-icon>
@@ -33,25 +37,34 @@
         </v-card>
       </v-col>
 
-      <v-col v-if="activeSetting !== null" cols="4" class=''>
+      <v-col
+        v-if="activeSetting !== null"
+        class="py-0"
+        cols="4"
+      >
         <options
           :options="activeSetting.options"
           @updateOption="updateOption"
         />
       </v-col>
 
-      <v-col cols="4" class=''>
-        <component :is="currentComponent" />
-        <v-card
-          v-if="showLoading"
-          width="100%"
-        >
-          <v-progress-circular
-            color="primary"
-            indeterminate
-            size="50"
-            style="margin-top: 45px; position: absolute; left: 50%"
-          />
+      <v-col
+        class="pa-0 pl-1"
+        cols="4"
+      >
+        <v-card class="card-custom-shadow pa-4 white">
+          <component :is="currentComponent" />
+          <v-card
+            v-if="!showLoading"
+            width="100%"
+          >
+            <v-progress-circular
+              color="primary"
+              indeterminate
+              size="50"
+              style="margin-top: 45px; position: absolute; left: 50%"
+            />
+          </v-card>
         </v-card>
       </v-col>
     </v-row>

@@ -1,5 +1,8 @@
 <template>
-  <v-card height="100%">
+  <v-card
+    class="card-custom-shadow"
+    height="100%"
+  >
     <v-card-text class="vertical-scroll">
       <v-list>
         <template v-for="(item, index) in options">
@@ -9,7 +12,9 @@
             @click="selectOption(item)"
           >
             <v-list-item-content>
-              <v-list-item-title :class="{'white--text' : optSelected == item.name }">{{item.name}}</v-list-item-title>
+              <v-list-item-title :class="{'white--text': optSelected == item.name }">
+                {{ item.name }}
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>

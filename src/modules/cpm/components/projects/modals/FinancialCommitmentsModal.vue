@@ -186,7 +186,6 @@
                       color="blue"
                       mask="date"
                       v-on="on"
-                      @click:append="showCalendarCompletionDate"
                     />
                   </template>
                   <v-date-picker
@@ -439,7 +438,8 @@ export default {
       commitment: {
         budget_category: {
           ref: ''
-        }
+        },
+        completionDateText: ''
       },
       lineItem: {},
       changes: [],
@@ -738,9 +738,6 @@ export default {
     setCompletionDate() {
       const date = DateTime.fromISO(this.commitment.completionDate)
       this.commitment.completionDateText = date.toFormat('MM/dd/yyyy')
-    },
-    showCalendarCompletionDate() {
-      this.$refs.completionDatePopup.isOpen = true
     },
     startSearchBudgetCategory() {
       this.showBudgetCategorySearch = true
