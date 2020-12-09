@@ -109,7 +109,6 @@
                 <v-dialog
                   ref="dialogStartDate"
                   v-model="modalStartDate"
-                  full-width
                   lazy
                   persistent
                   :return-value.sync="currentfiscalYear.startDate"
@@ -159,7 +158,6 @@
                 <v-dialog
                   ref="dialogEndDate"
                   v-model="modalEndDate"
-                  full-width
                   lazy
                   persistent
                   :return-value.sync="currentfiscalYear.endDate"

@@ -22,11 +22,11 @@ export default {
   },
   props: {
     rightColumn: {
-      type: Number,
+      type: [Number, String],
       default: 6
     },
     leftColumn: {
-      type: Number,
+      type: [Number, String],
       default: 6
     }
   },

@@ -131,19 +131,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 export default {
   name: 'ChangesReasons',
-  props: {
-    included: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    ...mapState('Companies', {
-      currentCompany: 'currentCompany'
-    })
-  },
-  data() {
-    return {
+  data (){ return{
       action: '',
       reasons: [],
       element: {},
@@ -173,7 +161,17 @@ export default {
         .collection('settings')
         .doc('changes')
         .collection('reasons')
+  }},
+  props: {
+    included: {
+      type: Boolean,
+      default: false
     }
+  },
+  computed: {
+    ...mapState('Companies', {
+      currentCompany: 'currentCompany'
+    })
   },
   methods: {
     executeAction() {
