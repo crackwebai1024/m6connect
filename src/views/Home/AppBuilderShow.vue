@@ -116,16 +116,27 @@
 
         <div slot="rightPanel">
           <div
-            v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 1 )"
-            :key="`p-l-${index}`"
-            class="mb-3 panel px-4 py-3 white"
+            v-if="currentTab === 0"
+            class="main-content px-3"
           >
-            <h3>{{ panel.title }}</h3>
-
-            <form-show-generator
-              :fields="$h.dg(panel, 'fields', [])"
-              :panel="panel"
+            <project-social-media
+              class="px-0"
+              :external="true"
             />
+          </div>
+          <div v-else>
+            <div
+              v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 1 )"
+              :key="`p-l-${index}`"
+              class="mb-3 panel px-4 py-3 white"
+            >
+              <h3>{{ panel.title }}</h3>
+
+              <form-show-generator
+                :fields="$h.dg(panel, 'fields', [])"
+                :panel="panel"
+              />
+            </div>
           </div>
         </div>
       </panel-two-columns>
@@ -136,7 +147,6 @@
 <script>
 import AppTemplate from '@/views/Home/AppTemplate'
 import ProjectSocialMedia from './ProjectSocialMedia'
-import PanelFull from '@/components/AppBuilder/Content/PanelFull'
 import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
@@ -147,10 +157,14 @@ export default {
   components: {
     AppTemplate,
     ProjectSocialMedia,
-    PanelFull,
     PanelTwoColumns,
     FormShowGenerator
   },
+
+  data: () => ({
+    tabs: [],
+    currentTab: 0
+  }),
 
   computed: {
     ...mapState('Companies', {
@@ -171,6 +185,14 @@ export default {
     }
   },
 
+  watch: {
+    async record(val) {
+      await this.$store.dispatch('GSFeed/setRoom', 'AppBuilder')
+      await this.$store.dispatch('GSFeed/setBuilderFeed', val.record_number.replace('#', '_'))
+      await this.$store.dispatch('GSFeed/retrieveFeed')
+    }
+  },
+
   methods: {
     ...mapActions('AppBuilder', {
       getApp: 'getApp'
@@ -178,12 +200,7 @@ export default {
     ...mapMutations('RecordsInstance', {
       displayAppBuilderShow: 'displayAppBuilderShow'
     })
-  },
-
-  data: () => ({
-    tabs: [],
-    currentTab: 0
-  })
+  }
 
 }
 </script>
