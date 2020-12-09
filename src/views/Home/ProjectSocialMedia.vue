@@ -796,6 +796,7 @@ export default {
         if (this.imageFiles.length === 0 && this.docsFiles.length === 0) {
           this.showLoading = false
         }
+        await this.$store.dispatch('GSFeed/cleanFeed')
 
         this.reloadFeed()
         this.urlInfo = {}
