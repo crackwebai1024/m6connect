@@ -362,7 +362,7 @@
         color="blue"
         dark
       >
-        <v-card-text class="pt-3 vertical-scroll">
+        <v-card-text class="pt-3">
           Please stand by, uploading files...
           <v-progress-linear
             class="mb-0"

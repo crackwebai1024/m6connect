@@ -2,9 +2,11 @@
   <v-dialog
     v-model="dialog"
     max-width="1200px"
-    persistent>
+    persistent
+  >
     <v-card
-      class="licensing-edit-modal">
+      class="licensing-edit-modal"
+    >
       <v-card-title class="headline px-6 py-4 white">
         <span class="grey--text text--darken-1">
           {{ $t('cpm.projects.budgetPanel.editBudget.budget') }}:
@@ -12,10 +14,10 @@
         </span>
         <v-btn
           absolute
-          right
           color="blue darken-2"
           dark
           fab
+          right
           small
           @click="createNewBudget"
         >
@@ -26,9 +28,11 @@
       </v-card-title>
       <v-divider class="grey lighten-3" />
 
-      <v-card-text 
-      :style='viewportHeight' class='vertical-scroll'>
-        <v-row class='d-flex'>
+      <v-card-text
+        class="vertical-scroll"
+        :style="viewportHeight"
+      >
+        <v-row class="d-flex">
           <v-col
             cols="4"
           >
@@ -200,7 +204,7 @@
                   color="blue"
                   dark
                 >
-                  <v-card-text class="vertical-scroll">
+                  <v-card-text class="pt-2">
                     {{ $t('general.uploadingFilesMessage') }}
                     <v-progress-linear
                       class="mb-0"
@@ -414,8 +418,8 @@ export default {
           document.documentElement.clientHeight,
           window.innerHeight || 0
         ) * 0.6
-        height = height - 5
-        return {'height' : `${height}px !important`}
+      height = height - 5
+      return { 'height': `${height}px !important` }
     },
     dialog: {
       get() {
