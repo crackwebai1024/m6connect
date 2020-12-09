@@ -364,9 +364,6 @@
             :items="resources"
             :options.sync="pagination"
             :server-items-length="pagination.totalItems"
-            @update:column:width="
-              ({ index, width }) => (headersWidth[index] = width)
-            "
             @update:options="debounceSearch(search)"
           >
             <template
