@@ -39,31 +39,33 @@
           <v-data-table
             :headers="headers"
             :items="settings.roles"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item.name }}</td>
-              <td>{{ props.item.users.length }}</td>
-              <td class="text-right">
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#757575"
-                  size="20"
-                  @click.prevent="editElement(props.item)"
-                >
-                  mdi-pencil
-                </v-icon>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item.name }}</td>
+                <td>{{ props.item.users.length }}</td>
+                <td class="text-right">
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#757575"
+                    size="20"
+                    @click.prevent="editElement(props.item)"
+                  >
+                    mdi-pencil
+                  </v-icon>
 
-                <v-icon
-                  class="ml-0 mr-0 pointer"
-                  color="#f44336"
-                  :disabled="props.item.name === 'Bid Manager'"
-                  size="20"
-                  @click.prevent="deleteElement(props.item)"
-                >
-                  mdi-delete
-                </v-icon>
-              </td>
+                  <v-icon
+                    class="ml-0 mr-0 pointer"
+                    color="#f44336"
+                    :disabled="props.item.name === 'Bid Manager'"
+                    size="20"
+                    @click.prevent="deleteElement(props.item)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>
@@ -75,7 +77,6 @@
       v-model="showForm"
       max-width="800px"
       persistent
-      scrollable
     >
       <v-card>
         <v-card-title class="headline px-6 py-4 white">
@@ -84,7 +85,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
+        <v-card-text :style='{height: viewportHeight}' class="vertical-scroll">
           <div class="form-group">
             <v-text-field
               v-model="roleName"
@@ -301,7 +302,14 @@ export default {
     ...mapGetters(['appLabel']),
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
-    })
+    }),
+    viewportHeight () {
+      let h = Math.max(
+          document.documentElement.clientHeight,
+          window.innerHeight || 0
+        ) * 0.63
+      return `${h}px`
+    }
   },
   mounted() {
     db.collection('settings')

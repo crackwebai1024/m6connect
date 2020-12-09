@@ -116,6 +116,16 @@
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
+      <v-chip
+        color="transparent"
+        disabled
+        text-color="black"
+      >
+        <strong>
+          {{ $t('cpm.projects.accrual') }}
+          {{ poAccrual | currency }}
+        </strong>
+      </v-chip>
     </v-row>
 
     <div class="text-center">
@@ -131,7 +141,7 @@
       :align-actions="alignActions"
       :headers="headersSpendings"
       :items="resources"
-      :items-per-page-options="[5,10,15,200]"
+      :footer-props='footerProps'
       :options.sync="pagination"
       @update:options="debounceSearch(search, false)"
     >
@@ -276,7 +286,7 @@
       >
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
-            {{ $t('cpm.projects.spending') }}
+            {{ $t('cpm.projects.spending') }} 
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
@@ -326,6 +336,52 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('general.documentNumber') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-text-field
+                    ref="docNumber"
+                    v-model="dialogProperties.docNumber"
+                    :label="$t('general.documentNumber')"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('general.accrual') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <money
+                    ref="accrual"
+                    v-model="dialogProperties.accrual"
+                    :label="$t('general.accrual')"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
                         {{ $tc('cpm.projects.commitment', 2) }}
                       </v-col>
                       <v-col class="shrink" />
@@ -356,6 +412,7 @@
               </v-row>
 
               <v-row
+                v-if="glaccount"
                 align="center"
                 justify="center"
               >
@@ -376,7 +433,7 @@
                     clearable
                     item-text="name"
                     item-value="code"
-                    :items="glaccount.codes"
+                    :items="glaccount.codes || []"
                     return-object
                   >
                     <template
@@ -431,8 +488,6 @@
                   <v-dialog
                     ref="dialogSpendingDateOpenedText"
                     v-model="dialogSpendingDateOpenedText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.dateOpenedText"
                     width="290px"
@@ -500,8 +555,6 @@
                   <v-dialog
                     ref="dialogSpendingPaidDateText"
                     v-model="dialogSpendingPaidDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.paidDateText"
                     width="290px"
@@ -793,7 +846,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -888,7 +940,6 @@
                     :items="vendors"
                     :label="$t('cpm.projects.vendorName')"
                     return-object
-                    :rules="[rules.required]"
                   />
                 </v-col>
                 <v-col
@@ -909,8 +960,6 @@
                   <v-dialog
                     ref="dialogLineItemDateText"
                     v-model="dialogLineItemDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.dateText"
                     :rules="[rules.required]"
@@ -961,8 +1010,6 @@
                   <v-dialog
                     ref="dialogLineItemPaidDateText"
                     v-model="dialogLineItemPaidDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.paidDateText"
                     width="290px"
@@ -1162,6 +1209,7 @@
           <v-spacer />
           <v-btn
             color="gray"
+            outlined
             :disabled="loading"
             :loading="loading"
             text
@@ -1190,6 +1238,7 @@
 
     <!-- show line items modal -->
     <v-dialog
+      v-if="showLineItemsModal"
       v-model="showLineItemsModal"
       max-width="1000px"
       persistent
@@ -1230,7 +1279,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -1243,7 +1291,6 @@
               <v-col md="12">
                 <v-data-table
                   :headers="headersLineItems"
-                  hide-default-footer
                   :items="spendingToShow.lineItems"
                   :items-per-page-options="[5,10,15,200]"
                 >
@@ -1430,6 +1477,9 @@ export default {
     const projectId = this.pid || this.$route.params.id
 
     return {
+      footerProps: {
+        itemsPerPageOptions: [5,10,15,200]
+      },
       defaultItemSpending: {
         number: '',
         costCodeText: '',
@@ -1447,7 +1497,7 @@ export default {
         Math.max(
           document.documentElement.clientHeight,
           window.innerHeight || 0
-        ) * 0.63,
+        ) * 0.53,
       projectId,
       showSearchingModal: false,
       projectRef: db.collection('cpm_projects').doc(projectId),
@@ -1461,7 +1511,9 @@ export default {
         description: '',
         budget_category: {
           ref: ''
-        }
+        },
+        docNumber: '',
+        accrual: ''
       },
       method: 'add',
       dialogSpending: false,
@@ -1675,7 +1727,7 @@ export default {
     },
 
     getViewPortHeight() {
-      return `${this.viewPortHeight}px !important`
+      return `${this.viewPortHeight}px`
     },
     budgetCategoryErrors() {
       if (
@@ -1710,6 +1762,9 @@ export default {
   },
 
   watch: {
+    lineItems: function (v) {
+      console.log(v)
+    },
     'project.totals.spendingTotal': function () {
       EventBus.$emit('refresh-commitments-panel-by-spendings')
     },
@@ -1786,6 +1841,11 @@ export default {
     testPagination(v) {
       console.log(v)
     },
+    poAccrual() {
+      console.log(this.$h.dg(this, 'project', null))
+      const openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
+      return openWithAccrual
+    },
     ...mapActions('companies/cpmProjects/spendings', {
       indexResource: 'indexELK'
     }),
@@ -1799,7 +1859,8 @@ export default {
       submitDeleteSpending: 'delete',
       createLineItem: 'createLineItem',
       updateLineItem: 'updateLineItem',
-      submitDeleteLineItem: 'deleteLineItem'
+      submitDeleteLineItem: 'deleteLineItem',
+      updateAccrual: 'updateAccrual'
     }),
     cardDialogClick() {
       this.$refs.cardDialog.doubleClick()
@@ -1958,6 +2019,7 @@ export default {
           await this.addLineItemSpending()
           break
         case 'put':
+          this.dialogLineItem = false
           await this.updateLineItemSpending()
           break
       }
@@ -2058,7 +2120,7 @@ export default {
           newLineItem[key] = this.dialogLineItemProperties[key]
         }
       })
-
+      console.log(newLineItem)
       this.loading = true
 
       const spendingReference = db.collection('cpm_projects')
@@ -2070,6 +2132,7 @@ export default {
         lineItem: newLineItem,
         projectId: this.projectId
       }).then(() => {
+        this.updateAccrual(this.$route.params.id)
         this.spendingToShow.lineItems.push(newLineItem)
         this.loading = false
         this.$snotify.success(
@@ -2108,7 +2171,6 @@ export default {
           }
         })
         this.loading = true
-
         const spendingReference = db.collection('cpm_projects')
           .doc(this.projectId)
           .collection('spendings')
@@ -2606,6 +2668,7 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async doc => {
+        this.updateAccrual(this.$route.params.id)
         const spendingDoc = await doc.get()
         const spending = {
           id: spendingDoc.id,
@@ -2656,6 +2719,7 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async () => {
+        this.updateAccrual(this.$route.params.id)
         this.updateSpendingTotals()
 
         // adding files

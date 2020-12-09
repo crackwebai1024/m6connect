@@ -18,8 +18,8 @@ Vue.filter('monthDayYear', (date, formatType = 'MM/dd/yyyy') => {
   try {
     return format(date, formatType)
   } catch (e) {
-    console.log(e)
-    console.log(date)
+    //console.log(e)
+    //console.log(date)
   }
 })
 

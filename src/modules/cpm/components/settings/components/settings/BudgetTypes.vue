@@ -102,7 +102,7 @@
             >
             <v-btn
               color="blue"
-              outline
+              outlined
               @click="cancel"
             >
               Cancel

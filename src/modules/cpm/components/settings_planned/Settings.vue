@@ -8,14 +8,10 @@
       class="fill-height"
     >
       <v-col cols="4">
-        <v-card class="card-settings">
+        <v-card class="card-settings px-2">
           <div style="flex-container">
-            <v-tooltip
-              v-for="(setting, sindex) in settings"
-              :key="sindex"
-              right
-            >
-              <template v-slot:activator="{ on }">
+              <div v-for="(setting, sindex) in settings"
+              :key="sindex">
                 <v-btn
                   class="blockbtn flex-column"
                   :class="activeSetting === setting ? 'settingActive' : ''"
@@ -29,9 +25,7 @@
                   </v-icon>
                   <div>{{ setting.name }}</div>
                 </v-btn>
-              </template>
-              <span>{{ setting.name }}</span>
-            </v-tooltip>
+              </div>
           </div>
         </v-card>
       </v-col>

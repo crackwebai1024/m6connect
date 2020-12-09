@@ -123,6 +123,13 @@
       >
         <strong>{{ $t('cpm.projects.open') }} {{ (poTax || 0) | currency }}</strong>
       </v-chip>
+      <v-chip
+        color="transparent"
+        disabled
+        text-color="black"
+      >
+        <strong>{{$t('cpm.projects.accrual')}} {{ (poAccrual || 0) | currency }}</strong>
+      </v-chip>
     </v-row>
 
     <m6-data-table
@@ -502,6 +509,11 @@ export default {
 
     poTax() {
       return this.$h.dg(this.project, 'totals.openCommitmentTotal', 0)
+    },
+    poAccrual() {
+      console.log(this.$h.dg(this, 'project', null))
+      let openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
+      return openWithAccrual
     },
 
     headers() {

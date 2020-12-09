@@ -4,7 +4,6 @@
     v-model="show"
     max-width="600px"
     persistent
-    scrollable
     transition="dialog-transition"
   >
     <v-card>

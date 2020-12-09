@@ -80,7 +80,7 @@ const actions = {
               'number',
               'paidDateText',
               'po_number',
-              //{ files: ['name', 'url', 'file', 'size', 'path'] },
+              // { files: ['name', 'url', 'file', 'size', 'path'] },
               { commitment: ['id', 'number', 'vendor'] },
               { budget_category: ['id', 'name', 'code'] }
             ]
@@ -107,7 +107,8 @@ const actions = {
         })
         .then(async response => {
           if (response.errors || response.error) {
-            return reject(response.errors || response.error)
+            // eslint-disable-next-line no-console
+            console.error(response.errors || response.error)
           }
           const result = response.data.cpmProjectSpendings
 
