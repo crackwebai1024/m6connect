@@ -143,6 +143,27 @@
                 <div class="font-weight-black subheading">
                   <v-row>
                     <v-col class="align-center d-flex text-nowrap">
+                      Accrual
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <money
+                  v-model="commitment.accrual"
+                  disabled
+                />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="align-center d-flex text-nowrap">
                       Status
                     </v-col>
                   </v-row>

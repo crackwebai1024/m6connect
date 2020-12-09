@@ -400,9 +400,9 @@
                   <td>
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
-                        <!--                        <span v-on="on">{{-->
-                        <!--                          $h.dg(item, 'lastStatusComment.comment', '') | trunc-->
-                        <!--                        }}</span>-->
+                        <span v-on="on">{{
+                          $h.dg(item, 'lastStatusComment.comment', '') | trunc
+                        }}</span>
                       </template>
                       <span>{{
                         $h.dg(item, 'lastStatusComment.comment', '')
@@ -487,9 +487,9 @@
                   <td>
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
-                        <!--                        <span v-on="on">{{-->
-                        <!--                          $h.dg(item, 'lastBudgetComment.comment', '') | trunc-->
-                        <!--                        }}</span>-->
+                        <span v-on="on">{{
+                          $h.dg(item, 'lastBudgetComment.comment', '') | trunc
+                        }}</span>
                       </template>
                       <span>{{
                         $h.dg(item, 'lastBudgetComment.comment', '')
