@@ -92,7 +92,7 @@ const actions = {
           limit: { value: limit, type: 'Int' },
           page: { value: page, type: 'Int' },
           sort: { value: sort, type: 'Sort' },
-          sortBy: { value: sortBy || 'title', type: 'String' }
+          sortBy: { value: sortBy[0] || 'title', type: 'String' }
         }
       })
 

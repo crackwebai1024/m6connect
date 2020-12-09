@@ -355,12 +355,16 @@
         :key="view.val"
       >
         <v-col cols="12">
+          <!--            :rows-per-page-items="pagination.itemsPerPage"-->
           <m6-data-table
+            :footer-props="{
+              'items-per-page-options': [5,10,15]
+            }"
             :headers="headers"
             :items="resources"
             :options.sync="pagination"
             :server-items-length="pagination.totalItems"
-            width="
+            @update:column:width="
               ({ index, width }) => (headersWidth[index] = width)
             "
             @update:options="debounceSearch(search)"
@@ -400,9 +404,9 @@
                   <td>
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
-                        <span v-on="on">{{
-                          $h.dg(item, 'lastStatusComment.comment', '') | trunc
-                        }}</span>
+                        <!--                        <span v-on="on">{{-->
+                        <!--                          $h.dg(item, 'lastStatusComment.comment', '') | trunc-->
+                        <!--                        }}</span>-->
                       </template>
                       <span>{{
                         $h.dg(item, 'lastStatusComment.comment', '')
@@ -487,9 +491,9 @@
                   <td>
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
-                        <span v-on="on">{{
-                          $h.dg(item, 'lastBudgetComment.comment', '') | trunc
-                        }}</span>
+                        <!--                        <span v-on="on">{{-->
+                        <!--                          $h.dg(item, 'lastBudgetComment.comment', '') | trunc-->
+                        <!--                        }}</span>-->
                       </template>
                       <span>{{
                         $h.dg(item, 'lastBudgetComment.comment', '')
@@ -516,7 +520,7 @@
                   </td>
                 </template>
 
-                <td class="justify-center layout">
+                <td class="">
                   <v-tooltip left>
                     <template v-slot:activator="{ on }">
                       <v-icon
@@ -695,9 +699,9 @@ export default {
       }
     ],
     pagination: {
-      sortBy: 'title',
+      sortBy: ['title'],
       descending: false,
-      itemsPerPage: 8,
+      itemsPerPage: vm.rowsPerPageItems,
       totalItems: 0,
       page: 1
     },
@@ -743,8 +747,12 @@ export default {
       return this.view.val === 'grid_view'
     },
 
-    itemsPerPageItems() {
-      return [8, 16, 24, { text: 'All', value: 10000 }]
+    rowsPerPageItems() {
+      if (this.isGridView) {
+        return [8, 16, 24]
+      }
+
+      return [5, 10, 25]
     },
     headers() {
       let headers = [
@@ -1104,7 +1112,7 @@ export default {
 
   watch: {
     isGridView(v) {
-      this.pagination.itemsPerPage = 8
+      this.pagination.itemsPerPage = v ? 8 : 10
     },
 
     'pagination.page': async function () {
