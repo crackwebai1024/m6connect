@@ -115,7 +115,7 @@
                             mdi-image-outline
                           </v-icon>
                           <span class="ml-2 my-0 pa-0">
-                            Image
+                            Image/Video
                           </span>
                         </v-list-item-title>
                       </v-list-item>
@@ -239,17 +239,17 @@
               <input
                 v-show="false"
                 ref="imageInput"
-                accept="image/*"
+                accept="image/*, image/heif, image/heic, video/*, video/mp4, video/x-m4v, video/x-matroska, .mkv"
                 multiple
                 type="file"
                 @change="onImagesChange"
               >
               <div
-                v-if="srcImageFiles.length > 0"
+                v-if="srcImageFiles.length > 0 || srcVideoFiles.length > 0"
                 class="align-center d-flex grey--text my-2 text-caption"
               >
                 <v-divider class="blue-grey lighten-5" />
-                <span class="mx-3">Images</span>
+                <span class="mx-3">Image/Video</span>
                 <v-divider class="blue-grey lighten-5" />
               </div>
               <div v-if="srcImageFiles.length > 0">
@@ -263,6 +263,38 @@
                       class="image-preview"
                       :src="srcImageFile"
                     >
+                    <v-btn
+                      class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                      color="grey lighten-2"
+                      fab
+                    >
+                      <v-icon
+                        size="12"
+                      >
+                        mdi-close
+                      </v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+              <div v-if="srcVideoFiles.length > 0">
+                <div class="d-flex images-container mx-1 px-0 py-0">
+                  <div
+                    v-for="(srcVideo, index) in srcVideoFiles"
+                    :key="'previewimage-' + index"
+                    class="mx-1 relative w-fit"
+                  >
+                    <video
+                      controls
+                      height="100"
+                      width="100"
+                    >
+                      <source
+                        :src="srcVideo.url"
+                        :type="srcVideo.type"
+                      >
+                      Your browser does not support the video tag.
+                    </video>
                     <v-btn
                       class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
                       color="grey lighten-2"
@@ -463,9 +495,23 @@ export default {
     srcImageFiles() {
       const srcImages = []
       this.imageFiles.forEach(imageFile => {
-        srcImages.push(URL.createObjectURL(imageFile))
+        if (imageFile['type'].substr(0, imageFile['type'].indexOf('/')) === 'image') {
+          srcImages.push(URL.createObjectURL(imageFile))
+        }
       })
       return srcImages
+    },
+    srcVideoFiles() {
+      const srcVideo = []
+      this.imageFiles.forEach(file => {
+        if (file['type'].substr(0, file['type'].indexOf('/')) === 'video') {
+          srcVideo.push({
+            url: URL.createObjectURL(file),
+            type: file['type']
+          })
+        }
+      })
+      return srcVideo
     },
     areas() {
       return [
@@ -772,7 +818,10 @@ export default {
     },
     onImagesChange(files) {
       files['srcElement']['files'].forEach(file => {
-        this.imageFiles.push(file)
+        const type = file['type'].substr(0, file['type'].indexOf('/'))
+        if (type === 'image' || type === 'video') {
+          this.imageFiles.push(file)
+        }
       })
     },
     removeImage(index) {
