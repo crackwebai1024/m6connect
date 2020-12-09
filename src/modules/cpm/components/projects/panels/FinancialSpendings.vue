@@ -940,7 +940,6 @@
                     :items="vendors"
                     :label="$t('cpm.projects.vendorName')"
                     return-object
-                    :rules="[rules.required]"
                   />
                 </v-col>
                 <v-col
@@ -1011,7 +1010,6 @@
                   <v-dialog
                     ref="dialogLineItemPaidDateText"
                     v-model="dialogLineItemPaidDateText"
-                    full-width
                     persistent
                     :return-value.sync="dialogLineItemProperties.paidDateText"
                     width="290px"
@@ -1211,6 +1209,7 @@
           <v-spacer />
           <v-btn
             color="gray"
+            outlined
             :disabled="loading"
             :loading="loading"
             text
@@ -2020,6 +2019,7 @@ export default {
           await this.addLineItemSpending()
           break
         case 'put':
+          this.dialogLineItem = false
           await this.updateLineItemSpending()
           break
       }
@@ -2171,7 +2171,6 @@ export default {
           }
         })
         this.loading = true
-
         const spendingReference = db.collection('cpm_projects')
           .doc(this.projectId)
           .collection('spendings')
