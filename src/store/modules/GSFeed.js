@@ -244,6 +244,9 @@ const actions = {
       }
     })
   },
+  cleanFeed({ commit }) {
+    commit('SET_TIMELINE', [])
+  },
   retrieveActivityReactions({ state }, id) {
     return new Promise(resolve => {
       state.client.reactions.filter({
