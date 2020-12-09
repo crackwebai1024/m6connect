@@ -837,17 +837,47 @@ export default {
             }
 
             // Verify if the line item already exists
-            if (formatedData.spendingLineItem_line_number) {
-              const checkLineItem = await this.getSpendingLineItem(project.id, spending.id, formatedData.spendingLineItem_line_number)
-              if (!checkLineItem) {
-                console.log('Creating Spending Line Item')
-                const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
-                await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
+            if (this.currentCompany.id === 809) {
+              let commitment = await this.getCommitment(project.id, number)
+
+              if (commitment.length > 1) {
+              // Error we can have just one commitment with the same number
+                this.$snotify.error('Commitment duplicated: ', 'Error')
               } else {
-                console.log('Skipping Line Item, already exists')
+                if (!commitment) {
+                  // Commitment not exists
+                  console.log('Commitment not exist, skipping')
+                } else {
+                  console.log('Using Existing Commitment')
+                  commitment = commitment[0]
+
+                  const clis = await this.getCommitmentLineItems(project.id, commitment.id)
+
+                  await Promise.all(clis.map(async cli => {
+                    if (!cli.spendingRef && cli.amount === formatedData.spendingLineItem_amount) {
+                      // Create line item
+                      console.log('Creating Spending Line Item')
+                      formatedData.commitmentLineRef = cli.ref
+                      const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
+                      cli.ref.update(newSpendingLineItem)
+                      await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
+                    }
+                  }))
+                }
               }
             } else {
-              console.log('Missing Spending Line item number')
+              if (formatedData.spendingLineItem_line_number) {
+                const checkLineItem = await this.getSpendingLineItem(project.id, spending.id, formatedData.spendingLineItem_line_number)
+                if (!checkLineItem) {
+                  console.log('Creating Spending Line Item')
+                  const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
+                  await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
+                } else {
+                  console.log('Skipping Line Item, already exists')
+                }
+              } else {
+                console.log('Missing Spending Line item number')
+              }
             }
           }
         }
@@ -890,6 +920,21 @@ export default {
         return false
       }
       return await Promise.all(docs.docs.map(async item => item))
+    },
+    async getCommitmentLineItems(projectId, commitmentId) {
+      const docs = await db.collection('cpm_projects')
+        .doc(projectId)
+        .collection('commitments')
+        .doc(commitmentId)
+        .collection('line_items')
+        .get()
+      if (docs.empty) {
+        return false
+      }
+      return await Promise.all(docs.docs.map(async item => {
+        const data = await item.data()
+        return { ...data, id: item.id, ref: item.ref }
+      }))
     },
     async getCommitmentLineItem(projectID, commitmentID, number) {
       const docs = await db.collection('cpm_projects')
@@ -1153,7 +1198,8 @@ export default {
         dist_seq_nbr: '',
         fiscalYear: item.others_fiscal_year || '',
         period: item.others_period || '',
-        api_obj_id: item.others_uid // uid
+        api_obj_id: item.others_uid || '', // uid,
+        commitmentLineRef: item.ref || ''
       }
 
       // Update amount

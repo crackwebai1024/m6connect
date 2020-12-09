@@ -7,14 +7,20 @@
           class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
           no-gutters
         >
-          <v-col v-if='!isProjectList' cols="3">
+          <v-col
+            v-if="!isFullScreen"
+            cols="3"
+          >
             <action-feed v-show="showSidePanels" />
           </v-col>
-          <v-col :cols="isProjectList ? 12 : 6">
+          <v-col :cols="isFullScreen ? 12 : 6">
             <!-- Home / Company Profile -->
             <router-view />
           </v-col>
-          <v-col v-if='!isProjectList' cols="3">
+          <v-col
+            v-if="!isFullScreen"
+            cols="3"
+          >
             <m6-chat v-show="showSidePanels" />
           </v-col>
         </v-row>
@@ -59,8 +65,8 @@ export default {
     //
   }),
   computed: {
-    isProjectList() {
-      return this.$route.name == 'app.cpm'
+    isFullScreen() {
+      return this.$route.name === 'app.cpm'
     },
     ...mapState(['layout']),
     ...mapGetters('Auth', {
