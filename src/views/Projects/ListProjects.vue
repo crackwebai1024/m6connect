@@ -356,10 +356,10 @@
       >
         <v-col cols="12">
           <m6-data-table
+            :disable-pagination="true"
             :headers="headers"
             :items="resources"
             :options.sync="pagination"
-            :server-items-length="pagination.totalItems"
             width="
               ({ index, width }) => (headersWidth[index] = width)
             "

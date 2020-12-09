@@ -112,7 +112,7 @@
         text-color="black"
       >
         <strong>
-          {{ $t('cpm.projects.spending') }}
+          {{ $t('cpm.projects.spendingTotal') }}
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
@@ -139,9 +139,9 @@
 
     <m6-data-table
       :align-actions="alignActions"
+      :footer-props="footerProps"
       :headers="headersSpendings"
       :items="resources"
-      :footer-props='footerProps'
       :options.sync="pagination"
       @update:options="debounceSearch(search, false)"
     >
@@ -286,7 +286,7 @@
       >
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
-            {{ $t('cpm.projects.spending') }} 
+            {{ $t('cpm.projects.spending') }}
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
@@ -1209,9 +1209,9 @@
           <v-spacer />
           <v-btn
             color="gray"
-            outlined
             :disabled="loading"
             :loading="loading"
+            outlined
             text
             @click="closeDialogLineSpending"
           >
@@ -1478,7 +1478,7 @@ export default {
 
     return {
       footerProps: {
-        itemsPerPageOptions: [5,10,15,200]
+        itemsPerPageOptions: [5, 10, 15, 200]
       },
       defaultItemSpending: {
         number: '',
