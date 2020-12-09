@@ -149,8 +149,7 @@ export default {
   props: {
     budget: { type: Object, default: () => {} },
     value: { type: Boolean, default: false },
-    type: { type: String, default: 'project' },
-    lineItems: { type: Object, default: () => {} }
+    type: { type: String, default: 'project' }
   },
 
   data() {
@@ -193,6 +192,7 @@ export default {
       costCodesAllArray: [],
       firebaseBudget: {},
       showLoading: false,
+      lineItems: { type: Object, default: () => {} },
       lineItemToDelete: {},
       selectedBudgetCategory: null
     }
