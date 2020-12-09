@@ -14,7 +14,6 @@
               <template>
                 <v-list-item
                   :class="activeSetting === setting ? 'settingActive' : ''"
-                  v-on="on"
                   @click="activateSettingFn(setting)"
                 >
                   <v-list-item-icon>

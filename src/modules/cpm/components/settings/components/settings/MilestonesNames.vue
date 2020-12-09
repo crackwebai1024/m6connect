@@ -40,31 +40,31 @@
             class="mainList"
             dense
           >
-            <v-list-tile class="myListHeader">
-              <v-list-tile-content>Name</v-list-tile-content>
-              <v-list-tile-action>Action</v-list-tile-action>
-            </v-list-tile>
+            <v-list-item class="myListHeader">
+              <v-list-item-content>Name</v-list-item-content>
+              <v-list-item-action>Action</v-list-item-action>
+            </v-list-item>
             <draggable
               v-model="settings.names"
               @end="drag = false"
               @start="drag = true"
               @update="saveOrder"
             >
-              <v-list-tile
+              <v-list-item
                 v-for="(item, key) in settings.names"
                 :key="key"
                 class="myList"
               >
-                <v-list-tile-avatar>
+                <v-list-item-avatar>
                   <v-icon
                     color="blue"
                     small
                   >
                     mdi-drag-variant
                   </v-icon>
-                </v-list-tile-avatar>
-                <v-list-tile-content>{{ item }}</v-list-tile-content>
-                <v-list-tile-action
+                </v-list-item-avatar>
+                <v-list-item-content>{{ item }}</v-list-item-content>
+                <v-list-item-action
                   style="flex-direction:row; justify-content: flex-end;"
                 >
                   <v-btn
@@ -83,8 +83,8 @@
                   >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
-                </v-list-tile-action>
-              </v-list-tile>
+                </v-list-item-action>
+              </v-list-item>
             </draggable>
           </v-list>
         </div>
@@ -172,26 +172,26 @@
                     </v-btn>
                   </v-subheader>
                   <div class="myBox">
-                    <v-list-tile
+                    <v-list-item
                       v-for="(item, index) in validDates"
                       :key="index"
                       @click=""
                     >
-                      <v-list-tile-content>
-                        <v-list-tile-title>{{ $moment(item).format('MM/DD/YYYY') }}</v-list-tile-title>
-                      </v-list-tile-content>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ $moment(item).format('MM/DD/YYYY') }}</v-list-item-title>
+                      </v-list-item-content>
 
-                      <v-list-tile-action>
+                      <v-list-item-action>
                         <v-icon @click="editValidDate(item, index)">
                           mdi-pencil
                         </v-icon>
-                      </v-list-tile-action>
-                      <v-list-tile-action>
+                      </v-list-item-action>
+                      <v-list-item-action>
                         <v-icon @click.prevent="deleteValidDate(key, item)">
                           mdi-delete
                         </v-icon>
-                      </v-list-tile-action>
-                    </v-list-tile>
+                      </v-list-item-action>
+                    </v-list-item>
                   </div>
                 </v-list>
 
