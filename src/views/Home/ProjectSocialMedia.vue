@@ -592,6 +592,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch('GSFeed/cleanFeed')
     if (!this.external) {
       this.companyState()
     }
