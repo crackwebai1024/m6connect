@@ -6,10 +6,10 @@
       :left="left"
       :multi-line="multiLine"
       :right="right"
-      :timeout="timeout"
       :top="top"
       :vertical="vertical"
     >
+
       <b class="white--text" >{{ text }}</b>
 
       <template v-slot:action="{ attrs }">
