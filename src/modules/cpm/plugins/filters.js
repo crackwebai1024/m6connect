@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import format from 'date-fns/format'
+import { truncate } from 'lodash'
+
 Vue.filter('formatPhoneNumber', function (phoneNumberString) {
   const cleaned = ('' + phoneNumberString).replace(/\D/g, '')
   const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
@@ -18,10 +20,21 @@ Vue.filter('monthDayYear', (date, formatType = 'MM/dd/yyyy') => {
   try {
     return format(date, formatType)
   } catch (e) {
-    //console.log(e)
-    //console.log(date)
+    // console.log(e)
+    // console.log(date)
   }
 })
+
+Vue.filter(
+  'trunc',
+  (
+    value = '',
+    options = {
+      length: 10,
+      separator: ''
+    }
+  ) => truncate(value, options)
+)
 
 Vue.filter('phone', (phone = '') =>
   phone.replace(/[^0-9]/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')
