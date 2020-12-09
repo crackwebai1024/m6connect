@@ -1,10 +1,13 @@
 <template>
-  <v-menu offset-y open-on-hover >
+  <v-menu
+    offset-y
+    open-on-hover
+  >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         v-bind="attrs"
         color="primary"
-        text 
+        text
         v-on="on"
       >
         {{ currentChoice }}
@@ -15,9 +18,14 @@
         v-for="(choice, index) in choices"
         :key="index"
       >
-        <v-list-item-title >
-          <v-btn text @click="pickingView(choice)" >
-            <v-icon class="black--text" >{{ choice.icon }}</v-icon> {{ choice.text }}
+        <v-list-item-title>
+          <v-btn
+            text
+            @click="pickingView(choice)"
+          >
+            <v-icon class="black--text">
+              {{ choice.icon }}
+            </v-icon> {{ choice.text }}
           </v-btn>
         </v-list-item-title>
       </v-list-item>
@@ -28,7 +36,7 @@
 
 <script>
 export default {
-  name: "GeneralListDropDown",
+  name: 'GeneralListDropDown',
   data: () => ({
     currentChoice: 'Card View',
     choices: [
@@ -39,7 +47,7 @@ export default {
   methods: {
     pickingView(choice) {
       this.currentChoice = choice.text
-      $emit('input', choice.value)
+      this.$emit('input', choice.value)
     }
   }
 }
