@@ -88,6 +88,14 @@
           </m6-upload>
           <v-btn
             class="white--text"
+            color="grey darken-2"
+            style="float: left;"
+            @click="tableView"
+          >
+            Table View
+          </v-btn>
+          <v-btn
+            class="white--text"
             color="green darken-2"
             style="float: right;"
             @click="updatingApp"
@@ -268,6 +276,11 @@
       <m6-loading
         :loading="loading"
       />
+
+      <table-view
+        :showTable="showTable"
+        @hideTableModal="hideTableModal"
+      />
     </template>
   </v-card>
 </template>
@@ -279,6 +292,7 @@ import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
 import AddField from '@/components/AppBuilder/Buttons/AddField'
 import Field from '@/components/AppBuilder/Modals/Field'
+import TableView from '@/components/AppBuilder/Modals/TableView'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
@@ -296,7 +310,8 @@ export default {
     Panel,
     TabUpdates,
     ProjectSocialMedia,
-    AppActivities
+    AppActivities,
+    TableView
   },
 
   data: () => ({
@@ -323,8 +338,7 @@ export default {
         required: false
       }
     },
-
-
+    showTable: false,
     rules: {
       generic: [v => !!v || 'This field is required']
     }
@@ -526,6 +540,14 @@ export default {
       this.fieldToDelete = null
       this.tabToDelete = null
       this.showDeleteModal = false
+    },
+
+    tableView() {
+      this.showTable = true
+    },
+
+    hideTableModal() {
+      this.showTable = false
     }
   }
 
