@@ -54,7 +54,6 @@
         cols="4"
       >
         <v-card class="card-custom-shadow pa-4 white">
-          skjjfsk
           <component :is="currentComponent" />
           <v-card
             v-if="!showLoading"
