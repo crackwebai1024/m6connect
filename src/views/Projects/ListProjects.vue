@@ -1,7 +1,6 @@
 <template>
   <v-container
-    class="pa-0"
-    fluid
+    class="ma-0 max-w-container pa-0"
   >
     <m6-list
       class="fluid it-apps-index max-w-container pt-0"
@@ -130,10 +129,9 @@
       <v-data-iterator
         v-if="isGridView"
         class="w-full"
+        :footer-props="footerProps"
         :items="resources"
-        :options.sync="pagination"
         :server-items-length="pagination.totalItems"
-        sort-by
         wrap
         @pagination="initialized ? debounceSearch(search) : null"
       >
@@ -358,10 +356,9 @@
       >
         <v-col cols="12">
           <m6-data-table
-            @update:column:
             :headers="headers"
             :items="resources"
-            :items-per-page-options="[5,10,30,200]"
+            :options.sync="pagination"
             :server-items-length="pagination.totalItems"
             width="
               ({ index, width }) => (headersWidth[index] = width)
@@ -369,185 +366,187 @@
             @update:options="debounceSearch(search)"
           >
             <template
-              slot="items"
+              slot="item"
               slot-scope="{ item }"
             >
-              <td class="pa-1 text-center">
-                <v-avatar :color="item.projectImage ? '' : 'indigo'">
-                  <img
-                    v-if="item.projectImage"
-                    :src="item.projectImage"
-                  >
-                  <v-icon
-                    v-else
-                    dark
-                  >
-                    mdi-wallpaper
-                  </v-icon>
-                </v-avatar>
-              </td>
-
-              <td>
-                <a
-                  href="#"
-                  @click.prevent="goToProject(item, false)"
-                >
-                  <span class="customColor0D47A1">{{ item.number }}</span>
-                </a>
-              </td>
-
-              <template v-if="!isPlanned">
-                <td>{{ item.status }}</td>
+              <tr>
+                <td class="pa-1 text-center">
+                  <v-avatar :color="item.projectImage ? '' : 'indigo'">
+                    <img
+                      v-if="item.projectImage"
+                      :src="item.projectImage"
+                    >
+                    <v-icon
+                      v-else
+                      dark
+                    >
+                      mdi-wallpaper
+                    </v-icon>
+                  </v-avatar>
+                </td>
 
                 <td>
-                  <v-tooltip top>
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">{{
-                        $h.dg(item, 'lastStatusComment.comment', '') | trunc
+                  <a
+                    href="#"
+                    @click.prevent="goToProject(item, false)"
+                  >
+                    <span class="customColor0D47A1">{{ item.number }}</span>
+                  </a>
+                </td>
+
+                <template v-if="!isPlanned">
+                  <td>{{ item.status }}</td>
+
+                  <td>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <span v-on="on">{{
+                          $h.dg(item, 'lastStatusComment.comment', '') | trunc
+                        }}</span>
+                      </template>
+                      <span>{{
+                        $h.dg(item, 'lastStatusComment.comment', '')
                       }}</span>
-                    </template>
-                    <span>{{
-                      $h.dg(item, 'lastStatusComment.comment', '')
-                    }}</span>
-                  </v-tooltip>
-                </td>
-              </template>
-
-              <td>{{ getCampus(item.campus) }}</td>
-
-              <td>
-                <v-menu
-                  nudge-top="70"
-                  offset-y
-                  open-on-hover
-                >
-                  <template v-slot:activator="{ on }">
-                    <div
-                      class="maxWidth9rem text-truncate"
-                      v-on="on"
-                    >
-                      {{ item.title }}
-                    </div>
-                  </template>
-
-                  <v-card color="rgb(255, 255, 255, 0.9)">
-                    <v-card-text class="vertical-scroll">
-                      {{ item.title }}
-                    </v-card-text>
-                  </v-card>
-                </v-menu>
-              </td>
-
-              <template v-if="isPlanned">
-                <td
-                  v-for="(fy, index) in fiscalYears"
-                  :key="index"
-                >
-                  {{ $h.dg(item, 'budgetsByFiscalYear[fy.value]', 0) | currency }}
-                </td>
-
-                <td>{{ getBudgetTotal(item) | currency }}</td>
-                <td>{{ getDates(item.id, 'RFP') }}</td>
-                <td>{{ getDates(item.id, 'Board Approval') }}</td>
-
-                <template v-if="showAllMileStones">
-                  <td>{{ getDates(item.id, 'startDate') }}</td>
-                  <td>{{ getDates(item.id, 'RFQ') }}</td>
-                  <td>{{ getDates(item.id, 'meeting') }}</td>
-                  <td>{{ getDates(item.id, 'RFP Due') }}</td>
-                  <td>{{ getDates(item.id, 'interviews') }}</td>
-                  <td>{{ getDates(item.id, 'draft') }}</td>
-                  <td>{{ getDates(item.id, 'contract') }}</td>
-                  <td>{{ getDates(item.id, 'final') }}</td>
-                  <td>{{ getDates(item.id, 'live') }}</td>
+                    </v-tooltip>
+                  </td>
                 </template>
 
+                <td>{{ getCampus(item.campus) }}</td>
+
                 <td>
-                  {{
-                    $tc('general.months', getDuration(item), {
-                      count: getDuration(item)
-                    })
-                  }}
-                </td>
-              </template>
-
-              <template v-if="!isPlanned">
-                <td
-                  class="maxWidth9rem text-truncate"
-                >
-                  {{ item.description }}
-                </td>
-
-                <td>{{ getManagerLabel(item) }}</td>
-
-                <td class="text-lg-right text-md-right text-right">
-                  {{ $h.dg(item, 'budget', 0) | currency }}
-                </td>
-              </template>
-
-              <template v-if="!isPlanned">
-                <td>
-                  <v-tooltip top>
+                  <v-menu
+                    nudge-top="70"
+                    offset-y
+                    open-on-hover
+                  >
                     <template v-slot:activator="{ on }">
-                      <span v-on="on">{{
-                        $h.dg(item, 'lastBudgetComment.comment', '') | trunc
-                      }}</span>
+                      <div
+                        class="maxWidth9rem text-truncate"
+                        v-on="on"
+                      >
+                        {{ item.title }}
+                      </div>
                     </template>
-                    <span>{{
-                      $h.dg(item, 'lastBudgetComment.comment', '')
-                    }}</span>
+
+                    <v-card color="rgb(255, 255, 255, 0.9)">
+                      <v-card-text class="vertical-scroll">
+                        {{ item.title }}
+                      </v-card-text>
+                    </v-card>
+                  </v-menu>
+                </td>
+
+                <template v-if="isPlanned">
+                  <td
+                    v-for="(fy, index) in fiscalYears"
+                    :key="index"
+                  >
+                    {{ $h.dg(item, 'budgetsByFiscalYear[fy.value]', 0) | currency }}
+                  </td>
+
+                  <td>{{ getBudgetTotal(item) | currency }}</td>
+                  <td>{{ getDates(item.id, 'RFP') }}</td>
+                  <td>{{ getDates(item.id, 'Board Approval') }}</td>
+
+                  <template v-if="showAllMileStones">
+                    <td>{{ getDates(item.id, 'startDate') }}</td>
+                    <td>{{ getDates(item.id, 'RFQ') }}</td>
+                    <td>{{ getDates(item.id, 'meeting') }}</td>
+                    <td>{{ getDates(item.id, 'RFP Due') }}</td>
+                    <td>{{ getDates(item.id, 'interviews') }}</td>
+                    <td>{{ getDates(item.id, 'draft') }}</td>
+                    <td>{{ getDates(item.id, 'contract') }}</td>
+                    <td>{{ getDates(item.id, 'final') }}</td>
+                    <td>{{ getDates(item.id, 'live') }}</td>
+                  </template>
+
+                  <td>
+                    {{
+                      $tc('general.months', getDuration(item), {
+                        count: getDuration(item)
+                      })
+                    }}
+                  </td>
+                </template>
+
+                <template v-if="!isPlanned">
+                  <td
+                    class="maxWidth9rem text-truncate"
+                  >
+                    {{ item.description }}
+                  </td>
+
+                  <td>{{ getManagerLabel(item) }}</td>
+
+                  <td class="text-lg-right text-md-right text-right">
+                    {{ $h.dg(item, 'budget', 0) | currency }}
+                  </td>
+                </template>
+
+                <template v-if="!isPlanned">
+                  <td>
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <span v-on="on">{{
+                          $h.dg(item, 'lastBudgetComment.comment', '') | trunc
+                        }}</span>
+                      </template>
+                      <span>{{
+                        $h.dg(item, 'lastBudgetComment.comment', '')
+                      }}</span>
+                    </v-tooltip>
+                  </td>
+
+                  <td class="text-lg-right text-md-right text-right">
+                    {{ $h.dg(item, 'totals.spendingTotal', 0) | currency }}
+                  </td>
+
+                  <td class="text-lg-right text-md-right text-right">
+                    {{ $h.dg(item, 'projectFinalCost', 0) | currency }}
+                  </td>
+
+                  <td>{{ item.startDate | monthDayYear }}</td>
+
+                  <td>
+                    {{ item.constructionStartDate | monthDayYear }}
+                  </td>
+
+                  <td>
+                    {{ item.constructionEndDate | monthDayYear }}
+                  </td>
+                </template>
+
+                <td class="justify-center layout">
+                  <v-tooltip left>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        class="mr-2 pointer"
+                        small
+                        v-on="on"
+                        @click="goToProject(item, false)"
+                      >
+                        mdi-pencil
+                      </v-icon>
+                    </template>
+                    <span>{{ $t('general.edit') }}</span>
+                  </v-tooltip>
+
+                  <v-tooltip right>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-if="item.canDelete"
+                        class="pointer"
+                        small
+                        v-on="on"
+                        @click="deleteProject(item)"
+                      >
+                        mdi-delete
+                      </v-icon>
+                    </template>
+                    <span>{{ $t('general.delete') }}</span>
                   </v-tooltip>
                 </td>
-
-                <td class="text-lg-right text-md-right text-right">
-                  {{ $h.dg(item, 'totals.spendingTotal', 0) | currency }}
-                </td>
-
-                <td class="text-lg-right text-md-right text-right">
-                  {{ $h.dg(item, 'projectFinalCost', 0) | currency }}
-                </td>
-
-                <td>{{ item.startDate | monthDayYear }}</td>
-
-                <td>
-                  {{ item.constructionStartDate | monthDayYear }}
-                </td>
-
-                <td>
-                  {{ item.constructionEndDate | monthDayYear }}
-                </td>
-              </template>
-
-              <td class="justify-center layout">
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      class="mr-2 pointer"
-                      small
-                      v-on="on"
-                      @click="goToProject(item, false)"
-                    >
-                      mdi-pencil
-                    </v-icon>
-                  </template>
-                  <span>{{ $t('general.edit') }}</span>
-                </v-tooltip>
-
-                <v-tooltip right>
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      v-if="item.canDelete"
-                      class="pointer"
-                      small
-                      v-on="on"
-                      @click="deleteProject(item)"
-                    >
-                      mdi-delete
-                    </v-icon>
-                  </template>
-                  <span>{{ $t('general.delete') }}</span>
-                </v-tooltip>
-              </td>
+              </tr>
             </template>
           </m6-data-table>
         </v-col>
@@ -647,6 +646,9 @@ export default {
   },
 
   data: vm => ({
+    footerProps: {
+      itemsPerPageOptions: [8]
+    },
     deleteProjectMessage: '',
     rfpModalTitle: '',
     showAssociatedRfpsModal: false,
@@ -741,7 +743,7 @@ export default {
       return this.view.val === 'grid_view'
     },
 
-    rowsPerPageItems() {
+    itemsPerPageItems() {
       return [8, 16, 24, { text: 'All', value: 10000 }]
     },
     headers() {
@@ -977,7 +979,7 @@ export default {
         search: this.search || '',
         sort: this.pagination.descending ? 'DESC' : 'ASC',
         sortBy: this.pagination.sortBy,
-        limit: this.pagination.rowsPerPage
+        limit: this.pagination.itemsPerPage
       }
 
       if (this.campusOption && this.campusOption !== 'All') {
@@ -1102,7 +1104,7 @@ export default {
 
   watch: {
     isGridView(v) {
-      this.pagination.rowsPerPage = v ? 8 : 5
+      this.pagination.itemsPerPage = 8
     },
 
     'pagination.page': async function () {
@@ -1110,14 +1112,14 @@ export default {
         await this.getMileStones(this.resources)
       }
     },
-    'pagination.rowsPerPage': async function (value) {
+    'pagination.itemsPerPage': async function (value) {
       if (this.isGridView) {
         db.collection('m6user')
           .doc(this.currentCompany.id.toString())
           .collection('pagination')
           .doc(this.isPlanned ? 'planned' : 'projects')
           .set({
-            rowsPerPage: this.pagination.rowsPerPage
+            itemsPerPage: this.pagination.itemsPerPage
           })
       }
     },
@@ -1181,8 +1183,8 @@ export default {
       .get().then(doc => {
         if (doc.exists) {
           const data = doc.data()
-          if (data.rowsPerPage) {
-            this.pagination.rowsPerPage = data.rowsPerPage
+          if (data.itemsPerPage) {
+            this.pagination.itemsPerPage = data.itemsPerPage
           }
         }
       })

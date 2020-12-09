@@ -141,7 +141,7 @@
       :align-actions="alignActions"
       :headers="headersSpendings"
       :items="resources"
-      :items-per-page-options="[5,10,15,200]"
+      :footer-props='footerProps'
       :options.sync="pagination"
       @update:options="debounceSearch(search, false)"
     >
@@ -286,7 +286,7 @@
       >
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
-            {{ $t('cpm.projects.spending') }}
+            {{ $t('cpm.projects.spending') }} 
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
@@ -366,7 +366,7 @@
                   </div>
                 </v-col>
                 <v-col cols="7">
-                  <v-text-field
+                  <money
                     ref="accrual"
                     v-model="dialogProperties.accrual"
                     :label="$t('general.accrual')"
@@ -1478,6 +1478,9 @@ export default {
     const projectId = this.pid || this.$route.params.id
 
     return {
+      footerProps: {
+        itemsPerPageOptions: [5,10,15,200]
+      },
       defaultItemSpending: {
         number: '',
         costCodeText: '',
@@ -1760,6 +1763,9 @@ export default {
   },
 
   watch: {
+    lineItems: function (v) {
+      console.log(v)
+    },
     'project.totals.spendingTotal': function () {
       EventBus.$emit('refresh-commitments-panel-by-spendings')
     },
@@ -1838,7 +1844,7 @@ export default {
     },
     poAccrual() {
       console.log(this.$h.dg(this, 'project', null))
-      let openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
+      const openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
       return openWithAccrual
     },
     ...mapActions('companies/cpmProjects/spendings', {
@@ -1854,7 +1860,8 @@ export default {
       submitDeleteSpending: 'delete',
       createLineItem: 'createLineItem',
       updateLineItem: 'updateLineItem',
-      submitDeleteLineItem: 'deleteLineItem'
+      submitDeleteLineItem: 'deleteLineItem',
+      updateAccrual: 'updateAccrual'
     }),
     cardDialogClick() {
       this.$refs.cardDialog.doubleClick()
@@ -2125,6 +2132,7 @@ export default {
         lineItem: newLineItem,
         projectId: this.projectId
       }).then(() => {
+        this.updateAccrual(this.$route.params.id)
         this.spendingToShow.lineItems.push(newLineItem)
         this.loading = false
         this.$snotify.success(
@@ -2661,6 +2669,7 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async doc => {
+        this.updateAccrual(this.$route.params.id)
         const spendingDoc = await doc.get()
         const spending = {
           id: spendingDoc.id,
@@ -2711,6 +2720,7 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async () => {
+        this.updateAccrual(this.$route.params.id)
         this.updateSpendingTotals()
 
         // adding files
