@@ -438,7 +438,8 @@ export default {
       commitment: {
         budget_category: {
           ref: ''
-        }
+        },
+        completionDateText: ''
       },
       lineItem: {},
       changes: [],
