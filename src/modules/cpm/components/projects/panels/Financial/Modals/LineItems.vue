@@ -46,7 +46,7 @@
           :items-per-page-options="[5,10,15,200]"
         >
           <template v-slot:item.category="{item}">
-            {{ item.items[0].budget_category.ref.name }}
+            {{ item.items[0].budget_category.ref.name || '' }}
           </template>
           <template v-slot:items="props">
             <tr
@@ -123,6 +123,29 @@
               </v-col>
             </v-row>
           </template>
+
+          <template v-slot:item.actions="props">
+            <td>
+              <v-col style="float: right;">
+                <v-icon
+                  class="ml-0 mr-2 pointer"
+                  color="#757575"
+                  size="20"
+                  @click.stop="editLineItem(props.item)"
+                >
+                  mdi-pencil
+                </v-icon>
+                <v-icon
+                  class="ml-0 mr-2 pointer"
+                  color="#f44336"
+                  size="20"
+                  @click.stop="deleteLineItem(props.item)"
+                >
+                  mdi-delete
+                </v-icon>
+              </v-col>
+            </td>
+          </template>
         </v-data-table>
         <div class="totals-container">
           <v-chip>{{ $t('general.subTotal') }}: {{ total | currency }}</v-chip>
@@ -171,6 +194,10 @@ export default {
         {
           text: this.$t('cpm.projects.budgetPanel.editBudget.amount'),
           value: 'amount'
+        },
+        {
+          text: 'Actions',
+          value: 'actions'
         }
       ],
       subHeaders: [
@@ -392,8 +419,11 @@ export default {
       this.lineItemToDelete = {}
     },
 
-    deleteConfirmed() {
+    async deleteConfirmed() {
       this.showLoading = true
+      const snapshot = await this.projectRef.collection('budgets').doc(this.budget.id).collection('lineItems').get()
+      const newsnap = snapshot.docs.map(doc => doc.data())
+      console.log(newsnap)
       this.projectRef
         .collection('budgets')
         .doc(this.budget.id)
