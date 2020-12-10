@@ -32,9 +32,9 @@
 
     <v-container class="pt-0">
       <v-data-table
+        :footer-props="footerProps"
         :headers="headers"
         :items="settings.types"
-        :footer-props="footerProps"
       >
         <template v-slot:items="props">
           <td>{{ props.item }}</td>
@@ -131,7 +131,7 @@ export default {
   },
   data() {
     return {
-      footerProps:{
+      footerProps: {
         'items-per-page-options': [5, 10, 15, 10000]
       },
       element: '',

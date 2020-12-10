@@ -78,17 +78,17 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="600px"
       persistent
     >
-      <v-card class="mt-2">
+      <v-card>
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Budget Types
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
+        <v-card-text>
           <v-form ref="form">
             <v-text-field
               v-model="element"
@@ -99,21 +99,24 @@
               v-model="currentElement"
               type="hidden"
             >
-            <v-btn
-              color="blue"
-              outlined
-              @click="cancel"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="blue"
-              dark
-              type="submit"
-              @click="save"
-            >
-              {{ submitLoading ? 'Saving...' : 'Save' }}
-            </v-btn>
+            <div class="d-flex justify-end">
+              <v-btn
+                class="mr-2"
+                color="blue"
+                outlined
+                @click="cancel"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue"
+                dark
+                type="submit"
+                @click="save"
+              >
+                {{ submitLoading ? 'Saving...' : 'Save' }}
+              </v-btn>
+            </div>
           </v-form>
         </v-card-text>
       </v-card>
