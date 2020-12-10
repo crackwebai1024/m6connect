@@ -116,16 +116,6 @@
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
-      <v-chip
-        color="transparent"
-        disabled
-        text-color="black"
-      >
-        <strong>
-          {{ $t('cpm.projects.accrual') }}
-          {{ poAccrual | currency }}
-        </strong>
-      </v-chip>
     </v-row>
 
     <div class="text-center">
@@ -350,30 +340,6 @@
                   />
                 </v-col>
               </v-row>
-
-              <v-row
-                align="center"
-                justify="center"
-              >
-                <v-col cols="3">
-                  <div class="font-weight-black subheading">
-                    <v-row>
-                      <v-col class="align-center d-flex text-nowrap">
-                        {{ $tc('general.accrual') }}
-                      </v-col>
-                      <v-col class="shrink" />
-                    </v-row>
-                  </div>
-                </v-col>
-                <v-col cols="7">
-                  <money
-                    ref="accrual"
-                    v-model="dialogProperties.accrual"
-                    :label="$t('general.accrual')"
-                  />
-                </v-col>
-              </v-row>
-
               <v-row
                 align="center"
                 justify="center"
@@ -1762,9 +1728,6 @@ export default {
   },
 
   watch: {
-    lineItems: function (v) {
-      console.log(v)
-    },
     'project.totals.spendingTotal': function () {
       EventBus.$emit('refresh-commitments-panel-by-spendings')
     },
@@ -1841,11 +1804,6 @@ export default {
     testPagination(v) {
       console.log(v)
     },
-    poAccrual() {
-      console.log(this.$h.dg(this, 'project', null))
-      const openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
-      return openWithAccrual
-    },
     ...mapActions('companies/cpmProjects/spendings', {
       indexResource: 'indexELK'
     }),
@@ -1859,8 +1817,7 @@ export default {
       submitDeleteSpending: 'delete',
       createLineItem: 'createLineItem',
       updateLineItem: 'updateLineItem',
-      submitDeleteLineItem: 'deleteLineItem',
-      updateAccrual: 'updateAccrual'
+      submitDeleteLineItem: 'deleteLineItem'
     }),
     cardDialogClick() {
       this.$refs.cardDialog.doubleClick()
@@ -2008,7 +1965,7 @@ export default {
 
     async saveLineItemSpending() {
       this.checkErrorsLineItem()
-
+      console.log(this.validLineItem)
       if (!this.validLineItem) {
         return
       }
@@ -2132,7 +2089,6 @@ export default {
         lineItem: newLineItem,
         projectId: this.projectId
       }).then(() => {
-        this.updateAccrual(this.$route.params.id)
         this.spendingToShow.lineItems.push(newLineItem)
         this.loading = false
         this.$snotify.success(
@@ -2668,7 +2624,6 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async doc => {
-        this.updateAccrual(this.$route.params.id)
         const spendingDoc = await doc.get()
         const spending = {
           id: spendingDoc.id,
@@ -2719,7 +2674,6 @@ export default {
         projectId: this.projectId,
         spending: auxSpending
       }).then(async () => {
-        this.updateAccrual(this.$route.params.id)
         this.updateSpendingTotals()
 
         // adding files

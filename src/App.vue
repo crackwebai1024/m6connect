@@ -32,7 +32,7 @@
         <router-view />
       </template>
     </div>
-
+    <vue-snotify />
     <m6-notification
       :danger="notifDanger"
       :snackbar="notifShow"

@@ -100,7 +100,6 @@
             <div class="d-flex justify-end w-full">
               <v-btn
                 class="grey--text text--darken-3"
-                flat
                 outlined
                 text
                 @click="cancel"
