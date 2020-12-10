@@ -642,7 +642,7 @@
       :class="[minimized ? 'd-none' : 'd-flex']"
     >
       <v-menu
-        :close-on-content-click="false"
+        :close-on-content-click="true"
         content-class="elevation-0"
         elevation="0"
         :offset-y="offset"
@@ -855,7 +855,7 @@
 
 <script>
 /* eslint-disable camelcase */
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
@@ -1028,6 +1028,10 @@ export default {
       getApps: 'getAvailableApps',
       getActions: 'getActionsFeed'
     }),
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess'
+    }),
     changeApp(event) {
       this.getActions(event).then(response => {
         this.options['records'] = response.data
@@ -1189,7 +1193,6 @@ export default {
       ), 1)
     },
     updateMsg(event) {
-      this.showLoading = true
       const msgs = this.messages
       const index = msgs.indexOf(msgs.filter(e => e.id === event.message.id)[0])
       this.messages[index] = Object.assign(...[msgs[index], event.message])
@@ -1251,88 +1254,89 @@ export default {
       }
     },
     async sendMessage() {
-      if (this.valueInput.trim().length === 0) {
+      try {
+        this.showLoading = true
+        const message = await this.$store.dispatch('GSChat/sendMessage', {
+          channel: this.channel,
+          message: this.valueInput
+        })
+
+        if (this.imageFiles.length > 0) {
+          
+          const urls = []
+          this.imageFiles.forEach(async (image, index) => {
+            const url = await this.setStreamFiles({
+              files: image,
+              headers: {
+                'Content-Type': image['type'],
+                'Content-Name': image['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+              }
+            })
+
+            urls.push(url['attachUrl'])
+            if (index === this.imageFiles.length - 1) {
+
+              await this.updateMessage({
+                id: message['message']['id'],
+                text: message['message']['text'],
+                images: urls
+              })
+                this.showLoading = false
+                this.imageFiles = []
+            }
+          })
+        }
+
+        if (this.itemInfo['panel']) {
+          await this.updateMessage({
+            id: message['message']['id'],
+            text: message['message']['text'],
+            panel: this.urlInfo
+          })
+        }
+
+
+        if (this.docFiles.length > 0) {
+          this.showLoading = true
+          const urls = []
+          this.docFiles.forEach(async (file, index) => {
+            const url = await this.setStreamFiles({
+              files: file,
+              headers: {
+                'Content-Type': file['type'],
+                'Content-Name': file['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+              }
+            })
+
+            urls.push(url['attachUrl'])
+            if (this.docFiles.length - 1 === index) {
+              this.updateMessage({
+                id: message['message']['id'],
+                text: message['message']['text'],
+                files: urls
+              }).then(() => {
+                this.showLoading = false
+                this.docFiles = []
+              })
+            }
+          })
+        }
+        this.showLoading = false
+
         this.valueInput = ''
-        this.$nextTick(() => this.$refs.inputMessage.focus())
-        return true
-      }
-
-      const message = await this.$store.dispatch('GSChat/sendMessage', {
-        channel: this.channel,
-        message: this.valueInput
-      })
-
-      if (this.imageFiles.length > 0) {
-        this.showLoading = true
-        const urls = []
-        this.imageFiles.forEach(async (image, index) => {
-          const url = await this.setStreamFiles({
-            files: image,
-            headers: {
-              'Content-Type': image['type'],
-              'Content-Name': image['name'],
-              'Stream-Id': message['message']['id'],
-              'Stream-type': 'message'
-            }
-          })
-
-          urls.push(url['attachUrl'])
-          if (index === this.imageFiles.length - 1) {
-            await this.updateMessage({
-              id: message['message']['id'],
-              text: message['message']['text'],
-              images: urls
-            }).then(() => {
-              this.showLoading = false
-              this.imageFiles = []
-            })
-          }
+        this.$nextTick(() => {
+          this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+          this.$refs.inputMessage.focus()
         })
+      } catch(e) {
+        this.notifDanger('There was an error while sending the message')
       }
-
-      if (this.itemInfo['panel']) {
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          panel: this.urlInfo
-        })
-      }
-
-
-      if (this.docFiles.length > 0) {
-        this.showLoading = true
-        const urls = []
-        this.docFiles.forEach(async (file, index) => {
-          const url = await this.setStreamFiles({
-            files: file,
-            headers: {
-              'Content-Type': file['type'],
-              'Content-Name': file['name'],
-              'Stream-Id': message['message']['id'],
-              'Stream-type': 'message'
-            }
-          })
-
-          urls.push(url['attachUrl'])
-          if (this.docFiles.length - 1 === index) {
-            this.updateMessage({
-              id: message['message']['id'],
-              text: message['message']['text'],
-              files: urls
-            }).then(() => {
-              this.showLoading = false
-              this.docFiles = []
-            })
-          }
-        })
-      }
-
-      this.valueInput = ''
-      this.$nextTick(() => {
-        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-        this.$refs.inputMessage.focus()
-      })
     },
+
     beforeDelete(decision, messageID) {
       this.messageEdit = ''
       this.deleteDialog = false
