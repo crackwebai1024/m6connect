@@ -83,7 +83,6 @@
       v-model="showForm"
       max-width="800px"
       persistent
-      scrollable
     >
       <v-card>
         <v-card-title class="headline px-6 py-4 white">

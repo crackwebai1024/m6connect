@@ -38,7 +38,7 @@
       </v-col>
 
       <v-col
-        v-if="activeSetting !== null"
+        v-if="activeSetting.options"
         class="py-0"
         cols="4"
       >
@@ -52,19 +52,8 @@
         class="pa-0 pl-1"
         cols="4"
       >
-        <v-card class="card-custom-shadow pa-4 white">
+        <v-card v-if='currentComponent' class="card-custom-shadow pa-4 white">
           <component :is="currentComponent" />
-          <v-card
-            v-if="!showLoading"
-            width="100%"
-          >
-            <v-progress-circular
-              color="primary"
-              indeterminate
-              size="50"
-              style="margin-top: 45px; position: absolute; left: 50%"
-            />
-          </v-card>
         </v-card>
       </v-col>
     </v-row>
