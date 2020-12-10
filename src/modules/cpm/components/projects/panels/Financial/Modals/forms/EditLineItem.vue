@@ -3,15 +3,15 @@
     mode="out-in"
     name="router-anim"
   >
-    <div class="row">
-      <div class="col-xs-12">
+    <div class="px-3">
+      <div class="w-full">
         <budget-category-select
           :category="lineItem.budget_category.ref"
           :errors="budgetCategoryErrors"
           @newCategory="setBudgetCategory"
         />
       </div>
-      <div class="col-xs-12">
+      <div class="w-full">
         <v-text-field
           v-model="lineItem.costCodeNumber"
           :append-icon="
@@ -23,7 +23,7 @@
         />
       </div>
 
-      <div class="col-xs-5 margin-top-25">
+      <div class="margin-top-25 w-full">
         <template v-if="lineItem.type === 'Amount'">
           <label>{{ lineItem.type }}</label>
           <money
@@ -107,18 +107,18 @@
 
       <div class="actions col-xs-12 margin-top-25 text-right">
         <v-btn
-          color="blue"
-          outline
+          class="mr-2"
+          color="white"
           @click="cancelLineItem"
         >
           Cancel
         </v-btn>
         <v-btn
-          color="blue darken-3"
+          color="blue darken-2"
           dark
           @click="saveLineItem"
         >
-          Save
+          Update
         </v-btn>
       </div>
       <div class="clearfix" />
