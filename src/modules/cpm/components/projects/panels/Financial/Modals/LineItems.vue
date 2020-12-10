@@ -45,6 +45,9 @@
           :items="budgetCategories"
           :items-per-page-options="[5,10,15,200]"
         >
+          <template v-slot:item.category="{item}">
+            {{ item.items[0].budget_category.ref.name }}
+          </template>
           <template v-slot:items="props">
             <tr
               @click="
