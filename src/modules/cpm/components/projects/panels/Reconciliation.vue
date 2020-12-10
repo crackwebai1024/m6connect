@@ -123,7 +123,7 @@
         disabled
         text-color="black"
       >
-        <strong>{{ $t('cpm.projects.accrual') }} {{ (poTax - project.accrual || 0) | currency }}</strong>
+        <strong>{{ $t('cpm.projects.poOpenAccrual') }} {{ (poTax - project.accrual || 0) | currency }}</strong>
       </v-chip>
       <v-chip
         color="transparent"

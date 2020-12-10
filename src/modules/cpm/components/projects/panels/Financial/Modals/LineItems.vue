@@ -45,6 +45,9 @@
           :items="budgetCategories"
           :items-per-page-options="[5,10,15,200]"
         >
+          <template v-slot:item.category="{item}">
+            {{ item.items[0].budget_category.ref.name }}
+          </template>
           <template v-slot:items="props">
             <tr
               @click="
@@ -149,8 +152,7 @@ export default {
   props: {
     budget: { type: Object, default: () => {} },
     value: { type: Boolean, default: false },
-    type: { type: String, default: 'project' },
-    lineItems: { type: Object, default: () => {} }
+    type: { type: String, default: 'project' }
   },
 
   data() {
@@ -193,6 +195,7 @@ export default {
       costCodesAllArray: [],
       firebaseBudget: {},
       showLoading: false,
+      lineItems: { type: Object, default: () => {} },
       lineItemToDelete: {},
       selectedBudgetCategory: null
     }
