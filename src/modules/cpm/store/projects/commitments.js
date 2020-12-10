@@ -135,6 +135,7 @@ const actions = {
       .doc(projectId)
       .collection('commitments')
       .get().then(async response => {
+        let totalAccrual = 0
         let accrual = 0
         await Promise.all(response.docs.map(async item => {
           const lines = await item.ref.collection('line_items').get()
@@ -143,7 +144,10 @@ const actions = {
             accrual += data.accrual || 0
           }))
           item.ref.update({ accrual })
+          totalAccrual += accrual
         }))
+        db.collection('cpm_projects')
+          .doc(projectId).update({ accrual: totalAccrual })
       })
   },
 

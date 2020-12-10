@@ -1467,6 +1467,7 @@ export const en = {
       photoUploadError: 'Photo upload Error',
       po: 'PO',
       accrual: 'Accrual',
+      poOpenAccrual: 'PO Open with Accrual',
       poNumber: 'Commitment Number',
       prelimNotices: 'Prelim Notices',
       proceedConfirm: 'Do you want to proceed?',

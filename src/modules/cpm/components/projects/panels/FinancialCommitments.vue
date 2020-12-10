@@ -128,7 +128,7 @@
         disabled
         text-color="black"
       >
-        <strong>{{ $t('cpm.projects.accrual') }} {{ (poAccrual || 0) | currency }}</strong>
+        <strong>{{ $t('cpm.projects.poOpenAccrual') }} {{ (poTax - project.accrual || 0) | currency }}</strong>
       </v-chip>
     </v-row>
 
@@ -509,10 +509,6 @@ export default {
 
     poTax() {
       return this.$h.dg(this.project, 'totals.openCommitmentTotal', 0)
-    },
-    poAccrual() {
-      const openWithAccrual = this.poAmount - this.$h.dg(this.project, 'accrual', 0)
-      return openWithAccrual
     },
 
     headers() {
