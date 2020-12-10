@@ -74,7 +74,7 @@
             </tr>
           </template>
 
-          <template v-slot:expand="props">
+          <template v-slot:expand="">
             <v-row justify="center">
               <v-col cols="11">
                 <v-data-table
@@ -434,7 +434,8 @@ export default {
 
     calculateBudgetTotal() {
       let budgetSubTotal = parseFloat(0.0)
-      this.lineItems.forEach(item => {
+      let lineItems = Object.values(this.$h.dg(this, 'lineItems', []))
+      lineItems.forEach(item => {
         if (item.type === 'Amount' && !item.belowSubtotal) {
           budgetSubTotal += parseFloat(item.amount)
         }

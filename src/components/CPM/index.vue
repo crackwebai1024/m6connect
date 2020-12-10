@@ -106,6 +106,9 @@
                 >
                   <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
                     {{ index }}
+                    <v-btn fab>
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
                   </h3>
                   <v-row
                     v-for="(item, index) in section"
