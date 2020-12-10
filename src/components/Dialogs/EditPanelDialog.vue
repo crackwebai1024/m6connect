@@ -10,7 +10,15 @@
             </v-card-title>
             <v-card-text :style='{height: height(), overflowX: "hidden"}' class='vertical-scroll pa-0'>
                 <v-row class='my-4 white px-5' :key='index' v-for="(item, index) in panel.items">
-                    <v-text-field single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
+                    <template v-if='item.default === defaults.money'>
+                        <v-col class='flex-shrink-1 flex-grow-0'>
+                            <v-icon>{{item.icon}}</v-icon>
+                        </v-col>
+                        <v-col class='flex-grow-1 flex-shrink-0'>
+                            <money :label='item.label'></money>
+                        </v-col>
+                    </template>
+                    <v-text-field v-else single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
                 </v-row>
             </v-card-text>
             <v-card-actions class='white'>
@@ -18,12 +26,12 @@
                 <v-btn
                     color="grey text--darken"
                     text
-                    @click="show = false">
+                    @click="closeDialog">
                     Cancel
                 </v-btn>
                 <v-btn
                     color="primary white--text"
-                    @click="submitSave">
+                    >
                     Submit
                 </v-btn>
             </v-card-actions>
@@ -31,12 +39,22 @@
     </v-dialog>
 </template>
 <script>
+import { Money } from 'v-money'
 export default {
+    components: {Money},
     name: 'edit-panel-dialog',
     model: {
         prop: 'show',
         event: 'show-change'
     },
+    data: () => ({
+        defaults: {
+            money: '0.00',
+            text: 'N/A',
+            date: '--/--/----',
+            percent: '0'
+        }
+    }),
     props: {
         show: {
             type: [Boolean, String],
@@ -55,6 +73,9 @@ export default {
             ) * 0.6
 
             return `${viewportSize}px`
+        },
+        closeDialog() {
+            this.$emit('show-change', false)
         }
     }
 }
