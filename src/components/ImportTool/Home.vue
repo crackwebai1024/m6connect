@@ -24,11 +24,15 @@
               </v-btn>
 
               <v-btn @click="rollBack('spendingLineItem')">
-                Rollback Spendings
+                Rollback SLI
               </v-btn>
 
               <v-btn @click="rollBack('commitment')">
                 Rollback Commitments
+              </v-btn>
+
+              <v-btn @click="rollBack('commitmentLineItem')">
+                Rollback CLI
               </v-btn>
 
               <v-btn @click="rollBack('project')">
@@ -406,6 +410,10 @@ export default {
             description: ''
           },
           {
+            name: 'Accrual',
+            description: ''
+          },
+          {
             name: 'Amount',
             description: ''
           },
@@ -753,7 +761,8 @@ export default {
       this.percentage = 0
       this.percentageDialog = true
 
-      for (let index = 0; index < this.fileData.data.length; index++) {
+      // for (let index = 0; index < this.fileData.data.length; index++) {
+      for (let index = 0; index < 10; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
@@ -882,7 +891,8 @@ export default {
           }
         }
 
-        this.percentage = (index * 100) / this.fileData.data.length
+        // this.percentage = (index * 100) / this.fileData.data.length
+        this.percentage = (index * 100) / 10
       }
       this.percentage = 100
     },
@@ -1057,7 +1067,7 @@ export default {
         createdBy: 'm6works_import_tool',
         budgetCategory: bc.name || '', // Name
         budget_category: bc.ref || {}, // reference,
-        api_obj_id: item.others_uid // uid
+        api_obj_id: item.others_uid || '' // uid
       }
 
       return new Promise(resolve => {
@@ -1084,10 +1094,10 @@ export default {
         open_po_amount: '',
         description: item.commitmentLineItem_description || '',
         description2: item.commitmentLineItem_description_2 || '',
-        wbsElement: item.commitmentLineItem_wbs_element,
+        wbsElement: item.others_wbs_element || '',
         fiscalYear: item.others_fiscal_year || '',
         period: item.others_period || '',
-        api_obj_id: item.others_uid // uid
+        api_obj_id: item.others_uid || ''// uid
       }
       return new Promise(resolve => {
         const spending = db.collection('cpm_projects')
@@ -1154,7 +1164,7 @@ export default {
             custom_id: item.others_vendor_code || ''
           }
         ],
-        api_obj_id: item.others_uid // uid
+        api_obj_id: item.others_uid || '' // uid
       }
 
       return new Promise(resolve => {

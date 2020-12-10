@@ -100,7 +100,6 @@
             <div class="d-flex justify-end w-full">
               <v-btn
                 class="grey--text text--darken-3"
-                flat
                 outlined
                 text
                 @click="cancel"
@@ -121,6 +120,16 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <!--DELETE MODAL-->
+    <m6-confirm-delete
+      v-if="showBudgetStatusDeleteModal"
+      :message="$t('cpm.projects.budgetPanel.confirmBudgetStatus') + ' ' + budgetStatusDeleteItemName"
+      :show="showBudgetStatusDeleteModal"
+      :title="$t('cpm.projects.budgetPanel.deleteBudgetStatus')"
+      @cancel="showBudgetStatusDeleteModal = false"
+      @confirm="submitDelete"
+    />
+    <!--DELETE MODAL-->
   </div>
 </template>
 
@@ -129,6 +138,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetStatus',
   props: {
     included: {
       type: Boolean,
@@ -147,6 +157,9 @@ export default {
       settings: {},
       submitLoading: false,
       showForm: false,
+      showBudgetStatusDeleteModal: false,
+      budgetStatusDeleteItemId: '',
+      budgetStatusDeleteItemName: '',
       rules: {
         required: value => !!value || 'Required.'
       },
@@ -208,15 +221,13 @@ export default {
       this.cancel()
     },
     deleteElement(id, name) {
-      const confirmation = confirm(
-        `Do you want to delete this budget status: ${name}`
-      )
-      if (confirmation) {
-        this.submitDelete(id)
-      }
+      this.budgetStatusDeleteItemId = id
+      this.budgetStatusDeleteItemName = name
+      this.showBudgetStatusDeleteModal = true
     },
-    submitDelete(id) {
-      this.settings.status.splice(id, 1)
+    submitDelete() {
+      this.showBudgetStatusDeleteModal = false
+      this.settings.status.splice(this.budgetStatusDeleteItemI, 1)
       db.collection('settings')
         .doc(this.currentCompany.id)
         .collection('settings')

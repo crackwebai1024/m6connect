@@ -10,22 +10,24 @@
       <v-col cols="4">
         <v-card class="card-settings px-2">
           <div style="flex-container">
-              <div v-for="(setting, sindex) in settings"
-              :key="sindex">
-                <v-btn
-                  class="blockbtn flex-column"
-                  :class="activeSetting === setting ? 'settingActive' : ''"
-                  icon
-                  style="height:150px; width:100%; cursor: pointer;"
-                  v-on="on"
-                  @click="activateSettingFn(setting)"
-                >
-                  <v-icon style="font-size:80px;">
-                    {{ setting.icon }}
-                  </v-icon>
-                  <div>{{ setting.name }}</div>
-                </v-btn>
-              </div>
+            <div
+              v-for="(setting, sindex) in settings"
+              :key="sindex"
+            >
+              <v-btn
+                class="blockbtn flex-column"
+                :class="activeSetting === setting ? 'settingActive' : ''"
+                icon
+                style="height:150px; width:100%; cursor: pointer;"
+                v-on="on"
+                @click="activateSettingFn(setting)"
+              >
+                <v-icon style="font-size:80px;">
+                  {{ setting.icon }}
+                </v-icon>
+                <div>{{ setting.name }}</div>
+              </v-btn>
+            </div>
           </div>
         </v-card>
       </v-col>

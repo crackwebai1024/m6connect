@@ -32,9 +32,9 @@
 
     <v-container class="pt-0">
       <v-data-table
+        :footer-props="footerProps"
         :headers="headers"
         :items="settings.types"
-        :footer-props="footerProps"
       >
         <template v-slot:items="props">
           <td>{{ props.item }}</td>
@@ -115,6 +115,7 @@ import ComponentTemplate from '../ComponentTemplate'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetTypes',
   components: {
     ComponentTemplate
   },
@@ -131,7 +132,7 @@ export default {
   },
   data() {
     return {
-      footerProps:{
+      footerProps: {
         'items-per-page-options': [5, 10, 15, 10000]
       },
       element: '',

@@ -78,18 +78,17 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="600px"
       persistent
-      scrollable
     >
-      <v-card class="mt-2">
+      <v-card>
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Budget Types
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
+        <v-card-text>
           <v-form ref="form">
             <v-text-field
               v-model="element"
@@ -100,25 +99,38 @@
               v-model="currentElement"
               type="hidden"
             >
-            <v-btn
-              color="blue"
-              outlined
-              @click="cancel"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="blue"
-              dark
-              type="submit"
-              @click="save"
-            >
-              {{ submitLoading ? 'Saving...' : 'Save' }}
-            </v-btn>
+            <div class="d-flex justify-end">
+              <v-btn
+                class="mr-2"
+                color="blue"
+                outlined
+                @click="cancel"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue"
+                dark
+                type="submit"
+                @click="save"
+              >
+                {{ submitLoading ? 'Saving...' : 'Save' }}
+              </v-btn>
+            </div>
           </v-form>
         </v-card-text>
       </v-card>
     </v-dialog>
+    <!--DELETE MODAL-->
+    <m6-confirm-delete
+      v-if="showBudgetTypeDeleteModal"
+      :message="$t('cpm.projects.budgetPanel.confirmBudgetType') + ' ' + budgetTypeDeleteItemName"
+      :show="showBudgetTypeDeleteModal"
+      :title="$t('cpm.projects.budgetPanel.deleteBudgetType')"
+      @cancel="showBudgetTypeDeleteModal = false"
+      @confirm="submitDelete"
+    />
+    <!--DELETE MODAL-->
   </div>
 </template>
 
@@ -127,6 +139,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetTypes',
   props: {
     included: {
       type: Boolean,
@@ -145,6 +158,9 @@ export default {
       settings: {},
       submitLoading: false,
       showForm: false,
+      showBudgetTypeDeleteModal: false,
+      budgetTypeDeleteItemId: '',
+      budgetTypeDeleteItemName: '',
       rules: {
         required: value => !!value || 'Required.'
       },
@@ -206,15 +222,13 @@ export default {
       this.cancel()
     },
     deleteElement(id, name) {
-      const confirmation = confirm(
-        `Do you want to delete this budget type: ${name}`
-      )
-      if (confirmation) {
-        this.submitDelete(id)
-      }
+      this.budgetTypeDeleteItemId = id
+      this.budgetTypeDeleteItemName = name
+      this.showBudgetTypeDeleteModal = true
     },
-    submitDelete(id) {
-      this.settings.types.splice(id, 1)
+    submitDelete() {
+      this.showBudgetTypeDeleteModal = false
+      this.settings.types.splice(this.budgetTypeDeleteItemId, 1)
       db.collection('settings')
         .doc(this.currentCompany.id)
         .collection('settings')

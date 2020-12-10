@@ -47,3 +47,5 @@ Vue.filter('currency', num => {
     currency: 'USD'
   })
 })
+
+Vue.filter('trunc', (str = '') => truncate)
