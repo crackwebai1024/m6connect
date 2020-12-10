@@ -18,12 +18,12 @@
                 <v-btn
                     color="grey text--darken"
                     text
-                    @click="show = false">
+                    @click="closeDialog">
                     Cancel
                 </v-btn>
                 <v-btn
                     color="primary white--text"
-                    @click="submitSave">
+                    >
                     Submit
                 </v-btn>
             </v-card-actions>
@@ -55,6 +55,9 @@ export default {
             ) * 0.6
 
             return `${viewportSize}px`
+        },
+        closeDialog() {
+            this.$emit('show-change', false)
         }
     }
 }
