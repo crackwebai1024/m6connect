@@ -117,6 +117,16 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <!--DELETE MODAL-->
+    <m6-confirm-delete
+      v-if="showBudgetLineDeleteModal"
+      :message="$t('cpm.projects.budgetPanel.confirmBudgetLine') + ' ' + budgetLineDeleteItemName"
+      :show="showBudgetLineDeleteModal"
+      :title="$t('cpm.projects.budgetPanel.deleteBudgetLine')"
+      @cancel="showBudgetLineDeleteModal = false"
+      @confirm="submitDelete"
+    />
+    <!--DELETE MODAL-->
   </div>
 </template>
 
@@ -125,6 +135,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetLine',
   props: {
     included: {
       type: Boolean,
@@ -143,6 +154,9 @@ export default {
       settings: {},
       submitLoading: false,
       showForm: false,
+      showBudgetLineDeleteModal: false,
+      budgetLineDeleteItemId: '',
+      budgetLineDeleteItemName: '',
       rules: {
         required: value => !!value || 'Required.'
       },
@@ -211,15 +225,13 @@ export default {
       this.cancel()
     },
     deleteElement(id, name) {
-      const confirmation = confirm(
-        `Do you want to delete this budget Line Item Type: ${name}`
-      )
-      if (confirmation) {
-        this.submitDelete(id)
-      }
+      this.budgetLineDeleteItemId = id
+      this.budgetLineDeleteItemName = name
+      this.showBudgetLineDeleteModal = true
     },
-    submitDelete(id) {
-      this.settings.lineItemTypes.splice(id, 1)
+    submitDelete() {
+      this.showBudgetLineDeleteModal = false
+      this.settings.lineItemTypes.splice(this.budgetLineDeleteItemId, 1)
       db.collection('settings')
         .doc(this.currentCompany.id)
         .collection('settings')

@@ -115,6 +115,7 @@ import ComponentTemplate from '../ComponentTemplate'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetTypes',
   components: {
     ComponentTemplate
   },
