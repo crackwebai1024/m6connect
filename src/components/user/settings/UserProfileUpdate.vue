@@ -99,12 +99,11 @@ export default {
     }),
     async reponseProfileImg(res) {
       if(res.ok) {
-        const user = {...this.user}
-        user.profilePic = res.data.link
+        this.user.profilePic = res.data.link
 
         try {
           this.loading = true
-          await this.updateUserData(user)
+          await this.updateUserData(this.user)
           this.loading = false
           this.notifSuccess('Updated!')
         } catch(e) {
