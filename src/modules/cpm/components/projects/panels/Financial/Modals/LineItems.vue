@@ -79,44 +79,42 @@
           </template>
 
           <template v-slot:item.lineitems="props">
-            <v-row justify="center">
-              <v-col cols="11">
-                <v-data-table
-                  class="elevation-1"
-                  disable-sort
-                  :headers="subHeaders"
-                  :hide-default-footer="true"
-                  :items="props.item.items"
-                >
-                  <template v-slot:item.createdat="props">
-                    {{ getDate(props.item.createdAt) }}
-                  </template>
-                  <template v-slot:item.amount="props">
-                    {{ props.item.amount | currency }}
-                  </template>
-                  <template v-slot:item.actions="props">
-                    <div class="d-flex">
-                      <v-icon
-                        class="ml-0 mr-2 pointer"
-                        color="#757575"
-                        size="20"
-                        @click.stop="editLineItem(props.item)"
-                      >
-                        mdi-pencil
-                      </v-icon>
-                      <v-icon
-                        class="ml-0 mr-2 pointer"
-                        color="#f44336"
-                        size="20"
-                        @click.stop="deleteLineItem(props.item)"
-                      >
-                        mdi-delete
-                      </v-icon>
-                    </div>
-                  </template>
-                </v-data-table>
-              </v-col>
-            </v-row>
+            <div class="py-3">
+              <v-data-table
+                class="elevation-1"
+                disable-sort
+                :headers="subHeaders"
+                :hide-default-footer="true"
+                :items="props.item.items"
+              >
+                <template v-slot:item.createdat="props">
+                  {{ getDate(props.item.createdAt) }}
+                </template>
+                <template v-slot:item.amount="props">
+                  {{ props.item.amount | currency }}
+                </template>
+                <template v-slot:item.actions="props">
+                  <div class="d-flex">
+                    <v-icon
+                      class="ml-0 mr-2 pointer"
+                      color="#757575"
+                      size="20"
+                      @click.stop="editLineItem(props.item)"
+                    >
+                      mdi-pencil
+                    </v-icon>
+                    <v-icon
+                      class="ml-0 mr-2 pointer"
+                      color="#f44336"
+                      size="20"
+                      @click.stop="deleteLineItem(props.item)"
+                    >
+                      mdi-delete
+                    </v-icon>
+                  </div>
+                </template>
+              </v-data-table>
+            </div>
           </template>
         </v-data-table>
         <div class="totals-container">
