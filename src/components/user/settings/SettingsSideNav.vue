@@ -10,21 +10,26 @@
         </v-list-item-title>
       </v-list-item>
 
-      <v-list-item class="cursor-pointer">
-        <v-list-item-title @click="pickingComponent({ name: 'company-show', size: 9 })">
-          My Company
-        </v-list-item-title>
+      <v-list-item class="cursor-pointer no-flex">
+        <v-menu
+          absolute
+          offset-y
+          style="max-width: 600px"
+        >
+          <template v-slot:activator="{ on }">
+            <span v-on="on">My Company</span>
+          </template>
+
+          <v-list>
+            <v-list-item @click="pickingComponent({ name: 'company-show', size: 9 })">
+              Company Settings
+            </v-list-item>
+            <v-list-item @click="pickingComponent({ name: 'user-mangement-table' })">
+              User Settings
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-list-item>
-
-      <v-list-group>
-        <template v-slot:activator>
-          <v-list-item-title>User Mangement</v-list-item-title>
-        </template>
-
-        <v-list-item @click="pickingComponent({ name: 'user-mangement-table' })">
-          All Users
-        </v-list-item>
-      </v-list-group>
 
       <div class="px-2">
         <hr>
@@ -62,6 +67,9 @@ export default {
 
 <style lang="scss" scoped>
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
+}
+.no-flex {
+  display: block;
 }
 </style>
