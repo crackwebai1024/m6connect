@@ -147,8 +147,9 @@ const actions = {
     })
   },
   updateMessage({ commit }, info) {
-    return new Promise(() => {
+    return new Promise((resolve, _) => {
       commit('EDIT_MESSAGE', info)
+      resolve(true)
     })
   },
   removeChat({ commit }, payload) {
