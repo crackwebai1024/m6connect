@@ -40,13 +40,14 @@
           @edited="lineItemEdited"
         />
         <v-data-table
+          disable-sort
           :headers="headers"
           item-key="category.name"
           :items="budgetCategories"
           :items-per-page-options="[5,10,15,200]"
         >
           <template v-slot:item.category="{item}">
-            {{ item.items[0].budget_category.ref.name }}
+            {{ item.items[0].budget_category.ref.name || '' }}
           </template>
           <template v-slot:items="props">
             <tr
@@ -77,51 +78,43 @@
             </tr>
           </template>
 
-          <template v-slot:expand="">
-            <v-row justify="center">
-              <v-col cols="11">
-                <v-data-table
-                  class="elevation-1"
-                  :headers="subHeaders"
-                  :items="selectedBudgetCategory.items"
-                  :items-per-page-options="[5,10,15,200]"
-                >
-                  <template v-slot:items="props">
-                    <tr style="background-color: rgba(0, 0, 0, 0.05);">
-                      <td>
-                        {{ getDate(props.item.createdAt) }}
-                      </td>
-                      <td class="">
-                        {{ props.item.type }}
-                      </td>
-                      <td>
-                        {{ props.item.amount | currency }}
-                      </td>
-                      <td>
-                        <v-col style="float: right;">
-                          <v-icon
-                            class="ml-0 mr-2 pointer"
-                            color="#757575"
-                            size="20"
-                            @click.stop="editLineItem(props.item)"
-                          >
-                            mdi-pencil
-                          </v-icon>
-                          <v-icon
-                            class="ml-0 mr-2 pointer"
-                            color="#f44336"
-                            size="20"
-                            @click.stop="deleteLineItem(props.item)"
-                          >
-                            mdi-delete
-                          </v-icon>
-                        </v-col>
-                      </td>
-                    </tr>
-                  </template>
-                </v-data-table>
-              </v-col>
-            </v-row>
+          <template v-slot:item.lineitems="">
+            <div class="py-3">
+              <v-data-table
+                class="elevation-1"
+                disable-sort
+                :headers="subHeaders"
+                :hide-default-footer="true"
+                :items="props.item.items"
+              >
+                <template v-slot:item.createdat="props">
+                  {{ getDate(props.item.createdAt) }}
+                </template>
+                <template v-slot:item.amount="props">
+                  {{ props.item.amount | currency }}
+                </template>
+                <template v-slot:item.actions="props">
+                  <div class="d-flex">
+                    <v-icon
+                      class="ml-0 mr-2 pointer"
+                      color="#757575"
+                      size="20"
+                      @click.stop="editLineItem(props.item)"
+                    >
+                      mdi-pencil
+                    </v-icon>
+                    <v-icon
+                      class="ml-0 mr-2 pointer"
+                      color="#f44336"
+                      size="20"
+                      @click.stop="deleteLineItem(props.item)"
+                    >
+                      mdi-delete
+                    </v-icon>
+                  </div>
+                </template>
+              </v-data-table>
+            </div>
           </template>
         </v-data-table>
         <div class="totals-container">
@@ -162,7 +155,6 @@ export default {
       projectRef: db.collection('cpm_projects').doc(this.$route.params.id),
       settings: {},
       headers: [
-        { text: '', width: '1%', sortable: false },
         {
           text: this.$t('cpm.projects.budgetPanel.editBudget.budgetCategory'),
           value: 'category',
@@ -171,12 +163,17 @@ export default {
         {
           text: this.$t('cpm.projects.budgetPanel.editBudget.amount'),
           value: 'amount'
+        },
+        {
+          text: 'Line Items',
+          value: 'lineitems'
         }
       ],
       subHeaders: [
         {
           text: this.$t('cpm.projects.budgetPanel.editBudget.createdAt'),
-          sortable: false
+          sortable: false,
+          value: 'createdat'
         },
         {
           text: this.$t('cpm.projects.budgetPanel.editBudget.type'),
@@ -186,7 +183,7 @@ export default {
           text: this.$t('cpm.projects.budgetPanel.editBudget.amount'),
           value: 'amount'
         },
-        { text: this.$t('general.actions'), sortable: false }
+        { text: this.$t('general.actions'), sortable: false, value: 'actions' }
       ],
       showNewItem: false,
       showEditItem: false,
@@ -392,7 +389,7 @@ export default {
       this.lineItemToDelete = {}
     },
 
-    deleteConfirmed() {
+    async deleteConfirmed() {
       this.showLoading = true
       this.projectRef
         .collection('budgets')
