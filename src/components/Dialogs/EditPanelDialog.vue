@@ -11,14 +11,34 @@
             <v-card-text :style='{height: height(), overflowX: "hidden"}' class='vertical-scroll pa-0'>
                 <v-row class='my-4 white px-5' :key='index' v-for="(item, index) in panel.items">
                     <template v-if='item.default === defaults.money'>
-                        <v-col class='flex-shrink-1 flex-grow-0'>
+                        <v-col class='flex-shrink-1 flex-grow-0 pa-0 d-flex align-center'>
                             <v-icon>{{item.icon}}</v-icon>
                         </v-col>
                         <v-col class='flex-grow-1 flex-shrink-0'>
-                            <money :label='item.label'></money>
+                            <money v-model='item.value' :label='item.label'></money>
                         </v-col>
                     </template>
-                    <v-text-field v-else single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
+
+                    <template v-else-if='item.default === defaults.date'>
+                        <v-menu offset-y v-model='datePickers[index]' :close-on-content-click='false'>
+                            <template v-slot:activator='{on, attrs}'>
+                                <v-text-field single-line
+                                    :prepend-icon="item.icon"
+                                    :label='item.label'
+                                    v-on='on'
+                                    v-model='item.value'
+                                    v-bind='attrs'>
+                                </v-text-field>
+                            </template>
+                            <v-date-picker
+                                elevation="13"
+                                header-color="white"
+                                v-model="item.value"
+                                @input="datePickers[index] = false">
+                            </v-date-picker>
+                        </v-menu>
+                    </template>
+                    <v-text-field v-model='item.value' v-else single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
                 </v-row>
             </v-card-text>
             <v-card-actions class='white'>
@@ -31,7 +51,7 @@
                 </v-btn>
                 <v-btn
                     color="primary white--text"
-                    >
+                    @click='savePanel()'>
                     Submit
                 </v-btn>
             </v-card-actions>
@@ -40,6 +60,9 @@
 </template>
 <script>
 import { Money } from 'v-money'
+import { db } from '@/utils/Firebase'
+
+
 export default {
     components: {Money},
     name: 'edit-panel-dialog',
@@ -48,6 +71,7 @@ export default {
         event: 'show-change'
     },
     data: () => ({
+        datePickers: {},
         defaults: {
             money: '0.00',
             text: 'N/A',
@@ -76,6 +100,44 @@ export default {
         },
         closeDialog() {
             this.$emit('show-change', false)
+        },
+        //Move this function to Vuex mutations
+        savePanel() {
+            //helper function
+            function camelize(str) {
+            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+                return index === 0 ? word.toLowerCase() : word.toUpperCase();
+            }).replace(/\s+/g, '').replace('/', '');
+            }
+            let items = {}
+            this.panel.items.forEach((item, index) => {
+                items[camelize(item.label)] = item.value
+            })
+
+            let map = {}
+
+            if (this.panel.title == 'Project Quickview') {
+                map = {
+                    basic: items
+                }
+            } else if (this.panel.title == 'Schedule & Budget') {
+                map = {
+                    schedule: items
+                }
+            }else {
+                map = {
+                    milestones: items
+                }
+            }
+
+            
+            //this.$snotify.success('Changes saved')
+            db.collection('cpm_projects').doc(this.$route.params.id).update(map)
+            .then(doc => {
+                this.$snotify.success('Changes saved')
+                this.closeDialog()
+            })
+            .catch(err => this.$snotify.error('Something went wrong', 'Changes not saved'))
         }
     }
 }

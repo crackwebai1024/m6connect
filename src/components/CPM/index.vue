@@ -546,7 +546,7 @@ export default {
   methods: {
     showPanelEditModal (panel) {
       this.showEditPanel = true
-      this.panelToEdit = panel
+      this.panelToEdit = {...panel}
     },
     ...mapActions({
       getPanelSettings: 'hideCpmPanels/getSettings'
