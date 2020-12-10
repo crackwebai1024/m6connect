@@ -13,7 +13,8 @@ export default {
     ],
     idle_previews: [],
     general_list: [],
-    companies_list: []
+    companies_list: [],
+    fieldLists: []
   },
   getters: {
     get_record_full_screen: state => () => state.record_full_screen,
@@ -21,7 +22,8 @@ export default {
     get_screen_status: state => () => state.screen_status,
     get_idle_previews: state => () => state.idle_previews,
     get_general_list: state => () => state.general_list,
-    get_companies_list: state => () => state.companies_list
+    get_companies_list: state => () => state.companies_list,
+    get_fields_list: state => state.fieldLists
   },
   mutations: {
     set_companies_list_data(state, proj) {

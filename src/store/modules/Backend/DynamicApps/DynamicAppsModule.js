@@ -29,6 +29,12 @@ export default {
     },
     async get_all_apps_by_id({}, app) {
       const apps = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/by/${app}`)
+      const fieldList = []
+      apps['data'].map((row, index) => {
+        fieldList[index] = row.fields
+        delete row.fields
+      })
+      generalListModule.state.fieldLists = fieldList
       generalListModule.state.general_list = convertApps.toM6Apps(apps['data'])
     },
     async get_apps({}) {

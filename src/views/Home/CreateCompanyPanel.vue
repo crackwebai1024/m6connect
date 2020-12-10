@@ -279,6 +279,8 @@
 
       <table-view
         :showTable="showTable"
+        :fieldListProp="fieldList"
+        :tableItemsProp="tableItems"
         @hideTableModal="hideTableModal"
       />
     </template>
@@ -298,6 +300,7 @@ import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import AppActivities from '@/views/AppBuilder/AppActivities'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'CreateCompanyPanel',
@@ -315,8 +318,11 @@ export default {
   },
 
   data: () => ({
+    server: `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}`,
     app: {},
     message: 'Tab',
+    tableItems: [],
+    fieldList: [],
     appLoaded: false,
     showDeleteModal: false,
     tabToDelete: null,
@@ -543,11 +549,25 @@ export default {
     },
 
     tableView() {
-      this.showTable = true
+      this.loading = true
+      axios.post(`${this.server}/api/app-builder/field/list/all`, {
+        appId: parseInt(this.$route.params.id)
+      }).then(response => {
+        this.fieldList = response.data
+      })
+      axios.post(`${this.server}/api/app-builder/table-fields/get`, {
+        appId: parseInt(this.$route.params.id)
+      }).then(response => {
+        this.showTable = true
+        this.tableItems = response.data
+      })
+      this.loading = false
     },
 
     hideTableModal() {
       this.showTable = false
+      this.tableItems = []
+      this.fieldList = []
     }
   }
 
