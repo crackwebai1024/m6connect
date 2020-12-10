@@ -391,7 +391,6 @@ export default {
 
     async deleteConfirmed() {
       this.showLoading = true
-      // this.fetchLineItems()
       this.projectRef
         .collection('budgets')
         .doc(this.budget.id)

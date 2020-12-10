@@ -81,9 +81,8 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="600px"
       persistent
-      scrollable
     >
       <v-card>
         <v-card-title class="headline px-6 py-4 white">
@@ -93,7 +92,7 @@
         </v-card-title>
         <v-divider class="grey lighten-3" />
 
-        <v-card-text class="pa-2 vertical-scroll">
+        <v-card-text class="px-6 py-2 vertical-scroll">
           <v-text-field
             v-model="name"
             color="blue"
