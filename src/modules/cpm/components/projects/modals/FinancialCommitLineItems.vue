@@ -208,8 +208,6 @@
                 <v-menu
                   v-model="paidToDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -335,8 +333,6 @@
                 <v-menu
                   v-model="documentDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -626,8 +622,6 @@
                 <v-menu
                   v-model="startDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -671,8 +665,6 @@
                 <v-menu
                   v-model="deliveryDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import format from 'date-fns/format'
+import { truncate } from 'lodash'
 Vue.filter('formatPhoneNumber', function (phoneNumberString) {
   const cleaned = ('' + phoneNumberString).replace(/\D/g, '')
   const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/)
@@ -34,3 +35,5 @@ Vue.filter('currency', num => {
     currency: 'USD'
   })
 })
+
+Vue.filter('trunc', (str = '') => truncate)
