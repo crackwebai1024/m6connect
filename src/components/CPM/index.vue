@@ -99,19 +99,20 @@
                 slot="leftPanel"
                 class=""
               >
+                <edit-panel-dialog :panel.sync='panelToEdit' v-model="showEditPanel"></edit-panel-dialog>
                 <v-col
-                  v-for="(section,index) in projectInformation"
+                  v-for="(panel,index) in projectInformation"
                   :key="index"
                   class="card-custom-shadow mb-3 px-6 py-5 rounded white"
                 >
                   <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
-                    {{ index }}
-                    <v-btn fab>
+                    {{ panel.title }}
+                    <v-btn @click='showPanelEditModal(panel)' fab class='float-right' x-small>
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </h3>
                   <v-row
-                    v-for="(item, index) in section"
+                    v-for="(item, index) in panel.items"
                     :key="index"
                   >
                     <v-col class="align-center d-flex flex-grow-0 flex-shrink-0">
@@ -331,10 +332,12 @@ import {
 } from '@/utils/Firebase'
 import StatusComment from '../../modules/cpm/components/projects/panels/StatusComment.vue'
 import BudgetComment from '../../modules/cpm/components/projects/panels/BudgetComment.vue'
+import EditPanelDialog from '../Dialogs/EditPanelDialog'
 
 export default {
   name: 'Apps',
   components: {
+    EditPanelDialog,
     RecordContainer,
     AppTemplatePlain,
     PanelFull,
@@ -355,8 +358,12 @@ export default {
 
   },
   data: () => ({
-    projectInformation: {
-      'Project Quickview': [
+    showEditPanel: false,
+    panelToEdit: {},
+    projectInformation: [
+      {
+        title: 'Project Quickview',
+        items: [
         {
           label: 'Project Manager',
           value: '',
@@ -418,8 +425,11 @@ export default {
           default: defaults.money,
           icon: 'mdi-currency-usd'
         }
-      ],
-      'Schedule & Budget': [
+      ]
+      },
+      {
+        title: 'Schedule & Budget',
+        items: [
         {
           label: 'Phase',
           value: '',
@@ -474,16 +484,18 @@ export default {
           default: defaults.money,
           icon: 'mdi-currency-usd'
         }
-      ],
-      'Commitments & Spendings': [
+      ]},
+      {
+        title: 'Commitments & Spendings',
+        items: [
         {
           label: 'Spent to Date',
           value: '',
           default: defaults.money,
           icon: 'mdi-currency-usd'
         }
-      ]
-    },
+      ]}
+    ],
     tab: null,
     items: [
       'Profile',
@@ -532,6 +544,10 @@ export default {
   },
   beforeDestroy() {},
   methods: {
+    showPanelEditModal (panel) {
+      this.showEditPanel = true
+      this.panelToEdit = panel
+    },
     ...mapActions({
       getPanelSettings: 'hideCpmPanels/getSettings'
     })
