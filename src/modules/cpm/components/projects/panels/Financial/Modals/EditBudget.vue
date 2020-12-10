@@ -34,7 +34,7 @@
       >
         <v-row class="d-flex">
           <v-col
-            cols="4"
+            cols="3"
           >
             <v-row class="budget-title">
               <v-col cols="6">
@@ -175,7 +175,7 @@
           </v-col>
 
           <v-col
-            cols="8"
+            cols="9"
           >
             <div class="form-group margin-top-25">
               <line-items
