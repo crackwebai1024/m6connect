@@ -202,7 +202,6 @@
             </v-col>
           </v-row> -->
 
-
           <v-row class="d-flex flex-wrap ma-0 w-full">
             <v-col
               v-for="(item, index) in props.items"
@@ -223,7 +222,7 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-btn
-                      v-if="showDeleteIconApplication === index"
+                      v-show="showDeleteIconApplication == index"
                       absolute
                       class="deleteBtn"
                       color="red"
@@ -243,7 +242,7 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-btn
-                      v-if="showDeleteIconApplication === index"
+                      v-show="showDeleteIconApplication === index"
                       absolute
                       class="newTabBtn"
                       color="purple"
