@@ -255,7 +255,7 @@
                       'color'
                     )
                   "
-                  large
+                  size="22"
                   v-on="on"
                 >
                   {{
