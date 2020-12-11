@@ -144,6 +144,7 @@ export const en = {
     dateCreated: 'Date Created',
     dateOpened: 'Date Opened',
     datePaid: 'Date Paid',
+    datePosted: 'Date Posted',
     day: 'Day',
     decline: 'Decline',
     declined: 'Declined',
