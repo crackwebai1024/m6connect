@@ -8,20 +8,20 @@
           no-gutters
         >
           <v-col
-            v-if="!isFullScreen"
+            v-show="showSidePanels"
             cols="3"
           >
-            <action-feed v-show="showSidePanels" />
+            <action-feed />
           </v-col>
-          <v-col :cols="isFullScreen ? 12 : 6">
+          <v-col :cols="!showSidePanels ? 12 : 6">
             <!-- Home / Company Profile -->
             <router-view />
           </v-col>
           <v-col
-            v-if="!isFullScreen"
+            v-show="showSidePanels"
             cols="3"
           >
-            <m6-chat v-show="showSidePanels" />
+            <m6-chat />
           </v-col>
         </v-row>
         <!-- Preview overlay -->
@@ -65,9 +65,6 @@ export default {
     //
   }),
   computed: {
-    isFullScreen() {
-      return this.$route.name === 'app.cpm'
-    },
     ...mapState(['layout']),
     ...mapGetters('Auth', {
       loggedIn: 'loggedIn'
