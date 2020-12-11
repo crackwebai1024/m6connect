@@ -10,30 +10,28 @@
         </v-list-item-title>
       </v-list-item>
 
-      <v-list-item  class="cursor-pointer no-flex" @click="pickingComponent({ name: 'user-mangement-table' })">
-        <span >User Settings</span>
-      </v-list-item>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-title>My Company</v-list-item-title>
+        </template>
 
-      <v-list-item class="cursor-pointer no-flex">
-        <v-menu
-          absolute
-          offset-y
-          style="max-width: 600px"
+        <v-list-item 
+          v-for="(link, index) in companyLinks" :key="`company-link-${index}`" 
+          @click="pickingComponent({ name: 'company-show', size:9, tab: link.tab})"
         >
-          <template v-slot:activator="{ on }">
-            <span v-on="on">My Company</span>
-          </template>
+          {{ link.name }}
+        </v-list-item>
+      </v-list-group>
 
-          <v-list>
-            <v-list-item 
-              v-for="(link, index) in companyLinks" :key="`company-link-${index}`" 
-              @click="pickingComponent({ name: 'company-show', size:9, tab: link.tab})"
-            >
-              {{ link.name }}
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-list-item>
+      <v-list-group>
+        <template v-slot:activator>
+          <v-list-item-title>User Mangement</v-list-item-title>
+        </template>
+
+        <v-list-item @click="pickingComponent({ name: 'user-mangement-table' })">
+          All Users
+        </v-list-item>
+      </v-list-group>
 
       <div class="px-2">
         <hr>
