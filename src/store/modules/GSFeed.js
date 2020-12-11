@@ -188,7 +188,7 @@ const actions = {
   // eslint-disable-next-line no-empty-pattern
   updateActivity({}, updateProperties) {
     return new Promise(resolve => {
-      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity/${auth.state.user.id}`, updateProperties).then(() => {
+      axios.put(`http://${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, updateProperties).then(() => {
         resolve(true)
       })
     })

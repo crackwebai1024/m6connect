@@ -141,7 +141,7 @@
               <v-btn
                 class="ml-2"
                 color="green accent-3"
-                :disabled="data.message == updateMessage"
+                :disabled="data.message === updateMessage"
                 icon
                 @click="updatePost(data)"
               >
@@ -579,7 +579,7 @@ export default {
   }),
   computed: {
     ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
-    ...mapGetters('Auth', { currentUser: 'getUser' }),
+    ...mapGetters('Auth', { currentUser: 'getUser', token: 'getAccessToken' }),
     ...mapGetters('GSFeed', {
       timeline: 'getTimeline',
       feed: 'getFeed',
@@ -735,7 +735,7 @@ export default {
         }
       }
 
-      this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
+      this.$store.dispatch('GSFeed/addReaction', payload).then(async () => {
         if (activity.props) {
           await this.$store.dispatch('GSFeed/setActionPost')
           await this.$store.dispatch('WorkOrderModule/setWorkOrder')
@@ -771,6 +771,7 @@ export default {
 
       activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
       activity['actor']['data']['image'] = this.user.profilePic
+      activity['token'] = this.token
       activity.message = this.updateMessage
 
       this.$store.dispatch('GSFeed/updateActivity', activity)
