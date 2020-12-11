@@ -38,6 +38,8 @@
               class="w-full"
               :navigate-to="navigate"
               :navigation-enabled="false"
+              :pagination-active-color="'#fff'"
+              :pagination-color="'#333'"
               :pagination-enabled="true"
               :per-page="1"
             >
@@ -295,7 +297,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s ease-out;
@@ -304,5 +306,8 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.VueCarousel-dot {
+  outline: none !important;
 }
 </style>
