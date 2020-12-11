@@ -8,7 +8,7 @@
           no-gutters
         >
           <v-col
-            v-if="showSidePanels"
+            v-show="showSidePanels"
             cols="3"
           >
             <action-feed />
@@ -18,7 +18,7 @@
             <router-view />
           </v-col>
           <v-col
-            v-if="showSidePanels"
+            v-show="showSidePanels"
             cols="3"
           >
             <m6-chat />
