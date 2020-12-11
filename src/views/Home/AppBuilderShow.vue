@@ -36,6 +36,7 @@
             btn-button="purple"
             @loading="loading = !loading"
             @response="recordImageRes"
+            acceptedFileType="image"
           >
             <v-icon>mdi-cloud-upload</v-icon>
           </m6-upload>
@@ -225,7 +226,7 @@ export default {
           this.loading = true
           await this.updateRecord(this.record)
           this.loading = false
-          this.notifSuccess('Company Updated!')
+          this.notifSuccess('Record Updated!')
         } catch (e) {
           this.loading = false
           this.notifDanger('There was an error while saving the file')
