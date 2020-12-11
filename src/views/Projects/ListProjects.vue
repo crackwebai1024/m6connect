@@ -163,10 +163,10 @@
                       v-show="showDeleteIconApplication == index"
                       absolute
                       class="deleteBtn"
-                      color="white"
+                      color="red lighten-1"
+                      dark
                       elevation="1"
                       fab
-                      light
                       small
                       v-on="on"
                       @click.stop="deleteProject(item)"
@@ -186,7 +186,7 @@
                       v-show="showDeleteIconApplication === index"
                       absolute
                       class="newTabBtn"
-                      color="purple lighten-3"
+                      color="purple lighten-1"
                       elevation="1"
                       fab
                       small
