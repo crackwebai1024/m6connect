@@ -151,13 +151,13 @@ const actions = {
       payload['req']['data']['time'] = new Date().toISOString()
       payload['req']['data']['foreign_id'] = `${Date.now()}-post-${Math.floor(Math.random() * 9999999)}`
       if (state.room === 'companies') {
-        payload['req']['data']['to'] = ['companies:global']
+        payload['req']['data']['to'] = [`companies:${payload['compID']}`]
         payload['req']['data']['company'] = payload['compID']
       } else if (state.room === 'cpm') {
-        payload['req']['data']['to'] = ['cpm:global']
+        payload['req']['data']['to'] = [`cpm:${state.foreignId}`]
         payload['req']['data']['cpm'] = state.foreignId
       } else if (state.room === 'AppBuilder') {
-        payload['req']['data']['to'] = ['AppBuilder:global']
+        payload['req']['data']['to'] = [`AppBuilder:${state.foreignId}`]
         payload['req']['data']['AppBuilder'] = state.foreignId
       }
 
