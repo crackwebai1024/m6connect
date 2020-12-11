@@ -254,7 +254,7 @@ export default {
                 text: this.stringToUpercase(field.type),
                 value: field.type + '-' + findex
               })
-              row[field.type + '-' + findex] = field.label
+              row[field.type + '-' + findex] = field.value
             }
           })
         })
