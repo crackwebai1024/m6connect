@@ -5,18 +5,19 @@
   >
     <v-list>
       <v-list-item>
-        <v-list-item-title @click="pickingComponent({ })">
+        <v-list-item-title class="text-left" @click="pickingComponent({ })">
           My Profile
         </v-list-item-title>
       </v-list-item>
 
       <v-list-group>
         <template v-slot:activator>
-          <v-list-item-title>My Company</v-list-item-title>
+          <v-list-item-title class="text-left" >My Company</v-list-item-title>
         </template>
 
         <v-list-item 
           v-for="(link, index) in companyLinks" :key="`company-link-${index}`" 
+          class="text-left ml-4"  
           @click="pickingComponent({ name: 'company-show', size:9, tab: link.tab})"
         >
           {{ link.name }}
@@ -25,10 +26,10 @@
 
       <v-list-group>
         <template v-slot:activator>
-          <v-list-item-title>User Mangement</v-list-item-title>
+          <v-list-item-title class="text-left" >User Mangement</v-list-item-title>
         </template>
 
-        <v-list-item @click="pickingComponent({ name: 'user-mangement-table' })">
+        <v-list-item class="text-left ml-4" @click="pickingComponent({ name: 'user-mangement-table' })">
           All Users
         </v-list-item>
       </v-list-group>
@@ -38,16 +39,16 @@
       </div>
 
       <v-list-item>
-        <v-list-item-title>IT Applications</v-list-item-title>
+        <v-list-item-title class="text-left" >IT Applications</v-list-item-title>
       </v-list-item>
 
       <v-list-item>
-        <v-list-item-title>
+        <v-list-item-title class="text-left" >
           Capital Projects Management
         </v-list-item-title>
       </v-list-item>
       <v-list-item @click="$router.push('/cpm/import/tool')">
-        <v-list-item-title>
+        <v-list-item-title class="text-left" >
           Capital Projects Import Tool
         </v-list-item-title>
       </v-list-item>
@@ -85,5 +86,8 @@ export default {
 }
 .no-flex {
   display: block;
+}
+.text-left {
+  text-align: left;
 }
 </style>
