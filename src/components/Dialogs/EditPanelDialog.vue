@@ -15,7 +15,7 @@
                             <v-icon>{{item.icon}}</v-icon>
                         </v-col>
                         <v-col class='flex-grow-1 flex-shrink-0'>
-                            <money v-model='item.value' :label='item.label'></money>
+                            <money v-model='panelItems[camelize(item.label)]' :label='item.label'></money>
                         </v-col>
                     </template>
 
@@ -26,19 +26,19 @@
                                     :prepend-icon="item.icon"
                                     :label='item.label'
                                     v-on='on'
-                                    v-model='item.value'
+                                    v-model='panelItems[camelize(item.label)]'
                                     v-bind='attrs'>
                                 </v-text-field>
                             </template>
                             <v-date-picker
                                 elevation="13"
                                 header-color="white"
-                                v-model="item.value"
+                                v-model="panelItems[camelize(item.label)]"
                                 @input="datePickers[index] = false">
                             </v-date-picker>
                         </v-menu>
                     </template>
-                    <v-text-field v-model='item.value' v-else single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
+                    <v-text-field v-model='panelItems[camelize(item.label)]' v-else single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
                 </v-row>
             </v-card-text>
             <v-card-actions class='white'>
@@ -77,7 +77,9 @@ export default {
             text: 'N/A',
             date: '--/--/----',
             percent: '0'
-        }
+        },
+        panelItems: {} // we can still use the same object
+                       // as prop and create a custom key for vmodels, so we dont modify current value
     }),
     props: {
         show: {
@@ -89,7 +91,17 @@ export default {
             default: () => {}
         }
     },
+    mounted () {
+        this.panel.items.forEach((item, index) => {
+            this.panelItems[this.camelize(item.label)] = item.value
+        })
+    },
     methods: {
+        camelize (str) {
+            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
+                return index === 0 ? word.toLowerCase() : word.toUpperCase();
+            }).replace(/\s+/g, '').replace('/', '');
+        },
         height () {
             let viewportSize = Math.max(
             document.documentElement.clientHeight,
@@ -103,30 +115,19 @@ export default {
         },
         //Move this function to Vuex mutations
         savePanel() {
-            //helper function
-            function camelize(str) {
-            return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-                return index === 0 ? word.toLowerCase() : word.toUpperCase();
-            }).replace(/\s+/g, '').replace('/', '');
-            }
-            let items = {}
-            this.panel.items.forEach((item, index) => {
-                items[camelize(item.label)] = item.value
-            })
-
             let map = {}
 
             if (this.panel.title == 'Project Quickview') {
                 map = {
-                    basic: items
+                    basic: this.panelItems
                 }
             } else if (this.panel.title == 'Schedule & Budget') {
                 map = {
-                    schedule: items
+                    schedule: this.panelItems
                 }
             }else {
                 map = {
-                    milestones: items
+                    milestones: this.panelItems
                 }
             }
 
@@ -135,6 +136,7 @@ export default {
             db.collection('cpm_projects').doc(this.$route.params.id).update(map)
             .then(doc => {
                 this.$snotify.success('Changes saved')
+                this.$emit('update')
                 this.closeDialog()
             })
             .catch(err => this.$snotify.error('Something went wrong', 'Changes not saved'))
