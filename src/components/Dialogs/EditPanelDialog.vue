@@ -9,17 +9,22 @@
                 <span class='white--text font-weight-bold'>{{ panel.title || 'Panel Title' }}</span>
             </v-card-title>
             <v-card-text :style='{height: height(), overflowX: "hidden"}' class='vertical-scroll pa-0'>
-                <v-row class='my-4 white px-5' :key='index' v-for="(item, index) in panel.items">
+                <v-row class='my-4 white px-5 d-block' :key='index' v-for="(item, index) in panel.items">
+                    
                     <template v-if='item.default === defaults.money'>
-                        <v-col class='flex-shrink-1 flex-grow-0 pa-0 d-flex align-center'>
-                            <v-icon>{{item.icon}}</v-icon>
-                        </v-col>
-                        <v-col class='flex-grow-1 flex-shrink-0'>
-                            <money v-model='panelItems[camelize(item.label)]' :label='item.label'></money>
-                        </v-col>
+                        <div class='d-flex'>
+                            <v-col class='flex-shrink-1 flex-grow-0 pa-0 d-flex align-center'>
+                                <v-icon>{{item.icon}}</v-icon>
+                            </v-col>
+                            <v-col class='flex-grow-1 flex-shrink-0'>
+                                <label class='text-subtitle-2'> {{item.label}} </label>
+                                <money v-model='panelItems[camelize(item.label)]' :label='item.label'></money>
+                            </v-col>
+                        </div>
                     </template>
 
                     <template v-else-if='item.default === defaults.date'>
+                        <label class='text-subtitle-2 ml-8'> {{item.label}} </label>
                         <v-menu offset-y v-model='datePickers[index]' :close-on-content-click='false'>
                             <template v-slot:activator='{on, attrs}'>
                                 <v-text-field single-line
@@ -38,7 +43,10 @@
                             </v-date-picker>
                         </v-menu>
                     </template>
-                    <v-text-field v-model='panelItems[camelize(item.label)]' v-else single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
+                    <template v-else>
+                        <label class='text-subtitle-2 ml-8'> {{item.label}} </label>
+                        <v-text-field v-model='panelItems[camelize(item.label)]' single-line :prepend-icon="item.icon" :label='item.label'></v-text-field>
+                    </template>
                 </v-row>
             </v-card-text>
             <v-card-actions class='white'>
@@ -144,3 +152,8 @@ export default {
     }
 }
 </script>
+<style>
+.v-text-field {
+    margin-top: 0px
+}
+</style>
