@@ -8,13 +8,14 @@
             ref="obj"
             style="display: none"
             type="file"
+            :accept=" fileMap[acceptedFileType] || '' "
             @change="onFilePicked"
         >
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import axios from 'axios'
 import Compressor from 'compressorjs';
 
@@ -24,11 +25,23 @@ export default {
         btnButton: {
             type: String,
             default: ""
+        },
+        acceptedFileType: {
+            type: String, 
+            default: ""
         }
     },
+    data: () => ({
+        fileMap: {
+            'image': 'image/*'
+        }
+    }),
     methods: {
         ...mapActions('File', {
             getPresignedUrl: 'getPresignedUrl'
+        }),
+        ...mapMutations('SnackBarNotif', {
+            notifDanger: 'notifDanger',
         }),
         pickFile() {
             this.$refs.obj.click()
@@ -39,7 +52,22 @@ export default {
             if (files[0] !== undefined) {
                 this.$emit('loading')
                 for (let x = 0; x < files.length; x++) {
-                    await this.prepareUpload(files[x])
+
+                    switch (true) {
+                        case this.acceptedFileType == this.$h.dg( this.$h.dg(files, `${x}.type`, '').split('/'), '0', ''):
+                            await this.prepareUpload(files[x])   
+                            break
+                        
+                        case !this.acceptedFileType.length:
+                            await this.prepareUpload(files[x])
+                            break
+
+                        default: 
+                            this.notifDanger(`The file must be of type: ${this.acceptedFileType}`)
+                            this.$emit('loading')
+                            break
+                    }
+                    
                 }
                 // this.$emit('loading')
             }
