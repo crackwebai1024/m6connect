@@ -10,6 +10,10 @@
         </v-list-item-title>
       </v-list-item>
 
+      <v-list-item  class="cursor-pointer no-flex" @click="pickingComponent({ name: 'user-mangement-table' })">
+        <span >User Settings</span>
+      </v-list-item>
+
       <v-list-item class="cursor-pointer no-flex">
         <v-menu
           absolute
@@ -21,11 +25,11 @@
           </template>
 
           <v-list>
-            <v-list-item @click="pickingComponent({ name: 'company-show', size: 9 })">
-              Company Settings
-            </v-list-item>
-            <v-list-item @click="pickingComponent({ name: 'user-mangement-table' })">
-              User Settings
+            <v-list-item 
+              v-for="(link, index) in companyLinks" :key="`company-link-${index}`" 
+              @click="pickingComponent({ name: 'company-show', size:9, tab: link.tab})"
+            >
+              {{ link.name }}
             </v-list-item>
           </v-list>
         </v-menu>
@@ -57,6 +61,18 @@
 import { mapMutations } from 'vuex'
 export default {
   name: 'SettingsSideNave',
+
+  data: () => ({
+    companyLinks: [
+      { name: 'General', tab: 0 },
+      { name: 'Project Specs', tab: 1 },
+      { name: 'Social Media', tab: 2 },
+      { name: 'Locations', tab: 3 },
+      { name: 'Codes', tab: 4 },
+      { name: 'Image', tab: 5 }
+    ]
+  }),
+
   methods: {
     ...mapMutations('UserSettingsControl', {
       pickingComponent: 'setSecondColumnComponent'
