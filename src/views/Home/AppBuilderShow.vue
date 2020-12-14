@@ -48,11 +48,14 @@
         no-gutters
       >
         <v-col cols="7" />
-        <v-col cols="2">
+        <v-col
+          class="align-center d-flex flex-column justify-center"
+          cols="5"
+        >
           <v-img
             v-if="app.iconLink"
             :alt="app.iconLink"
-            class="d-inline-block rounded"
+            class="rounded"
             height="70"
             :src="app.iconLink"
             width="50"
@@ -65,9 +68,7 @@
           >
             mdi-store
           </v-icon>
-        </v-col>
-        <v-col cols="3">
-          <span class="d-inline-block ml-5">{{ app['title'] }}</span>
+          <span class="mt-3 text-center">{{ app['title'] }}</span>
         </v-col>
       </v-row>
     </div>
@@ -105,7 +106,7 @@
           <div
             v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 0 )"
             :key="`p-l-${index}`"
-            class="mb-3 panel px-4 py-3 white"
+            class="mb-3 panel px-4 py-3 w-side white"
           >
             <h3>{{ panel.title }}</h3>
             <form-show-generator
