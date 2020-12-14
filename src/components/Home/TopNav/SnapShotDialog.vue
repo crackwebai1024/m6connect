@@ -178,6 +178,7 @@
                       :items="statusItems"
                       label="Status"
                     />
+                    <attachment v-model="rapidItem.items[i].rapid_attachment" />
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -219,6 +220,7 @@ import SpeedDial from '@/components/_partials/SpeedDial.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
 import axios from 'axios'
+import Attachment from '@/components/AppBuilder/Form/Components/Attachment.vue'
 
 const width = window.innerWidth * .7
 const height = window.innerHeight * .7
@@ -244,7 +246,8 @@ export default {
   components: {
     SpeedDial,
     PeopleAutocomplete,
-    DatePicker
+    DatePicker,
+    Attachment
   },
 
   props: {
