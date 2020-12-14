@@ -1,20 +1,25 @@
 <template>
-  <div class="h-full">
-    <record-container :record_data="data"></record-container>
+  <div class="h-full w-full">
+    <record-container :record_data="data" />
   </div>
 </template>
 
 <script>
-import RecordContainer from "@/components/RecordMode/RecordContainer";
+import RecordContainer from '@/components/RecordMode/RecordContainer'
 
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
+  name: 'PreviewSelector',
   components: {
-    RecordContainer,
+    RecordContainer
   },
   props: {
-    data: Object,
-  },
-};
+    data: {
+      type: Object,
+      default: () => {}
+    }
+  }
+}
 </script>
 
 <style lang="scss">
