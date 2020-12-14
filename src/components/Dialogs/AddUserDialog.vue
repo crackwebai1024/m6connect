@@ -1,13 +1,13 @@
 <template>
-  <v-card class="px-8 py-3 rounded-lg">
-    <v-card-subtitle class="pb-0">
-      <h2 class="blue--text ma-0 mt-4 text-center text-h4">
-        Add Users in your Group
+  <v-card class="rounded-lg">
+    <v-card-subtitle class="blue pa-5">
+      <h2 class="text-heading-6 white--text blue">
+        Invite Colleagues, Customers and Vendors
       </h2>
     </v-card-subtitle>
     <v-card-title class="pb-6">
       <v-spacer />
-      <v-btn
+      <!--<v-btn
         color="secondary"
         width="40%"
         x-large
@@ -23,7 +23,7 @@
         @click="element='vendor'"
       >
         In Vendors
-      </v-btn>
+      </v-btn>-->
       <v-spacer />
     </v-card-title>
     <v-card-text>
@@ -39,7 +39,52 @@
         class="messages-container white"
         style="height: 400px; overflow-y: scroll;"
       >
-        <div
+      <v-row class="mb-3">
+        <v-chip
+          :key='index'
+          v-for="(user, index) in selectedUsers"
+          large
+          class='px-5 mx-3'
+          color='primary lighten-3'
+        >
+          <!--@click="data.select"
+          @click:close="remove(data.item)"-->
+          <v-avatar left>
+            <v-img v-if="user.profilePic" :src="user.profilePic"></v-img>
+            <v-icon v-else>mdi-account</v-icon>
+          </v-avatar>
+          <b class='primary--text darken-2'>{{ user.user.firstName }} 
+          {{ user.user.lastName }}</b>
+        </v-chip>
+      </v-row>
+      <v-autocomplete
+          v-model="selectedUsers"
+          :items="companies"
+          filled
+          chips
+          color="blue-grey lighten-2"
+          label="Select"
+          item-text="user.firstName"
+          return-object
+          multiple
+        >
+          <template v-slot:item="data">
+            <template v-if="typeof data.item !== 'object'">
+              <v-list-item-content v-text="data.item"></v-list-item-content>
+            </template>
+            <template v-else>
+              <v-list-item-avatar>
+                <v-img v-if="data.item.user.profilePic" :src="data.item.user.profilePic"></v-img>
+                <v-icon v-else>mdi-account</v-icon>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title v-html='data.item.user.firstName + " " + data.item.user.lastName'></v-list-item-title>
+                <v-list-item-subtitle v-html="data.item.user.email"></v-list-item-subtitle>
+              </v-list-item-content>
+            </template>
+          </template>
+        </v-autocomplete>
+        <!--<div
           v-for="(user, ind) of companies"
           :key="ind+'-company-user-dialog'"
           class="align-center d-flex"
@@ -60,20 +105,7 @@
               :value="user['selected']"
               @click="user['selected'] = !user['selected']"
             />
-            <v-avatar
-              class="mr-3"
-              :color="user['user']['profilePic']? 'transparent' : 'blue' "
-              dark
-              size="36"
-            >
-              <v-img
-                v-if="user['user']['profilePic']"
-                :src="user['user']['profilePic']"
-              />
-              <template v-else>
-                <span class="text-uppercase white--text">{{ user.user.firstName.charAt(0) }}{{ user.user.lastName.charAt(0) }}</span>
-              </template>
-            </v-avatar>
+            
             {{ `${user.user.firstName} ${user.user.lastName}` }}
             <v-spacer />
             <v-chip
@@ -83,7 +115,7 @@
               <span class="white--text">{{ (user.joinStatus).toLowerCase() }}</span>
             </v-chip>
           </v-btn>
-        </div>
+        </div>-->
         <h2
           v-if="companies.length === 0"
           class="font-weight-black mt-2 text-center"
@@ -97,14 +129,14 @@
         >
           No users found
         </h2>
-      </div>outline
+      </div>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
       <v-btn
         class="mt-2"
         color="primary"
-        outline
+        outlined
         width="30%"
         @click="res(false)"
       >
@@ -113,7 +145,6 @@
       <v-btn
         class="mt-2"
         color="success"
-        outline
         width="30%"
         @click="res(true)"
       >
@@ -139,6 +170,7 @@ export default {
     roomName: '',
     companies: [],
     resList: [],
+    selectedUsers: [],
     element: 'company'
   }),
   computed: {

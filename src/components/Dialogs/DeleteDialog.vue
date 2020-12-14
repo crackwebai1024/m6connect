@@ -1,11 +1,11 @@
 <template>
-  <v-card class="rounded-lg">
+  <v-card class="elevation-0">
     <v-card-title class="headline">
-      Are you sure?
+      Delete {{ element }}
     </v-card-title>
 
     <v-card-text>
-      Do you want to remove the {{ element }}
+      Proceed
     </v-card-text>
 
     <v-divider />

@@ -91,6 +91,8 @@
           v-if="channel.id.substr(14, 5) === 'group'"
           v-model="deleteDialog"
           width="50%"
+          persistent
+          class='elevation-10'
         >
           <template #activator="{ on, attrs }">
             <v-hover
@@ -160,26 +162,11 @@
               </div>
             </v-hover>
           </template>
-          <delete-dialog
-            v-if="messageEdit === channel.data.id + '-channel'"
-            :element="`messages on '${channel.data.name}' group`"
-            @closeDeleteModal="cleanChat($event)"
-          />
-          <add-user-dialog
-            v-if="messageEdit === channel.data.id + '-add-user'"
-            :current-users="channel.state.members"
-            @closeModal="addUser($event)"
-          />
-          <info-users-dialog
-            v-if="messageEdit === channel.data.id + '-info'"
-            :channel="channel"
-            :current-users="channel.state.members"
-          />
-          <settings-channel-dialog
-            v-if="messageEdit === channel.data.id + '-edit'"
-            :channel="channel"
-            @closeEditeModal="closeModal"
-          />
+          <edit-configuration-dialog :channel='channel'/>
+          <!--
+          
+
+          -->
         </v-dialog>
         <v-dialog
           v-else
@@ -857,21 +844,15 @@
 /* eslint-disable camelcase */
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
-import DeleteDialog from '@/components/Dialogs/DeleteDialog'
-import AddUserDialog from '@/components/Dialogs/AddUserDialog'
-import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
-import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
+import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 
 export default {
   name: 'Chatbox',
   components: {
-    SettingsChannelDialog,
-    InfoUsersDialog,
-    AddUserDialog,
-    DeleteDialog,
+    EditConfigurationDialog,
     VEmojiPicker,
     ExternalUrl,
     RecordUrl,
