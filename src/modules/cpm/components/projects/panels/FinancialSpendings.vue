@@ -896,17 +896,34 @@
               </v-row>
               <v-row>
                 <v-col
-                  md="6"
+                  md="12"
                   sm="12"
                 >
-                  <v-autocomplete
+                  <v-text-field v-model="dialogLineItemProperties.vendorID" label="Vendor ID"></v-text-field>
+                  <!-----<v-autocomplete
                     v-model="dialogLineItemProperties.vendor"
                     clearable
                     item-text="title"
                     :items="vendors"
                     :label="$t('cpm.projects.vendorName')"
                     return-object
-                  />
+                  />-->
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field v-model="dialogLineItemProperties.vendor" :label="$t('cpm.projects.vendorName')"></v-text-field>
+                  <!-----<v-autocomplete
+                    v-model="dialogLineItemProperties.vendor"
+                    clearable
+                    item-text="title"
+                    :items="vendors"
+                    :label="$t('cpm.projects.vendorName')"
+                    return-object
+                  />-->
                 </v-col>
                 <v-col
                   md="6"

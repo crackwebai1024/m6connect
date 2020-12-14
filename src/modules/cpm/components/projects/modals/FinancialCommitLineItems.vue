@@ -84,7 +84,10 @@
                 </div>
               </v-col>
               <v-col cols="7">
-                <v-autocomplete
+                <v-text-field v-model="lineItem.vendor">
+                  
+                </v-text-field>
+                <!--<v-autocomplete
                   v-model="lineItem.vendor"
                   clearable
                   item-text="title"
@@ -105,7 +108,7 @@
                     </v-chip>
                     {{ item.title }}
                   </template>
-                </v-autocomplete>
+                </v-autocomplete>-->
               </v-col>
             </v-row>
 
