@@ -12,7 +12,9 @@
         icon
         :to="{ name: 'apps', params: {} }"
       >
-        <v-icon>mdi-close</v-icon>
+        <v-icon>
+          mdi-close
+        </v-icon>
       </v-btn>
       <div class="align-center d-flex">
         <v-img
