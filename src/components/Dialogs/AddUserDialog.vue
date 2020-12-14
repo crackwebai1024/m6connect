@@ -1,7 +1,7 @@
 <template>
-  <v-card class="rounded-lg">
-    <v-card-subtitle class="blue pa-5">
-      <h2 class="text-heading-6 white--text blue">
+  <v-card class="rounded-false">
+    <v-card-subtitle class="blue accent-4 pa-5">
+      <h2 class="text-heading-6 white--text">
         Invite Colleagues, Customers and Vendors
       </h2>
     </v-card-subtitle>
@@ -226,3 +226,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  div.v-card__subtitle {
+    border-radius: 0px !important
+  }
+</style>

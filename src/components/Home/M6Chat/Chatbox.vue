@@ -11,7 +11,7 @@
     <div
       class="align-center chat-title d-flex justify-space-between px-3"
       :class="[minimized ? 'blue lighten-2' : '']"
-      @click="minimizeChatBox"
+      @click.self="minimizeChatBox"
     >
       <div
         v-if="channel.id.substr(14, 5) === 'group'"
@@ -20,6 +20,7 @@
         <v-avatar
           class="mr-2"
           size="42"
+          @click='editConfigurationDialog = true'
         >
           <img
             v-if="channel.data.image !== ''"
@@ -89,17 +90,18 @@
       <div class="d-flex">
         <v-dialog
           v-if="channel.id.substr(14, 5) === 'group'"
-          v-model="deleteDialog"
+          v-model="editConfigurationDialog"
+          
           width="50%"
           persistent
           class='elevation-10'
         >
-          <template #activator="{ on, attrs }">
-            <v-hover
+          <template #activator="">
+            <!--<v-hover
               v-slot="{ hover }"
             >
               <div class="relative">
-                <v-card
+                <!--<v-card
                   v-if="hover"
                   class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
                   style="margin-bottom: -64px; margin-left: -130px;"
@@ -160,9 +162,9 @@
                   </v-icon>
                 </v-btn>
               </div>
-            </v-hover>
+            </v-hover>-->
           </template>
-          <edit-configuration-dialog :channel='channel'/>
+          <edit-configuration-dialog @close-dialog='() => editConfigurationDialog = false' :channel='channel'/>
           <!--
           
 
@@ -876,6 +878,7 @@ export default {
     currentUserId: 2,
     messageEdit: '',
     messageEditInput: '',
+    editConfigurationDialog: false,
     dataReady: false,
     messages: [],
     state: {
