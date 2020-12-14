@@ -23,9 +23,12 @@
           :key="`custom-field-${f.id}`"
           cols="12"
         >
+          <template v-if="f.machine_name == 'rapid_snapshot_image'" >
+            <img style="width: 20rem; height: auto;" :src="genericRecord[`${f.id}`]" alt="Rapid Image" >
+          </template>
           <component
             :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
-            v-if="f.type === 'referenced'"
+            v-else-if="f.type === 'referenced'"
             v-model="genericRecord[`${f.id}`]"
             :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
             :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
@@ -180,15 +183,15 @@ export default {
     }),
 
     saveStandardFields() {
-      if (this.showStandardFields) {
-        return new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
+        if (this.showStandardFields) {
           this.updateRecord(this.recordToEdit)
             .then(res => resolve(res))
             .catch(e => reject(e))
-        })
-      }
+        }
 
-      return new Promise.resolve()
+        return resolve()
+      })
     },
 
     async creating() {
@@ -261,7 +264,6 @@ export default {
           fields: []
         }
         payloadToCreate.fields = this.createFieldsPayload(createObj)
-
         await this.updateSomeFieldValues(payload)
         await this.bulkSaveFieldValues(payloadToCreate)
         if (deleteArr.length) {
