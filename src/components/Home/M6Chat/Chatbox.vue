@@ -11,7 +11,7 @@
     <div
       class="align-center chat-title d-flex justify-space-between px-3 rounded-t"
       :class="[minimized ? 'blue lighten-2' : '']"
-      @click="minimizeChatBox"
+      @click.self="minimizeChatBox"
     >
       <div
         v-if="channel.id.substr(14, 5) === 'group'"
@@ -20,6 +20,7 @@
         <v-avatar
           class="mr-2"
           size="42"
+          @click='editConfigurationDialog = true'
         >
           <img
             v-if="channel.data.image !== ''"
@@ -92,15 +93,16 @@
       <div class="d-flex">
         <v-dialog
           v-if="channel.id.substr(14, 5) === 'group'"
-          v-model="deleteDialog"
+          v-model="editConfigurationDialog"
+
           width="50%"
         >
-          <template #activator="{ on, attrs }">
-            <v-hover
+          <template #activator="">
+            <!--<v-hover
               v-slot="{ hover }"
             >
               <div class="relative">
-                <v-card
+                <!--<v-card
                   v-if="hover"
                   class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
                   style="margin-bottom: -64px; margin-left: -130px;"
@@ -161,28 +163,13 @@
                   </v-icon>
                 </v-btn>
               </div>
-            </v-hover>
+            </v-hover>-->
           </template>
-          <delete-dialog
-            v-if="messageEdit === channel.data.id + '-channel'"
-            :element="`messages on '${channel.data.name}' group`"
-            @closeDeleteModal="cleanChat($event)"
-          />
-          <add-user-dialog
-            v-if="messageEdit === channel.data.id + '-add-user'"
-            :current-users="channel.state.members"
-            @closeModal="addUser($event)"
-          />
-          <info-users-dialog
-            v-if="messageEdit === channel.data.id + '-info'"
-            :channel="channel"
-            :current-users="channel.state.members"
-          />
-          <settings-channel-dialog
-            v-if="messageEdit === channel.data.id + '-edit'"
-            :channel="channel"
-            @closeEditeModal="closeModal"
-          />
+          <edit-configuration-dialog @close-dialog='() => editConfigurationDialog = false' :channel='channel'/>
+          <!--
+          
+
+          -->
         </v-dialog>
         <v-dialog
           v-else
@@ -928,6 +915,7 @@ export default {
     currentUserId: 2,
     messageEdit: '',
     messageEditInput: '',
+    editConfigurationDialog: false,
     dataReady: false,
     messages: [],
     state: {

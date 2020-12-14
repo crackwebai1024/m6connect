@@ -1,8 +1,8 @@
 <template>
-  <v-card class="px-8 py-3 rounded-lg">
-    <v-card-subtitle class="pb-0">
-      <h2 class="blue--text ma-0 mt-4 text-center text-h4">
-        Add Users in your Group
+  <v-card class="rounded-false">
+    <v-card-subtitle class="blue accent-4 pa-5">
+      <h2 class="text-heading-6 white--text">
+        Invite Colleagues, Customers and Vendors
       </h2>
     </v-card-subtitle>
     <v-card-title class="pb-6">
@@ -194,3 +194,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  div.v-card__subtitle {
+    border-radius: 0px !important
+  }
+</style>
