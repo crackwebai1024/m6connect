@@ -30,11 +30,14 @@
           {{ notification.post.actor.data.name }}
         </p>
         <v-spacer />
-        <v-avatar
-          :color="diffNowColor(notification.post.actor.created_at)"
-          size="15"
-        ></v-avatar>
-        <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+        <div class="d-flex justify-center">
+          <v-avatar
+            :color="diffNowColor(notification.post.actor.created_at)"
+            style="margin: 0 10px;"
+            size="10"
+          ></v-avatar>
+          <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+        </div>
       </div>
     </div>
     <p
@@ -289,8 +292,6 @@ export default {
       diff = (diff - hours) / 24
       const days = Math.abs(Math.floor(diff % 30))
       const index = days > 5 ? 5 : (days < 0 ? 0 : days)
-      console.log(days)
-      console.log(index)
       return this.timerBallColor[index]
     },
     pendingApprovals(approvals) {
