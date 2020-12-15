@@ -19,8 +19,8 @@
 export default {
     props: {
         value: {
-            type: Boolean,
-            default: null
+            type: [Boolean, Number],
+            default: 0 
         },
         label: {
             type: String,
@@ -31,10 +31,10 @@ export default {
     computed: {
         radio: {
             get() {
-                return this.value || null
+                return this.value ? true : false 
             },
             set(data) {
-                this.$emit('input', data)
+                this.$emit('input', data.toString())
             }
         }
     }

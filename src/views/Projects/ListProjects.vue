@@ -140,69 +140,6 @@
         </template>
 
         <template v-slot:default="props">
-          <!-- <v-row class="d-flex flex-wrap ma-0 w-full">
-            <v-col
-              v-for="i in 2"
-              :key="'fakedata'+i"
-              class="ma-0 my-2 pa-0 px-2 rounded"
-              cols="12"
-              lg="3"
-              md="4"
-              sm="6"
-            >
-              <div
-                class="card-custom-shadow pointer rounded white"
-                @click="seeProjectPanel('123')"
-              >
-                <div class="align-center d-flex flex-column pb-2 pt-4">
-                  <img
-                    :alt="currentCompany.name"
-                    class="rounded-circle"
-                    height="80"
-                    :src="currentCompany.logo"
-                    width="80"
-                  >
-                  <p class="font-weight-bold mb-1 pa-3 text-h6">
-                    Advanced Vendor & Project Reporting
-                  </p>
-                  <p class="font-weight-bold grey--text ma-0 pa-0 text-caption">
-                    PRJ-00017-2020
-                  </p>
-                  <p class="grey--text ma-0 pa-0 text-caption">
-                    (SHC) Sharp Healthcare
-                  </p>
-                  <v-chip
-                    class="my-2 pointer"
-                    pill
-                    v-on="on"
-                  >
-                    <v-avatar left>
-                      <v-img src="https://cdn.vuetifyjs.com/images/john.png" />
-                    </v-avatar>
-                    John Leider
-                  </v-chip>
-                </div>
-                <div class="d-flex ma-0 pa-0">
-                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                    Budget Status
-                  </div>
-                  <div class="grey--text py-1 text--darken-3 text-caption text-center w-half">
-                    Start Date
-                  </div>
-                </div>
-                <div class="d-flex ma-0 pa-0">
-                  <div class="blue lighten-2 py-2 text-center w-half white--text">
-                    Roadmap
-                  </div>
-                  <div class="blue py-2 text-center w-half white--text">
-                    07/5/2021
-                  </div>
-                </div>
-              </div>
-            </v-col>
-          </v-row> -->
-
-
           <v-row class="d-flex flex-wrap ma-0 w-full">
             <v-col
               v-for="(item, index) in props.items"
@@ -223,40 +160,46 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-btn
-                      v-if="showDeleteIconApplication === index"
+                      v-show="showDeleteIconApplication == index"
                       absolute
                       class="deleteBtn"
-                      color="red"
+                      color="white"
+                      elevation="1"
                       fab
                       light
                       small
                       v-on="on"
-                      @click="deleteProject(item)"
+                      @click.stop="deleteProject(item)"
                     >
-                      <v-icon>mdi-delete</v-icon>
+                      <v-icon size="20">
+                        mdi-delete
+                      </v-icon>
                     </v-btn>
                   </template>
 
-                  <span>{{ $t('cpm.deleteProject') }}</span>
+                  <span class="grey lighten-3 pa-2 rounded">{{ $t('cpm.deleteProject') }}</span>
                 </v-tooltip>
 
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-btn
-                      v-if="showDeleteIconApplication === index"
+                      v-show="showDeleteIconApplication === index"
                       absolute
                       class="newTabBtn"
-                      color="purple"
+                      color="purple lighten-3"
+                      elevation="1"
                       fab
                       small
                       v-on="on"
-                      @click="goToProject(item, true)"
+                      @click.stop="goToProject(item, true)"
                     >
-                      <v-icon>mdi-folder-plus</v-icon>
+                      <v-icon size="20">
+                        mdi-folder-plus
+                      </v-icon>
                     </v-btn>
                   </template>
 
-                  <span>{{ $t('cpm.openNewTab') }}</span>
+                  <span class="grey lighten-3 pa-2 rounded">{{ $t('cpm.openNewTab') }}</span>
                 </v-tooltip>
 
                 <v-col

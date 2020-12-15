@@ -23,9 +23,12 @@
           :key="`custom-field-${f.id}`"
           cols="12"
         >
+          <template v-if="f.machine_name == 'rapid_snapshot_image'" >
+            <img style="width: 20rem; height: auto;" :src="genericRecord[`${f.id}`]" alt="Rapid Image" >
+          </template>
           <component
             :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
-            v-if="f.type === 'referenced'"
+            v-else-if="f.type === 'referenced'"
             v-model="genericRecord[`${f.id}`]"
             :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
             :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
@@ -180,15 +183,15 @@ export default {
     }),
 
     saveStandardFields() {
-      if (this.showStandardFields) {
-        return new Promise((resolve, reject) => {
+      return new Promise( (resolve, reject) => {
+        if (this.showStandardFields) {
           this.updateRecord(this.recordToEdit)
             .then(res => resolve(res))
             .catch(e => reject(e))
-        })
-      }
+        }
 
-      return new Promise.resolve()
+        return resolve()
+      })
     },
 
     async creating() {
@@ -245,7 +248,7 @@ export default {
           const { toDelete, toCreate } = this.findTheDifference(this.typesToIds[a], this.genericRecord[a], a)
           const fieldType = this.fields.find(f => f.id === a).type
 
-          deleteArr.push({ values: toDelete, fieldType })
+          if(toDelete.length) deleteArr.push({ values: toDelete, fieldType })
           createObj[a] = toCreate
         })
 
@@ -261,7 +264,6 @@ export default {
           fields: []
         }
         payloadToCreate.fields = this.createFieldsPayload(createObj)
-
         await this.updateSomeFieldValues(payload)
         await this.bulkSaveFieldValues(payloadToCreate)
         if (deleteArr.length) {
@@ -284,7 +286,7 @@ export default {
 
       for (let x = 0; x < this.fields.length; x++) {
         const f = this.fields[x]
-        const value = this.$h.dg(record, `${f.id}`, '')
+        let value = this.$h.dg(record, `${f.id}`, '')
 
         if (!value) continue
 
@@ -294,7 +296,11 @@ export default {
             field_id: f.id
           }))
           fields = [...fields, ...res]
+        } if( Object.prototype.toString.call(value) == '[object Object]' ) {
+          delete value['created_at']
+          delete value['updated_at']
         } else {
+          if( value == 'true' || value == 'false' ) value = value == 'true' 
           fields.push({ value, field_id: f.id })
         }
       }
@@ -303,7 +309,7 @@ export default {
     },
 
     findTheDifference(reference, newData, fieldId) {
-      const toDelete = reference.filter(r => !newData.includes(r.value))
+      const toDelete = reference.filter(r => !newData.includes(r.value)) || []
 
       const transformedArray = reference.map(r => r.value)
       const toCreate = newData.filter(a => !transformedArray.includes(a))

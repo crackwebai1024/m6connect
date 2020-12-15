@@ -11,7 +11,7 @@
             v-if="!isFullScreen"
             cols="3" xl='2'
           >
-            <action-feed v-show="showSidePanels" />
+            <action-feed />
           </v-col>
           <v-col xl='8' :sm="isFullScreen ? 12 : 6">
             <!-- Home / Company Profile -->
@@ -21,7 +21,7 @@
             v-if="!isFullScreen"
             cols="3" xl='2'
           >
-            <m6-chat v-show="showSidePanels" />
+            <m6-chat />
           </v-col>
         </v-row>
         <!-- Preview overlay -->
@@ -65,9 +65,6 @@ export default {
     //
   }),
   computed: {
-    isFullScreen() {
-      return this.$route.name === 'app.cpm'
-    },
     ...mapState(['layout']),
     ...mapGetters('Auth', {
       loggedIn: 'loggedIn'
