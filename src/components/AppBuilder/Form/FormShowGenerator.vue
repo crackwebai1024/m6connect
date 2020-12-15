@@ -23,9 +23,12 @@
           :key="`custom-field-${f.id}`"
           cols="12"
         >
+          <template v-if="f.machine_name == 'rapid_snapshot_image'" >
+            <img style="width: 20rem; height: auto;" :src="genericRecord[`${f.id}`]" alt="Rapid Image" >
+          </template>
           <component
             :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
-            v-if="f.type === 'referenced'"
+            v-else-if="f.type === 'referenced'"
             v-model="genericRecord[`${f.id}`]"
             :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
             :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"

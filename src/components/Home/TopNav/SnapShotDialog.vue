@@ -226,7 +226,6 @@ const width = window.innerWidth * .7
 const height = window.innerHeight * .7
 
 const noteModel = {
-  rapid_record_number: '',
   rapid_title: '',
   rapid_description: '',
   rapid_x: Math.floor(width / 2),
@@ -376,7 +375,7 @@ export default {
           i => ({
             ...i,
             rapid_user: this.currentUser.id,
-            rapid_imageLink: imageLink,
+            rapid_snapshot_image: imageLink,
             rapid_priority: ( i.rapid_color_rating + i.rapid_reaction ) / 2,
             rapid_company: this.currentCompany.id
           })
@@ -407,7 +406,6 @@ export default {
       const coords = this.getRandCoordinates()
       const note = {
         id,
-        rapid_record_number: +new Date(),
         ...this.defaultNote,
         ...coords,
         rapid_url: window.location.href
