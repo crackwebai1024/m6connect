@@ -9,73 +9,49 @@
           v-if="showStandardFields"
           class="pa-0"
         >
-          <template v-if="editMode === 0">
-            <div class="d-flex flex-column">
-              <p class="mb-0 text-caption">
-                Record Status
-              </p>
-              <p class="mb-2">
+          <v-hover
+            v-slot="{ hover }"
+          >
+            <div class="d-flex justify-between relative">
+              <p
+                v-if="editMode === 0 || (editMode === 2 && !showIndexFields[0])"
+                class="mb-2"
+              >
+                <span class="mb-0 text-caption">Record Status</span><br>
                 {{ recordToEdit.status }}
               </p>
+              <v-autocomplete
+                v-if="editMode === 1 || (editMode === 2 && showIndexFields[0])"
+                v-model="recordToEdit.status"
+                filled
+                :items="statusOptions"
+                label="Record Status"
+                outlined
+              />
+              <v-btn
+                v-if="editMode === 2 && showIndexFields[0]"
+                class="green--text ml-2 text--accent-2"
+                icon
+                @click="showIndexFields[0] = false"
+              >
+                <v-icon size="18">
+                  mdi-check
+                </v-icon>
+              </v-btn>
+              <v-btn
+                v-if="hover && !showIndexFields[0]"
+                class="absolute right-0 top-0"
+                icon
+                right
+                top
+                @click="showIndexFields[0] = true"
+              >
+                <v-icon size="18">
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
             </div>
-          </template>
-          <template v-else-if="editMode === 1">
-            <v-autocomplete
-              v-model="recordToEdit.status"
-              filled
-              :items="statusOptions"
-              label="Record Status"
-              outlined
-            />
-          </template>
-          <template v-else>
-            <v-hover v-slot="{ hover }">
-              <div
-                v-if="showIndexFields[0] !== true"
-                class="d-flex flex-column relative"
-              >
-                <p class="mb-0 text-caption">
-                  Record Status
-                </p>
-                <p class="mb-2">
-                  {{ recordToEdit.status }}
-                </p>
-                <v-btn
-                  v-if="hover"
-                  class="absolute right-0 top-0"
-                  icon
-                  right
-                  top
-                  @click="showIndexFields[0] = true"
-                >
-                  <v-icon size="18">
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </div>
-              <div
-                v-else
-                class="d-flex justify-between"
-              >
-                <v-autocomplete
-                  v-model="recordToEdit.status"
-                  filled
-                  :items="statusOptions"
-                  label="Record Status"
-                  outlined
-                />
-                <v-btn
-                  class="green--text ml-2 text--accent-2"
-                  icon
-                  @click="showIndexFields[0] = false"
-                >
-                  <v-icon size="18">
-                    mdi-check
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-hover>
-          </template>
+          </v-hover>
 
           <v-textarea
             v-model="recordToEdit.description"
