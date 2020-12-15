@@ -39,7 +39,7 @@
                 </v-icon>
               </v-btn>
               <v-btn
-                v-if="hover && !showIndexFields[0]"
+                v-if="hover && !showIndexFields[0] && editMode === 2"
                 class="absolute right-0 top-0"
                 icon
                 right
@@ -82,7 +82,7 @@
                 </v-icon>
               </v-btn>
               <v-btn
-                v-if="hover && !showIndexFields[1]"
+                v-if="hover && !showIndexFields[1] && editMode === 2"
                 class="absolute right-0 top-0"
                 icon
                 right
