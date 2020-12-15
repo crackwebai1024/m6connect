@@ -7,70 +7,140 @@
       slot="header"
       class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
     >
-      <v-btn
-        color="red darken-1"
-        icon
-        :to="{ name: 'apps', params: {} }"
+      <v-col
+        class="d-flex relative"
+        cols="10"
       >
-        <v-icon>
-          mdi-close
-        </v-icon>
-      </v-btn>
-      <div class="align-center d-flex">
-        <v-img
-          v-if="record.image"
-          :alt="record.image"
-          class="rounded"
-          height="150"
-          :src="record.image"
-          width="180"
-        />
-
-        <v-icon
-          v-else
-          size="180"
+        <v-btn
+          class="absolute"
+          color="red darken-1"
+          icon
+          style="left: -40px; top: 13px;"
+          :to="{ name: 'apps', params: {} }"
         >
-          mdi-store
-        </v-icon>
-
-        <div class="ml-8">
-          <p class="font-weight-regular mb-1 text-h7">
-            {{ record['record_number'] }}
-          </p>
-          <v-spacer />
-          <p class="font-weight-regular mb-1 text-h5">
-            {{ record.title }}
-          </p>
-        </div>
-      </div>
-      <v-row
-        align="center"
-        no-gutters
-      >
-        <v-col cols="7" />
-        <v-col
-          class="align-center d-flex flex-column justify-center"
-          cols="5"
-        >
+          <v-icon>
+            mdi-close
+          </v-icon>
+        </v-btn>
+        <div class="d-flex w-full">
           <v-img
-            v-if="app.iconLink"
-            :alt="app.iconLink"
+            v-if="record.image"
+            :alt="record.image"
             class="rounded"
-            height="70"
-            :src="app.iconLink"
-            width="50"
+            height="150"
+            :src="record.image"
+            width="180"
           />
 
           <v-icon
             v-else
-            class="d-inline-block"
-            size="100"
+            size="180"
           >
             mdi-store
           </v-icon>
-          <span class="mt-3 text-center">{{ app['title'] }}</span>
-        </v-col>
-      </v-row>
+
+          <div class="pl-8 w-full">
+            <p class="font-weight-regular mb-1 text-h7">
+              {{ record['record_number'] }}
+            </p>
+            <v-spacer />
+            <div
+              v-if="!editTitleMode"
+              class="relative w-fit"
+            >
+              <p
+                class="font-weight-regular mb-1 text-h5"
+                style="height: 68px; overflow: hidden; text-overflow: ellipsis;"
+              >
+                {{ record.title }}
+              </p>
+              <v-btn
+                class="absolute pointer"
+                color="grey darken-1"
+                icon
+                style="right: -40px; top: -10px;"
+                @click="showEditTitleMode"
+              >
+                <v-icon size="18">
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+            </div>
+            <div
+              v-else
+              class="d-flex"
+            >
+              <v-textarea
+                v-model="updatedTitle"
+                auto-grow
+                class="mb-0"
+                label="Edit Title"
+                name="input-7-1"
+                outlined
+                @keyup.enter="editTitle"
+                @keyup.esc="cancelEditTitle"
+              />
+              <div
+                class="d-flex flex-column"
+              >
+                <v-btn
+                  class="ml-2"
+                  color="red"
+                  icon
+                  @click="cancelEditTitle"
+                >
+                  <v-icon size="22">
+                    mdi-close
+                  </v-icon>
+                </v-btn>
+                <v-btn
+                  class="ml-2"
+                  color="green accent-3"
+                  :disabled="record.title === updatedTitle"
+                  icon
+                  @click="editTitle"
+                >
+                  <v-icon
+                    size="22"
+                  >
+                    mdi-check
+                  </v-icon>
+                </v-btn>
+              </div>
+            </div>
+          </div>
+        </div>
+      </v-col>
+      <v-col cols="2">
+        <v-row
+          align="center"
+          no-gutters
+        >
+          <v-spacer />
+          <div
+            class="align-center d-flex flex-column justify-center"
+          >
+            <v-img
+              v-if="app.iconLink"
+              :alt="app.iconLink"
+              class="rounded-lg"
+              height="70"
+              :src="app.iconLink"
+              style="border-radius: 14px !important;"
+              width="70"
+            />
+
+            <v-icon
+              v-else
+              class="d-inline-block"
+              size="100"
+            >
+              mdi-store
+            </v-icon>
+            <span class="mt-3 text-center">{{ app['title'] }}</span>
+          </div>
+        </v-row>
+      </v-col>
     </div>
     <div
       slot="tabs"
@@ -180,12 +250,33 @@ export default {
     }),
     ...mapMutations('RecordsInstance', {
       displayAppBuilderShow: 'displayAppBuilderShow'
-    })
+    }),
+    ...mapActions('AppBuilder', {
+      updateRecord: 'updateRecord'
+    }),
+    showEditTitleMode() {
+      this.updatedTitle = this.record.title
+      this.editTitleMode = true
+    },
+    cancelEditTitle() {
+      this.editTitleMode = false
+    },
+    editTitle() {
+      this.record.title = this.updatedTitles
+      return new Promise((resolve, reject) => {
+        this.updateRecord(this.record)
+          .then(res => resolve(res))
+          .catch(e => reject(e))
+      })
+      this.editTitleMode = false
+    }
   },
 
   data: () => ({
     tabs: [],
-    currentTab: 0
+    currentTab: 0,
+    editTitleMode: false,
+    updatedTitle: ''
   })
 
 }

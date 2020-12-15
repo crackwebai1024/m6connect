@@ -146,7 +146,7 @@
                 @click="updatePost(data)"
               >
                 <v-icon size="22">
-                  mdi-checkbox-marked-circle-outlined
+                  mdi-check
                 </v-icon>
               </v-btn>
             </div>
