@@ -921,8 +921,16 @@ export default {
     formatData(item) {
       const formated = {}
       this.importHeaders.forEach((header, index) => {
-        if (this.mappedFields[index] !== '') {
-          formated[this.mappedFields[index]] = item[index]
+        if (this.mappedFields[index] !== '' && this.mappedFields[index] !== undefined) {
+          if (this.mappedFields[index].includes('amount') || this.mappedFields[index].includes('accrual')) {
+            if (isNaN(parseFloat(item[index].replace(/,/g, '')))) {
+              formated[this.mappedFields[index]] = 0
+            } else {
+              formated[this.mappedFields[index]] = parseFloat(item[index].replace(/,/g, ''))
+            }
+          } else {
+            formated[this.mappedFields[index]] = item[index]
+          }
         }
       })
       return formated
