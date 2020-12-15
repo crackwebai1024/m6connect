@@ -1,15 +1,81 @@
 <template>
   <v-form ref="form">
-    <v-container fluid>
-      <v-row>
-        <v-col v-if="showStandardFields">
-          <v-autocomplete
-            v-model="recordToEdit.status"
-            filled
-            :items="statusOptions"
-            label="Record Status"
-            outlined
-          />
+    <v-container
+      class="pa-0"
+      fluid
+    >
+      <v-row class="ma-0 pa-0 pt-4">
+        <v-col
+          v-if="showStandardFields"
+          class="pa-0"
+        >
+          <template v-if="editMode === 0">
+            <div class="d-flex flex-column">
+              <p class="mb-0 text-caption">
+                Record Status
+              </p>
+              <p class="mb-2">
+                {{ recordToEdit.status }}
+              </p>
+            </div>
+          </template>
+          <template v-else-if="editMode === 1">
+            <v-autocomplete
+              v-model="recordToEdit.status"
+              filled
+              :items="statusOptions"
+              label="Record Status"
+              outlined
+            />
+          </template>
+          <template v-else>
+            <v-hover v-slot="{ hover }">
+              <div
+                v-if="showIndexFields[0] !== true"
+                class="d-flex flex-column relative"
+              >
+                <p class="mb-0 text-caption">
+                  Record Status
+                </p>
+                <p class="mb-2">
+                  {{ recordToEdit.status }}
+                </p>
+                <v-btn
+                  v-if="hover"
+                  class="absolute right-0 top-0"
+                  icon
+                  right
+                  top
+                  @click="showIndexFields[0] = true"
+                >
+                  <v-icon size="18">
+                    mdi-pencil
+                  </v-icon>
+                </v-btn>
+              </div>
+              <div
+                v-else
+                class="d-flex justify-between"
+              >
+                <v-autocomplete
+                  v-model="recordToEdit.status"
+                  filled
+                  :items="statusOptions"
+                  label="Record Status"
+                  outlined
+                />
+                <v-btn
+                  class="green--text ml-2 text--accent-2"
+                  icon
+                  @click="showIndexFields[0] = false"
+                >
+                  <v-icon size="18">
+                    mdi-check
+                  </v-icon>
+                </v-btn>
+              </div>
+            </v-hover>
+          </template>
 
           <v-textarea
             v-model="recordToEdit.description"
@@ -163,7 +229,8 @@ export default {
     typesToIds: {},
     complexDataStructs: { autocomplete: true, people: true },
     recordToEdit: {},
-    statusOptions: ['Published', 'Draft', 'Archived']
+    statusOptions: ['Published', 'Draft', 'Archived'],
+    showIndexFields: []
   }),
 
   computed: {

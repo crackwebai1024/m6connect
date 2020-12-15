@@ -157,7 +157,7 @@
               :edit-mode="currentView"
               :fields="$h.dg(panel, 'fields', [])"
               :panel="panel"
-              :show-standard-fields="tab.readOnly && index === 0"
+              :show-standard-fields="(tab.readOnly && index === 0)"
             />
           </div>
         </div>
