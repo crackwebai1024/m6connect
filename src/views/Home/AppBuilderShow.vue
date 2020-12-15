@@ -42,6 +42,7 @@
           <m6-upload
             accepted-file-type="image"
             btn-button="purple"
+            class="absolute left-0 ml-3 mt-2 top-0"
             @loading="loading = !loading"
             @response="recordImageRes"
           >
