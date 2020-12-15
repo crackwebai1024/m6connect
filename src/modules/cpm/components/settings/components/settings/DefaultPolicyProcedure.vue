@@ -27,7 +27,7 @@
               <v-col md="12">
                 <v-btn
                   color="blue"
-                  outline
+                  outlined
                   @click="cancel"
                 >
                   Cancel

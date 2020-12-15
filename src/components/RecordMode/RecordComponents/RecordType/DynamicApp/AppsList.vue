@@ -1,5 +1,5 @@
-<template class="mx-0">
-  <v-container>
+<template>
+  <v-container class="w-full">
     <header-component
       class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded w-full"
       hasslot
@@ -106,6 +106,14 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.setDynamicApps().then(() => {
+      this.getApps().then(apps => {
+        this.apps = apps
+        this.loading = false
+      })
+    })
+  },
   methods: {
     ...mapActions('ITAppsModule', {
       filterApps: 'get_filter_builder_apps'
@@ -126,17 +134,9 @@ export default {
       this.loading = true
       this.apps = []
       this.getApps().then(
-        apps => (this.apps = this.list(), this.loading = false)
+        () => (this.apps = this.list(), this.loading = false)
       )
     }
-  },
-  mounted() {
-    this.setDynamicApps().then(() => {
-      this.getApps().then(apps => {
-        this.apps = apps
-        this.loading = false
-      })
-    })
   }
 }
 </script>

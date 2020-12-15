@@ -54,6 +54,7 @@
     "vue-select": "^3.10.8",
     "vue-snotify": "^3.2.1",
     "vue-tel-input-vuetify": "^1.2.13",
+    "vue-youtube-embed": "^2.2.2",
     "vue2-editor": "^2.10.2",
     "vue2-google-maps": "^0.10.7",
     "vuedraggable": "^2.24.3",

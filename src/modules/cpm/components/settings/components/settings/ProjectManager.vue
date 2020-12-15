@@ -39,27 +39,29 @@
           <v-data-table
             :headers="headers"
             :items="settings.projectManager"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item.label }}</td>
-              <td class="text-right">
-                <!--<v-btn-->
-                <!--  small-->
-                <!--  icon-->
-                <!--  @click.prevent="editElement(props.index, props.item)" >-->
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item.label }}</td>
+                <td class="text-right">
+                  <!--<v-btn-->
+                  <!--  small-->
+                  <!--  icon-->
+                  <!--  @click.prevent="editElement(props.index, props.item)" >-->
 
-                <!--  <v-icon>mdi-pencil</v-icon>-->
-                <!--</v-btn>-->
-                <v-icon
-                  class="ml-0 mr-0 pointer"
-                  color="#f44336"
-                  size="20"
-                  @click.prevent="deleteElement(props.index, props.item.label)"
-                >
-                  mdi-delete
-                </v-icon>
-              </td>
+                  <!--  <v-icon>mdi-pencil</v-icon>-->
+                  <!--</v-btn>-->
+                  <v-icon
+                    class="ml-0 mr-0 pointer"
+                    color="#f44336"
+                    size="20"
+                    @click.prevent="deleteElement(props.index, props.item.label)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>
@@ -70,7 +72,6 @@
       v-model="showForm"
       max-width="800px"
       persistent
-      scrollable
     >
       <v-card class="mt-2">
         <v-card-title class="headline px-6 py-4 white">

@@ -10,7 +10,7 @@
       <v-divider class="grey lighten-3" />
 
       <v-card-text
-        class="pt-3 vertical-scroll"
+        class="pt-3"
         v-html="message"
       >
         <div>

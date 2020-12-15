@@ -457,6 +457,9 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     }),
+    ...mapGetters('Auth', {
+      user: 'getUser'
+    }),
     sortedProjectManager() {
       let aux = []
         .concat(
@@ -792,9 +795,9 @@ export default {
       }
     },
     getCreator() {
-      const user = window.Drupal.settings.m6_platform.user
-      user.label = user.name + ' ' + user.lastName
-      user.value = window.Drupal.settings.m6_platform.uid
+      const user = {}
+      user.label = this.user.firstName + ' ' + this.user.lastName
+      user.value = this.user.id
       return user
     },
     async create() {
@@ -1130,7 +1133,6 @@ export default {
             }
             this.showLoading = false
             this.$snotify.success('The Project has been created', 'Success')
-            this.$emit('close')
 
             if (project.forecasted) {
               this.$router.push({
@@ -1143,6 +1145,7 @@ export default {
                 params: { id: doc.id }
               })
             }
+            this.$router.replace('/cpm/' + doc.id)
           })
           .catch(error => {
             console.error(error)

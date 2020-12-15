@@ -5,6 +5,9 @@
     :class="[minimized ? 'minimized' : 'h-full']"
     elevation="3"
   >
+    <M6Loading
+      :loading="showLoading"
+    />
     <div
       class="align-center chat-title d-flex justify-space-between px-3"
       :class="[minimized ? 'blue lighten-2' : '']"
@@ -190,8 +193,7 @@
               <div class="relative">
                 <v-card
                   v-if="hover"
-                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
-                  style="margin-bottom: -90px; margin-left: -130px;"
+                  class="absolute left-0 max-w-none pa-1 top-0 w-fit z-20"
                 >
                   <v-btn
                     v-bind="attrs"
@@ -201,7 +203,7 @@
                     v-on="on"
                     @click="messageEdit = channel.data.id + '-channel'"
                   >
-                    Delete Group
+                    Delete Conversation
                   </v-btn>
                 </v-card>
                 <v-btn
@@ -327,11 +329,12 @@
                 class="d-flex ml-auto w-fit"
               >
                 <div
-                  v-for="(image, index) in message.images"
-                  :key="'imagemsg-' + index"
+                  v-for="(image, ind) in message.images"
+                  :key="'imagemsg-' + ind"
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
+                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
                     :src="image"
                   >
@@ -453,6 +456,7 @@
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
+                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
                     :src="image"
                   >
@@ -496,9 +500,27 @@
           :type="'message'"
         />
         <external-url
-          v-if="urlify(message.text)['urls'].length > 0"
+          v-if="urlify(message.text)['urls'].length > 0 && urlify(message.text)['youtubeUrls'].length === 0"
           :urls="urlify(message.text)['urls']"
         />
+        <youtube-video
+          v-if="urlify(message.text)['youtubeUrls'].length > 0"
+          :urls="urlify(message.text)['youtubeUrls']"
+        />
+        <div
+          v-for="(row, imageIndex) in message.images"
+          :key="imageIndex"
+          class="video-list__container"
+        >
+          <video
+            v-if="row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
+            controls
+          >
+            <source
+              :src="row"
+            >
+          </video>
+        </div>
       </div>
     </div>
     <!-- Emoji Picker -->
@@ -562,10 +584,42 @@
             :src="srcImageFile"
           >
           <v-btn
-            class="absolute btn-chat-shadow ml-2 right-0 top-0"
+            class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
             color="grey lighten-2"
             fab
-            style="height:15px; width:15px;"
+            @click="removeImage(index)"
+          >
+            <v-icon
+              size="12"
+            >
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </template>
+    <template v-if="srcVideoFiles.length > 0">
+      <div class="d-flex images-container mx-1 px-0 py-0">
+        <div
+          v-for="(srcVideo, index) in srcVideoFiles"
+          :key="'previewimage-' + index"
+          class="mx-1 relative w-fit"
+        >
+          <video
+            controls
+            height="100"
+            width="100"
+          >
+            <source
+              :src="srcVideo.url"
+              :type="srcVideo.type"
+            >
+            Your browser does not support the video tag.
+          </video>
+          <v-btn
+            class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+            color="grey lighten-2"
+            fab
             @click="removeImage(index)"
           >
             <v-icon
@@ -588,7 +642,7 @@
       :class="[minimized ? 'd-none' : 'd-flex']"
     >
       <v-menu
-        :close-on-content-click="false"
+        :close-on-content-click="true"
         content-class="elevation-0"
         elevation="0"
         :offset-y="offset"
@@ -721,7 +775,7 @@
                   v-on="on"
                 >
                   <v-file-input
-                    accept="image/png, image/jpeg, image/bmp"
+                    accept="image/*, image/heif, image/heic, video/*, video/mp4, video/x-m4v, video/x-matroska, .mkv"
                     class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
                     hide-input
                     multiple
@@ -730,7 +784,7 @@
                   />
                 </div>
               </template>
-              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image</span>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image/Video</span>
             </v-tooltip>
           </v-list-item>
           <v-list-item class="ma-0 pa-0 uploadfile-btn">
@@ -800,13 +854,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+/* eslint-disable camelcase */
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
 import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
+import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 
 export default {
@@ -818,7 +874,8 @@ export default {
     DeleteDialog,
     VEmojiPicker,
     ExternalUrl,
-    RecordUrl
+    RecordUrl,
+    YoutubeVideo
   },
   props: {
     channel: {
@@ -828,6 +885,7 @@ export default {
   },
   data: () => ({
     deleteDialog: false,
+    showLoading: false,
     hover: false,
     menu: false,
     input: '',
@@ -897,9 +955,23 @@ export default {
     srcImageFiles() {
       const srcImages = []
       this.imageFiles.forEach(imageFile => {
-        srcImages.push(URL.createObjectURL(imageFile))
+        if (imageFile['type'].substr(0, imageFile['type'].indexOf('/')) === 'image') {
+          srcImages.push(URL.createObjectURL(imageFile))
+        }
       })
       return srcImages
+    },
+    srcVideoFiles() {
+      const srcVideo = []
+      this.imageFiles.forEach(file => {
+        if (file['type'].substr(0, file['type'].indexOf('/')) === 'video') {
+          srcVideo.push({
+            url: URL.createObjectURL(file),
+            type: file['type']
+          })
+        }
+      })
+      return srcVideo
     }
   },
   watch: {
@@ -914,7 +986,6 @@ export default {
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
-
 
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
@@ -956,6 +1027,10 @@ export default {
     ...mapActions('WorkOrderModule', {
       getApps: 'getAvailableApps',
       getActions: 'getActionsFeed'
+    }),
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess'
     }),
     changeApp(event) {
       this.getActions(event).then(response => {
@@ -1079,13 +1154,17 @@ export default {
     },
     urlify(text) {
       const urlRegex = /(https?:\/\/[^\s]+)/g
+      const youtubeUrlRegex = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/
       const textUrls = []
+      let youtubeUrls = []
+
       const res = text.replace(urlRegex, function (url) {
         const path = new URL(url)
         textUrls.push(url)
         return '<a href="' + url + '" target="_blank" class=" white--text pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>'
       })
-      return { text: res, urls: textUrls }
+      youtubeUrls = textUrls.filter(row => youtubeUrlRegex.test(row))
+      return { text: res, urls: textUrls, youtubeUrls: youtubeUrls }
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
@@ -1175,78 +1254,89 @@ export default {
       }
     },
     async sendMessage() {
-      if (this.valueInput.trim().length === 0) {
+      try {
+        this.showLoading = true
+        const message = await this.$store.dispatch('GSChat/sendMessage', {
+          channel: this.channel,
+          message: this.valueInput
+        })
+
+        if (this.imageFiles.length > 0) {
+          
+          const urls = []
+          this.imageFiles.forEach(async (image, index) => {
+            const url = await this.setStreamFiles({
+              files: image,
+              headers: {
+                'Content-Type': image['type'],
+                'Content-Name': image['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+              }
+            })
+
+            urls.push(url['attachUrl'])
+            if (index === this.imageFiles.length - 1) {
+
+              await this.updateMessage({
+                id: message['message']['id'],
+                text: message['message']['text'],
+                images: urls
+              })
+                this.showLoading = false
+                this.imageFiles = []
+            }
+          })
+        }
+
+        if (this.itemInfo['panel']) {
+          await this.updateMessage({
+            id: message['message']['id'],
+            text: message['message']['text'],
+            panel: this.urlInfo
+          })
+        }
+
+
+        if (this.docFiles.length > 0) {
+          this.showLoading = true
+          const urls = []
+          this.docFiles.forEach(async (file, index) => {
+            const url = await this.setStreamFiles({
+              files: file,
+              headers: {
+                'Content-Type': file['type'],
+                'Content-Name': file['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+              }
+            })
+
+            urls.push(url['attachUrl'])
+            if (this.docFiles.length - 1 === index) {
+              this.updateMessage({
+                id: message['message']['id'],
+                text: message['message']['text'],
+                files: urls
+              }).then(() => {
+                this.showLoading = false
+                this.docFiles = []
+              })
+            }
+          })
+        }
+        this.showLoading = false
+
         this.valueInput = ''
-        this.$nextTick(() => this.$refs.inputMessage.focus())
-        return true
+        this.$nextTick(() => {
+          this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+          this.$refs.inputMessage.focus()
+        })
+      } catch(e) {
+        this.notifDanger('There was an error while sending the message')
       }
-
-      const message = await this.$store.dispatch('GSChat/sendMessage', {
-        channel: this.channel,
-        message: this.valueInput
-      })
-
-      if (this.imageFiles.length > 0) {
-        this.imageFiles.forEach(async image => {
-          await this.setStreamFiles({
-            files: image,
-            headers: {
-              'Content-Type': image['type'],
-              'Content-Name': image['name'],
-              'Stream-Id': message['message']['id'],
-              'Stream-type': 'message'
-            }
-          })
-        })
-
-        const images = await this.getFileUrl(message['message']['id'])
-
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          images: images
-        })
-      }
-
-      if (this.itemInfo['panel']) {
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          panel: this.urlInfo
-        })
-      }
-
-
-      if (this.docFiles.length > 0) {
-        this.docFiles.forEach(async file => {
-          await this.setStreamFiles({
-            files: file,
-            headers: {
-              'Content-Type': file['type'],
-              'Content-Name': file['name'],
-              'Stream-Id': message['message']['id'],
-              'Stream-type': 'message'
-            }
-          })
-        })
-
-        const files = await this.getFileUrl(message['message']['id'])
-
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          files: files
-        })
-      }
-
-      this.valueInput = ''
-      this.imageFiles = []
-      this.docFiles = []
-      this.$nextTick(() => {
-        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-        this.$refs.inputMessage.focus()
-      })
     },
+
     beforeDelete(decision, messageID) {
       this.messageEdit = ''
       this.deleteDialog = false
@@ -1259,7 +1349,9 @@ export default {
       this.minimized = !this.minimized
     },
     onImagesChange(e) {
-      this.imageFiles = e
+      e.forEach(item => {
+        this.imageFiles.push(item)
+      })
       this.$refs.inputMessage.focus()
     },
     removeImage(index) {
@@ -1294,6 +1386,10 @@ v-icon, p {
 .chat-title {
   min-height: 60px;
   background: #F7FCFF;
+}
+.v-close-btn {
+  height: 15px!important;
+  width: 15px!important;
 }
 .-rotate-45 {
   transform: rotate(-45deg);

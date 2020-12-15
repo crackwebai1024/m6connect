@@ -1,25 +1,20 @@
 <template>
-  <v-container class="w-main-content px-0 ma-0 pt-5 pb-0 d-flex vertical-scroll dont-show-scroll h-full">
+  <v-container class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full">
     <!-- General use list component-->
     <template>
       <!-- Project List Component -->
-      <apps-list class="main-content align-content-start"/>
+      <apps-list class="align-content-start main-content" />
     </template>
   </v-container>
 </template>
 
 <script>
-import {mapGetters, mapState, mapActions} from 'vuex';
-import AppsList from "@/components/RecordMode/RecordComponents/RecordType/DynamicApp/AppsList";
+import AppsList from '@/components/RecordMode/RecordComponents/RecordType/DynamicApp/AppsList'
 
 export default {
-  name: "AppBuilder",
+  name: 'AppBuilder',
   components: {
-    AppsList,
-  },
-  computed: {
-  },
-  methods: {
+    AppsList
   }
-};
+}
 </script>

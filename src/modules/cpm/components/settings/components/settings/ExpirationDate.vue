@@ -10,7 +10,7 @@
       />
       <v-btn
         color="blue"
-        outline
+        outlined
         @click="clear"
       >
         {{ $t('general.clear') }}

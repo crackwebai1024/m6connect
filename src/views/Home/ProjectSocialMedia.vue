@@ -1,7 +1,8 @@
+<!--eslint-disable vue/v-on-function-call-->
 <!-- eslint-disable vue/no-parsing-error -->
 <template>
   <v-container
-    class="h-full py-0"
+    class="h-full py-0 w-full"
   >
     <header-component
       class="card-custom-shadow h-auto mb-4 rounded"
@@ -93,46 +94,11 @@
                         dark
                         icon
                         v-on="on"
+                        @click="$refs.fileInput.click()"
                       >
                         <v-icon>mdi-file-plus-outline</v-icon>
                       </v-btn>
                     </template>
-                    <v-list>
-                      <v-list-item>
-                        <v-file-input
-                          accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf"
-                          class="align-left blue--text d-flex justify-left ma-0 pa-0 upload-icon"
-                          :disabled="postListShow"
-                          hide-input
-                          label="File"
-                          multiple
-                          prepend-icon="mdi-file-document-outline"
-                          @change="onDocsChange"
-                        >
-                          <p
-                            slot="append-outer"
-                            class="my-0 py-0"
-                          >
-                            File input
-                          </p>
-                        </v-file-input>
-                      </v-list-item>
-                      <v-list-item class="text-left">
-                        <v-file-input
-                          accept="image/png, image/jpeg, image/bmp"
-                          class="align-left blue--text d-flex justify-left ma-0 pa-0 upload-icon"
-                          :disabled="postListShow"
-                          hide-input
-                          label="Image"
-                          multiple
-                          prepend-icon="mdi-image-outline"
-                          @change="onImagesChange"
-                        />
-                        <p class="my-0 py-0">
-                          Image
-                        </p>
-                      </v-list-item>
-                    </v-list>
                   </v-menu>
                   <v-menu
                     v-model="menu"
@@ -241,37 +207,74 @@
           </v-col>
           <v-col cols="12">
             <div class="w-full">
+              <input
+                v-show="false"
+                ref="fileInput"
+                accept="application/msword, application/sql, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*, image/heif, image/heic, video/*, video/mp4, video/x-m4v, video/x-matroska, .mkv"
+                multiple
+                type="file"
+                @change="onFilesChange"
+              >
               <div
-                v-if="srcImageFiles.length > 0"
+                v-if="srcVideoOrImageFiles.length > 0"
                 class="align-center d-flex grey--text my-2 text-caption"
               >
                 <v-divider class="blue-grey lighten-5" />
-                <span class="mx-3">Images</span>
+                <span class="mx-3">Image/Video</span>
                 <v-divider class="blue-grey lighten-5" />
               </div>
-              <div v-if="srcImageFiles.length > 0">
-                <div class="d-flex images-container mx-1 px-0 py-0">
+              <div v-if="srcVideoOrImageFiles.length > 0">
+                <div class="d-flex images-container mx-1 preview__container px-0 py-0">
                   <div
-                    v-for="(srcImageFile, index) in srcImageFiles"
-                    :key="'previewimage-' + index"
+                    v-for="(srcVideoOrImage, index) in srcVideoOrImageFiles"
+                    :key="'previewVI-' + index"
                     class="mx-1 relative w-fit"
+                    @click="removeVideoOrImage(index)"
                   >
-                    <img
-                      class="image-preview"
-                      :src="srcImageFile"
-                    >
-                    <v-btn
-                      class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
-                      color="grey lighten-2"
-                      fab
-                      @click="removeImage(index)"
-                    >
-                      <v-icon
-                        size="12"
+                    <template v-if="srcVideoOrImage.type === 'image'">
+                      <img
+                        class="image-preview"
+                        :src="srcVideoOrImage.url"
+                        style="width: 100px; height: 100px;"
                       >
-                        mdi-close
-                      </v-icon>
-                    </v-btn>
+                      <v-btn
+                        class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                        color="grey lighten-2"
+                        fab
+                        @click="removeVideoOrImage(index)"
+                      >
+                        <v-icon
+                          size="12"
+                        >
+                          mdi-close
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <template v-else>
+                      <video
+                        controls
+                        height="100"
+                        width="100"
+                      >
+                        <source
+                          :src="srcVideoOrImage.url"
+                          :type="srcVideoOrImage.type"
+                        >
+                        Your browser does not support the video tag.
+                      </video>
+                      <v-btn
+                        class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                        color="grey lighten-2"
+                        fab
+                        @click="removeVideoOrImage(index)"
+                      >
+                        <v-icon
+                          size="12"
+                        >
+                          mdi-close
+                        </v-icon>
+                      </v-btn>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -284,7 +287,7 @@
                 <v-divider class="blue-grey lighten-5" />
               </div>
               <div v-if="docsFiles.length > 0">
-                <div class="d-flex images-container mx-1 my-1 px-0 py-0">
+                <div class="d-flex images-container mx-1 my-1 preview__container px-0 py-0">
                   <div
                     v-for="(doc, index) in docsFiles"
                     :key="'doc-' + index"
@@ -457,12 +460,23 @@ export default {
 
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
-    srcImageFiles() {
-      const srcImages = []
-      this.imageFiles.forEach(imageFile => {
-        srcImages.push(URL.createObjectURL(imageFile))
+    srcVideoOrImageFiles() {
+      const srcVideoOrImages = []
+      this.imageFiles.forEach(file => {
+        if (file['type'].substr(0, file['type'].indexOf('/')) === 'video') {
+          srcVideoOrImages.push({
+            url: URL.createObjectURL(file),
+            type: file['type']
+          })
+        }
+        if (file['type'].substr(0, file['type'].indexOf('/')) === 'image') {
+          srcVideoOrImages.push({
+            url: URL.createObjectURL(file),
+            type: 'image'
+          })
+        }
       })
-      return srcImages
+      return srcVideoOrImages
     },
     areas() {
       return [
@@ -543,6 +557,7 @@ export default {
     }
   },
   mounted() {
+    this.$store.dispatch('GSFeed/cleanFeed')
     if (!this.external) {
       this.companyState()
     }
@@ -630,9 +645,14 @@ export default {
     printSc(msg) {
       this.titlePage = `${msg}`
     },
-    onDocsChange(docs) {
-      docs.forEach(doc => {
-        this.docsFiles.push(doc)
+    onFilesChange(files) {
+      files['srcElement']['files'].forEach(file => {
+        const type = file['type'].substr(0, file['type'].indexOf('/'))
+        if (type === 'image' || type === 'video') {
+          this.imageFiles.push(file)
+        } else {
+          this.docsFiles.push(file)
+        }
       })
     },
     async privateState() {
@@ -649,9 +669,6 @@ export default {
     },
     addActivity() {
       this.showLoading = true
-      if (this.activityText.trim() === '') {
-        return
-      }
       this.showSkeletonPost = true
       const comp = this.user.companies.items.find(item => item.active === true)
       const urls = this.urlify()
@@ -685,7 +702,8 @@ export default {
       this.$store.dispatch('GSFeed/addActivity', activity).then(async res => {
         if (this.imageFiles.length > 0) {
           const urls = []
-          this.imageFiles.forEach(async (image, index) => {
+          for (let index = 0; index < this.imageFiles.length; index++) {
+            const image = this.imageFiles[index]
             const url = await this.setStreamFiles({
               files: image,
               headers: {
@@ -710,12 +728,13 @@ export default {
 
               this.$store.dispatch('GSFeed/updateActivity', activity)
             }
-          })
+          }
         }
 
         if (this.docsFiles.length > 0) {
           const urls = []
-          this.docsFiles.forEach(async (file, index) => {
+          for (let index = 0; index < this.docsFiles.length; index++) {
+            const file = this.docsFiles[index]
             const url = await this.setStreamFiles({
               files: file,
               headers: {
@@ -741,12 +760,13 @@ export default {
 
               this.$store.dispatch('GSFeed/updateActivity', activity)
             }
-          })
+          }
         }
 
         if (this.imageFiles.length === 0 && this.docsFiles.length === 0) {
           this.showLoading = false
         }
+        await this.$store.dispatch('GSFeed/cleanFeed')
 
         this.reloadFeed()
         this.urlInfo = {}
@@ -767,12 +787,7 @@ export default {
     async reloadFeed() {
       await this.$store.dispatch('GSFeed/retrieveFeed')
     },
-    onImagesChange(files) {
-      files.forEach(file => {
-        this.imageFiles.push(file)
-      })
-    },
-    removeImage(index) {
+    removeVideoOrImage(index) {
       this.imageFiles.splice(index, 1)
     },
     removeFile(index) {
@@ -789,5 +804,8 @@ export default {
 }
 .v-select__selections {
      min-height: 30px
+}
+.preview__container {
+  flex-wrap: wrap;
 }
 </style>

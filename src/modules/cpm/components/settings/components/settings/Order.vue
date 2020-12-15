@@ -25,7 +25,7 @@
 
       <v-btn
         color="blue"
-        outline
+        outlined
         @click="clear"
       >
         Clear
@@ -47,8 +47,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'Order',
-  data() {
-    return {
+  data: vm => ({
       phase: '',
       currentPhase: '',
       settings: {},
@@ -58,8 +57,7 @@ export default {
       rules: {
         required: value => !!value || 'Required.'
       }
-    }
-  },
+  }),
   computed: {
     ...mapGetters(['appLabel']),
     ...mapState('Companies', {

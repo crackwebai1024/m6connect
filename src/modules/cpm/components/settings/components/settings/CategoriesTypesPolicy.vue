@@ -20,7 +20,7 @@
           <v-data-table
             :headers="headers"
             :items="settings.types"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
             <template v-slot:items="props">
               <td>{{ props.item.name }}</td>

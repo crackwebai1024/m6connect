@@ -7,20 +7,8 @@
             <h1 class="blue--text pb-3 text-center">
               Edit Your Company
             </h1>
-            <v-tabs
-              v-model="tab"
-              color="blue darken-1"
-              grow
-            >
-              <v-tab>General</v-tab>
-              <v-tab>Project Specs</v-tab>
-              <v-tab>Social Media</v-tab>
-              <v-tab>Locations</v-tab>
-              <v-tab>Codes</v-tab>
-              <v-tab>Profile Image</v-tab>
-            </v-tabs>
             <v-tabs-items
-              v-model="tab"
+              v-model="secondColumnComponent.tab"
               class="pt-3"
             >
               <v-tab-item>
@@ -192,7 +180,7 @@
           </v-container>
         </v-form>
       </v-card-text>
-      <v-card-actions v-if="tab !== 4 ">
+      <v-card-actions v-if="secondColumnComponent.tab !== 4 ">
         <v-spacer />
         <v-btn
           class="darken-2 green white--text"
@@ -223,7 +211,6 @@ export default {
     CompanyCodesDisplay
   },
   data: () => ({
-    tab: 0,
     defaultSocialMediaLink: { icon: '', name: '', link: '' },
     value: '',
     options: {
@@ -259,6 +246,9 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany',
       companyInsuranceStatus: 'companyInsuranceStatus'
+    }),
+    ...mapState('UserSettingsControl', {
+      secondColumnComponent: 'secondColumnComponent'
     })
   },
   methods: {

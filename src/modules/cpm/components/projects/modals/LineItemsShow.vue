@@ -204,7 +204,8 @@ export default {
   },
   methods: {
     ...mapActions('cpm/projects/commitments', {
-      deleteLineItemStore: 'deleteLineItem'
+      deleteLineItemStore: 'deleteLineItem',
+      updateAccrual: 'updateAccrual'
     }),
     reload() {
       this.showCreateLineItemsModal = false
@@ -224,6 +225,7 @@ export default {
         lineItemId: this.lineItemToDelete.id
       })
         .then(() => {
+          this.updateAccrual(this.$route.params.id)
           this.$delete(this.commitment.line_items, this.lineItemIndexToDelete)
           this.$emit('reload')
           this.$snotify.success('The Line Item has been deleted', 'Success')

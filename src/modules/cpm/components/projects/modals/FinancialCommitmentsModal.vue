@@ -143,6 +143,27 @@
                 <div class="font-weight-black subheading">
                   <v-row>
                     <v-col class="align-center d-flex text-nowrap">
+                      Accrual
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+              <v-col cols="7">
+                <money
+                  v-model="commitment.accrual"
+                  disabled
+                />
+              </v-col>
+            </v-row>
+
+            <v-row
+              align="center"
+              justify="center"
+            >
+              <v-col cols="3">
+                <div class="font-weight-black subheading">
+                  <v-row>
+                    <v-col class="align-center d-flex text-nowrap">
                       Status
                     </v-col>
                   </v-row>
@@ -186,7 +207,6 @@
                       color="blue"
                       mask="date"
                       v-on="on"
-                      @click:append="showCalendarCompletionDate"
                     />
                   </template>
                   <v-date-picker
@@ -363,7 +383,7 @@
         color="blue"
         dark
       >
-        <v-card-text class="pt-3 vertical-scroll">
+        <v-card-text class="pt-3">
           Please stand by, uploading files...
           <v-progress-linear
             class="mb-0"
@@ -439,7 +459,8 @@ export default {
       commitment: {
         budget_category: {
           ref: ''
-        }
+        },
+        completionDateText: ''
       },
       lineItem: {},
       changes: [],
@@ -738,9 +759,6 @@ export default {
     setCompletionDate() {
       const date = DateTime.fromISO(this.commitment.completionDate)
       this.commitment.completionDateText = date.toFormat('MM/dd/yyyy')
-    },
-    showCalendarCompletionDate() {
-      this.$refs.completionDatePopup.isOpen = true
     },
     startSearchBudgetCategory() {
       this.showBudgetCategorySearch = true

@@ -36,6 +36,7 @@
           slot-scope="{ parent, item, tile }"
         >
           <div
+            class='black--text'
             :class="($h.dg(item, 'classOption', []).length > 0) ? item.classOption : 'highLightDisable'"
           >
             {{ $h.dg(item, 'code', 'N/A') }} - {{ $h.dg(item, 'name', 'Undefined') }}

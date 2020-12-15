@@ -123,6 +123,13 @@
       >
         <strong>{{ $t('cpm.projects.open') }} {{ (poTax || 0) | currency }}</strong>
       </v-chip>
+      <v-chip
+        color="transparent"
+        disabled
+        text-color="black"
+      >
+        <strong>{{ $t('cpm.projects.poOpenAccrual') }} {{ (poTax - project.accrual || 0) | currency }}</strong>
+      </v-chip>
     </v-row>
 
     <m6-data-table

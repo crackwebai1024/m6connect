@@ -1,26 +1,24 @@
 <template>
-  <div :style="` ${ tableView ? 'width: 100vw' : '' } `">
-    <v-container
-      class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full w-main-content"
-      fluid
-      :style="` ${ tableView ? 'width: 100%' : '' } `"
-    >
-      <!-- General use list component-->
-      <template v-if="get_screen_status()">
-        <record-container
-          class="align-content-start main-content"
-          :data="get_record_full_screen()"
-        />
-      </template>
-      <template v-else>
-        <!-- Project List Component -->
-        <general-list
-          class="align-content-start main-content"
-          @tableView=" e => tableView = e "
-        />
-      </template>
-    </v-container>
-  </div>
+  <v-container
+    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full"
+    fluid
+    :style="` ${ tableView ? 'width: 100%' : '' } `"
+  >
+    <!-- General use list component-->
+    <template v-if="screenStatus()">
+      <record-container
+        class="align-content-start main-content"
+        :data="recordFullScreen()"
+      />
+    </template>
+    <template v-else>
+      <!-- Project List Component -->
+      <general-list
+        class="align-content-start main-content"
+        @tableView=" e => tableView = e "
+      />
+    </template>
+  </v-container>
 </template>
 
 <script>
@@ -29,6 +27,7 @@ import GeneralList from '@/views/Home/GeneralList'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
 
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'Apps',
   components: {
     RecordContainer,
@@ -39,21 +38,21 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      get_screen_status: 'GeneralListModule/get_screen_status',
-      get_record_full_screen: 'GeneralListModule/get_record_full_screen',
-      get_image_preview_overlay: 'get_image_preview_overlay'
+      screenStatus: 'GeneralListModule/get_screen_status',
+      recordFullScreen: 'GeneralListModule/get_record_full_screen',
+      imageOverlay: 'get_image_preview_overlay'
     }),
     ...mapState(['layout']),
     imageArray() {
-      const images = this.get_image_preview_overlay()[0]
+      const images = this.imageOverlay()[0]
       return images
     },
     selectedImage() {
-      const selected = this.get_image_preview_overlay()[1]
+      const selected = this.imageOverlay()[1]
       return selected
     },
     overlayActive() {
-      const selected = this.get_image_preview_overlay()[0].length > 0
+      const selected = this.imageOverlay()[0].length > 0
       return selected
     }
   },

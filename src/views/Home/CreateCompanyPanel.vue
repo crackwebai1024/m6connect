@@ -86,6 +86,9 @@
           >
             <v-icon>mdi-cloud-upload</v-icon>
           </m6-upload>
+          <v-btn color="red darken-2" class="white--text" @click="showDeleteDialog = true" >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
           <v-btn
             class="white--text"
             color="green darken-2"
@@ -268,6 +271,14 @@
       <m6-loading
         :loading="loading"
       />
+
+      <m6-confirm-delete
+        message="Are you sure you want to delete this App?"
+        :show="showDeleteDialog"
+        title="Delete Current App"
+        @cancel="cancelDelete"
+        @confirm="confirmingDelete"
+      />
     </template>
   </v-card>
 </template>
@@ -300,6 +311,7 @@ export default {
   },
 
   data: () => ({
+    showDeleteDialog: false,
     app: {},
     message: 'Tab',
     appLoaded: false,
@@ -355,13 +367,33 @@ export default {
   methods: {
     ...mapActions('AppBuilder', {
       switchOrderTabs: 'switchOrderTabs',
-      updateApp: 'updateApp'
+      updateApp: 'updateApp',
+      deleteApp: 'deleteApp'
     }),
 
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+
+    async confirmingDelete() {
+      this.showDeleteDialog = false
+
+      try {
+        this.loading = true
+        await this.deleteApp(this.$route.params.id)
+        this.loading = false
+        this.notifSuccess('The App Was Deleted')
+        this.$router.push('/')
+      } catch(e) {
+        this.loading = false
+        this.notifDanger('There was an error, App was NOT deleted')
+      }
+    },
+
+    cancelDelete() {
+      this.showDeleteDialog = false
+    },
 
     updatePanel(data) {
       this.app.tabs[this.activeTab].panels = this.app.tabs[this.activeTab].panels.map(p => p.id == data.id ? data : p)

@@ -39,6 +39,15 @@
             mdi-store
           </v-icon>
 
+          <m6-upload
+            accepted-file-type="image"
+            btn-button="purple"
+            @loading="loading = !loading"
+            @response="recordImageRes"
+          >
+            <v-icon>mdi-cloud-upload</v-icon>
+          </m6-upload>
+
           <div class="pl-8 w-full">
             <p class="font-weight-regular mb-1 text-h7">
               {{ record['record_number'] }}
@@ -138,13 +147,31 @@
               mdi-store
             </v-icon>
             <span class="mt-3 text-center">{{ app['title'] }}</span>
+            <v-btn
+              color="red darken-2"
+              icon
+              small
+              @click="deletingRecord"
+            >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
           </div>
         </v-row>
       </v-col>
+
+      <m6-loading :loading="loading" />
+
+      <m6-confirm-delete
+        message="Are you sure you want to delete this record?"
+        :show="showDeleteDialog"
+        title="Delete Current Record"
+        @cancel="cancelDelete"
+        @confirm="confirmDelete"
+      />
     </div>
     <div
       slot="tabs"
-      class="align-center d-flex"
+      class="d-flex"
     >
       <v-tabs
         v-model="currentTab"
@@ -189,16 +216,27 @@
 
         <div slot="rightPanel">
           <div
-            v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 1 )"
-            :key="`p-l-${index}`"
-            class="mb-3 panel px-4 py-3 white"
+            v-if="currentTab === 0"
+            class="main-content px-3"
           >
-            <h3>{{ panel.title }}</h3>
-
-            <form-show-generator
-              :fields="$h.dg(panel, 'fields', [])"
-              :panel="panel"
+            <project-social-media
+              class="px-0"
+              :external="true"
             />
+          </div>
+          <div v-else>
+            <div
+              v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 1 )"
+              :key="`p-l-${index}`"
+              class="mb-3 panel px-4 py-3 white"
+            >
+              <h3>{{ panel.title }}</h3>
+
+              <form-show-generator
+                :fields="$h.dg(panel, 'fields', [])"
+                :panel="panel"
+              />
+            </div>
           </div>
         </div>
       </panel-two-columns>
@@ -209,10 +247,10 @@
 <script>
 import AppTemplate from '@/views/Home/AppTemplate'
 import ProjectSocialMedia from './ProjectSocialMedia'
-import PanelFull from '@/components/AppBuilder/Content/PanelFull'
 import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
   name: 'AppBuilderShow',
@@ -220,10 +258,17 @@ export default {
   components: {
     AppTemplate,
     ProjectSocialMedia,
-    PanelFull,
     PanelTwoColumns,
-    FormShowGenerator
+    FormShowGenerator,
+    DeleteDialog
   },
+
+  data: () => ({
+    tabs: [],
+    currentTab: 0,
+    loading: false,
+    showDeleteDialog: false
+  }),
 
   computed: {
     ...mapState('Companies', {
@@ -244,16 +289,66 @@ export default {
     }
   },
 
+  watch: {
+    async record(val) {
+      await this.$store.dispatch('GSFeed/setRoom', 'AppBuilder')
+      await this.$store.dispatch('GSFeed/setBuilderFeed', val.record_number.replace('#', '_'))
+      await this.$store.dispatch('GSFeed/retrieveFeed')
+    }
+  },
+
   methods: {
     ...mapActions('AppBuilder', {
-      getApp: 'getApp'
+      getApp: 'getApp',
+      updateRecord: 'updateRecord',
+      deleteRecord: 'deleteRecord'
     }),
     ...mapMutations('RecordsInstance', {
       displayAppBuilderShow: 'displayAppBuilderShow'
     }),
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess'
+    }),
     ...mapActions('AppBuilder', {
       updateRecord: 'updateRecord'
     }),
+    deletingRecord() {
+      this.showDeleteDialog = true
+    },
+    async confirmDelete() {
+      this.showDeleteDialog = false
+
+      try {
+        this.loading = true
+        await this.deleteRecord(this.record.id)
+        this.notifSuccess('The record was deleted')
+        this.$router.push('/')
+        this.loading = false
+      } catch (e) {
+        this.loading = false
+        this.notifDanger('There was an error while deleting the Record')
+      }
+    },
+    cancelDelete() {
+      this.showDeleteDialog = false
+    },
+    async recordImageRes(res) {
+      if (res.ok) {
+        this.record.image = res.data.link
+        try {
+          this.loading = true
+          await this.updateRecord(this.record)
+          this.loading = false
+          this.notifSuccess('Record Updated!')
+        } catch (e) {
+          this.loading = false
+          this.notifDanger('There was an error while saving the file')
+        }
+      } else {
+        this.notifDanger('There was an error while saving the file')
+      }
+    },
     showEditTitleMode() {
       this.updatedTitle = this.record.title
       this.editTitleMode = true
@@ -282,6 +377,10 @@ export default {
 }
 </script>
 
-<style lang="scs" scoped>
-
+<style lang="scss" scoped>
+.flex-row {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+}
 </style>

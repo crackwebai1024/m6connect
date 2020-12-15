@@ -9,10 +9,7 @@
       :info="{title: 'Search All Apps', icon: ''}"
     >
       <template #select>
-        <v-switch
-          v-model="tableView"
-          :append-icon=" tableView ? 'mdi-table' : 'mdi-arrange-bring-forward' "
-        />
+        <general-list-drop-down v-model="tableView" />
         <v-menu
           bottom
           offset-y
@@ -70,7 +67,7 @@
     </header-component>
     <div v-if="!loading">
       <template v-if="tableView">
-        <records-table :items="testItems" />
+        <records-table :items="records" />
       </template>
       <template v-else>
         <v-row
@@ -109,13 +106,15 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
 import HeaderComponent from '@/components/Home/HeaderComponent'
 import RecordsTable from '@/components/RecordsTable'
+import GeneralListDropDown from '@/components/Apps/GeneralListDropDown'
 
 export default {
   name: 'GeneralList',
   components: {
     GeneralItem,
     HeaderComponent,
-    RecordsTable
+    RecordsTable,
+    GeneralListDropDown
   },
   data: () => ({
     loading: true,
@@ -123,8 +122,7 @@ export default {
     perPage: 8,
     records: [],
     searchInput: '',
-    tableView: false,
-    testItems: []
+    tableView: false
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -248,7 +246,6 @@ export default {
     },
     async changingApps(app) {
       try {
-        this.testItems = await this.getRecordsByApp(app['prefix'])
         app.function()
       } catch (e) {
         // Empty
