@@ -13,7 +13,7 @@
             class="input"
             :placeholder="placeholder || label"
             :select-first-on-enter="selectFirstOnEnter"
-            :value="value"
+            :value="addressVal"
             @place_changed="sendingData"
           />
         </div>
@@ -31,7 +31,7 @@ export default {
       default: false
     },
     value: {
-      type: String,
+      type: [Object, String],
       default: ''
     },
     label: {
@@ -47,6 +47,15 @@ export default {
       default: true
     }
   },
+  
+  computed: {
+    addressVal: {
+      get(){
+        if( typeof this.value == "string" ) return this.value
+        return this.value.value
+      }
+    }
+  },
 
   data: () => ({
     outlinedAndFilledClasses: 'v-text-field--enclosed v-text-field--filled v-text-field--is-booted v-text-field--outlined'
@@ -56,10 +65,10 @@ export default {
     sendingData(place) {
       this.$emit('placeUpdate', place)
       const address = {}
-      address.address = val.formatted_address
+      address.value = place.formatted_address
 
-      address.lat = val.geometry.location.lat()
-      address.lng = val.geometry.location.lng()
+      address.lat = place.geometry.location.lat().toString()
+      address.lng = place.geometry.location.lng().toString()
       this.$emit('input', address) 
     },
   }

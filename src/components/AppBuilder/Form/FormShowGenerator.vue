@@ -301,6 +301,7 @@ export default {
         } if( Object.prototype.toString.call(value) == '[object Object]' ) {
           delete value['created_at']
           delete value['updated_at']
+          fields.push({ value, field_id: f.id })
         } else {
           if( value == 'true' || value == 'false' ) value = value == 'true' 
           fields.push({ value, field_id: f.id })
