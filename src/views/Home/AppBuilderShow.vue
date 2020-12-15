@@ -357,13 +357,9 @@ export default {
     cancelEditTitle() {
       this.editTitleMode = false
     },
-    editTitle() {
+    async editTitle() {
       this.record.title = this.updatedTitles
-      return new Promise((resolve, reject) => {
-        this.updateRecord(this.record)
-          .then(res => resolve(res))
-          .catch(e => reject(e))
-      })
+      await this.updateRecord(this.record)
       this.editTitleMode = false
     }
   },
@@ -372,7 +368,9 @@ export default {
     tabs: [],
     currentTab: 0,
     editTitleMode: false,
-    updatedTitle: ''
+    updatedTitle: '',
+    loading: false,
+    showDeleteDialog: false
   })
 
 }
