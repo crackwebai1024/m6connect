@@ -6,7 +6,7 @@
     >
       {{ info['prefix'] ? info['prefix'] : apps.filter(app => app.id === info['app_id'])[0]['prefix'] }}
     </div>
-    <div class="d-flex">
+    <div class="w-full">
       <v-row
         class="pl-5"
         no-gutters
@@ -49,7 +49,9 @@
         </v-col>
       </v-row>
     </div>
-    <span class="font-weight-regular mb-0 mt-4 pl-5 text-h6 w-full">{{ info['description'] }}</span>
+    <p class="font-weight-regular mb-0 mt-4 pl-5 text-h6 w-full">
+      {{ info['description'] }}
+    </p>
   </v-container>
 </template>
 

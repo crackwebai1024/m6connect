@@ -1,4 +1,6 @@
 import axios from 'axios'
+const DynamicAppPosts     = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/RecordPostListPreview.vue")
+const PreviewTabsManager  = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/PreviewTabsBuilder.vue")
 const defaultState = {
   app: {}
 }
@@ -11,6 +13,29 @@ const mutations = {
 }
 
 const actions = {
+  async getNavigationPreView(context, appID) {
+    const tabs = []
+    const app = await context.dispatch('getApp', appID)
+
+    app.tabs.forEach((tab, i) => {
+      tabs.push({
+        name: tab.title,
+        index: i,
+        component: PreviewTabsManager,
+        icon: 'mdi-table-row'
+      })
+      if (i === 0) {
+        tabs.push({
+          name: 'Feed',
+          component: DynamicAppPosts,
+          icon: 'mdi-comment-quote'
+        })
+      }
+    })
+    console.log(tabs);
+
+    return tabs
+  },
   getApp({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`).then(({ data }) => {

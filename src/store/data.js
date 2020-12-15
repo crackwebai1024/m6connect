@@ -27,7 +27,7 @@ const Rationalization = {
 // Dynamic App
 const DynamicAppSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/DynamicAppSummary")
 const DynamicAppPosts = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/RecordPostListPreview.vue")
-const PreviewTabsManager = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/PreviewTabsManager.vue")
+const PreviewTabsManager = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/PreviewTabsBuilder.vue")
 
 export default{
   // Home Data

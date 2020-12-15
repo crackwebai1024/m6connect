@@ -1,6 +1,6 @@
 <template>
   <div class="h-full w-full">
-    <record-container :record_data="data" />
+    <record-container :record-data="data" />
   </div>
 </template>
 

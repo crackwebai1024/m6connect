@@ -1,7 +1,7 @@
 <template>
   <v-card
-    class="mt-5 pa-3"
-    height="500px"
+    class="dont-show-scroll my-5 pa-0 vertical-scroll"
+    height="300px"
   >
     <project-social-media
       class="pa-0"
@@ -26,7 +26,10 @@ export default {
   },
   data: () => ({
   }),
-  computed: {
+  async mounted() {
+    await this.$store.dispatch('GSFeed/setRoom', 'AppBuilder')
+    await this.$store.dispatch('GSFeed/setBuilderFeed', this.info.record_number.replace('#', '_'))
+    await this.$store.dispatch('GSFeed/retrieveFeed')
   }
 }
 </script>
