@@ -33,10 +33,10 @@
           </v-icon>
 
           <m6-upload
+            accepted-file-type="image"
             btn-button="purple"
             @loading="loading = !loading"
             @response="recordImageRes"
-            acceptedFileType="image"
           >
             <v-icon>mdi-cloud-upload</v-icon>
           </m6-upload>
@@ -77,7 +77,12 @@
         </v-col>
         <v-col cols="3">
           <span class="d-inline-block ml-5">{{ app['title'] }}</span>
-          <v-btn color="red darken-2" small icon @click="deletingRecord" >
+          <v-btn
+            color="red darken-2"
+            icon
+            small
+            @click="deletingRecord"
+          >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
         </v-col>
@@ -122,6 +127,24 @@
       slot="content"
       class="w-full"
     >
+      <panel-full
+        class="mb-2"
+      >
+        <v-tabs
+          v-model="currentView"
+          active-class="font-weight-black blue--text text--lighten-1"
+          class="grey--text lighten-3 mb-2 rounded-pill w-fit"
+          :hide-slider="true"
+        >
+          <v-tab
+            v-for="(tab, i) in views"
+            :key="`viewtabs-${i}`"
+            class="capitalize"
+          >
+            {{ tab }}
+          </v-tab>
+        </v-tabs>
+      </panel-full>
       <panel-two-columns>
         <div slot="leftPanel">
           <div
@@ -131,6 +154,7 @@
           >
             <h3>{{ panel.title }}</h3>
             <form-show-generator
+              :edit-mode="currentView"
               :fields="$h.dg(panel, 'fields', [])"
               :panel="panel"
               :show-standard-fields="tab.readOnly && index === 0"
@@ -141,7 +165,7 @@
         <div slot="rightPanel">
           <div
             v-if="currentTab === 0"
-            class="main-content px-3"
+            class="main-content px-0"
           >
             <project-social-media
               class="px-0"
@@ -190,8 +214,14 @@ export default {
   data: () => ({
     tabs: [],
     currentTab: 0,
+    currentView: 0,
+    views: [
+      'View Mode',
+      'Edit Mode',
+      'Inline Edit'
+    ],
     loading: false,
-    showDeleteDialog:false
+    showDeleteDialog: false
   }),
 
   computed: {
@@ -239,14 +269,14 @@ export default {
     },
     async confirmDelete() {
       this.showDeleteDialog = false
-     
+
       try {
         this.loading = true
-        await this.deleteRecord(this.record.id) 
+        await this.deleteRecord(this.record.id)
         this.notifSuccess('The record was deleted')
         this.$router.push('/')
         this.loading = false
-      } catch(e){
+      } catch (e) {
         this.loading = false
         this.notifDanger('There was an error while deleting the Record')
       }
@@ -269,7 +299,6 @@ export default {
       } else {
         this.notifDanger('There was an error while saving the file')
       }
-    
     }
   }
 
