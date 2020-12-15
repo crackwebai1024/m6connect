@@ -249,11 +249,13 @@ export default {
         const fields = this.getFieldList()
         temp.map((row, index) => {
           fields[index].map((field, findex) => {
-            if (row.id === field.app_id) {
-              this.dynamicTableHeader.push({
-                text: this.stringToUpercase(field.type),
-                value: field.type + '-' + findex
-              })
+            if (row.app_id === field.app_id) {
+              if (!this.dynamicTableHeader.find(row => row.value === `${field.type}-${findex}`)) {
+                this.dynamicTableHeader.push({
+                  text: this.stringToUpercase(field.label),
+                  value: field.type + '-' + findex
+                })
+              }
               row[field.type + '-' + findex] = field.value
             }
           })

@@ -140,7 +140,9 @@ export default {
         multiple: true,
         chips: true,
         clearable: true
-      }
+      },
+      'referencedToApp': { component: 'v-text-field' },
+      'referenced': { component: 'v-text-field' }
     },
     genericRecord: {},
     formRules: {

@@ -195,7 +195,7 @@ export default {
         // eslint-disable-next-line camelcase
         row.show_in_table = true
       })
-      axios.post(`${this.server}/api/app-builder/table-fields/update`, {
+      axios.put(`${this.server}/api/app-builder/table-fields/update`, {
         tableItems: this.tableItems,
         appId: parseInt(this.$route.params.id)
       }).then(response => {
