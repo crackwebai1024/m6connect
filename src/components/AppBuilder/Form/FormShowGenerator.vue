@@ -97,46 +97,86 @@
           </v-hover>
         </v-col>
         <v-col
-          v-for="f in fields"
+          v-for="(f, index) in fields"
           :key="`custom-field-${f.id}`"
+          class="ma-0 pa-0"
           cols="12"
         >
-          <template v-if="f.machine_name == 'rapid_snapshot_image'">
-            <img
-              alt="Rapid Image"
-              :src="genericRecord[`${f.id}`]"
-              style="width: 20rem; height: auto;"
-            >
-          </template>
-          <component
-            :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
-            v-else-if="f.type === 'referenced'"
-            v-model="genericRecord[`${f.id}`]"
-            :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
-            :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
-            disabled
-            filled
-            :items="$h.dg( f, 'metadata.options', [] )"
-            :label=" $h.dg( f, 'label', '' ) "
-            :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
-            outlined
-            :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
-            :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
-          />
-          <component
-            :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')"
-            v-else
-            v-model="genericRecord[`${f.id}`]"
-            :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
-            :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
-            filled
-            :items="$h.dg( f, 'metadata.options', [] )"
-            :label=" $h.dg( f, 'label', '' ) "
-            :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
-            outlined
-            :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
-            :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
-          />
+          <v-hover
+            v-slot="{ hover }"
+          >
+            <div class="d-flex justify-between relative">
+              <p
+                v-if="editMode === 0 || (editMode === 2 && !showIndexFields[index + 2])"
+                class="mb-2"
+              >
+                <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
+                {{ genericRecord[`${f.id}`] }}
+              </p>
+              <template
+                v-if="editMode === 1 || (editMode === 2 && showIndexFields[index + 2])"
+              >
+                <template v-if="f.machine_name == 'rapid_snapshot_image'">
+                  <img
+                    alt="Rapid Image"
+                    :src="genericRecord[`${f.id}`]"
+                    style="width: 20rem; height: auto;"
+                  >
+                </template>
+                <component
+                  :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
+                  v-else-if="f.type === 'referenced'"
+                  v-model="genericRecord[`${f.id}`]"
+                  :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
+                  :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
+                  disabled
+                  filled
+                  :items="$h.dg( f, 'metadata.options', [] )"
+                  :label=" $h.dg( f, 'label', '' ) "
+                  :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
+                  outlined
+                  :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+                  :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
+                />
+                <component
+                  :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')"
+                  v-else
+                  v-model="genericRecord[`${f.id}`]"
+                  :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
+                  :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
+                  filled
+                  :items="$h.dg( f, 'metadata.options', [] )"
+                  :label=" $h.dg( f, 'label', '' ) "
+                  :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
+                  outlined
+                  :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+                  :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
+                />
+              </template>
+              <v-btn
+                v-if="editMode === 2 && showIndexFields[index + 2]"
+                class="green--text ml-2 text--accent-2"
+                icon
+                @click="showIndexFields[1] = false"
+              >
+                <v-icon size="18">
+                  mdi-check
+                </v-icon>
+              </v-btn>
+              <v-btn
+                v-if="hover && !showIndexFields[index + 2] && editMode === 2"
+                class="absolute right-0 top-0"
+                icon
+                right
+                top
+                @click="showIndexFields[index + 2] = true"
+              >
+                <v-icon size="18">
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+            </div>
+          </v-hover>
         </v-col>
       </v-row>
 
