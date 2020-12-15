@@ -392,7 +392,6 @@ export default {
     },
 
     cancelDelete() {
-      console.log('cancel')
       this.showDeleteDialog = false
     },
 
