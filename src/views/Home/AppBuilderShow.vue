@@ -77,14 +77,25 @@
         </v-col>
         <v-col cols="3">
           <span class="d-inline-block ml-5">{{ app['title'] }}</span>
+          <v-btn color="red darken-2" small icon @click="deletingRecord" >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
         </v-col>
       </v-row>
 
       <m6-loading :loading="loading" />
+
+      <m6-confirm-delete
+        message="Are you sure you want to delete this record?"
+        :show="showDeleteDialog"
+        title="Delete Current Record"
+        @cancel="cancelDelete"
+        @confirm="confirmDelete"
+      />
     </div>
     <div
       slot="tabs"
-      class="align-center d-flex"
+      class="d-flex"
     >
       <v-tabs
         v-model="currentTab"
@@ -163,6 +174,7 @@ import ProjectSocialMedia from './ProjectSocialMedia'
 import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 
 export default {
   name: 'AppBuilderShow',
@@ -171,13 +183,15 @@ export default {
     AppTemplate,
     ProjectSocialMedia,
     PanelTwoColumns,
-    FormShowGenerator
+    FormShowGenerator,
+    DeleteDialog
   },
 
   data: () => ({
     tabs: [],
     currentTab: 0,
-    loading: false
+    loading: false,
+    showDeleteDialog:false
   }),
 
   computed: {
@@ -210,7 +224,8 @@ export default {
   methods: {
     ...mapActions('AppBuilder', {
       getApp: 'getApp',
-      updateRecord: 'updateRecord'
+      updateRecord: 'updateRecord',
+      deleteRecord: 'deleteRecord'
     }),
     ...mapMutations('RecordsInstance', {
       displayAppBuilderShow: 'displayAppBuilderShow'
@@ -219,6 +234,26 @@ export default {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+    deletingRecord() {
+      this.showDeleteDialog = true
+    },
+    async confirmDelete() {
+      this.showDeleteDialog = false
+     
+      try {
+        this.loading = true
+        await this.deleteRecord(this.record.id) 
+        this.notifSuccess('The record was deleted')
+        this.$router.push('/')
+        this.loading = false
+      } catch(e){
+        this.loading = false
+        this.notifDanger('There was an error while deleting the Record')
+      }
+    },
+    cancelDelete() {
+      this.showDeleteDialog = false
+    },
     async recordImageRes(res) {
       if (res.ok) {
         this.record.image = res.data.link
