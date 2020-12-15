@@ -21,7 +21,7 @@
                            <v-checkbox v-model="address.mainLocation" label="Main Location" />
                        </v-col>
                        <v-col cols="12" >
-                           <g-map :address="address.address" placeholder="Company Address" @placeUpdate="placeUpdate" />
+                           <g-map :value="address.address" placeholder="Company Address" @placeUpdate="placeUpdate" />
                        </v-col>
                        <v-col cols="12" >
                            <v-autocomplete 

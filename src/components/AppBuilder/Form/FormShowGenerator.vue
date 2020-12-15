@@ -88,6 +88,7 @@ import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOpt
 import AppAttachment from '@/components/AppBuilder/Form/Components/Attachment.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
+import GMap from '@/components/_partials/GMap'
 
 export default {
   name: 'FormShowGenerator',
@@ -97,7 +98,8 @@ export default {
     AppAttachment,
     VAutocomplete,
     RadioBtnOptions,
-    PeopleAutocomplete
+    PeopleAutocomplete,
+    GMap
   },
 
   props: {
@@ -140,6 +142,9 @@ export default {
         multiple: true,
         chips: true,
         clearable: true
+      },
+      'autocomplete-address': {
+        component: 'g-map'
       }
     },
     genericRecord: {},
