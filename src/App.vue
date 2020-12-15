@@ -9,17 +9,17 @@
         >
           <v-col
             v-if="!isFullScreen"
-            cols="3"
+            cols="3" xl='2'
           >
             <action-feed v-show="showSidePanels" />
           </v-col>
-          <v-col :cols="isFullScreen ? 12 : 6">
+          <v-col xl='8' :sm="isFullScreen ? 12 : 6">
             <!-- Home / Company Profile -->
             <router-view />
           </v-col>
           <v-col
             v-if="!isFullScreen"
-            cols="3"
+            cols="3" xl='2'
           >
             <m6-chat v-show="showSidePanels" />
           </v-col>

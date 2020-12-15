@@ -77,8 +77,11 @@
           <v-col
             v-for="(item, index) of records"
             :key="index"
-            :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-            cols="12"
+            class='card-container'
+            :class="Object.keys(records).length !== index + 1 ? '' : ''"
+            sm="6"
+            lg='6'
+            xl='4'
           >
             <general-item :record-data="item" />
           </v-col>
@@ -268,5 +271,8 @@ export default {
 }
 v-progress-circular {
   margin-left: 45%!important;
+}
+.card-container > .v-card {
+  height: 100%;
 }
 </style>
