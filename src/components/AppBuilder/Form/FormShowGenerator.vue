@@ -53,12 +53,48 @@
             </div>
           </v-hover>
 
-          <v-textarea
-            v-model="recordToEdit.description"
-            filled
-            label="Record Description"
-            outlined
-          />
+          <v-hover
+            v-slot="{ hover }"
+          >
+            <div class="d-flex justify-between relative">
+              <p
+                v-if="editMode === 0 || (editMode === 2 && !showIndexFields[1])"
+                class="mb-2"
+              >
+                <span class="mb-0 text-caption">Record Description</span><br>
+                {{ recordToEdit.description }}
+              </p>
+              <v-textarea
+                v-if="editMode === 1 || (editMode === 2 && showIndexFields[1])"
+                v-model="recordToEdit.description"
+                filled
+                label="Record Description"
+                outlined
+              />
+              <v-btn
+                v-if="editMode === 2 && showIndexFields[1]"
+                class="green--text ml-2 text--accent-2"
+                icon
+                @click="showIndexFields[1] = false"
+              >
+                <v-icon size="18">
+                  mdi-check
+                </v-icon>
+              </v-btn>
+              <v-btn
+                v-if="hover && !showIndexFields[1]"
+                class="absolute right-0 top-0"
+                icon
+                right
+                top
+                @click="showIndexFields[1] = true"
+              >
+                <v-icon size="18">
+                  mdi-pencil
+                </v-icon>
+              </v-btn>
+            </div>
+          </v-hover>
         </v-col>
         <v-col
           v-for="f in fields"
