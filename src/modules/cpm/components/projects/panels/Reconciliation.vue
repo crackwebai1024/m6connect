@@ -235,7 +235,7 @@
                   @click="openReconciliationModal(props.item)"
                 />
               </template>
-              <span>{{
+              <span class="grey lighten-3 pa-2 rounded">{{
                 getVerifiedStatusProperty(
                   $h.dg(props, 'item.verifiedStatus', 'noValidated'),
                   'text'
@@ -248,13 +248,14 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-icon
+                  class="pointer"
                   :color="
                     getM6VerifiedStatus(
                       $h.dg(props, 'item.openAmount'),
                       'color'
                     )
                   "
-                  large
+                  size="22"
                   v-on="on"
                 >
                   {{
@@ -262,7 +263,7 @@
                   }}
                 </v-icon>
               </template>
-              <span>{{
+              <span class="grey lighten-3 pa-2 rounded">{{
                 getM6VerifiedStatus($h.dg(props, 'item.openAmount'), 'text')
               }}</span>
             </v-tooltip>

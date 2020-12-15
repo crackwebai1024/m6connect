@@ -20,7 +20,7 @@
       <v-divider class="grey lighten-3" />
 
       <v-divider class="grey lighten-3" />
-      <v-card-text class="vertical-scroll">
+      <v-card-text>
         <v-form
           ref="form"
         >
