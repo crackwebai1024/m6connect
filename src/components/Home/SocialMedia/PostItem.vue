@@ -619,6 +619,10 @@ export default {
   },
   mounted() {
     this.images = this.data.images
+    // fix for Action Item
+    if (this.images === undefined) {
+      this.images = []
+    }
     this.pictureItems = this.images.slice(0, 4)
     this.user = this.currentUser
     if (this.data.own_reactions.like !== undefined) {
