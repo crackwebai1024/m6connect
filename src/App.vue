@@ -1,18 +1,27 @@
 <template>
   <v-app id="complete-app">
     <div class="grey h-viewport lighten-3">
-      <template v-if="loggedIn && (!$route.meta.public || $route.meta.topNav)">
-        <template v-if="$route.meta.topNav">
-          <top-nav />
-          <div class="mt-60">
+      <template v-if="loggedIn && !$route.meta.public">
+        <top-nav />
+        <v-row
+          class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
+          no-gutters
+        >
+          <v-col
+            v-if="!isFullScreen"
+            cols="3"
+            :xl="largeViewport.sidePanelsCols"
+          >
+            <action-feed />
+          </v-col>
+          <v-col :xl="largeViewport.mainCols" :sm="isFullScreen ? 12 : 6">
+            <!-- Home / Company Profile -->
             <router-view />
-          </div>
-        </template>
-        <template v-else>
-          <top-nav />
-          <v-row
-            class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
-            no-gutters
+          </v-col>
+          <v-col
+            v-if="!isFullScreen"
+            cols="3"
+            :xl="largeViewport.sidePanelsCols"
           >
             <v-col
               v-show="showSidePanels"
