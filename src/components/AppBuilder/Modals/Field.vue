@@ -215,7 +215,8 @@ export default {
         { label: 'Attachment', value: 'attachment' },
         { label: 'Yes / No', value: 'boolean' },
         { label: 'Reference Field', value: 'referenced' },
-        { label: 'Reference App', value: 'referencedToApp' }
+        { label: 'Reference App', value: 'referencedToApp' },
+        { label: 'Address', value: 'autocomplete-address' }
       ],
       fieldList: []
     }
