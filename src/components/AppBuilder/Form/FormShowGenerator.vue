@@ -58,7 +58,7 @@
                 v-if="showIndexFields[0]"
                 class="green--text ml-2 text--accent-2"
                 icon
-                @click="showIndexFields[0] = false"
+                @click="$set(showIndexFields, 0, false)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -70,7 +70,7 @@
                 icon
                 right
                 top
-                @click="showIndexFields[0] = true"
+                @click="$set(showIndexFields, 0, true)"
               >
                 <v-icon size="18">
                   mdi-pencil
@@ -101,7 +101,7 @@
                 v-if="showIndexFields[1]"
                 class="green--text ml-2 text--accent-2"
                 icon
-                @click="showIndexFields[1] = false"
+                @click="$set(showIndexFields, 1, false)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -113,7 +113,7 @@
                 icon
                 right
                 top
-                @click="showIndexFields[1] = true"
+                @click="$set(showIndexFields, 1, true)"
               >
                 <v-icon size="18">
                   mdi-pencil
@@ -191,7 +191,7 @@
                 v-if="showIndexFields[index + 2]"
                 class="green--text ml-2 text--accent-2"
                 icon
-                @click="showIndexFields[index + 2] = false"
+                @click="$set(showIndexFields, index + 2, false)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -203,7 +203,7 @@
                 icon
                 right
                 top
-                @click="showIndexFields[index + 2] = true"
+                @click="$set(showIndexFields, index + 2, true)"
               >
                 <v-icon size="18">
                   mdi-pencil
