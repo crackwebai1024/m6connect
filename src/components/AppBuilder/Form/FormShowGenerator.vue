@@ -137,7 +137,15 @@
                 class="mb-2"
               >
                 <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
-                {{ genericRecord[`${f.id}`] }}
+                <template v-if="f.type === 'attachment'">
+                  {{ genericRecord[`${f.id}`]['file_name'] }}
+                </template>
+                <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
+                  {{ genericRecord[`${f.id}`].join(', ') }}
+                </template>
+                <template v-else>
+                  {{ genericRecord[`${f.id}`] }}
+                </template>
               </p>
               <template
                 v-if="editMode === 1 || (editMode !== 1 && showIndexFields[index + 2])"
