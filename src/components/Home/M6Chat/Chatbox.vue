@@ -327,8 +327,17 @@
               <p v-if="message.images && message.text == ''">
                 {{ message.images.join(', ') }}
               </p>
+              <template v-if="!message.images">
+                <v-skeleton-loader
+                  v-if="index === messages.length - 1 && (srcImageFiles.length !== 0 || srcVideoFiles.length !== 0)"
+                  class="mx-auto"
+                  height="100"
+                  type="card"
+                  width="100"
+                />
+              </template>
               <div
-                v-if="message.images"
+                v-else
                 class="d-flex ml-auto w-fit"
               >
                 <div
