@@ -359,7 +359,6 @@ export default {
     },
     async editTitle() {
       this.record.title = this.updatedTitle
-      console.log(this.record)
       await this.updateRecord(this.record)
       this.editTitleMode = false
     }

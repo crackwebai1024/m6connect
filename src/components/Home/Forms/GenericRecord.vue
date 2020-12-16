@@ -209,7 +209,6 @@ export default {
         this.loading = false
         this.close()
       } catch (e) {
-        console.log(e)
         this.notifDanger('There Was An Error While Creating The Record')
         this.loading = false
       }
