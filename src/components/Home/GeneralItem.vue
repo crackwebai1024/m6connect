@@ -8,7 +8,6 @@
       width="100%"
       @click="updateInfo"
     >
-      <!--@click=" recordData['prefix'] !== null ? redirect() : updateInfo()"-->
       <component
         :is="compData"
         :info="recordData"
