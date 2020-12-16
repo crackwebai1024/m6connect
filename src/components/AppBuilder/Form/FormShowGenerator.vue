@@ -146,6 +146,9 @@ export default {
         chips: true,
         clearable: true
       },
+      'referencedToApp': { component: 'v-text-field' },
+      'referenced': { component: 'v-text-field' }
+      },
       'autocomplete-address': {
         component: 'g-map'
       }
@@ -306,7 +309,7 @@ export default {
           delete value['updated_at']
           fields.push({ value, field_id: f.id })
         } else {
-          if( value == 'true' || value == 'false' ) value = value == 'true' 
+          if( value == 'true' || value == 'false' ) value = value == 'true'
           fields.push({ value, field_id: f.id })
         }
       }

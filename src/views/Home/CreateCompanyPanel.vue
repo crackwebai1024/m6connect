@@ -91,6 +91,14 @@
           </v-btn>
           <v-btn
             class="white--text"
+            color="grey darken-2"
+            style="float: left;"
+            @click="tableView"
+          >
+            Table View
+          </v-btn>
+          <v-btn
+            class="white--text"
             color="green darken-2"
             style="float: right;"
             @click="updatingApp"
@@ -223,7 +231,7 @@
             />
             <add-panel @addNewPanel="addNewPanel(0)" />
           </v-col>
-          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)" > 
+          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)" >
             <v-col
               v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
               class="pa-0 pl-1"
@@ -281,6 +289,13 @@
         @cancel="cancelDelete"
         @confirm="confirmingDelete"
       />
+
+      <table-view
+        :showTable="showTable"
+        :fieldListProp="fieldList"
+        :tableItemsProp="tableItems"
+        @hideTableModal="hideTableModal"
+      />
     </template>
   </v-card>
 </template>
@@ -292,11 +307,13 @@ import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
 import AddField from '@/components/AppBuilder/Buttons/AddField'
 import Field from '@/components/AppBuilder/Modals/Field'
+import TableView from '@/components/AppBuilder/Modals/TableView'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import AppActivities from '@/views/AppBuilder/AppActivities'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'CreateCompanyPanel',
@@ -309,13 +326,17 @@ export default {
     Panel,
     TabUpdates,
     ProjectSocialMedia,
-    AppActivities
+    AppActivities,
+    TableView
   },
 
   data: () => ({
     showDeleteDialog: false,
+    server: `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}`,
     app: {},
     message: 'Tab',
+    tableItems: [],
+    fieldList: [],
     appLoaded: false,
     showDeleteModal: false,
     tabToDelete: null,
@@ -337,8 +358,7 @@ export default {
         required: false
       }
     },
-
-
+    showTable: false,
     rules: {
       generic: [v => !!v || 'This field is required']
     }
@@ -561,6 +581,28 @@ export default {
       this.fieldToDelete = null
       this.tabToDelete = null
       this.showDeleteModal = false
+    },
+
+    tableView() {
+      this.loading = true
+      axios.post(`${this.server}/api/app-builder/field/list/all`, {
+        appId: parseInt(this.$route.params.id)
+      }).then(response => {
+        this.fieldList = response.data
+      })
+      axios.post(`${this.server}/api/app-builder/table-fields/get`, {
+        appId: parseInt(this.$route.params.id)
+      }).then(response => {
+        this.showTable = true
+        this.tableItems = response.data
+      })
+      this.loading = false
+    },
+
+    hideTableModal() {
+      this.showTable = false
+      this.tableItems = []
+      this.fieldList = []
     }
   }
 
