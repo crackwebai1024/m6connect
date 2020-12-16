@@ -99,7 +99,8 @@ const router = new VueRouter({
       name: "dev",
       component: Dev,
       meta: {
-        public: true
+        public: true,
+        topNav: true
       }
     },
     {
