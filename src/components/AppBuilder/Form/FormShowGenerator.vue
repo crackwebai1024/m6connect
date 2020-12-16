@@ -23,8 +23,12 @@
           :key="`custom-field-${f.id}`"
           cols="12"
         >
-          <template v-if="f.machine_name == 'rapid_snapshot_image'" >
-            <img style="width: 20rem; height: auto;" :src="genericRecord[`${f.id}`]" alt="Rapid Image" >
+          <template v-if="f.machine_name === 'rapid_snapshot_image'">
+            <img
+              alt="Rapid Image"
+              :src="genericRecord[`${f.id}`]"
+              style="width: 20rem; height: auto;"
+            >
           </template>
           <component
             :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
@@ -147,8 +151,7 @@ export default {
         clearable: true
       },
       'referencedToApp': { component: 'v-text-field' },
-      'referenced': { component: 'v-text-field' }
-      },
+      'referenced': { component: 'v-text-field' },
       'autocomplete-address': {
         component: 'g-map'
       }
@@ -191,7 +194,7 @@ export default {
     }),
 
     saveStandardFields() {
-      return new Promise( (resolve, reject) => {
+      return new Promise((resolve, reject) => {
         if (this.showStandardFields) {
           this.updateRecord(this.recordToEdit)
             .then(res => resolve(res))
@@ -256,7 +259,7 @@ export default {
           const { toDelete, toCreate } = this.findTheDifference(this.typesToIds[a], this.genericRecord[a], a)
           const fieldType = this.fields.find(f => f.id === a).type
 
-          if(toDelete.length) deleteArr.push({ values: toDelete, fieldType })
+          if (toDelete.length) deleteArr.push({ values: toDelete, fieldType })
           createObj[a] = toCreate
         })
 
@@ -304,12 +307,13 @@ export default {
             field_id: f.id
           }))
           fields = [...fields, ...res]
-        } if( Object.prototype.toString.call(value) == '[object Object]' ) {
+        }
+        if (Object.prototype.toString.call(value) == '[object Object]') {
           delete value['created_at']
           delete value['updated_at']
           fields.push({ value, field_id: f.id })
         } else {
-          if( value == 'true' || value == 'false' ) value = value == 'true'
+          if (value == 'true' || value == 'false') value = value == 'true'
           fields.push({ value, field_id: f.id })
         }
       }
