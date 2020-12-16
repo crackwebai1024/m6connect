@@ -137,7 +137,7 @@
                 class="mb-2"
               >
                 <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
-                <template v-if="f.type === 'attachment'">
+                <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
                   {{ genericRecord[`${f.id}`]['file_name'] }}
                 </template>
                 <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
