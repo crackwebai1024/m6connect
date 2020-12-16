@@ -79,7 +79,7 @@
           </p>
           <p
             v-else
-            class="font-weight-medium ma-0 pa-0 text-caption"
+            class="capitalize font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
             {{ setDate( new Date( users[0].user.last_active )) }}
@@ -1143,24 +1143,24 @@ export default {
     },
     setDate(item) {
       const months = [
-        'JAN',
-        'FEB',
-        'MAR',
-        'APR',
-        'MAY',
-        'JUN',
-        'JUL',
-        'AUG',
-        'SEP',
-        'OCT',
-        'NOV',
-        'DEC'
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       ]
 
       // If the last session was more than 1 day ago it shows the date else it shows the time.
       return 86400000 - (new Date - item) <= 0 ?
-        `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}` :
-        `Last connection: ${
+        `Online: ${months[item.getMonth()]} ${item.getDate()}, ${item.getFullYear()}` :
+        `Online: ${
           item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2, '0') : item.getHours().toString().padStart(2, '0')
         }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
