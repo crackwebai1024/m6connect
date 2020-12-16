@@ -63,6 +63,9 @@
         <v-col>{{info['created_at'] | normalizeDate}}</v-col>
       </v-row>
     </div>
+    <p class="font-weight-regular mb-0 mt-4 pl-5 text-h6 w-full">
+      {{ info['description'] }}
+    </p>
   </v-container>
 </template>
 
@@ -76,7 +79,7 @@ export default {
   props: {
     info: {
       type: Object,
-      default: {}
+      default: () => {}
     }
   },
   data: () => ({
