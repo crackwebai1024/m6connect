@@ -184,7 +184,7 @@
         <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
           <v-col
             class="d-flex flex-column justify-center pa-0 pr-1"
-            cols="5"
+            :cols=" $h.dg(app, `tabs.${activeTab}.full_width`, false) ? 12 : 5"
           >
             <!--                <div class="mb-3 panel px-4 py-3 white">-->
             <!--                  <h3 class="font-weight-bold grey&#45;&#45;text spacing-tight text&#45;&#45;darken-1">-->
@@ -223,31 +223,33 @@
             />
             <add-panel @addNewPanel="addNewPanel(0)" />
           </v-col>
-          <v-col
-            v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
-            class="pa-0 pl-1"
-            cols="7"
-          >
-            <panel
-              v-for="panel in rightPanels"
-              :key="panel.id"
-              :panel="panel"
-              @deletePanel="deletePanel"
-              @updatePanel="updatePanel"
-            />
-            <add-panel @addNewPanel="addNewPanel(1)" />
-          </v-col>
+          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)" > 
+            <v-col
+              v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
+              class="pa-0 pl-1"
+              cols="7"
+            >
+              <panel
+                v-for="panel in rightPanels"
+                :key="panel.id"
+                :panel="panel"
+                @deletePanel="deletePanel"
+                @updatePanel="updatePanel"
+              />
+              <add-panel @addNewPanel="addNewPanel(1)" />
+            </v-col>
 
-          <v-col
-            v-else
-            class="pa-0 pl-1"
-            cols="7"
-          >
-            <project-social-media
-              class="opacity-social-media"
-              post-list-show
-            />
-          </v-col>
+            <v-col
+              v-else
+              class="pa-0 pl-1"
+              cols="7"
+            >
+              <project-social-media
+                class="opacity-social-media"
+                post-list-show
+              />
+            </v-col>
+          </template>
         </v-row>
       </div>
 
@@ -480,11 +482,12 @@ export default {
         this.tabToDelete = {}
       })
     },
-    addNewTab() {
+    addNewTab(tabNumOption) {
       const newTab = {
         appID: this.app.id,
         weight: 0,
-        title: 'New Tab'
+        title: 'New Tab',
+        fullWidth: tabNumOption
       }
       this.$store.dispatch('AppBuilder/saveTab', newTab).then(result => {
         this.app.tabs.push(result)
