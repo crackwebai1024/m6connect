@@ -464,7 +464,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters('Auth', { user: 'getUser' }),
+    ...mapGetters('Auth', { user: 'getUser', token: 'getAccessToken' }),
     srcVideoOrImageFiles() {
       const srcVideoOrImages = []
       this.imageFiles.forEach(file => {
@@ -680,17 +680,16 @@ export default {
 
       const activity = {
         req: {
-          userID: this.user.id,
+          token: this.token,
           data: {
-            actor: JSON.stringify({
+            actor: {
               created_at: new Date(),
               updated_at: new Date(),
-              id: this.user.id,
               data: {
                 image: this.user.profilePic,
                 name: `${this.user.firstName} ${this.user.lastName}`
               }
-            }),
+            },
             message: this.activityText,
             external_url: urls,
             record_url: this.urlInfo,
@@ -729,6 +728,7 @@ export default {
 
               activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
               activity['actor']['data']['image'] = this.user.profilePic
+              activity['token'] = this.token
               activity['images'] = urls
 
               this.$store.dispatch('GSFeed/updateActivity', activity)
@@ -761,6 +761,7 @@ export default {
 
               activity['actor']['data']['name'] = `${this.user.firstName} ${this.user.lastName}`
               activity['actor']['data']['image'] = this.user.profilePic
+              activity['token'] = this.token
               activity['files'] = urls
 
               this.$store.dispatch('GSFeed/updateActivity', activity)
