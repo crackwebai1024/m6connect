@@ -210,7 +210,7 @@
             <form-show-generator
               :fields="$h.dg(panel, 'fields', [])"
               :panel="panel"
-              :show-standard-fields="tab.readOnly && index === 0"
+              :show-standard-fields="(tab.readOnly && index === 0)"
             />
           </div>
         </div>
@@ -221,7 +221,7 @@
         >
           <div
             v-if="currentTab === 0"
-            class="main-content px-3"
+            class="main-content px-0"
           >
             <project-social-media
               class="px-0"
