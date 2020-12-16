@@ -65,7 +65,7 @@
         </v-text-field>
       </template>
     </header-component>
-    <div v-if="true">
+    <div v-if="!loading">
       <template v-if="tableView">
         <records-table
           :items="records"
@@ -74,17 +74,14 @@
       </template>
       <template v-else>
         <v-row
-          v-if="true"
+          v-if="!loading"
           class="w-full"
         >
           <v-col
             v-for="(item, index) of records"
             :key="index"
-            class='card-container'
-            :class="Object.keys(records).length !== index + 1 ? '' : ''"
-            sm="6"
-            lg='6'
-            xl='4'
+            :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+            cols="12"
           >
             <general-item :record-data="item" />
           </v-col>
@@ -246,7 +243,6 @@ export default {
     getRecords(appId) {
       this.loading = true
       this.getDynamicApps(appId).then(() => {
-        console.info(this.list)
         const temp = this.list()
         this.dynamicTableHeader = this.headers.slice(0, 12)
 
@@ -319,8 +315,5 @@ export default {
 }
 v-progress-circular {
   margin-left: 45%!important;
-}
-.card-container > .v-card {
-  height: 100%;
 }
 </style>

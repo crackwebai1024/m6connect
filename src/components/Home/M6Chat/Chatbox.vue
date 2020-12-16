@@ -11,7 +11,7 @@
     <div
       class="align-center chat-title d-flex justify-space-between px-3"
       :class="[minimized ? 'blue lighten-2' : '']"
-      @click.self="minimizeChatBox"
+      @click="minimizeChatBox"
     >
       <div
         v-if="channel.id.substr(14, 5) === 'group'"
@@ -20,7 +20,6 @@
         <v-avatar
           class="mr-2"
           size="42"
-          @click='editConfigurationDialog = true'
         >
           <img
             v-if="channel.data.image !== ''"
@@ -90,18 +89,15 @@
       <div class="d-flex">
         <v-dialog
           v-if="channel.id.substr(14, 5) === 'group'"
-          v-model="editConfigurationDialog"
-          
+          v-model="deleteDialog"
           width="50%"
-          persistent
-          class='elevation-10'
         >
-          <template #activator="">
-            <!--<v-hover
+          <template #activator="{ on, attrs }">
+            <v-hover
               v-slot="{ hover }"
             >
               <div class="relative">
-                <!--<v-card
+                <v-card
                   v-if="hover"
                   class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
                   style="margin-bottom: -64px; margin-left: -130px;"
@@ -162,13 +158,28 @@
                   </v-icon>
                 </v-btn>
               </div>
-            </v-hover>-->
+            </v-hover>
           </template>
-          <edit-configuration-dialog @close-dialog='() => editConfigurationDialog = false' :channel='channel'/>
-          <!--
-          
-
-          -->
+          <delete-dialog
+            v-if="messageEdit === channel.data.id + '-channel'"
+            :element="`messages on '${channel.data.name}' group`"
+            @closeDeleteModal="cleanChat($event)"
+          />
+          <add-user-dialog
+            v-if="messageEdit === channel.data.id + '-add-user'"
+            :current-users="channel.state.members"
+            @closeModal="addUser($event)"
+          />
+          <info-users-dialog
+            v-if="messageEdit === channel.data.id + '-info'"
+            :channel="channel"
+            :current-users="channel.state.members"
+          />
+          <settings-channel-dialog
+            v-if="messageEdit === channel.data.id + '-edit'"
+            :channel="channel"
+            @closeEditeModal="closeModal"
+          />
         </v-dialog>
         <v-dialog
           v-else
@@ -858,15 +869,21 @@
 /* eslint-disable camelcase */
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
+import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import AddUserDialog from '@/components/Dialogs/AddUserDialog'
+import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
+import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
-import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 
 export default {
   name: 'Chatbox',
   components: {
-    EditConfigurationDialog,
+    SettingsChannelDialog,
+    InfoUsersDialog,
+    AddUserDialog,
+    DeleteDialog,
     VEmojiPicker,
     ExternalUrl,
     RecordUrl,
@@ -890,7 +907,6 @@ export default {
     currentUserId: 2,
     messageEdit: '',
     messageEditInput: '',
-    editConfigurationDialog: false,
     dataReady: false,
     messages: [],
     state: {

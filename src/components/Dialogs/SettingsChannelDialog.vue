@@ -1,27 +1,40 @@
 <template>
-  <v-card class='rounded-false elevation-0'>
+  <v-card>
     <v-toolbar
-      color="blue accent-4 elevation-0"
-      class=' rounded-false'
+      color="purple accent-4"
     >
-      <v-toolbar-title class="white--text  rounded-false">
+      <v-toolbar-title class="white--text">
+        Channel Settings
       </v-toolbar-title>
-        <template v-slot:extension>
-          <v-row class='d-flex justify-center'>
+      <v-spacer />
+      <v-btn
+        class="white--text"
+        color="transparent"
+        depressed
+        tile
+        @click="boolDeleteDiaLog = true"
+      >
+        Delete Channel <v-icon>mdi-trash-can</v-icon>
+      </v-btn>
+      <v-dialog
+        v-model="boolDeleteDiaLog"
+        max-width="350"
+        persistent
+      >
+        <delete-dialog
+          :element="`cannel: '${ channel.data.name }'`"
+          @closeDeleteModal="$event ? deleteGroup() : boolDeleteDiaLog = false"
+        />
+      </v-dialog>
+    </v-toolbar>
+    <v-card-text>
+      <v-form ref="form">
+        <v-row>
+          <v-col class="col pa-0 text-center">
             <v-avatar
-              @mouseenter="isProfilePicHover = true"
-              @mouseleave="isProfilePicHover = false"
-              class="mr-2 text-center align-self-center grey lighten-2"
+              class="mr-2 text-center"
               size="130"
             >
-            <v-overlay :value='isProfilePicHover' absolute opacity='0.7'>
-              <m6-upload
-                btn-button="purple"
-                @loading="loading = !loading"
-                @response="reponseProfileImg">
-                <v-icon size='50' color='white'>mdi-pencil</v-icon>
-              </m6-upload>
-            </v-overlay>
               <img
                 v-if="channelImage !== ''"
                 :alt="channelImage"
@@ -29,73 +42,55 @@
               >
               <v-icon
                 v-else
-                size='50'
+                size="130"
               >
                 mdi-account-group-outline
               </v-icon>
             </v-avatar>
-          </v-row>
-        </template>
-      <v-spacer />
-      
-      <v-dialog
-        v-model="boolDeleteDiaLog"
-        max-width="350"
-        persistent
-      >
-        <delete-dialog
-          :element="itemToDelete"
-          @closeDeleteModal="$event ? deleteGroup() : boolDeleteDiaLog = false"
-        />
-      </v-dialog>
-    </v-toolbar>
-    <v-card-text class='my-10'>
-      <v-form ref="form">
+            <m6-upload
+
+              btn-button="purple"
+              @loading="loading = !loading"
+              @response="reponseProfileImg"
+            >
+              <v-icon>mdi-pencil</v-icon>
+            </m6-upload>
+          </v-col>
+        </v-row>
         <v-row>
+          <v-col cols="3">
+            <h2 class="mt-5 text-body-1">
+              Channel Name:
+            </h2>
+          </v-col>
+          <v-col>
             <v-text-field
               v-model="channelName"
-              :readonly='!editMode'
-              class="mt-0 text-h4 text-center"
-            >
-              <template v-slot:append-outer>
-                <v-btn v-if='!editMode' icon large @click='editMode = true'>
-                  <v-icon size='40'>mdi-pencil-outline</v-icon>
-                </v-btn>
-                <template v-else>
-                  <v-btn icon large @click='updateChannel(true)'>
-                    <v-icon size='40' color='green'>mdi-check</v-icon>
-                  </v-btn>
-                  <v-btn icon large @click='updateChannel(false)'>
-                    <v-icon size='40'>mdi-close</v-icon>
-                  </v-btn>
-                </template>
-              </template>
-            </v-text-field>
+              class="mt-0"
+            />
+          </v-col>
         </v-row>
       </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
-      
+      <v-btn
+        color="error"
+        dark
+        width="95px"
+        @click="updateChannel(false)"
+      >
+        Cancel
+      </v-btn>
+      <v-btn
+        color="success"
+        dark
+        width="95px"
+        @click="updateChannel(true)"
+      >
+        Edit
+      </v-btn>
     </v-card-actions>
-    <v-list>
-      <v-list-item @click='deleteMessages()'>
-          <v-list-item-icon>
-              <v-icon>mdi-delete</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-              Delete messages
-          </v-list-item-content>
-      </v-list-item>
-      <v-list-item @click='boolDeleteDiaLog = true'>
-        <v-list-item-icon>
-            <v-icon color='red'>mdi-delete</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content class="red--text">
-            Delete channel
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
   </v-card>
 </template>
 
@@ -115,10 +110,7 @@ export default {
     }
   },
   data: () => ({
-    itemToDelete: '',
-    isProfilePicHover: false,
     boolDeleteDiaLog: false,
-    editMode: false,
     loading: false,
     channelName: '',
     channelImage: ''
@@ -127,10 +119,6 @@ export default {
     ...mapMutations('SnackBarNotif',
       { notifDanger: 'notifDanger' }
     ),
-    deleteMessages () {
-      this.itemToDelete = `'${ this.channel.data.name }' group chat messages.`
-      this.boolDeleteDiaLog = true
-    },
     deleteGroup() {
       this.channel.delete().then(() => {
         this.updateChannel(false)
@@ -149,7 +137,6 @@ export default {
       } else {
         this.channelName = this.channel.data.name
         this.channelImage = this.channel.data.image
-        this.editMode = false
         this.$emit('closeEditeModal')
       }
     },
@@ -167,12 +154,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .v-input input {
-    text-align: center;
-  }
-  header.v-toolbar, .v-toolbar__content {
-    border-radius: 0px !important
-  }
-</style>
