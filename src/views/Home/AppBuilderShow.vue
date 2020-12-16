@@ -199,7 +199,7 @@
       slot="content"
       class="w-full"
     >
-      <panel-two-columns :leftColumn="tab.full_width ? 12 : 6" >
+      <panel-two-columns :left-column="tab.full_width ? 12 : 6">
         <div slot="leftPanel">
           <div
             v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 0 )"
@@ -215,7 +215,10 @@
           </div>
         </div>
 
-        <div slot="rightPanel" v-if="!tab.full_width" >
+        <div
+          v-if="!tab.full_width"
+          slot="rightPanel"
+        >
           <div
             v-if="currentTab === 0"
             class="main-content px-3"
@@ -294,6 +297,7 @@ export default {
     async record(val) {
       await this.$store.dispatch('GSFeed/setRoom', 'AppBuilder')
       await this.$store.dispatch('GSFeed/setBuilderFeed', val.record_number.replace('#', '_'))
+      await this.$store.dispatch('GSFeed/cleanFeed')
       await this.$store.dispatch('GSFeed/retrieveFeed')
     }
   },
