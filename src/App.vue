@@ -1,32 +1,42 @@
 <template>
   <v-app id="complete-app">
     <div class="grey h-viewport lighten-3">
-      <template v-if="loggedIn && !$route.meta.public">
-        <top-nav />
-        <v-row
-          class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
-          no-gutters
-        >
-          <v-col
-            v-if="!isFullScreen"
-            cols="3" xl='2'
-          >
-            <action-feed v-show="showSidePanels" />
-          </v-col>
-          <v-col xl='8' :sm="isFullScreen ? 12 : 6">
-            <!-- Home / Company Profile -->
+      <template v-if="loggedIn && (!$route.meta.public || $route.meta.topNav)">
+        <template v-if="$route.meta.topNav">
+          <top-nav />
+          <div class="mt-60">
             <router-view />
-          </v-col>
-          <v-col
-            v-if="!isFullScreen"
-            cols="3" xl='2'
+          </div>
+        </template>
+        <template v-else>
+          <top-nav />
+          <v-row
+            class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
+            no-gutters
           >
-            <m6-chat v-show="showSidePanels" />
-          </v-col>
-        </v-row>
-        <!-- Preview overlay -->
-        <chat-wrapper />
-        <general-overlay />
+            <v-col
+              v-show="showSidePanels"
+              :xl="largeViewport.sidePanelsCols"
+              cols="3"
+            >
+              <action-feed />
+            </v-col>
+            <v-col :xl='largeViewport.mainCols' :cols="!showSidePanels ? 12 : 6">
+              <!-- Home / Company Profile -->
+              <router-view />
+            </v-col>
+            <v-col
+              v-show="showSidePanels"
+              :xl="largeViewport.sidePanelsCols"
+              cols="3"
+            >
+              <m6-chat />
+            </v-col>
+          </v-row>
+          <!-- Preview overlay -->
+          <chat-wrapper />
+          <general-overlay />
+        </template>
       </template>
       <template v-else>
         <router-view />
@@ -65,8 +75,11 @@ export default {
     //
   }),
   computed: {
-    isFullScreen() {
-      return this.$route.name === 'app.cpm'
+    largeViewport () {
+      return {
+        mainCols: this.showSidePanels ? 8 : 12,
+        sidePanelsCols: this.showSidePanels ? 2 : 0,
+      }
     },
     ...mapState(['layout']),
     ...mapGetters('Auth', {
@@ -103,5 +116,8 @@ export default {
   }
   .central-content {
     height: calc(100vh - 60px);
+  }
+  .mt-60 {
+    margin-top: 60px;
   }
 </style>

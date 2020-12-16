@@ -65,13 +65,16 @@
         </v-text-field>
       </template>
     </header-component>
-    <div v-if="!loading">
+    <div v-if="true">
       <template v-if="tableView">
-        <records-table :items="records" />
+        <records-table
+          :items="records"
+          :tableHeaders="dynamic?dynamicTableHeader:headers"
+        />
       </template>
       <template v-else>
         <v-row
-          v-if="!loading"
+          v-if="true"
           class="w-full"
         >
           <v-col
@@ -125,7 +128,24 @@ export default {
     perPage: 8,
     records: [],
     searchInput: '',
-    tableView: false
+    tableView: false,
+    dynamic: false,
+    headers: [
+      { text: 'Image', value: 'image' },
+      { text: 'Record #', value: 'record_number' },
+      { text: 'App', value: 'app_prefix' },
+      { text: 'Title', value: 'title' },
+      { text: 'Description', value: 'description' },
+      { text: 'Creator', value: 'author' },
+      { text: 'Created On', value: 'created_at' },
+      { text: 'Class', value: 'class' },
+      { text: 'Category', value: 'category' },
+      { text: 'Type', value: 'type' },
+      { text: 'State', value: 'state' },
+      { text: 'Status', value: 'status' },
+      { text: 'Action', value: 'action', sortable: false }
+    ],
+    dynamicTableHeader: []
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -183,7 +203,7 @@ export default {
             type: 'subtitle',
             function: () => {
               this.setFilterTag({ key: 'dynamicApp', value: app['title'] })
-              this.getRecords(app.id)
+              this.getRecords(Number(app.id))
             }
           }
         )
@@ -201,6 +221,9 @@ export default {
       filterApps: 'get_filter_apps',
       setFilterTag: 'set_filter_tag'
     }),
+    ...mapGetters('GeneralListModule', {
+      getFieldList: 'get_fields_list'
+    }),
     ...mapActions('DynamicAppsModule', {
       getDynamicApps: 'get_all_apps_by_id',
       setDynamicApps: 'set_apps'
@@ -216,13 +239,34 @@ export default {
       this.loading = true
       this.filterApps({ param: event }).then(() => {
         this.records = this.list()
+        this.dynamic = false
         this.loading = false
       })
     },
     getRecords(appId) {
       this.loading = true
       this.getDynamicApps(appId).then(() => {
-        this.records = this.list()
+        console.info(this.list)
+        const temp = this.list()
+        this.dynamicTableHeader = this.headers.slice(0, 12)
+
+        const fields = this.getFieldList()
+        temp.map((row, index) => {
+          fields[index].map((field, findex) => {
+            if (row.app_id === field.app_id) {
+              if (!this.dynamicTableHeader.find(row => row.value === `${field.type}-${findex}`)) {
+                this.dynamicTableHeader.push({
+                  text: this.stringToUpercase(field.label),
+                  value: field.type + '-' + findex
+                })
+              }
+              row[field.type + '-' + findex] = field.value
+            }
+          })
+        })
+        this.dynamicTableHeader.push(this.headers.slice(-1)[0])
+        this.records = temp
+        this.dynamic = true
         this.loading = false
       }).catch(() => {
         this.loading = false
@@ -231,6 +275,7 @@ export default {
     reload() {
       this.loading = true
       this.records = []
+      this.dynamic = false
       this.getApps().then(
         () => (this.records = this.list(), this.loading = false)
       )
@@ -253,6 +298,9 @@ export default {
       } catch (e) {
         // Empty
       }
+    },
+    stringToUpercase(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
     }
   }
 }

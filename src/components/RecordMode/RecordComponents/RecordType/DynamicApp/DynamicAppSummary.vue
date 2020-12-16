@@ -41,7 +41,7 @@
           <div>
               <v-row class=''>
                 <div class="mb-0 text-h6 font-weight-bold black--text lineheight-sm">
-                {{ info['title'] }}
+                {{ info['title'] | trunc(30) }}
                 </div>
               </v-row>
               <v-row class=''>

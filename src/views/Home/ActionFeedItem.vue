@@ -30,7 +30,14 @@
           {{ notification.post.actor.data.name }}
         </p>
         <v-spacer />
-        <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+        <div class="d-flex justify-center">
+          <v-avatar
+            :color="diffNowColor(notification.post.actor.created_at)"
+            style="margin: 0 10px;"
+            size="10"
+          ></v-avatar>
+          <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+        </div>
       </div>
     </div>
     <p
@@ -161,7 +168,15 @@ export default {
       'teal',
       'amber'
     ],
-    users: []
+    users: [],
+    timerBallColor: [
+      '#C62828',
+      '#EF6C00',
+      '#F9A825',
+      '#2E7D32',
+      '#1565C0',
+      '#6A1B9A'
+    ]
   }),
   computed: {
   },
@@ -263,7 +278,21 @@ export default {
       const hours = Math.abs(Math.floor(diff % 24))
       diff = (diff - hours) / 24
       const days = Math.abs(Math.floor(diff % 30))
-      return days + ' days, ' + hours + ' hours, ' + minutes + ' minutes, ' + seconds + ' seconds'
+      return days + ' days, ' + hours + ' hours, ' + minutes + ' minutes'
+    },
+    diffNowColor(date) {
+      const dateNow = new Date()
+      const dateNotification = new Date(date)
+      let diff = (dateNow.getTime() - dateNotification.getTime()) / 1000
+      const seconds = Math.abs(Math.floor(diff % 60))
+      diff = (diff - seconds) / 60
+      const minutes = Math.abs(Math.floor(diff % 60))
+      diff = (diff - minutes) / 60
+      const hours = Math.abs(Math.floor(diff % 24))
+      diff = (diff - hours) / 24
+      const days = Math.abs(Math.floor(diff % 30))
+      const index = days > 5 ? 5 : (days < 0 ? 0 : days)
+      return this.timerBallColor[index]
     },
     pendingApprovals(approvals) {
       let pendingApprovals = 0

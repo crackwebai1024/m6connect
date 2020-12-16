@@ -146,7 +146,7 @@
                 @click="updatePost(data)"
               >
                 <v-icon size="22">
-                  mdi-checkbox-marked-circle-outline
+                  mdi-check
                 </v-icon>
               </v-btn>
             </div>
@@ -305,11 +305,23 @@
               :cols="widthCols()"
             >
               <v-img
+                v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                 aspect-ratio="1.7"
                 class="mx-1 my-1 pointer"
                 :src="image"
                 @click="previewImage(image)"
               />
+              <div class="mx-1 my-1 pointer video-list__container">
+                <video
+                  v-if="image.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
+                  controls
+                >
+                  <source
+                    :src="image"
+                    type="video/mp4"
+                  >
+                </video>
+              </div>
             </v-col>
           </v-row>
           <v-btn
@@ -607,6 +619,10 @@ export default {
   },
   mounted() {
     this.images = this.data.images
+    // fix for Action Item
+    if (this.images === undefined) {
+      this.images = []
+    }
     this.pictureItems = this.images.slice(0, 4)
     this.user = this.currentUser
     if (this.data.own_reactions.like !== undefined) {
@@ -663,7 +679,6 @@ export default {
     },
     urlify(text) {
       const urlRegex = /(https?:\/\/[^\s]+)/g
-      const youtubeUrlRegex = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/
       const textUrls = []
       let youtubeUrls = []
 
@@ -672,7 +687,7 @@ export default {
         textUrls.push(url)
         return '<a href="' + url + '" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>'
       })
-      youtubeUrls = textUrls.filter(row => youtubeUrlRegex.test(row))
+      youtubeUrls = textUrls.filter(row => this.youtubeCheck(row))
       return { text: res, urls: textUrls, youtubeUrls: youtubeUrls }
     },
     widthCols() {
@@ -823,6 +838,10 @@ export default {
       })
 
       return pendingApprovals
+    },
+    youtubeCheck(url) {
+      const youtubeUrlRegex = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/
+      return youtubeUrlRegex.test(url)
     }
   }
 }

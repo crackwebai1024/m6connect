@@ -395,10 +395,6 @@ export default {
           {
             name: 'Delivery Date',
             description: ''
-          },
-          {
-            name: 'Cost Code Number',
-            description: ''
           }
         ],
         commitmentLineItem: [
@@ -533,7 +529,7 @@ export default {
             description: ''
           },
           {
-            name: 'GL Account Number',
+            name: 'GL Account Name',
             description: ''
           },
           {
@@ -566,6 +562,10 @@ export default {
           },
           {
             name: 'UID',
+            description: ''
+          },
+          {
+            name: 'Cost Code Number',
             description: ''
           }
         ]
@@ -730,7 +730,7 @@ export default {
       // Verify the headers
 
       this.mappedFields.forEach(item => {
-        if (item.includes('projects_id_number') !== false) {
+        if (item.includes('projects_id_number') !== false || item.includes('others_wbs_element')) {
           console.log('Projects', item)
           projectsCheck = true
         }
@@ -761,34 +761,46 @@ export default {
       this.percentage = 0
       this.percentageDialog = true
 
-      // for (let index = 0; index < this.fileData.data.length; index++) {
-      for (let index = 0; index < 10; index++) {
+      for (let index = 0; index < this.fileData.data.length; index++) {
+      // for (let index = 0; index < 10; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
         } else {
           console.log('CHECKING ' + index)
           const formatedData = this.formatData(item)
+          let project = ''
           // Check if project exists
-          let project = await this.getProject(formatedData.projects_id_number)
+          if (formatedData.projects_id_number) {
+            project = await this.getProject(formatedData.projects_id_number)
+          } else if (formatedData.others_wbs_element) {
+            const wbsInfo = formatedData.others_wbs_element.split('-')
+            const projectNumber = `${wbsInfo[0]}-${wbsInfo[1]}-${wbsInfo[2]}`
+            formatedData.others_cost_code_number = wbsInfo[3]
+            project = await this.getProject(projectNumber)
+          } else {
+            continue
+          }
 
           // Create project if not exists
           if (project === false) {
             console.log('Creating Project')
             project = await this.createProject(formatedData)
             await this.storeForRevert('project', project.id, project)
-          } else {
+          } else if (project[0].id) {
             console.log('Using Existing project')
             project = project[0]
+          } else {
+            console.log('ERROR ON PROJECT')
+            continue
           }
-
 
           // Once the project is created, we check if we are importing commitments or spendings
           if (this.types.includes('commitments')) {
             const number = formatedData.commitments_id_number || formatedData.commitmentLineItem_po_id_number
-            if (number === undefined) {
-              console.error('MISSING NUMBER')
-              break
+            if (!number) {
+              console.error('MISSING PO NUMBER')
+              continue
             }
             let commitment = await this.getCommitment(project.id, number)
 
@@ -823,9 +835,9 @@ export default {
             }
           } else if (this.types.includes('spendings')) {
             const number = formatedData.spendings_id_number
-            if (number === undefined) {
-              console.error('MISSING NUMBER')
-              break
+            if (!number) {
+              console.error('MISSING SPENDING NUMBER')
+              continue
             }
             let spending = await this.getSpending(project.id, number)
 
@@ -846,32 +858,42 @@ export default {
             }
 
             // Verify if the line item already exists
-            if (this.currentCompany.id === 809) {
-              let commitment = await this.getCommitment(project.id, number)
-
-              if (commitment.length > 1) {
-              // Error we can have just one commitment with the same number
-                this.$snotify.error('Commitment duplicated: ', 'Error')
+            if (this.currentCompany.id === '809') {
+              if (!formatedData.spendingLineItem_commitment_id_number) {
+                console.log('Creating Spending Line Item without PO NUMBER')
+                formatedData.spendingLineItem_commitment_id_number = `M6ID-${Math.floor(Math.random() * 1000000) + 1}`
+                const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
+                await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
               } else {
-                if (!commitment) {
-                  // Commitment not exists
-                  console.log('Commitment not exist, skipping')
+                let commitment = await this.getCommitment(project.id, formatedData.spendingLineItem_commitment_id_number)
+                if (commitment.length > 1) {
+                // Error we can have just one commitment with the same number
+                  this.$snotify.error('Commitment duplicated: ', 'Error')
                 } else {
-                  console.log('Using Existing Commitment')
-                  commitment = commitment[0]
+                  if (!commitment) {
+                    // Commitment not exists
+                    console.log('Commitment not exist, skipping')
+                  } else {
+                    console.log('Using Existing Commitment (Spendings Process)')
+                    commitment = commitment[0]
 
-                  const clis = await this.getCommitmentLineItems(project.id, commitment.id)
-
-                  await Promise.all(clis.map(async cli => {
-                    if (!cli.spendingRef && cli.amount === formatedData.spendingLineItem_amount) {
-                      // Create line item
-                      console.log('Creating Spending Line Item')
-                      formatedData.commitmentLineRef = cli.ref
-                      const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
-                      cli.ref.update(newSpendingLineItem)
-                      await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
+                    const clis = await this.getCommitmentLineItems(project.id, commitment.id)
+                    let isNewSpending = false
+                    await Promise.all(clis.map(async cli => {
+                      if (!cli.spendingRef && cli.amount === formatedData.spendingLineItem_amount) {
+                        // Create line item
+                        console.log('Creating Spending Line Item')
+                        isNewSpending = true
+                        formatedData.commitmentLineRef = cli.ref
+                        const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
+                        cli.ref.update({ spendingRef: newSpendingLineItem })
+                        await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
+                      }
+                    }))
+                    if (!isNewSpending) {
+                      console.log('Spending already Imported')
                     }
-                  }))
+                  }
                 }
               }
             } else {
@@ -891,16 +913,24 @@ export default {
           }
         }
 
-        // this.percentage = (index * 100) / this.fileData.data.length
-        this.percentage = (index * 100) / 10
+        this.percentage = (index * 100) / this.fileData.data.length
+        // this.percentage = (index * 100) / 10
       }
       this.percentage = 100
     },
     formatData(item) {
       const formated = {}
       this.importHeaders.forEach((header, index) => {
-        if (this.mappedFields[index] !== '') {
-          formated[this.mappedFields[index]] = item[index]
+        if (this.mappedFields[index] !== '' && this.mappedFields[index] !== undefined) {
+          if (this.mappedFields[index].includes('amount') || this.mappedFields[index].includes('accrual')) {
+            if (isNaN(parseFloat(item[index].replace(/,/g, '')))) {
+              formated[this.mappedFields[index]] = 0
+            } else {
+              formated[this.mappedFields[index]] = parseFloat(item[index].replace(/,/g, ''))
+            }
+          } else {
+            formated[this.mappedFields[index]] = item[index]
+          }
         }
       })
       return formated
@@ -952,7 +982,7 @@ export default {
         .collection('commitments')
         .doc(commitmentID)
         .collection('line_items')
-        .where('line_number', '==', number)
+        .where('line_number', '==', number.toString())
         .get()
       if (docs.empty) {
         return false
@@ -1071,8 +1101,8 @@ export default {
       }
 
       return new Promise(resolve => {
-        const spending = db.collection('cpm_projects').doc(projectID).collection('commitments').add(newCommitment)
-        resolve(spending)
+        const commitment = db.collection('cpm_projects').doc(projectID).collection('commitments').add(newCommitment)
+        resolve(commitment)
       })
     },
     async createCommitmentLineItem(projectID, commitmentID, item) {
@@ -1091,6 +1121,7 @@ export default {
         cost_per_item: item.commitmentLineItem_cost_per_item || '',
         total_po_line_amount: item.commitmentLineItem_amount || '',
         amount: item.commitmentLineItem_amount || '',
+        accrual: item.commitmentLineItem_accrual || '',
         open_po_amount: '',
         description: item.commitmentLineItem_description || '',
         description2: item.commitmentLineItem_description_2 || '',
@@ -1100,13 +1131,13 @@ export default {
         api_obj_id: item.others_uid || ''// uid
       }
       return new Promise(resolve => {
-        const spending = db.collection('cpm_projects')
+        const commitment = db.collection('cpm_projects')
           .doc(projectID)
           .collection('commitments')
           .doc(commitmentID)
           .collection('line_items')
           .add(newCommitmentLineItem)
-        resolve(spending)
+        resolve(commitment)
       })
     },
     async createSpending(projectID, item) {
@@ -1121,10 +1152,13 @@ export default {
           this.budgetCategories.push(bc)
         }
       }
-
-      // if (item.spendingLineItem_commitment_id_number) {
-      //   await this.getCommitment(projectID, item.spendingLineItem_commitment_id_number)
-      // }
+      let commitmentRef = null
+      if (item.spendingLineItem_commitment_id_number) {
+        const commitment = await this.getCommitment(projectID, item.spendingLineItem_commitment_id_number)
+        if (commitment !== false) {
+          commitmentRef = commitment[0].ref
+        }
+      }
 
       const gl = {}
 
@@ -1134,7 +1168,7 @@ export default {
         budget_category: {
           ref: bc.ref || '' // reference
         },
-        commitment: item.spendingLineItem_commitment_id_number || '',
+        commitment: commitmentRef || item.spendingLineItem_commitment_id_number || '',
         contingency: '' || false,
         costCode: '',
         costCodeNumber: '',
@@ -1186,7 +1220,7 @@ export default {
           title: item.others_vendor_name || '',
           custom_id: item.others_vendor_code || ''
         },
-        line_number: item.spendingLineItem_line_number.toString() || '',
+        line_number: this.$h.dg(item, 'spendingLineItem_line_number', '').toString() || '',
         line_description: item.spendingLineItem_description || '',
         dateText: item.spendingLineItem_start_date || '',
         date: new Date(item.spendingLineItem_start_date).getTime() || '',
@@ -1197,7 +1231,7 @@ export default {
         account: item.spendingLineItem_paid_date || '',
         aoc_code: item.spendingLineItem_paid_date || '',
         status: item.spendingLineItem_status || '',
-        amount: item.spendingLineItem_amount || '',
+        amount: item.spendingLineItem_amount || 0,
         account_category: item.spendingLineItem_account_category || item.others_budget_category_code || '',
         cancel_seq: '',
         suffix: '',

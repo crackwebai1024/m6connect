@@ -37,7 +37,9 @@
             <carousel
               class="w-full"
               :navigate-to="navigate"
-              :navigation-enabled="false"
+              :navigation-enabled="true"
+              :pagination-active-color="'#fff'"
+              :pagination-color="'#333'"
               :pagination-enabled="true"
               :per-page="1"
             >
@@ -295,7 +297,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s ease-out;
@@ -304,5 +306,29 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.VueCarousel-dot {
+  outline: none !important;
+}
+.VueCarousel-slide .v-image__image {
+  background-size: auto !important;
+}
+.VueCarousel-navigation-prev {
+  left: 58px !important;
+  padding-right: 13px !important;
+}
+.VueCarousel-navigation-next {
+  right: 58px !important;
+  padding-left: 13px !important;
+}
+.VueCarousel-navigation-prev, .VueCarousel-navigation-next {
+  border-radius: 100%;
+  background: rgb(255 255 255 / 30%) !important;
+  color: white !important;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  outline: none !important;
 }
 </style>

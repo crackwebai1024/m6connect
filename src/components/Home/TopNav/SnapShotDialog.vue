@@ -178,6 +178,7 @@
                       :items="statusItems"
                       label="Status"
                     />
+                    <attachment v-model="rapidItem.items[i].rapid_attachment" />
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>
@@ -219,12 +220,12 @@ import SpeedDial from '@/components/_partials/SpeedDial.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
 import axios from 'axios'
+import Attachment from '@/components/AppBuilder/Form/Components/Attachment.vue'
 
 const width = window.innerWidth * .7
 const height = window.innerHeight * .7
 
 const noteModel = {
-  rapid_record_number: '',
   rapid_title: '',
   rapid_description: '',
   rapid_x: Math.floor(width / 2),
@@ -244,7 +245,8 @@ export default {
   components: {
     SpeedDial,
     PeopleAutocomplete,
-    DatePicker
+    DatePicker,
+    Attachment
   },
 
   props: {
@@ -373,7 +375,7 @@ export default {
           i => ({
             ...i,
             rapid_user: this.currentUser.id,
-            rapid_imageLink: imageLink,
+            rapid_snapshot_image: imageLink,
             rapid_priority: ( i.rapid_color_rating + i.rapid_reaction ) / 2,
             rapid_company: this.currentCompany.id
           })
@@ -404,7 +406,6 @@ export default {
       const coords = this.getRandCoordinates()
       const note = {
         id,
-        rapid_record_number: +new Date(),
         ...this.defaultNote,
         ...coords,
         rapid_url: window.location.href
