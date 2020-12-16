@@ -51,7 +51,10 @@
           offset-x="10"
           offset-y="10"
         >
-          <v-avatar size="42">
+          <v-avatar
+            class="blue"
+            size="42"
+          >
             <img
               v-if="users[0].user.image"
               :alt="channel.name"
