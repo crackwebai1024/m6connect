@@ -4,7 +4,7 @@
     name="router-anim"
   >
     <v-row>
-      <v-col cols='12'>
+      <v-col cols="12">
         <budget-category-select
           :category="newItem.budget_category.ref"
           :errors="budgetCategoryErrors"
@@ -12,7 +12,7 @@
         />
       </v-col>
 
-      <v-col cols='12'>
+      <v-col cols="12">
         <v-text-field
           v-model="newItem.costCodeNumber"
           :append-icon="
@@ -23,7 +23,7 @@
           readonly
         />
       </v-col>
-      <v-col cols='12'>
+      <v-col cols="12">
         <template v-if="newItem.type === 'Amount'">
           <label>{{ newItem.type }}</label>
           <money
@@ -45,7 +45,7 @@
 
       <v-col
         v-if="!checkTypeHide"
-        cols='12'
+        cols="12"
         style="margin-top: 14px"
       >
         <label>Type</label>
@@ -58,8 +58,8 @@
 
       <v-col
         v-if="newItem.type === 'Amount'"
-        cols='12'
         class="checkbox-fix margin-top-10"
+        cols="12"
       >
         <v-checkbox
           v-model="newItem.belowSubtotal"
@@ -71,9 +71,9 @@
       <div class="clearfix" />
 
       <v-col
-        cols='12'
         v-if="newItem.type === 'Percentage'"
         class="checkbox-fix margin-top-10"
+        cols="12"
       >
         <label>Apply To:</label>
         <v-select
@@ -83,9 +83,9 @@
         />
       </v-col>
       <v-col
-        cols='12'
         v-if="newItem.type === 'Percentage'"
         class="checkbox-fix margin-top-10"
+        cols="12"
       >
         <template v-if="newItem.percentageType === 'Category'">
           <label>Apply To:</label>
@@ -98,7 +98,10 @@
         </template>
       </v-col>
 
-      <v-col cols='12' class="margin-top-25">
+      <v-col
+        class="margin-top-25"
+        cols="12"
+      >
         <v-textarea
           v-model="newItem.description"
           auto-grow
@@ -108,11 +111,13 @@
         />
       </v-col>
 
-      <v-col cols='12' class="actions margin-top-25 text-right">
+      <v-col
+        class="actions margin-top-25 text-right"
+        cols="12"
+      >
         <v-btn
           class="mr-3"
           color="grey lighten-2"
-          outline
           @click="cancelLineItem"
         >
           Cancel

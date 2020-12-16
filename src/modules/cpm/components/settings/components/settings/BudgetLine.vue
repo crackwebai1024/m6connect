@@ -40,30 +40,31 @@
           <v-data-table
             :headers="headers"
             :items="settings.lineItemTypes"
-            :items-per-page-options="[5,10,15,200]"
             :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item }}</td>
-              <td class="text-right">
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#757575"
-                  size="20"
-                  @click.prevent="editElement(props.index, props.item)"
-                >
-                  mdi-pencil
-                </v-icon>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item }}</td>
+                <td class="text-right">
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#757575"
+                    size="20"
+                    @click.prevent="editElement(props.index, props.item)"
+                  >
+                    mdi-pencil
+                  </v-icon>
 
-                <v-icon
-                  class="ml-0 mr-2 pointer"
-                  color="#f44336"
-                  size="20"
-                  @click.prevent="deleteElement(props.index, props.item)"
-                >
-                  mdi-delete
-                </v-icon>
-              </td>
+                  <v-icon
+                    class="ml-0 mr-2 pointer"
+                    color="#f44336"
+                    size="20"
+                    @click.prevent="deleteElement(props.index, props.item)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>
@@ -73,18 +74,18 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="600px"
       persistent
     >
-      <v-card class="mt-2">
+      <v-card>
         <v-card-title class="headline px-6 py-4 white">
           <span class="grey--text text--darken-1">
             Budget Line Items
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="vertical-scroll">
-          <v-form>
+        <v-card-text>
+          <v-form class="pt-2">
             <v-text-field
               v-model="element"
               color="blue"
@@ -94,26 +95,38 @@
               v-model="currentElement"
               type="hidden"
             >
-            <v-btn
-              class="mr-2"
-              color="grey"
-              outline
-              @click="cancel"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              color="blue"
-              dark
-              type="submit"
-              @click="save"
-            >
-              {{ submitLoading ? 'Saving...' : 'Save' }}
-            </v-btn>
+            <div class="d-flex justify-end">
+              <v-btn
+                class="mr-2"
+                color="grey"
+                outlined
+                @click="cancel"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue"
+                dark
+                type="submit"
+                @click="save"
+              >
+                {{ submitLoading ? 'Saving...' : 'Save' }}
+              </v-btn>
+            </div>
           </v-form>
         </v-card-text>
       </v-card>
     </v-dialog>
+    <!--DELETE MODAL-->
+    <m6-confirm-delete
+      v-if="showBudgetLineDeleteModal"
+      :message="$t('cpm.projects.budgetPanel.confirmBudgetLine') + ' ' + budgetLineDeleteItemName"
+      :show="showBudgetLineDeleteModal"
+      :title="$t('cpm.projects.budgetPanel.deleteBudgetLine')"
+      @cancel="showBudgetLineDeleteModal = false"
+      @confirm="submitDelete"
+    />
+    <!--DELETE MODAL-->
   </div>
 </template>
 
@@ -122,6 +135,7 @@ import { db } from '@/utils/Firebase.js'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetLine',
   props: {
     included: {
       type: Boolean,
@@ -140,6 +154,9 @@ export default {
       settings: {},
       submitLoading: false,
       showForm: false,
+      showBudgetLineDeleteModal: false,
+      budgetLineDeleteItemId: '',
+      budgetLineDeleteItemName: '',
       rules: {
         required: value => !!value || 'Required.'
       },
@@ -208,15 +225,13 @@ export default {
       this.cancel()
     },
     deleteElement(id, name) {
-      const confirmation = confirm(
-        `Do you want to delete this budget Line Item Type: ${name}`
-      )
-      if (confirmation) {
-        this.submitDelete(id)
-      }
+      this.budgetLineDeleteItemId = id
+      this.budgetLineDeleteItemName = name
+      this.showBudgetLineDeleteModal = true
     },
-    submitDelete(id) {
-      this.settings.lineItemTypes.splice(id, 1)
+    submitDelete() {
+      this.showBudgetLineDeleteModal = false
+      this.settings.lineItemTypes.splice(this.budgetLineDeleteItemId, 1)
       db.collection('settings')
         .doc(this.currentCompany.id)
         .collection('settings')

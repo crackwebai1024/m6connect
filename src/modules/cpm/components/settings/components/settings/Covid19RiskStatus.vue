@@ -21,24 +21,26 @@
       <v-data-table
         :headers="headers"
         :items="items"
-        :pagination.sync="pagination"
+        :options.sync="pagination"
       >
-        <template v-slot:items="props">
-          <td>{{ props.item.name }}</td>
-          <td class="text-center">
-            <v-tooltip top>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  :color="props.item.color"
-                  fab
-                  small
-                  v-on="on"
-                  @click="editItem(props.item)"
-                />
-              </template>
-              <span>{{ $t('cpmSettings.clickToPickAColor') }}</span>
-            </v-tooltip>
-          </td>
+        <template v-slot:item="props">
+          <tr>
+            <td>{{ props.item.name }}</td>
+            <td class="text-center">
+              <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    :color="props.item.color"
+                    fab
+                    small
+                    v-on="on"
+                    @click="editItem(props.item)"
+                  />
+                </template>
+                <span>{{ $t('cpmSettings.clickToPickAColor') }}</span>
+              </v-tooltip>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-card-text>

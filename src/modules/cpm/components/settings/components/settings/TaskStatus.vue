@@ -20,26 +20,28 @@
           <v-data-table
             :headers="headers"
             :items="settings.status"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item }}</td>
-              <td class="text-right">
-                <v-btn
-                  icon
-                  small
-                  @click.prevent="editElement(props.index, props.item)"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
-                  small
-                  @click.prevent="deleteElement(props.index, props.item)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </td>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item }}</td>
+                <td class="text-right">
+                  <v-btn
+                    icon
+                    small
+                    @click.prevent="editElement(props.index, props.item)"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    small
+                    @click.prevent="deleteElement(props.index, props.item)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>

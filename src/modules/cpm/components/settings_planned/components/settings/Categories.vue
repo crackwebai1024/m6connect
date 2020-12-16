@@ -3,7 +3,6 @@
     <template slot="button">
       <v-btn
         color="primary"
-        dark
         fab
         small
         @click="showForm = true"
@@ -17,26 +16,28 @@
         :headers="headers"
         :items="settings.categories"
       >
-        <template v-slot:items="props">
-          <td>{{ props.item }}</td>
-          <td class="text-right">
-            <v-btn
-              icon
-              small
-              text
-              @click.prevent="editCategory(props.index, props.item)"
-            >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn
-              icon
-              small
-              text
-              @click.prevent="deleteCategory(props.index, props.item)"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </td>
+        <template v-slot:item="props">
+          <tr>
+            <td>{{ props.item }}</td>
+            <td class="text-right">
+              <v-btn
+                icon
+                small
+                text
+                @click.prevent="editCategory(props.index, props.item)"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn
+                icon
+                small
+                text
+                @click.prevent="deleteCategory(props.index, props.item)"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-container>
@@ -64,7 +65,7 @@
           >
           <v-btn
             color="blue"
-            outline
+            outlined
             @click="cancel"
           >
             Cancel

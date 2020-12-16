@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-data-table
-      :headers="headers"
+      :headers="tableHeaders"
       :items="items"
       :items-per-page="5"
     >
-      <template #item.record_number="{ item }" > 
+      <template #item.record_number="{ item }"> 
         <router-link class="router-link" :to="{ name: 'record.show', params: { id: item.id } }" >
           {{ item.record_number }}
         </router-link>
       </template>
-      <template #item.title="{ item }"  >
+      <template #item.title="{ item }">
         <router-link class="router-link" :to="{ name: 'record.show', params: { id: item.id } }" >
           {{ item.title }}
         </router-link>
@@ -22,7 +22,7 @@
             $h.dg(item, 'standard_field_description', '')
         }}
       </template>
-      <template #item.author="{ item }" >
+      <template #item.author="{ item }">
         {{ getAuthor(item.author) }}
       </template>
       <template #item.standard_image="{ item }">
@@ -32,7 +32,7 @@
           :src="item.standard_image"
         >
       </template>
-      <template #item.created_at="{ item }" >
+      <template #item.created_at="{ item }">
         {{ item.created_at.getMonth() + '/' + item.created_at.getDate() + '/' + item.created_at.getFullYear() }}
       </template>
       <template #item.action>
@@ -66,6 +66,10 @@ export default {
     items: {
       type: Array,
       default: () => ([])
+    },
+    tableHeaders: {
+      type: Array,
+      required: true
     }
   },
   data: () => ({
@@ -88,7 +92,7 @@ export default {
 
   computed: {
     ...mapGetters('Companies', {
-      currentCompanyUsers: "getCurrentCompanyUsers"
+      currentCompanyUsers: 'getCurrentCompanyUsers'
     })
   },
 
@@ -96,7 +100,7 @@ export default {
     getAuthor(id) {
       const res = this.currentCompanyUsers.find( u => this.$h.dg(u, 'user.id', '') === id ) 
       return this.$h.dg(res, 'user.firstName', '') + ' ' + this.$h.dg(res, 'user.lastName', '')
-    },
+    }
   }
 }
 </script>

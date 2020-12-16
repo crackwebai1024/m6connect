@@ -100,8 +100,7 @@ const actions = {
         company
       })
         .then(res => {
-          const currentCompany = res.data
-          currentCompany.users = state.currentCompany.users || []
+          let currentCompany = { ...res.data.data.updateCompany, users:  state.currentCompany.users || []}
 
           commit('setCurrentCompany', currentCompany)
           resolve(res)

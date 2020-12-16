@@ -1,62 +1,59 @@
 <template>
   <v-container
-    id="cpmSettings"
-    fluid
-    grid-list-md
+    class="pa-0"
   >
     <v-row
-      class="fill-height"
+      class="ma-0 pa-0"
     >
-      <v-col cols="4">
-        <v-card>
-          <v-divider />
-          <div>
-            <v-tooltip
+      <v-col
+        class="pa-0 pr-1"
+        cols="4"
+      >
+        <v-card class="card-custom-shadow px-5">
+          <v-list>
+            <v-row
               v-for="(setting, sindex) in settings"
               :key="sindex"
-              right
             >
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  class="blockbtn flex-column"
+              <template>
+                <v-list-item
                   :class="activeSetting === setting ? 'settingActive' : ''"
-                  icon
-                  style="height:150px; width:100%; cursor: pointer;"
-                  v-on="on"
                   @click="activateSettingFn(setting)"
                 >
-                  <v-icon style="font-size:80px;">
-                    {{ setting.icon }}
-                  </v-icon>
-                  <p>{{ setting.name }}</p>
-                </v-btn>
+                  <v-list-item-icon>
+                    <v-icon size="30">
+                      {{ setting.icon }}
+                    </v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      {{ setting.name }}
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
               </template>
-              <span>{{ setting.name }}</span>
-            </v-tooltip>
-          </div>
+            </v-row>
+          </v-list>
         </v-card>
       </v-col>
 
-      <v-col cols="4">
+      <v-col
+        v-if="activeSetting.options"
+        class="py-0"
+        cols="4"
+      >
         <options
-          v-if="activeSetting !== null"
           :options="activeSetting.options"
           @updateOption="updateOption"
         />
       </v-col>
 
-      <v-col cols="4">
-        <component :is="currentComponent" />
-        <v-card
-          v-if="showLoading"
-          width="100%"
-        >
-          <v-progress-circular
-            color="primary"
-            indeterminate
-            size="50"
-            style="margin-top: 45px; position: absolute; left: 50%"
-          />
+      <v-col
+        class="pa-0 pl-1"
+        cols="4"
+      >
+        <v-card v-if='currentComponent' class="card-custom-shadow pa-4 white">
+          <component :is="currentComponent" />
         </v-card>
       </v-col>
     </v-row>
@@ -163,7 +160,7 @@ export default {
       settings: [
         {
           name: this.$t('cpmSettings.settings.project'),
-          icon: 'ballot',
+          icon: 'mdi-ballot',
           options: [
             {
               name: this.$t('cpmSettings.settings.projOptions.category'),
@@ -234,7 +231,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.cost'),
           component: 'cost-options',
-          icon: 'attach_money',
+          icon: 'mdi-currency-usd',
           options: [
             {
               name: this.$t('cpmSettings.settings.costOptions.budgetStatus'),
@@ -277,7 +274,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.scheduleCpm'),
           component: 'cost-options',
-          icon: 'schedule',
+          icon: 'mdi-calendar',
           options: [
             {
               name: this.$t(
@@ -308,7 +305,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.rfpTimeline'),
           component: 'cost-options',
-          icon: 'schedule',
+          icon: 'mdi-currency-usd',
           options: [
             {
               name: this.$t(
@@ -321,7 +318,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.tasks'),
           component: 'cost-options',
-          icon: 'list_alt',
+          icon: 'mdi-file-tree',
           options: [
             {
               name: this.$t('cpmSettings.settings.tasksOptions.taskStatus'),
@@ -340,7 +337,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.users'),
           component: 'cost-options',
-          icon: 'emoji_people',
+          icon: 'mdi-account-group',
           options: [
             {
               name: this.$t('cpmSettings.settings.usersOptions.projManager'),
@@ -359,7 +356,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.policy'),
           component: 'cost-options',
-          icon: 'work',
+          icon: 'mdi-briefcase',
           options: [
             {
               name: this.$t('cpmSettings.settings.policyOptions.cat'),
@@ -374,7 +371,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.rfp'),
           component: 'cost-options',
-          icon: 'business',
+          icon: 'mdi-domain',
           options: [
             {
               name: this.$t('cpmSettings.settings.rfpOptions.status'),
@@ -385,7 +382,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.hideFields'),
           component: 'cost-options',
-          icon: 'visibility',
+          icon: 'mdi-eye-outline',
           options: [
             {
               name: this.$t('cpmSettings.settings.hideFieldsOptions.budget'),
@@ -402,7 +399,7 @@ export default {
         {
           name: this.$t('cpmSettings.settings.general'),
           component: 'cost-options',
-          icon: 'settings',
+          icon: 'mdi-cog',
           options: [
             {
               name: this.$t('cpmSettings.settings.generalOptions.hidePanels'),

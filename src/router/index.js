@@ -18,7 +18,7 @@ const Projects = () => import(/* webpackChunkName: 'Store' */ '@/views/Projects/
 const ProjectPanel = () => import(/* webpackChunkName: 'Store' */ '@/views/ProjectPanel/index')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShowBlank.vue')
-const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
+const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import/index')
 const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/CloneTool')
 const RapidTable = () => import(/* webpackChunkName: 'RapidTable' */ '@/views/Rapid/RapidTable')
 import store from '../store/';
@@ -99,7 +99,8 @@ const router = new VueRouter({
       name: "dev",
       component: Dev,
       meta: {
-        public: true
+        public: true,
+        topNav: true
       }
     },
     {

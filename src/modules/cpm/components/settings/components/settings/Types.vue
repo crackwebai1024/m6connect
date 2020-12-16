@@ -20,28 +20,30 @@
           <v-data-table
             :headers="headers"
             :items="settings.types"
-            :pagination.sync="pagination"
+            :options.sync="pagination"
           >
-            <template v-slot:items="props">
-              <td>{{ props.item }}</td>
-              <td class="text-right">
-                <v-btn
-                  icon
-                  small
-                  text
-                  @click.prevent="edit(props.index, props.item)"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-                <v-btn
-                  icon
-                  small
-                  text
-                  @click.prevent="deleteType(props.index, props.item)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </td>
+            <template v-slot:item="props">
+              <tr>
+                <td>{{ props.item }}</td>
+                <td class="text-right">
+                  <v-btn
+                    icon
+                    small
+                    text
+                    @click.prevent="edit(props.index, props.item)"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-btn
+                    icon
+                    small
+                    text
+                    @click.prevent="deleteType(props.index, props.item)"
+                  >
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </td>
+              </tr>
             </template>
           </v-data-table>
         </div>
@@ -71,7 +73,7 @@
           >
           <v-btn
             color="blue"
-            outline
+            outlined
             @click="cancel"
           >
             Cancel

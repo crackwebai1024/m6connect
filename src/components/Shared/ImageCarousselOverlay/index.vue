@@ -1,38 +1,66 @@
 <template>
   <transition name="fade">
-    <v-overlay opacity="0.6" :value="overlay">
-      <v-card class="h-viewport w-viewport"
-        @keydown.esc="closeOverlay()"
+    <v-overlay
+      opacity="0.6"
+      :value="overlay"
+    >
+      <v-card
+        class="h-viewport w-viewport"
+        @keydown.esc="closeOverlay"
         @keydown.left="this.images.indexOf(navigate++)"
         @keydown.right="this.images.indexOf(navigate--)"
       >
-        <v-row no-gutters align="center" justify="center" class="fill-height">
-          <v-col cols="8" class="relative">
+        <v-row
+          align="center"
+          class="fill-height"
+          justify="center"
+          no-gutters
+        >
+          <v-col
+            class="relative"
+            cols="8"
+          >
             <v-avatar
-              @click="closeOverlay()"
-              size="50"
+              class="absolute pointer top-0"
               color="grey lighten-2"
-              class="pointer absolute top-0"
+              size="50"
               style="height: 50px; width: 50px; left: 15px; z-index: 100;"
+              @click="closeOverlay"
             >
-              <v-icon size="30" color="black">mdi-close</v-icon>
+              <v-icon
+                color="black"
+                size="30"
+              >
+                mdi-close
+              </v-icon>
             </v-avatar>
             <carousel
               class="w-full"
-              :navigationEnabled="false"
-              :paginationEnabled="true"
-              :perPage="1"
-              :navigateTo="navigate"
+              :navigate-to="navigate"
+              :navigation-enabled="true"
+              :pagination-active-color="'#fff'"
+              :pagination-color="'#333'"
+              :pagination-enabled="true"
+              :per-page="1"
             >
-              <slide v-for="(item,index) in images" :key="index+'-image'">
-                <v-img style="height:80vh;" :src="item"/>
+              <slide
+                v-for="(item,index) in images"
+                :key="index+'-image'"
+              >
+                <v-img
+                  :src="item"
+                  style="height:80vh;"
+                />
               </slide>
             </carousel>
           </v-col>
-          <v-col cols="4" class="h-viewport white">
-            <v-card 
-              class="card-custom-shadow mb-4 white"
+          <v-col
+            class="h-viewport white"
+            cols="4"
+          >
+            <v-card
               v-if="Object.keys(post).length > 0"
+              class="card-custom-shadow mb-4 white"
               style="height: 20vh;"
             >
               <v-card-title class="pb-0 pt-6 px-5">
@@ -69,8 +97,8 @@
                 <div class="px-5 py-4">
                   <template>
                     {{ post.message }}
-                    <slot name="record"></slot>
-                    <slot name="assignments"></slot>
+                    <slot name="record" />
+                    <slot name="assignments" />
                   </template>
                 </div>
               </div>
@@ -92,10 +120,10 @@
                     {{ contLikes() }}
                     <v-progress-circular
                       v-show="progressLike"
+                      indeterminate
                       size="10"
                       width="1"
-                      indeterminate
-                    ></v-progress-circular>
+                    />
                   </div>
                   <v-spacer />
                   <div
@@ -107,13 +135,14 @@
                 </v-row>
               </v-card-actions>
             </v-card>
-            <div 
-              v-if="Object.keys(post).length > 0" 
+            <div
+              v-if="Object.keys(post).length > 0"
               style="overflow-y:auto; height: 80vh;"
             >
               <v-col
                 class="d-flex px-5"
-                cols="12">
+                cols="12"
+              >
                 <v-badge
                   bottom
                   class="mr-3"
@@ -134,11 +163,11 @@
                   v-model="comment_data"
                   class="black--text"
                   dense
-                  solo
                   height="40"
                   hide-details
                   placeholder="Write a comment..."
                   rounded
+                  solo
                   @keyup.enter="pushComment(post)"
                 />
               </v-col>
@@ -150,17 +179,17 @@
                   v-for="(comment, index) of post.latest_reactions.comment.slice().reverse()"
                   :key="index"
                   :comment="comment"
+                  :feed-activity="post.props ? true : false"
                   :reply="true"
-                  :feedActivity="post.props ? true : false"
                   :size="48"
-                  :userData="client.currentUser.data"
+                  :user-data="client.currentUser.data"
                 />
               </div>
               <v-skeleton-loader
                 v-if="showSkeleton"
-                class="post-item px-1 my-1"
+                class="my-1 post-item px-1"
                 type="list-item-avatar-two-line"
-              ></v-skeleton-loader>
+              />
             </div>
           </v-col>
         </v-row>
@@ -170,49 +199,49 @@
 </template>
 
 <script>
-import { Carousel, Slide } from "vue-carousel";
-import { mapGetters } from "vuex";
-import PostComments from '@/components/Home/SocialMedia/Comments';
-import CarouselImage from "@/components/Shared/ImageCarousselOverlay/CarouselImage";
+import { Carousel, Slide } from 'vue-carousel'
+import { mapGetters } from 'vuex'
+import PostComments from '@/components/Home/SocialMedia/Comments'
+import CarouselImage from '@/components/Shared/ImageCarousselOverlay/CarouselImage'
 
 export default {
   components: {
     Carousel,
     Slide,
     PostComments,
-    CarouselImage,
+    CarouselImage
   },
   props: {
     value: {
-      default: false,
+      default: false
     },
     images: {
-      required: true,
+      required: true
     },
     selected: {
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       overlay: false,
       likeState: false,
-      progressLike: false,  
+      progressLike: false,
       showSkeleton: false,
       comment_data: '',
-      navigate: 0,
-    };
+      navigate: 0
+    }
   },
   watch: {
     value(val) {
-      this.overlay = val;
+      this.overlay = val
     },
     post(val) {
-      this.post.actor = JSON.parse(this.post.actor);
+      this.post.actor = JSON.parse(this.post.actor)
     },
     selected(val) {
-      this.navigate = [this.images.indexOf(val), false];
-    },
+      this.navigate = [this.images.indexOf(val), false]
+    }
   },
   computed: {
     ...mapGetters('GSFeed', {
@@ -223,12 +252,12 @@ export default {
     }),
     likeIcon() {
       return this.likeState ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'
-    },
+    }
   },
   methods: {
     closeOverlay() {
-      this.overlay = false;
-      this.$emit("restartImageArray");
+      this.overlay = false
+      this.$emit('restartImageArray')
     },
     showCommentsPost() {
       this.rotate = 'full-rotate'
@@ -250,11 +279,11 @@ export default {
       }
 
       this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
-        if( activity.props ){
+        if (activity.props) {
           await this.$store.dispatch('GSFeed/setActionPost')
-          await this.$store.dispatch('WorkOrderModule/setWorkOrder');
-        }else{
-          await this.$store.dispatch('GSFeed/setPreviewPost', this.post['id']);
+          await this.$store.dispatch('WorkOrderModule/setWorkOrder')
+        } else {
+          await this.$store.dispatch('GSFeed/setPreviewPost', this.post['id'])
         }
         this.showSkeleton = false
       })
@@ -263,12 +292,12 @@ export default {
         this.data.comments = []
       }
       this.comment_data = ''
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
-<style scoped>
+<style>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s ease-out;
@@ -277,5 +306,29 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+.VueCarousel-dot {
+  outline: none !important;
+}
+.VueCarousel-slide .v-image__image {
+  background-size: auto !important;
+}
+.VueCarousel-navigation-prev {
+  left: 58px !important;
+  padding-right: 13px !important;
+}
+.VueCarousel-navigation-next {
+  right: 58px !important;
+  padding-left: 13px !important;
+}
+.VueCarousel-navigation-prev, .VueCarousel-navigation-next {
+  border-radius: 100%;
+  background: rgb(255 255 255 / 30%) !important;
+  color: white !important;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  outline: none !important;
 }
 </style>

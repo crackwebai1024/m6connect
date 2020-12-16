@@ -4,7 +4,6 @@
     v-model="show"
     max-width="600px"
     persistent
-    scrollable
     transition="dialog-transition"
   >
     <v-card>
@@ -47,7 +46,7 @@
                 />
               </v-col>
             </v-row>
-            
+
             <v-row>
               <v-col
                 md="6"
