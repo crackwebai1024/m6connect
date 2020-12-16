@@ -317,13 +317,16 @@
             </div>
             <div
               v-else
-              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-left w-fit"
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
               <p
                 class="ma-0 pa-0"
                 v-html="urlify(message.text)['text']"
               />
+              <p v-if="message.images && message.text == ''">
+                {{ message.images.join(', ') }}
+              </p>
               <div
                 v-if="message.images"
                 class="d-flex ml-auto w-fit"
@@ -1262,7 +1265,6 @@ export default {
         })
 
         if (this.imageFiles.length > 0) {
-          
           const urls = []
           this.imageFiles.forEach(async (image, index) => {
             const url = await this.setStreamFiles({
@@ -1277,14 +1279,13 @@ export default {
 
             urls.push(url['attachUrl'])
             if (index === this.imageFiles.length - 1) {
-
               await this.updateMessage({
                 id: message['message']['id'],
                 text: message['message']['text'],
                 images: urls
               })
-                this.showLoading = false
-                this.imageFiles = []
+              this.showLoading = false
+              this.imageFiles = []
             }
           })
         }
@@ -1332,7 +1333,7 @@ export default {
           this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
           this.$refs.inputMessage.focus()
         })
-      } catch(e) {
+      } catch (e) {
         this.notifDanger('There was an error while sending the message')
       }
     },
