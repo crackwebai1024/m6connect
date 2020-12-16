@@ -310,8 +310,14 @@ export default {
 .VueCarousel-dot {
   outline: none !important;
 }
+.VueCarousel-slide {
+  max-width: 100%;
+}
 .VueCarousel-slide .v-image__image {
   background-size: auto !important;
+}
+.VueCarousel-slide .v-responsive__content {
+  max-width: 100%;
 }
 .VueCarousel-navigation-prev {
   left: 58px !important;
