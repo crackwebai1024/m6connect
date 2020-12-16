@@ -1,8 +1,5 @@
 <template>
-  <v-card
-    class="dont-show-scroll my-5 pa-0 vertical-scroll"
-    height="300px"
-  >
+  <v-card class="dont-show-scroll h-full my-5 pa-0 vertical-scroll">
     <project-social-media
       class="pa-0"
       :read-only="true"

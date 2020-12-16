@@ -32,7 +32,6 @@ const actions = {
         })
       }
     })
-    console.log(tabs);
 
     return tabs
   },

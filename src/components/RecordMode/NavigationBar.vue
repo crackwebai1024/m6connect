@@ -46,12 +46,19 @@
       </v-speed-dial>
     </v-card>
     <record-body
-      v-if="true"
+      v-if="project['app_type'] !== 'dynamic_app'"
       :component="project"
       :name="getName()"
       :nav-commp="component"
       :sort-array="header"
       @items="setState"
+    />
+    <component
+      :is="builder"
+      class="w-full"
+      :class="indexBuilder !== 0 ? 'px-2' : 'px-0'"
+      :index="indexBuilder >= 0 ? indexBuilder : null"
+      :info="project"
     />
   </v-container>
 </template>
@@ -76,6 +83,8 @@ export default {
     }
   },
   data: () => ({
+    indexBuilder: null,
+    builder: null,
     header: [],
     component: [],
     currentState: 0,
@@ -88,17 +97,25 @@ export default {
       this.header = []
       this.NavWidgets.forEach(action => this.header.push(action))
       this.NavWidgets.forEach(action => this.component.push(action.component))
+
+      this.indexBuilder = this.header[0]['index'] >= 0 ? this.header[0]['index'] : null
+      this.builder = this.header[0]['component'] ? this.header[0]['component'] : null
     }
   },
   methods: {
     // The global function to make scroll and order components
     async moveComponent(index) {
-      await this.orderComponents(index)
-      const cont = this.currentState
-      if (document.getElementById(this.getName() + '-' + index).classList.contains('container')) {
-        this.scrolling(document.getElementById(this.getName() + '-' + index))
+      if (this.project['app_type'] === 'dynamic_app') {
+        this.indexBuilder = this.header[index]['index'] >= 0 ? this.header[index]['index'] : null
+        this.builder = this.header[index]['component'] ? this.header[index]['component'] : null
       } else {
-        this.scrolling(document.getElementById(this.getName() + '-' + cont))
+        await this.orderComponents(index)
+        const cont = this.currentState
+        if (document.getElementById(this.getName() + '-' + index).classList.contains('container')) {
+          this.scrolling(document.getElementById(this.getName() + '-' + index))
+        } else {
+          this.scrolling(document.getElementById(this.getName() + '-' + cont))
+        }
       }
     },
     // Order the components in order of call

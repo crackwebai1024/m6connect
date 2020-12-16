@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="!loading">
     <v-card class="mb-5">
       <v-card-title
         class="justify-center"
@@ -12,24 +12,32 @@
       <v-card-text>
         <v-row no-gutters>
           <v-col
-            v-for="(panel, index) in panels"
-            :key="`custom-panel-${index}`"
-            cols="6"
+            v-for="(panel, ind) in panels"
+            :key="`custom-panel-${ind}`"
+            cols="12"
           >
-            <v-card class="my-3 pa-2">
+            <v-card class="mx-2 my-3">
               <div
                 class="align-center d-flex grey--text my-2 text-caption"
+                :class="colors[Math.floor(Math.random() * 10)]"
               >
-                <v-divider class="blue-grey lighten-5" />
-                <p class="mx-3 my-0">
+                <v-divider class="blue-grey lighten-5 ml-3" />
+                <p class="mx-3 my-0 text-subtitle-2 white--text">
                   {{ panel.title }}
                 </p>
-                <v-divider class="blue-grey lighten-5" />
-                <v-btn icon>
+                <v-divider class="blue-grey lighten-5 mr-1" />
+                <v-btn
+                  color="white"
+                  icon
+                  @click="openDialog(panel)"
+                >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </div>
               <v-card-text>
+                <p v-if="panel['description']" class="my-0 pb-5 text-body-1">
+                  {{ panel['description'] }}
+                </p>
                 <div
                   v-for="(field, i) in panel.fields"
                   :key="`panel-field-${i}`"
@@ -38,9 +46,37 @@
                     {{ field.label }}
                   </p>
                   <v-spacer />
-                  <p class="ma-0 pa-0 text-subtitle-1">
-                    {{ panel.value.values[i+1] }}
+                  <div v-if="field.type === 'people'">
+                    <p
+                      v-for="user in panel.value.values[field.id]"
+                      :key="user"
+                      class="ma-0 pa-0 text-subtitle-1"
+                    >
+                      {{ user }}
+                    </p>
+                  </div>
+                  <div
+                    v-else-if="field.type === 'autocomplete'"
+                    class="ma-0 pa-0 text-subtitle-1"
+                  >
+                    <p
+                      v-for="(value, inde) in panel.value.values[field.id]"
+                      :key="inde+'-autocomplete'"
+                      class="ma-0 pa-0 text-subtitle-1"
+                    >
+                      {{ value['value'] }}
+                    </p>
+                  </div>
+                  <p v-else-if="field.type === 'boolean'">
+                    {{ panel.value.values[field.id] ? 'Yes' : 'No' }}
                   </p>
+                  <p
+                    v-else
+                    class="ma-0 pa-0 text-subtitle-1"
+                  >
+                    {{ panel.value.values[field.id] }}
+                  </p>
+                  <!--<p>{{ field }}</p>-->
                 </div>
               </v-card-text>
             </v-card>
@@ -48,14 +84,32 @@
         </v-row>
       </v-card-text>
     </v-card>
+
+    <v-dialog
+      v-model="dialog"
+      width="700"
+    >
+      <edit-panel-builder :panel="panel" :record="info" />
+    </v-dialog>
+  </v-container>
+  <v-container v-else>
+    <v-progress-circular
+      class="margin-center"
+      color="primary"
+      indeterminate
+    />
   </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import EditPanelBuilder from '@/components/Dialogs/EditPanelBuilder.vue'
 
 export default {
   name: 'PreviewTabsBuilder',
+  components: {
+    EditPanelBuilder
+  },
   props: {
     info: {
       type: Object,
@@ -67,20 +121,48 @@ export default {
     }
   },
   data: () => ({
+    dialog: false,
     loading: false,
-    recordId: 0,
+    panel: {},
     app: {},
     panels: [],
-    values: []
+    colors: [
+      'green',
+      'blue',
+      'red',
+      'purple',
+      'orange',
+      'pink',
+      'brown',
+      'light-blue',
+      'cyan',
+      'teal',
+      'amber'
+    ]
   }),
+  watch: {
+    index: {
+      async handler() {
+        this.panels = []
+        this.loading = true
+        this.app = await this.getApp(this.info['app_id'])
+        this.app = this.app.tabs[this.index]
+        this.app.panels.forEach(async (tab, i) => {
+          await this.setValues(tab)
+          if (i === this.app.panels.length - 1) {
+            this.loading = false
+          }
+        })
+      },
+      deep: true
+    }
+  },
   async mounted() {
-    console.log(this.index)
-    
     this.loading = true
     this.app = await this.getApp(this.info['app_id'])
     this.app = this.app.tabs[this.index]
     this.app.panels.forEach(async (tab, i) => {
-      this.setValues(tab)
+      await this.setValues(tab)
       if (i === this.app.panels.length - 1) {
         this.loading = false
       }
@@ -91,6 +173,10 @@ export default {
       'getApp',
       'getFieldValuesPerPanel'
     ]),
+    openDialog(panel) {
+      this.panel = panel
+      this.dialog = !this.dialog
+    },
     async setValues(app) {
       const data = {
         'recordID': this.info['id'],
@@ -108,3 +194,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.margin-center{
+  margin-left: 45%!important;
+}
+</style>

@@ -1,5 +1,8 @@
 <template>
-  <v-container class="dont-show-scroll h-full px-0 vertical-scroll w-full">
+  <v-container
+    v-if="component.app_type !== 'dynamic_app'"
+    class="dont-show-scroll h-full px-0 vertical-scroll w-full"
+  >
     <!-- That ID is used to scrolling the component -->
     <component
       :is="item.component"
@@ -19,10 +22,23 @@
       <div slot="no-more" />
     </infinite-loading>
     <div
-      v-for="(item, index) of emptyItems"
-      :id="name+'-'+(currentIndex+index)"
-      :key="index+'-no-container'"
+      v-for="(item, i) of emptyItems"
+      :id="name+'-'+(currentIndex+i)"
+      :key="i+'-no-container'"
       class="no-container"
+    />
+  </v-container>
+  <v-container
+    v-else
+    class="dont-show-scroll h-full px-0 vertical-scroll w-full"
+  >
+    <!-- That ID is used to scrolling the component -->
+    <component
+      :is="builder"
+      class="w-full"
+      :class="index !== 0 ? 'px-2' : 'px-0'"
+      :index="index >= 0 ? index : null"
+      :info="component"
     />
   </v-container>
 </template>
@@ -33,6 +49,14 @@ export default {
   // eslint-disable-next-line vue/match-component-file-name
   name: 'PreviewBody',
   props: {
+    builder: {
+      type: Object,
+      default: () => {}
+    },
+    index: {
+      type: Number,
+      default: null
+    },
     component: {
       type: Object,
       default: () => {}
