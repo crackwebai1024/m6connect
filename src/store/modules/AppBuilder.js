@@ -236,7 +236,7 @@ const actions = {
         .catch(e => reject(e))
     })
   },
-  
+
   deleteApp(_, payload) {
     return new Promise((resolve, reject) => {
       axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`)
