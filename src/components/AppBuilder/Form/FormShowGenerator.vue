@@ -247,6 +247,7 @@ import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOpt
 import AppAttachment from '@/components/AppBuilder/Form/Components/Attachment.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
+import GMap from '@/components/_partials/GMap'
 
 export default {
   name: 'FormShowGenerator',
@@ -256,7 +257,8 @@ export default {
     AppAttachment,
     VAutocomplete,
     RadioBtnOptions,
-    PeopleAutocomplete
+    PeopleAutocomplete,
+    GMap
   },
 
   props: {
@@ -299,6 +301,11 @@ export default {
         multiple: true,
         chips: true,
         clearable: true
+      },
+      'referencedToApp': { component: 'v-text-field' },
+      'referenced': { component: 'v-text-field' },
+      'autocomplete-address': {
+        component: 'g-map'
       }
     },
     genericRecord: {},
@@ -458,6 +465,7 @@ export default {
         if (Object.prototype.toString.call(value) == '[object Object]') {
           delete value['created_at']
           delete value['updated_at']
+          fields.push({ value, field_id: f.id })
         } else {
           if (value == 'true' || value == 'false') value = value == 'true'
           fields.push({ value, field_id: f.id })

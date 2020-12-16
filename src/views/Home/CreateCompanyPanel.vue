@@ -91,6 +91,14 @@
           </v-btn>
           <v-btn
             class="white--text"
+            color="grey darken-2"
+            style="float: left;"
+            @click="tableView"
+          >
+            Table View
+          </v-btn>
+          <v-btn
+            class="white--text"
             color="green darken-2"
             style="float: right;"
             @click="updatingApp"
@@ -184,7 +192,7 @@
         <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
           <v-col
             class="d-flex flex-column justify-center pa-0 pr-1"
-            cols="5"
+            :cols=" $h.dg(app, `tabs.${activeTab}.full_width`, false) ? 12 : 5"
           >
             <!--                <div class="mb-3 panel px-4 py-3 white">-->
             <!--                  <h3 class="font-weight-bold grey&#45;&#45;text spacing-tight text&#45;&#45;darken-1">-->
@@ -223,31 +231,33 @@
             />
             <add-panel @addNewPanel="addNewPanel(0)" />
           </v-col>
-          <v-col
-            v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
-            class="pa-0 pl-1"
-            cols="7"
-          >
-            <panel
-              v-for="panel in rightPanels"
-              :key="panel.id"
-              :panel="panel"
-              @deletePanel="deletePanel"
-              @updatePanel="updatePanel"
-            />
-            <add-panel @addNewPanel="addNewPanel(1)" />
-          </v-col>
+          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)" >
+            <v-col
+              v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
+              class="pa-0 pl-1"
+              cols="7"
+            >
+              <panel
+                v-for="panel in rightPanels"
+                :key="panel.id"
+                :panel="panel"
+                @deletePanel="deletePanel"
+                @updatePanel="updatePanel"
+              />
+              <add-panel @addNewPanel="addNewPanel(1)" />
+            </v-col>
 
-          <v-col
-            v-else
-            class="pa-0 pl-1"
-            cols="7"
-          >
-            <project-social-media
-              class="opacity-social-media"
-              post-list-show
-            />
-          </v-col>
+            <v-col
+              v-else
+              class="pa-0 pl-1"
+              cols="7"
+            >
+              <project-social-media
+                class="opacity-social-media"
+                post-list-show
+              />
+            </v-col>
+          </template>
         </v-row>
       </div>
 
@@ -279,6 +289,13 @@
         @cancel="cancelDelete"
         @confirm="confirmingDelete"
       />
+
+      <table-view
+        :showTable="showTable"
+        :fieldListProp="fieldList"
+        :tableItemsProp="tableItems"
+        @hideTableModal="hideTableModal"
+      />
     </template>
   </v-card>
 </template>
@@ -290,11 +307,13 @@ import AddTab from '@/components/AppBuilder/Buttons/AddTab'
 import Panel from '@/components/AppBuilder/Panel'
 import AddField from '@/components/AppBuilder/Buttons/AddField'
 import Field from '@/components/AppBuilder/Modals/Field'
+import TableView from '@/components/AppBuilder/Modals/TableView'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import AppActivities from '@/views/AppBuilder/AppActivities'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'CreateCompanyPanel',
@@ -307,13 +326,17 @@ export default {
     Panel,
     TabUpdates,
     ProjectSocialMedia,
-    AppActivities
+    AppActivities,
+    TableView
   },
 
   data: () => ({
     showDeleteDialog: false,
+    server: `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}`,
     app: {},
     message: 'Tab',
+    tableItems: [],
+    fieldList: [],
     appLoaded: false,
     showDeleteModal: false,
     tabToDelete: null,
@@ -335,8 +358,7 @@ export default {
         required: false
       }
     },
-
-
+    showTable: false,
     rules: {
       generic: [v => !!v || 'This field is required']
     }
@@ -480,11 +502,12 @@ export default {
         this.tabToDelete = {}
       })
     },
-    addNewTab() {
+    addNewTab(tabNumOption) {
       const newTab = {
         appID: this.app.id,
         weight: 0,
-        title: 'New Tab'
+        title: 'New Tab',
+        fullWidth: tabNumOption
       }
       this.$store.dispatch('AppBuilder/saveTab', newTab).then(result => {
         this.app.tabs.push(result)
@@ -558,6 +581,28 @@ export default {
       this.fieldToDelete = null
       this.tabToDelete = null
       this.showDeleteModal = false
+    },
+
+    tableView() {
+      this.loading = true
+      axios.post(`${this.server}/api/app-builder/field/list/all`, {
+        appId: parseInt(this.$route.params.id)
+      }).then(response => {
+        this.fieldList = response.data
+      })
+      axios.post(`${this.server}/api/app-builder/table-fields/get`, {
+        appId: parseInt(this.$route.params.id)
+      }).then(response => {
+        this.showTable = true
+        this.tableItems = response.data
+      })
+      this.loading = false
+    },
+
+    hideTableModal() {
+      this.showTable = false
+      this.tableItems = []
+      this.fieldList = []
     }
   }
 
