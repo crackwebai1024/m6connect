@@ -58,13 +58,33 @@
       </div>
       <div
         class="flex-space-between"
-        style=""
       >
-        <img
-          alt=""
-          class="app-icon-link pr-2"
-          :src="app.iconLink"
-        >
+        <template v-if="app.iconLink !== ''">
+          <img
+            alt=""
+            class="app-icon-link pr-2"
+            :src="app.iconLink"
+          />
+        </template>
+        <template v-else>
+          <v-avatar
+            :color="iconBackgroundColor"
+            @click="iconBuilderModal=true"
+            size="100"
+          >
+            <v-icon size="60">
+              {{ iconName }}
+            </v-icon>
+          </v-avatar>
+          <v-dialog
+            v-model="iconBuilderModal"
+            width="800"
+          >
+            <icon-builder-dialog
+              @selectIconAction="selectIconAction"
+            />
+          </v-dialog>
+        </template>
         <v-form ref="formApp">
           <v-text-field
             v-model="app.title"
@@ -173,7 +193,11 @@
               </template>
             </v-tab>
           </v-tabs>
-          <add-tab @addNewTab="addNewTab" />
+          <add-tab
+            v-if="appLoaded"
+            @addNewTab="addNewTab"
+            :layoutType="app.layout_type"
+          />
           <field
             v-if="showFieldModal"
             :editing="editing"
@@ -309,6 +333,7 @@ import AddField from '@/components/AppBuilder/Buttons/AddField'
 import Field from '@/components/AppBuilder/Modals/Field'
 import TableView from '@/components/AppBuilder/Modals/TableView'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import IconBuilderDialog from '@/components/Dialogs/IconBuilderDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import AppActivities from '@/views/AppBuilder/AppActivities'
@@ -327,7 +352,8 @@ export default {
     TabUpdates,
     ProjectSocialMedia,
     AppActivities,
-    TableView
+    TableView,
+    IconBuilderDialog
   },
 
   data: () => ({
@@ -361,7 +387,10 @@ export default {
     showTable: false,
     rules: {
       generic: [v => !!v || 'This field is required']
-    }
+    },
+    iconBuilderModal: false,
+    iconName: '',
+    iconBackgroundColor: ''
   }),
 
   computed: {
@@ -380,6 +409,14 @@ export default {
   mounted() {
     this.$store.dispatch('AppBuilder/getApp', this.$route.params.id).then(res => {
       this.app = res
+      if (res.metadata) {
+        this.app.metadata = JSON.parse(res.metadata)
+        this.iconName = this.app.metadata.appIcon ? this.app.metadata.appIcon.icon : 'mdi-account-circle'
+        this.iconBackgroundColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.background : '#AAA'
+      } else {
+        this.iconName = 'mdi-account-circle'
+        this.iconBackgroundColor = '#AAA'
+      }
 
       if (Object.keys(this.app).length === 0) this.$router.push('/')
       this.appLoaded = true
@@ -444,7 +481,18 @@ export default {
       }
 
       try {
-        const res = await this.updateApp({ params: this.app })
+        const res = await this.updateApp({
+          params: {
+            ...this.app,
+            metadata: {
+              ...this.app.metadata,
+              appIcon: {
+                icon: this.iconName,
+                background: this.iconBackgroundColor
+              }
+            }
+          }
+        })
         this.loading = false
         this.notifSuccess('Updated!')
       } catch (e) {
@@ -581,6 +629,14 @@ export default {
       this.fieldToDelete = null
       this.tabToDelete = null
       this.showDeleteModal = false
+    },
+
+    selectIconAction(selected, iconInfo) {
+      this.iconBuilderModal = !this.iconBuilderModal
+      if (selected) {
+        this.iconName = iconInfo.icon
+        this.iconBackgroundColor = iconInfo.background
+      }
     },
 
     tableView() {

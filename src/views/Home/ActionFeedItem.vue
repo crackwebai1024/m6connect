@@ -113,10 +113,18 @@
           mdi-message-outline
         </v-icon> {{ cont('comment') }}
       </p>
+      <div class="d-flex justify-center">
+        <v-avatar
+          class="mr-2"
+          :color="dueDateColor(notification.due_date)"
+          size="14"
+        />
+        <span class="leading-tight mt-1grey--text text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+      </div>
     </div>
     <div
       v-if="showActionBtns"
-      class="absolute action-btns align-center d-flex pa-3 text-caption"
+      class="absolute action-btns align-center d-flex pa-3 pb-13 text-caption"
     >
       <v-btn
         color="grey"
@@ -278,7 +286,7 @@ export default {
       const hours = Math.abs(Math.floor(diff % 24))
       diff = (diff - hours) / 24
       const days = Math.abs(Math.floor(diff % 30))
-      return days + ' days, ' + hours + ' hours, ' + minutes + ' minutes'
+      return days + ' days, ' + hours + ' hours, ' + minutes + ' min'
     },
     diffNowColor(date) {
       const dateNow = new Date()
