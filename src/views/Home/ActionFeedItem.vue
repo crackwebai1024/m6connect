@@ -113,7 +113,7 @@
           :color="dueDateColor(notification.due_date)"
           size="14"
         />
-        <span class="leading-tight mt-1grey--text text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+        <span class="leading-tight mt-1grey--text text--darken-1 text-caption">{{ diffNow(notification.due_date) }}</span>
       </div>
     </div>
     <div
@@ -272,7 +272,17 @@ export default {
     diffNow(date) {
       const dateNow = new Date()
       const dateNotification = new Date(date)
-      let diff = (dateNow.getTime() - dateNotification.getTime()) / 1000
+      dateNotification.setDate(dateNotification.getDate() + 1)
+      dateNotification.setHours(24, 0, 0, 0)
+      let dueMessage = ''
+      let firstDate = dateNow
+      let secondDate = dateNotification
+      if (dateNow > dateNotification) {
+        dueMessage = ' due'
+        firstDate = dateNotification
+        secondDate = dateNow
+      }
+      let diff = (secondDate.getTime() - firstDate.getTime()) / 1000
       const seconds = Math.abs(Math.floor(diff % 60))
       diff = (diff - seconds) / 60
       const minutes = Math.abs(Math.floor(diff % 60))
@@ -280,7 +290,7 @@ export default {
       const hours = Math.abs(Math.floor(diff % 24))
       diff = (diff - hours) / 24
       const days = Math.abs(Math.floor(diff % 30))
-      return days + ' days, ' + hours + ' hours, ' + minutes + ' min'
+      return days + ' days, ' + hours + ' hours, ' + minutes + ' min' + dueMessage
     },
     dueDateColor(date) {
       const dateNow = new Date()
