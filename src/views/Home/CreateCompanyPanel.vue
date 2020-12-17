@@ -173,7 +173,11 @@
               </template>
             </v-tab>
           </v-tabs>
-          <add-tab @addNewTab="addNewTab" />
+          <add-tab
+            v-if="appLoaded"
+            @addNewTab="addNewTab"
+            :layoutType="app.layout_type"
+          />
           <field
             v-if="showFieldModal"
             :editing="editing"
