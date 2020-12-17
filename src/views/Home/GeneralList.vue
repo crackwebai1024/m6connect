@@ -80,17 +80,11 @@
           <v-col
             v-for="(item, index) of records"
             :key="index"
-<<<<<<< HEAD
             class='card-container'
             :class="Object.keys(records).length !== index + 1 ? '' : ''"
             sm="6"
             lg='6'
             xl='4'
-=======
-            :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-            md="6"
-            sm="12"
->>>>>>> 9e03fdb481c9a47463c91bc6c06e2cdc7776ad0a
           >
             <general-item :record-data="item" />
           </v-col>
