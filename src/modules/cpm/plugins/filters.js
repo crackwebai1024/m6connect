@@ -13,13 +13,12 @@ Vue.filter('formatPhoneNumber', function (phoneNumberString) {
   }
   return phoneNumberString
 })
-Vue.filter('normalizeDate', (date, formatType = 'yyyy-MM-dd') => {
-    return date instanceof Date && !isNaN(date)? format(date, formatType) : 'invalid date'
-  }
+Vue.filter('normalizeDate', (date, formatType = 'yyyy-MM-dd') =>
+  format(date, formatType)
 )
 Vue.filter('monthDayYear', (date, formatType = 'MM/dd/yyyy') => {
   try {
-    return date instanceof Date && !isNaN(date)? format(date, formatType) : 'invalid date'
+    return format(date, formatType)
   } catch (e) {
     // console.log(e)
     // console.log(date)
