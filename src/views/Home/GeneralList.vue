@@ -65,7 +65,10 @@
         </v-text-field>
       </template>
     </header-component>
-    <div v-if="!loading">
+    <div
+      v-if="!loading"
+      class="app-list__container h-auto max-w-tight mb-3 mx-auto rounded"
+    >
       <template v-if="tableView">
         <records-table
           :items="records"
@@ -80,7 +83,7 @@
           <v-col
             v-for="(item, index) of records"
             :key="index"
-            :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
+            class="app-item__container"
             md="6"
             sm="12"
           >
@@ -316,5 +319,13 @@ export default {
 }
 v-progress-circular {
   margin-left: 45%!important;
+}
+.app-list__container {
+  justify-content: space-between;
+  display: flex;
+}
+.app-item__container {
+  margin: 0;
+  padding: 8px;
 }
 </style>
