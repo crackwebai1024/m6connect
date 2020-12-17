@@ -1,60 +1,58 @@
-import axios from 'axios'
-import auth from '../../Auth'
+import axios from "axios";
+import auth from '../../Auth';
 
 export default {
   namespaced: true,
   state: {
-    actionFeed: [],
-    filter: {}
+    actionFeed:[],
+    filter:{}
   },
-  getters: {
+  getters: {  
     getActionFeed: state => state.actionFeed,
-    getFilter: state => state.filter
+    getFilter: state => state.filter,
   },
   mutations: {
-    SET_WORK_ORDER: (state, payload) => state.actionFeed = payload,
+    SET_WORK_ORDER:  (state, payload) => state.actionFeed = payload,
     SET_WORK_FILTER: (state, payload) => state.filter = payload,
     UPDATE_ACTION_ITEM: async ({}, payload) => await axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/wo_assignments/${payload.id}`, payload)
   },
   actions: {
     updateActionItem({ commit }, data) {
-      const item = data['items'].filter(e => e.assignee === auth.state.user.id)
-      if (item.length > 0) {
+      let item = data['items'].filter((e) => { return e.assignee === auth.state.user.id });
+      if ( item.length > 0 ) {
         commit('UPDATE_ACTION_ITEM', {
           id: item[0]['id'],
           status: data['value']
-        })
+        });
       }
     },
     async getActionsFeed({}, payload) {
-      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/by/${payload}`)
+      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/by/${payload}`);
     },
-    async getAvailableApps() {
-      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`)
+    async getAvailableApps(){
+      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`);
     },
-    setWorkFilter({ commit }, data) {
-      commit('SET_WORK_FILTER', data)
+    setWorkFilter({ commit }, data){
+      commit('SET_WORK_FILTER', data);
     },
-    async setWorkOrder(state) {
-      const res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${auth.state.user.id}/${state.state.filter.key}`)
-      state.commit('SET_WORK_ORDER', res['data'])
+    async setWorkOrder(state){
+      let res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${auth.state.user.id}/${state.state.filter.key}`);
+      state.commit('SET_WORK_ORDER', res['data']);
     },
     async getUsersList({}, data) {
-      return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/user/list`, {
-        userIds: data
-      })
+      return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/user/list`, {userIds: data})
     },
-    async getRecords({}, type) {
-      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/records/${type}`)
+    async getRecords({}, type){
+      return await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/records/${type}`);
     },
     postAction({}, data) {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order`, data)
     },
-    putAction({}, data) {
-      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${data['id']}`, data['query'])
+    putAction({}, data){
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${data['id']}`, data['query']);
     },
-    deleteAction({}, actionID) {
-      axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${actionID}`)
+    deleteAction({}, actionID){
+      axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${actionID}`);
     }
   }
-}
+};

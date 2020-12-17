@@ -65,10 +65,14 @@
         </v-text-field>
       </template>
     </header-component>
+<<<<<<< HEAD
+    <div v-if="true">
+=======
     <div
       v-if="!loading"
       :class="tableView?'app-list__container':'app-list__container h-auto max-w-tight mb-3 mx-auto rounded'"
     >
+>>>>>>> d423d1d3d0a3c79a9145620c2a38f8a6e3dccca0
       <template v-if="tableView">
         <records-table
           :items="records"
@@ -77,15 +81,23 @@
       </template>
       <template v-else>
         <v-row
-          v-if="!loading"
+          v-if="true"
           class="w-full"
         >
           <v-col
             v-for="(item, index) of records"
             :key="index"
+<<<<<<< HEAD
+            class='card-container'
+            :class="Object.keys(records).length !== index + 1 ? '' : ''"
+            sm="6"
+            lg='6'
+            xl='4'
+=======
             class="app-item__container"
             md="6"
             sm="12"
+>>>>>>> d423d1d3d0a3c79a9145620c2a38f8a6e3dccca0
           >
             <general-item :record-data="item" />
           </v-col>
@@ -247,6 +259,7 @@ export default {
     getRecords(appId) {
       this.loading = true
       this.getDynamicApps(appId).then(() => {
+        console.info(this.list)
         const temp = this.list()
         this.dynamicTableHeader = this.headers.slice(0, 12)
 
@@ -319,6 +332,9 @@ export default {
 }
 v-progress-circular {
   margin-left: 45%!important;
+}
+.card-container > .v-card {
+  height: 100%;
 }
 .app-list__container {
   justify-content: space-between;

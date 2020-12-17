@@ -19,7 +19,8 @@
 
           <template v-slot:item.assignees="{ item }">
             <v-avatar
-              v-for="assignee in item.assignees"
+              :key='i'
+              v-for="(assignee, i) in item.assignees"
               size="28"
               style="margin-left:-5px"
             >

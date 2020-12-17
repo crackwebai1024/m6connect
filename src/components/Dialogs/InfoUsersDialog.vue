@@ -1,9 +1,11 @@
 <template>
     <v-card>
         <v-toolbar
-            color="cyan"
+            color="white elevation-0"
         >
-            <v-toolbar-title class="white--text">Members</v-toolbar-title>
+            <v-toolbar-title class='font-weight-bold'>
+                ({{Object.keys(currentUsers).length}}) Members
+            </v-toolbar-title>
         </v-toolbar>
         <v-card-text>
             <v-list class="transparent">

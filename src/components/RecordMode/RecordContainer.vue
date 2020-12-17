@@ -1,83 +1,54 @@
 <template>
-  <v-container class="h-full max-w-none pa-0">
-    <record-header :header-data-record="infoRecordData" />
-    <navigation-bar
-      v-if="get_screen_status() && recordData === null"
-      class="dont-show-scroll preview-content vertical-scroll"
-      :nav-widgets="actions"
-      :project="get_record_full_screen()"
-    />
-    <navigation-bar
-      v-else
-      class="dont-show-scroll preview-content vertical-scroll"
-      :nav-widgets="actions"
-      :project="infoRecordData"
-    />
+  <v-container class="pa-0 max-w-none h-full">
+    <record-header :headerDataRecord="infoRecordData"/>
+    <navigation-bar class="vertical-scroll dont-show-scroll preview-content" v-if="get_screen_status() && record_data == null" :NavWidgets=actions :project="get_record_full_screen()" />
+    <navigation-bar class="vertical-scroll dont-show-scroll preview-content" v-else :NavWidgets=actions :project="infoRecordData" />
   </v-container>
 </template>
-
 <script>
-/* eslint-disable vue/prop-name-casing */
-import { mapGetters, mapActions } from 'vuex'
-import NavigationBar from './NavigationBar'
-import globalDataApp from '../../store/data'
-import RecordHeader from './RecordHeader'
+import { mapGetters } from "vuex";
+import NavigationBar from "./NavigationBar";
+import globalDataApp from "../../store/data";
+import RecordHeader from "./RecordHeader";
 
 export default {
-  name: 'RecordContainer',
   components: {
     NavigationBar,
     RecordHeader
   },
-  props: {
-    recordData: {
-      type: Object,
-      default: () => ({})
-    },
-    recordIndex: {
-      type: Number,
-      default: 0
-    }
-  },
   data: () => ({
-    actions: []
+    actions: [],
   }),
+  name: "RecordContainer",
   computed: {
-    ...mapGetters('GeneralListModule', [
-      'get_screen_status',
-      'get_record_full_screen'
-    ]),
+    ...mapGetters("GeneralListModule",["get_screen_status", "get_record_full_screen"]),
     infoRecordData() {
-      return this.recordData
+      return this.record_data;
     },
-    infoWidget() {
-      return this.setData()
+    infoWidget(){
+      return this.setData();
     }
-  },
-  watch: {
-    infoRecordData: function () {
-      this.setData()
-    }
-  },
-  mounted() {
-    this.setData()
   },
   methods: {
-    ...mapActions('AppBuilder', {
-      previewNav: 'getNavigationPreView'
-    }),
-    async setData() {
-      if (this.infoRecordData.app_type === 'dynamic_app') {
-        this.actions = await this.previewNav(this.infoRecordData.app_id)
-      } else {
-        this.actions = this.get_screen_status() ? globalDataApp.records_widgets[this.get_record_full_screen().app_type]
-          : globalDataApp.records_widgets[this.infoRecordData.app_type]
-      }
+    setData(){
+      this.actions = this.get_screen_status() ? globalDataApp.records_widgets[this.get_record_full_screen().app_type]
+        : globalDataApp.records_widgets[this.infoRecordData.app_type];
     }
+  },
+  props: {
+    record_data: Object,
+    recordIndex: Number,
+  },
+  watch:{
+    infoRecordData:function(){
+      this.setData();
+    }
+  },
+  mounted(){
+    this.setData();
   }
-}
+};
 </script>
-
 <style>
 .preview-content {
   height: calc(100% - 41px);

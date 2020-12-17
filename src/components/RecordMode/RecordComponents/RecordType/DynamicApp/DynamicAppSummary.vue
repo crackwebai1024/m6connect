@@ -1,96 +1,66 @@
 <template>
-  <v-container class="card-custom-shadow d-flex flex-wrap justify-start panel-container py-5 relative rounded white height-100">
+  <v-container style='height: 100%' class="card-custom-shadow d-flex py-2 relative rounded white">
     <div
       v-show="info['prefix']"
-      class="absolute align-center card-content__tag d-flex font-weight-regular justify-center red text-body-1 white--text"
+      class="red absolute align-center card-content__tag d-flex font-weight-regular justify-center text-body-1 white--text"
     >
       {{ info['prefix'] ? info['prefix'] : apps.filter(app => app.id === info['app_id'])[0]['prefix'] }}
     </div>
-    <div class="w-full">
+    <div class="d-inline-flex flex-column" style='width: 100%'>
       <v-row
-        class="pl-5"
-        no-gutters
       >
-        <v-col cols="4">
-          <v-badge
-            avatar
-            bordered
-            :color="getBadgeColor()"
-            offset-x="20"
-            offset-y="20"
-            overlap
-          >
-            <v-avatar size="90">
-              <v-img
+        <v-col class='flex-shrink-1 py-0 flex-grow-0 pr-9 pt-3 pl-5'>
+          <v-badge offset-y="23" offset-x="23" bordered avatar overlap :color='getStatusColor'>
+            <v-avatar color='grey lighten-2' size='100'>
+                <v-img
                 v-if="info.image"
                 :alt="info.image"
-                class="d-inline-block rounded w-full"
-                max-height="100px"
+                max-height="75px"
+                class='rounded-full'
                 :src="info.image"
               />
               <v-img
                 v-else-if="info.iconLink"
                 :alt="info.iconLink"
-                class="d-inline-block rounded w-full"
-                max-height="100px"
+                max-height="75px"
+                class='rounded-full'
                 :src="info.iconLink"
               />
+
               <v-icon
                 v-else
-                class="d-inline-block"
-                size="100"
+                class='rounded-full'
+                size="75"
               >
                 mdi-store
               </v-icon>
             </v-avatar>
           </v-badge>
         </v-col>
-        <v-col cols="8 px-5">
-          <v-row>
-            <v-col
-              class="custom-col"
-              cols="12"
-            >
-              <span class="app-title">
-                {{ info['title'] }}
-              </span>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col
-              class="custom-col"
-              cols="12"
-            >
-              <span class="app-number">{{ info['record_number'] }}</span>
-            </v-col>
-          </v-row>
+        <v-col class='d-flex align-center flex-grow-1 flex-shrink-0'>
+          <div>
+              <v-row class=''>
+                <div class="mb-0 text-h6 font-weight-bold black--text lineheight-sm">
+                {{ info['title'] | truncate(15) }}
+                </div>
+              </v-row>
+              <v-row class=''>
+                <div class="font-weight-regular mb-0 text-title lineheight-sm">{{ info['record_number'] }}</div>
+              </v-row>
+          </div>
         </v-col>
       </v-row>
-    </div>
-    <div>
-      <v-row class="app-description">
-        <v-col
-          class="custom-col"
-          cols="12"
-        >
-          {{ info['description'] }}
+      <v-row class='px-5 pb-1 text-body'>
+        <v-col>
+          {{info['description'] | truncate}}
         </v-col>
       </v-row>
-      <v-row class="app-author">
-        <v-col
-          class="custom-col"
-          cols="12"
-        >
-          {{ info['author'] }}
+      <v-row class='px-5 d-flex align-end mb-auto'>
+        <v-col>
+          Author
         </v-col>
-      </v-row>
-      <v-row class="app-created_at">
-        <v-col
-          class="custom-col"
-          cols="12"
-        >
-          {{ dateFormater(info['created_at']) }}
-        </v-col>
+        <v-spacer></v-spacer>
+        <v-col>{{info['created_at'] | normalizeDate}}</v-col>
       </v-row>
     </div>
   </v-container>
@@ -106,7 +76,7 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => {}
+      default: {}
     }
   },
   data: () => ({
@@ -114,7 +84,26 @@ export default {
   computed: {
     ...mapGetters('DynamicAppsModule', {
       apps: 'getApps'
-    })
+    }),
+    getStatusColor() {
+      if (!this.info?.status) return 'grey'
+      switch (this.info.status) {
+        case 'Published':
+          return 'light-green accent-4'
+          break;
+        case 'Draft':
+          return 'yellow'
+          break;
+        default:
+          return 'grey'
+          break;
+      }
+    }
+  },
+  filters: {
+    truncate(v = '', length = 100) {
+      return typeof(v) == 'string' && v.length > length ? `${v.substring(0,length)}...` : v
+    }
   },
   methods: {
     dateFormater(e) {
@@ -142,7 +131,7 @@ export default {
     },
     getBadgeColor() {
       if (this.info.status) {
-        if (this.info.status.toUpperCase() === 'PUBLISHED') return 'green'
+        if (this.info.status.toUpperCase() === 'PUBLISHED') return 'green accent-4'
         if (this.info.status.toUpperCase() === 'GREY') return 'yellow'
         if (this.info.status.toUpperCase() === 'ARCHIVED') return 'grey'
       } else {
@@ -153,51 +142,9 @@ export default {
 }
 </script>
 
-<style scoped>
-.app-title {
-  text-align: left;
-  font: normal normal 600 20px/24px Raleway;
-  letter-spacing: 0px;
-  color: #606060;
-  opacity: 1;
-}
-.app-number {
-  text-align: left;
-  font: normal normal normal 16px/21px Roboto;
-  letter-spacing: 0px;
-  color: #404040;
-  opacity: 1;
-}
-.app-description {
-  text-align: left;
-  font: normal normal normal 16px/21px Roboto;
-  letter-spacing: 0px;
-  color: #404040;
-  padding: 10px 30px;
-  opacity: 1;
-}
-.app-author {
-  background: #F0F0F0 0% 0% no-repeat padding-box;
-  border-radius: 12px;
-  text-align: left;
-  font: normal normal normal 12px/16px Roboto;
-  letter-spacing: 0px;
-  color: #404040;
-  opacity: 1;
-  margin: 5px 10px;
-}
-.app-created_at {
-  background: #F0F0F0 0% 0% no-repeat padding-box;
-  border-radius: 12px;
-  text-align: left;
-  font: normal normal normal 12px/16px Roboto;
-  letter-spacing: 0px;
-  color: #404040;
-  opacity: 1;
-  margin: 5px 10px;
-}
-.custom-col {
-  padding: 5px 10px;
+<style>
+.lineheight-sm {
+  line-height: 1;
 }
 .height-100 {
   height: 100%;

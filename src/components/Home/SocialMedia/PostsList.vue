@@ -97,7 +97,6 @@ export default {
     if (!this.external) {
       this.set_user_data()
       this.set_posts_data()
-      await this.$store.dispatch('GSFeed/cleanFeed')
       await this.$store.dispatch('GSFeed/retrieveFeed')
 
       this.feed.subscribe(async data => {

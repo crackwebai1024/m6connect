@@ -11,7 +11,7 @@
     <div
       class="align-center chat-title d-flex justify-space-between px-3 rounded-t"
       :class="[minimized ? 'blue lighten-2' : '']"
-      @click="minimizeChatBox"
+      @click.self="minimizeChatBox"
     >
       <div
         v-if="channel.id.substr(14, 5) === 'group'"
@@ -20,6 +20,7 @@
         <v-avatar
           class="mr-2"
           size="42"
+          @click='editConfigurationDialog = true'
         >
           <img
             v-if="channel.data.image !== ''"
@@ -92,11 +93,14 @@
       <div class="d-flex">
         <v-dialog
           v-if="channel.id.substr(14, 5) === 'group'"
-          v-model="deleteDialog"
+          v-model="editConfigurationDialog"
+          
           width="50%"
+          persistent
+          class='elevation-10'
         >
-          <template #activator="{ on, attrs }">
-            <v-hover
+          <template #activator="">
+            <!--<v-hover
               v-slot="{ hover }"
             >
               <div class="relative">
@@ -161,28 +165,13 @@
                   </v-icon>
                 </v-btn>
               </div>
-            </v-hover>
+            </v-hover>-->
           </template>
-          <delete-dialog
-            v-if="messageEdit === channel.data.id + '-channel'"
-            :element="`messages on '${channel.data.name}' group`"
-            @closeDeleteModal="cleanChat($event)"
-          />
-          <add-user-dialog
-            v-if="messageEdit === channel.data.id + '-add-user'"
-            :current-users="channel.state.members"
-            @closeModal="addUser($event)"
-          />
-          <info-users-dialog
-            v-if="messageEdit === channel.data.id + '-info'"
-            :channel="channel"
-            :current-users="channel.state.members"
-          />
-          <settings-channel-dialog
-            v-if="messageEdit === channel.data.id + '-edit'"
-            :channel="channel"
-            @closeEditeModal="closeModal"
-          />
+          <edit-configuration-dialog @close-dialog='() => editConfigurationDialog = false' :channel='channel'/>
+          <!--
+          
+
+          -->
         </v-dialog>
         <v-dialog
           v-else
@@ -320,7 +309,7 @@
             </div>
             <div
               v-else
-              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-left w-fit"
+              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-right w-fit"
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
               <p
@@ -343,7 +332,7 @@
                 />
               </template>
               <div
-                v-else
+                v-if="message.images"
                 class="d-flex ml-auto w-fit"
               >
                 <div
@@ -890,21 +879,15 @@
 /* eslint-disable camelcase */
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
-import DeleteDialog from '@/components/Dialogs/DeleteDialog'
-import AddUserDialog from '@/components/Dialogs/AddUserDialog'
-import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
-import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
+import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 
 export default {
   name: 'Chatbox',
   components: {
-    SettingsChannelDialog,
-    InfoUsersDialog,
-    AddUserDialog,
-    DeleteDialog,
+    EditConfigurationDialog,
     VEmojiPicker,
     ExternalUrl,
     RecordUrl,
@@ -928,6 +911,7 @@ export default {
     currentUserId: 2,
     messageEdit: '',
     messageEditInput: '',
+    editConfigurationDialog: false,
     dataReady: false,
     messages: [],
     state: {
@@ -1296,6 +1280,7 @@ export default {
         })
 
         if (this.imageFiles.length > 0) {
+          
           const urls = []
           this.imageFiles.forEach(async (image, index) => {
             const url = await this.setStreamFiles({
@@ -1310,13 +1295,14 @@ export default {
 
             urls.push(url['attachUrl'])
             if (index === this.imageFiles.length - 1) {
+
               await this.updateMessage({
                 id: message['message']['id'],
                 text: message['message']['text'],
                 images: urls
               })
-              this.showLoading = false
-              this.imageFiles = []
+                this.showLoading = false
+                this.imageFiles = []
             }
           })
         }
@@ -1365,7 +1351,7 @@ export default {
           this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
           this.$refs.inputMessage.focus()
         })
-      } catch (e) {
+      } catch(e) {
         this.notifDanger('There was an error while sending the message')
       }
     },

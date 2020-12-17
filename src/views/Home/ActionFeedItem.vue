@@ -30,6 +30,14 @@
           {{ notification.post.actor.data.name }}
         </p>
         <v-spacer />
+        <div class="d-flex justify-center">
+          <v-avatar
+            :color="diffNowColor(notification.post.actor.created_at)"
+            style="margin: 0 10px;"
+            size="10"
+          ></v-avatar>
+          <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+        </div>
       </div>
     </div>
     <p
@@ -292,11 +300,18 @@ export default {
       const days = Math.abs(Math.floor(diff % 30))
       return days + ' days, ' + hours + ' hours, ' + minutes + ' min' + dueMessage
     },
-    dueDateColor(date) {
+    diffNowColor(date) {
       const dateNow = new Date()
-      const dueDate = new Date(date)
-      const diff = (dueDate.getTime() - dateNow.getTime()) / (1000 * 24 * 3600)
-      const index = diff > 5 ? 5 : (diff < 0 ? 0 : Math.round(diff))
+      const dateNotification = new Date(date)
+      let diff = (dateNow.getTime() - dateNotification.getTime()) / 1000
+      const seconds = Math.abs(Math.floor(diff % 60))
+      diff = (diff - seconds) / 60
+      const minutes = Math.abs(Math.floor(diff % 60))
+      diff = (diff - minutes) / 60
+      const hours = Math.abs(Math.floor(diff % 24))
+      diff = (diff - hours) / 24
+      const days = Math.abs(Math.floor(diff % 30))
+      const index = days > 5 ? 5 : (days < 0 ? 0 : days)
       return this.timerBallColor[index]
     },
     pendingApprovals(approvals) {

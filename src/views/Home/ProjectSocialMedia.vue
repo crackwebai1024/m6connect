@@ -2,10 +2,9 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <template>
   <v-container
-    class="py-0 w-full"
+    class="h-full py-0 w-full"
   >
     <header-component
-      v-if="!readOnly"
       class="card-custom-shadow h-auto mb-4 rounded"
       hasslot
       :info="{title: 'Create Post', icon: ''}"
@@ -433,10 +432,6 @@ export default {
       default: false
     },
     postListShow: {
-      type: Boolean,
-      default: false
-    },
-    readOnly: {
       type: Boolean,
       default: false
     }
