@@ -141,9 +141,13 @@ export default {
       return `${months[month - 1]} ${day} ${year}, ${hour} : ${mins}`
     },
     getBadgeColor() {
-      if (this.info.status.toUpperCase() === 'PUBLISHED') return 'green'
-      if (this.info.status.toUpperCase() === 'GREY') return 'yellow'
-      if (this.info.status.toUpperCase() === 'ARCHIVED') return 'grey'
+      if (this.info.status) {
+        if (this.info.status.toUpperCase() === 'PUBLISHED') return 'green'
+        if (this.info.status.toUpperCase() === 'GREY') return 'yellow'
+        if (this.info.status.toUpperCase() === 'ARCHIVED') return 'grey'
+      } else {
+        return 'grey'
+      }
     }
   }
 }
