@@ -51,7 +51,10 @@
           offset-x="10"
           offset-y="10"
         >
-          <v-avatar size="42">
+          <v-avatar
+            class="blue"
+            size="42"
+          >
             <img
               v-if="users[0].user.image"
               :alt="channel.name"
@@ -79,7 +82,7 @@
           </p>
           <p
             v-else
-            class="font-weight-medium ma-0 pa-0 text-caption"
+            class="capitalize font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
             {{ setDate( new Date( users[0].user.last_active )) }}
@@ -317,15 +320,27 @@
             </div>
             <div
               v-else
-              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-left w-fit"
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
               <p
                 class="ma-0 pa-0"
                 v-html="urlify(message.text)['text']"
               />
+              <p v-if="message.images && message.text == ''">
+                {{ message.images.join(', ') }}
+              </p>
+              <template v-if="!message.images">
+                <v-skeleton-loader
+                  v-if="index === messages.length - 1 && (srcImageFiles.length !== 0 || srcVideoFiles.length !== 0)"
+                  class="mx-auto"
+                  height="100"
+                  type="card"
+                  width="100"
+                />
+              </template>
               <div
-                v-if="message.images"
+                v-else
                 class="d-flex ml-auto w-fit"
               >
                 <div
@@ -423,14 +438,26 @@
             </v-dialog>
           </template>
           <template v-else>
-            <img
-              v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              :alt="channel.name"
-              class="mr-3 rounded-circle"
-              height="30"
-              :src="users[0].user.image"
-              width="30"
-            >
+            <template v-if="firstCommentBeforeAnswer(message.user.id, index)">
+              <img
+                v-if="users[0].user.image"
+                :alt="channel.name"
+                class="mr-3 rounded-circle"
+                height="30"
+                :src="users[0].user.image"
+                width="30"
+              >
+              <div
+                v-else
+                class="align-center blue d-flex justify-center mr-2 rounded-pill"
+                style="width: 35px; height:35px;"
+              >
+                <span class="text-uppercase white--text">
+                  {{ channel.membersInChannel.user.name.charAt(0) }}
+                </span>
+              </div>
+            </template>
+
             <v-card
               v-else
               class="mr-3"
@@ -1131,24 +1158,24 @@ export default {
     },
     setDate(item) {
       const months = [
-        'JAN',
-        'FEB',
-        'MAR',
-        'APR',
-        'MAY',
-        'JUN',
-        'JUL',
-        'AUG',
-        'SEP',
-        'OCT',
-        'NOV',
-        'DEC'
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       ]
 
       // If the last session was more than 1 day ago it shows the date else it shows the time.
       return 86400000 - (new Date - item) <= 0 ?
-        `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}` :
-        `Last connection: ${
+        `Online: ${months[item.getMonth()]} ${item.getDate()}, ${item.getFullYear()}` :
+        `Online: ${
           item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2, '0') : item.getHours().toString().padStart(2, '0')
         }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
@@ -1262,7 +1289,6 @@ export default {
         })
 
         if (this.imageFiles.length > 0) {
-          
           const urls = []
           this.imageFiles.forEach(async (image, index) => {
             const url = await this.setStreamFiles({
@@ -1277,14 +1303,13 @@ export default {
 
             urls.push(url['attachUrl'])
             if (index === this.imageFiles.length - 1) {
-
               await this.updateMessage({
                 id: message['message']['id'],
                 text: message['message']['text'],
                 images: urls
               })
-                this.showLoading = false
-                this.imageFiles = []
+              this.showLoading = false
+              this.imageFiles = []
             }
           })
         }
@@ -1332,7 +1357,7 @@ export default {
           this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
           this.$refs.inputMessage.focus()
         })
-      } catch(e) {
+      } catch (e) {
         this.notifDanger('There was an error while sending the message')
       }
     },

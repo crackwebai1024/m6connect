@@ -47,10 +47,18 @@
                 v-for="(item,index) in images"
                 :key="index+'-image'"
               >
-                <v-img
-                  :src="item"
-                  style="height:80vh;"
-                />
+                <div
+                  class="theme--dark v-image v-responsive"
+                  style="height: 80vh;"
+                >
+                  <div class="align-center d-flex justify-center v-image__image v-image__image--cover">
+                    <img
+                      alt=""
+                      class="max-w-full"
+                      :src="item"
+                    >
+                  </div>
+                </div>
               </slide>
             </carousel>
           </v-col>
@@ -310,8 +318,14 @@ export default {
 .VueCarousel-dot {
   outline: none !important;
 }
+.VueCarousel-slide {
+  max-width: 100%;
+}
 .VueCarousel-slide .v-image__image {
   background-size: auto !important;
+}
+.VueCarousel-slide .v-responsive__content {
+  max-width: 100%;
 }
 .VueCarousel-navigation-prev {
   left: 58px !important;

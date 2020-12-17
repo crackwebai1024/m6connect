@@ -69,6 +69,10 @@ export default {
     ...mapActions('RapidTicket', {
       getRapidList: 'getList'
     }),
+    
+    ...mapActions('WorkOrderModule', {
+      getUsers: 'getUsersList'
+    }),
 
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
@@ -86,7 +90,6 @@ export default {
       this.loading = false 
       this.notifDanger('There was an error while loading the Rapids')
     }
-
   },
 
   computed: {
