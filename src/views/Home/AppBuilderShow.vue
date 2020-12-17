@@ -199,7 +199,7 @@
       slot="content"
       class="w-full"
     >
-      <panel-two-columns :leftColumn="tab.full_width ? 12 : 6" >
+      <panel-two-columns :left-column="tab.full_width ? 12 : 6">
         <div slot="leftPanel">
           <div
             v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 0 )"
@@ -210,15 +210,18 @@
             <form-show-generator
               :fields="$h.dg(panel, 'fields', [])"
               :panel="panel"
-              :show-standard-fields="tab.readOnly && index === 0"
+              :show-standard-fields="(tab.readOnly && index === 0)"
             />
           </div>
         </div>
 
-        <div slot="rightPanel" v-if="!tab.full_width" >
+        <div
+          v-if="!tab.full_width"
+          slot="rightPanel"
+        >
           <div
             v-if="currentTab === 0"
-            class="main-content px-3"
+            class="main-content px-0"
           >
             <project-social-media
               class="px-0"
@@ -294,6 +297,7 @@ export default {
     async record(val) {
       await this.$store.dispatch('GSFeed/setRoom', 'AppBuilder')
       await this.$store.dispatch('GSFeed/setBuilderFeed', val.record_number.replace('#', '_'))
+      await this.$store.dispatch('GSFeed/cleanFeed')
       await this.$store.dispatch('GSFeed/retrieveFeed')
     }
   },
