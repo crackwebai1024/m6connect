@@ -6,10 +6,9 @@
     >
       <v-btn
         v-if="editMode === 0 || editMode === 2"
-        class="absolute right-0 top-0"
+        class="absolute buttonTop right-0 top-0"
         icon
         right
-        style="top: -25px;"
         top
         @click="editMode = 1"
       >
@@ -19,10 +18,9 @@
       </v-btn>
       <v-btn
         v-else
-        class="absolute green--text right-0 top-0"
+        class="absolute buttonTop green--text right-0 top-0"
         icon
         right
-        style="top: -25px;"
         top
         @click="editMode = 0"
       >
@@ -141,7 +139,22 @@
                   {{ genericRecord[`${f.id}`]['file_name'] }}
                 </template>
                 <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
-                  {{ genericRecord[`${f.id}`].join(', ') }}
+                  <div v-if="typeof genericRecord[`${f.id}`][0] === 'object'">
+                    <v-chip
+                      v-for="(v, ind) in genericRecord[`${f.id}`]"
+                      :key="'itm-'+ind"
+                      class="mx-1"
+                      color="blue"
+                      text-color="white"
+                    >
+                      <span class="white--text">
+                        {{ v['value'] }}
+                      </span>
+                    </v-chip>
+                  </div>
+                  <span v-else>
+                    {{ genericRecord[`${f.id}`].join(', ') }}
+                  </span>
                 </template>
                 <template v-else>
                   {{ genericRecord[`${f.id}`] }}
@@ -150,11 +163,11 @@
               <template
                 v-if="editMode === 1 || (editMode !== 1 && showIndexFields[index + 2])"
               >
-                <template v-if="f.machine_name == 'rapid_snapshot_image'">
+                <template v-if="f.machine_name === 'rapid_snapshot_image'">
                   <img
                     alt="Rapid Image"
+                    class="rapImg"
                     :src="genericRecord[`${f.id}`]"
-                    style="width: 20rem; height: auto;"
                   >
                 </template>
                 <component
@@ -241,6 +254,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import { VTextField, VAutocomplete } from 'vuetify/lib'
 import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
 import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOptions.vue'
@@ -273,7 +287,7 @@ export default {
     },
 
     showStandardFields: {
-      type: Boolean,
+      type: [Boolean, Number, String],
       default: false
     }
 
@@ -328,6 +342,17 @@ export default {
       showSelf: 'displayAppBuilderShow'
     })
 
+  },
+
+  watch: {
+    $route() {
+      this.loadingData()
+    }
+  },
+
+  mounted() {
+    this.loadingData()
+    this.recordToEdit = { ...this.currentRecord }
   },
 
   methods: {
@@ -447,6 +472,12 @@ export default {
     },
 
     createFieldsPayload(record) {
+      const newFields = []
+
+      Object.keys(record).forEach(key => {
+        newFields.push(record[key])
+      })
+
       let fields = []
 
       for (let x = 0; x < this.fields.length; x++) {
@@ -462,30 +493,37 @@ export default {
           }))
           fields = [...fields, ...res]
         }
-        if (Object.prototype.toString.call(value) == '[object Object]') {
-          delete value['created_at']
-          delete value['updated_at']
-          fields.push({ value, field_id: f.id })
-        } else {
-          if (value == 'true' || value == 'false') value = value == 'true'
-          fields.push({ value, field_id: f.id })
+
+        if (typeof value !== 'object' || (typeof value === 'object' && value.length > 0)) {
+          if (Object.prototype.toString.call(value) === '[object Object]') {
+            delete value['created_at']
+            delete value['updated_at']
+            fields.push({ value, field_id: f.id })
+          } else {
+            if (value === 'true' || value === 'false') value = value === 'true'
+            fields.push({ value, field_id: f.id })
+          }
         }
       }
 
       return fields
     },
 
-    findTheDifference(reference, newData, fieldId) {
-      const toDelete = reference.filter(r => !newData.includes(r.value)) || []
+    findTheDifference(reference, newData) {
+      let toDelete = []
+      let transformedArray = []
+      if (reference) {
+        toDelete = reference.filter(r => !newData.includes(r.value)) || []
+        transformedArray = reference.map(r => r.value)
+      }
 
-      const transformedArray = reference.map(r => r.value)
       const toCreate = newData.filter(a => !transformedArray.includes(a))
 
       return { toDelete, toCreate }
     },
 
     async loadingData() {
-      if (this.$route.name === 'record.show') {
+      if (this.$route.name === 'record.show' && Object.keys(this.panel).length > 0) {
         try {
           this.loading = true
 
@@ -503,19 +541,16 @@ export default {
         }
       }
     }
-
-  },
-
-  watch: {
-    $route(oldVal, newVal) {
-      this.loadingData()
-    }
-  },
-
-  mounted() {
-    this.loadingData()
-    this.recordToEdit = { ...this.currentRecord }
   }
-
 }
 </script>
+
+<style>
+.buttonTop {
+  top: -25px!important;
+}
+.rapImg {
+  width: 20rem!important;
+  height: auto!important;
+}
+</style>
