@@ -300,8 +300,11 @@ export default {
     showStandardFields: {
       type: [Boolean, Number, String],
       default: false
+    },
+    recordID: {
+      type: Number,
+      default: 0
     }
-
   },
 
   data: () => ({
@@ -535,13 +538,15 @@ export default {
     },
 
     async loadingData() {
-      if (this.$route.name === 'record.show' && Object.keys(this.panel).length > 0) {
+      if ((this.$route.name === 'record.show' && Object.keys(this.panel).length > 0) || this.$route.name === 'home') {
         try {
           this.loading = true
+          const ids = this.fields.map(f => f.id)
 
           const res = await this.getFieldValuesPerPanel({
-            recordID: this.$route.params.id,
-            panelID: this.panel.id
+            recordID: this.$route.params.id || this.recordID,
+            panelID: this.panel.id,
+            ids
           })
           this.genericRecord = { ...res.values }
           this.typesToIds = res.typesToIds
