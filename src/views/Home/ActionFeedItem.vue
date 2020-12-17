@@ -30,6 +30,7 @@
           {{ notification.post.actor.data.name }}
         </p>
         <v-spacer />
+<<<<<<< HEAD
         <div class="d-flex justify-center">
           <v-avatar
             :color="diffNowColor(notification.post.actor.created_at)"
@@ -38,6 +39,8 @@
           ></v-avatar>
           <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
         </div>
+=======
+>>>>>>> a688301a2e7fb673292cf4ee2b6f1cbea1241c35
       </div>
     </div>
     <p
@@ -102,21 +105,31 @@
         {{ pendingApprovals(users) }} pending
       </p>
     </div>
-    <div class="absolute align-center d-flex feed-btns pa-3 text-caption">
-      <p class="mb-0 mr-2">
-        <v-icon size="17">
-          mdi-thumb-up-outline
-        </v-icon> {{ cont('like') }}
-      </p>
-      <p class="mb-0 mr-2">
-        <v-icon size="17">
-          mdi-message-outline
-        </v-icon> {{ cont('comment') }}
-      </p>
+    <div class="absolute align-center d-flex feed-btns justify-between pa-3 text-caption w-full">
+      <div class="d-flex">
+        <p class="mb-0 mr-2">
+          <v-icon size="17">
+            mdi-thumb-up-outline
+          </v-icon> {{ cont('like') }}
+        </p>
+        <p class="mb-0 mr-2">
+          <v-icon size="17">
+            mdi-message-outline
+          </v-icon> {{ cont('comment') }}
+        </p>
+      </div>
+      <div class="d-flex justify-center ml-auto">
+        <v-avatar
+          class="mr-2"
+          :color="dueDateColor(notification.due_date)"
+          size="14"
+        />
+        <span class="leading-tight mt-1grey--text text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+      </div>
     </div>
     <div
       v-if="showActionBtns"
-      class="absolute action-btns align-center d-flex pa-3 text-caption"
+      class="absolute action-btns align-center d-flex pa-3 pb-12 text-caption"
     >
       <v-btn
         color="grey"
@@ -278,7 +291,7 @@ export default {
       const hours = Math.abs(Math.floor(diff % 24))
       diff = (diff - hours) / 24
       const days = Math.abs(Math.floor(diff % 30))
-      return days + ' days, ' + hours + ' hours, ' + minutes + ' minutes'
+      return days + ' days, ' + hours + ' hours, ' + minutes + ' min'
     },
     diffNowColor(date) {
       const dateNow = new Date()

@@ -236,10 +236,30 @@ const actions = {
         .catch(e => reject(e))
     })
   },
-  
+
   deleteApp(_, payload) {
     return new Promise((resolve, reject) => {
       axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`)
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
+    })
+  },
+
+  recordsByApps(_, payload) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/records_by_apps`, payload)
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
+    })
+  },
+
+  getSingleRecordFieldValue(_, { recordID, fieldID, refID } = {}) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/reference/${recordID}/${fieldID}/${refID}`)
         .then(({ data }) => {
           resolve(data)
         })
