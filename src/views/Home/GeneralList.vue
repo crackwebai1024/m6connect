@@ -67,7 +67,7 @@
     </header-component>
     <div
       v-if="!loading"
-      class="app-list__container h-auto max-w-tight mb-3 mx-auto rounded"
+      :class="tableView?'app-list__container':'app-list__container h-auto max-w-tight mb-3 mx-auto rounded'"
     >
       <template v-if="tableView">
         <records-table
