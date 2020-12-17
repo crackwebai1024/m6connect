@@ -177,12 +177,12 @@ const typeMap = {
     {
       json: 'author',
       js: 'author',
-      typ: u(undefined, '')
+      typ: u(undefined, u('', null))
     },
     {
       json: 'title',
       js: 'title',
-      typ: u(undefined, '')
+      typ: u(undefined,  u('', null))
     },
     {
       json: 'image',
