@@ -112,4 +112,7 @@ export default {
 .lineheight-sm {
   line-height: 1;
 }
+.height-100 {
+  height: 100%;
+}
 </style>

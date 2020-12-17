@@ -6,7 +6,8 @@
       elevation="0"
       tile
       width="100%"
-      @click=" recordData['prefix'] !== null ? redirect() : updateInfo()"
+      height="100%"
+      @click="updateInfo"
     >
       <component
         :is="compData"
