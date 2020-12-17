@@ -117,6 +117,7 @@
       </div>
     </div>
     <div
+      v-if="showActionBtns"
       class="absolute action-btns align-center d-flex pa-3 pb-12 text-caption"
     >
       <v-btn

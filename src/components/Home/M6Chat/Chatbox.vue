@@ -526,21 +526,24 @@
         </div>
         <record-url
           v-if="message['panel'] && message['panel']['id']"
+          class="mb-2"
           :record-info="message['panel']"
           :type="'message'"
         />
         <external-url
           v-if="urlify(message.text)['urls'].length > 0 && urlify(message.text)['youtubeUrls'].length === 0"
+          class="mb-2"
           :urls="urlify(message.text)['urls']"
         />
         <youtube-video
           v-if="urlify(message.text)['youtubeUrls'].length > 0"
+          class="mb-2"
           :urls="urlify(message.text)['youtubeUrls']"
         />
         <div
           v-for="(row, imageIndex) in message.images"
           :key="imageIndex"
-          class="video-list__container"
+          class="mb-2 video-list__container"
         >
           <video
             v-if="row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
