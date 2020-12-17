@@ -13,7 +13,7 @@
       <v-text-field
         :outlined="outlined"
         :filled="filled"
-        v-model="dateFormatted"
+        v-model="formatedValue"
         clearable
         hint="MM/DD/YYYY format"
         :label="label"
@@ -69,6 +69,15 @@ export default {
   computed: {
     computedDateFormatted() {
       return this.formatDate(this.date)
+    },
+    formatedValue: {
+      get() {
+        this.dateFormatted = this.formatDate(this.value)
+        return this.dateFormatted
+      },
+      set(val) {
+        this.dateFormatted = val
+      }
     }
   },
 
@@ -76,9 +85,6 @@ export default {
     date(val) {
       this.dateFormatted = this.formatDate(this.date)
     },
-    value(val) {
-      this.dateFormatted = this.formatDate(val)
-    }
   },
 
   methods: {
