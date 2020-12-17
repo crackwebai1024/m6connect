@@ -30,7 +30,7 @@
           fab
           right
           small
-          @click="showForm = true"
+          @click="newL1"
         >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
