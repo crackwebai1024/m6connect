@@ -136,9 +136,11 @@
       v-if="dataTable"
       :align-actions="alignActions"
       class="elevation-0"
+      :footer-props="{
+        'items-per-page-options': [5,10,15,200]
+      }"
       :headers="headers"
       :items="resources"
-      :items-per-page-options="[5,10,15,200]"
       :options.sync="pagination"
       :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
