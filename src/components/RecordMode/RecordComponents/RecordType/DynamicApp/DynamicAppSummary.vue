@@ -41,7 +41,7 @@
           <div>
               <v-row class=''>
                 <div class="mb-0 text-h6 font-weight-bold black--text lineheight-sm">
-                {{ info['title'] | trunc(30) }}
+                {{ info['title'] | truncate(15) }}
                 </div>
               </v-row>
               <v-row class=''>
@@ -52,7 +52,7 @@
       </v-row>
       <v-row class='px-5 pb-1 text-body'>
         <v-col>
-          {{info['description'] | descriptionTrunc}}
+          {{info['description'] | truncate}}
         </v-col>
       </v-row>
       <v-row class='px-5 d-flex align-end mb-auto'>
@@ -101,8 +101,8 @@ export default {
     }
   },
   filters: {
-    descriptionTrunc(v = '') {
-      return typeof(v) == 'string' && v.length > 100 ? `${v.substring(0,99)}...` : v
+    truncate(v = '', length = 100) {
+      return typeof(v) == 'string' && v.length > length ? `${v.substring(0,length)}...` : v
     }
   }
 }
