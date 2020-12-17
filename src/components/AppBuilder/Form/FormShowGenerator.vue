@@ -381,7 +381,6 @@ export default {
         })
       }
     } catch (e) {
-      console.log(e)
       this.notifDanger('There was an error while loading')
     }
   },
@@ -486,8 +485,6 @@ export default {
         this.notifSuccess('The values were updated')
         this.loading = false
       } catch (e) {
-        console.log(e)
-
         this.notifDanger('The was an error while updated')
         this.loading = false
       }
@@ -525,9 +522,6 @@ export default {
           })
         }
       }
-
-      console.log(fields)
-      
 
       return { fields }
     },
@@ -583,8 +577,6 @@ export default {
         this.genericRecord = { ...genericRecord }
         field.referenced_record_id = record.id
       } catch (e) {
-        console.log(e)
-
         this.notifDanger('There was an error while getting a reference fields value')
       }
     }
