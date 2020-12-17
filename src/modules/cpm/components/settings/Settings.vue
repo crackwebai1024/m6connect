@@ -52,7 +52,10 @@
         class="pa-0 pl-1"
         cols="4"
       >
-        <v-card v-if='currentComponent' class="card-custom-shadow pa-4 white">
+        <v-card
+          v-if="currentComponent"
+          class="card-custom-shadow holis pa-4 white"
+        >
           <component :is="currentComponent" />
         </v-card>
       </v-col>
