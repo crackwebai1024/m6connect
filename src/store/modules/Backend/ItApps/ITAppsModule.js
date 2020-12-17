@@ -54,7 +54,7 @@ export default {
           response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps`)
           break
       }
-      cont.state.itappsRecords = convertApps.toM6Apps(response['data'])
+      cont.state.itappsRecords = response['data']
       generalListModule.state.general_list = cont.state.itappsRecords
     },
     async get_description({}, id) {

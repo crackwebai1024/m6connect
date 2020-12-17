@@ -6,10 +6,9 @@
     >
       <v-btn
         v-if="editMode === 0 || editMode === 2"
-        class="absolute right-0 top-0"
+        class="absolute buttonTop right-0 top-0"
         icon
         right
-        style="top: -25px;"
         top
         @click="editMode = 1"
       >
@@ -19,10 +18,9 @@
       </v-btn>
       <v-btn
         v-else
-        class="absolute green--text right-0 top-0"
+        class="absolute buttonTop green--text right-0 top-0"
         icon
         right
-        style="top: -25px;"
         top
         @click="editMode = 0"
       >
@@ -126,8 +124,8 @@
           v-for="(f, index) in fields"
           :key="`custom-field-${f.id}`"
           class="ma-0 pa-0"
+          :class=" f.type === 'referenced' ? 'custom-flex-row' : '' "
           cols="12"
-          :class=" f.type == 'referenced' ? 'custom-flex-row' : '' "
         >
           <v-hover
             v-slot="{ hover }"
@@ -141,15 +139,15 @@
                 <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
                   {{ genericRecord[`${f.id}`]['file_name'] }}
                 </template>
-                <template v-else-if="Array.isArray(genericRecord[`${f.id}`])" >
-                  {{  
-                    typeof genericRecord[`${f.id}`][0] == 'object' ? 
-                    genericRecord[`${f.id}`].map( g => g.value).join(', ')
-                    : genericRecord[`${f.id}`].join(', ') 
+                <template v-else-if="Array.isArray(genericRecord[`${f.id}`])">
+                  {{
+                    typeof genericRecord[`${f.id}`][0] === 'object' ?
+                      genericRecord[`${f.id}`].map( g => g.value).join(', ')
+                      : genericRecord[`${f.id}`].join(', ')
                   }}
                 </template>
                 <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
-                  {{  genericRecord[`${f.id}`].value }}
+                  {{ genericRecord[`${f.id}`].value }}
                 </template>
                 <template v-else>
                   {{ genericRecord[`${f.id}`] }}
@@ -158,25 +156,25 @@
               <template
                 v-if="editMode === 1 || (editMode !== 1 && showIndexFields[index + 2])"
               >
-                <template v-if="f.type == 'referenced' " >
-                  <v-autocomplete 
-                    class="mr-2 w-20" 
-                    :items="recordsByAppsList[$h.dg( f, 'metadata.originalReference.id', '')]" 
-                    item-text="title" 
+                <template v-if="f.type === 'referenced'">
+                  <v-autocomplete
+                    class="mr-2 w-20"
+                    filled
+                    item-text="title"
                     item-value="id"
-                    :value="f.referenced_record_id"
+                    :items="recordsByAppsList[$h.dg( f, 'metadata.originalReference.id', '')]"
+                    label="Pick a Record"
+                    outlined
                     return-object
-                    outlined 
-                    filled 
-                    label="Pick a Record" 
+                    :value="f.referenced_record_id"
                     @input=" e => changingRefValue(e, f) "
                   />
                 </template>
-                <template v-else-if="f.type == 'referencedToApp'" >
+                <template v-else-if="f.type === 'referencedToApp'">
                   App Name: {{ $h.dg(f, 'metadata.originalReference.label', '') }}
                 </template>
-                <template v-if="f.type != 'referencedToApp'" >
-                  <template v-if="f.machine_name == 'rapid_snapshot_image'">
+                <template v-if="f.type !== 'referencedToApp'">
+                  <template v-if="f.machine_name === 'rapid_snapshot_image'">
                     <img
                       alt="Rapid Image"
                       :src="genericRecord[`${f.id}`]"
@@ -267,6 +265,7 @@
 </template>
 
 <script>
+/* eslint-disable camelcase */
 import { VTextField, VAutocomplete } from 'vuetify/lib'
 import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
 import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOptions.vue'
@@ -299,7 +298,7 @@ export default {
     },
 
     showStandardFields: {
-      type: Boolean,
+      type: [Boolean, Number, String],
       default: false
     },
     recordID: {
@@ -358,6 +357,35 @@ export default {
       showSelf: 'displayAppBuilderShow'
     })
 
+  },
+
+  watch: {
+    $route() {
+      this.loadingData()
+    }
+  },
+
+  async mounted() {
+    try {
+      this.loadingData()
+      this.recordToEdit = { ...this.currentRecord }
+      const referencedFields = this.fields.filter(f => f.type === 'referenced')
+
+      if (referencedFields.length) {
+        const originals = referencedFields
+          .map(r => ({
+            app_id: this.$h.dg(r, 'metadata.originalReference.app_id', ''),
+            id: this.$h.dg(r, 'metadata.originalReference.id', ''),
+            type: this.$h.dg(r, 'metadata.originalReference.type', '')
+          }))
+
+        this.recordsByAppsList = await this.recordsByApps({
+          fields: originals
+        })
+      }
+    } catch (e) {
+      this.notifDanger('There was an error while loading')
+    }
   },
 
   methods: {
@@ -430,34 +458,25 @@ export default {
     async updating() {
       try {
         this.loading = true
-
-        const complexTypes = this.fields.filter(f => { 
+        const complexTypes = this.fields.filter(f => {
           const type = this.$h.dg(f, 'metadata.originalReference.type', '') || f.type
           return this.complexDataStructs[type]
         }).map(f => f.id)
-
         const newGenericRecord = { ...this.genericRecord }
-
         complexTypes.forEach(id => {
           delete newGenericRecord[id]
         })
-
         const deleteArr = []
         const createObj = {}
-
         complexTypes.forEach(a => {
           const { toDelete, toCreate } = this.findTheDifference(this.typesToIds[a], this.genericRecord[a], a)
           const field = this.fields.find(f => f.id === a)
           const fieldType = this.$h.dg(field, 'metadata.originalReference.type', '') || field.type
-
           if (toDelete.length) deleteArr.push({ values: toDelete, fieldType })
           createObj[a] = toCreate
         })
-
         const payload = this.createFieldsPayload(newGenericRecord)
-
         const payloadToCreate = this.createFieldsPayload(createObj)
-
         await this.updateSomeFieldValues(payload)
         await this.bulkSaveFieldValues(payloadToCreate)
         if (deleteArr.length) {
@@ -466,7 +485,6 @@ export default {
           })
         }
         await this.saveStandardFields()
-
         this.notifSuccess('The values were updated')
         this.loading = false
       } catch (e) {
@@ -479,12 +497,10 @@ export default {
       let fields = []
       for (let x = 0; x < this.fields.length; x++) {
         const f = this.fields[x]
-        const idForUpdate = this.$h.dg(f, 'metadata.originalReference.id', '') ? f.metadata.originalReference.id  : f.id 
-        const recordIdForUpdate = this.$h.dg( f, 'referenced_record_id', '') ? f.referenced_record_id : this.recordID ? this.recordID : this.$route.params.id
+        const idForUpdate = this.$h.dg(f, 'metadata.originalReference.id', '') ? f.metadata.originalReference.id : f.id
+        const recordIdForUpdate = this.$h.dg(f, 'referenced_record_id', '') ? f.referenced_record_id : this.recordID ? this.recordID : this.$route.params.id
         let value = this.$h.dg(record, `${f.id}`, '')
-
         if (!value) continue
-
         if (Array.isArray(value)) {
           const res = value.map(v => ({
             value: v,
@@ -492,22 +508,29 @@ export default {
             record_id: recordIdForUpdate
           }))
           fields = [...fields, ...res]
-        } else if (Object.prototype.toString.call(value) == '[object Object]') {
+        } else if (Object.prototype.toString.call(value) === '[object Object]') {
           delete value['created_at']
           delete value['updated_at']
-          fields.push({ value, field_id: idForUpdate, record_id: recordIdForUpdate })
+          fields.push({
+            value,
+            field_id: idForUpdate,
+            record_id: recordIdForUpdate
+          })
         } else {
-          if (value == 'true' || value == 'false') value = value == 'true'
-          fields.push({ value, field_id: idForUpdate, record_id: recordIdForUpdate })
+          if (value === 'true' || value === 'false') value = value === 'true'
+          fields.push({
+            value,
+            field_id: idForUpdate,
+            record_id: recordIdForUpdate
+          })
         }
       }
 
       return { fields }
     },
 
-    findTheDifference(reference = [], newData = [], fieldId) {
+    findTheDifference(reference = [], newData = []) {
       const toDelete = reference.filter(r => !newData.includes(r.value)) || []
-
       const transformedArray = reference.map(r => r.value)
       const toCreate = newData.filter(a => !transformedArray.includes(a))
 
@@ -515,15 +538,15 @@ export default {
     },
 
     async loadingData() {
-      if (this.$route.name === 'record.show' || this.$route.name === 'home') {
+      if ((this.$route.name === 'record.show' && Object.keys(this.panel).length > 0) || this.$route.name === 'home') {
         try {
           this.loading = true
-          const ids = this.fields.map( f => f.id )
+          const ids = this.fields.map(f => f.id)
 
           const res = await this.getFieldValuesPerPanel({
             recordID: this.$route.params.id || this.recordID,
             panelID: this.panel.id,
-            ids 
+            ids
           })
           this.genericRecord = { ...res.values }
           this.typesToIds = res.typesToIds
@@ -539,71 +562,43 @@ export default {
     async changingRefValue(record, field) {
       const fieldID = field.metadata.originalReference.id
       try {
-        const res = await this.getSingleRecordFieldValue({ recordID: record.id, fieldID, refID: field.id})
+        const res = await this.getSingleRecordFieldValue({
+          recordID: record.id,
+          fieldID,
+          refID: field.id
+        })
         const genericRecord = { ...this.genericRecord }
 
         switch (true) {
-          case this.$h.dg(field, 'metadata.originalReference.type') == 'timestamp':
+          case this.$h.dg(field, 'metadata.originalReference.type') === 'timestamp':
             genericRecord[`${field.id}`] = this.$h.dg(res, '0.value', '')
-            break;
-        
+            break
+
           default:
             genericRecord[`${field.id}`] = res.value
-            break;
+            break
         }
 
-        this.genericRecord = {...genericRecord}
+        this.genericRecord = { ...genericRecord }
         field.referenced_record_id = record.id
-      } catch(e) {
+      } catch (e) {
         this.notifDanger('There was an error while getting a reference fields value')
       }
     }
-
-  },
-
-  watch: {
-    $route(oldVal, newVal) {
-      this.loadingData()
-    },
-    fields: {
-      handler: function(value) {
-        if(this.recordID) {
-          this.loadingData()
-        }
-      },
-      immediate: true
-    }
-  },
-
-  async mounted() {
-    try {
-      if( this.fields.length ) this.loadingData()
-      this.recordToEdit = { ...this.currentRecord }
-      const referencedFields = this.fields.filter( f => f.type == 'referenced' )
-
-      if(referencedFields.length) {
-        const originals = referencedFields
-          .map( r => {
-            return { 
-              app_id: this.$h.dg(r, 'metadata.originalReference.app_id' ,''), 
-              id:  this.$h.dg(r, 'metadata.originalReference.id' ,''),
-              type: this.$h.dg(r, 'metadata.originalReference.type', '') 
-            }
-          })
-        
-        this.recordsByAppsList = await this.recordsByApps({ fields: originals })
-      }
-    } catch(e) {
-      this.notifDanger('There was an error while loading')
-    }
   }
-
 }
 </script>
 
 <style lang="scss" scoped>
+.buttonTop {
+  top: -25px!important;
+}
+.rapImg {
+  width: 20rem!important;
+  height: auto!important;
+}
 .custom-flex-row {
-  display: flex; 
+  display: flex;
   display: -webkit-flex;
   flex-direction: row;
 }

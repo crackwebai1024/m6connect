@@ -36,13 +36,13 @@
       v-if="notification.record"
       class="grey--text mb-3 ml-2 mt-2 text--darken-4 text-body-2"
     >
-      {{ notification.post.message }}
+      {{ notification.description }}
     </p>
     <p
       v-else
       class="align-center black--text d-flex mb-0 message-box ml-1 pl-3 text-caption"
     >
-      {{ notification.post.message }}
+      {{ notification.description }}
     </p>
     <p
       v-if="notification.record"
@@ -256,6 +256,7 @@ export default {
         id: id,
         record: record,
         colorTag: colorTag,
+        // eslint-disable-next-line camelcase
         wo_assignments: this.users
       }
 
