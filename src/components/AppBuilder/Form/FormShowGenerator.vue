@@ -196,8 +196,11 @@ export default {
     showStandardFields: {
       type: Boolean,
       default: false
+    },
+    recordID: {
+      type: Number,
+      default: 0
     }
-
   },
 
   data: () => ({
@@ -372,7 +375,7 @@ export default {
       for (let x = 0; x < this.fields.length; x++) {
         const f = this.fields[x]
         const idForUpdate = this.$h.dg(f, 'metadata.originalReference.id', '') ? f.metadata.originalReference.id  : f.id 
-        const recordIdForUpdate = this.$h.dg( f, 'referenced_record_id', '') ? f.referenced_record_id : this.$route.params.id
+        const recordIdForUpdate = this.$h.dg( f, 'referenced_record_id', '') ? f.referenced_record_id : this.recordID ? this.recordID : this.$route.params.id
         let value = this.$h.dg(record, `${f.id}`, '')
 
         if (!value) continue
@@ -407,13 +410,15 @@ export default {
     },
 
     async loadingData() {
-      if (this.$route.name === 'record.show') {
+      if (this.$route.name === 'record.show' || this.$route.name === 'home') {
         try {
           this.loading = true
+          const ids = this.fields.map( f => f.id )
 
           const res = await this.getFieldValuesPerPanel({
-            recordID: this.$route.params.id,
-            panelID: this.panel.id
+            recordID: this.$route.params.id || this.recordID,
+            panelID: this.panel.id,
+            ids 
           })
           this.genericRecord = { ...res.values }
           this.typesToIds = res.typesToIds
@@ -454,12 +459,20 @@ export default {
   watch: {
     $route(oldVal, newVal) {
       this.loadingData()
+    },
+    fields: {
+      handler: function(value) {
+        if(this.recordID) {
+          this.loadingData()
+        }
+      },
+      immediate: true
     }
   },
 
   async mounted() {
     try {
-      this.loadingData()
+      if( this.fields.length ) this.loadingData()
       this.recordToEdit = { ...this.currentRecord }
       const referencedFields = this.fields.filter( f => f.type == 'referenced' )
 

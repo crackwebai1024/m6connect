@@ -5,6 +5,7 @@
     <post-item
       v-if="Object.keys(actionPost).length > 0"
       :data="actionPost"
+      :recordID="$h.dg(actionPost, 'props.record.id' , '')"
     >
       <template v-slot:record>
         <p
