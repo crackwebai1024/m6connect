@@ -369,7 +369,7 @@
                   <v-col
                     v-for="(file, messIndex) of message['files']"
                     :key="messIndex+'-file'"
-                    class="my-0 py-0"
+                    class="align-start d-flex my-0 py-0"
                     cols="12"
                   >
                     <v-icon
@@ -378,7 +378,7 @@
                       mdi-file-document-outline
                     </v-icon>
                     <p
-                      class="font-weight-bold mx-1 my-0 pointer py-0 text-subtitle-1"
+                      class="font-weight-bold leading-tight mx-1 my-0 pointer py-0 text-caption"
                       @click="redirect(file)"
                     >
                       {{ file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')') }}
@@ -575,7 +575,7 @@
       :class="[minimized ? 'd-none' : '']"
     />
     <!-- Files -->
-    <template v-if="docFiles.length > 0">
+    <template v-if="docFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex docs images-container mx-1 px-0 py-1">
         <div
           v-for="(docFile, index) in docFiles"
@@ -605,7 +605,7 @@
       :class="[minimized ? 'd-none' : '']"
     />
     <!-- Images -->
-    <template v-if="srcImageFiles.length > 0">
+    <template v-if="srcImageFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex images-container mx-1 px-0 py-3">
         <div
           v-for="(srcImageFile, index) in srcImageFiles"
@@ -631,7 +631,7 @@
         </div>
       </div>
     </template>
-    <template v-if="srcVideoFiles.length > 0">
+    <template v-if="srcVideoFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex images-container mx-1 px-0 py-0">
         <div
           v-for="(srcVideo, index) in srcVideoFiles"
@@ -961,7 +961,8 @@ export default {
       'Thursday',
       'Friday',
       'Saturday'
-    ]
+    ],
+    hideFilesPreview: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -1357,6 +1358,7 @@ export default {
           })
         }
         this.showLoading = false
+        this.hideFilesPreview = true
 
         this.valueInput = ''
         this.$nextTick(() => {
@@ -1380,6 +1382,7 @@ export default {
       this.minimized = !this.minimized
     },
     onImagesChange(e) {
+      this.hideFilesPreview = false
       e.forEach(item => {
         this.imageFiles.push(item)
       })
@@ -1389,6 +1392,7 @@ export default {
       this.imageFiles.splice(index, 1)
     },
     onDocsChange(e) {
+      this.hideFilesPreview = false
       this.docFiles = e
       this.$refs.inputMessage.focus()
     },
