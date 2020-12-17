@@ -59,7 +59,7 @@
               :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
               :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
               filled
-              :items="$h.dg( f, 'metadata.options', [] )"
+              :items="$h.dg( f, 'metadata.originalReference.metadata.options', [] )"
               :label=" $h.dg( f, 'label', '' ) "
               :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
               outlined
@@ -270,7 +270,11 @@ export default {
       try {
         this.loading = true
 
-        const complexTypes = this.fields.filter(f => this.complexDataStructs[f.type]).map(f => f.id)
+        const complexTypes = this.fields.filter(f => { 
+          const type = this.$h.dg(f, 'metadata.originalReference.type', '') || f.type
+          return this.complexDataStructs[type]
+        }).map(f => f.id)
+
         const newGenericRecord = { ...this.genericRecord }
 
         complexTypes.forEach(id => {
@@ -282,7 +286,8 @@ export default {
 
         complexTypes.forEach(a => {
           const { toDelete, toCreate } = this.findTheDifference(this.typesToIds[a], this.genericRecord[a], a)
-          const fieldType = this.fields.find(f => f.id === a).type
+          const field = this.fields.find(f => f.id === a)
+          const fieldType = this.$h.dg(field, 'metadata.originalReference.type', '') || field.type
 
           if (toDelete.length) deleteArr.push({ values: toDelete, fieldType })
           createObj[a] = toCreate
@@ -326,8 +331,7 @@ export default {
             record_id: recordIdForUpdate
           }))
           fields = [...fields, ...res]
-        }
-        if (Object.prototype.toString.call(value) == '[object Object]') {
+        } else if (Object.prototype.toString.call(value) == '[object Object]') {
           delete value['created_at']
           delete value['updated_at']
           fields.push({ value, field_id: idForUpdate, record_id: recordIdForUpdate })
@@ -340,7 +344,7 @@ export default {
       return { fields }
     },
 
-    findTheDifference(reference, newData, fieldId) {
+    findTheDifference(reference = [], newData = [], fieldId) {
       const toDelete = reference.filter(r => !newData.includes(r.value)) || []
 
       const transformedArray = reference.map(r => r.value)
