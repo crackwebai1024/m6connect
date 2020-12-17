@@ -30,27 +30,19 @@
           {{ notification.post.actor.data.name }}
         </p>
         <v-spacer />
-        <div class="d-flex justify-center">
-          <v-avatar
-            :color="dueDateColor(notification.due_date)"
-            style="margin: 0 10px;"
-            size="10"
-          ></v-avatar>
-          <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
-        </div>
       </div>
     </div>
     <p
       v-if="notification.record"
       class="grey--text mb-3 ml-2 mt-2 text--darken-4 text-body-2"
     >
-      {{ notification.post.message }}
+      {{ notification.description }}
     </p>
     <p
       v-else
       class="align-center black--text d-flex mb-0 message-box ml-1 pl-3 text-caption"
     >
-      {{ notification.post.message }}
+      {{ notification.description }}
     </p>
     <p
       v-if="notification.record"
@@ -102,21 +94,31 @@
         {{ pendingApprovals(users) }} pending
       </p>
     </div>
-    <div class="absolute align-center d-flex feed-btns pa-3 text-caption">
-      <p class="mb-0 mr-2">
-        <v-icon size="17">
-          mdi-thumb-up-outline
-        </v-icon> {{ cont('like') }}
-      </p>
-      <p class="mb-0 mr-2">
-        <v-icon size="17">
-          mdi-message-outline
-        </v-icon> {{ cont('comment') }}
-      </p>
+    <div class="absolute align-center d-flex feed-btns justify-between pa-3 text-caption w-full">
+      <div class="d-flex">
+        <p class="mb-0 mr-2">
+          <v-icon size="17">
+            mdi-thumb-up-outline
+          </v-icon> {{ cont('like') }}
+        </p>
+        <p class="mb-0 mr-2">
+          <v-icon size="17">
+            mdi-message-outline
+          </v-icon> {{ cont('comment') }}
+        </p>
+      </div>
+      <div class="d-flex justify-center ml-auto">
+        <v-avatar
+          class="mr-2"
+          :color="dueDateColor(notification.due_date)"
+          size="14"
+        />
+        <span class="leading-tight mt-1grey--text text--darken-1 text-caption">{{ diffNow(notification.due_date) }}</span>
+      </div>
     </div>
     <div
       v-if="showActionBtns"
-      class="absolute action-btns align-center d-flex pa-3 text-caption"
+      class="absolute action-btns align-center d-flex pa-3 pb-12 text-caption"
     >
       <v-btn
         color="grey"
@@ -254,6 +256,7 @@ export default {
         id: id,
         record: record,
         colorTag: colorTag,
+        // eslint-disable-next-line camelcase
         wo_assignments: this.users
       }
 
@@ -270,7 +273,17 @@ export default {
     diffNow(date) {
       const dateNow = new Date()
       const dateNotification = new Date(date)
-      let diff = (dateNow.getTime() - dateNotification.getTime()) / 1000
+      dateNotification.setDate(dateNotification.getDate() + 1)
+      dateNotification.setHours(24, 0, 0, 0)
+      let dueMessage = ''
+      let firstDate = dateNow
+      let secondDate = dateNotification
+      if (dateNow > dateNotification) {
+        dueMessage = ' due'
+        firstDate = dateNotification
+        secondDate = dateNow
+      }
+      let diff = (secondDate.getTime() - firstDate.getTime()) / 1000
       const seconds = Math.abs(Math.floor(diff % 60))
       diff = (diff - seconds) / 60
       const minutes = Math.abs(Math.floor(diff % 60))
@@ -278,7 +291,7 @@ export default {
       const hours = Math.abs(Math.floor(diff % 24))
       diff = (diff - hours) / 24
       const days = Math.abs(Math.floor(diff % 30))
-      return days + ' days, ' + hours + ' hours, ' + minutes + ' minutes'
+      return days + ' days, ' + hours + ' hours, ' + minutes + ' min' + dueMessage
     },
     dueDateColor(date) {
       const dateNow = new Date()

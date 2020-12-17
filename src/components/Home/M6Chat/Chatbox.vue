@@ -9,7 +9,7 @@
       :loading="showLoading"
     />
     <div
-      class="align-center chat-title d-flex justify-space-between px-3"
+      class="align-center chat-title d-flex justify-space-between px-3 rounded-t"
       :class="[minimized ? 'blue lighten-2' : '']"
       @click="minimizeChatBox"
     >
@@ -51,7 +51,10 @@
           offset-x="10"
           offset-y="10"
         >
-          <v-avatar size="42">
+          <v-avatar
+            class="blue"
+            size="42"
+          >
             <img
               v-if="users[0].user.image"
               :alt="channel.name"
@@ -79,7 +82,7 @@
           </p>
           <p
             v-else
-            class="font-weight-medium ma-0 pa-0 text-caption"
+            class="capitalize font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
             {{ setDate( new Date( users[0].user.last_active )) }}
@@ -324,8 +327,11 @@
                 class="ma-0 pa-0"
                 v-html="urlify(message.text)['text']"
               />
-              <p v-if="message.images && message.text == ''">
-                {{ message.images.join(', ') }}
+              <p
+                v-if="message.images && message.text == ''"
+                class="mb-0"
+              >
+                {{ getFileNames(message.images) }}
               </p>
               <template v-if="!message.images">
                 <v-skeleton-loader
@@ -363,7 +369,7 @@
                   <v-col
                     v-for="(file, messIndex) of message['files']"
                     :key="messIndex+'-file'"
-                    class="my-0 py-0"
+                    class="align-start d-flex my-0 py-0"
                     cols="12"
                   >
                     <v-icon
@@ -372,7 +378,7 @@
                       mdi-file-document-outline
                     </v-icon>
                     <p
-                      class="font-weight-bold mx-1 my-0 pointer py-0 text-subtitle-1"
+                      class="font-weight-bold leading-tight mx-1 my-0 pointer py-0 text-caption"
                       @click="redirect(file)"
                     >
                       {{ file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')') }}
@@ -435,14 +441,26 @@
             </v-dialog>
           </template>
           <template v-else>
-            <img
-              v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              :alt="channel.name"
-              class="mr-3 rounded-circle"
-              height="30"
-              :src="users[0].user.image"
-              width="30"
-            >
+            <template v-if="firstCommentBeforeAnswer(message.user.id, index)">
+              <img
+                v-if="users[0].user.image"
+                :alt="channel.name"
+                class="mr-3 rounded-circle"
+                height="30"
+                :src="users[0].user.image"
+                width="30"
+              >
+              <div
+                v-else
+                class="align-center blue d-flex justify-center mr-2 rounded-pill"
+                style="width: 35px; height:35px;"
+              >
+                <span class="text-uppercase white--text">
+                  {{ channel.membersInChannel.user.name.charAt(0) }}
+                </span>
+              </div>
+            </template>
+
             <v-card
               v-else
               class="mr-3"
@@ -508,21 +526,24 @@
         </div>
         <record-url
           v-if="message['panel'] && message['panel']['id']"
+          class="mb-2"
           :record-info="message['panel']"
           :type="'message'"
         />
         <external-url
           v-if="urlify(message.text)['urls'].length > 0 && urlify(message.text)['youtubeUrls'].length === 0"
+          class="mb-2"
           :urls="urlify(message.text)['urls']"
         />
         <youtube-video
           v-if="urlify(message.text)['youtubeUrls'].length > 0"
+          class="mb-2"
           :urls="urlify(message.text)['youtubeUrls']"
         />
         <div
           v-for="(row, imageIndex) in message.images"
           :key="imageIndex"
-          class="video-list__container"
+          class="mb-2 video-list__container"
         >
           <video
             v-if="row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
@@ -554,7 +575,7 @@
       :class="[minimized ? 'd-none' : '']"
     />
     <!-- Files -->
-    <template v-if="docFiles.length > 0">
+    <template v-if="docFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex docs images-container mx-1 px-0 py-1">
         <div
           v-for="(docFile, index) in docFiles"
@@ -584,7 +605,7 @@
       :class="[minimized ? 'd-none' : '']"
     />
     <!-- Images -->
-    <template v-if="srcImageFiles.length > 0">
+    <template v-if="srcImageFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex images-container mx-1 px-0 py-3">
         <div
           v-for="(srcImageFile, index) in srcImageFiles"
@@ -610,7 +631,7 @@
         </div>
       </div>
     </template>
-    <template v-if="srcVideoFiles.length > 0">
+    <template v-if="srcVideoFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex images-container mx-1 px-0 py-0">
         <div
           v-for="(srcVideo, index) in srcVideoFiles"
@@ -940,7 +961,8 @@ export default {
       'Thursday',
       'Friday',
       'Saturday'
-    ]
+    ],
+    hideFilesPreview: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -1143,24 +1165,24 @@ export default {
     },
     setDate(item) {
       const months = [
-        'JAN',
-        'FEB',
-        'MAR',
-        'APR',
-        'MAY',
-        'JUN',
-        'JUL',
-        'AUG',
-        'SEP',
-        'OCT',
-        'NOV',
-        'DEC'
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       ]
 
       // If the last session was more than 1 day ago it shows the date else it shows the time.
       return 86400000 - (new Date - item) <= 0 ?
-        `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}` :
-        `Last connection: ${
+        `Last Online: ${months[item.getMonth()]} ${item.getDate()}, ${item.getFullYear()}` :
+        `Last Online: ${
           item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2, '0') : item.getHours().toString().padStart(2, '0')
         }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
@@ -1336,6 +1358,7 @@ export default {
           })
         }
         this.showLoading = false
+        this.hideFilesPreview = true
 
         this.valueInput = ''
         this.$nextTick(() => {
@@ -1359,6 +1382,7 @@ export default {
       this.minimized = !this.minimized
     },
     onImagesChange(e) {
+      this.hideFilesPreview = false
       e.forEach(item => {
         this.imageFiles.push(item)
       })
@@ -1368,6 +1392,7 @@ export default {
       this.imageFiles.splice(index, 1)
     },
     onDocsChange(e) {
+      this.hideFilesPreview = false
       this.docFiles = e
       this.$refs.inputMessage.focus()
     },
@@ -1377,6 +1402,9 @@ export default {
     messageTime(time) {
       const messageDate = new Date(time)
       return messageDate.getHours() + ':' + messageDate.getMinutes()
+    },
+    getFileNames(urlArr) {
+      return urlArr.map(url => url.split('/').pop().replace(/%20/g, ' ')).join(', ')
     }
   }
 }
