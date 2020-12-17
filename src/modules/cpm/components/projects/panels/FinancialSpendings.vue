@@ -133,6 +133,7 @@
       :headers="headersSpendings"
       :items="resources"
       :options.sync="pagination"
+      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template
@@ -899,7 +900,10 @@
                   md="12"
                   sm="12"
                 >
-                  <v-text-field v-model="dialogLineItemProperties.vendorID" label="Vendor ID"></v-text-field>
+                  <v-text-field
+                    v-model="dialogLineItemProperties.vendorID"
+                    label="Vendor ID"
+                  />
                   <!-----<v-autocomplete
                     v-model="dialogLineItemProperties.vendor"
                     clearable
@@ -915,7 +919,10 @@
                   md="6"
                   sm="12"
                 >
-                  <v-text-field v-model="dialogLineItemProperties.vendor" :label="$t('cpm.projects.vendorName')"></v-text-field>
+                  <v-text-field
+                    v-model="dialogLineItemProperties.vendor"
+                    :label="$t('cpm.projects.vendorName')"
+                  />
                   <!-----<v-autocomplete
                     v-model="dialogLineItemProperties.vendor"
                     clearable
