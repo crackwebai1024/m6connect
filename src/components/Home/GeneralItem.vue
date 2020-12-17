@@ -6,7 +6,7 @@
       elevation="0"
       tile
       width="100%"
-      @click="updateInfo"
+      @click=" recordData['prefix'] !== null ? redirect() : updateInfo()"
     >
       <component
         :is="compData"
@@ -19,7 +19,6 @@
 <script>
 import { mapActions } from 'vuex'
 import globalDataApp from '../../store/data'
-import DynamicAppSummary from '@/components/RecordMode/RecordComponents/RecordType/DynamicApp/DynamicAppSummary'
 
 export default {
   name: 'GeneralItem',
@@ -33,11 +32,7 @@ export default {
     compData: {}
   }),
   created() {
-    if (this.recordData.app_type === 'dynamic_app') {
-      this.compData = DynamicAppSummary
-    } else {
-      this.compData = globalDataApp.records_widgets[this.recordData.app_type][0].component
-    }
+    this.compData = globalDataApp.records_widgets[this.recordData.app_type][0].component
   },
   methods: {
     ...mapActions('InfoModule', [
@@ -46,12 +41,8 @@ export default {
     ]),
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     updateInfo() {
-      if (!this.recordData['record_number'] && this.recordData['prefix'] !== null) {
-        this.$router.push(`/dev/${this.recordData['id']}`)
-      } else {
-        this.push_data_to_active(this.recordData)
-        this.change_preview_navigation_drawer(true)
-      }
+      this.push_data_to_active(this.recordData)
+      this.change_preview_navigation_drawer(true)
     },
     redirect() {
       if (this.recordData['record_number']) {

@@ -1,12 +1,11 @@
 <template>
-  <v-row class="d-flex flex-column justify-center ma-0 mb-2 pa-0">
-    <slot name="content" />
+  <v-row class="pa-0 ma-0 mb-2 d-flex flex-column justify-center">
+    <slot name="content"/>
   </v-row>
 </template>
-
 <script>
 export default {
-  name: 'PanelFull',
+  name: "PanelFull",
   components: {
   },
   props: {
@@ -17,5 +16,5 @@ export default {
   },
   methods: {
   }
-}
+};
 </script>

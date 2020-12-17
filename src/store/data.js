@@ -1,5 +1,3 @@
-//   const Convert = require("@/store/models/m6apps");
-
 const RequestTab = () => import("@/components/RecordMode/RecordComponents/Tabs/RequestTab")
 const TicketTab = () => import("@/components/RecordMode/RecordComponents/Tabs/TicketTab")
 const ProjectSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/Project/ProjectSummary")
@@ -26,8 +24,6 @@ const Rationalization = {
 
 // Dynamic App
 const DynamicAppSummary = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/DynamicAppSummary")
-const DynamicAppPosts = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/RecordPostListPreview.vue")
-const PreviewTabsManager = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/PreviewTabsBuilder.vue")
 
 export default{
   // Home Data
@@ -149,16 +145,6 @@ export default{
           icon: 'mdi-format-textbox', 
           name: 'summary',
           component: DynamicAppSummary
-        },
-        {
-          icon:'mdi-account-group',
-          name: 'social Network',
-          component: DynamicAppPosts
-        },
-        {
-          icon: 'mdi-table-row',
-          name: 'Tabs Manager',
-          component: PreviewTabsManager
         }
       ],
       project:[

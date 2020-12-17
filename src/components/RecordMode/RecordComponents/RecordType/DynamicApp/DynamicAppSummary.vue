@@ -1,57 +1,68 @@
 <template>
-  <v-container class="card-custom-shadow d-flex flex-wrap justify-start panel-container py-5 relative rounded white">
+  <v-container style='height: 100%' class="card-custom-shadow d-flex py-2 relative rounded white">
     <div
       v-show="info['prefix']"
-      class="absolute align-center card-content__tag d-flex font-weight-regular justify-center red text-body-1 white--text"
+      class="red absolute align-center card-content__tag d-flex font-weight-regular justify-center text-body-1 white--text"
     >
       {{ info['prefix'] ? info['prefix'] : apps.filter(app => app.id === info['app_id'])[0]['prefix'] }}
     </div>
-    <div class="w-full">
+    <div class="d-inline-flex flex-column" style='width: 100%'>
       <v-row
-        class="pl-5"
-        no-gutters
       >
-        <v-col cols="2">
-          <v-img
-            v-if="info.image"
-            :alt="info.image"
-            class="d-inline-block rounded w-full"
-            max-height="100px"
-            :src="info.image"
-          />
-          <v-img
-            v-else-if="info.iconLink"
-            :alt="info.iconLink"
-            class="d-inline-block rounded w-full"
-            max-height="100px"
-            :src="info.iconLink"
-          />
+        <v-col class='flex-shrink-1 py-0 flex-grow-0 pr-9 pt-3 pl-5'>
+          <v-badge offset-y="23" offset-x="23" bordered avatar overlap :color='getStatusColor'>
+            <v-avatar color='grey lighten-2' size='100'>
+                <v-img
+                v-if="info.image"
+                :alt="info.image"
+                max-height="75px"
+                class='rounded-full'
+                :src="info.image"
+              />
+              <v-img
+                v-else-if="info.iconLink"
+                :alt="info.iconLink"
+                max-height="75px"
+                class='rounded-full'
+                :src="info.iconLink"
+              />
 
-          <v-icon
-            v-else
-            class="d-inline-block"
-            size="100"
-          >
-            mdi-store
-          </v-icon>
+              <v-icon
+                v-else
+                class='rounded-full'
+                size="75"
+              >
+                mdi-store
+              </v-icon>
+            </v-avatar>
+          </v-badge>
         </v-col>
-        <v-col cols="10 px-5">
-          <v-row>
-            <v-col cols="12">
-              <p class="font-weight-regular mb-0 mt-1 text-h5">
-                {{ info['title'] }}
-              </p>
-            </v-col>
-            <v-col cols="12">
-              <span class="font-weight-regular mb-0 text-h6">{{ info['record_number'] }}</span>
-            </v-col>
-          </v-row>
+        <v-col class='d-flex align-center flex-grow-1 flex-shrink-0'>
+          <div>
+              <v-row class=''>
+                <div class="mb-0 text-h6 font-weight-bold black--text lineheight-sm">
+                {{ info['title'] | trunc(30) }}
+                </div>
+              </v-row>
+              <v-row class=''>
+                <div class="font-weight-regular mb-0 text-title lineheight-sm">{{ info['record_number'] }}</div>
+              </v-row>
+          </div>
         </v-col>
       </v-row>
+      <v-row class='px-5 pb-1 text-body'>
+        <v-col>
+          {{info['description'] | descriptionTrunc}}
+        </v-col>
+      </v-row>
+      <v-row class='px-5 d-flex align-end mb-auto'>
+        <v-col>
+          Author
+        </v-col>
+        <v-spacer></v-spacer>
+        <v-col>{{info['created_at'] | normalizeDate}}</v-col>
+      </v-row>
     </div>
-    <p class="font-weight-regular mb-0 mt-4 pl-5 text-h6 w-full">
-      {{ info['description'] }}
-    </p>
   </v-container>
 </template>
 
@@ -65,7 +76,7 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => {}
+      default: {}
     }
   },
   data: () => ({
@@ -73,7 +84,32 @@ export default {
   computed: {
     ...mapGetters('DynamicAppsModule', {
       apps: 'getApps'
-    })
+    }),
+    getStatusColor() {
+      if (!this.info?.status) return 'grey'
+      switch (this.info.status) {
+        case 'Published':
+          return 'light-green accent-4'
+          break;
+        case 'Draft':
+          return 'yellow'
+          break;
+        default:
+          return 'grey'
+          break;
+      }
+    }
+  },
+  filters: {
+    descriptionTrunc(v = '') {
+      return typeof(v) == 'string' && v.length > 100 ? `${v.substring(0,99)}...` : v
+    }
   }
 }
 </script>
+
+<style>
+.lineheight-sm {
+  line-height: 1;
+}
+</style>

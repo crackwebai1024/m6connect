@@ -1,220 +1,68 @@
 <template>
   <v-form ref="form">
-    <v-container
-      class="pa-0 relative"
-      fluid
-    >
-      <v-btn
-        v-if="editMode === 0 || editMode === 2"
-        class="absolute right-0 top-0"
-        icon
-        right
-        style="top: -25px;"
-        top
-        @click="editMode = 1"
-      >
-        <v-icon size="25">
-          mdi-pencil
-        </v-icon>
-      </v-btn>
-      <v-btn
-        v-else
-        class="absolute green--text right-0 top-0"
-        icon
-        right
-        style="top: -25px;"
-        top
-        @click="editMode = 0"
-      >
-        <v-icon size="25">
-          mdi-check
-        </v-icon>
-      </v-btn>
-      <v-row class="ma-0 pa-0 pt-4">
-        <v-col
-          v-if="showStandardFields"
-          class="pa-0"
-        >
-          <v-hover
-            v-slot="{ hover }"
-          >
-            <div class="d-flex justify-between relative">
-              <p
-                v-if="editMode !== 1 && !showIndexFields[0]"
-                class="mb-2"
-              >
-                <span class="mb-0 text-caption">Record Status</span><br>
-                {{ recordToEdit.status }}
-              </p>
-              <v-autocomplete
-                v-if="editMode === 1 || (editMode !== 1 && showIndexFields[0])"
-                v-model="recordToEdit.status"
-                filled
-                :items="statusOptions"
-                label="Record Status"
-                outlined
-              />
-              <v-btn
-                v-if="showIndexFields[0]"
-                class="green--text ml-2 text--accent-2"
-                icon
-                @click="$set(showIndexFields, 0, false)"
-              >
-                <v-icon size="18">
-                  mdi-check
-                </v-icon>
-              </v-btn>
-              <v-btn
-                v-if="hover && !showIndexFields[0] && editMode !== 1"
-                class="absolute right-0 top-0"
-                icon
-                right
-                top
-                @click="$set(showIndexFields, 0, true)"
-              >
-                <v-icon size="18">
-                  mdi-pencil
-                </v-icon>
-              </v-btn>
-            </div>
-          </v-hover>
+    <v-container fluid>
+      <v-row>
+        <v-col v-if="showStandardFields">
+          <v-autocomplete
+            v-model="recordToEdit.status"
+            filled
+            :items="statusOptions"
+            label="Record Status"
+            outlined
+          />
 
-          <v-hover
-            v-slot="{ hover }"
-          >
-            <div class="d-flex justify-between relative">
-              <p
-                v-if="editMode !== 1 && !showIndexFields[1]"
-                class="mb-2"
-              >
-                <span class="mb-0 text-caption">Record Description</span><br>
-                {{ recordToEdit.description }}
-              </p>
-              <v-textarea
-                v-if="editMode === 1 || (editMode !== 1 && showIndexFields[1])"
-                v-model="recordToEdit.description"
-                filled
-                label="Record Description"
-                outlined
-              />
-              <v-btn
-                v-if="showIndexFields[1]"
-                class="green--text ml-2 text--accent-2"
-                icon
-                @click="$set(showIndexFields, 1, false)"
-              >
-                <v-icon size="18">
-                  mdi-check
-                </v-icon>
-              </v-btn>
-              <v-btn
-                v-if="hover && !showIndexFields[1] && editMode !== 1"
-                class="absolute right-0 top-0"
-                icon
-                right
-                top
-                @click="$set(showIndexFields, 1, true)"
-              >
-                <v-icon size="18">
-                  mdi-pencil
-                </v-icon>
-              </v-btn>
-            </div>
-          </v-hover>
+          <v-textarea
+            v-model="recordToEdit.description"
+            filled
+            label="Record Description"
+            outlined
+          />
         </v-col>
         <v-col
-          v-for="(f, index) in fields"
+          v-for="f in fields"
           :key="`custom-field-${f.id}`"
-          class="ma-0 pa-0"
           cols="12"
         >
-          <v-hover
-            v-slot="{ hover }"
-          >
-            <div class="d-flex justify-between relative">
-              <p
-                v-if="editMode !== 1 && !showIndexFields[index + 2]"
-                class="mb-2"
-              >
-                <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
-                <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
-                  {{ genericRecord[`${f.id}`]['file_name'] }}
-                </template>
-                <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
-                  {{ genericRecord[`${f.id}`].join(', ') }}
-                </template>
-                <template v-else>
-                  {{ genericRecord[`${f.id}`] }}
-                </template>
-              </p>
-              <template
-                v-if="editMode === 1 || (editMode !== 1 && showIndexFields[index + 2])"
-              >
-                <template v-if="f.machine_name == 'rapid_snapshot_image'">
-                  <img
-                    alt="Rapid Image"
-                    :src="genericRecord[`${f.id}`]"
-                    style="width: 20rem; height: auto;"
-                  >
-                </template>
-                <component
-                  :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
-                  v-else-if="f.type === 'referenced'"
-                  v-model="genericRecord[`${f.id}`]"
-                  :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
-                  :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
-                  disabled
-                  filled
-                  :items="$h.dg( f, 'metadata.options', [] )"
-                  :label=" $h.dg( f, 'label', '' ) "
-                  :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
-                  outlined
-                  :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
-                  :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
-                />
-                <component
-                  :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')"
-                  v-else
-                  v-model="genericRecord[`${f.id}`]"
-                  :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
-                  :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
-                  filled
-                  :items="$h.dg( f, 'metadata.options', [] )"
-                  :label=" $h.dg( f, 'label', '' ) "
-                  :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
-                  outlined
-                  :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
-                  :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
-                />
-              </template>
-              <v-btn
-                v-if="showIndexFields[index + 2]"
-                class="green--text ml-2 text--accent-2"
-                icon
-                @click="$set(showIndexFields, index + 2, false)"
-              >
-                <v-icon size="18">
-                  mdi-check
-                </v-icon>
-              </v-btn>
-              <v-btn
-                v-if="hover && !showIndexFields[index + 2] && editMode !== 1"
-                class="absolute right-0 top-0"
-                icon
-                right
-                top
-                @click="$set(showIndexFields, index + 2, true)"
-              >
-                <v-icon size="18">
-                  mdi-pencil
-                </v-icon>
-              </v-btn>
-            </div>
-          </v-hover>
+          <template v-if="f.machine_name === 'rapid_snapshot_image'">
+            <img
+              alt="Rapid Image"
+              :src="genericRecord[`${f.id}`]"
+              style="width: 20rem; height: auto;"
+            >
+          </template>
+          <component
+            :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
+            v-else-if="f.type === 'referenced'"
+            v-model="genericRecord[`${f.id}`]"
+            :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
+            :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
+            disabled
+            filled
+            :items="$h.dg( f, 'metadata.options', [] )"
+            :label=" $h.dg( f, 'label', '' ) "
+            :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
+            outlined
+            :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+            :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
+          />
+          <component
+            :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')"
+            v-else
+            v-model="genericRecord[`${f.id}`]"
+            :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
+            :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
+            filled
+            :items="$h.dg( f, 'metadata.options', [] )"
+            :label=" $h.dg( f, 'label', '' ) "
+            :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
+            outlined
+            :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+            :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
+          />
         </v-col>
       </v-row>
 
-      <v-row v-if="fields.length > 0 && editMode !== 0">
+      <v-row v-if="fields.length > 0">
         <v-col cols="12">
           <v-spacer />
           <v-btn
@@ -317,9 +165,7 @@ export default {
     typesToIds: {},
     complexDataStructs: { autocomplete: true, people: true },
     recordToEdit: {},
-    statusOptions: ['Published', 'Draft', 'Archived'],
-    showIndexFields: [],
-    editMode: 0
+    statusOptions: ['Published', 'Draft', 'Archived']
   }),
 
   computed: {
