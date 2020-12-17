@@ -9,7 +9,7 @@
       :loading="showLoading"
     />
     <div
-      class="align-center chat-title d-flex justify-space-between px-3"
+      class="align-center chat-title d-flex justify-space-between px-3 rounded-t"
       :class="[minimized ? 'blue lighten-2' : '']"
       @click="minimizeChatBox"
     >
@@ -327,8 +327,11 @@
                 class="ma-0 pa-0"
                 v-html="urlify(message.text)['text']"
               />
-              <p v-if="message.images && message.text == ''">
-                {{ message.images.join(', ') }}
+              <p
+                v-if="message.images && message.text == ''"
+                class="mb-0"
+              >
+                {{ getFileNames(message.images) }}
               </p>
               <template v-if="!message.images">
                 <v-skeleton-loader
@@ -1174,8 +1177,8 @@ export default {
 
       // If the last session was more than 1 day ago it shows the date else it shows the time.
       return 86400000 - (new Date - item) <= 0 ?
-        `Online: ${months[item.getMonth()]} ${item.getDate()}, ${item.getFullYear()}` :
-        `Online: ${
+        `Last Online: ${months[item.getMonth()]} ${item.getDate()}, ${item.getFullYear()}` :
+        `Last Online: ${
           item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2, '0') : item.getHours().toString().padStart(2, '0')
         }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
@@ -1392,6 +1395,9 @@ export default {
     messageTime(time) {
       const messageDate = new Date(time)
       return messageDate.getHours() + ':' + messageDate.getMinutes()
+    },
+    getFileNames(urlArr) {
+      return urlArr.map(url => url.split('/').pop().replace(/%20/g, ' ')).join(', ')
     }
   }
 }
