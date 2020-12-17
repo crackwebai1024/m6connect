@@ -104,6 +104,40 @@ export default {
     truncate(v = '', length = 100) {
       return typeof(v) == 'string' && v.length > length ? `${v.substring(0,length)}...` : v
     }
+  },
+  methods: {
+    dateFormater(e) {
+      const date = new Date(e)
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ]
+      const year = date.getFullYear()
+      const month = date.getMonth()
+      const day = date.getDate()
+      const hour = date.getHours()
+      const mins = date.getMinutes()
+      return `${months[month - 1]} ${day} ${year}, ${hour} : ${mins}`
+    },
+    getBadgeColor() {
+      if (this.info.status) {
+        if (this.info.status.toUpperCase() === 'PUBLISHED') return 'green accent-4'
+        if (this.info.status.toUpperCase() === 'GREY') return 'yellow'
+        if (this.info.status.toUpperCase() === 'ARCHIVED') return 'grey'
+      } else {
+        return 'grey'
+      }
+    }
   }
 }
 </script>
