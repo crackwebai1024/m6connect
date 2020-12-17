@@ -16,18 +16,16 @@
           >
             <v-col
               v-show="showSidePanels"
-              :xl="largeViewport.sidePanelsCols"
               cols="3"
             >
               <action-feed />
             </v-col>
-            <v-col :xl='largeViewport.mainCols' :cols="!showSidePanels ? 12 : 6">
+            <v-col :cols="!showSidePanels ? 12 : 6">
               <!-- Home / Company Profile -->
               <router-view />
             </v-col>
             <v-col
               v-show="showSidePanels"
-              :xl="largeViewport.sidePanelsCols"
               cols="3"
             >
               <m6-chat />
@@ -75,12 +73,6 @@ export default {
     //
   }),
   computed: {
-    largeViewport () {
-      return {
-        mainCols: this.showSidePanels ? 8 : 12,
-        sidePanelsCols: this.showSidePanels ? 2 : 0,
-      }
-    },
     ...mapState(['layout']),
     ...mapGetters('Auth', {
       loggedIn: 'loggedIn'
