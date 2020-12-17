@@ -30,17 +30,6 @@
           {{ notification.post.actor.data.name }}
         </p>
         <v-spacer />
-<<<<<<< HEAD
-        <div class="d-flex justify-center">
-          <v-avatar
-            :color="diffNowColor(notification.post.actor.created_at)"
-            style="margin: 0 10px;"
-            size="10"
-          ></v-avatar>
-          <span class="grey--text leading-tight text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
-        </div>
-=======
->>>>>>> a688301a2e7fb673292cf4ee2b6f1cbea1241c35
       </div>
     </div>
     <p
@@ -124,7 +113,7 @@
           :color="dueDateColor(notification.due_date)"
           size="14"
         />
-        <span class="leading-tight mt-1grey--text text--darken-1 text-caption">{{ diffNow(notification.post.actor.created_at) }}</span>
+        <span class="leading-tight mt-1grey--text text--darken-1 text-caption">{{ diffNow(notification.due_date) }}</span>
       </div>
     </div>
     <div
@@ -283,7 +272,17 @@ export default {
     diffNow(date) {
       const dateNow = new Date()
       const dateNotification = new Date(date)
-      let diff = (dateNow.getTime() - dateNotification.getTime()) / 1000
+      dateNotification.setDate(dateNotification.getDate() + 1)
+      dateNotification.setHours(24, 0, 0, 0)
+      let dueMessage = ''
+      let firstDate = dateNow
+      let secondDate = dateNotification
+      if (dateNow > dateNotification) {
+        dueMessage = ' due'
+        firstDate = dateNotification
+        secondDate = dateNow
+      }
+      let diff = (secondDate.getTime() - firstDate.getTime()) / 1000
       const seconds = Math.abs(Math.floor(diff % 60))
       diff = (diff - seconds) / 60
       const minutes = Math.abs(Math.floor(diff % 60))
@@ -291,7 +290,7 @@ export default {
       const hours = Math.abs(Math.floor(diff % 24))
       diff = (diff - hours) / 24
       const days = Math.abs(Math.floor(diff % 30))
-      return days + ' days, ' + hours + ' hours, ' + minutes + ' min'
+      return days + ' days, ' + hours + ' hours, ' + minutes + ' min' + dueMessage
     },
     diffNowColor(date) {
       const dateNow = new Date()

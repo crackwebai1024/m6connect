@@ -9,6 +9,7 @@
     <div class="d-inline-flex flex-column" style='width: 100%'>
       <v-row
       >
+<<<<<<< HEAD
         <v-col class='flex-shrink-1 py-0 flex-grow-0 pr-9 pt-3 pl-5'>
           <v-badge offset-y="23" offset-x="23" bordered avatar overlap :color='getStatusColor'>
             <v-avatar color='grey lighten-2' size='100'>
@@ -17,6 +18,23 @@
                 :alt="info.image"
                 max-height="75px"
                 class='rounded-full'
+=======
+        <v-col cols="4">
+          <v-badge
+            avatar
+            bordered
+            :color="getBadgeColor()"
+            offset-x="20"
+            offset-y="20"
+            overlap
+          >
+            <v-avatar size="90">
+              <v-img
+                v-if="info.image"
+                :alt="info.image"
+                class="d-inline-block rounded w-full"
+                max-height="100px"
+>>>>>>> 9e03fdb481c9a47463c91bc6c06e2cdc7776ad0a
                 :src="info.image"
               />
               <v-img
