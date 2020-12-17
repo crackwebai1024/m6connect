@@ -138,10 +138,13 @@
       :align-actions="alignActions"
       class="elevation-0"
       fixed-header
+      :footer-props="{
+        'items-per-page-options': [5,10,15,200]
+      }"
       :headers="headers"
       :items="resources"
-      :items-per-page-options="[5,10,15,200]"
       :options="pagination"
+      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template v-slot:item="props">
