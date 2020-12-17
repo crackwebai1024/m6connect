@@ -6,6 +6,7 @@
       elevation="0"
       tile
       width="100%"
+      height="100%"
       @click="updateInfo"
     >
       <component

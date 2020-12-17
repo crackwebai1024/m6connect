@@ -1,5 +1,5 @@
 <template>
-  <v-container class="card-custom-shadow d-flex flex-wrap justify-start panel-container py-5 relative rounded white">
+  <v-container class="card-custom-shadow d-flex flex-wrap justify-start panel-container py-5 relative rounded white height-100">
     <div
       v-show="info['prefix']"
       class="absolute align-center card-content__tag d-flex font-weight-regular justify-center red text-body-1 white--text"
@@ -194,5 +194,8 @@ export default {
 }
 .custom-col {
   padding: 5px 10px;
+}
+.height-100 {
+  height: 100%;
 }
 </style>
