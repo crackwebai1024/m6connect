@@ -51,7 +51,10 @@
           offset-x="10"
           offset-y="10"
         >
-          <v-avatar size="42">
+          <v-avatar
+            class="blue"
+            size="42"
+          >
             <img
               v-if="users[0].user.image"
               :alt="channel.name"
@@ -435,14 +438,26 @@
             </v-dialog>
           </template>
           <template v-else>
-            <img
-              v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              :alt="channel.name"
-              class="mr-3 rounded-circle"
-              height="30"
-              :src="users[0].user.image"
-              width="30"
-            >
+            <template v-if="firstCommentBeforeAnswer(message.user.id, index)">
+              <img
+                v-if="users[0].user.image"
+                :alt="channel.name"
+                class="mr-3 rounded-circle"
+                height="30"
+                :src="users[0].user.image"
+                width="30"
+              >
+              <div
+                v-else
+                class="align-center blue d-flex justify-center mr-2 rounded-pill"
+                style="width: 35px; height:35px;"
+              >
+                <span class="text-uppercase white--text">
+                  {{ channel.membersInChannel.user.name.charAt(0) }}
+                </span>
+              </div>
+            </template>
+
             <v-card
               v-else
               class="mr-3"
