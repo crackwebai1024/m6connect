@@ -81,7 +81,8 @@
             v-for="(item, index) of records"
             :key="index"
             :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-            cols="12"
+            md="6"
+            sm="12"
           >
             <general-item :record-data="item" />
           </v-col>
