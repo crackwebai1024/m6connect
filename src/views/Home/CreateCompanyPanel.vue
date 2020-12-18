@@ -64,13 +64,14 @@
             alt=""
             class="app-icon-link pr-2"
             :src="app.iconLink"
-          />
+          >
         </template>
         <template v-else>
           <v-avatar
+            class="pointer"
             :color="iconBackgroundColor"
-            @click="iconBuilderModal=true"
             size="100"
+            @click="iconBuilderModal=true"
           >
             <v-icon size="60">
               {{ iconName }}
@@ -106,7 +107,11 @@
           >
             <v-icon>mdi-cloud-upload</v-icon>
           </m6-upload>
-          <v-btn color="red darken-2" class="white--text" @click="showDeleteDialog = true" >
+          <v-btn
+            class="white--text"
+            color="red darken-2"
+            @click="showDeleteDialog = true"
+          >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
           <v-btn
@@ -195,8 +200,8 @@
           </v-tabs>
           <add-tab
             v-if="appLoaded"
+            :layout-type="app.layout_type"
             @addNewTab="addNewTab"
-            :layoutType="app.layout_type"
           />
           <field
             v-if="showFieldModal"
@@ -255,7 +260,7 @@
             />
             <add-panel @addNewPanel="addNewPanel(0)" />
           </v-col>
-          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)" >
+          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)">
             <v-col
               v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
               class="pa-0 pl-1"
@@ -315,9 +320,9 @@
       />
 
       <table-view
-        :showTable="showTable"
-        :fieldListProp="fieldList"
-        :tableItemsProp="tableItems"
+        :field-list-prop="fieldList"
+        :show-table="showTable"
+        :table-items-prop="tableItems"
         @hideTableModal="hideTableModal"
       />
     </template>
@@ -444,7 +449,7 @@ export default {
         this.loading = false
         this.notifSuccess('The App Was Deleted')
         this.$router.push('/')
-      } catch(e) {
+      } catch (e) {
         this.loading = false
         this.notifDanger('There was an error, App was NOT deleted')
       }

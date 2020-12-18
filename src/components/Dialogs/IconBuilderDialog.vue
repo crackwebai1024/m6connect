@@ -24,6 +24,23 @@
       </v-col>
       <v-col cols="4">
         <sketch-picker v-model="iconBackgroundColor" />
+        <div
+          v-if="selectedIcon !== ''"
+          class="align-center d-flex justify-center py-4 w-full"
+        >
+          <v-avatar
+            class="pointer"
+            :color="iconBackgroundColor.hex"
+            size="100"
+          >
+            <v-icon
+              :color="iconColor.hex"
+              size="60"
+            >
+              {{ 'mdi-' + selectedIcon }}
+            </v-icon>
+          </v-avatar>
+        </div>
       </v-col>
     </v-row>
     <v-divider />
@@ -57,7 +74,12 @@ export default {
     'sketch-picker': Sketch
   },
   data: () => ({
-    iconBackgroundColor: {},
+    iconBackgroundColor: {
+      hex: '#000'
+    },
+    iconColor: {
+      hex: '#fff'
+    },
     selectedIcon: '',
     iconList: [],
     searchKey: ''
