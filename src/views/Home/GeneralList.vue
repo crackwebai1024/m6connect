@@ -1,10 +1,11 @@
 <template>
   <v-container
-    class="pa-0"
+    class="pa-0 w-full"
+    :class="tableView ? 'mx-10' : ''"
     fluid
   >
     <header-component
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
+      class="card-custom-shadow h-auto mb-3 mx-auto rounded"
       hasslot
       :info="{title: 'Search All Apps', icon: ''}"
     >
@@ -37,7 +38,9 @@
                 :class="item.type === 'title' ? 'grey--text' : 'black--text pointer'"
                 @click="changingApps(item)"
               >
-                {{ item.text }}
+                <p>
+                  {{ item.text }}
+                </p>
               </v-list-item-title>
             </v-list-item>
           </v-list>
@@ -67,12 +70,12 @@
     </header-component>
     <div
       v-if="!loading"
-      :class="tableView?'app-list__container':'app-list__container h-auto max-w-tight mb-3 mx-auto rounded'"
+      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
     >
       <template v-if="tableView">
         <records-table
           :items="records"
-          :tableHeaders="dynamic?dynamicTableHeader:headers"
+          :table-headers="dynamic ? dynamicTableHeader : headers"
         />
       </template>
       <template v-else>
@@ -141,7 +144,6 @@ export default {
       { text: 'Created On', value: 'created_at' },
       { text: 'Class', value: 'class' },
       { text: 'Category', value: 'category' },
-      { text: 'Type', value: 'type' },
       { text: 'State', value: 'state' },
       { text: 'Status', value: 'status' },
       { text: 'Action', value: 'action', sortable: false }
