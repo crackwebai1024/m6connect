@@ -73,7 +73,10 @@
             size="100"
             @click="iconBuilderModal=true"
           >
-            <v-icon size="60">
+            <v-icon
+              :color="iconColor"
+              size="60"
+            >
               {{ iconName }}
             </v-icon>
           </v-avatar>
@@ -641,6 +644,7 @@ export default {
       if (selected) {
         this.iconName = iconInfo.icon
         this.iconBackgroundColor = iconInfo.background
+        this.iconColor = iconInfo.iconColor
       }
     },
 

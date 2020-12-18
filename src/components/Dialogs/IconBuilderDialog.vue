@@ -133,7 +133,8 @@ export default {
       this.iconList = icons
       this.$emit('selectIconAction', selected, {
         icon: `mdi-${this.selectedIcon}`,
-        background: this.iconBackgroundColor.hex ? this.iconBackgroundColor.hex : '#AAA'
+        background: this.iconBackgroundColor.hex ? this.iconBackgroundColor.hex : '#AAA',
+        iconColor: this.iconColor.hex ? this.iconColor.hex : '#fff'
       })
     },
     selectIcon(e) {
