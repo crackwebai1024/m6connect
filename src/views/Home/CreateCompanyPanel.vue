@@ -37,8 +37,10 @@
         @selectHeaderAction="selectHeaderAction"
       />
     </v-dialog>
-    <div
-      class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative w-full"
+    <v-card
+      class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative rounded-0 w-full"
+      :color="headerBackgroundColor"
+      flat
     >
       <div class="align-center d-flex">
         <div class="grey lighten-3 pa-16">
@@ -156,7 +158,7 @@
           </v-btn>
         </v-form>
       </div>
-    </div>
+    </v-card>
 
     <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
     <template v-if="showActions">
