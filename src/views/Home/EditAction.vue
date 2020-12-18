@@ -8,12 +8,30 @@
       <slot name="btn" />
     </div>
     <v-dialog
+      content-class="overflow-visible"
       v-model="showInput"
       max-width="500"
     >
       <v-card>
-        <v-card-title class="headline">
-          New Action
+        <v-btn
+          icon
+          class="modal-close-btn"
+          @click="showInput=false"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-card-title class="headline d-flex justify-content-between">
+          <span>Edit Action</span>
+          <v-btn
+            icon
+            @click="showDeleteDiaLog = true"
+          >
+            <v-icon
+              class="grey--text text--darken-2"
+            >
+              mdi-trash-can
+            </v-icon>
+          </v-btn>
         </v-card-title>
         <v-card-text>
           <v-container class="mt-2 px-0 py-0 white">
@@ -153,19 +171,40 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <v-dialog
+      v-model="showDeleteDiaLog"
+      max-width="350"
+      persistent
+    >
+      <delete-action-dialog
+        :element="`action: 111`"
+        @closeDeleteModal="$event ? deleteAction({}) : showDeleteDiaLog = false"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { validations } from '@/mixins/form-validations'
 import { mapActions, mapGetters } from 'vuex'
+import DeleteActionDialog from '@/components/Dialogs/DeleteActionDialog'
 import axios from 'axios'
 
 export default {
-  name: 'AddFeed',
+  name: 'EditAction',
+  props: {
+    action: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  components: {
+    DeleteActionDialog
+  },
   mixins: [validations],
   data: () => ({
     testValue: null,
+    showDeleteDiaLog: false,
     testOptions: [{
       id: 'a',
       label: 'a',
@@ -185,6 +224,7 @@ export default {
     }],
     showInput: false,
     itemInfo: {
+      id: null,
       author: null,
       due_date: null,
       assignment_list: null,
@@ -215,10 +255,19 @@ export default {
     ...mapGetters('Auth', { user: 'getUser' })
   },
   mounted() {
-    this.itemInfo['author'] = this.user.id
+    this.itemInfo['id'] = this.action.id
+    this.itemInfo['author'] = this.action.author
+    this.itemInfo['due_date'] = new Date(this.action.due_date)
+    this.itemInfo['assignment_list'] = this.action.wo_assignments.map(assignment => assignment.assignee)
+    this.itemInfo['description'] = this.action.description
+    this.itemInfo['title'] = this.action.title
+    this.itemInfo['type'] = this.action.type.id
+    this.itemInfo['application_id'] = this.action.application_id
+    this.itemInfo['record_id'] = this.action.record && this.action.record.id
     this.selects({ params: ['wo_request_type'], nesting: 1 }).then(res => {
       this.options['type'] = res['data']['wo_request_type']
     })
+    
     // TODO: The available apps list should be on a global list on the store.
     this.getApps().then(response => {
       response.data.map(app => {
@@ -234,7 +283,7 @@ export default {
     ...mapActions('WorkOrderModule', {
       records: 'getRecords',
       getApps: 'getAvailableApps',
-      postAction: 'postAction',
+      updateActionItemInfo: 'updateActionItemInfo',
       getActions: 'getActionsFeed',
       workOrder: 'setWorkOrder'
     }),
@@ -256,6 +305,17 @@ export default {
     onDocsChange(e) {
       this.docFiles = e
       this.$refs.inputFeed.focus()
+    },
+    async deleteAction(activity) {
+      await this.$store.dispatch('GSFeed/removeActivity', activity.id)
+      if (activity.props) {
+        await this.deleteAct(activity.props.id)
+
+        this.$store.dispatch('GSFeed/setEmptyActionPost')
+        this.$store.dispatch('WorkOrderModule/setWorkOrder')
+      }
+      this.showDeleteDiaLog = false
+      await this.$store.dispatch('GSFeed/retrieveFeed')
     },
     post() {
       this.itemInfo['activity'] = {
@@ -280,7 +340,7 @@ export default {
       this.itemInfo['start_date'] = new Date().toISOString().slice(0, 10)
       this.itemInfo['requested_date'] = new Date().toISOString().slice(0, 10)
       this.showInput = false
-      this.postAction(this.itemInfo).then(() => {
+      this.updateActionItemInfo(this.itemInfo).then(() => {
         this.workOrder()
       })
     },
@@ -299,5 +359,21 @@ export default {
     color: #B6B6B6;
     cursor: not-allowed;
     background-image: none;
+  }
+  .justify-content-between {
+      justify-content: space-between;
+  }
+  .modal-close-btn {
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    z-index: 999;
+    border: 2px solid #ccc;
+    box-shadow: 1px 1px white;
+    background-color: black;
+    color: white !important;
+  }
+  .overflow-visible {
+    overflow: visible;
   }
 </style>

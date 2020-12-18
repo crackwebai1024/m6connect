@@ -6,17 +6,33 @@
     @mouseleave="showActionBtns = false"
     @mouseover="showActionBtns = true"
   >
-    <div
-      v-if="notification.application"
-      :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'"
-    >
-      {{ notification.application.prefix }}
-    </div>
-    <div
-      v-else
-      :class="notification.colorTag +' card-content__tag absolute white--text d-flex justify-center align-center text-body-1 font-weight-regular'"
-    >
-      {{ notification.status }}
+    <div class="d-flex card-content__tag absolute pa-0">
+      <edit-action :action="notification">
+        <v-btn
+          slot="btn"
+          icon
+          class="mr-3"
+          @click="modal = 'app-builder'"
+        >
+          <v-icon
+            class="pointer grey--text text--darken-2"
+          >
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+      </edit-action>
+      <div
+        v-if="notification.application"
+        :class="notification.colorTag +' white--text d-flex justify-center align-center px-3 text-body-1 font-weight-regular'"
+      >
+        {{ notification.application.prefix }}
+      </div>
+      <div
+        v-else
+        :class="notification.colorTag +' white--text d-flex justify-center align-center px-3 text-body-1 font-weight-regular'"
+      >
+        {{ notification.status }}
+      </div>
     </div>
     <div class="d-flex">
       <v-avatar size="36">
@@ -114,18 +130,30 @@
       <v-btn
         color="grey"
         icon
-        @click="updateStatus(false)"
+        @click="showConfirmDialog = true; confirmMessage = `Do you want to decline this action?`; confirmStatus = false"
       >
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-btn
         color="green accent-3"
         icon
-        @click="updateStatus(true )"
+        @click="showConfirmDialog = true; confirmMessage = `Do you want to complete this action?`; confirmStatus = true"
       >
         <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
       </v-btn>
     </div>
+    <v-dialog
+      v-model="showConfirmDialog"
+      max-width="350"
+      persistent
+    >
+      <confirm-dialog
+        :message="confirmMessage"
+        :okLabel="`OK`"
+        :cancelLabel="`Cancel`"
+        @closeDeleteModal="$event ? updateStatus(confirmStatus) : showConfirmDialog = false"
+      />
+    </v-dialog>
   </div>
   <v-container v-else>
     <v-progress-circular
@@ -138,8 +166,15 @@
 
 <script>
 import { mapActions } from 'vuex'
+import EditAction from './EditAction'
+import ConfirmDialog from '@/components/Dialogs/ConfirmDialog'
+// import AppBuilderShow from './AppBuilderShow'
 export default {
   name: 'ActionFeedItem',
+  components: {
+    EditAction,
+    ConfirmDialog
+  },
   props: {
     notification: {
       type: Object,
@@ -148,6 +183,7 @@ export default {
   },
   data: () => ({
     showActionBtns: false,
+    showConfirmDialog: false,
     colors: [
       'green',
       'blue',
@@ -161,7 +197,10 @@ export default {
       'teal',
       'amber'
     ],
-    users: []
+    modal: '',
+    users: [],
+    confirmMessage: '',
+    confirmStatus: false
   }),
   computed: {
   },
@@ -225,13 +264,15 @@ export default {
       setActPost: 'setActionPost'
     }),
     ...mapActions('GeneralListModule', { recordData: 'push_data_to_active' }),
-    updateStatus(e) {
-      this.$store.dispatch('WorkOrderModule/updateActionItem', {
+    async updateStatus(e) {
+      await this.$store.dispatch('WorkOrderModule/updateActionItem', {
         items: this.notification['wo_assignments'],
         value: e ? 'Complete' : 'Declined'
       }).then(() => {
         this.workOrder()
       })
+
+      this.showConfirmDialog = false
     },
     setPost() {
       const { record, colorTag, id } = this.notification

@@ -31,7 +31,7 @@
 
 <script>
 export default {
-  name: 'DeleteDialog',
+  name: 'DeleteActionDialog',
   props: {
     element: String
   },
@@ -42,3 +42,4 @@ export default {
   }
 }
 </script>
+

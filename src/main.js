@@ -15,10 +15,13 @@ import VueCarousel from 'vue-carousel'
 import VueYouTubeEmbed from 'vue-youtube-embed'
 
 import Treeselect from '@riophae/vue-treeselect'
+import DatetimePicker from 'vuetify-datetime-picker'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 Vue.component('treeselect', Treeselect)
 
 Vue.use(VueCarousel)
+
+Vue.use(DatetimePicker)
 
 Vue.use(VueYouTubeEmbed)
 
