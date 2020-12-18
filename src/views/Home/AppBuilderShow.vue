@@ -204,7 +204,7 @@
           <div
             v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 0 )"
             :key="`p-l-${index}`"
-            class="mb-3 panel px-4 py-3 w-side white"
+            class="card-custom-shadow mb-3 panel px-4 py-3 rounded w-side white"
           >
             <h3>{{ panel.title }}</h3>
             <form-show-generator
