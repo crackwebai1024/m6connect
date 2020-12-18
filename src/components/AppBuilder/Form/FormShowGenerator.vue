@@ -304,6 +304,10 @@ export default {
     recordID: {
       type: Number,
       default: 0
+    },
+    table: {
+      type: Object,
+      default: () => ({})
     }
   },
 

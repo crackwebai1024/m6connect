@@ -212,6 +212,10 @@
               :panel="panel"
               :show-standard-fields="(tab.readOnly && index === 0)"
             />
+
+            <div v-for="(table, index) in $h.dg(panel, 'tables', [])" :key="`panel-table-${index}`" >
+              <generated-table :table="table" editMode />
+            </div>
           </div>
         </div>
 
@@ -255,6 +259,7 @@ import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import GeneratedTable from '@/components/AppBuilder/GenericTable/GeneratedTable'
 
 export default {
   name: 'AppBuilderShow',
@@ -264,7 +269,8 @@ export default {
     ProjectSocialMedia,
     PanelTwoColumns,
     FormShowGenerator,
-    DeleteDialog
+    DeleteDialog,
+    GeneratedTable
   },
 
   data: () => ({
