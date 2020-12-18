@@ -449,7 +449,11 @@ export default {
             }))
             payload.fields = [...payload.fields, ...res]
           } else {
-            payload.fields.push({ value, field_id: f.id })
+            payload.fields.push({
+              value,
+              field_id: f.id,
+              record_id: payload['record_id']
+            })
           }
         }
 
@@ -596,7 +600,7 @@ export default {
     },
     saveValues(index) {
       this.$set(this.showIndexFields, index, false)
-      this.creating()
+      this.updating()
     }
   }
 }
