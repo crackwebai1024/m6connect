@@ -4,7 +4,7 @@
     fluid
   >
     <header-component
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
+      class="card-custom-shadow h-auto mb-3 mx-auto rounded"
       hasslot
       :info="{title: 'Search All Apps', icon: ''}"
     >
@@ -67,12 +67,12 @@
     </header-component>
     <div
       v-if="!loading"
-      :class="tableView?'app-list__container':'app-list__container h-auto max-w-tight mb-3 mx-auto rounded'"
+      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
     >
       <template v-if="tableView">
         <records-table
           :items="records"
-          :tableHeaders="dynamic?dynamicTableHeader:headers"
+          :table-headers="dynamic ? dynamicTableHeader : headers"
         />
       </template>
       <template v-else>
