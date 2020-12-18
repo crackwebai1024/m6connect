@@ -496,7 +496,8 @@ export default {
               ...this.app.metadata,
               appIcon: {
                 icon: this.iconName,
-                background: this.iconBackgroundColor
+                background: this.iconBackgroundColor,
+                iconColor: this.iconColor
               }
             }
           }
