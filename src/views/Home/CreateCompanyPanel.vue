@@ -16,6 +16,27 @@
     >
       <v-icon>mdi-account-hard-hat</v-icon>
     </v-btn>
+    <v-btn
+      absolute
+      color="primary"
+      dark
+      fab
+      left
+      small
+      style="top: 75px"
+      top
+      @click="showHeaderColor = !showHeaderColor"
+    >
+      <v-icon>mdi-format-color-fill</v-icon>
+    </v-btn>
+    <v-dialog
+      v-model="showHeaderColor"
+      width="800"
+    >
+      <header-builder-dialog
+        @selectHeaderAction="selectHeaderAction"
+      />
+    </v-dialog>
     <div
       class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative w-full"
     >
@@ -342,6 +363,7 @@ import Field from '@/components/AppBuilder/Modals/Field'
 import TableView from '@/components/AppBuilder/Modals/TableView'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import IconBuilderDialog from '@/components/Dialogs/IconBuilderDialog'
+import HeaderBuilderDialog from '@/components/Dialogs/HeaderBuilderDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import AppActivities from '@/views/AppBuilder/AppActivities'
@@ -361,7 +383,8 @@ export default {
     ProjectSocialMedia,
     AppActivities,
     TableView,
-    IconBuilderDialog
+    IconBuilderDialog,
+    HeaderBuilderDialog
   },
 
   data: () => ({
@@ -399,7 +422,10 @@ export default {
     iconBuilderModal: false,
     iconName: '',
     iconBackgroundColor: '',
-    iconColor: ''
+    iconColor: '',
+    showHeaderColor: false,
+    headerBackgroundColor: '',
+    headerTextColor: ''
   }),
 
   computed: {
@@ -423,10 +449,14 @@ export default {
         this.iconName = this.app.metadata.appIcon ? this.app.metadata.appIcon.icon : 'mdi-account-circle'
         this.iconBackgroundColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.background : '#AAA'
         this.iconColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.iconColor : '#AAA'
+        this.headerBackgroundColor = this.app.metadata.appHeader ? this.app.metadata.appHeader.headerBackgroundColor : '#fff'
+        this.headerTextColor = this.app.metadata.appHeader ? this.app.metadata.appHeader.headerTextColor : '#AAA'
       } else {
         this.iconName = 'mdi-account-circle'
         this.iconBackgroundColor = '#AAA'
         this.iconColor = '#AAA'
+        this.headerBackgroundColor = '#fff'
+        this.headerTextColor = '#AAA'
       }
 
       if (Object.keys(this.app).length === 0) this.$router.push('/')
@@ -649,6 +679,37 @@ export default {
         this.iconName = iconInfo.icon
         this.iconBackgroundColor = iconInfo.background
         this.iconColor = iconInfo.iconColor
+      }
+    },
+
+    async selectHeaderAction(selected, headerInfo) {
+      console.log(selected, headerInfo)
+      this.showHeaderColor = !this.showHeaderColor
+      if (selected) {
+        this.headerBackgroundColor = headerInfo.headerBackgroundColor
+        this.headerTextColor = headerInfo.headerTextColor
+        this.loading = true
+
+        try {
+          const res = await this.updateApp({
+            params: {
+              ...this.app,
+              metadata: {
+                ...this.app.metadata,
+                appHeader: {
+                  headerBackgroundColor: this.headerBackgroundColor,
+                  headerTextColor: this.headerTextColor
+                }
+              }
+            }
+          })
+          this.loading = false
+          this.notifSuccess('Updated!')
+        } catch (e) {
+          this.loading = false
+          this.notifDanger('There was an error while updating')
+          return e
+        }
       }
     },
 
