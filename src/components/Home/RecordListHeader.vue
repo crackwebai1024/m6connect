@@ -4,7 +4,7 @@
     :style="{
       backgroundImage: 'linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(' + require('@/assets/header-background.png') + ')',
       backgroundPosition: 'center center',
-      backgroundSize: 'cover';
+      backgroundSize: 'cover'
     }"
   >
     <div>
