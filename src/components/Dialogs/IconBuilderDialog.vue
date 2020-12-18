@@ -22,8 +22,38 @@
           </div>
         </div>
       </v-col>
-      <v-col cols="4">
-        <sketch-picker v-model="iconBackgroundColor" />
+      <v-col
+        class="px-0"
+        cols="4"
+      >
+        <v-tabs
+          v-model="tabsPicker"
+          centered
+        >
+          <v-tab>
+            Background
+          </v-tab>
+          <v-tab>
+            Icon
+          </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="tabsPicker">
+          <v-tab-item>
+            <v-card flat>
+              <v-card-text>
+                <sketch-picker v-model="iconBackgroundColor" />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card flat>
+              <v-card-text>
+                <sketch-picker v-model="iconColor" />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
+
         <div
           v-if="selectedIcon !== ''"
           class="align-center d-flex justify-center py-4 w-full"
@@ -82,7 +112,8 @@ export default {
     },
     selectedIcon: '',
     iconList: [],
-    searchKey: ''
+    searchKey: '',
+    tabsPicker: 0
   }),
   watch: {
     searchKey() {
