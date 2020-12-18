@@ -35,7 +35,7 @@ export default {
         delete row.fieldValues
       })
       generalListModule.state.fieldLists = fieldList
-      generalListModule.state.general_list = convertApps.toM6Apps(apps['data'])
+      generalListModule.state.general_list = apps['data']
     },
     async get_apps({}) {
       const apps = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`)
