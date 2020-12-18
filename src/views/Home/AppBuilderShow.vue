@@ -199,12 +199,15 @@
       slot="content"
       class="w-full"
     >
-      <panel-two-columns :left-column="tab.full_width ? 12 : 6">
+      <panel-two-columns
+        :left-column="tab.full_width ? 12 : 5"
+        :right-column="tab.full_width ? 12 : 7"
+      >
         <div slot="leftPanel">
           <div
             v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 0 )"
             :key="`p-l-${index}`"
-            class="card-custom-shadow mb-3 panel px-4 py-3 rounded w-side white"
+            class="card-custom-shadow mb-3 panel px-4 py-3 rounded white"
           >
             <h3>{{ panel.title }}</h3>
             <form-show-generator

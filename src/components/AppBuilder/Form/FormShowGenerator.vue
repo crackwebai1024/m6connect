@@ -56,7 +56,7 @@
                 v-if="showIndexFields[0]"
                 class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, 0, false)"
+                @click="saveValues(0)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -99,7 +99,7 @@
                 v-if="showIndexFields[1]"
                 class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, 1, false)"
+                @click="saveValues(1)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -215,7 +215,7 @@
                 v-if="showIndexFields[index + 2]"
                 class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, index + 2, false)"
+                @click="saveValues(index + 2)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -584,6 +584,10 @@ export default {
       } catch (e) {
         this.notifDanger('There was an error while getting a reference fields value')
       }
+    },
+    saveValues(index) {
+      this.$set(this.showIndexFields, index, false)
+      this.creating()
     }
   }
 }
