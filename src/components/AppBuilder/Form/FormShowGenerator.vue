@@ -54,7 +54,7 @@
               />
               <v-btn
                 v-if="showIndexFields[0]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
                 @click="$set(showIndexFields, 0, false)"
               >
@@ -97,7 +97,7 @@
               />
               <v-btn
                 v-if="showIndexFields[1]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
                 @click="$set(showIndexFields, 1, false)"
               >
@@ -213,7 +213,7 @@
               </template>
               <v-btn
                 v-if="showIndexFields[index + 2]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
                 @click="$set(showIndexFields, index + 2, false)"
               >
