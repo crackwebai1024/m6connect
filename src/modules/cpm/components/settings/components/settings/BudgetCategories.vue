@@ -21,6 +21,19 @@
             </v-icon>
           </v-btn>
         </portal>
+
+        <v-btn
+          v-else
+          absolute
+          color="blue"
+          dark
+          fab
+          right
+          small
+          @click="newL1"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
       </v-card-title>
 
       <v-card-text>
@@ -93,10 +106,9 @@
         <v-divider class="grey lighten-3" />
 
         <v-card-text class="px-6 py-2">
-          <v-text-field
-            v-model="name"
-            color="blue"
-            label="Budget Category Name"
+          <budget-category-select
+            :category="name"
+            @newCategory="setBudgetCategory"
           />
 
           <v-text-field
@@ -144,12 +156,15 @@
 <script>
 import { db } from '@/utils/Firebase'
 // import * as easings from 'vuetify/es5/util/easing-patterns'
+import BudgetCategorySelect from '@/modules/cpm/components/projects/_partials/BudgetCategorySelect'
 import draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetCategories',
   components: {
-    draggable
+    draggable,
+    BudgetCategorySelect
   },
 
   props: {
@@ -325,6 +340,9 @@ export default {
       this.currentItem = {}
       this.currentIndex = -1
       this.showForm = false
+    },
+    setBudgetCategory(category) {
+      this.name = category
     }
   },
 
