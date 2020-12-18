@@ -9,6 +9,7 @@
       :appList="areas.concat(areas2)"
       @changeEvent="changeEvent"
       @changingApps="changingApps"
+      @tableViewChange="tableViewChange"
     />
 
     <div
@@ -277,6 +278,9 @@ export default {
         ~~(Math.random() * 255),
         ~~(Math.random() * 255)
       ] + ')'
+    },
+    tableViewChange(val) {
+      this.tableView = val
     }
   }
 }

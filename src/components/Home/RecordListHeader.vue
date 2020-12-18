@@ -104,6 +104,11 @@ export default {
     },
     selected: -1
   }),
+  watch: {
+    tableView() {
+      this.$emit("tableViewChange", this.tableView)
+    }
+  },
   methods: {
     changeEvent(event) {
       this.$emit('changeEvent', event)
