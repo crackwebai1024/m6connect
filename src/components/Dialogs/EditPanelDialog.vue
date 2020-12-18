@@ -69,8 +69,6 @@
 <script>
 import { Money } from 'v-money'
 import { db } from '@/utils/Firebase'
-
-
 export default {
     components: {Money},
     name: 'edit-panel-dialog',
@@ -115,7 +113,6 @@ export default {
             document.documentElement.clientHeight,
             window.innerHeight || 0
             ) * 0.6
-
             return `${viewportSize}px`
         },
         closeDialog() {
@@ -124,7 +121,6 @@ export default {
         //Move this function to Vuex mutations
         savePanel() {
             let map = {}
-
             if (this.panel.title == 'Project Quickview') {
                 map = {
                     basic: this.panelItems
@@ -138,7 +134,6 @@ export default {
                     milestones: this.panelItems
                 }
             }
-
             
             //this.$snotify.success('Changes saved')
             db.collection('cpm_projects').doc(this.$route.params.id).update(map)

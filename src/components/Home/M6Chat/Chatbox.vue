@@ -877,10 +877,7 @@
 /* eslint-disable camelcase */
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
-import DeleteDialog from '@/components/Dialogs/DeleteDialog'
-import AddUserDialog from '@/components/Dialogs/AddUserDialog'
-import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
-import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
+import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
@@ -888,10 +885,7 @@ import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
 export default {
   name: 'Chatbox',
   components: {
-    SettingsChannelDialog,
-    InfoUsersDialog,
-    AddUserDialog,
-    DeleteDialog,
+    EditConfigurationDialog,
     VEmojiPicker,
     ExternalUrl,
     RecordUrl,
