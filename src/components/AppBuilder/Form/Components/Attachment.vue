@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <p class="my-0 py-0 text-center text-h5">
+  <v-container class="mb-2 pa-0">
+    <p class="my-0 py-0 text-body-2 text-center text-h5">
       {{ label }}
     </p>
     <v-card
@@ -9,13 +9,14 @@
     >
       <v-card-title class="my-0 py-0">
         <span
-          class="pointer"
+          class="mt-2 pointer text-body-1"
           @click="openFile"
         >
           {{ file['file_name_full'] }}
         </span>
         <v-spacer />
         <v-btn
+          class="my-2"
           icon
           @click="edit = !edit"
         >
@@ -24,16 +25,21 @@
           </v-icon>
         </v-btn>
       </v-card-title>
-      <v-card-text v-if="file['file_type'] && file['file_type'].substring(0,5) === 'image'">
+      <v-card-text
+        v-if="file['file_type'] && file['file_type'].substring(0,5) === 'image'"
+        class="pb-2"
+      >
         <v-img
           alt="Project Image"
           :src="getURL()"
           width="w-full"
         />
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="pt-0 px-4">
         <v-spacer />
-        <p>{{ getSize() }}</p>
+        <p class="mb-1">
+          {{ getSize() }}
+        </p>
       </v-card-actions>
     </v-card>
 

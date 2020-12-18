@@ -77,8 +77,8 @@ const router = new VueRouter({
       }
     },
     {
-      path: "/apps",
-      name: "apps",
+      path: "/records",
+      name: "records",
       component: Apps
     },
     {
