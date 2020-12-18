@@ -398,7 +398,8 @@ export default {
     },
     iconBuilderModal: false,
     iconName: '',
-    iconBackgroundColor: ''
+    iconBackgroundColor: '',
+    iconColor: ''
   }),
 
   computed: {
@@ -421,9 +422,11 @@ export default {
         this.app.metadata = JSON.parse(res.metadata)
         this.iconName = this.app.metadata.appIcon ? this.app.metadata.appIcon.icon : 'mdi-account-circle'
         this.iconBackgroundColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.background : '#AAA'
+        this.iconColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.iconColor : '#AAA'
       } else {
         this.iconName = 'mdi-account-circle'
         this.iconBackgroundColor = '#AAA'
+        this.iconColor = '#AAA'
       }
 
       if (Object.keys(this.app).length === 0) this.$router.push('/')
