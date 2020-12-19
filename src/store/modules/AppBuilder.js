@@ -233,8 +233,8 @@ const actions = {
 
   getFieldValuesPerPanel(_, { recordID, panelID, ids } = {}) {
     return new Promise((resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`)
-      // axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`, { ids })
+      // axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`)
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`, { ids })
         .then(({ data }) => {
           resolve(data)
         })

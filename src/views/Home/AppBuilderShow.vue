@@ -214,7 +214,7 @@
             />
 
             <div v-for="(table, index) in $h.dg(panel, 'tables', [])" :key="`panel-table-${index}`" >
-              <generated-table :table="table" editMode />
+              <generated-table :table="table" :recordID="record.id" editMode />
             </div>
           </div>
         </div>
