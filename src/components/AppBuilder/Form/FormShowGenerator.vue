@@ -54,9 +54,9 @@
               />
               <v-btn
                 v-if="showIndexFields[0]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, 0, false)"
+                @click="saveValues(0)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -97,9 +97,9 @@
               />
               <v-btn
                 v-if="showIndexFields[1]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, 1, false)"
+                @click="saveValues(1)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -130,27 +130,36 @@
           <v-hover
             v-slot="{ hover }"
           >
-            <div class="d-flex justify-between relative">
+            <div class="align-start d-flex justify-between mb-1 relative">
               <p
                 v-if="editMode !== 1 && !showIndexFields[index + 2]"
-                class="mb-2"
+                class="my-2"
               >
-                <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
-                <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
-                  {{ genericRecord[`${f.id}`]['file_name'] }}
-                </template>
-                <template v-else-if="Array.isArray(genericRecord[`${f.id}`])">
-                  {{
-                    typeof genericRecord[`${f.id}`][0] === 'object' ?
-                      genericRecord[`${f.id}`].map( g => g.value).join(', ')
-                      : genericRecord[`${f.id}`].join(', ')
-                  }}
-                </template>
-                <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
-                  {{ genericRecord[`${f.id}`].value }}
-                </template>
+                <span
+                  v-if="genericRecord[`${f.id}`] === undefined"
+                  class="blue--text pointer"
+                  @click="$set(showIndexFields, index + 2, true)"
+                >
+                  Add {{ $h.dg( f, 'label', '' ) }}
+                </span>
                 <template v-else>
-                  {{ genericRecord[`${f.id}`] }}
+                  <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
+                  <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
+                    {{ genericRecord[`${f.id}`]['file_name'] }}
+                  </template>
+                  <template v-else-if="Array.isArray(genericRecord[`${f.id}`])">
+                    {{
+                      typeof genericRecord[`${f.id}`][0] === 'object' ?
+                        genericRecord[`${f.id}`].map( g => g.value).join(', ')
+                        : genericRecord[`${f.id}`].join(', ')
+                    }}
+                  </template>
+                  <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
+                    {{ genericRecord[`${f.id}`].value }}
+                  </template>
+                  <template v-else>
+                    {{ genericRecord[`${f.id}`] }}
+                  </template>
                 </template>
               </p>
               <template
@@ -213,9 +222,9 @@
               </template>
               <v-btn
                 v-if="showIndexFields[index + 2]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, index + 2, false)"
+                @click="saveValues(index + 2)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -440,7 +449,11 @@ export default {
             }))
             payload.fields = [...payload.fields, ...res]
           } else {
-            payload.fields.push({ value, field_id: f.id })
+            payload.fields.push({
+              value,
+              field_id: f.id,
+              record_id: payload['record_id']
+            })
           }
         }
 
@@ -584,6 +597,10 @@ export default {
       } catch (e) {
         this.notifDanger('There was an error while getting a reference fields value')
       }
+    },
+    saveValues(index) {
+      this.$set(this.showIndexFields, index, false)
+      this.updating()
     }
   }
 }

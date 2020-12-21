@@ -197,7 +197,7 @@ export default {
     },
     quickAccessLinks: [
       { url: '/', icon: 'home' },
-      { url: '/apps', icon: 'view-comfy', text: 'apps' },
+      { url: '/records', icon: 'view-comfy', text: 'apps' },
       { url: '/companies', icon: 'office-building' },
       { url: '/store', icon: 'storefront' },
       { url: '/user/settings', icon: 'cog' }

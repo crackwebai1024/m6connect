@@ -5,22 +5,39 @@
       :items="items"
       :items-per-page="5"
     >
-      <template #item.record_number="{ item }"> 
-        <router-link class="router-link" :to="{ name: 'record.show', params: { id: item.id } }" >
+      <template #item.record_number="{ item }">
+        <router-link
+          class="router-link"
+          :to="{ name: 'record.show', params: { id: item.id } }"
+        >
           {{ item.record_number }}
         </router-link>
       </template>
       <template #item.title="{ item }">
-        <router-link class="router-link" :to="{ name: 'record.show', params: { id: item.id } }" >
-          {{ item.title }}
-        </router-link>
+        <p>
+          <router-link
+            class="router-link"
+            :to="{ name: 'record.show', params: { id: item.id } }"
+          >
+            {{ item.title }}
+          </router-link>
+        </p>
+      </template>
+      <template #item.description="{ item }">
+        <p>
+          {{
+            item.description
+          }}
+        </p>
       </template>
       <template #item.description_slot="{ item }">
-        {{
-          $h.dg(item, 'standard_field_description', '').length > 40 ?
-            $h.dg(item, 'standard_field_description', '').substr(0,40) + '...' :
-            $h.dg(item, 'standard_field_description', '')
-        }}
+        <p>
+          {{
+            $h.dg(item, 'standard_field_description', '').length > 40 ?
+              $h.dg(item, 'standard_field_description', '').substr(0,40) + '...' :
+              $h.dg(item, 'standard_field_description', '')
+          }}
+        </p>
       </template>
       <template #item.author="{ item }">
         {{ getAuthor(item.author) }}
@@ -33,7 +50,7 @@
         >
       </template>
       <template #item.created_at="{ item }">
-        {{ item.created_at.getMonth() + '/' + item.created_at.getDate() + '/' + item.created_at.getFullYear() }}
+        {{ new Date(item.created_at).getMonth() + '/' + new Date(item.created_at).getDate() + '/' + new Date(item.created_at).getFullYear() }}
       </template>
       <template #item.action>
         <v-btn
@@ -61,6 +78,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  // eslint-disable-next-line vue/match-component-file-name
   name: 'RecordsTableIndex',
   props: {
     items: {
@@ -98,7 +116,7 @@ export default {
 
   methods: {
     getAuthor(id) {
-      const res = this.currentCompanyUsers.find( u => this.$h.dg(u, 'user.id', '') === id ) 
+      const res = this.currentCompanyUsers.find(u => this.$h.dg(u, 'user.id', '') === id)
       return this.$h.dg(res, 'user.firstName', '') + ' ' + this.$h.dg(res, 'user.lastName', '')
     }
   }

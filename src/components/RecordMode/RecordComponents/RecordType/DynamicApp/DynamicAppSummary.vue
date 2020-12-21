@@ -73,7 +73,7 @@
           class="custom-col"
           cols="12"
         >
-          <p>
+          <p class="my-0 py-0">
             {{ info['description'] }}
           </p>
         </v-col>
