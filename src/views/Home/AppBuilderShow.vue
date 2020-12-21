@@ -3,173 +3,191 @@
     :is-persistent="$route.name === 'record.show'"
     :props-dialog="showSelf"
   >
-    <div
+    <v-card
       slot="header"
-      class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
+      class="d-flex justify-center rounded-0 w-full"
+      :color="headerBackgroundColor"
+      flat
     >
-      <v-col
-        class="d-flex relative"
-        cols="10"
+      <v-card
+        class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative rounded-0 w-full"
+        :color="headerBackgroundColor"
+        flat
       >
-        <v-btn
-          class="absolute"
-          color="red darken-1"
-          icon
-          style="left: -40px; top: 13px;"
-          :to="{ name: 'apps', params: {} }"
+        <div
+          class="align-center d-flex w-full"
         >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-        <div class="d-flex w-full">
-          <v-img
-            v-if="record.image"
-            :alt="record.image"
-            class="rounded"
-            height="150"
-            :src="record.image"
-            width="180"
-          />
-
-          <v-icon
-            v-else
-            size="180"
+          <v-col
+            class="d-flex relative"
+            cols="10"
           >
-            mdi-store
-          </v-icon>
-
-          <m6-upload
-            accepted-file-type="image"
-            btn-button="purple"
-            class="absolute left-0 ml-3 mt-2 top-0"
-            @loading="loading = !loading"
-            @response="recordImageRes"
-          >
-            <v-icon>mdi-cloud-upload</v-icon>
-          </m6-upload>
-
-          <div class="pl-8 w-full">
-            <p class="font-weight-regular mb-1 text-h7">
-              {{ record['record_number'] }}
-            </p>
-            <v-spacer />
-            <div
-              v-if="!editTitleMode"
-              class="relative w-fit"
+            <v-btn
+              class="absolute"
+              color="red darken-1"
+              icon
+              style="left: -40px; top: 13px;"
+              :to="{ name: 'apps', params: {} }"
             >
-              <p
-                class="font-weight-regular mb-1 text-h5"
-                style="height: 68px; overflow: hidden; text-overflow: ellipsis;"
-              >
-                {{ record.title }}
-              </p>
-              <v-btn
-                class="absolute pointer"
-                color="grey darken-1"
-                icon
-                style="right: -40px; top: -10px;"
-                @click="showEditTitleMode"
-              >
-                <v-icon size="18">
-                  mdi-pencil
-                </v-icon>
-              </v-btn>
-            </div>
-            <div
-              v-else
-              class="d-flex"
-            >
-              <v-textarea
-                v-model="updatedTitle"
-                auto-grow
-                class="mb-0"
-                label="Edit Title"
-                name="input-7-1"
-                outlined
-                @keyup.enter="editTitle"
-                @keyup.esc="cancelEditTitle"
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
+            <div class="d-flex w-full">
+              <v-img
+                v-if="record.image"
+                :alt="record.image"
+                class="rounded"
+                height="150"
+                :src="record.image"
+                width="180"
               />
-              <div
-                class="d-flex flex-column"
+
+              <v-icon
+                v-else
+                size="180"
               >
-                <v-btn
-                  class="ml-2"
-                  color="red"
-                  icon
-                  @click="cancelEditTitle"
+                mdi-store
+              </v-icon>
+
+              <m6-upload
+                accepted-file-type="image"
+                btn-button="purple"
+                class="absolute left-0 ml-3 mt-2 top-0"
+                @loading="loading = !loading"
+                @response="recordImageRes"
+              >
+                <v-icon>mdi-cloud-upload</v-icon>
+              </m6-upload>
+
+              <div class="pl-8 w-full">
+                <p
+                  class="font-weight-regular mb-1 text-h7"
+                  :style="'color: ' + headerTextColor + ';'"
                 >
-                  <v-icon size="22">
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-                <v-btn
-                  class="ml-2"
-                  color="green accent-3"
-                  :disabled="record.title === updatedTitle"
-                  icon
-                  @click="editTitle"
+                  {{ record['record_number'] }}
+                </p>
+                <v-spacer />
+                <div
+                  v-if="!editTitleMode"
+                  class="relative w-fit"
                 >
-                  <v-icon
-                    size="22"
+                  <p
+                    class="font-weight-regular mb-1 text-h5"
+                    :style="'height: 68px; overflow: hidden; text-overflow: ellipsis; color: ' + headerTextColor + ';'"
                   >
-                    mdi-check
-                  </v-icon>
-                </v-btn>
+                    {{ record.title }}
+                  </p>
+                  <v-btn
+                    class="absolute pointer"
+                    color="grey darken-1"
+                    icon
+                    style="right: -40px; top: -10px;"
+                    @click="showEditTitleMode"
+                  >
+                    <v-icon size="18">
+                      mdi-pencil
+                    </v-icon>
+                  </v-btn>
+                </div>
+                <div
+                  v-else
+                  class="d-flex"
+                >
+                  <v-textarea
+                    v-model="updatedTitle"
+                    auto-grow
+                    class="mb-0"
+                    label="Edit Title"
+                    name="input-7-1"
+                    outlined
+                    @keyup.enter="editTitle"
+                    @keyup.esc="cancelEditTitle"
+                  />
+                  <div
+                    class="d-flex flex-column"
+                  >
+                    <v-btn
+                      class="ml-2"
+                      color="red"
+                      icon
+                      @click="cancelEditTitle"
+                    >
+                      <v-icon size="22">
+                        mdi-close
+                      </v-icon>
+                    </v-btn>
+                    <v-btn
+                      class="ml-2"
+                      color="green accent-3"
+                      :disabled="record.title === updatedTitle"
+                      icon
+                      @click="editTitle"
+                    >
+                      <v-icon
+                        size="22"
+                      >
+                        mdi-check
+                      </v-icon>
+                    </v-btn>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </v-col>
+          <v-col cols="2">
+            <v-row
+              align="center"
+              no-gutters
+            >
+              <v-spacer />
+              <div
+                class="align-center d-flex flex-column justify-center"
+              >
+                <v-img
+                  v-if="app.iconLink"
+                  :alt="app.iconLink"
+                  class="rounded-lg"
+                  height="70"
+                  :src="app.iconLink"
+                  style="border-radius: 14px !important;"
+                  width="70"
+                />
+
+                <v-icon
+                  v-else
+                  class="d-inline-block"
+                  size="100"
+                >
+                  mdi-store
+                </v-icon>
+                <span
+                  class="mt-3 text-center"
+                  :style="'color: ' + headerTextColor + ';'"
+                >{{ app['title'] }}</span>
+                <v-btn
+                  color="red darken-2"
+                  icon
+                  small
+                  @click="deletingRecord"
+                >
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </div>
+            </v-row>
+          </v-col>
+
+          <m6-loading :loading="loading" />
+
+          <m6-confirm-delete
+            message="Are you sure you want to delete this record?"
+            :show="showDeleteDialog"
+            title="Delete Current Record"
+            @cancel="cancelDelete"
+            @confirm="confirmDelete"
+          />
         </div>
-      </v-col>
-      <v-col cols="2">
-        <v-row
-          align="center"
-          no-gutters
-        >
-          <v-spacer />
-          <div
-            class="align-center d-flex flex-column justify-center"
-          >
-            <v-img
-              v-if="app.iconLink"
-              :alt="app.iconLink"
-              class="rounded-lg"
-              height="70"
-              :src="app.iconLink"
-              style="border-radius: 14px !important;"
-              width="70"
-            />
-
-            <v-icon
-              v-else
-              class="d-inline-block"
-              size="100"
-            >
-              mdi-store
-            </v-icon>
-            <span class="mt-3 text-center">{{ app['title'] }}</span>
-            <v-btn
-              color="red darken-2"
-              icon
-              small
-              @click="deletingRecord"
-            >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </div>
-        </v-row>
-      </v-col>
-
-      <m6-loading :loading="loading" />
-
-      <m6-confirm-delete
-        message="Are you sure you want to delete this record?"
-        :show="showDeleteDialog"
-        title="Delete Current Record"
-        @cancel="cancelDelete"
-        @confirm="confirmDelete"
-      />
-    </div>
+      </v-card>
+    </v-card>
     <div
       slot="tabs"
       class="d-flex"
@@ -274,8 +292,26 @@ export default {
     tabs: [],
     currentTab: 0,
     loading: false,
-    showDeleteDialog: false
+    showDeleteDialog: false,
+    currentApp: {},
+    headerBackgroundColor: '#fff',
+    headerTextColor: '#aaa'
   }),
+
+  mounted() {
+    this.$store.dispatch('AppBuilder/getApp', this.$route.params.id).then(res => {
+      this.currentApp = res
+      if (res.metadata) {
+        this.currentApp.metadata = JSON.parse(res.metadata)
+        console.log(this.currentApp.metadata)
+        this.headerBackgroundColor = this.currentApp.metadata.appHeader ? this.currentApp.metadata.appHeader.headerBackgroundColor : '#fff'
+        this.headerTextColor = this.currentApp.metadata.appHeader ? this.currentApp.metadata.appHeader.headerTextColor : '#AAA'
+      } else {
+        this.headerBackgroundColor = '#fff'
+        this.headerTextColor = '#AAA'
+      }
+    })
+  },
 
   computed: {
     ...mapState('Companies', {

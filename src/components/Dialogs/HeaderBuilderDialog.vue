@@ -47,7 +47,7 @@
               :color="headerBackgroundColor.hex"
             >
               <v-toolbar-title :color="headerTextColor.hex">
-                Title
+                <span :style="'color: ' + headerTextColor.hex + ';'">Title</span>
               </v-toolbar-title>
               <v-spacer />
             </v-toolbar>

@@ -39,12 +39,10 @@
     </v-dialog>
     <v-card
       class="d-flex justify-center rounded-0 w-full"
-      :color="headerBackgroundColor"
       flat
     >
       <v-card
         class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative rounded-0 w-full"
-        :color="headerBackgroundColor"
         flat
       >
         <div class="align-center d-flex">
