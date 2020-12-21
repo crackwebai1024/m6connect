@@ -776,6 +776,7 @@ export default {
           } else if (formatedData.others_wbs_element) {
             const wbsInfo = formatedData.others_wbs_element.split('-')
             const projectNumber = `${wbsInfo[0]}-${wbsInfo[1]}-${wbsInfo[2]}`
+            formatedData.projects_id_number = projectNumber
             formatedData.others_cost_code_number = wbsInfo[3]
             project = await this.getProject(projectNumber)
           } else {
@@ -1304,13 +1305,15 @@ export default {
       const day = ('0' + (start.getDate())).slice(-2).toString()
 
       const snap = await db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).get()
-      console.log(snap)
       snap.docs.map(async i => {
-        const data = await i.data()
+        const data = {
+          ...i.data(),
+          ref: i.ref,
+          id: i.id
+        }
         if (data.ref) {
           const doc = await data.ref.get()
           if (doc.exists) {
-            console.log(await doc.ref.delete())
             i.ref.delete()
           } else {
             console.log('DOC DOESNT EXISTS')
