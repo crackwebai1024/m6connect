@@ -539,7 +539,7 @@ export default {
             value: v,
             field_id: idForUpdate,
             record_id: recordIdForUpdate,
-            table_row_id: this.tableRowID
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           }))
           fields = [...fields, ...res]
         } else if (Object.prototype.toString.call(value) === '[object Object]') {
@@ -549,7 +549,7 @@ export default {
             value,
             field_id: idForUpdate,
             record_id: recordIdForUpdate,
-            table_row_id: this.tableRowID
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           })
         } else {
           if (value === 'true' || value === 'false') value = value === 'true'
@@ -557,7 +557,7 @@ export default {
             value,
             field_id: idForUpdate,
             record_id: recordIdForUpdate,
-            table_row_id: this.tableRowID
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           })
         }
       }

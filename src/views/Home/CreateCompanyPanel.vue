@@ -440,7 +440,14 @@ export default {
     }),
 
     updatingTable(panel, table) {
-      panel.tables = panel.tables.map( t => t.id != table.id ? t : table )
+      const index = panel.tables.map( t => t.id ).indexOf(table.id)
+      if(index > -1) {
+        panel.tables[index] = table
+      } else {
+        panel.tables.push(table)
+      }
+
+      panel.tables = [...panel.tables]
     },
 
     async confirmingDelete() {
