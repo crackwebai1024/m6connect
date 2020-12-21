@@ -1,5 +1,5 @@
 <template>
-  <v-container class="card-custom-shadow d-flex flex-wrap justify-start panel-container py-5 relative rounded white height-100">
+  <v-container class="card-custom-shadow d-flex flex-wrap height-100 justify-start panel-container py-5 relative rounded white">
     <div
       v-show="info['prefix']"
       class="absolute align-center card-content__tag d-flex font-weight-regular justify-center red text-body-1 white--text"
@@ -73,7 +73,9 @@
           class="custom-col"
           cols="12"
         >
-          {{ info['description'] }}
+          <p class="my-0 py-0">
+            {{ info['description'] }}
+          </p>
         </v-col>
       </v-row>
       <v-row class="app-author">

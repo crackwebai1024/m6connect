@@ -1,24 +1,26 @@
 <template>
   <v-container
-    class="pa-0"
+    class="pa-0 w-full"
+    :class="tableView ? 'mx-10' : ''"
     fluid
   >
     <record-list-header
       v-if="headerLoaded"
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
-      :appList="areas.concat(areas2)"
+      :app-list="areas.concat(areas2)"
+      class="card-custom-shadow h-auto mb-3 mx-auto rounded"
       @changeEvent="changeEvent"
       @changingApps="changingApps"
+      @tableViewChange="tableViewChange"
     />
 
     <div
       v-if="!loading && headerLoaded"
-      :class="tableView?'app-list__container':'app-list__container h-auto max-w-tight mb-3 mx-auto rounded'"
+      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
     >
       <template v-if="tableView">
         <records-table
           :items="records"
-          :tableHeaders="dynamic?dynamicTableHeader:headers"
+          :table-headers="dynamic ? dynamicTableHeader : headers"
         />
       </template>
       <template v-else>
@@ -86,7 +88,6 @@ export default {
       { text: 'Created On', value: 'created_at' },
       { text: 'Class', value: 'class' },
       { text: 'Category', value: 'category' },
-      { text: 'Type', value: 'type' },
       { text: 'State', value: 'state' },
       { text: 'Status', value: 'status' },
       { text: 'Action', value: 'action', sortable: false }
@@ -277,6 +278,9 @@ export default {
         ~~(Math.random() * 255),
         ~~(Math.random() * 255)
       ] + ')'
+    },
+    tableViewChange(val) {
+      this.tableView = val
     }
   }
 }

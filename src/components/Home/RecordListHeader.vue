@@ -3,7 +3,8 @@
     class="px-13 py-5 white"
     :style="{
       backgroundImage: 'linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(' + require('@/assets/header-background.png') + ')',
-      backgroundPosition: 'center center'
+      backgroundPosition: 'center center',
+      backgroundSize: 'cover'
     }"
   >
     <div>
@@ -48,12 +49,14 @@
               :src="item.iconLink"
             />
             <template v-else-if="item.metadata">
-              <v-icon
-                v-if="item.metadata.appIcon"
-                size="100"
-              >
-                {{ item.metadata.appIcon.icon }}
-              </v-icon>
+              <template v-if="item.metadata.appIcon">
+                <v-icon
+                  :color="item.metadata.appIcon.iconColor"
+                  size="100"
+                >
+                  {{ item.metadata.appIcon.icon }}
+                </v-icon>
+              </template>
               <v-icon
                 v-else
                 size="100"
@@ -104,6 +107,11 @@ export default {
     },
     selected: -1
   }),
+  watch: {
+    tableView() {
+      this.$emit('tableViewChange', this.tableView)
+    }
+  },
   methods: {
     changeEvent(event) {
       this.$emit('changeEvent', event)
