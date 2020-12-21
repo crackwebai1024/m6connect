@@ -65,6 +65,16 @@ const actions = {
         })
         .catch(e => reject(e))
     })
+  },
+ 
+  updateFieldsList(_, payload) {
+    return new Promise((resolve, reject) => {
+      axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/fields`, payload)
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
+    })
   }
 }
 
