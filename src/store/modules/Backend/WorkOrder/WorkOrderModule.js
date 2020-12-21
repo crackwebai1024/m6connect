@@ -38,8 +38,10 @@ export default {
     },
     async setWorkOrder(state) {
       const usr = auth.state.user
-      const res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${usr.id}/${state.state.filter.key}/${usr.companies.items.find(c => c.active)['id']}`)
-      state.commit('SET_WORK_ORDER', res['data'])
+      if (Object.keys(usr).length > 0) {
+        const res = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${usr.id}/${state.state.filter.key}/${usr.companies.items.find(c => c.active)['id']}`)
+        state.commit('SET_WORK_ORDER', res['data'] ? res['data'] : [])
+      }
     },
     async getUsersList({}, data) {
       return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/user/list`, {
