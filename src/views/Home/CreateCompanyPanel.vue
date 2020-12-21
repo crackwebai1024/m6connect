@@ -258,8 +258,10 @@
               v-for="panel in leftPanels"
               :key="panel.id"
               :panel="panel"
+              :appID="app.id"
               @deletePanel="deletePanel"
               @updatePanel="updatePanel"
+              @updatingTable=" e => updatingTable(panel, e)"
             />
             <add-panel @addNewPanel="addNewPanel(0)" />
           </v-col>
@@ -273,8 +275,10 @@
                 v-for="panel in rightPanels"
                 :key="panel.id"
                 :panel="panel"
+                :appID="app.id"
                 @deletePanel="deletePanel"
                 @updatePanel="updatePanel"
+                @updatingTable=" e => updatingTable(panel, e)"
               />
               <add-panel @addNewPanel="addNewPanel(1)" />
             </v-col>
@@ -445,6 +449,17 @@ export default {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+
+    updatingTable(panel, table) {
+      const index = panel.tables.map( t => t.id ).indexOf(table.id)
+      if(index > -1) {
+        panel.tables[index] = table
+      } else {
+        panel.tables.push(table)
+      }
+
+      panel.tables = [...panel.tables]
+    },
 
     async confirmingDelete() {
       this.showDeleteDialog = false

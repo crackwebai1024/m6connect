@@ -108,10 +108,28 @@
           </v-btn>
         </v-list-item-action>
       </v-list-item>
+      <v-list-item v-if="showTableCreator" >
+        <table-creator :table="activeAppTable" @updateTable="updatingTable" @close="showTableCreator = false" />
+      </v-list-item>
+      <template v-else >
+        <v-list-item v-for="(table, index) in panel.tables" @click="editingTable(table)" :key="`panel-table-${index}`" >
+          {{ table.title }}   
+        </v-list-item> 
+      </template>
     </v-list>
     <div class="align-start d-flex">
       <div class="overflow-hidden w-full">
         <add-field @addNewField="addNewField" />
+        <span class="blue--text"> / </span>
+        <v-btn 
+          :disabled="showTableCreator"
+          color="transparent" 
+          class="blue--text capitalize px-1" 
+          elevation="0" 
+          @click="createNewTable" 
+        >
+          Add Table
+        </v-btn>
       </div>
     </div>
     <field
@@ -140,6 +158,7 @@
 import AddField from '@/components/AppBuilder/Buttons/AddField'
 import Field from '@/components/AppBuilder/Modals/Field'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import TableCreator from '@/components/AppBuilder/GenericTable'
 import { mapActions, mapMutations } from 'vuex'
 
 export default {
@@ -148,7 +167,8 @@ export default {
   components: {
     DeleteDialog,
     AddField,
-    Field
+    Field,
+    TableCreator
   },
 
   props: {
@@ -156,6 +176,10 @@ export default {
       default: () => ({}),
       required: false,
       type: Object
+    },
+    appID: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -182,7 +206,9 @@ export default {
         // eslint-disable-next-line camelcase
         referenced_field: null
       },
-      loading: false
+      loading: false,
+      showTableCreator: false,
+      activeAppTable: {}
     }
   },
 
@@ -191,10 +217,39 @@ export default {
       updatePanel: 'updatePanel'
     }),
 
+    ...mapActions('AppTables', {
+      createAppTable: 'createTable'
+    }),
+
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+
+    updatingTable(table) { 
+      this.activeAppTable = {...table}
+      this.$emit('updatingTable', table)
+    },
+
+    editingTable(table){
+      this.activeAppTable = table
+      if( !this.$h.dg(this.activeAppTable, 'fields', []).length ) this.activeAppTable.fields = []
+
+      this.$nextTick( () => { this.showTableCreator = true })
+    },
+
+    async createNewTable() {
+      try {
+        this.loading = true
+        this.activeAppTable = await this.createAppTable({ panel_id: this.panel.id, title: 'New Table', app_id: this.appID })
+        this.activeAppTable.fields = []
+        this.$nextTick( () => { this.showTableCreator = true })
+        this.loading = false
+      } catch(e) {
+        this.loading = false
+        this.notifDanger('There was an error while creating the table')
+      }
+    },
 
     async updatingPanel() {
       try {

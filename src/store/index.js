@@ -27,7 +27,7 @@ import hideCpmPanels from '@/modules/cpm/store/hide-cpm-panels'
 import ganttSettings from '@/modules/cpm/store/gantt-settings'
 import gantt from '@/modules/cpm/store/gantt'
 import cpm from '@/modules/cpm/store'
-
+import AppTables from '@/store/modules/AppTables.js'
 import companies from '@/modules/cpm/store/companies'
 import ImportCPM from './modules/ImportCPM'
 
@@ -191,6 +191,7 @@ export default new Vuex.Store({
     ImportCPM,
     RecordsInstance,
     cpm,
-    WorkActivity
+    WorkActivity,
+    AppTables
   }
 })

@@ -313,6 +313,18 @@ export default {
     recordID: {
       type: Number,
       default: 0
+    },
+    table: {
+      type: Object,
+      default: () => ({})
+    },
+    inheritedEditMode: {
+      type: Boolean,
+      default: false
+    },
+    data: {
+      type: Object,
+      default: () => ({})
     }
   },
 
@@ -357,7 +369,8 @@ export default {
     statusOptions: ['Published', 'Draft', 'Archived'],
     recordsByAppsList: {},
     showIndexFields: [],
-    editMode: 0
+    editMode: 0,
+    tableRowID: 0
   }),
 
   computed: {
@@ -371,6 +384,24 @@ export default {
   watch: {
     $route() {
       this.loadingData()
+    },
+    inheritedEditMode: {
+      handler: function(val){
+        this.editMode = val ? 1 : 0
+      },
+      immediate: true
+    },
+    data: { // for table view
+      handler: function(value) {
+        let val = {...value}
+        if( !Object.keys(val).length ) return
+        this.typesToIds = { ...val.metadata.typesToIds }
+        this.tableRowID = val.metadata.tableRowID
+        delete val.metadata
+        this.isEdit = true
+        this.genericRecord = {...val}
+      },
+      immediate: true
     }
   },
 
@@ -462,6 +493,7 @@ export default {
 
         this.notifSuccess('The values were saved')
         this.loading = false
+        this.$emit('closing', { ...this.genericRecord })
       } catch (e) {
         this.notifDanger('The was an error while saving')
         this.loading = false
@@ -500,6 +532,7 @@ export default {
         await this.saveStandardFields()
         this.notifSuccess('The values were updated')
         this.loading = false
+        this.$emit('closing', {...this.genericRecord})
       } catch (e) {
         this.notifDanger('The was an error while updated')
         this.loading = false
@@ -518,7 +551,8 @@ export default {
           const res = value.map(v => ({
             value: v,
             field_id: idForUpdate,
-            record_id: recordIdForUpdate
+            record_id: recordIdForUpdate,
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           }))
           fields = [...fields, ...res]
         } else if (Object.prototype.toString.call(value) === '[object Object]') {
@@ -527,14 +561,16 @@ export default {
           fields.push({
             value,
             field_id: idForUpdate,
-            record_id: recordIdForUpdate
+            record_id: recordIdForUpdate,
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           })
         } else {
           if (value === 'true' || value === 'false') value = value === 'true'
           fields.push({
             value,
             field_id: idForUpdate,
-            record_id: recordIdForUpdate
+            record_id: recordIdForUpdate,
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           })
         }
       }
@@ -551,7 +587,10 @@ export default {
     },
 
     async loadingData() {
-      if ((this.$route.name === 'record.show' && Object.keys(this.panel).length > 0) || this.$route.name === 'home') {
+      if (
+        (this.$route.name === 'record.show' && ( Object.keys(this.panel).length > 0) ) || 
+        this.$route.name === 'home') 
+      {
         try {
           this.loading = true
           const ids = this.fields.map(f => f.id)
