@@ -288,22 +288,11 @@ export default {
     DeleteDialog
   },
 
-  data: () => ({
-    tabs: [],
-    currentTab: 0,
-    loading: false,
-    showDeleteDialog: false,
-    currentApp: {},
-    headerBackgroundColor: '#fff',
-    headerTextColor: '#aaa'
-  }),
-
   mounted() {
     this.$store.dispatch('AppBuilder/getApp', this.$route.params.id).then(res => {
       this.currentApp = res
       if (res.metadata) {
         this.currentApp.metadata = JSON.parse(res.metadata)
-        console.log(this.currentApp.metadata)
         this.headerBackgroundColor = this.currentApp.metadata.appHeader ? this.currentApp.metadata.appHeader.headerBackgroundColor : '#fff'
         this.headerTextColor = this.currentApp.metadata.appHeader ? this.currentApp.metadata.appHeader.headerTextColor : '#AAA'
       } else {
@@ -410,10 +399,14 @@ export default {
   data: () => ({
     tabs: [],
     currentTab: 0,
+    loading: false,
     editTitleMode: false,
     updatedTitle: '',
     loading: false,
-    showDeleteDialog: false
+    currentApp: {},
+    showDeleteDialog: false,
+    headerBackgroundColor: '#fff',
+    headerTextColor: '#aaa'
   })
 
 }
