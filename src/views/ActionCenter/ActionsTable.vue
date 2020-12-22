@@ -8,7 +8,6 @@
           :items-per-page="10"
           :loading="loading"
         >
-
           <template v-slot:item.description="{ item }">
             <span>{{ item.description.substr(0, 25) }}</span>
           </template>
@@ -19,7 +18,8 @@
 
           <template v-slot:item.assignees="{ item }">
             <v-avatar
-              v-for="assignee in item.assignees"
+              v-for="(assignee, index) in item.assignees"
+              :key="'assignee'+ index"
               size="28"
               style="margin-left:-5px"
             >
@@ -38,20 +38,26 @@
 
           <template v-slot:item.actions="{ item }">
             <v-icon
-              small
               class="mr-2"
+              small
               @click="showEditActivityDialog(item)"
-            >mdi-pencil</v-icon>
+            >
+              mdi-pencil
+            </v-icon>
             <v-icon
               small
               @click="showConfirmDeleteDialog(item)"
-            >mdi-delete</v-icon>
+            >
+              mdi-delete
+            </v-icon>
           </template>
-
         </v-data-table>
       </v-col>
 
-      <v-dialog v-model="dialogEdit" max-width="450px">
+      <v-dialog
+        v-model="dialogEdit"
+        max-width="450px"
+      >
         <v-card>
           <v-card-title>Edit activity</v-card-title>
           <v-card-text>
@@ -61,46 +67,46 @@
                   <v-text-field
                     v-model="editingActivity.title"
                     label="Title"
-                  ></v-text-field>
+                  />
                 </v-col>
 
                 <v-col cols="12">
                   <v-text-field
                     v-model="editingActivity.description"
                     label="Summary"
-                  ></v-text-field>
+                  />
                 </v-col>
 
                 <v-col cols="12">
                   <v-text-field
                     v-model="editingActivity.status"
                     label="Status"
-                  ></v-text-field>
+                  />
                 </v-col>
 
                 <v-col cols="12">
                   <v-menu
                     v-model="startDatePicker"
                     :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
                     min-width="290px"
+                    :nudge-right="40"
+                    offset-y
+                    transition="scale-transition"
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
                         v-model="editingActivity.start_date"
+                        v-bind="attrs"
                         label="Start date"
                         prepend-icon="mdi-calendar"
                         readonly
-                        v-bind="attrs"
                         v-on="on"
-                      ></v-text-field>
+                      />
                     </template>
                     <v-date-picker
                       v-model="editingActivity.start_date"
                       @input="startDatePicker = false"
-                    ></v-date-picker>
+                    />
                   </v-menu>
                 </v-col>
 
@@ -108,25 +114,25 @@
                   <v-menu
                     v-model="dueDatePicker"
                     :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
                     min-width="290px"
+                    :nudge-right="40"
+                    offset-y
+                    transition="scale-transition"
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
                         v-model="editingActivity.due_date"
+                        v-bind="attrs"
                         label="Due date"
                         prepend-icon="mdi-calendar"
                         readonly
-                        v-bind="attrs"
                         v-on="on"
-                      ></v-text-field>
+                      />
                     </template>
                     <v-date-picker
                       v-model="editingActivity.due_date"
                       @input="dueDatePicker = false"
-                    ></v-date-picker>
+                    />
                   </v-menu>
                 </v-col>
 
@@ -134,25 +140,25 @@
                   <v-menu
                     v-model="endDatePicker"
                     :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
                     min-width="290px"
+                    :nudge-right="40"
+                    offset-y
+                    transition="scale-transition"
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
                         v-model="editingActivity.end_date"
+                        v-bind="attrs"
                         label="End date"
                         prepend-icon="mdi-calendar"
                         readonly
-                        v-bind="attrs"
                         v-on="on"
-                      ></v-text-field>
+                      />
                     </template>
                     <v-date-picker
                       v-model="editingActivity.end_date"
                       @input="endDatePicker = false"
-                    ></v-date-picker>
+                    />
                   </v-menu>
                 </v-col>
 
@@ -184,38 +190,63 @@
             </v-container>
           </v-card-text>
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialogEdit = false">
+            <v-spacer />
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="dialogEdit = false"
+            >
               Cancel
             </v-btn>
-            <v-btn color="blue darken-1" text @click="saveActivity">
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="saveActivity"
+            >
               Save
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
 
-      <v-dialog v-model="dialogDelete" max-width="600px">
+      <v-dialog
+        v-model="dialogDelete"
+        max-width="600px"
+      >
         <v-card>
-          <v-card-title class="headline">Are you sure you want to delete this activity?</v-card-title>
+          <v-card-title class="headline">
+            Are you sure you want to delete this activity?
+          </v-card-title>
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialogDelete = false">
+            <v-spacer />
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="dialogDelete = false"
+            >
               Cancel
             </v-btn>
-            <v-btn color="red darken-1" text @click="deleteActivity">
+            <v-btn
+              color="red darken-1"
+              text
+              @click="deleteActivity"
+            >
               OK
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
-
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapMutations, mapActions, mapState, mapGetters } from 'vuex'
+import {
+  mapMutations,
+  mapActions,
+  mapState,
+  mapGetters
+} from 'vuex'
 import { pick } from 'lodash'
 
 export default {
@@ -234,7 +265,7 @@ export default {
       { text: 'Start Date', value: 'start_date' },
       { text: 'Due Date', value: 'due_date' },
       { text: 'End Date', value: 'end_date' },
-      { text: 'Actions', value: 'actions' },
+      { text: 'Actions', value: 'actions' }
     ],
     editingActivity: {},
     deletingActivity: {},
@@ -243,12 +274,12 @@ export default {
     loading: false,
     startDatePicker: false,
     dueDatePicker: false,
-    endDatePicker: false,
+    endDatePicker: false
   }),
 
   computed: {
     ...mapState('WorkActivity', {
-      activities: (state) => state.list
+      activities: state => state.list
     }),
     ...mapGetters('Companies', {
       companyUsers: 'getCurrentCompanyUsers'
@@ -268,21 +299,21 @@ export default {
     ...mapActions('WorkActivity', {
       getActivityList: 'getList',
       saveActivityItem: 'updateWork',
-      deleteActivityItem: 'deleteWork',
+      deleteActivityItem: 'deleteWork'
     }),
-    
+
     showEditActivityDialog(activity) {
       this.editingActivity = {
         ...activity,
         assignment_list: activity.assignees.map(u => u.id),
-        preview_list: activity.assignees.map(u => u.id),
-      };
-      this.dialogEdit = true;
+        preview_list: activity.assignees.map(u => u.id)
+      }
+      this.dialogEdit = true
     },
 
     showConfirmDeleteDialog(activity) {
-      this.deletingActivity = activity;
-      this.dialogDelete = true;
+      this.deletingActivity = activity
+      this.dialogDelete = true
     },
 
     async saveActivity() {
@@ -294,8 +325,8 @@ export default {
           'assignment_list', 'preview_list'
         )
 
-        await this.saveActivityItem({ id: this.editingActivity.id, activity });
-        this.loading = false;
+        await this.saveActivityItem({ id: this.editingActivity.id, activity })
+        this.loading = false
         this.dialogEdit = false
       } catch (e) {
         this.loading = false
@@ -306,16 +337,16 @@ export default {
 
     async deleteActivity() {
       try {
-        this.loading = true;
-        await this.deleteActivityItem(this.deletingActivity.id);
-        this.loading = false;
+        this.loading = true
+        await this.deleteActivityItem(this.deletingActivity.id)
+        this.loading = false
         this.dialogDelete = false
       } catch (e) {
         this.loading = false
         this.dialogDelete = false
         this.notifDanger('There was an error while deleting activity')
       }
-    },
+    }
   },
 
   async mounted() {

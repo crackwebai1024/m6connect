@@ -16,130 +16,157 @@
     >
       <v-icon>mdi-account-hard-hat</v-icon>
     </v-btn>
-    <div
-      class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative w-full"
+    <v-btn
+      absolute
+      color="primary"
+      dark
+      fab
+      left
+      small
+      style="top: 75px"
+      top
+      @click="showHeaderColor = !showHeaderColor"
     >
-      <div class="align-center d-flex">
-        <div class="grey lighten-3 pa-16">
-          <v-icon
-            class="grey--text text--lighten-1"
-            size="38"
-          >
-            mdi-image-filter-hdr
-          </v-icon>
-        </div>
-        <div class="ml-8">
-          <p class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl">
-            Record Title
-          </p><p />
-          <add-field @addNewField="addNewField" />
-          <v-list>
-            <v-list-item
-              v-for="field in app.fields"
-              :key="field.id"
-              class="my-0 py-0"
-            >
-              <v-list-item-content @click="editField(field)">
-                <v-list-item-title>{{ field.label }}</v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-action class="my-0 py-0">
-                <v-btn
-                  icon
-                  @click="showDelete(field)"
-                >
-                  <v-icon color="red lighten-3">
-                    mdi-delete
-                  </v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list>
-        </div>
-      </div>
-      <div
-        class="flex-space-between"
+      <v-icon>mdi-format-color-fill</v-icon>
+    </v-btn>
+    <v-dialog
+      v-model="showHeaderColor"
+      width="800"
+    >
+      <header-builder-dialog
+        @selectHeaderAction="selectHeaderAction"
+      />
+    </v-dialog>
+    <v-card
+      class="d-flex justify-center rounded-0 w-full"
+      flat
+    >
+      <v-card
+        class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 relative rounded-0 w-full"
+        flat
       >
-        <template v-if="app.iconLink !== ''">
-          <div style="display: flex" >
+        <div class="align-center d-flex">
+          <div class="grey lighten-3 pa-16">
+            <v-icon
+              class="grey--text text--lighten-1"
+              size="38"
+            >
+              mdi-image-filter-hdr
+            </v-icon>
+          </div>
+          <div class="ml-8">
+            <p class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl">
+              Record Title
+            </p><p />
+            <add-field @addNewField="addNewField" />
+            <v-list>
+              <v-list-item
+                v-for="field in app.fields"
+                :key="field.id"
+                class="my-0 py-0"
+              >
+                <v-list-item-content @click="editField(field)">
+                  <v-list-item-title>{{ field.label }}</v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action class="my-0 py-0">
+                  <v-btn
+                    icon
+                    @click="showDelete(field)"
+                  >
+                    <v-icon color="red lighten-3">
+                      mdi-delete
+                    </v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </div>
+        </div>
+        <div
+          class="flex-space-between"
+        >
+          <template v-if="app.iconLink !== ''">
+            <div style="display: flex" >
             <v-btn color="red darken-2" @click="deleteIconLink" x-small dark fab >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-            <img
+              <img
               class="app-icon-link pr-2"
               :src="app.iconLink"
             >
           </div>
-        </template>
-        <template v-else>
-          <v-avatar
-            class="pointer"
-            :color="iconBackgroundColor"
-            size="100"
-            @click="iconBuilderModal=true"
-          >
-            <v-icon
-              :color="iconColor"
-              size="60"
+          </template>
+          <template v-else>
+            <v-avatar
+              class="pointer"
+              :color="iconBackgroundColor"
+              size="100"
+              @click="iconBuilderModal=true"
             >
-              {{ iconName }}
-            </v-icon>
-          </v-avatar>
-          <v-dialog
-            v-model="iconBuilderModal"
-            width="800"
-          >
-            <icon-builder-dialog
-              @selectIconAction="selectIconAction"
+              <v-icon
+                :color="iconColor"
+                size="60"
+              >
+                {{ iconName }}
+              </v-icon>
+            </v-avatar>
+            <v-dialog
+              v-model="iconBuilderModal"
+              width="800"
+            >
+              <icon-builder-dialog
+                @selectIconAction="selectIconAction"
+              />
+            </v-dialog>
+          </template>
+          <v-form ref="formApp">
+            <v-text-field
+              v-model="app.title"
+              class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+              label="App Title"
+              :rules="rules.generic"
             />
-          </v-dialog>
-        </template>
-        <v-form ref="formApp">
-          <v-text-field
-            v-model="app.title"
-            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
-            label="App Title"
-            :rules="rules.generic"
-          />
-          <v-text-field
-            v-model="app.prefix"
-            class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
-            label="App Prefix"
-            maxlength="3"
-            :rules="rules.generic"
-          />
-          <m6-upload
-            btn-button="purple"
-            @loading="loading = !loading"
-            @response="responseAppLogo"
-          >
-            <v-icon>mdi-cloud-upload</v-icon>
-          </m6-upload>
-          <v-btn
-            class="white--text"
-            color="red darken-2"
-            @click="showDeleteDialog = true"
-          >
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
-          <v-btn
-            class="white--text"
-            color="grey darken-2"
-            style="float: left;"
-            @click="tableView"
-          >
-            Table View
-          </v-btn>
-          <v-btn
-            class="white--text"
-            color="green darken-2"
-            style="float: right;"
-            @click="updatingApp"
-          >
-            save
-          </v-btn>
-        </v-form>
-      </div>
-    </div>
+            <v-text-field
+              v-model="app.prefix"
+              class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+              label="App Prefix"
+              maxlength="3"
+              :rules="rules.generic"
+            />
+            <m6-upload
+              btn-button="purple"
+              @loading="loading = !loading"
+              @response="responseAppLogo"
+            >
+              <v-icon>mdi-cloud-upload</v-icon>
+            </m6-upload>
+            <v-btn
+              class="white--text"
+              color="red darken-2"
+              @click="showDeleteDialog = true"
+            >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <v-btn
+              class="white--text"
+              color="grey darken-2"
+              style="float: left;"
+              @click="tableView"
+            >
+              Table View
+            </v-btn>
+            <v-btn
+              class="white--text"
+              color="green darken-2"
+              style="float: right;"
+              @click="updatingApp"
+            >
+              save
+            </v-btn>
+          </v-form>
+        </div>
+      </v-card>
+    </v-card>
 
     <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
     <template v-if="showActions">
@@ -350,6 +377,7 @@ import Field from '@/components/AppBuilder/Modals/Field'
 import TableView from '@/components/AppBuilder/Modals/TableView'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import IconBuilderDialog from '@/components/Dialogs/IconBuilderDialog'
+import HeaderBuilderDialog from '@/components/Dialogs/HeaderBuilderDialog'
 import TabUpdates from '@/components/AppBuilder/Modals/TabUpdates'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import AppActivities from '@/views/AppBuilder/AppActivities'
@@ -369,7 +397,8 @@ export default {
     ProjectSocialMedia,
     AppActivities,
     TableView,
-    IconBuilderDialog
+    IconBuilderDialog,
+    HeaderBuilderDialog
   },
 
   data: () => ({
@@ -407,7 +436,10 @@ export default {
     iconBuilderModal: false,
     iconName: '',
     iconBackgroundColor: '',
-    iconColor: ''
+    iconColor: '',
+    showHeaderColor: false,
+    headerBackgroundColor: '',
+    headerTextColor: ''
   }),
 
   computed: {
@@ -431,10 +463,14 @@ export default {
         this.iconName = this.app.metadata.appIcon ? this.app.metadata.appIcon.icon : 'mdi-account-circle'
         this.iconBackgroundColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.background : '#AAA'
         this.iconColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.iconColor : '#AAA'
+        this.headerBackgroundColor = this.app.metadata.appHeader ? this.app.metadata.appHeader.headerBackgroundColor : '#fff'
+        this.headerTextColor = this.app.metadata.appHeader ? this.app.metadata.appHeader.headerTextColor : '#AAA'
       } else {
         this.iconName = 'mdi-account-circle'
         this.iconBackgroundColor = '#AAA'
         this.iconColor = '#AAA'
+        this.headerBackgroundColor = '#fff'
+        this.headerTextColor = '#AAA'
       }
 
       if (Object.keys(this.app).length === 0) this.$router.push('/')
@@ -692,6 +728,36 @@ export default {
         this.iconName = iconInfo.icon
         this.iconBackgroundColor = iconInfo.background
         this.iconColor = iconInfo.iconColor
+      }
+    },
+
+    async selectHeaderAction(selected, headerInfo) {
+      this.showHeaderColor = !this.showHeaderColor
+      if (selected) {
+        this.headerBackgroundColor = headerInfo.headerBackgroundColor
+        this.headerTextColor = headerInfo.headerTextColor
+        this.loading = true
+
+        try {
+          const res = await this.updateApp({
+            params: {
+              ...this.app,
+              metadata: {
+                ...this.app.metadata,
+                appHeader: {
+                  headerBackgroundColor: this.headerBackgroundColor,
+                  headerTextColor: this.headerTextColor
+                }
+              }
+            }
+          })
+          this.loading = false
+          this.notifSuccess('Updated!')
+        } catch (e) {
+          this.loading = false
+          this.notifDanger('There was an error while updating')
+          return e
+        }
       }
     },
 
