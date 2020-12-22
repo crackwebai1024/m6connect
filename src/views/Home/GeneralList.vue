@@ -218,7 +218,7 @@ export default {
       this.loading = true
       this.getDynamicApps(appId).then(() => {
         const temp = this.list()
-        this.dynamicTableHeader = this.headers.slice(0, 12)
+        this.dynamicTableHeader = this.headers.slice(0, 11)
 
         const fields = this.getFieldList()
         temp.map((row, index) => {
@@ -227,7 +227,8 @@ export default {
               if (!this.dynamicTableHeader.find(row => row.value === `${field.type}-${findex}`)) {
                 this.dynamicTableHeader.push({
                   text: this.stringToUpercase(field.label),
-                  value: field.type + '-' + findex
+                  value: field.type + '-' + findex,
+                  type: field.type
                 })
               }
               row[field.type + '-' + findex] = field.value
