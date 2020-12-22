@@ -151,7 +151,9 @@ export default {
     
     computed: {
         headers() {
-            let headers = this.$h.dg(this.table, 'fields', []).map( f => ({ text: f.label, value: f.id }) )
+            const fields = [...this.table.fields]
+            fields.sort(function(a,b){ return a.order - b.order })
+            let headers = fields.map( f => ({ text: f.label, value: f.id }) )
             headers.push({ text: 'Actions', value: 'actions' })
             return headers
         },

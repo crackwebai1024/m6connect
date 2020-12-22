@@ -10,16 +10,35 @@
           :items="table.fields"
           :items-per-page="5"
         >
-          <template v-slot:item.fieldName="{ item }">
-            {{ item.label }}
-          </template>
-          <template v-slot:item.action="{ item }">
-            <v-btn fab icon x-small color="green darken-1" @click="editingField(item)" >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn fab icon x-small color="red darken-1" @click="deletingField(item)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+          <template v-slot:body="props">
+            <draggable
+              :list="table.fields"
+              tag="tbody"
+            >
+              <template v-if="props.items.length === 0">
+                <tr>
+                  <td colspan="2">
+                    no fields
+                  </td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr
+                  v-for="(row, index) in props.items"
+                  :key="index"
+                >
+                  <td>{{ row.label }}</td>
+                  <td>
+                    <v-btn fab icon x-small color="green darken-1" @click="editingField(row)" >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn fab icon x-small color="red darken-1" @click="deletingField(row)">
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </template>
+            </draggable>
           </template>
         </v-data-table>
       </v-card-text>
@@ -47,6 +66,7 @@
 import AddField from '@/components/AppBuilder/Buttons/AddField'
 import Field from '@/components/AppBuilder/Modals/Field'
 import { mapMutations, mapActions } from 'vuex'
+import Draggable from 'vuedraggable'
 
 export default {
   props: {
@@ -58,7 +78,8 @@ export default {
 
   components: {
     AddField,
-    Field
+    Field,
+    Draggable
   },
 
   data: () => ({
@@ -83,7 +104,8 @@ export default {
       { text: 'Field Name',value: "fieldName" }, 
       { text: 'Actions', value: 'action', sortable: false } 
     ],
-    loading: false
+    loading: false,
+    fieldsOriginal: []
   }),
 
   methods: {
@@ -93,7 +115,7 @@ export default {
 
     ...mapActions('AppTables', {
       getTableFields: 'getTableFields',
-
+      updateFieldsList: 'updateFieldsList',
       updateTable: 'updateTable'
     }),
     
@@ -147,14 +169,31 @@ export default {
       try {
         this.loading = true
         await this.updateTable(this.table)
+
+        if(this.table.fields) {
+          this.table.fields.map((f, index) => {
+            f.order = index
+          })
+          await this.updateFieldsList({ fields: this.table.fields })
+        }
+      
         this.$emit('updateTable', this.table)
         this.loading = false
       } catch(e) {
         this.notifDanger('There was an error while updating the table')
         this.loading = false
       }
-    }
+    },
+  },
 
+  watch: {
+    table: {
+      handler: function(val) {
+        this.fieldsOriginal = [...val.fields]
+        val.fields = val.fields.sort(function(a,b){ return a.order - b.order })
+      },
+      immediate: true
+    }
   },
 
   async mounted() {
