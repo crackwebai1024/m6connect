@@ -55,12 +55,6 @@
                 @change="onFileChange"
               >
             </v-form>
-            <div
-              v-for="i in 200"
-              :key="i"
-            >
-              lala<br>
-            </div>
 
             <v-divider class="grey lighten-3 my-2 z-index" />
             <!-- File Upload Errors -->
