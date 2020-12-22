@@ -144,6 +144,7 @@ export const en = {
     dateCreated: 'Date Created',
     dateOpened: 'Date Opened',
     datePaid: 'Date Paid',
+    datePosted: 'Date Posted',
     day: 'Day',
     decline: 'Decline',
     declined: 'Declined',
@@ -1627,7 +1628,7 @@ export const en = {
       cost: 'Cost',
       costOptions: {
         budgetStatus: 'Budget Status',
-        budgetCat: 'Budget Categories',
+        budgetCat: 'Cost Element Category',
         budgetTypes: 'Budget Types',
         budgetLineItems: 'Budget Line Items',
         changesReasons: 'Change Reason',

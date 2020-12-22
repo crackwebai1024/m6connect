@@ -13,6 +13,9 @@
           </v-card-title>
           <v-divider class="grey lighten-3 z-index" />
           <v-card-text class="pb-5 px-6">
+            <!--            <template v-for="field in selectFields">-->
+            <!--              {{ field.value }} <br>-->
+            <!--            </template>-->
             <div v-if="$route.query.dev === 'dev'">
               <h5>Developer Tools</h5>
               <v-btn @click="useHistorical">
@@ -341,10 +344,26 @@ export default {
           },
           {
             name: 'Title',
-            value: 'title'
+            description: ''
           },
           {
-            name: 'Description',
+            name: 'CPA',
+            description: ''
+          },
+          {
+            name: 'CPA Capital With Cont',
+            description: ''
+          },
+          {
+            name: 'CPA Capital',
+            description: ''
+          },
+          {
+            name: 'YTD Actuals Expenses',
+            description: ''
+          },
+          {
+            name: 'YTD Actuals Capitals',
             description: ''
           },
           {
@@ -356,7 +375,11 @@ export default {
             description: ''
           },
           {
-            name: 'Contractor',
+            name: 'General Contractor',
+            description: ''
+          },
+          {
+            name: 'Project Manager',
             description: ''
           },
           {
@@ -373,6 +396,10 @@ export default {
           },
           {
             name: 'Phase',
+            description: ''
+          },
+          {
+            name: 'Status',
             description: ''
           },
           {
@@ -566,6 +593,47 @@ export default {
           },
           {
             name: 'Cost Code Number',
+            description: ''
+          }
+        ],
+        schedule: [
+          {
+            header: 'Schedule & Budget'
+          },
+          {
+            name: 'Phase',
+            description: ''
+          },
+          {
+            name: 'Target Date / Phase',
+            description: ''
+          },
+          {
+            name: 'Construction Start',
+            description: ''
+          },
+          {
+            name: 'Anticipated Construction Finish',
+            description: ''
+          },
+          {
+            name: 'Complete Budget',
+            description: ''
+          },
+          {
+            name: 'Complete Schedule',
+            description: ''
+          },
+          {
+            name: 'Complete Overall',
+            description: ''
+          },
+          {
+            name: 'Budget Status',
+            description: ''
+          },
+          {
+            name: 'Total Project Budget',
             description: ''
           }
         ]
@@ -985,11 +1053,7 @@ export default {
         .collection('line_items')
         .where('line_number', '==', number.toString())
         .get()
-      if (docs.empty) {
-        return false
-      } else {
-        return true
-      }
+      return !docs.empty
     },
     async getSpending(projectID, number) {
       const docs = await db.collection('cpm_projects')
@@ -1056,9 +1120,31 @@ export default {
         title: item.projects_title || item.projects_id_number.toString() || 'New Project',
         forecasted: false,
         creator: {},
+        createdBy: 'm6works_import_tool',
         spendingsByPeriod: {},
         capitalPlans: [],
         priority: '',
+        basic: {
+          cPA: item.projects_cpa,
+          cPACaptial: item.projects_cpa_capital,
+          cPACapitalWithCont: item.projects_cpa_capital_with_cont,
+          category1: item.projects_category,
+          generalContractor: item.projects_general_contractor,
+          projectManager: item.projects_project_manager,
+          yTDActualsCapitals: item.projects_ytd_actuals_capitals,
+          yTDActualsExpenses: item.projects_ytd_actuals_expenses
+        },
+        schedule: {
+          phase: item.schedule_phase,
+          targetDatePhase: item.schedule_target_date___phase,
+          constructionStart: item.schedule_construction_start,
+          anticipatedConstructionFinish: item.schedule_anticipated_construction_finish,
+          completeBudget: item.schedule_complete_budget,
+          completeSchedule: item.schedule_complete_schedule,
+          complete: item.schedule_complete_overall,
+          budgetStatus: item.schedule_budget_status,
+          totalProjectBudget: item.schedule_total_project_budget
+        },
         totals: {
           budgetTotal: 0,
           commitmentTotal: 0,

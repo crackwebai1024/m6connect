@@ -46,7 +46,7 @@
                 v-else
                 class="text-center"
               >
-                Search Budget Categories
+                Search Cost Element Category
               </div>
             </div>
 

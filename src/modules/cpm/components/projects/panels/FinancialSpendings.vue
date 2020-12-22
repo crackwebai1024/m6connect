@@ -301,7 +301,7 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
-                        {{ $t('general.invoiceNumber') }}
+                        {{ $t('general.documentNumber') }}
                       </v-col>
                       <v-col class="shrink">
                         <span style="color: red;">*</span>
@@ -313,7 +313,7 @@
                   <v-text-field
                     ref="number"
                     v-model="dialogProperties.number"
-                    :label="$t('general.invoiceNumber')"
+                    :label="$t('general.documentNumber')"
                     :rules="[rules.required]"
                   />
                 </v-col>
@@ -327,7 +327,7 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
-                        {{ $tc('general.documentNumber') }}
+                        {{ $tc('general.invoiceNumber') }}
                       </v-col>
                       <v-col class="shrink" />
                     </v-row>
@@ -337,7 +337,7 @@
                   <v-text-field
                     ref="docNumber"
                     v-model="dialogProperties.docNumber"
-                    :label="$t('general.documentNumber')"
+                    :label="$t('general.invoiceNumber')"
                   />
                 </v-col>
               </v-row>
@@ -446,7 +446,10 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
-                        {{ $t('general.dateOpened') }}
+                        {{ $t('general.datePosted') }}
+                      </v-col>
+                      <v-col class="shrink">
+                        <span style="color:red;">*</span>
                       </v-col>
                     </v-row>
                   </div>
@@ -462,9 +465,10 @@
                     <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="dialogProperties.dateOpenedText"
-                        :label="$t('general.dateOpened')"
+                        :label="$t('general.datePosted')"
                         prepend-icon="mdi-calendar"
                         readonly
+                        :rules="[rules.required]"
                         v-on="on"
                         @blur="
                           openedDate = parseDate(
@@ -512,9 +516,6 @@
                       <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.datePaid') }}
                       </v-col>
-                      <v-col class="shrink">
-                        <span style="color:red;">*</span>
-                      </v-col>
                     </v-row>
                   </div>
                 </v-col>
@@ -532,7 +533,6 @@
                         :label="$t('general.datePaid')"
                         prepend-icon="mdi-calendar"
                         readonly
-                        :rules="[rules.required]"
                         v-on="on"
                         @blur="
                           paidDate = parseDate(dialogProperties.paidDateText)
