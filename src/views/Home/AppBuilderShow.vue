@@ -49,6 +49,10 @@
             <v-icon>mdi-cloud-upload</v-icon>
           </m6-upload>
 
+          <v-btn v-if="record.image" color="red darken-2" small icon @click="deleteRecordImage" >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+
           <div class="pl-8 w-full">
             <p class="font-weight-regular mb-1 text-h7">
               {{ record['record_number'] }}
@@ -327,8 +331,30 @@ export default {
     ...mapActions('AppBuilder', {
       updateRecord: 'updateRecord'
     }),
+    ...mapActions('File', {
+      deleteFileFromS3: 'deleteFileFromS3'
+    }),
     deletingRecord() {
       this.showDeleteDialog = true
+    },
+    async deleteRecordImage() {
+      try {
+        this.loading = true 
+        if(this.$h.dg(this.record, 'image', '').length ) { 
+          let splitLink = this.record.image.split('com')
+          const key = splitLink[1].substr(1)
+
+          await this.deleteFileFromS3({ key })
+          this.record.image = ""
+          await this.updateRecord(this.record)
+        }
+        
+        this.loading = false
+        this.notifSuccess('The image was deleted')
+      } catch(e) {
+        this.notifDanger('There was an error while deleting App Icon Image')
+        this.loading = false
+      }
     },
     async confirmDelete() {
       this.showDeleteDialog = false

@@ -60,11 +60,15 @@
         class="flex-space-between"
       >
         <template v-if="app.iconLink !== ''">
-          <img
-            alt=""
-            class="app-icon-link pr-2"
-            :src="app.iconLink"
-          >
+          <div style="display: flex" >
+            <v-btn color="red darken-2" @click="deleteIconLink" x-small dark fab >
+              <v-icon>mdi-delete</v-icon>
+            </v-btn>
+            <img
+              class="app-icon-link pr-2"
+              :src="app.iconLink"
+            >
+          </div>
         </template>
         <template v-else>
           <v-avatar
@@ -450,6 +454,30 @@ export default {
       notifSuccess: 'notifSuccess'
     }),
 
+    ...mapActions('File', {
+      deleteFileFromS3: 'deleteFileFromS3'
+    }),
+
+    async deleteIconLink() {
+      try {
+        this.loading = true
+        if(this.$h.dg(this.app, 'iconLink', '').length ) {
+          let splitLink = this.app.iconLink.split('com')
+          const key = splitLink[1].substr(1)
+
+          await this.deleteFileFromS3({ key })
+          this.app.iconLink = ""
+          await this.updateApp({ params: this.app })
+        }
+
+        this.loading = false
+        this.notifSuccess('The image was deleted')
+      } catch(e) {
+        this.notifDanger('There was an error while deleting App Icon Image')
+        this.loading = false
+      }
+    },
+
     updatingTable(panel, table) {
       const index = panel.tables.map( t => t.id ).indexOf(table.id)
       if(index > -1) {
@@ -702,7 +730,7 @@ export default {
     min-height: 350px;
 }
 .app-icon-link {
-  height: 3rem;
+  height: 5rem;
   width: auto;
   border-radius: 20%;
 }

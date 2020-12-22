@@ -22,7 +22,15 @@ const actions = {
             .then(resolve)
             .catch(reject)
         })
-    } 
+    },
+
+    deleteFileFromS3(_, params) {
+        return new Promise((resolve, reject) => {
+            axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/file/delete`, params)
+            .then(resolve)
+            .catch(reject)
+        })
+    }
 }
 
 export default {
