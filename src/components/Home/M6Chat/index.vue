@@ -8,12 +8,14 @@
         :key="'department-' + index"
         :department="department"
         :last-department=" index !== departments.length - 1 "
+        :light-mode="lightMode"
       />
       <connections
         v-else-if="department.channels.length"
         :key="'department-' + index"
         :department="department"
         :last-department=" index !== departments.length - 1 "
+        :light-mode="lightMode"
       />
     </template>
   </div>
