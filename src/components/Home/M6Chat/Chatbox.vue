@@ -141,79 +141,7 @@
 
           width="50%"
         >
-          <template #activator="">
-            <!--<v-hover
-              v-slot="{ hover }"
-            >
-              <div class="relative">
-                <!--<v-card
-                  v-if="hover"
-                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
-                  style="margin-bottom: -64px; margin-left: -130px;"
-                >
-                  <v-btn
-                    v-bind="attrs"
-                    class="black--text capitalize px-3 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-channel'"
-                  >
-                    Delete Conversation
-                  </v-btn>
-                  <v-btn
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-info'"
-                  >
-                    Information
-                  </v-btn>
-                  <v-btn
-                    v-if="channel.data.created_by.id === user.id"
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-add-user'"
-                  >
-                    Add Users
-                  </v-btn>
-                  <v-btn
-                    v-if="channel.data.created_by.id === user.id"
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-edit'"
-                  >
-                    Edit Configuration
-                  </v-btn>
-                </v-card>
-                <v-btn
-                  class="btn-chat-shadow ml-2"
-                  color="white"
-                  fab
-                  x-small
-                >
-                  <v-icon
-                    size="15"
-                  >
-                    mdi-cogs
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-hover>-->
-          </template>
           <edit-configuration-dialog @close-dialog='() => editConfigurationDialog = false' :channel='channel'/>
-          <!--
-          
-
-          -->
         </v-dialog>
         <v-dialog
           v-else
@@ -1116,8 +1044,7 @@ export default {
       this.showImagesGallery = true
     },
     fetchChatGallery() {
-      console.log('NEW STUFFFFFs')
-      let images = [] //Store image and its message so we can fetch more data lately
+      let images = []
       if (this.messages)  {
         this.messages.forEach(msg => {
         if (typeof(msg.images) != 'undefined' && msg.images.length > 0) {

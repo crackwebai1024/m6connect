@@ -5,27 +5,6 @@
         Invite Colleagues, Customers and Vendors
       </h2>
     </v-card-subtitle>
-    <v-card-title class="pb-6">
-      <v-spacer />
-      <!--<v-btn
-        color="secondary"
-        width="40%"
-        x-large
-        @click="element='company'"
-      >
-        In Company
-      </v-btn>
-      <v-spacer />
-      <v-btn
-        color="secondary"
-        width="40%"
-        x-large
-        @click="element='vendor'"
-      >
-        In Vendors
-      </v-btn>-->
-      <v-spacer />
-    </v-card-title>
     <v-card-text>
       <v-text-field
         v-if="typeof this.currentUsers === 'string'"
@@ -47,8 +26,6 @@
           class='px-5 mx-3'
           color='primary lighten-3'
         >
-          <!--@click="data.select"
-          @click:close="remove(data.item)"-->
           <v-avatar left>
             <v-img v-if="user.profilePic" :src="user.profilePic"></v-img>
             <v-icon v-else>mdi-account</v-icon>
@@ -84,38 +61,6 @@
             </template>
           </template>
         </v-autocomplete>
-        <!--<div
-          v-for="(user, ind) of companies"
-          :key="ind+'-company-user-dialog'"
-          class="align-center d-flex"
-        >
-          <v-btn
-            block
-            class="btn-user my-0 my-2 py-6"
-            color="transparent"
-            depressed
-            tile
-            @click="user['selected'] = !user['selected']"
-          >
-            <v-checkbox
-              v-model="user['selected']"
-              class="mr-2 mt-0"
-              color="success"
-              hide-details
-              :value="user['selected']"
-              @click="user['selected'] = !user['selected']"
-            />
-            
-            {{ `${user.user.firstName} ${user.user.lastName}` }}
-            <v-spacer />
-            <v-chip
-              :color="user.joinStatus.toUpperCase() === 'ACTIVE' ? 'green'
-                : user.joinStatus.toUpperCase() === 'PENDING' ? 'yellow' : 'red'"
-            >
-              <span class="white--text">{{ (user.joinStatus).toLowerCase() }}</span>
-            </v-chip>
-          </v-btn>
-        </div>-->
         <h2
           v-if="companies.length === 0"
           class="font-weight-black mt-2 text-center"
