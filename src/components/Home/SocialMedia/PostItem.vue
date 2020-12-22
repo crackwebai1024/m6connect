@@ -96,7 +96,10 @@
             <slot name="record" />
 
             <template v-if="recordFields">
-              <form-show-generator :recordID="recordID" :fields="recordFields" />
+              <form-show-generator
+                :fields="recordFields"
+                :record-i-d="recordID"
+              />
             </template>
 
             <slot name="assignments" />

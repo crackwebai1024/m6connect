@@ -386,20 +386,20 @@ export default {
       this.loadingData()
     },
     inheritedEditMode: {
-      handler: function(val){
+      handler: function (val) {
         this.editMode = val ? 1 : 0
       },
       immediate: true
     },
     data: { // for table view
-      handler: function(value) {
-        let val = {...value}
-        if( !Object.keys(val).length ) return
+      handler: function (value) {
+        const val = { ...value }
+        if (!Object.keys(val).length) return
         this.typesToIds = { ...val.metadata.typesToIds }
         this.tableRowID = val.metadata.tableRowID
         delete val.metadata
         this.isEdit = true
-        this.genericRecord = {...val}
+        this.genericRecord = { ...val }
       },
       immediate: true
     }
@@ -532,7 +532,7 @@ export default {
         await this.saveStandardFields()
         this.notifSuccess('The values were updated')
         this.loading = false
-        this.$emit('closing', {...this.genericRecord})
+        this.$emit('closing', { ...this.genericRecord })
       } catch (e) {
         this.notifDanger('The was an error while updated')
         this.loading = false
