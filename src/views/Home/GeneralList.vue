@@ -169,7 +169,7 @@ export default {
             prefix: app['prefix'],
             type: 'subtitle',
             iconLink: app['iconLink'],
-            metadata: JSON.parse(app['metadata']),
+            metadata: app['metadata'] ? JSON.parse(app['metadata']) : null,
             bgColor: this.getRandomColor(),
             function: () => {
               this.setFilterTag({ key: 'dynamicApp', value: app['title'] })

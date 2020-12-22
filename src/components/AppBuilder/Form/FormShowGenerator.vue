@@ -587,10 +587,7 @@ export default {
     },
 
     async loadingData() {
-      if (
-        (this.$route.name === 'record.show' && ( Object.keys(this.panel).length > 0) ) || 
-        this.$route.name === 'home') 
-      {
+      if (this.$route.name === 'record.show' && Object.keys(this.panel).length > 0) {
         try {
           this.loading = true
           const ids = this.fields.map(f => f.id)
