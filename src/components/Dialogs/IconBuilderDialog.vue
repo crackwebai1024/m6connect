@@ -22,8 +22,55 @@
           </div>
         </div>
       </v-col>
-      <v-col cols="4">
-        <sketch-picker v-model="iconBackgroundColor" />
+      <v-col
+        class="px-0"
+        cols="4"
+      >
+        <v-tabs
+          v-model="tabsPicker"
+          centered
+        >
+          <v-tab>
+            Background
+          </v-tab>
+          <v-tab>
+            Icon
+          </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="tabsPicker">
+          <v-tab-item>
+            <v-card flat>
+              <v-card-text>
+                <sketch-picker v-model="iconBackgroundColor" />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+          <v-tab-item>
+            <v-card flat>
+              <v-card-text>
+                <sketch-picker v-model="iconColor" />
+              </v-card-text>
+            </v-card>
+          </v-tab-item>
+        </v-tabs-items>
+
+        <div
+          v-if="selectedIcon !== ''"
+          class="align-center d-flex justify-center py-4 w-full"
+        >
+          <v-avatar
+            class="pointer"
+            :color="iconBackgroundColor.hex"
+            size="100"
+          >
+            <v-icon
+              :color="iconColor.hex"
+              size="60"
+            >
+              {{ 'mdi-' + selectedIcon }}
+            </v-icon>
+          </v-avatar>
+        </div>
       </v-col>
     </v-row>
     <v-divider />
@@ -57,10 +104,16 @@ export default {
     'sketch-picker': Sketch
   },
   data: () => ({
-    iconBackgroundColor: {},
+    iconBackgroundColor: {
+      hex: '#000'
+    },
+    iconColor: {
+      hex: '#fff'
+    },
     selectedIcon: '',
     iconList: [],
-    searchKey: ''
+    searchKey: '',
+    tabsPicker: 0
   }),
   watch: {
     searchKey() {
@@ -80,7 +133,8 @@ export default {
       this.iconList = icons
       this.$emit('selectIconAction', selected, {
         icon: `mdi-${this.selectedIcon}`,
-        background: this.iconBackgroundColor.hex ? this.iconBackgroundColor.hex : '#AAA'
+        background: this.iconBackgroundColor.hex ? this.iconBackgroundColor.hex : '#AAA',
+        iconColor: this.iconColor.hex ? this.iconColor.hex : '#fff'
       })
     },
     selectIcon(e) {

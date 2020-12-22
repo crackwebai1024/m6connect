@@ -1,12 +1,10 @@
 <template>
   <v-hover v-slot="{ hover }">
     <v-card
-      class="mx-auto rounded transparent"
+      class="h-full mx-auto rounded transparent w-full"
       :class="{ 'on-hover': !hover }"
       elevation="0"
       tile
-      width="100%"
-      height="100%"
       @click="updateInfo"
     >
       <component

@@ -1,78 +1,26 @@
 <template>
   <v-container
-    class="pa-0"
+    class="pa-0 w-full"
+    :class="tableView ? 'mx-10' : ''"
     fluid
   >
-    <header-component
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
-      hasslot
-      :info="{title: 'Search All Apps', icon: ''}"
-    >
-      <template #select>
-        <general-list-drop-down v-model="tableView" />
-        <v-menu
-          bottom
-          offset-y
-          transition="slide-y-transition"
-        >
-          <template #activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              class="capitalize font-weight-bold mb-0 pl-1 purple--text px-0 text--darken-1 transparent"
-              elevation="0"
-              v-on="on"
-            >
-              {{ filter['value'] }}
-              <v-icon class="blue--text text--darken-3">
-                mdi-chevron-down
-              </v-icon>
-            </v-btn>
-          </template>
-          <v-list dense>
-            <v-list-item
-              v-for="(item, i) in areas.concat(areas2)"
-              :key="i"
-            >
-              <v-list-item-title
-                :class="item.type === 'title' ? 'grey--text' : 'black--text pointer'"
-                @click="changingApps(item)"
-              >
-                {{ item.text }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
-      <template #input>
-        <v-text-field
-          v-model="searchInput"
-          class="font-weight-bold"
-          dense
-          flat
-          height="40"
-          hide-details
-          label="Start Typing to Search"
-          rounded
-          single-line
-          solo-inverted
-          @change="changeEvent"
-        >
-          <template #append>
-            <v-row class="align-center d-flex">
-              <v-icon>mdi-magnify</v-icon>
-            </v-row>
-          </template>
-        </v-text-field>
-      </template>
-    </header-component>
+    <record-list-header
+      v-if="headerLoaded"
+      :app-list="areas.concat(areas2)"
+      class="card-custom-shadow h-auto mb-3 mx-auto rounded"
+      @changeEvent="changeEvent"
+      @changingApps="changingApps"
+      @tableViewChange="tableViewChange"
+    />
+
     <div
-      v-if="!loading"
-      :class="tableView?'app-list__container':'app-list__container h-auto max-w-tight mb-3 mx-auto rounded'"
+      v-if="!loading && headerLoaded"
+      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
     >
       <template v-if="tableView">
         <records-table
           :items="records"
-          :tableHeaders="dynamic?dynamicTableHeader:headers"
+          :table-headers="dynamic ? dynamicTableHeader : headers"
         />
       </template>
       <template v-else>
@@ -111,20 +59,19 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
-import HeaderComponent from '@/components/Home/HeaderComponent'
+import RecordListHeader from '@/components/Home/RecordListHeader'
 import RecordsTable from '@/components/RecordsTable'
-import GeneralListDropDown from '@/components/Apps/GeneralListDropDown'
 
 export default {
   name: 'GeneralList',
   components: {
     GeneralItem,
-    HeaderComponent,
-    RecordsTable,
-    GeneralListDropDown
+    RecordListHeader,
+    RecordsTable
   },
   data: () => ({
     loading: true,
+    headerLoaded: false,
     areas2: [],
     perPage: 8,
     records: [],
@@ -141,7 +88,6 @@ export default {
       { text: 'Created On', value: 'created_at' },
       { text: 'Class', value: 'class' },
       { text: 'Category', value: 'category' },
-      { text: 'Type', value: 'type' },
       { text: 'State', value: 'state' },
       { text: 'Status', value: 'status' },
       { text: 'Action', value: 'action', sortable: false }
@@ -160,6 +106,13 @@ export default {
         {
           text: 'All Apps',
           type: 'subtitle',
+          metadata: {
+            appicon: {
+              icon: 'mdi-store',
+              background: ''
+            }
+          },
+          bgColor: this.getRandomColor(),
           function: () => {
             this.setFilterTag({ key: 'everyone', value: 'All Apps' })
             this.reload()
@@ -168,11 +121,25 @@ export default {
         {
           text: 'Applications',
           type: 'title',
+          metadata: {
+            appicon: {
+              icon: 'mdi-store',
+              background: ''
+            }
+          },
+          bgColor: this.getRandomColor(),
           function: () => {}
         },
         {
           text: 'ITApps',
           type: 'subtitle',
+          metadata: {
+            appicon: {
+              icon: 'mdi-store',
+              background: ''
+            }
+          },
+          bgColor: this.getRandomColor(),
           function: () => {
             this.setFilterTag({ key: 'itapps', value: 'ITApps' })
             this.reload()
@@ -193,8 +160,7 @@ export default {
     this.getApps().then(() => {
       this.records = this.list()
       this.loading = false
-    }
-    )
+    })
     this.selectApp().then(res => {
       res['data'].forEach(app => {
         this.areas2.push(
@@ -202,6 +168,9 @@ export default {
             text: app['title'],
             prefix: app['prefix'],
             type: 'subtitle',
+            iconLink: app['iconLink'],
+            metadata: JSON.parse(app['metadata']),
+            bgColor: this.getRandomColor(),
             function: () => {
               this.setFilterTag({ key: 'dynamicApp', value: app['title'] })
               this.getRecords(Number(app.id))
@@ -209,6 +178,7 @@ export default {
           }
         )
       })
+      this.headerLoaded = true
     })
   },
   beforeDestroy() {
@@ -301,6 +271,16 @@ export default {
     },
     stringToUpercase(str) {
       return str.charAt(0).toUpperCase() + str.slice(1)
+    },
+    getRandomColor() {
+      return 'rgb(' + [
+        ~~(Math.random() * 255),
+        ~~(Math.random() * 255),
+        ~~(Math.random() * 255)
+      ] + ')'
+    },
+    tableViewChange(val) {
+      this.tableView = val
     }
   }
 }

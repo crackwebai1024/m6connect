@@ -64,15 +64,19 @@
             alt=""
             class="app-icon-link pr-2"
             :src="app.iconLink"
-          />
+          >
         </template>
         <template v-else>
           <v-avatar
+            class="pointer"
             :color="iconBackgroundColor"
-            @click="iconBuilderModal=true"
             size="100"
+            @click="iconBuilderModal=true"
           >
-            <v-icon size="60">
+            <v-icon
+              :color="iconColor"
+              size="60"
+            >
               {{ iconName }}
             </v-icon>
           </v-avatar>
@@ -106,7 +110,11 @@
           >
             <v-icon>mdi-cloud-upload</v-icon>
           </m6-upload>
-          <v-btn color="red darken-2" class="white--text" @click="showDeleteDialog = true" >
+          <v-btn
+            class="white--text"
+            color="red darken-2"
+            @click="showDeleteDialog = true"
+          >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
           <v-btn
@@ -195,8 +203,8 @@
           </v-tabs>
           <add-tab
             v-if="appLoaded"
+            :layout-type="app.layout_type"
             @addNewTab="addNewTab"
-            :layoutType="app.layout_type"
           />
           <field
             v-if="showFieldModal"
@@ -250,12 +258,14 @@
               v-for="panel in leftPanels"
               :key="panel.id"
               :panel="panel"
+              :appID="app.id"
               @deletePanel="deletePanel"
               @updatePanel="updatePanel"
+              @updatingTable=" e => updatingTable(panel, e)"
             />
             <add-panel @addNewPanel="addNewPanel(0)" />
           </v-col>
-          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)" >
+          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)">
             <v-col
               v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
               class="pa-0 pl-1"
@@ -265,8 +275,10 @@
                 v-for="panel in rightPanels"
                 :key="panel.id"
                 :panel="panel"
+                :appID="app.id"
                 @deletePanel="deletePanel"
                 @updatePanel="updatePanel"
+                @updatingTable=" e => updatingTable(panel, e)"
               />
               <add-panel @addNewPanel="addNewPanel(1)" />
             </v-col>
@@ -315,9 +327,9 @@
       />
 
       <table-view
-        :showTable="showTable"
-        :fieldListProp="fieldList"
-        :tableItemsProp="tableItems"
+        :field-list-prop="fieldList"
+        :show-table="showTable"
+        :table-items-prop="tableItems"
         @hideTableModal="hideTableModal"
       />
     </template>
@@ -390,7 +402,8 @@ export default {
     },
     iconBuilderModal: false,
     iconName: '',
-    iconBackgroundColor: ''
+    iconBackgroundColor: '',
+    iconColor: ''
   }),
 
   computed: {
@@ -413,9 +426,11 @@ export default {
         this.app.metadata = JSON.parse(res.metadata)
         this.iconName = this.app.metadata.appIcon ? this.app.metadata.appIcon.icon : 'mdi-account-circle'
         this.iconBackgroundColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.background : '#AAA'
+        this.iconColor = this.app.metadata.appIcon ? this.app.metadata.appIcon.iconColor : '#AAA'
       } else {
         this.iconName = 'mdi-account-circle'
         this.iconBackgroundColor = '#AAA'
+        this.iconColor = '#AAA'
       }
 
       if (Object.keys(this.app).length === 0) this.$router.push('/')
@@ -435,6 +450,17 @@ export default {
       notifSuccess: 'notifSuccess'
     }),
 
+    updatingTable(panel, table) {
+      const index = panel.tables.map( t => t.id ).indexOf(table.id)
+      if(index > -1) {
+        panel.tables[index] = table
+      } else {
+        panel.tables.push(table)
+      }
+
+      panel.tables = [...panel.tables]
+    },
+
     async confirmingDelete() {
       this.showDeleteDialog = false
 
@@ -444,7 +470,7 @@ export default {
         this.loading = false
         this.notifSuccess('The App Was Deleted')
         this.$router.push('/')
-      } catch(e) {
+      } catch (e) {
         this.loading = false
         this.notifDanger('There was an error, App was NOT deleted')
       }
@@ -488,7 +514,8 @@ export default {
               ...this.app.metadata,
               appIcon: {
                 icon: this.iconName,
-                background: this.iconBackgroundColor
+                background: this.iconBackgroundColor,
+                iconColor: this.iconColor
               }
             }
           }
@@ -636,6 +663,7 @@ export default {
       if (selected) {
         this.iconName = iconInfo.icon
         this.iconBackgroundColor = iconInfo.background
+        this.iconColor = iconInfo.iconColor
       }
     },
 

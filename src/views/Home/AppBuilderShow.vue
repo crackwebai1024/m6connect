@@ -199,12 +199,15 @@
       slot="content"
       class="w-full"
     >
-      <panel-two-columns :left-column="tab.full_width ? 12 : 6">
+      <panel-two-columns
+        :left-column="tab.full_width ? 12 : 5"
+        :right-column="tab.full_width ? 12 : 7"
+      >
         <div slot="leftPanel">
           <div
             v-for="(panel, index) in panelsByColumn( $h.dg( tab, 'panels', []), 0 )"
             :key="`p-l-${index}`"
-            class="mb-3 panel px-4 py-3 w-side white"
+            class="card-custom-shadow mb-3 panel px-4 py-3 rounded white"
           >
             <h3>{{ panel.title }}</h3>
             <form-show-generator
@@ -212,6 +215,10 @@
               :panel="panel"
               :show-standard-fields="(tab.readOnly && index === 0)"
             />
+
+            <div v-for="(table, index) in $h.dg(panel, 'tables', [])" :key="`panel-table-${index}`" >
+              <generated-table :table="table" :recordID="record.id" editMode />
+            </div>
           </div>
         </div>
 
@@ -255,6 +262,7 @@ import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 import { mapState, mapMutations, mapActions } from 'vuex'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
+import GeneratedTable from '@/components/AppBuilder/GenericTable/GeneratedTable'
 
 export default {
   name: 'AppBuilderShow',
@@ -264,7 +272,8 @@ export default {
     ProjectSocialMedia,
     PanelTwoColumns,
     FormShowGenerator,
-    DeleteDialog
+    DeleteDialog,
+    GeneratedTable
   },
 
   data: () => ({

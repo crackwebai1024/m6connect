@@ -279,6 +279,7 @@ export default {
           app_id: this.currentApp.id,
           // eslint-disable-next-line camelcase
           panel_id: field.panel_id,
+          table_id: field.table_id,
           weight: field.weight,
           metadata: field.metadata,
           type: field.type,

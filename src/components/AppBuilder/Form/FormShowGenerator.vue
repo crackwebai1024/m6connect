@@ -54,9 +54,9 @@
               />
               <v-btn
                 v-if="showIndexFields[0]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, 0, false)"
+                @click="saveValues(0)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -97,9 +97,9 @@
               />
               <v-btn
                 v-if="showIndexFields[1]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, 1, false)"
+                @click="saveValues(1)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -130,27 +130,36 @@
           <v-hover
             v-slot="{ hover }"
           >
-            <div class="d-flex justify-between relative">
+            <div class="align-start d-flex justify-between mb-1 relative">
               <p
                 v-if="editMode !== 1 && !showIndexFields[index + 2]"
-                class="mb-2"
+                class="my-2"
               >
-                <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
-                <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
-                  {{ genericRecord[`${f.id}`]['file_name'] }}
-                </template>
-                <template v-else-if="Array.isArray(genericRecord[`${f.id}`])">
-                  {{
-                    typeof genericRecord[`${f.id}`][0] === 'object' ?
-                      genericRecord[`${f.id}`].map( g => g.value).join(', ')
-                      : genericRecord[`${f.id}`].join(', ')
-                  }}
-                </template>
-                <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
-                  {{ genericRecord[`${f.id}`].value }}
-                </template>
+                <span
+                  v-if="genericRecord[`${f.id}`] === undefined"
+                  class="blue--text pointer"
+                  @click="$set(showIndexFields, index + 2, true)"
+                >
+                  Add {{ $h.dg( f, 'label', '' ) }}
+                </span>
                 <template v-else>
-                  {{ genericRecord[`${f.id}`] }}
+                  <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
+                  <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
+                    {{ genericRecord[`${f.id}`]['file_name'] }}
+                  </template>
+                  <template v-else-if="Array.isArray(genericRecord[`${f.id}`])">
+                    {{
+                      typeof genericRecord[`${f.id}`][0] === 'object' ?
+                        genericRecord[`${f.id}`].map( g => g.value).join(', ')
+                        : genericRecord[`${f.id}`].join(', ')
+                    }}
+                  </template>
+                  <template v-else-if="typeof(genericRecord[`${f.id}`]) === 'object'">
+                    {{ genericRecord[`${f.id}`].value }}
+                  </template>
+                  <template v-else>
+                    {{ genericRecord[`${f.id}`] }}
+                  </template>
                 </template>
               </p>
               <template
@@ -213,9 +222,9 @@
               </template>
               <v-btn
                 v-if="showIndexFields[index + 2]"
-                class="green--text ml-2 text--accent-2"
+                class="accent-4 green ml-2 text--accent-2 white--text"
                 icon
-                @click="$set(showIndexFields, index + 2, false)"
+                @click="saveValues(index + 2)"
               >
                 <v-icon size="18">
                   mdi-check
@@ -304,6 +313,18 @@ export default {
     recordID: {
       type: Number,
       default: 0
+    },
+    table: {
+      type: Object,
+      default: () => ({})
+    },
+    inheritedEditMode: {
+      type: Boolean,
+      default: false
+    },
+    data: {
+      type: Object,
+      default: () => ({})
     }
   },
 
@@ -348,7 +369,8 @@ export default {
     statusOptions: ['Published', 'Draft', 'Archived'],
     recordsByAppsList: {},
     showIndexFields: [],
-    editMode: 0
+    editMode: 0,
+    tableRowID: 0
   }),
 
   computed: {
@@ -362,6 +384,24 @@ export default {
   watch: {
     $route() {
       this.loadingData()
+    },
+    inheritedEditMode: {
+      handler: function(val){
+        this.editMode = val ? 1 : 0
+      },
+      immediate: true
+    },
+    data: { // for table view
+      handler: function(value) {
+        let val = {...value}
+        if( !Object.keys(val).length ) return
+        this.typesToIds = { ...val.metadata.typesToIds }
+        this.tableRowID = val.metadata.tableRowID
+        delete val.metadata
+        this.isEdit = true
+        this.genericRecord = {...val}
+      },
+      immediate: true
     }
   },
 
@@ -440,7 +480,11 @@ export default {
             }))
             payload.fields = [...payload.fields, ...res]
           } else {
-            payload.fields.push({ value, field_id: f.id })
+            payload.fields.push({
+              value,
+              field_id: f.id,
+              record_id: payload['record_id']
+            })
           }
         }
 
@@ -449,6 +493,7 @@ export default {
 
         this.notifSuccess('The values were saved')
         this.loading = false
+        this.$emit('closing', { ...this.genericRecord })
       } catch (e) {
         this.notifDanger('The was an error while saving')
         this.loading = false
@@ -487,6 +532,7 @@ export default {
         await this.saveStandardFields()
         this.notifSuccess('The values were updated')
         this.loading = false
+        this.$emit('closing', {...this.genericRecord})
       } catch (e) {
         this.notifDanger('The was an error while updated')
         this.loading = false
@@ -505,7 +551,8 @@ export default {
           const res = value.map(v => ({
             value: v,
             field_id: idForUpdate,
-            record_id: recordIdForUpdate
+            record_id: recordIdForUpdate,
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           }))
           fields = [...fields, ...res]
         } else if (Object.prototype.toString.call(value) === '[object Object]') {
@@ -514,14 +561,16 @@ export default {
           fields.push({
             value,
             field_id: idForUpdate,
-            record_id: recordIdForUpdate
+            record_id: recordIdForUpdate,
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           })
         } else {
           if (value === 'true' || value === 'false') value = value === 'true'
           fields.push({
             value,
             field_id: idForUpdate,
-            record_id: recordIdForUpdate
+            record_id: recordIdForUpdate,
+            table_row_id: this.tableRowID > 0 ? this.tableRowID : null
           })
         }
       }
@@ -538,7 +587,10 @@ export default {
     },
 
     async loadingData() {
-      if ((this.$route.name === 'record.show' && Object.keys(this.panel).length > 0) || this.$route.name === 'home') {
+      if (
+        (this.$route.name === 'record.show' && ( Object.keys(this.panel).length > 0) ) || 
+        this.$route.name === 'home') 
+      {
         try {
           this.loading = true
           const ids = this.fields.map(f => f.id)
@@ -584,6 +636,10 @@ export default {
       } catch (e) {
         this.notifDanger('There was an error while getting a reference fields value')
       }
+    },
+    saveValues(index) {
+      this.$set(this.showIndexFields, index, false)
+      this.updating()
     }
   }
 }
