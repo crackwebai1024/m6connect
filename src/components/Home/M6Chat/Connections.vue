@@ -3,27 +3,30 @@
     <div class="actions-container">
       <v-dialog
         v-model="addUserDialog"
-        width="50%">
+        width="50%"
+      >
         <template v-slot:activator="{ on, attrs }">
           <v-btn
+            v-bind="attrs"
             color="grey darken-4"
             icon
-            v-bind="attrs" v-on="on" 
+            v-on="on"
           >
-            <v-icon class="grey--text text--darken-2">
+            <v-icon :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
               mdi-account-multiple-plus-outline
             </v-icon>
           </v-btn>
         </template>
-        <add-user-dialog 
-         :currentUsers="user.id"
-          @closeModal="addUser($event)"></add-user-dialog>
+        <add-user-dialog
+          :current-users="user.id"
+          @closeModal="addUser($event)"
+        />
       </v-dialog>
       <v-btn
         color="grey darken-4"
         icon
       >
-        <v-icon class="grey--text text--darken-2">
+        <v-icon :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
           mdi-filter
         </v-icon>
       </v-btn>
@@ -32,13 +35,13 @@
         icon
         @click="showSearchInputFunction"
       >
-        <v-icon class="grey--text text--darken-2">
+        <v-icon :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
           mdi-magnify
         </v-icon>
       </v-btn>
     </div>
     <div>
-      <h4 class="mb-4 ml-1">
+      <h4 :class=" !lightMode ? 'grey--text text--darken-2 mb-4 ml-1' : 'white--text mb-4 ml-1' ">
         {{ department.name }}
       </h4>
       <input
@@ -50,16 +53,18 @@
         type="text"
       >
       <v-btn
-        dense v-for="(channel, ind) in filteredChannels" :key="'channel-' + channel.id"
+        v-for="(channel, ind) in filteredChannels"
+        :key="'channel-' + channel.id"
         class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
         color="transparent"
+        dense
         elevation="0"
         @click="startChat(channel)"
       >
         <v-avatar
           v-if="channel.id.substr(14, 5) === 'group'"
-          :color="channel.data.image ? 'transparent' : 'blue'"
           class="mr-3"
+          :color="channel.data.image ? 'transparent' : 'blue'"
           dark
           size="36"
         >
@@ -101,21 +106,21 @@
               inline
               :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
-              <p class="font-weight-bold mb-0">
+              <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
                 {{ channel.data.name }}
               </p>
             </v-badge>
             <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
           </div>
         </div>
-        <div v-else >
+        <div v-else>
           <div class="align-start d-flex flex-column">
             <v-badge
               :content="unread_count[ind]['unread']"
               inline
-                :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
+              :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
-              <p class="font-weight-bold mb-0">
+              <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
                 {{ channel.membersInChannel.user.name }}
               </p>
             </v-badge>
@@ -140,14 +145,18 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 import AddUserDialog from '@/components/Dialogs/AddUserDialog'
 
 export default {
+  name: 'Connections',
   components: {
     AddUserDialog
   },
-  name: 'Connections',
   props: {
     department: {
       type: Object,
       default: () => {}
+    },
+    lightMode: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -165,9 +174,9 @@ export default {
     ...mapGetters('GSFeed', { feed: 'getFeed' }),
     filteredChannels() {
       const result = []
-      this.unread_count = [];
+      this.unread_count = []
       this.department.channels.forEach(channel => {
-        if (Object.keys( channel.state.members ).length == 2) {
+        if (Object.keys(channel.state.members).length == 2) {
           Object.keys(channel.state.members).forEach(member => {
             if (member !== this.user.id) {
               const user = channel.state.members[member]
@@ -176,17 +185,17 @@ export default {
                 channel.membersInChannel = user
                 result.push(channel)
                 this.unread_count.push({
-                  isOpen:false,
+                  isOpen: false,
                   cid: channel['cid'],
                   unread: channel['state']['read'][this.user.id]['unread_messages']
                 })
               }
             }
           })
-        }else {
+        } else {
           result.push(channel)
           this.unread_count.push({
-            isOpen:false,
+            isOpen: false,
             cid: channel['cid'],
             unread: channel['state']['read'][this.user.id]['unread_messages']
           })
@@ -201,29 +210,29 @@ export default {
     })
     this.client.on('channel.visible', r => {
       this.unread_count.forEach((item, ind) => {
-        if (item.cid == r.cid){
-          this.unread_count[ind]['isOpen'] = !this.unread_count[ind]['isOpen'];
-          this.unread_count[ind]['unread'] = 0;
+        if (item.cid == r.cid) {
+          this.unread_count[ind]['isOpen'] = !this.unread_count[ind]['isOpen']
+          this.unread_count[ind]['unread'] = 0
         }
       })
     })
     this.client.on('channel.deleted', r => {
       this.department.channels.splice(this.department.channels.indexOf(
-        this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+        this.department.channels.filter(e => e.id === r.channel_id)[0]
       ), 1)
-      this.$store.dispatch('GSChat/deleteChat', r.channel_id);
-    });
+      this.$store.dispatch('GSChat/deleteChat', r.channel_id)
+    })
     this.client.on('member.removed', r => {
       if (this.user.id === r.user.id) {
         this.department.channels.splice(this.department.channels.indexOf(
-          this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+          this.department.channels.filter(e => e.id === r.channel_id)[0]
         ), 1)
         this.$store.dispatch('GSChat/removeChat', r.channel_id)
       }
     })
     this.client.on('notification.removed_from_channel', r => {
       this.department.channels.splice(this.department.channels.indexOf(
-        this.department.channels.filter((e) => { return e.id === r.channel_id; })[0]
+        this.department.channels.filter(e => e.id === r.channel_id)[0]
       ), 1)
       this.$store.dispatch('GSChat/removeChat', r.channel_id)
     })
@@ -237,16 +246,16 @@ export default {
     })
   },
   methods: {
-    ...mapActions("GSChat", ["makeGroupChat"]),
-    addUser(event){
-      this.addUserDialog = false;
+    ...mapActions('GSChat', ['makeGroupChat']),
+    addUser(event) {
+      this.addUserDialog = false
       if (event.users.length > 1) {
         // We make the new conversation
         this.makeGroupChat({
           name: event.name,
           image: event.image,
           members: event.users
-        });
+        })
       }
     },
     pushUnreadCount(channel) {
@@ -259,7 +268,7 @@ export default {
     addNewMessage(event) {},
     async startChat(channel) {
       await this.$store.dispatch('GSChat/pushChat', channel)
-      await channel.markRead();
+      await channel.markRead()
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
