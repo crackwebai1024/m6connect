@@ -97,6 +97,7 @@
 
             <template v-if="recordFields">
               <form-show-generator
+                :action-record="actionRecord"
                 :fields="recordFields"
                 :record-i-d="recordID"
               />
@@ -560,6 +561,10 @@ export default {
     recordID: {
       type: Number,
       default: 0
+    },
+    actionRecord: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({

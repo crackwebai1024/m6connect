@@ -4,6 +4,7 @@
   >
     <post-item
       v-if="Object.keys(actionPost).length > 0"
+      :action-record="true"
       :data="actionPost"
       :record-i-d="$h.dg(actionPost, 'props.record.id' , '')"
     >

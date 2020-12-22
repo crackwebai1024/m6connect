@@ -211,13 +211,21 @@
           >
             <h3>{{ panel.title }}</h3>
             <form-show-generator
+              :action-record="true"
               :fields="$h.dg(panel, 'fields', [])"
               :panel="panel"
               :show-standard-fields="(tab.readOnly && index === 0)"
             />
 
-            <div v-for="(table, index) in $h.dg(panel, 'tables', [])" :key="`panel-table-${index}`" >
-              <generated-table :table="table" :recordID="record.id" editMode />
+            <div
+              v-for="(table, index) in $h.dg(panel, 'tables', [])"
+              :key="`panel-table-${index}`"
+            >
+              <generated-table
+                edit-mode
+                :record-i-d="record.id"
+                :table="table"
+              />
             </div>
           </div>
         </div>
@@ -244,6 +252,7 @@
               <h3>{{ panel.title }}</h3>
 
               <form-show-generator
+                :action-record="true"
                 :fields="$h.dg(panel, 'fields', [])"
                 :panel="panel"
               />

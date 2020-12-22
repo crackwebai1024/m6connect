@@ -4,30 +4,32 @@
       class="pa-0 relative"
       fluid
     >
-      <v-btn
-        v-if="editMode === 0 || editMode === 2"
-        class="absolute buttonTop right-0 top-0"
-        icon
-        right
-        top
-        @click="editMode = 1"
-      >
-        <v-icon size="25">
-          mdi-pencil
-        </v-icon>
-      </v-btn>
-      <v-btn
-        v-else
-        class="absolute buttonTop green--text right-0 top-0"
-        icon
-        right
-        top
-        @click="editMode = 0"
-      >
-        <v-icon size="25">
-          mdi-check
-        </v-icon>
-      </v-btn>
+      <template v-if="actionRecord">
+        <v-btn
+          v-if="editMode === 0 || editMode === 2"
+          class="absolute buttonTop right-0 top-0"
+          icon
+          right
+          top
+          @click="editMode = 1"
+        >
+          <v-icon size="25">
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+        <v-btn
+          v-else
+          class="absolute buttonTop green--text right-0 top-0"
+          icon
+          right
+          top
+          @click="editMode = 0"
+        >
+          <v-icon size="25">
+            mdi-check
+          </v-icon>
+        </v-btn>
+      </template>
       <v-row class="ma-0 pa-0 pt-4">
         <v-col
           v-if="showStandardFields"
@@ -325,6 +327,10 @@ export default {
     data: {
       type: Object,
       default: () => ({})
+    },
+    actionRecord: {
+      type: Boolean,
+      default: false
     }
   },
 
