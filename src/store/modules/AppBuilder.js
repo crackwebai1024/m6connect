@@ -2,13 +2,17 @@ import axios from 'axios'
 const DynamicAppPosts     = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/RecordPostListPreview.vue")
 const PreviewTabsManager  = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/PreviewTabsBuilder.vue")
 const defaultState = {
-  app: {}
+  app: {},
+  appsList: []
 }
 const state = () => defaultState
 const getters = {}
 const mutations = {
   setCurrentApp(state, payload) {
     state.app = payload
+  },
+  setAppList(state, payload) {
+    state.appsList = payload
   }
 }
 
@@ -44,9 +48,10 @@ const actions = {
     })
   },
 
-  getAppList() {
+  getAppList({ commit }) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/list`).then(({ data }) => {
+        commit('setAppList', data)
         resolve(data)
       })
         .catch(e => reject(e))

@@ -22,6 +22,7 @@ const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import/
 const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/CloneTool')
 const RapidTable = () => import(/* webpackChunkName: 'RapidTable' */ '@/views/Rapid/RapidTable')
 const ActionsTable = () => import(/* webpackChunkName: 'ActionsTable' */ '@/views/ActionCenter/ActionsTable')
+const MarketPlaceAdmin = () => import(/* webpackChunkName: 'MarketPlaceAdmin' */ '@/views/Marketplace/Admin')
 
 import store from '../store/';
 Vue.use(VueRouter);
@@ -144,6 +145,11 @@ const router = new VueRouter({
       path: "/action-center",
       name: "actioncenter.index",
       component: ActionsTable
+    },
+    {
+      path: "/marketplace/admin",
+      name: "marketplace.admin",
+      component: MarketPlaceAdmin
     }
   ],
 });
