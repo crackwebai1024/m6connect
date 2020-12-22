@@ -13,9 +13,9 @@
           </v-card-title>
           <v-divider class="grey lighten-3 z-index" />
           <v-card-text class="pb-5 px-6">
-            <template v-for="field in selectFields">
-              {{ field.value }} <br>
-            </template>
+            <!--            <template v-for="field in selectFields">-->
+            <!--              {{ field.value }} <br>-->
+            <!--            </template>-->
             <div v-if="$route.query.dev === 'dev'">
               <h5>Developer Tools</h5>
               <v-btn @click="useHistorical">
