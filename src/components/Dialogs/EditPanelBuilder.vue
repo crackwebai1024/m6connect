@@ -8,6 +8,7 @@
     </v-card-title>
     <v-card-text>
       <form-show-generator
+        :action-record="true"
         :fields="panel['fields']"
         :panel="panel"
       />

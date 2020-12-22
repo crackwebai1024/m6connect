@@ -4,30 +4,32 @@
       class="pa-0 relative"
       fluid
     >
-      <v-btn
-        v-if="editMode === 0 || editMode === 2"
-        class="absolute buttonTop right-0 top-0"
-        icon
-        right
-        top
-        @click="editMode = 1"
-      >
-        <v-icon size="25">
-          mdi-pencil
-        </v-icon>
-      </v-btn>
-      <v-btn
-        v-else
-        class="absolute buttonTop green--text right-0 top-0"
-        icon
-        right
-        top
-        @click="editMode = 0"
-      >
-        <v-icon size="25">
-          mdi-check
-        </v-icon>
-      </v-btn>
+      <template v-if="actionRecord">
+        <v-btn
+          v-if="editMode === 0 || editMode === 2"
+          class="absolute buttonTop right-0 top-0"
+          icon
+          right
+          top
+          @click="editMode = 1"
+        >
+          <v-icon size="25">
+            mdi-pencil
+          </v-icon>
+        </v-btn>
+        <v-btn
+          v-else
+          class="absolute buttonTop green--text right-0 top-0"
+          icon
+          right
+          top
+          @click="editMode = 0"
+        >
+          <v-icon size="25">
+            mdi-check
+          </v-icon>
+        </v-btn>
+      </template>
       <v-row class="ma-0 pa-0 pt-4">
         <v-col
           v-if="showStandardFields"
@@ -325,6 +327,10 @@ export default {
     data: {
       type: Object,
       default: () => ({})
+    },
+    actionRecord: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -386,20 +392,20 @@ export default {
       this.loadingData()
     },
     inheritedEditMode: {
-      handler: function(val){
+      handler: function (val) {
         this.editMode = val ? 1 : 0
       },
       immediate: true
     },
     data: { // for table view
-      handler: function(value) {
-        let val = {...value}
-        if( !Object.keys(val).length ) return
+      handler: function (value) {
+        const val = { ...value }
+        if (!Object.keys(val).length) return
         this.typesToIds = { ...val.metadata.typesToIds }
         this.tableRowID = val.metadata.tableRowID
         delete val.metadata
         this.isEdit = true
-        this.genericRecord = {...val}
+        this.genericRecord = { ...val }
       },
       immediate: true
     }
@@ -532,7 +538,7 @@ export default {
         await this.saveStandardFields()
         this.notifSuccess('The values were updated')
         this.loading = false
-        this.$emit('closing', {...this.genericRecord})
+        this.$emit('closing', { ...this.genericRecord })
       } catch (e) {
         this.notifDanger('The was an error while updated')
         this.loading = false

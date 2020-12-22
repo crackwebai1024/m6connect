@@ -233,6 +233,7 @@
           >
             <h3>{{ panel.title }}</h3>
             <form-show-generator
+              :action-record="true"
               :fields="$h.dg(panel, 'fields', [])"
               :panel="panel"
               :show-standard-fields="(tab.readOnly && index === 0)"
@@ -273,6 +274,7 @@
               <h3>{{ panel.title }}</h3>
 
               <form-show-generator
+                :action-record="true"
                 :fields="$h.dg(panel, 'fields', [])"
                 :panel="panel"
               />
