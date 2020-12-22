@@ -689,7 +689,6 @@ export default {
     },
 
     async selectHeaderAction(selected, headerInfo) {
-      console.log(selected, headerInfo)
       this.showHeaderColor = !this.showHeaderColor
       if (selected) {
         this.headerBackgroundColor = headerInfo.headerBackgroundColor
