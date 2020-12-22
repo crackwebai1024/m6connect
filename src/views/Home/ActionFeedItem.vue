@@ -68,7 +68,7 @@
             :icon="follower.status === 'Complete' ? 'mdi-check' : follower.status === 'Declined' ? 'mdi-close-circle' : 'mdi-help'"
             offset-x="12"
             offset-y="12"
-            style="margin-left:-5px"
+            style="margin-left: -5px"
             top
           >
             <v-avatar size="28">
@@ -297,7 +297,7 @@ export default {
       const dateNow = new Date()
       const dueDate = new Date(date)
       const diff = (dueDate.getTime() - dateNow.getTime()) / (1000 * 24 * 3600)
-      const index = diff > 5 ? 5 : (diff < 0 ? 0 : Math.round(diff))
+      const index = diff > 5 ? 5 : (diff < 0 ? 0 : Math.ceil(diff))
       return this.timerBallColor[index]
     },
     pendingApprovals(approvals) {

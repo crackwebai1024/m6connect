@@ -16,7 +16,7 @@
         flat
         height="40"
         hide-details
-        label="Start Typing to Search"
+        :label="placeHolder"
         rounded
         single-line
         @change="changeEvent"
@@ -99,6 +99,7 @@ export default {
   data: () => ({
     searchInput: '',
     tableView: '',
+    placeHolder: 'Search All Records',
     flickityOptions: {
       initialIndex: 1,
       prevNextButtons: true,
@@ -110,6 +111,13 @@ export default {
   watch: {
     tableView() {
       this.$emit('tableViewChange', this.tableView)
+    },
+    selected() {
+      if (this.selected !== -1) {
+        this.placeHolder = 'Search ' + this.appList.find((row, index) => index === this.selected).text
+      } else {
+        this.placeHolder = 'Search All Records'
+      }
     }
   },
   methods: {

@@ -1,0 +1,17 @@
+<template>
+  <p>
+    {{ appValue.value }}
+  </p>
+</template>
+
+<script>
+export default {
+  name: 'AppFieldValueNumber',
+  props: {
+    appValue: {
+      type: Object,
+      default: () => {}
+    }
+  }
+}
+</script>
