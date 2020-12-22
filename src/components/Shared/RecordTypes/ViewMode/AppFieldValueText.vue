@@ -1,6 +1,6 @@
 <template>
   <p>
-    {{ appValue.value }}
+    {{ appValue?appValue.value:'' }}
   </p>
 </template>
 

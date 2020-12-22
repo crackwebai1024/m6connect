@@ -1,6 +1,6 @@
 <template>
   <p>
-    {{ getAuthor(appValue.value) }}
+    {{ appValue?getAuthor(appValue.value):'' }}
   </p>
 </template>
 
