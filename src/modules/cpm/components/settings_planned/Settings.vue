@@ -165,7 +165,7 @@ export default {
               component: 'budget-status'
             },
             {
-              name: 'Budget Categories',
+              name: 'Cost Element Category',
               component: 'budget-categories'
             },
             {

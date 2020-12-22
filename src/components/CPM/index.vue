@@ -99,15 +99,29 @@
                 slot="leftPanel"
                 class=""
               >
-                <edit-panel-dialog v-if='panelToEdit.items' @update='updateProject' :panel.sync='panelToEdit' v-model="showEditPanel"></edit-panel-dialog>
+                <edit-panel-dialog
+                  v-if="panelToEdit.items"
+                  v-model="showEditPanel"
+                  :panel.sync="panelToEdit"
+                  @update="updateProject"
+                />
                 <v-col
                   v-for="(panel,index) in projectInformation"
                   :key="index"
                   class="card-custom-shadow mb-3 px-6 py-5 rounded white"
                 >
-                  <h3 style='position: relative' class="font-weight-bold grey--text spacing-tight text--darken-3">
+                  <h3
+                    class="font-weight-bold grey--text spacing-tight text--darken-3"
+                    style="position: relative"
+                  >
                     {{ panel.title }}
-                    <v-btn @click='showPanelEditModal(panel)' right absolute fab x-small>
+                    <v-btn
+                      absolute
+                      fab
+                      right
+                      x-small
+                      @click="showPanelEditModal(panel)"
+                    >
                       <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                   </h3>
@@ -365,139 +379,141 @@ export default {
         title: 'Project Quickview',
         type: 'basic',
         items: [
-        {
-          label: 'Project Manager',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-badge-account'
-        },
-        {
-          label: 'General Contractor',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-badge-account'
-        },
-        {
-          label: 'Status',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-list-status'
-        },
-        {
-          label: 'CPA',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-label'
+          {
+            label: 'Project Manager',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-badge-account'
+          },
+          {
+            label: 'General Contractor',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-badge-account'
+          },
+          {
+            label: 'Status',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-list-status'
+          },
+          {
+            label: 'CPA',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-label'
 
-        },
-        {
-          label: 'Project Title',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-information'
-        },
-        {
-          label: 'Category 1',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-subtitles-outline'
-        },
-        {
-          label: 'YTD Actuals Capitals',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        },
-        {
-          label: 'YTD Actuals Expenses',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        },
-        {
-          label: 'CPA Capital',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        },
-        {
-          label: 'CPA Capital With Cont',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        }
-      ]
+          },
+          {
+            label: 'Project Title',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-information'
+          },
+          {
+            label: 'Category 1',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-subtitles-outline'
+          },
+          {
+            label: 'YTD Actuals Capitals',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          },
+          {
+            label: 'YTD Actuals Expenses',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          },
+          {
+            label: 'CPA Capital',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          },
+          {
+            label: 'CPA Capital With Cont',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          }
+        ]
       },
       {
         title: 'Schedule & Budget',
-        type: 'schedule', //use the same for editpaneldialog.vue
+        type: 'schedule', // use the same for editpaneldialog.vue
         items: [
-        {
-          label: 'Phase',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-badge-account'
-        },
-        {
-          label: 'Target Date / Phase',
-          value: '',
-          default: defaults.date,
-          icon: 'mdi-calendar'
-        },
-        {
-          label: 'Construction Start',
-          value: '',
-          default: defaults.date,
-          icon: 'mdi-calendar'
-        },
-        {
-          label: 'Anticipated Construction Finish',
-          value: '',
-          default: defaults.date,
-          icon: 'mdi-calendar'
-        },
-        {
-          label: 'Complete Budget',
-          value: '',
-          default: defaults.percent,
-          icon: 'mdi-percent'
-        },
-        {
-          label: 'Complete Schedule',
-          value: '',
-          default: defaults.percent,
-          icon: 'mdi-percent'
-        },
-        {
-          label: 'Complete',
-          value: '',
-          default: defaults.percent,
-          icon: 'mdi-percent'
-        },
-        {
-          label: 'Budget Status',
-          value: '',
-          default: defaults.percent,
-          icon: 'mdi-percent'
-        },
-        {
-          label: 'Total Project Budget',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        }
-      ]},
+          {
+            label: 'Phase',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-badge-account'
+          },
+          {
+            label: 'Target Date / Phase',
+            value: '',
+            default: defaults.date,
+            icon: 'mdi-calendar'
+          },
+          {
+            label: 'Construction Start',
+            value: '',
+            default: defaults.date,
+            icon: 'mdi-calendar'
+          },
+          {
+            label: 'Anticipated Construction Finish',
+            value: '',
+            default: defaults.date,
+            icon: 'mdi-calendar'
+          },
+          {
+            label: 'Complete Budget',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Complete Schedule',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Complete',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Budget Status',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Total Project Budget',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          }
+        ]
+      },
       {
         title: 'Commitments & Spendings',
         type: 'milestones',
         items: [
-        {
-          label: 'Spent to Date',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        }
-      ]}
+          {
+            label: 'Spent to Date',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          }
+        ]
+      }
     ],
     tab: null,
     items: [
@@ -547,28 +563,28 @@ export default {
   },
   beforeDestroy() {},
   methods: {
-    async updateProject () {
+    async updateProject() {
       const res = await db.collection('cpm_projects').doc(this.$route.params.id).get()
       this.project = res.data()
     },
-    showPanelEditModal (panel) {
+    showPanelEditModal(panel) {
       this.showEditPanel = true
-      this.panelToEdit = {...panel}
+      this.panelToEdit = { ...panel }
     },
-    camelize (str) {
-      return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function(word, index) {
-          return index === 0 ? word.toLowerCase() : word.toUpperCase();
-      }).replace(/\s+/g, '').replace('/', '');
+    camelize(str) {
+      return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+        return index === 0 ? word.toLowerCase() : word.toUpperCase()
+      }).replace(/\s+/g, '').replace('/', '')
     },
     ...mapActions({
       getPanelSettings: 'hideCpmPanels/getSettings'
     })
   },
   watch: {
-    project: function(){
+    project: function () {
       if (this.project) {
         this.projectInformation.forEach(function (panel) {
-          panel.items.map(function(item) {
+          panel.items.map(function (item) {
             if (this.project[panel.type]) item.value = this.project[panel.type][this.camelize(item.label)]
           }.bind(this))
         }.bind(this))

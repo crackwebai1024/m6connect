@@ -38,7 +38,7 @@
 
       <v-card-text>
         <div class="form-group">
-          <label>Budget Categories</label>
+          <label>Cost Element Category</label>
           <v-list
             class="mainList"
             dense
@@ -255,7 +255,7 @@ export default {
     newL1() {
       this.action = 'new'
       this.showForm = true
-      this.formTitle = 'Create a new Budget Category'
+      this.formTitle = 'Create a new Cost Element Category'
     },
 
     edit(item) {

@@ -1627,7 +1627,7 @@ export const en = {
       cost: 'Cost',
       costOptions: {
         budgetStatus: 'Budget Status',
-        budgetCat: 'Budget Categories',
+        budgetCat: 'Cost Element Category',
         budgetTypes: 'Budget Types',
         budgetLineItems: 'Budget Line Items',
         changesReasons: 'Change Reason',

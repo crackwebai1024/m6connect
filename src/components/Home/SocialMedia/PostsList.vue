@@ -5,7 +5,7 @@
     <post-item
       v-if="Object.keys(actionPost).length > 0"
       :data="actionPost"
-      :recordID="$h.dg(actionPost, 'props.record.id' , '')"
+      :record-i-d="$h.dg(actionPost, 'props.record.id' , '')"
     >
       <template v-slot:record>
         <p
@@ -24,9 +24,9 @@
         <v-badge
           v-for="(follower, index) in actionPost.props.wo_assignments"
           :key="index + 'follower'"
-          :bordered="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
+          :bordered="!(follower.status === 'Complete' || follower.status === 'Declined')"
           :color="follower.status === 'Complete' ? 'green accent-3' : follower.status === 'Declined' ? 'red' :'white black--text'"
-          :dark="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
+          :dark="!(follower.status === 'Complete' || follower.status === 'Declined')"
           :icon="follower.status === 'Complete' ? 'mdi-check' : follower.status === 'Declined' ? 'mdi-close-circle' : 'mdi-help'"
           offset-x="12"
           offset-y="12"
