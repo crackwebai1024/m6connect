@@ -100,7 +100,8 @@
             v-model="app.prefix"
             class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
             label="App Prefix"
-            maxlength="3"
+            maxlength="5"
+            minlength="1"
             :rules="rules.generic"
           />
           <m6-upload
@@ -408,6 +409,7 @@ export default {
     }),
 
     leftPanels() {
+      console.log(this.app)
       return this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
     },
     rightPanels() {
@@ -509,7 +511,7 @@ export default {
         this.notifSuccess('Updated!')
       } catch (e) {
         this.loading = false
-        this.notifDanger('There was an error while updating')
+        this.notifDanger(e.response.data.error)
         return e
       }
     },

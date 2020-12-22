@@ -58,6 +58,8 @@
           v-model="itemInfo.layout_type"
           :items="['Profile', 'Stepper']"
           label="Layout Type"
+          required
+          :rules="stringsRules('Layout Type')"
         />
       </v-col>
       <v-col cols="12">
@@ -102,7 +104,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'DynamicAppForm',
@@ -137,6 +139,9 @@ export default {
       post_app: 'post_app',
       pushAppId: 'push_app_id'
     }),
+    ...mapMutations('SnackBarNotif', {
+        notifDanger: 'notifDanger'
+    }),
     responseRecordImg(res) {
       if (res.ok) {
         this.appImage = res.data.link
@@ -153,6 +158,17 @@ export default {
       this.post_app(this.itemInfo).then(res => {
         this.pushAppId(res['data']['id'])
         this.$router.push(`/dev/${res['data']['id']}`)
+        this.close()
+      })
+      .catch(error => {
+        let errorMsg = "";
+        
+        for(var i in error.response.data){
+          console.log(i)
+          console.log(error.response.data[i])
+          errorMsg += error.response.data[i]+"<br />"
+        }
+        this.notifDanger(errorMsg)
       })
     },
     pushTab() {
@@ -191,7 +207,8 @@ export default {
     stringLengthRules(name) {
       return [
         v => !!v || name + ' is required',
-        v => v.length === 3 || name + ' must be 3 characters'
+        v => v.length >= 1 || name + ' must be at least 1 character',
+        v => v.length <= 5 || name + ' must be less than 5 characters'
       ]
     },
     close() {
@@ -200,7 +217,6 @@ export default {
     validate() {
       if (this.$refs.form.validate()) {
         this.postNewDynamicApp()
-        this.close()
       }
     }
   }
