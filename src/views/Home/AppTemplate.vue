@@ -39,7 +39,7 @@
               offset-x="17"
               offset-y="17"
               overlap
-              style="z-index: 203;"
+              :style=" actionOverlay ? 'z-index: 203;' : '' "
             >
               <v-btn
                 :class="actionOverlay ? 'white ml-auto pa-6 white--text' : 'darken-2 grey ml-auto pa-6 white--text' "
@@ -57,6 +57,7 @@
             </v-badge>
             <v-overlay
               class="record-overlay"
+              opacity="0.7"
               :value="actionOverlay"
             >
               <v-row
@@ -83,7 +84,7 @@
           offset-x="17"
           offset-y="17"
           overlap
-          style="z-index: 203;"
+          :style=" chatOverlay ? 'z-index: 203;' : '' "
         >
           <v-btn
             class="blue ml-auto pa-6 white--text"
@@ -101,6 +102,7 @@
         </v-badge>
         <v-overlay
           class="record-overlay"
+          opacity="0.7"
           :value="chatOverlay"
         >
           <v-row
