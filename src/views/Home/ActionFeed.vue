@@ -4,7 +4,7 @@
     class="dont-show-scroll h-full px-4 transparent vertical-scroll w-full"
   >
     <div class="align-center d-flex justify-space-between mb-1 mt-4 pl-3">
-      <p class="font-weight-bold mb-0">
+      <p :class="['font-weight-bold mb-0', {'white--text': lightMode}]">
         Action Feed
       </p>
       <div class="align-center d-flex">
@@ -16,12 +16,12 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               v-bind="attrs"
-              class="capitalize font-weight-bold mb-0 pl-1 purple--text px-0 text--darken-1 transparent"
+              :class="['capitalize font-weight-bold mb-0 pl-1 px-0 text--darken-1 transparent', {'white--text': lightMode}, {'purple--text': !lightMode} ]"
               elevation="0"
               v-on="on"
             >
               {{ filterTag.value }}
-              <v-icon class="blue--text text--darken-3">
+              <v-icon :class=" !lightMode ? 'blue--text text--darken-3' : 'white--text' ">
                 mdi-chevron-down
               </v-icon>
             </v-btn>
@@ -45,7 +45,7 @@
           icon
           @click="showSearchInputFunction"
         >
-          <v-icon class="grey--text text--darken-2">
+          <v-icon :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
             mdi-magnify
           </v-icon>
         </v-btn>
@@ -96,6 +96,12 @@ export default {
   name: 'ActionFeed',
   components: {
     ActionFeedItem
+  },
+  props: {
+    lightMode: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => ({
     busy: false,

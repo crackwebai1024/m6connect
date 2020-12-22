@@ -42,8 +42,8 @@
               style="z-index: 203;"
             >
               <v-btn
-                class="darken-2 grey ml-auto pa-6 white--text"
-                color="white"
+                :class="actionOverlay ? 'white ml-auto pa-6 white--text' : 'darken-2 grey ml-auto pa-6 white--text' "
+                :color="!actionOverlay ? 'white' : 'grey darken-2'"
                 depressed
                 icon
                 rounded
@@ -60,18 +60,18 @@
               :value="actionOverlay"
             >
               <v-row
-                class="central-content flex flex-nowrap justify-space-between max-w-container mx-auto relative top-6 transparent0 w-full"
+                class="central-content flex flex-nowrap justify-space-between mx-auto relative top-6 transparent0 w-full"
                 no-gutters
               >
                 <v-col
                   class="dont-show-scroll vertical-scroll"
-                  cols="4"
+                  cols="3"
                 >
                   <div
                     class="w-full"
                     style="height: 310px;"
                   />
-                  <action-feed />
+                  <action-feed :light-mode="true" />
                 </v-col>
               </v-row>
             </v-overlay>
@@ -99,7 +99,24 @@
             6
           </template>
         </v-badge>
-        <v-overlay :value="chatOverlay" />
+        <v-overlay
+          class="record-overlay"
+          :value="chatOverlay"
+        >
+          <v-row
+            class="central-content flex flex-nowrap justify-space-between mx-auto relative top-6 transparent0 w-full"
+            no-gutters
+          >
+            <v-col
+              cols="9"
+            />
+            <v-col
+              cols="3"
+            >
+              <m6-chat :light-mode="true" />
+            </v-col>
+          </v-row>
+        </v-overlay>
       </v-dialog>
     </template>
   </div>
@@ -107,11 +124,13 @@
 
 <script>
 import ActionFeed from '@/views/Home/ActionFeed'
+import M6Chat from '@/components/Home/M6Chat'
 
 export default {
   name: 'AppTemplate',
   components: {
-    ActionFeed
+    ActionFeed,
+    M6Chat
   },
   props: {
     propsDialog: {

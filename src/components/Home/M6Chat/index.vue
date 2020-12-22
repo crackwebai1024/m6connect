@@ -30,6 +30,12 @@ export default {
     DepartmentChat,
     Connections
   },
+  props: {
+    lightMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       watchers: []
