@@ -28,11 +28,53 @@
           </div>
 
           <div
-            class="details-content grey h-fit lighten-3 min-h-full pt-3"
+            class="details-content grey h-fit lighten-3 min-h-full pt-3 relative"
           >
             <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
               <slot name="content" />
             </v-row>
+            <v-badge
+              class="absolute left-0 ml-5 mt-5 top-0 w-fit"
+              color="blue"
+              offset-x="17"
+              offset-y="17"
+              overlap
+              style="z-index: 203;"
+            >
+              <v-btn
+                class="darken-2 grey ml-auto pa-6 white--text"
+                color="white"
+                depressed
+                icon
+                rounded
+                @click="actionOverlay = !actionOverlay"
+              >
+                <v-icon>mdi-menu</v-icon>
+              </v-btn>
+              <template v-slot:badge>
+                12
+              </template>
+            </v-badge>
+            <v-overlay
+              class="record-overlay"
+              :value="actionOverlay"
+            >
+              <v-row
+                class="central-content flex flex-nowrap justify-space-between max-w-container mx-auto relative top-6 transparent0 w-full"
+                no-gutters
+              >
+                <v-col
+                  class="dont-show-scroll vertical-scroll"
+                  cols="4"
+                >
+                  <div
+                    class="w-full"
+                    style="height: 310px;"
+                  />
+                  <action-feed />
+                </v-col>
+              </v-row>
+            </v-overlay>
           </div>
         </v-card>
         <v-badge
@@ -64,9 +106,12 @@
 </template>
 
 <script>
+import ActionFeed from '@/views/Home/ActionFeed'
+
 export default {
   name: 'AppTemplate',
   components: {
+    ActionFeed
   },
   props: {
     propsDialog: {
@@ -136,5 +181,10 @@ export default {
 }
 .v-tabs-slider {
     color: #2196F3;
+}
+.record-overlay .v-overlay__content {
+  width: 100%;
+  height: 100%;
+  top: 60px;
 }
 </style>
