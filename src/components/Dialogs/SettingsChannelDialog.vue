@@ -78,24 +78,6 @@
       <v-spacer />
       
     </v-card-actions>
-    <v-list>
-      <v-list-item @click='deleteMessages()'>
-          <v-list-item-icon>
-              <v-icon>mdi-delete</v-icon>
-          </v-list-item-icon>
-          <v-list-item-content>
-              Delete messages
-          </v-list-item-content>
-      </v-list-item>
-      <v-list-item @click='boolDeleteDiaLog = true'>
-        <v-list-item-icon>
-            <v-icon color='red'>mdi-delete</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content class="red--text">
-            Delete channel
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
   </v-card>
 </template>
 

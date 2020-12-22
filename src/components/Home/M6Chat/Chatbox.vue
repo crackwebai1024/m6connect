@@ -8,6 +8,50 @@
     <M6Loading
       :loading="showLoading"
     />
+    <v-dialog v-model='showImagesGallery'
+        fullscreen 
+        @keydown.esc="() => showImagesGallery = false"
+        @keydown.left="chatGallery.indexOf(currentGalleryItem--)"
+        @keydown.right="chatGallery.indexOf(currentGalleryItem++)">
+      <v-card 
+        class="d-flex align-center overflow-hidden px-5" style='background: #000000a8'>
+        
+        <v-btn class='mt-10' color='white' fab absolute right top>
+          <v-icon color='black' @click='showImagesGallery = false'>mdi-close</v-icon>
+        </v-btn>
+        <v-row
+          align="center"
+          class=""
+          style='height: 100%'
+          justify="center"
+        >
+
+        <carousel
+              class="w-full"
+              :navigate-to="currentGalleryItem"
+              :navigation-enabled="true"
+              :pagination-active-color="'#fff'"
+              :pagination-color="'#333'"
+              :pagination-enabled="true"
+              :per-page="1">
+          <slide :key='`gallery-item${i}`' v-for='(img, i) of chatGallery'>
+            <div
+              class="theme--dark v-image v-responsive"
+              style="height: 80vh;"
+                >
+                  <div class="align-center d-flex justify-center v-image__image v-image__image--cover">
+                    <img
+                      alt=""
+                      class="max-w-full"
+                      :src="img.source"
+                    >
+                  </div>
+                </div>
+          </slide>
+        </carousel>
+        </v-row>
+      </v-card>  
+    </v-dialog>  
     <div
       class="align-center chat-title d-flex justify-space-between px-3 rounded-t"
       :class="[minimized ? 'blue lighten-2' : '']"
@@ -341,6 +385,7 @@
                   <img
                     v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
+                    @click='openChatGallery(image)'
                     :src="image"
                   >
                 </div>
@@ -881,6 +926,8 @@ import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
+import { Carousel, Slide } from 'vue-carousel';
+import CarouselImage from '@/components/Shared/ImageCarousselOverlay/CarouselImage.vue'
 
 export default {
   name: 'Chatbox',
@@ -889,7 +936,10 @@ export default {
     VEmojiPicker,
     ExternalUrl,
     RecordUrl,
-    YoutubeVideo
+    YoutubeVideo,
+    Carousel,
+    Slide,
+    CarouselImage
   },
   props: {
     channel: {
@@ -900,11 +950,14 @@ export default {
   data: () => ({
     deleteDialog: false,
     showLoading: false,
+    showImagesGallery: false,
+    currentGalleryItem: 0,
     hover: false,
     menu: false,
     input: '',
     display: true,
     whoTyping: {},
+    chatGallery: [],
     // user id john doe
     currentUserId: 2,
     messageEdit: '',
@@ -949,7 +1002,7 @@ export default {
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
     ...mapGetters('GSChat', { client: 'client' }),
-
+    
     groupedMessages() {
       return this.messages.reduce(function (r, a) {
         r[a.date.day] = [...r[a.date.day] || [], a]
@@ -997,11 +1050,15 @@ export default {
           this.messages.splice(ind, 1)
         }
       })
+      this.fetchChatGallery()
     }
   },
   async mounted() {
+
     this.state = await this.channel.watch()
     this.messages = this.state.messages
+    
+    this.fetchChatGallery()
 
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
@@ -1052,6 +1109,29 @@ export default {
       this.getActions(event).then(response => {
         this.options['records'] = response.data
       })
+    },
+    openChatGallery (item = false) {
+      if (item) this.currentGalleryItem = this.chatGallery.findIndex(i => i.source === item);
+
+      this.showImagesGallery = true
+    },
+    fetchChatGallery() {
+      console.log('NEW STUFFFFFs')
+      let images = [] //Store image and its message so we can fetch more data lately
+      if (this.messages)  {
+        this.messages.forEach(msg => {
+        if (typeof(msg.images) != 'undefined' && msg.images.length > 0) {
+            msg.images.forEach( entry => {
+              let img = {
+                message: msg.id,
+                source: entry
+              }
+              images.push(img)
+            })
+          }
+        })
+      }
+      this.chatGallery = images
     },
     async selectRecord($event) {
       this.itemInfo['panel'] = null
@@ -1559,5 +1639,40 @@ v-icon, p {
 }
 .preview-doc {
   height: 30px;
+}
+
+
+.VueCarousel-dot {
+  outline: none !important;
+}
+.VueCarousel-slide {
+  max-width: 100%;
+}
+.VueCarousel-slide .v-image__image {
+  background-size: auto !important;
+}
+.VueCarousel-slide .v-responsive__content {
+  max-width: 100%;
+}
+.VueCarousel-navigation-prev {
+  left: 58px !important;
+  padding-right: 13px !important;
+}
+.VueCarousel-navigation-next {
+  right: 58px !important;
+  padding-left: 13px !important;
+}
+.VueCarousel-navigation-prev, .VueCarousel-navigation-next {
+  border-radius: 100%;
+  background: rgb(255 255 255 / 30%) !important;
+  color: white !important;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  outline: none !important;
+}
+.VueCarousel-pagination {
+  height: 10px
 }
 </style>
