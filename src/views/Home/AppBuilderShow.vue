@@ -216,8 +216,15 @@
               :show-standard-fields="(tab.readOnly && index === 0)"
             />
 
-            <div v-for="(table, index) in $h.dg(panel, 'tables', [])" :key="`panel-table-${index}`" >
-              <generated-table :table="table" :recordID="record.id" editMode />
+            <div
+              v-for="(table, index) in $h.dg(panel, 'tables', [])"
+              :key="`panel-table-${index}`"
+            >
+              <generated-table
+                edit-mode
+                :record-i-d="record.id"
+                :table="table"
+              />
             </div>
           </div>
         </div>

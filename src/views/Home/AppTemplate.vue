@@ -35,6 +35,29 @@
             </v-row>
           </div>
         </v-card>
+        <v-badge
+          class="absolute bottom-0 mb-5 mr-5 right-0 w-fit"
+          color="green"
+          offset-x="17"
+          offset-y="17"
+          overlap
+          style="z-index: 203;"
+        >
+          <v-btn
+            class="blue ml-auto pa-6 white--text"
+            color="white"
+            depressed
+            icon
+            rounded
+            @click="chatOverlay = !chatOverlay"
+          >
+            <v-icon>mdi-message</v-icon>
+          </v-btn>
+          <template v-slot:badge>
+            6
+          </template>
+        </v-badge>
+        <v-overlay :value="chatOverlay" />
       </v-dialog>
     </template>
   </div>
@@ -60,7 +83,9 @@ export default {
     }
   },
   data: () => ({
-    dialog: false
+    dialog: false,
+    chatOverlay: false,
+    actionOverlay: false
   }),
 
   watch: {
