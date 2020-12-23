@@ -12,7 +12,7 @@
       <v-tabs
         active-class="blue darken-4"
         background-color="transparent"
-        class="align-center d-flex justify-center max-w-content"
+        class="align-center d-flex justify-center mx-auto w-fit"
         color="white"
         height="60"
         :hide-slider="true"

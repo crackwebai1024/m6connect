@@ -1,5 +1,5 @@
 <template>
-  <v-container class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full">
+  <v-container class="d-flex dont-show-scroll h-full ma-0 max-w-content pb-0 pt-5 px-0 vertical-scroll w-content">
     <!-- General use list component-->
     <template v-if="screenStatus()">
       <record-container
@@ -21,7 +21,7 @@ import RecordContainer from '@/components/RecordMode/RecordContainer'
 
 export default {
   // eslint-disable-next-line vue/match-component-file-name
-  name: 'Apps',
+  name: 'Companies',
   components: {
     CompaniesList,
     RecordContainer

@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full"
+    class="d-flex dont-show-scroll h-full ma-0 max-w-content pb-0 pt-5 px-0 vertical-scroll w-content"
     fluid
     :style="` ${ tableView ? 'width: 100%' : '' } `"
   >
@@ -28,7 +28,7 @@ import RecordContainer from '@/components/RecordMode/RecordContainer'
 
 export default {
   // eslint-disable-next-line vue/match-component-file-name
-  name: 'Apps',
+  name: 'Records',
   components: {
     RecordContainer,
     GeneralList

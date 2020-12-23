@@ -4,7 +4,7 @@
       <template v-if="loggedIn && (!$route.meta.public || $route.meta.topNav)">
         <top-nav />
         <template v-if="$route.meta.topNav">
-          <!-- <router-view class="top-60" /> -->
+          <router-view class="top-60" />
         </template>
         <template v-else>
           <v-row
@@ -15,13 +15,17 @@
               v-if="showSidePanels"
               class="absolute h-full left-0 top-0 w-full"
             >
-              <action-feed class="fixed left-0 mt-60 top-0 w-side" />
-              <m6-chat class="fixed mt-60 right-0 top-0" />
+              <action-feed class="fixed left-0 max-w-side mt-60 top-0 w-side" />
+              <m6-chat
+                class="fixed max-w-side mt-60 right-0 top-0 w-side"
+                :class="{'d-none': $vuetify.breakpoint.xsAndDown}"
+              />
             </div>
 
             <div
               v-if="showSidePanels"
-              class="d-flex justify-center mt-60 w-full"
+              class="d-flex mt-60 w-full"
+              :class="!$vuetify.breakpoint.sm ? 'justify-center' : 'justify-start'"
             >
               <router-view />
             </div>

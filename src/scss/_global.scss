@@ -135,6 +135,14 @@ p {
   width: 50%;
 }
 
+.w-3__5 {
+  width: 60%;
+}
+
+.w-2__5 {
+  width: 40%;
+}
+
 .w-viewport {
   width: 100vw;
 }
@@ -144,15 +152,19 @@ p {
 }
 
 .w-side {
-  width: 360px;
+  width: 26% !important;
 }
 
 .max-w-full {
   max-width: 100%;
 }
 
+.max-w-side {
+  max-width: 370px;
+}
+
 .max-w-content {
-  max-width: 820px;
+  max-width: 742px;
 }
 
 .max-w-lg {
@@ -167,7 +179,7 @@ p {
   max-width: 620px;
 }
 .w-content {
-  width: 742px;
+  width: 48%;
 }
 
 .absolute {

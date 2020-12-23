@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="!loading"
-    class="dont-show-scroll h-full px-4 transparent vertical-scroll w-full"
+    :class="{'d-none': $vuetify.breakpoint.mdAndDown, 'dont-show-scroll h-full pl-4 transparent vertical-scroll w-full': true }"
   >
     <div class="align-center d-flex justify-space-between mb-1 mt-4 pl-3">
       <p :class="['mb-0', {'white--text': lightMode}]">
@@ -185,7 +185,7 @@
   </div>
   <v-container
     v-else
-    class="dont-show-scroll h-full px-4 text-center transparent vertical-scroll w-side"
+    class="dont-show-scroll h-full px-4 text-center transparent vertical-scroll"
   >
     <v-progress-circular
       color="primary"
