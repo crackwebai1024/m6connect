@@ -1,15 +1,18 @@
 <template>
     <div>
+      <record-stepper v-if="app.layout_type == 'Stepper'" />
     </div>
 </template>
 
 <script>
 import AppBuilderShow from '@/views/Home/AppBuilderShow.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
+import RecordStepper from '@/components/RecordStepper/index.vue'
 
 export default {
   components: {
-    AppBuilderShow
+    AppBuilderShow,
+    RecordStepper
   },
 
   methods: {
@@ -30,12 +33,18 @@ export default {
   },
 
   async mounted() {
-    this.setDisplayAppBuilderShow()
-
     try {
       const record = await this.getRecordById(this.$route.params.id)
       const app = await this.getApp(record.app_id)
+      if(app.layout_type == 'Profile') this.setDisplayAppBuilderShow()
+
     } catch (e) {}
+  },
+
+  computed: {
+    ...mapState('AppBuilder', {
+      app: 'app'
+    }),
   },
 
   beforeDestroy() {

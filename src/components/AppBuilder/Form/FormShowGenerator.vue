@@ -162,8 +162,9 @@
                   </template>
                 </template>
               </p>
-              <template
+              <div
                 v-if="editMode === 1 || (editMode !== 1 && showIndexFields[index + 2])"
+                class="custom-flex-stepper"
               >
                 <template v-if="f.type === 'referenced'">
                   <v-autocomplete
@@ -183,6 +184,9 @@
                   App Name: {{ $h.dg(f, 'metadata.originalReference.label', '') }}
                 </template>
                 <template v-if="f.type !== 'referencedToApp'">
+                  <div class="pb-2" v-if="f.machine_name !== 'rapid_snapshot_image' && !showOuterLabels" >
+                    <label class="stepper-label" >{{ $h.dg( f, 'label', '' ) }}</label>
+                  </div>
                   <template v-if="f.machine_name === 'rapid_snapshot_image'">
                     <img
                       alt="Rapid Image"
@@ -190,36 +194,38 @@
                       style="width: 20rem; height: auto;"
                     >
                   </template>
-                  <component
-                    :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
-                    v-else-if="f.type === 'referenced'"
-                    v-model="genericRecord[`${f.id}`]"
-                    :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
-                    :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
-                    filled
-                    :items="$h.dg( f, 'metadata.originalReference.metadata.options', [] )"
-                    :label=" $h.dg( f, 'label', '' ) "
-                    :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
-                    outlined
-                    :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
-                    :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
-                  />
-                  <component
-                    :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')"
-                    v-else
-                    v-model="genericRecord[`${f.id}`]"
-                    :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
-                    :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
-                    filled
-                    :items="$h.dg( f, 'metadata.options', [] )"
-                    :label=" $h.dg( f, 'label', '' ) "
-                    :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
-                    outlined
-                    :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
-                    :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
-                  />
+                  <div class="custom-flex-stepper-items" v-else-if="f.type === 'referenced'" >
+                    <component
+                      :is=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'component', '')"
+                      v-model="genericRecord[`${f.id}`]"
+                      :chips="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'chips', false)"
+                      :clearable="$h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'clearable', false )"
+                      :filled="filledInFields"
+                      :items="$h.dg( f, 'metadata.originalReference.metadata.options', [] )"
+                      :label=" showOuterLabels ? $h.dg( f, 'label', '' ) : null "
+                      :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
+                      outlined
+                      :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+                      :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
+                    />
+                  </div>
+                  <div class="custom-flex-stepper-items" v-else >
+                    <component
+                      :is=" $h.dg( typeToComponentMapping[f.type], 'component', '')"
+                      v-model="genericRecord[`${f.id}`]"
+                      :chips="$h.dg(typeToComponentMapping[f.type], 'chips', false)"
+                      :clearable="$h.dg( typeToComponentMapping[f.type], 'clearable', false )"
+                      :filled="filledInFields"
+                      :items="$h.dg( f, 'metadata.options', [] )"
+                      :label=" showOuterLabels ? $h.dg( f, 'label', '' ) : null "
+                      :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
+                      outlined
+                      :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
+                      :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
+                    />
+                  </div>
                 </template>
-              </template>
+              </div>
               <v-btn
                 v-if="showIndexFields[index + 2]"
                 class="accent-4 green ml-2 text--accent-2 white--text"
@@ -247,7 +253,7 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="fields.length > 0 && editMode !== 0">
+      <v-row v-if="fields.length > 0 && editMode !== 0 && !stepperShow">
         <v-col cols="12">
           <v-spacer />
           <v-btn
@@ -325,6 +331,22 @@ export default {
     data: {
       type: Object,
       default: () => ({})
+    },
+    stepperShow: { //only for stepper view
+      type: Boolean,
+      default: false
+    },
+    activateStepperSave: { //only for stepper view
+      type: Boolean,
+      default: false
+    },
+    filledInFields: { //only used in stepper view
+      type: Boolean,
+      default: true
+    },
+    showOuterLabels: { // only used in stepper view
+      type: Boolean,
+      default: true
     }
   },
 
@@ -400,6 +422,14 @@ export default {
         delete val.metadata
         this.isEdit = true
         this.genericRecord = {...val}
+      },
+      immediate: true
+    },
+    activateStepperSave: {
+      handler: function(val) {
+        if(val) {
+          this.updating()
+        }
       },
       immediate: true
     }
@@ -650,10 +680,19 @@ export default {
   width: 20rem!important;
   height: auto!important;
 }
-.custom-flex-row {
+.custom-flex-stepper {
   display: flex;
   display: -webkit-flex;
-  flex-direction: row;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  .custom-flex-stepper-items {
+    width: 100%;
+  }
+}
+.stepper-label {
+  font-size: 1.5rem;
+  color: rgb(58, 58, 58);
 }
 .w-20 {
   width: 20% !important;
