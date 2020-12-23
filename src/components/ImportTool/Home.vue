@@ -5,7 +5,10 @@
         class="pa-0"
         cols="12"
       >
-        <v-card>
+        <v-card
+          class="vertical-scroll"
+          max-height="800"
+        >
           <v-card-title class="headline px-6 py-3 white">
             <span class="grey--text text--darken-2 text-h6">
               Upload Document
