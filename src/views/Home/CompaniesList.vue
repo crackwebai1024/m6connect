@@ -1,39 +1,60 @@
 <template>
-  <v-container class="pa-0 d-flex flex-wrap">
-    <header-component hasslot :info="{title:'Search All Companies', icon:''}"  
-      class="max-w-tight mb-3 card-custom-shadow rounded w-full mx-auto h-auto">
+  <v-container class="d-flex flex-wrap justify-center pa-0">
+    <header-component
+      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded w-full"
+      hasslot
+      :info="{title: 'Search All Companies', icon: ''}"
+    >
       <template v-slot:select>
-        <v-menu transition="slide-y-transition" offset-y bottom>
+        <v-menu
+          bottom
+          offset-y
+          transition="slide-y-transition"
+        >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn elevation="0" class="capitalize mb-0 px-0 pl-1 transparent purple--text text--darken-1 font-weight-bold" v-bind="attrs" v-on="on">
+            <v-btn
+              v-bind="attrs"
+              class="capitalize font-weight-bold mb-0 pl-1 purple--text px-0 text--darken-1 transparent"
+              elevation="0"
+              v-on="on"
+            >
               {{ filterTypeText }}
-              <v-icon class="blue--text text--darken-3">mdi-chevron-down</v-icon>
+              <v-icon class="blue--text text--darken-3">
+                mdi-chevron-down
+              </v-icon>
             </v-btn>
           </template>
           <v-list>
-            <v-list-item @click="setTypeFilter(item.type)" v-for="(item, i) in areas" :key="i" v-if="item.type !== typeFilter">
+            <v-list-item
+              v-for="(item, i) in areas"
+              v-if="item.type !== typeFilter"
+              :key="i"
+              @click="setTypeFilter(item.type)"
+            >
               <v-list-item-title
                 :class="item.type == 'title' ? 'grey--text' : 'black--text'"
-              >{{ item.text }}</v-list-item-title>
+              >
+                {{ item.text }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
       </template>
       <template v-slot:input>
         <v-text-field
+          v-model="searchInput"
           class="font-weight-bold"
+          dense
+          flat
           height="40"
+          hide-details
           label="Start Typing to Search"
           rounded
-          flat
-          dense
-          v-model="searchInput"
           single-line
-          hide-details
           solo-inverted
         >
           <template v-slot:append>
-            <v-row class="d-flex align-center">
+            <v-row class="align-center d-flex">
               <v-icon>mdi-magnify</v-icon>
             </v-row>
           </template>
@@ -41,112 +62,148 @@
       </template>
     </header-component>
     <app-template
-      :editPanel="true"
+      class="px-14 w-full"
+      :edit-panel="true"
     >
       <v-btn
-          slot="actionbtn"
-          class="white"
-          text
+        slot="actionbtn"
+        class="mb-3 w-full white"
+        text
       >
-          Add Company
+        Add Company
       </v-btn>
-      <div slot="header" class="max-w-lg pt-6 pb-4 w-full mx-auto d-flex justify-space-between align-center">
-          <div class="d-flex align-center">
-              <div class="grey lighten-3 pa-16">
-                  <v-icon class="grey--text text--lighten-1" size="38">mdi-image-filter-hdr</v-icon>
-              </div>
-              <div class="ml-8">
-                  <v-text-field class="font-weight-regular add-field grey lighten-3 pt-1 px-4 rounded-xl mb-1" label="Title">
-                  </v-text-field>
-                  <v-btn
-                      elevation="0"
-                      color="transparent"
-                      class="blue--text capitalize px-1"
-                  >
-                      Add field
-                  </v-btn>
-              </div>
+      <div
+        slot="header"
+        class="align-center d-flex justify-space-between max-w-lg mx-auto pb-4 pt-6 w-full"
+      >
+        <div class="align-center d-flex">
+          <div class="grey lighten-3 pa-16">
+            <v-icon
+              class="grey--text text--lighten-1"
+              size="38"
+            >
+              mdi-image-filter-hdr
+            </v-icon>
           </div>
-      </div>
-      <div slot="btns" class="d-flex align-center">
-          <v-btn
+          <div class="ml-8">
+            <v-text-field
+              class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
+              label="Title"
+            />
+            <v-btn
+              class="blue--text capitalize px-1"
+              color="transparent"
               elevation="0"
-              class="grey capitalize lighten-2 grey--text text--darken-3 left-0 ml-3 pa-1 font-weight-black"
-              light
-          >
-              <v-icon>mdi-magnify</v-icon>
-          </v-btn>
+            >
+              Add field
+            </v-btn>
+          </div>
+        </div>
       </div>
-      <div slot="content" class="w-full">
+      <div
+        slot="btns"
+        class="align-center d-flex"
+      >
+        <v-btn
+          class="capitalize font-weight-black grey grey--text left-0 lighten-2 ml-3 pa-1 text--darken-3"
+          elevation="0"
+          light
+        >
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
+      </div>
+      <div
+        slot="content"
+        class="w-full"
+      >
         <panel-two-columns>
-          <div slot="leftPanel" class="white py-3 px-4 mb-3 panel">
-            <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
-            <div class="d-flex align-start">
-                <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
-                <div class="overflow-hidden w-full">
-                    <v-textarea
-                        class="grey lighten-3 px-4 pt-1"
-                        color="grey lighten-3"
-                    >
-                        <template v-slot:label>
-                            Description
-                        </template>
-                    </v-textarea>
-                    <v-btn
-                        elevation="0"
-                        color="transparent"
-                        class="blue--text capitalize px-1"
-                    >
-                        Add field
-                    </v-btn>
-                </div>
+          <div
+            slot="leftPanel"
+            class="mb-3 panel px-4 py-3 white"
+          >
+            <h3 class="font-weight-bold grey--text spacing-tight text--darken-1">
+              Information
+            </h3>
+            <div class="align-start d-flex">
+              <v-icon class="border mr-2 pt-2 rounded">
+                mdi-alert-circle
+              </v-icon>
+              <div class="overflow-hidden w-full">
+                <v-textarea
+                  class="grey lighten-3 pt-1 px-4"
+                  color="grey lighten-3"
+                >
+                  <template v-slot:label>
+                    Description
+                  </template>
+                </v-textarea>
+                <v-btn
+                  class="blue--text capitalize px-1"
+                  color="transparent"
+                  elevation="0"
+                >
+                  Add field
+                </v-btn>
+              </div>
             </div>
           </div>
-          <div slot="rightPanel" class="white py-3 px-4 mb-3 panel">
-            <h3 class="grey--text text--darken-1 spacing-tight font-weight-bold">Information</h3>
-            <div class="d-flex align-start">
-                <v-icon class="mr-2 rounded border pt-2">mdi-alert-circle</v-icon>
-                <div class="overflow-hidden w-full">
-                    <v-textarea
-                        class="grey lighten-3 px-4 pt-1"
-                        color="grey lighten-3"
-                    >
-                        <template v-slot:label>
-                            Description
-                        </template>
-                    </v-textarea>
-                    <v-btn
-                        elevation="0"
-                        color="transparent"
-                        class="blue--text capitalize px-1"
-                    >
-                        Add field
-                    </v-btn>
-                </div>
+          <div
+            slot="rightPanel"
+            class="mb-3 panel px-4 py-3 white"
+          >
+            <h3 class="font-weight-bold grey--text spacing-tight text--darken-1">
+              Information
+            </h3>
+            <div class="align-start d-flex">
+              <v-icon class="border mr-2 pt-2 rounded">
+                mdi-alert-circle
+              </v-icon>
+              <div class="overflow-hidden w-full">
+                <v-textarea
+                  class="grey lighten-3 pt-1 px-4"
+                  color="grey lighten-3"
+                >
+                  <template v-slot:label>
+                    Description
+                  </template>
+                </v-textarea>
+                <v-btn
+                  class="blue--text capitalize px-1"
+                  color="transparent"
+                  elevation="0"
+                >
+                  Add field
+                </v-btn>
+              </div>
             </div>
           </div>
         </panel-two-columns>
       </div>
     </app-template>
     <div
-      :key="index + 'company'"
       v-for="(item, index) of filteredCompanies"
-      class="w-half px-1"
+      :key="index + 'company'"
+      class="px-1"
+      :class="{'w-full': $vuetify.breakpoint.smAndDown, 'w-half': $vuetify.breakpoint.xl}"
     >
-      <company-item :companyData="item" />
+      <company-item :company-data="item" />
     </div>
-    <div v-if="filteredCompanies.length === 0">No results found</div>
+    <div v-if="filteredCompanies.length === 0">
+      No results found
+    </div>
   </v-container>
 </template>
+
 <script>
-import { mapGetters, mapActions } from "vuex";
-import CompanyItem from "@/components/Companies/CompanyItem";
-import HeaderComponent from "@/components/Home/HeaderComponent";
+import { mapGetters, mapActions } from 'vuex'
+import CompanyItem from '@/components/Companies/CompanyItem'
+import HeaderComponent from '@/components/Home/HeaderComponent'
 import AppTemplate from '@/views/Home/AppTemplate'
-import PanelFull from '@/components/AppBuilder/Content/PanelFull';
-import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns';
+import PanelFull from '@/components/AppBuilder/Content/PanelFull'
+import PanelTwoColumns from '@/components/AppBuilder/Content/PanelTwoColumns'
 
 export default {
+  name: 'CompaniesList',
   components: {
     CompanyItem,
     HeaderComponent,
@@ -154,52 +211,49 @@ export default {
     PanelFull,
     PanelTwoColumns
   },
-  name: "CompaniesList",
   data: () => ({
     perPage: 8,
-    searchInput: "",
-    typeFilter: "all",
-    items: ["Foo", "Bar", "Fizz", "Buzz"],
+    searchInput: '',
+    typeFilter: 'all',
+    items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     areas: [
-      { text: "All Companies", type: "all" },
-      { text: "Vendor", type: "Vendor" },
-      { text: "Customer", type: "Customer" },
+      { text: 'All Companies', type: 'all' },
+      { text: 'Vendor', type: 'Vendor' },
+      { text: 'Customer', type: 'Customer' }
     ],
     tabs: ['Home'],
     newTabName: ''
   }),
   computed: {
-    ...mapGetters("GeneralListModule", ["get_companies_list"]),
+    ...mapGetters('GeneralListModule', ['get_companies_list']),
     companies() {
-      return this.get_companies_list();
+      return this.get_companies_list()
     },
     filteredCompanies() {
-      return this.companies.filter((company) => {
-        let indexFound = company.record_name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+      return this.companies.filter(company => {
+        const indexFound = company.record_name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
           || company.title.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
           || company.url.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
 
         let typeFound = true
-        if(this.typeFilter !== "all") {
+        if (this.typeFilter !== 'all') {
           typeFound = company.type.toUpperCase() === this.typeFilter.toUpperCase() ? true : false
         }
-        return indexFound &&  typeFound
+        return indexFound && typeFound
       })
     },
     filterTypeText() {
-      return this.areas.filter((area) => {
-        return area.type == this.typeFilter
-      })[0].text
+      return this.areas.filter(area => area.type == this.typeFilter)[0].text
     }
   },
   methods: {
-    ...mapActions("GeneralListModule", ["load_mock_companies_data"]),
+    ...mapActions('GeneralListModule', ['load_mock_companies_data']),
     setTypeFilter(type) {
       this.typeFilter = type
     }
   },
   created() {
-    this.load_mock_companies_data();
-  },
-};
+    this.load_mock_companies_data()
+  }
+}
 </script>

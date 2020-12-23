@@ -1,6 +1,7 @@
 <template>
   <v-container
-    class="d-flex dont-show-scroll h-full ma-0 max-w-content pb-0 pt-5 px-0 vertical-scroll w-content"
+    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll"
+    :class="{'w-full': $vuetify.breakpoint.xs , 'w-3__5': $vuetify.breakpoint.md || $vuetify.breakpoint.sm, 'max-w-content w-content': $vuetify.breakpoint.lgAndUp }"
     fluid
     :style="` ${ tableView ? 'width: 100%' : '' } `"
   >
@@ -14,7 +15,7 @@
     <template v-else>
       <!-- Project List Component -->
       <general-list
-        class="align-content-start main-content"
+        class="align-content-start main-content px-3"
         @tableView=" e => tableView = e "
       />
     </template>

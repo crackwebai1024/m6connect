@@ -1,5 +1,8 @@
 <template>
-  <v-container class="d-flex dont-show-scroll h-full ma-0 max-w-content pb-0 pt-5 px-0 vertical-scroll w-content">
+  <v-container
+    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll"
+    :class="{'w-full': $vuetify.breakpoint.xs , 'w-3__5': $vuetify.breakpoint.md || $vuetify.breakpoint.sm, 'max-w-lg w-content': $vuetify.breakpoint.lgAndUp }"
+  >
     <!-- General use list component-->
     <template v-if="screenStatus()">
       <record-container
@@ -9,7 +12,7 @@
     </template>
     <template v-else>
       <!-- Companies List Component -->
-      <companies-list class="align-content-start main-content" />
+      <companies-list class="align-content-start main-content px-3" />
     </template>
   </v-container>
 </template>
