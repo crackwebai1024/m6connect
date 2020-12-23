@@ -1,6 +1,6 @@
 <template>
   <div
-    class="dont-show-scroll h-full max-w-side px-2 py-5 vertical-scroll"
+    class="dont-show-scroll h-sidepanel max-w-side px-2 py-5 vertical-scroll"
   >
     <template
       v-for="(department, index) in departments"

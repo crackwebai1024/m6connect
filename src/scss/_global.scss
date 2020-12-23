@@ -127,6 +127,10 @@ p {
   height: 100vh;
 }
 
+.h-sidepanel{
+  height: calc(100vh - 60px);
+}
+
 .w-full {
   width: 100%;
 }
