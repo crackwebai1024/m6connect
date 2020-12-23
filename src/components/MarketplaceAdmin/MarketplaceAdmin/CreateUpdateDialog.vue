@@ -140,7 +140,6 @@ export default {
         },
 
         async selectFile(file) {
-            console.log(file)
             try {
                 this.loading = true 
                 const localFile = {
