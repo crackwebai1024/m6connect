@@ -115,7 +115,10 @@
             <div
               class="w-side"
             >
-              <m6-chat :light-mode="true" />
+              <m6-chat
+                class="ml-auto"
+                :light-mode="true"
+              />
             </div>
           </v-row>
         </v-overlay>

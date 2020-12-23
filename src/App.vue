@@ -15,9 +15,13 @@
               v-if="showSidePanels"
               class="absolute h-full left-0 top-0 w-full"
             >
-              <action-feed class="fixed left-0 max-w-side mt-60 top-0 w-side" />
+              <action-feed
+                class="fixed left-0 max-w-side mt-60 top-0 w-side"
+                :class="{'d-none': $vuetify.breakpoint.mdAndDown, 'w-side': $vuetify.breakpoint.lgAndUp}"
+              />
               <m6-chat
                 class="fixed mt-60 right-0 top-0"
+                :class="{'d-none': $vuetify.breakpoint.xs, 'w-2__5': $vuetify.breakpoint.mdAndDown, 'w-side': $vuetify.breakpoint.lgAndUp }"
               />
             </div>
 

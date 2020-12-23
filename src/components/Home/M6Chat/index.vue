@@ -1,7 +1,6 @@
 <template>
   <div
     class="dont-show-scroll h-full max-w-side px-2 py-5 vertical-scroll"
-    :class="{'d-none': $vuetify.breakpoint.xs, 'w-2__5': $vuetify.breakpoint.mdAndDown, 'w-side': $vuetify.breakpoint.lgAndUp }"
   >
     <template
       v-for="(department, index) in departments"

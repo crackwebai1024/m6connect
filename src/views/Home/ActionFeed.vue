@@ -2,7 +2,6 @@
   <div
     v-if="!loading"
     class="dont-show-scroll h-full max-w-side pl-4 transparent vertical-scroll w-full"
-    :class="{'d-none': $vuetify.breakpoint.mdAndDown, 'w-side': $vuetify.breakpoint.lgAndUp}"
   >
     <div class="align-center d-flex justify-space-between mb-1 mt-4 pl-3">
       <p :class="['mb-0', {'white--text': lightMode}]">
