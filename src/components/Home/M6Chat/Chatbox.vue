@@ -585,33 +585,6 @@
       class="blue-grey lighten-5"
       :class="[minimized ? 'd-none' : '']"
     />
-    <!-- Blob Images -->
-    <template v-if="blobImages.length > 0 && !hideFilesPreview">
-      <div class="d-flex images-container mx-1 px-0 py-3">
-        <div
-          v-for="(blobImage, index) in blobImages"
-          :key="'previewblobimage-' + index"
-          class="mx-1 relative w-fit"
-        >
-          <img
-            class="image-preview"
-            :src="blobImage"
-          >
-          <v-btn
-            class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
-            color="grey lighten-2"
-            fab
-            @click="removeBlobImage(index)"
-          >
-            <v-icon
-              size="12"
-            >
-              mdi-close
-            </v-icon>
-          </v-btn>
-        </div>
-      </div>
-    </template>
     <!-- Images -->
     <template v-if="srcImageFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex images-container mx-1 px-0 py-3">
@@ -975,8 +948,7 @@ export default {
       'Friday',
       'Saturday'
     ],
-    hideFilesPreview: false,
-    blobImages: []
+    hideFilesPreview: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -1334,7 +1306,7 @@ export default {
           message: this.valueInput
         })
 
-        if (this.imageFiles.length > 0 || this.blobImages.length > 0) {
+        if (this.imageFiles.length > 0) {
           const urls = []
           this.imageFiles.forEach(async (image, index) => {
             const url = await this.setStreamFiles({
@@ -1355,29 +1327,6 @@ export default {
                 images: urls
               })
               this.imageFiles = []
-            }
-          })
-          this.blobImages.forEach(async (image, index) => {
-            console.log(image)
-            const url = await this.setStreamFiles({
-              files: image,
-              headers: {
-                'Content-Type': image['type'],
-                'Content-Name': 'Screenshot-' + (new Date()).getTime(),
-                'Stream-Id': (new Date()).getTime(),
-                'Stream-type': 'Screenshot'
-              }
-            })
-
-            urls.push(url['attachUrl'])
-            if (index === this.blobImages.length - 1) {
-              await this.updateMessage({
-                id: message['message']['id'],
-                text: message['message']['text'],
-                images: urls
-              })
-              this.showLoading = false
-              this.blobImages = []
             }
           })
         }
@@ -1452,9 +1401,6 @@ export default {
     removeImage(index) {
       this.imageFiles.splice(index, 1)
     },
-    removeBlobImage(index) {
-      this.blobImages.splice(index, 1)
-    },
     onDocsChange(e) {
       this.hideFilesPreview = false
       this.docFiles = e
@@ -1471,6 +1417,7 @@ export default {
       return urlArr.map(url => url.split('/').pop().replace(/%20/g, ' ')).join(', ')
     },
     onPasteImage(event) {
+      this.hideFilesPreview = false
       const items = (event.clipboardData || event.originalEvent.clipboardData).items
       console.log(items)
       let blob = null
@@ -1484,7 +1431,14 @@ export default {
       if (blob !== null) {
         const reader = new FileReader()
         reader.onload = function (event) {
-          self.blobImages.push(event.target.result)
+          const blobFile = new File([
+            event.target.result
+          ], 'Screenshot-' + (new Date()).getTime(), {
+            type: 'image/png',
+            lastModified: Date.now()
+          })
+          console.log(blobFile)
+          self.imageFiles.push(blobFile)
         }
         reader.readAsDataURL(blob)
       }
