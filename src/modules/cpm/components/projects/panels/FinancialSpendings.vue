@@ -112,7 +112,7 @@
         text-color="black"
       >
         <strong>
-          {{ $t('cpm.projects.spending') }}
+          {{ $t('cpm.projects.spendingTotal') }}
           {{ $h.dg(project, 'totals.spendingTotal', 0) | currency }}
         </strong>
       </v-chip>
@@ -129,10 +129,11 @@
 
     <m6-data-table
       :align-actions="alignActions"
+      :footer-props="footerProps"
       :headers="headersSpendings"
       :items="resources"
-      :items-per-page-options="[5,10,15,200]"
       :options.sync="pagination"
+      :server-items-length="pagination.totalItems"
       @update:options="debounceSearch(search, false)"
     >
       <template
@@ -300,7 +301,7 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
-                        {{ $t('general.invoiceNumber') }}
+                        {{ $t('general.documentNumber') }}
                       </v-col>
                       <v-col class="shrink">
                         <span style="color: red;">*</span>
@@ -312,12 +313,34 @@
                   <v-text-field
                     ref="number"
                     v-model="dialogProperties.number"
-                    :label="$t('general.invoiceNumber')"
+                    :label="$t('general.documentNumber')"
                     :rules="[rules.required]"
                   />
                 </v-col>
               </v-row>
 
+              <v-row
+                align="center"
+                justify="center"
+              >
+                <v-col cols="3">
+                  <div class="font-weight-black subheading">
+                    <v-row>
+                      <v-col class="align-center d-flex text-nowrap">
+                        {{ $tc('general.invoiceNumber') }}
+                      </v-col>
+                      <v-col class="shrink" />
+                    </v-row>
+                  </div>
+                </v-col>
+                <v-col cols="7">
+                  <v-text-field
+                    ref="docNumber"
+                    v-model="dialogProperties.docNumber"
+                    :label="$t('general.invoiceNumber')"
+                  />
+                </v-col>
+              </v-row>
               <v-row
                 align="center"
                 justify="center"
@@ -356,6 +379,7 @@
               </v-row>
 
               <v-row
+                v-if="glaccount"
                 align="center"
                 justify="center"
               >
@@ -376,7 +400,7 @@
                     clearable
                     item-text="name"
                     item-value="code"
-                    :items="glaccount.codes"
+                    :items="glaccount.codes || []"
                     return-object
                   >
                     <template
@@ -422,7 +446,10 @@
                   <div class="font-weight-black subheading">
                     <v-row>
                       <v-col class="align-center d-flex text-nowrap">
-                        {{ $t('general.dateOpened') }}
+                        {{ $t('general.datePosted') }}
+                      </v-col>
+                      <v-col class="shrink">
+                        <span style="color:red;">*</span>
                       </v-col>
                     </v-row>
                   </div>
@@ -431,8 +458,6 @@
                   <v-dialog
                     ref="dialogSpendingDateOpenedText"
                     v-model="dialogSpendingDateOpenedText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.dateOpenedText"
                     width="290px"
@@ -440,9 +465,10 @@
                     <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="dialogProperties.dateOpenedText"
-                        :label="$t('general.dateOpened')"
+                        :label="$t('general.datePosted')"
                         prepend-icon="mdi-calendar"
                         readonly
+                        :rules="[rules.required]"
                         v-on="on"
                         @blur="
                           openedDate = parseDate(
@@ -490,9 +516,6 @@
                       <v-col class="align-center d-flex text-nowrap">
                         {{ $t('general.datePaid') }}
                       </v-col>
-                      <v-col class="shrink">
-                        <span style="color:red;">*</span>
-                      </v-col>
                     </v-row>
                   </div>
                 </v-col>
@@ -500,8 +523,6 @@
                   <v-dialog
                     ref="dialogSpendingPaidDateText"
                     v-model="dialogSpendingPaidDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogProperties.paidDateText"
                     width="290px"
@@ -512,7 +533,6 @@
                         :label="$t('general.datePaid')"
                         prepend-icon="mdi-calendar"
                         readonly
-                        :rules="[rules.required]"
                         v-on="on"
                         @blur="
                           paidDate = parseDate(dialogProperties.paidDateText)
@@ -793,7 +813,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -878,18 +897,40 @@
               </v-row>
               <v-row>
                 <v-col
-                  md="6"
+                  md="12"
                   sm="12"
                 >
-                  <v-autocomplete
+                  <v-text-field
+                    v-model="dialogLineItemProperties.vendorID"
+                    label="Vendor ID"
+                  />
+                  <!-----<v-autocomplete
                     v-model="dialogLineItemProperties.vendor"
                     clearable
                     item-text="title"
                     :items="vendors"
                     :label="$t('cpm.projects.vendorName')"
                     return-object
-                    :rules="[rules.required]"
+                  />-->
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col
+                  md="6"
+                  sm="12"
+                >
+                  <v-text-field
+                    v-model="dialogLineItemProperties.vendor"
+                    :label="$t('cpm.projects.vendorName')"
                   />
+                  <!-----<v-autocomplete
+                    v-model="dialogLineItemProperties.vendor"
+                    clearable
+                    item-text="title"
+                    :items="vendors"
+                    :label="$t('cpm.projects.vendorName')"
+                    return-object
+                  />-->
                 </v-col>
                 <v-col
                   md="6"
@@ -909,8 +950,6 @@
                   <v-dialog
                     ref="dialogLineItemDateText"
                     v-model="dialogLineItemDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.dateText"
                     :rules="[rules.required]"
@@ -961,8 +1000,6 @@
                   <v-dialog
                     ref="dialogLineItemPaidDateText"
                     v-model="dialogLineItemPaidDateText"
-                    full-width
-                    lazy
                     persistent
                     :return-value.sync="dialogLineItemProperties.paidDateText"
                     width="290px"
@@ -1164,6 +1201,7 @@
             color="gray"
             :disabled="loading"
             :loading="loading"
+            outlined
             text
             @click="closeDialogLineSpending"
           >
@@ -1190,6 +1228,7 @@
 
     <!-- show line items modal -->
     <v-dialog
+      v-if="showLineItemsModal"
       v-model="showLineItemsModal"
       max-width="1000px"
       persistent
@@ -1230,7 +1269,6 @@
           class="vertical-scroll"
           :style="{
             height: getViewPortHeight,
-            height: method === 'add' ? '78vh' : '70vh',
             overflow: 'auto'
           }"
         >
@@ -1243,7 +1281,6 @@
               <v-col md="12">
                 <v-data-table
                   :headers="headersLineItems"
-                  hide-default-footer
                   :items="spendingToShow.lineItems"
                   :items-per-page-options="[5,10,15,200]"
                 >
@@ -1430,6 +1467,9 @@ export default {
     const projectId = this.pid || this.$route.params.id
 
     return {
+      footerProps: {
+        itemsPerPageOptions: [5, 10, 15, 200]
+      },
       defaultItemSpending: {
         number: '',
         costCodeText: '',
@@ -1447,7 +1487,7 @@ export default {
         Math.max(
           document.documentElement.clientHeight,
           window.innerHeight || 0
-        ) * 0.63,
+        ) * 0.53,
       projectId,
       showSearchingModal: false,
       projectRef: db.collection('cpm_projects').doc(projectId),
@@ -1461,7 +1501,9 @@ export default {
         description: '',
         budget_category: {
           ref: ''
-        }
+        },
+        docNumber: '',
+        accrual: ''
       },
       method: 'add',
       dialogSpending: false,
@@ -1675,7 +1717,7 @@ export default {
     },
 
     getViewPortHeight() {
-      return `${this.viewPortHeight}px !important`
+      return `${this.viewPortHeight}px`
     },
     budgetCategoryErrors() {
       if (
@@ -1947,7 +1989,7 @@ export default {
 
     async saveLineItemSpending() {
       this.checkErrorsLineItem()
-
+      console.log(this.validLineItem)
       if (!this.validLineItem) {
         return
       }
@@ -1958,6 +2000,7 @@ export default {
           await this.addLineItemSpending()
           break
         case 'put':
+          this.dialogLineItem = false
           await this.updateLineItemSpending()
           break
       }
@@ -2058,7 +2101,7 @@ export default {
           newLineItem[key] = this.dialogLineItemProperties[key]
         }
       })
-
+      console.log(newLineItem)
       this.loading = true
 
       const spendingReference = db.collection('cpm_projects')
@@ -2108,7 +2151,6 @@ export default {
           }
         })
         this.loading = true
-
         const spendingReference = db.collection('cpm_projects')
           .doc(this.projectId)
           .collection('spendings')

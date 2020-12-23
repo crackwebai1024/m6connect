@@ -5,10 +5,75 @@
     :class="[minimized ? 'minimized' : 'h-full']"
     elevation="3"
   >
+    <M6Loading
+      :loading="showLoading"
+    />
+    <v-dialog
+      v-model="showImagesGallery"
+      fullscreen
+      @keydown.esc="() => showImagesGallery = false"
+      @keydown.left="chatGallery.indexOf(currentGalleryItem--)"
+      @keydown.right="chatGallery.indexOf(currentGalleryItem++)"
+    >
+      <v-card
+        class="align-center d-flex overflow-hidden px-5"
+        style="background: #000000a8"
+      >
+        <v-btn
+          absolute
+          class="mt-10"
+          color="white"
+          fab
+          right
+          top
+        >
+          <v-icon
+            color="black"
+            @click="showImagesGallery = false"
+          >
+            mdi-close
+          </v-icon>
+        </v-btn>
+        <v-row
+          align="center"
+          class=""
+          justify="center"
+          style="height: 100%"
+        >
+          <carousel
+            class="w-full"
+            :navigate-to="currentGalleryItem"
+            :navigation-enabled="true"
+            :pagination-active-color="'#fff'"
+            :pagination-color="'#333'"
+            :pagination-enabled="true"
+            :per-page="1"
+          >
+            <slide
+              v-for="(img, i) of chatGallery"
+              :key="`gallery-item${i}`"
+            >
+              <div
+                class="theme--dark v-image v-responsive"
+                style="height: 80vh;"
+              >
+                <div class="align-center d-flex justify-center v-image__image v-image__image--cover">
+                  <img
+                    alt=""
+                    class="max-w-full"
+                    :src="img.source"
+                  >
+                </div>
+              </div>
+            </slide>
+          </carousel>
+        </v-row>
+      </v-card>
+    </v-dialog>
     <div
-      class="align-center chat-title d-flex justify-space-between px-3"
+      class="align-center chat-title d-flex justify-space-between px-3 rounded-t"
       :class="[minimized ? 'blue lighten-2' : '']"
-      @click="minimizeChatBox"
+      @click.self="minimizeChatBox"
     >
       <div
         v-if="channel.id.substr(14, 5) === 'group'"
@@ -17,6 +82,7 @@
         <v-avatar
           class="mr-2"
           size="42"
+          @click="editConfigurationDialog = true"
         >
           <img
             v-if="channel.data.image !== ''"
@@ -48,7 +114,10 @@
           offset-x="10"
           offset-y="10"
         >
-          <v-avatar size="42">
+          <v-avatar
+            class="blue"
+            size="42"
+          >
             <img
               v-if="users[0].user.image"
               :alt="channel.name"
@@ -76,7 +145,7 @@
           </p>
           <p
             v-else
-            class="font-weight-medium ma-0 pa-0 text-caption"
+            class="capitalize font-weight-medium ma-0 pa-0 text-caption"
             :class="[minimized ? 'white--text' : 'blue--text']"
           >
             {{ setDate( new Date( users[0].user.last_active )) }}
@@ -86,96 +155,13 @@
       <div class="d-flex">
         <v-dialog
           v-if="channel.id.substr(14, 5) === 'group'"
-          v-model="deleteDialog"
+          v-model="editConfigurationDialog"
+
           width="50%"
         >
-          <template #activator="{ on, attrs }">
-            <v-hover
-              v-slot="{ hover }"
-            >
-              <div class="relative">
-                <v-card
-                  v-if="hover"
-                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
-                  style="margin-bottom: -64px; margin-left: -130px;"
-                >
-                  <v-btn
-                    v-bind="attrs"
-                    class="black--text capitalize px-3 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-channel'"
-                  >
-                    Delete Conversation
-                  </v-btn>
-                  <v-btn
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-info'"
-                  >
-                    Information
-                  </v-btn>
-                  <v-btn
-                    v-if="channel.data.created_by.id === user.id"
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-add-user'"
-                  >
-                    Add Users
-                  </v-btn>
-                  <v-btn
-                    v-if="channel.data.created_by.id === user.id"
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-edit'"
-                  >
-                    Edit Configuration
-                  </v-btn>
-                </v-card>
-                <v-btn
-                  class="btn-chat-shadow ml-2"
-                  color="white"
-                  fab
-                  x-small
-                >
-                  <v-icon
-                    size="15"
-                  >
-                    mdi-cogs
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-hover>
-          </template>
-          <delete-dialog
-            v-if="messageEdit === channel.data.id + '-channel'"
-            :element="`messages on '${channel.data.name}' group`"
-            @closeDeleteModal="cleanChat($event)"
-          />
-          <add-user-dialog
-            v-if="messageEdit === channel.data.id + '-add-user'"
-            :current-users="channel.state.members"
-            @closeModal="addUser($event)"
-          />
-          <info-users-dialog
-            v-if="messageEdit === channel.data.id + '-info'"
+          <edit-configuration-dialog
             :channel="channel"
-            :current-users="channel.state.members"
-          />
-          <settings-channel-dialog
-            v-if="messageEdit === channel.data.id + '-edit'"
-            :channel="channel"
-            @closeEditeModal="closeModal"
+            @close-dialog="() => editConfigurationDialog = false"
           />
         </v-dialog>
         <v-dialog
@@ -190,8 +176,7 @@
               <div class="relative">
                 <v-card
                   v-if="hover"
-                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
-                  style="margin-bottom: -90px; margin-left: -130px;"
+                  class="absolute left-0 max-w-none pa-1 top-0 w-fit z-20"
                 >
                   <v-btn
                     v-bind="attrs"
@@ -201,7 +186,7 @@
                     v-on="on"
                     @click="messageEdit = channel.data.id + '-channel'"
                   >
-                    Delete Group
+                    Delete Conversation
                   </v-btn>
                 </v-card>
                 <v-btn
@@ -315,25 +300,42 @@
             </div>
             <div
               v-else
-              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-right w-fit"
+              class="arrow-up grey grey--text lighten-4 mb-3 message-arrow ml-1 mr-2 py-2 relative text--darken-3 text-body-2 text-left w-fit"
               :class="message['panel'] && message['panel']['id'] ? 'px-2': 'px-3'"
             >
               <p
                 class="ma-0 pa-0"
                 v-html="urlify(message.text)['text']"
               />
+              <p
+                v-if="message.images && message.text == ''"
+                class="mb-0"
+              >
+                {{ getFileNames(message.images) }}
+              </p>
+              <template v-if="!message.images">
+                <v-skeleton-loader
+                  v-if="index === messages.length - 1 && (srcImageFiles.length !== 0 || srcVideoFiles.length !== 0)"
+                  class="mx-auto"
+                  height="100"
+                  type="card"
+                  width="100"
+                />
+              </template>
               <div
-                v-if="message.images"
+                v-else
                 class="d-flex ml-auto w-fit"
               >
                 <div
-                  v-for="(image, index) in message.images"
-                  :key="'imagemsg-' + index"
+                  v-for="(image, ind) in message.images"
+                  :key="'imagemsg-' + ind"
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
+                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
                     :src="image"
+                    @click="openChatGallery(image)"
                   >
                 </div>
               </div>
@@ -348,7 +350,7 @@
                   <v-col
                     v-for="(file, messIndex) of message['files']"
                     :key="messIndex+'-file'"
-                    class="my-0 py-0"
+                    class="align-start d-flex my-0 py-0"
                     cols="12"
                   >
                     <v-icon
@@ -357,7 +359,7 @@
                       mdi-file-document-outline
                     </v-icon>
                     <p
-                      class="font-weight-bold mx-1 my-0 pointer py-0 text-subtitle-1"
+                      class="font-weight-bold leading-tight mx-1 my-0 pointer py-0 text-caption"
                       @click="redirect(file)"
                     >
                       {{ file.substring(file.lastIndexOf('/')+1).replace(/%20/g, ' ').replace('%28', '(').replace('%29', ')') }}
@@ -420,14 +422,26 @@
             </v-dialog>
           </template>
           <template v-else>
-            <img
-              v-if="firstCommentBeforeAnswer(message.user.id, index)"
-              :alt="channel.name"
-              class="mr-3 rounded-circle"
-              height="30"
-              :src="users[0].user.image"
-              width="30"
-            >
+            <template v-if="firstCommentBeforeAnswer(message.user.id, index)">
+              <img
+                v-if="users[0].user.image"
+                :alt="channel.name"
+                class="mr-3 rounded-circle"
+                height="30"
+                :src="users[0].user.image"
+                width="30"
+              >
+              <div
+                v-else
+                class="align-center blue d-flex justify-center mr-2 rounded-pill"
+                style="width: 35px; height:35px;"
+              >
+                <span class="text-uppercase white--text">
+                  {{ channel.membersInChannel.user.name.charAt(0) }}
+                </span>
+              </div>
+            </template>
+
             <v-card
               v-else
               class="mr-3"
@@ -453,6 +467,7 @@
                   class="mt-2 mx-1 relative w-fit"
                 >
                   <img
+                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
                     :src="image"
                   >
@@ -492,13 +507,34 @@
         </div>
         <record-url
           v-if="message['panel'] && message['panel']['id']"
+          class="mb-2"
           :record-info="message['panel']"
           :type="'message'"
         />
         <external-url
-          v-if="urlify(message.text)['urls'].length > 0"
+          v-if="urlify(message.text)['urls'].length > 0 && urlify(message.text)['youtubeUrls'].length === 0"
+          class="mb-2"
           :urls="urlify(message.text)['urls']"
         />
+        <youtube-video
+          v-if="urlify(message.text)['youtubeUrls'].length > 0"
+          class="mb-2"
+          :urls="urlify(message.text)['youtubeUrls']"
+        />
+        <div
+          v-for="(row, imageIndex) in message.images"
+          :key="imageIndex"
+          class="mb-2 video-list__container"
+        >
+          <video
+            v-if="row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
+            controls
+          >
+            <source
+              :src="row"
+            >
+          </video>
+        </div>
       </div>
     </div>
     <!-- Emoji Picker -->
@@ -520,7 +556,7 @@
       :class="[minimized ? 'd-none' : '']"
     />
     <!-- Files -->
-    <template v-if="docFiles.length > 0">
+    <template v-if="docFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex docs images-container mx-1 px-0 py-1">
         <div
           v-for="(docFile, index) in docFiles"
@@ -550,7 +586,7 @@
       :class="[minimized ? 'd-none' : '']"
     />
     <!-- Images -->
-    <template v-if="srcImageFiles.length > 0">
+    <template v-if="srcImageFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex images-container mx-1 px-0 py-3">
         <div
           v-for="(srcImageFile, index) in srcImageFiles"
@@ -562,10 +598,42 @@
             :src="srcImageFile"
           >
           <v-btn
-            class="absolute btn-chat-shadow ml-2 right-0 top-0"
+            class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
             color="grey lighten-2"
             fab
-            style="height:15px; width:15px;"
+            @click="removeImage(index)"
+          >
+            <v-icon
+              size="12"
+            >
+              mdi-close
+            </v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </template>
+    <template v-if="srcVideoFiles.length > 0 && !hideFilesPreview">
+      <div class="d-flex images-container mx-1 px-0 py-0">
+        <div
+          v-for="(srcVideo, index) in srcVideoFiles"
+          :key="'previewimage-' + index"
+          class="mx-1 relative w-fit"
+        >
+          <video
+            controls
+            height="100"
+            width="100"
+          >
+            <source
+              :src="srcVideo.url"
+              :type="srcVideo.type"
+            >
+            Your browser does not support the video tag.
+          </video>
+          <v-btn
+            class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+            color="grey lighten-2"
+            fab
             @click="removeImage(index)"
           >
             <v-icon
@@ -588,7 +656,7 @@
       :class="[minimized ? 'd-none' : 'd-flex']"
     >
       <v-menu
-        :close-on-content-click="false"
+        :close-on-content-click="true"
         content-class="elevation-0"
         elevation="0"
         :offset-y="offset"
@@ -721,7 +789,7 @@
                   v-on="on"
                 >
                   <v-file-input
-                    accept="image/png, image/jpeg, image/bmp"
+                    accept="image/*, image/heif, image/heic, video/*, video/mp4, video/x-m4v, video/x-matroska, .mkv"
                     class="align-center d-flex justify-center ma-0 pa-0 upload-icon white--text"
                     hide-input
                     multiple
@@ -730,7 +798,7 @@
                   />
                 </div>
               </template>
-              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image</span>
+              <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Image/Video</span>
             </v-tooltip>
           </v-list-item>
           <v-list-item class="ma-0 pa-0 uploadfile-btn">
@@ -800,25 +868,27 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+/* eslint-disable camelcase */
+import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
-import DeleteDialog from '@/components/Dialogs/DeleteDialog'
-import AddUserDialog from '@/components/Dialogs/AddUserDialog'
-import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
-import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
+import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
+import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
+import { Carousel, Slide } from 'vue-carousel'
+import CarouselImage from '@/components/Shared/ImageCarousselOverlay/CarouselImage.vue'
 
 export default {
   name: 'Chatbox',
   components: {
-    SettingsChannelDialog,
-    InfoUsersDialog,
-    AddUserDialog,
-    DeleteDialog,
+    EditConfigurationDialog,
     VEmojiPicker,
     ExternalUrl,
-    RecordUrl
+    RecordUrl,
+    YoutubeVideo,
+    Carousel,
+    Slide,
+    CarouselImage
   },
   props: {
     channel: {
@@ -828,15 +898,20 @@ export default {
   },
   data: () => ({
     deleteDialog: false,
+    showLoading: false,
+    showImagesGallery: false,
+    currentGalleryItem: 0,
     hover: false,
     menu: false,
     input: '',
     display: true,
     whoTyping: {},
+    chatGallery: [],
     // user id john doe
     currentUserId: 2,
     messageEdit: '',
     messageEditInput: '',
+    editConfigurationDialog: false,
     dataReady: false,
     messages: [],
     state: {
@@ -870,7 +945,8 @@ export default {
       'Thursday',
       'Friday',
       'Saturday'
-    ]
+    ],
+    hideFilesPreview: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -897,9 +973,23 @@ export default {
     srcImageFiles() {
       const srcImages = []
       this.imageFiles.forEach(imageFile => {
-        srcImages.push(URL.createObjectURL(imageFile))
+        if (imageFile['type'].substr(0, imageFile['type'].indexOf('/')) === 'image') {
+          srcImages.push(URL.createObjectURL(imageFile))
+        }
       })
       return srcImages
+    },
+    srcVideoFiles() {
+      const srcVideo = []
+      this.imageFiles.forEach(file => {
+        if (file['type'].substr(0, file['type'].indexOf('/')) === 'video') {
+          srcVideo.push({
+            url: URL.createObjectURL(file),
+            type: file['type']
+          })
+        }
+      })
+      return srcVideo
     }
   },
   watch: {
@@ -909,12 +999,14 @@ export default {
           this.messages.splice(ind, 1)
         }
       })
+      this.fetchChatGallery()
     }
   },
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
 
+    this.fetchChatGallery()
 
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
@@ -957,10 +1049,36 @@ export default {
       getApps: 'getAvailableApps',
       getActions: 'getActionsFeed'
     }),
+    ...mapMutations('SnackBarNotif', {
+      notifDanger: 'notifDanger',
+      notifSuccess: 'notifSuccess'
+    }),
     changeApp(event) {
       this.getActions(event).then(response => {
         this.options['records'] = response.data
       })
+    },
+    openChatGallery(item = false) {
+      if (item) this.currentGalleryItem = this.chatGallery.findIndex(i => i.source === item)
+
+      this.showImagesGallery = true
+    },
+    fetchChatGallery() {
+      const images = []
+      if (this.messages) {
+        this.messages.forEach(msg => {
+          if (typeof (msg.images) !== 'undefined' && msg.images.length > 0) {
+            msg.images.forEach(entry => {
+              const img = {
+                message: msg.id,
+                source: entry
+              }
+              images.push(img)
+            })
+          }
+        })
+      }
+      this.chatGallery = images
     },
     async selectRecord($event) {
       this.itemInfo['panel'] = null
@@ -1056,36 +1174,40 @@ export default {
     },
     setDate(item) {
       const months = [
-        'JAN',
-        'FEB',
-        'MAR',
-        'APR',
-        'MAY',
-        'JUN',
-        'JUL',
-        'AUG',
-        'SEP',
-        'OCT',
-        'NOV',
-        'DEC'
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
       ]
 
       // If the last session was more than 1 day ago it shows the date else it shows the time.
       return 86400000 - (new Date - item) <= 0 ?
-        `Last connection: ${months[item.getMonth()]}/${item.getDate()}/${item.getFullYear()}` :
-        `Last connection: ${
+        `Last Online: ${months[item.getMonth()]} ${item.getDate()}, ${item.getFullYear()}` :
+        `Last Online: ${
           item.getHours() > 12 ? (item.getHours() - 12).toString().padStart(2, '0') : item.getHours().toString().padStart(2, '0')
         }:${item.getMinutes().toString().padStart(2, '0')} ${item.getHours() > 12 ? 'PM' : 'AM'}`
     },
     urlify(text) {
       const urlRegex = /(https?:\/\/[^\s]+)/g
+      const youtubeUrlRegex = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/
       const textUrls = []
+      let youtubeUrls = []
+
       const res = text.replace(urlRegex, function (url) {
         const path = new URL(url)
         textUrls.push(url)
         return '<a href="' + url + '" target="_blank" class=" white--text pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>'
       })
-      return { text: res, urls: textUrls }
+      youtubeUrls = textUrls.filter(row => youtubeUrlRegex.test(row))
+      return { text: res, urls: textUrls, youtubeUrls: youtubeUrls }
     },
     addNewMessage(event) {
       this.messages = [...this.messages, event.message]
@@ -1175,78 +1297,88 @@ export default {
       }
     },
     async sendMessage() {
-      if (this.valueInput.trim().length === 0) {
+      try {
+        this.showLoading = true
+        const message = await this.$store.dispatch('GSChat/sendMessage', {
+          channel: this.channel,
+          message: this.valueInput
+        })
+
+        if (this.imageFiles.length > 0) {
+          const urls = []
+          this.imageFiles.forEach(async (image, index) => {
+            const url = await this.setStreamFiles({
+              files: image,
+              headers: {
+                'Content-Type': image['type'],
+                'Content-Name': image['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+              }
+            })
+
+            urls.push(url['attachUrl'])
+            if (index === this.imageFiles.length - 1) {
+              await this.updateMessage({
+                id: message['message']['id'],
+                text: message['message']['text'],
+                images: urls
+              })
+              this.showLoading = false
+              this.imageFiles = []
+            }
+          })
+        }
+
+        if (this.itemInfo['panel']) {
+          await this.updateMessage({
+            id: message['message']['id'],
+            text: message['message']['text'],
+            panel: this.urlInfo
+          })
+        }
+
+
+        if (this.docFiles.length > 0) {
+          this.showLoading = true
+          const urls = []
+          this.docFiles.forEach(async (file, index) => {
+            const url = await this.setStreamFiles({
+              files: file,
+              headers: {
+                'Content-Type': file['type'],
+                'Content-Name': file['name'],
+                'Stream-Id': message['message']['id'],
+                'Stream-type': 'message'
+              }
+            })
+
+            urls.push(url['attachUrl'])
+            if (this.docFiles.length - 1 === index) {
+              this.updateMessage({
+                id: message['message']['id'],
+                text: message['message']['text'],
+                files: urls
+              }).then(() => {
+                this.showLoading = false
+                this.docFiles = []
+              })
+            }
+          })
+        }
+        this.showLoading = false
+        this.hideFilesPreview = true
+
         this.valueInput = ''
-        this.$nextTick(() => this.$refs.inputMessage.focus())
-        return true
+        this.$nextTick(() => {
+          this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
+          this.$refs.inputMessage.focus()
+        })
+      } catch (e) {
+        this.notifDanger('There was an error while sending the message')
       }
-
-      const message = await this.$store.dispatch('GSChat/sendMessage', {
-        channel: this.channel,
-        message: this.valueInput
-      })
-
-      if (this.imageFiles.length > 0) {
-        this.imageFiles.forEach(async image => {
-          await this.setStreamFiles({
-            files: image,
-            headers: {
-              'Content-Type': image['type'],
-              'Content-Name': image['name'],
-              'Stream-Id': message['message']['id'],
-              'Stream-type': 'message'
-            }
-          })
-        })
-
-        const images = await this.getFileUrl(message['message']['id'])
-
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          images: images
-        })
-      }
-
-      if (this.itemInfo['panel']) {
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          panel: this.urlInfo
-        })
-      }
-
-
-      if (this.docFiles.length > 0) {
-        this.docFiles.forEach(async file => {
-          await this.setStreamFiles({
-            files: file,
-            headers: {
-              'Content-Type': file['type'],
-              'Content-Name': file['name'],
-              'Stream-Id': message['message']['id'],
-              'Stream-type': 'message'
-            }
-          })
-        })
-
-        const files = await this.getFileUrl(message['message']['id'])
-
-        this.updateMessage({
-          id: message['message']['id'],
-          text: message['message']['text'],
-          files: files
-        })
-      }
-
-      this.valueInput = ''
-      this.imageFiles = []
-      this.docFiles = []
-      this.$nextTick(() => {
-        this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight
-        this.$refs.inputMessage.focus()
-      })
     },
+
     beforeDelete(decision, messageID) {
       this.messageEdit = ''
       this.deleteDialog = false
@@ -1259,13 +1391,17 @@ export default {
       this.minimized = !this.minimized
     },
     onImagesChange(e) {
-      this.imageFiles = e
+      this.hideFilesPreview = false
+      e.forEach(item => {
+        this.imageFiles.push(item)
+      })
       this.$refs.inputMessage.focus()
     },
     removeImage(index) {
       this.imageFiles.splice(index, 1)
     },
     onDocsChange(e) {
+      this.hideFilesPreview = false
       this.docFiles = e
       this.$refs.inputMessage.focus()
     },
@@ -1275,6 +1411,9 @@ export default {
     messageTime(time) {
       const messageDate = new Date(time)
       return messageDate.getHours() + ':' + messageDate.getMinutes()
+    },
+    getFileNames(urlArr) {
+      return urlArr.map(url => url.split('/').pop().replace(/%20/g, ' ')).join(', ')
     }
   }
 }
@@ -1294,6 +1433,10 @@ v-icon, p {
 .chat-title {
   min-height: 60px;
   background: #F7FCFF;
+}
+.v-close-btn {
+  height: 15px!important;
+  width: 15px!important;
 }
 .-rotate-45 {
   transform: rotate(-45deg);
@@ -1443,5 +1586,40 @@ v-icon, p {
 }
 .preview-doc {
   height: 30px;
+}
+
+
+.VueCarousel-dot {
+  outline: none !important;
+}
+.VueCarousel-slide {
+  max-width: 100%;
+}
+.VueCarousel-slide .v-image__image {
+  background-size: auto !important;
+}
+.VueCarousel-slide .v-responsive__content {
+  max-width: 100%;
+}
+.VueCarousel-navigation-prev {
+  left: 58px !important;
+  padding-right: 13px !important;
+}
+.VueCarousel-navigation-next {
+  right: 58px !important;
+  padding-left: 13px !important;
+}
+.VueCarousel-navigation-prev, .VueCarousel-navigation-next {
+  border-radius: 100%;
+  background: rgb(255 255 255 / 30%) !important;
+  color: white !important;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  outline: none !important;
+}
+.VueCarousel-pagination {
+  height: 10px
 }
 </style>

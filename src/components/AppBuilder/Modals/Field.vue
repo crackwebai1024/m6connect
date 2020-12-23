@@ -136,6 +136,18 @@
                     value-format="object"
                   />
                 </v-col>
+                <v-col
+                  v-if="field.type === 'referencedToApp'"
+                  cols="12"
+                >
+                  <v-autocomplete
+                    v-model="field.referenced_app"
+                    item-text="label"
+                    item-value="appId"
+                    :items="appList"
+                    label="Referenced App"
+                  />
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -202,7 +214,9 @@ export default {
         { label: 'Multiple Choice', value: 'autocomplete' },
         { label: 'Attachment', value: 'attachment' },
         { label: 'Yes / No', value: 'boolean' },
-        { label: 'Reference Field', value: 'referenced' }
+        { label: 'Reference Field', value: 'referenced' },
+        { label: 'Reference App', value: 'referencedToApp' },
+        { label: 'Address', value: 'autocomplete-address' }
       ],
       fieldList: []
     }
@@ -210,7 +224,10 @@ export default {
   computed: {
     ...mapState('AppBuilder', {
       currentApp: 'app'
-    })
+    }),
+    appList() {
+      return this.fieldList.filter(row => Number(row.appId) !== Number(this.currentApp.id))
+    }
   },
 
   mounted() {
@@ -243,8 +260,18 @@ export default {
     removeOption(index, item) {
       item.splice(index, 1)
     },
+    verifyMachineName(txt) {
+      let re = new RegExp('^[a-zA-Z0-9_]*$')
+      const res = re.test(txt)
+      return res
+    },
     async saveField(field) {
       try {
+        if( field.machine_name && !this.verifyMachineName(this.$h.dg( field, 'machine_name', '' ) ) ) {
+          this.notifDanger('A Machine Name Should Only Contain: Letters, Numbers or Underscores')
+          return
+        }
+        
         // eslint-disable-next-line camelcase
         const postData = {
           id: field.id,
@@ -252,6 +279,7 @@ export default {
           app_id: this.currentApp.id,
           // eslint-disable-next-line camelcase
           panel_id: field.panel_id,
+          table_id: field.table_id,
           weight: field.weight,
           metadata: field.metadata,
           type: field.type,
@@ -265,6 +293,15 @@ export default {
           postData.referenced_field = field.referenced_field.id
         } else {
           delete postData.referenced_field
+        }
+        if (field.type === 'referencedToApp') {
+          postData.metadata.originalReference = this.appList.find(row => row.appId === field.referenced_app)
+          // eslint-disable-next-line camelcase
+          postData.referenced_app = field.referenced_app
+        } else {
+          delete postData.referenced_app
+        }
+        if ((field.type !== 'referenced') && (field.type !== 'referencedToApp')) {
           delete postData.metadata.originalReference
         }
         if (this.editing) {

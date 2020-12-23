@@ -1,76 +1,27 @@
 <template>
   <v-container
-    class="pa-0"
+    class="pa-0 w-full"
+    :class="tableView ? 'mx-10' : ''"
     fluid
   >
-    <header-component
-      class="card-custom-shadow h-auto max-w-tight mb-3 mx-auto rounded"
-      hasslot
-      :info="{title: 'Search All Apps', icon: ''}"
+    <record-list-header
+      v-if="headerLoaded"
+      :app-list="areas.concat(areas2)"
+      class="card-custom-shadow h-auto mb-3 mx-auto rounded"
+      @changeEvent="changeEvent"
+      @changingApps="changingApps"
+      @tableViewChange="tableViewChange"
+    />
+
+    <div
+      v-if="!loading && headerLoaded"
+      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
     >
-      <template #select>
-        <v-switch
-          v-model="tableView"
-          :append-icon=" tableView ? 'mdi-table' : 'mdi-arrange-bring-forward' "
-        />
-        <v-menu
-          bottom
-          offset-y
-          transition="slide-y-transition"
-        >
-          <template #activator="{ on, attrs }">
-            <v-btn
-              v-bind="attrs"
-              class="capitalize font-weight-bold mb-0 pl-1 purple--text px-0 text--darken-1 transparent"
-              elevation="0"
-              v-on="on"
-            >
-              {{ filter['value'] }}
-              <v-icon class="blue--text text--darken-3">
-                mdi-chevron-down
-              </v-icon>
-            </v-btn>
-          </template>
-          <v-list dense>
-            <v-list-item
-              v-for="(item, i) in areas.concat(areas2)"
-              :key="i"
-            >
-              <v-list-item-title
-                :class="item.type === 'title' ? 'grey--text' : 'black--text pointer'"
-                @click="changingApps(item)"
-              >
-                {{ item.text }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
-      <template #input>
-        <v-text-field
-          v-model="searchInput"
-          class="font-weight-bold"
-          dense
-          flat
-          height="40"
-          hide-details
-          label="Start Typing to Search"
-          rounded
-          single-line
-          solo-inverted
-          @change="changeEvent"
-        >
-          <template #append>
-            <v-row class="align-center d-flex">
-              <v-icon>mdi-magnify</v-icon>
-            </v-row>
-          </template>
-        </v-text-field>
-      </template>
-    </header-component>
-    <div v-if="!loading">
       <template v-if="tableView">
-        <records-table :items="testItems" />
+        <records-table
+          :items="records"
+          :table-headers="dynamic ? dynamicTableHeader : headers"
+        />
       </template>
       <template v-else>
         <v-row
@@ -80,8 +31,9 @@
           <v-col
             v-for="(item, index) of records"
             :key="index"
-            :class="Object.keys(records).length !== index + 1 ? 'mb-3' : ''"
-            cols="12"
+            class="app-item__container"
+            md="6"
+            sm="12"
           >
             <general-item :record-data="item" />
           </v-col>
@@ -107,24 +59,40 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
-import HeaderComponent from '@/components/Home/HeaderComponent'
+import RecordListHeader from '@/components/Home/RecordListHeader'
 import RecordsTable from '@/components/RecordsTable'
 
 export default {
   name: 'GeneralList',
   components: {
     GeneralItem,
-    HeaderComponent,
+    RecordListHeader,
     RecordsTable
   },
   data: () => ({
     loading: true,
+    headerLoaded: false,
     areas2: [],
     perPage: 8,
     records: [],
     searchInput: '',
     tableView: false,
-    testItems: []
+    dynamic: false,
+    headers: [
+      { text: 'Image', value: 'image' },
+      { text: 'Record #', value: 'record_number' },
+      { text: 'App', value: 'app_prefix' },
+      { text: 'Title', value: 'title' },
+      { text: 'Description', value: 'description' },
+      { text: 'Creator', value: 'author' },
+      { text: 'Created On', value: 'created_at' },
+      { text: 'Class', value: 'class' },
+      { text: 'Category', value: 'category' },
+      { text: 'State', value: 'state' },
+      { text: 'Status', value: 'status' },
+      { text: 'Action', value: 'action', sortable: false }
+    ],
+    dynamicTableHeader: []
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -138,6 +106,13 @@ export default {
         {
           text: 'All Apps',
           type: 'subtitle',
+          metadata: {
+            appicon: {
+              icon: 'mdi-store',
+              background: ''
+            }
+          },
+          bgColor: this.getRandomColor(),
           function: () => {
             this.setFilterTag({ key: 'everyone', value: 'All Apps' })
             this.reload()
@@ -146,11 +121,25 @@ export default {
         {
           text: 'Applications',
           type: 'title',
+          metadata: {
+            appicon: {
+              icon: 'mdi-store',
+              background: ''
+            }
+          },
+          bgColor: this.getRandomColor(),
           function: () => {}
         },
         {
           text: 'ITApps',
           type: 'subtitle',
+          metadata: {
+            appicon: {
+              icon: 'mdi-store',
+              background: ''
+            }
+          },
+          bgColor: this.getRandomColor(),
           function: () => {
             this.setFilterTag({ key: 'itapps', value: 'ITApps' })
             this.reload()
@@ -171,8 +160,7 @@ export default {
     this.getApps().then(() => {
       this.records = this.list()
       this.loading = false
-    }
-    )
+    })
     this.selectApp().then(res => {
       res['data'].forEach(app => {
         this.areas2.push(
@@ -180,13 +168,17 @@ export default {
             text: app['title'],
             prefix: app['prefix'],
             type: 'subtitle',
+            iconLink: app['iconLink'],
+            metadata: app['metadata'] ? JSON.parse(app['metadata']) : null,
+            bgColor: this.getRandomColor(),
             function: () => {
               this.setFilterTag({ key: 'dynamicApp', value: app['title'] })
-              this.getRecords(app.id)
+              this.getRecords(Number(app.id))
             }
           }
         )
       })
+      this.headerLoaded = true
     })
   },
   beforeDestroy() {
@@ -199,6 +191,9 @@ export default {
       selectApp: 'get_select_apps',
       filterApps: 'get_filter_apps',
       setFilterTag: 'set_filter_tag'
+    }),
+    ...mapGetters('GeneralListModule', {
+      getFieldList: 'get_fields_list'
     }),
     ...mapActions('DynamicAppsModule', {
       getDynamicApps: 'get_all_apps_by_id',
@@ -215,13 +210,34 @@ export default {
       this.loading = true
       this.filterApps({ param: event }).then(() => {
         this.records = this.list()
+        this.dynamic = false
         this.loading = false
       })
     },
     getRecords(appId) {
       this.loading = true
       this.getDynamicApps(appId).then(() => {
-        this.records = this.list()
+        const temp = this.list()
+        this.dynamicTableHeader = this.headers.slice(0, 11)
+
+        const fields = this.getFieldList()
+        temp.map((row, index) => {
+          fields[index].map((field, findex) => {
+            if (row.app_id === field.app_id) {
+              if (!this.dynamicTableHeader.find(row => row.value === `${field.type}-${findex}`)) {
+                this.dynamicTableHeader.push({
+                  text: this.stringToUpercase(field.label),
+                  value: field.type + '-' + findex,
+                  type: field.type
+                })
+              }
+              row[field.type + '-' + findex] = field.value
+            }
+          })
+        })
+        this.dynamicTableHeader.push(this.headers.slice(-1)[0])
+        this.records = temp
+        this.dynamic = true
         this.loading = false
       }).catch(() => {
         this.loading = false
@@ -230,6 +246,7 @@ export default {
     reload() {
       this.loading = true
       this.records = []
+      this.dynamic = false
       this.getApps().then(
         () => (this.records = this.list(), this.loading = false)
       )
@@ -248,11 +265,23 @@ export default {
     },
     async changingApps(app) {
       try {
-        this.testItems = await this.getRecordsByApp(app['prefix'])
         app.function()
       } catch (e) {
         // Empty
       }
+    },
+    stringToUpercase(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1)
+    },
+    getRandomColor() {
+      return 'rgb(' + [
+        ~~(Math.random() * 255),
+        ~~(Math.random() * 255),
+        ~~(Math.random() * 255)
+      ] + ')'
+    },
+    tableViewChange(val) {
+      this.tableView = val
     }
   }
 }
@@ -271,5 +300,13 @@ export default {
 }
 v-progress-circular {
   margin-left: 45%!important;
+}
+.app-list__container {
+  justify-content: space-between;
+  display: flex;
+}
+.app-item__container {
+  margin: 0;
+  padding: 8px;
 }
 </style>

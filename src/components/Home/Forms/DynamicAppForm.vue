@@ -54,6 +54,13 @@
         />
       </v-col>
       <v-col cols="12">
+        <v-autocomplete
+          v-model="itemInfo.layout_type"
+          :items="['Profile', 'Stepper']"
+          label="Layout Type"
+        />
+      </v-col>
+      <v-col cols="12">
         <v-text-field
           v-model="itemInfo.description"
           label="Description"
@@ -108,6 +115,7 @@ export default {
     itemInfo: {
       title: '',
       prefix: '',
+      layout_type: '',
       description: '',
       tabs: []
     },

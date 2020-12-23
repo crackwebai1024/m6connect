@@ -21,11 +21,24 @@
             </v-icon>
           </v-btn>
         </portal>
+
+        <v-btn
+          v-else
+          absolute
+          color="blue"
+          dark
+          fab
+          right
+          small
+          @click="newL1"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
       </v-card-title>
 
       <v-card-text>
         <div class="form-group">
-          <label>Budget Categories</label>
+          <label>Cost Element Category</label>
           <v-list
             class="mainList"
             dense
@@ -81,9 +94,8 @@
     <v-dialog
       v-if="showForm"
       v-model="showForm"
-      max-width="800px"
+      max-width="600px"
       persistent
-      scrollable
     >
       <v-card>
         <v-card-title class="headline px-6 py-4 white">
@@ -93,11 +105,10 @@
         </v-card-title>
         <v-divider class="grey lighten-3" />
 
-        <v-card-text class="pa-2 vertical-scroll">
-          <v-text-field
-            v-model="name"
-            color="blue"
-            label="Budget Category Name"
+        <v-card-text class="px-6 py-2">
+          <budget-category-select
+            :category="name"
+            @newCategory="setBudgetCategory"
           />
 
           <v-text-field
@@ -145,12 +156,15 @@
 <script>
 import { db } from '@/utils/Firebase'
 // import * as easings from 'vuetify/es5/util/easing-patterns'
+import BudgetCategorySelect from '@/modules/cpm/components/projects/_partials/BudgetCategorySelect'
 import draggable from 'vuedraggable'
 import { mapState } from 'vuex'
 
 export default {
+  name: 'BudgetCategories',
   components: {
-    draggable
+    draggable,
+    BudgetCategorySelect
   },
 
   props: {
@@ -241,7 +255,7 @@ export default {
     newL1() {
       this.action = 'new'
       this.showForm = true
-      this.formTitle = 'Create a new Budget Category'
+      this.formTitle = 'Create a new Cost Element Category'
     },
 
     edit(item) {
@@ -326,6 +340,9 @@ export default {
       this.currentItem = {}
       this.currentIndex = -1
       this.showForm = false
+    },
+    setBudgetCategory(category) {
+      this.name = category
     }
   },
 

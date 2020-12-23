@@ -51,11 +51,11 @@
           </v-btn>
         </v-toolbar>
 
-        <v-expansion-panel class="elevation-0">
+        <v-expansion-panels>
+          <v-expansion-panel class="elevation-0">
           <draggable
             v-model="settings.tasks"
             class="draggable-container"
-            :options="{ group: 'tasks' }"
             @end="drag = false"
             @start="drag = true"
             @update="saveOrder"
@@ -118,7 +118,8 @@
                 flat
               >
                 <v-card-text class="pa-0 vertical-scroll">
-                  <v-expansion-panel class="elevation-0">
+                  <v-expansion-panels>
+                    <v-expansion-panel class="elevation-0">
                     <v-expansion-panel-content
                       v-for="(itemL2, indexL2) in item.cat_1"
                       :key="indexL2"
@@ -171,11 +172,13 @@
                       </v-card>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
+                  </v-expansion-panels>
                 </v-card-text>
               </v-card>
             </v-expansion-panel-content>
           </draggable>
         </v-expansion-panel>
+        </v-expansion-panels>
 
         <div
           v-show="showForm"
@@ -227,7 +230,7 @@
                   <v-row class="ma-0">
                     <v-col md="2">
                       <v-btn
-                        outline
+                        outlined
                         @click="showColor = !showColor"
                       >
                         Color
@@ -376,7 +379,7 @@
                                 >
                                   <v-btn
                                     color="blue"
-                                    outline
+                                    outlined
                                     @click="clearGanttDialog"
                                   >
                                     Cancel
@@ -407,31 +410,32 @@
                           <v-col md="12">
                             <v-data-table
                               :headers="headers"
-                              hide-default-footer
                               :items="ganttsInTask"
                             >
-                              <template v-slot:items="props">
-                                <td>{{ props.item.gantt.name }}</td>
-                                <td>{{ props.item.duration }}</td>
-                                <td>
-                                  <v-btn
-                                    color="blue"
-                                    dark
-                                    icon
-                                    @click="editGantt(props.item, props.index)"
-                                  >
-                                    <v-icon>mdi-pencil</v-icon>
-                                  </v-btn>
+                              <template v-slot:item="props">
+                                <tr>
+                                  <td>{{ props.item.gantt.name }}</td>
+                                  <td>{{ props.item.duration }}</td>
+                                  <td>
+                                    <v-btn
+                                      color="blue"
+                                      dark
+                                      icon
+                                      @click="editGantt(props.item, props.index)"
+                                    >
+                                      <v-icon>mdi-pencil</v-icon>
+                                    </v-btn>
 
-                                  <v-btn
-                                    color="blue"
-                                    dark
-                                    icon
-                                    @click="deleteGantt(props.index)"
-                                  >
-                                    <v-icon>mdi-delete</v-icon>
-                                  </v-btn>
-                                </td>
+                                    <v-btn
+                                      color="blue"
+                                      dark
+                                      icon
+                                      @click="deleteGantt(props.index)"
+                                    >
+                                      <v-icon>mdi-delete</v-icon>
+                                    </v-btn>
+                                  </td>
+                                </tr>
                               </template>
                             </v-data-table>
                           </v-col>

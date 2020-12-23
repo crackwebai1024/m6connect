@@ -1,12 +1,117 @@
 <template>
   <div
     v-if="!loading"
-    class="dont-show-scroll h-full px-4 transparent vertical-scroll w-side"
+    class="dont-show-scroll h-full px-4 transparent vertical-scroll w-full"
   >
     <div class="align-center d-flex justify-space-between mb-1 mt-4 pl-3">
-      <p class="font-weight-bold mb-0">
+      <p :class="['font-weight-bold mb-0', {'white--text': lightMode}]">
         Action Feed
+        <v-icon
+          @click="actionFeedCalendar"
+        >
+          mdi-calendar-clock
+        </v-icon>
       </p>
+      <v-dialog
+        v-model="actionFeedCalendarModal"
+        max-width="600px"
+        persistent
+      >
+        <v-card>
+          <v-card-title>
+            <v-toolbar
+              flat
+            >
+              <v-btn
+                class="mr-4"
+                color="grey darken-2"
+                outlined
+                @click="setToday"
+              >
+                Today
+              </v-btn>
+              <v-btn
+                color="grey darken-2"
+                fab
+                small
+                text
+                @click="prev"
+              >
+                <v-icon small>
+                  mdi-chevron-left
+                </v-icon>
+              </v-btn>
+              <v-btn
+                color="grey darken-2"
+                fab
+                small
+                text
+                @click="next"
+              >
+                <v-icon small>
+                  mdi-chevron-right
+                </v-icon>
+              </v-btn>
+              <v-toolbar-title v-if="$refs.calendar">
+                {{ $refs.calendar.title }}
+              </v-toolbar-title>
+              <v-spacer />
+              <v-menu
+                bottom
+                right
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    color="grey darken-2"
+                    outlined
+                    v-on="on"
+                  >
+                    <span>{{ calendarTypeToLabel[calendarType] }}</span>
+                    <v-icon right>
+                      mdi-menu-down
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item @click="calendarType = 'day'">
+                    <v-list-item-title>Day</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="calendarType = 'week'">
+                    <v-list-item-title>Week</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="calendarType = 'month'">
+                    <v-list-item-title>Month</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="calendarType = '4day'">
+                    <v-list-item-title>4 days</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-toolbar>
+          </v-card-title>
+          <v-card-text>
+            <v-calendar
+              ref="calendar"
+              v-model="calendarValue"
+              :event-color="getEventColor"
+              :event-overlap-threshold="30"
+              :events="calendarEvents"
+              :type="calendarType"
+            />
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer />
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="actionFeedCalendarModal = false"
+            >
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <div class="align-center d-flex">
         <v-menu
           bottom
@@ -16,12 +121,12 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               v-bind="attrs"
-              class="capitalize font-weight-bold mb-0 pl-1 purple--text px-0 text--darken-1 transparent"
+              :class="['capitalize font-weight-bold mb-0 pl-1 px-0 text--darken-1 transparent', {'white--text': lightMode}, {'purple--text': !lightMode} ]"
               elevation="0"
               v-on="on"
             >
               {{ filterTag.value }}
-              <v-icon class="blue--text text--darken-3">
+              <v-icon :class=" !lightMode ? 'blue--text text--darken-3' : 'white--text' ">
                 mdi-chevron-down
               </v-icon>
             </v-btn>
@@ -45,7 +150,7 @@
           icon
           @click="showSearchInputFunction"
         >
-          <v-icon class="grey--text text--darken-2">
+          <v-icon :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
             mdi-magnify
           </v-icon>
         </v-btn>
@@ -80,12 +185,11 @@
   </div>
   <v-container
     v-else
-    class="dont-show-scroll h-full px-4 transparent vertical-scroll w-side"
+    class="dont-show-scroll h-full px-4 text-center transparent vertical-scroll w-side"
   >
     <v-progress-circular
       color="primary"
       indeterminate
-      style="margin-left: 45%;"
     />
   </v-container>
 </template>
@@ -98,6 +202,12 @@ export default {
   components: {
     ActionFeedItem
   },
+  props: {
+    lightMode: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => ({
     busy: false,
     currentIndex: 0,
@@ -108,7 +218,27 @@ export default {
     showActionBtns: false,
     // action feed data
     notifications: [],
-    status: []
+    status: [],
+    actionFeedCalendarModal: false,
+    // calendar part
+    calendarType: 'month',
+    calendarTypes: ['month', 'week', 'day', '4day'],
+    calendarTypeToLabel: {
+      month: 'Month',
+      week: 'Week',
+      day: 'Day',
+      '4day': '4 Days'
+    },
+    calendarValue: '',
+    calendarColors: [
+      'blue',
+      'indigo',
+      'deep-purple',
+      'cyan',
+      'green',
+      'orange',
+      'grey darken-1'
+    ]
   }),
   computed: {
     ...mapGetters('Auth', { cUser: 'getUser' }),
@@ -227,6 +357,27 @@ export default {
 
         return notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
       })
+    },
+    calendarEvents() {
+      const feeds = this.actFeed.filter(notification => {
+        if (typeof notification.post.actor.data === 'object') {
+          return notification.post.actor.data.name.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+          || notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+        }
+
+        return notification.description.toUpperCase().trim().indexOf(this.searchInput.toUpperCase().trim()) !== -1
+      })
+      const events = []
+      feeds.map(row => {
+        events.push({
+          name: row.title,
+          start: row.start_date,
+          end: row.due_date,
+          color: this.genEventColor(),
+          timed: false
+        })
+      })
+      return events
     }
   },
   watch: {
@@ -237,7 +388,7 @@ export default {
         this.loading = false
       })
     },
-    actFeed: function (val) {
+    actFeed: function () {
       this.currentIndex = 0
     }
   },
@@ -274,6 +425,27 @@ export default {
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput
       this.$nextTick(() => this.$refs.searchInput.focus())
+    },
+    actionFeedCalendar() {
+      this.actionFeedCalendarModal = true
+    },
+    getEventColor(event) {
+      return event.color
+    },
+    genEventColor() {
+      return this.calendarColors[this.rnd(0, this.calendarColors.length - 1)]
+    },
+    rnd(a, b) {
+      return Math.floor((b - a + 1) * Math.random()) + a
+    },
+    setToday() {
+      this.calendarValue = ''
+    },
+    prev() {
+      this.$refs.calendar.prev()
+    },
+    next() {
+      this.$refs.calendar.next()
     }
   }
 }

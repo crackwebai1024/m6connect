@@ -11,13 +11,18 @@ import './plugins'
 import './modules/cpm/plugins'
 import VueTelInputVuetify from 'vue-tel-input-vuetify/lib'
 import VueKonva from 'vue-konva'
-import VueCarousel from 'vue-carousel';
+import VueCarousel from 'vue-carousel'
+import VueYouTubeEmbed from 'vue-youtube-embed'
+import VueSocialSharing from 'vue-social-sharing'
 
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+
 Vue.component('treeselect', Treeselect)
 
-Vue.use(VueCarousel);
+Vue.use(VueCarousel)
+
+Vue.use(VueYouTubeEmbed)
 
 Vue.use(Helpers)
 
@@ -32,6 +37,8 @@ Vue.use(VueTelInputVuetify, {
 })
 
 Vue.use(VueKonva)
+
+Vue.use(VueSocialSharing)
 
 import * as VueGoogleMaps from 'vue2-google-maps'
 Vue.use(VueGoogleMaps, {

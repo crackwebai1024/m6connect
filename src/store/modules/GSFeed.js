@@ -44,6 +44,14 @@ const mutations = {
       state.gsToken
     )
   },
+  SET_BUILDER_FEED: async (state, appId) => {
+    state.foreignId = appId
+    state.feed = await state.client.feed(
+      'AppBuilder',
+      appId,
+      state.gsToken
+    )
+  },
   SET_COMPANIES_FEED: async (state, feedID) => {
     state.feedNotification = await state.client.feed(
       'notification',
@@ -148,6 +156,9 @@ const actions = {
       } else if (state.room === 'cpm') {
         payload['req']['data']['to'] = ['cpm:global']
         payload['req']['data']['cpm'] = state.foreignId
+      } else if (state.room === 'AppBuilder') {
+        payload['req']['data']['to'] = ['AppBuilder:global']
+        payload['req']['data']['AppBuilder'] = state.foreignId
       }
 
       const activity = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activity`, {
@@ -214,6 +225,14 @@ const actions = {
           commit('SET_TIMELINE', res.data)
           resolve(true)
         }).catch(e => reject(e))
+      } else if (state.room === 'AppBuilder') {
+        const url = `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/feed/activities/AppBuilder/${state.foreignId}`
+
+        axios.get(url).then(res => {
+          state.timeline = []
+          commit('SET_TIMELINE', res.data)
+          resolve(true)
+        }).catch(e => reject(e))
       } else {
         state.feed.get({
           reactions: { own: true, recent: true, counts: true }
@@ -224,6 +243,9 @@ const actions = {
         }).catch(e => reject(e))
       }
     })
+  },
+  cleanFeed({ commit }) {
+    commit('SET_TIMELINE', [])
   },
   retrieveActivityReactions({ state }, id) {
     return new Promise(resolve => {
@@ -260,6 +282,12 @@ const actions = {
   setCompanyFeed({ commit }, payload) {
     return new Promise(resolve => {
       commit('SET_COMPANIES_FEED', payload)
+      resolve(true)
+    })
+  },
+  setBuilderFeed({ commit }, payload) {
+    return new Promise(resolve => {
+      commit('SET_BUILDER_FEED', payload)
       resolve(true)
     })
   },

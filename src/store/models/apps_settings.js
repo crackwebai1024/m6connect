@@ -153,12 +153,41 @@ function r(name) {
 
 const typeMap = {
   'AppsSettings': o([
-    { json: 'id', js: 'id', typ: u(undefined, 0) },
-    { json: 'field', js: 'field', typ: u(undefined, '') },
-    { json: 'value', js: 'value', typ: u(undefined, '') },
-    { json: 'app_type', js: 'app_type', typ: u(undefined, '') },
-    { json: 'created_at', js: 'created_at', typ: u(undefined, Date) },
-    { json: 'updated_at', js: 'updated_at', typ: u(undefined, Date) }
+    {
+      json: 'id',
+      js: 'id',
+      typ: u(undefined, 0)
+    },
+    {
+      json: 'field',
+      js: 'field',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'value',
+      js: 'value',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'app_type',
+      js: 'app_type',
+      typ: u(undefined, '')
+    },
+    {
+      json: 'parent_id',
+      js: 'parent_id',
+      typ: u(undefined, u(null, 0))
+    },
+    {
+      json: 'created_at',
+      js: 'created_at',
+      typ: u(undefined, Date)
+    },
+    {
+      json: 'updated_at',
+      js: 'updated_at',
+      typ: u(undefined, Date)
+    }
   ], false)
 }
 

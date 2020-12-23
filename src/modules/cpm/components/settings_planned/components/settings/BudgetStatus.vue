@@ -114,6 +114,7 @@ import { db } from '@/utils/Firebase.js'
 import ComponentTemplate from '../ComponentTemplate'
 import { mapState } from 'vuex'
 export default {
+  name: 'BudgetStatus',
   components: {
     ComponentTemplate
   },

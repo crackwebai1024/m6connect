@@ -1,15 +1,15 @@
 <template>
     <v-snackbar
-      v-model="snackbar"
+      v-model="snackbarVal"
       :bottom="bottom"
       :color="notifColor"
       :left="left"
       :multi-line="multiLine"
       :right="right"
-      :timeout="timeout"
       :top="top"
       :vertical="vertical"
     >
+
       <b class="white--text" >{{ text }}</b>
 
       <template v-slot:action="{ attrs }">
@@ -27,6 +27,7 @@
 
 <script>
 import colors from 'vuetify/lib/util/colors'
+import { mapMutations } from 'vuex'
 
 export default {
     name: 'M6Notification',
@@ -46,10 +47,6 @@ export default {
         danger: {
             type: Boolean,
             default: false
-        },
-        timeout: {
-            type: Number,
-            default: 5000
         },
         top: {
             type: Boolean, 
@@ -80,7 +77,20 @@ export default {
             default: ''
         }
     },
+    methods: {
+        ...mapMutations('SnackBarNotif', {
+            notifClose: 'notifClose'
+        })
+    },
     computed: {
+        snackbarVal: {
+            get() {
+                return this.snackbar
+            },
+            set(val) {
+                if(!val) this.notifClose()
+            }
+        },
         notifColor(){
             let str = ""
             switch (true) {

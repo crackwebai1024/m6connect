@@ -24,7 +24,12 @@
           class="mb-0 px-13"
           :to="link.url"
         >
+          <apps-btn-drop-down
+            v-if="link.text === 'apps'"
+            :icon="link.icon"
+          />
           <v-icon
+            v-else
             color="white"
             :large="true"
           >
@@ -162,6 +167,7 @@ import AddFeed from './AddFeed'
 import CompanyHome from './CompanyHome'
 import NewRecordDialog from '@/components/Dialogs/NewRecordDialog'
 import AppBuilderShow from './AppBuilderShow'
+import AppsBtnDropDown from '@/components/Home/TopNav/AppsBtnDropDown'
 
 export default {
   name: 'TopNav',
@@ -176,7 +182,8 @@ export default {
     AddFeed,
     CreateApp,
     CompanyHome,
-    AppBuilderShow
+    AppBuilderShow,
+    AppsBtnDropDown
   },
   data: () => ({
     user: {
@@ -190,7 +197,7 @@ export default {
     },
     quickAccessLinks: [
       { url: '/', icon: 'home' },
-      { url: '/apps', icon: 'view-comfy' },
+      { url: '/records', icon: 'view-comfy', text: 'apps' },
       { url: '/companies', icon: 'office-building' },
       { url: '/store', icon: 'storefront' },
       { url: '/user/settings', icon: 'cog' }

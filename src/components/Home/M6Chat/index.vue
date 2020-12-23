@@ -1,5 +1,5 @@
 <template>
-  <div class="dont-show-scroll h-full pa-5 vertical-scroll w-side">
+  <div class="dont-show-scroll h-full pa-5 vertical-scroll w-full">
     <template
       v-for="(department, index) in departments"
     >
@@ -8,12 +8,14 @@
         :key="'department-' + index"
         :department="department"
         :last-department=" index !== departments.length - 1 "
+        :light-mode="lightMode"
       />
       <connections
         v-else-if="department.channels.length"
         :key="'department-' + index"
         :department="department"
         :last-department=" index !== departments.length - 1 "
+        :light-mode="lightMode"
       />
     </template>
   </div>
@@ -29,6 +31,12 @@ export default {
   components: {
     DepartmentChat,
     Connections
+  },
+  props: {
+    lightMode: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

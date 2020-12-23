@@ -28,22 +28,111 @@
           </div>
 
           <div
-            class="details-content grey h-fit lighten-3 min-h-full pt-3"
+            class="details-content grey h-fit lighten-3 min-h-full pt-3 relative"
           >
             <v-row class="align-start d-flex justify-space-between max-w-lg mx-auto pt-1 w-full">
               <slot name="content" />
             </v-row>
+            <v-badge
+              class="absolute left-0 ml-5 mt-5 top-0 w-fit"
+              color="blue"
+              offset-x="17"
+              offset-y="17"
+              overlap
+              :style=" actionOverlay ? 'z-index: 203;' : '' "
+            >
+              <v-btn
+                :class="actionOverlay ? 'white ml-auto pa-6 white--text' : 'darken-2 grey ml-auto pa-6 white--text' "
+                :color="!actionOverlay ? 'white' : 'grey darken-2'"
+                depressed
+                icon
+                rounded
+                @click="actionOverlay = !actionOverlay"
+              >
+                <v-icon>mdi-menu</v-icon>
+              </v-btn>
+              <template v-slot:badge>
+                12
+              </template>
+            </v-badge>
+            <v-overlay
+              class="record-overlay"
+              opacity="0.7"
+              :value="actionOverlay"
+            >
+              <v-row
+                class="central-content flex flex-nowrap justify-space-between mx-auto relative top-6 transparent0 w-full"
+                no-gutters
+              >
+                <v-col
+                  class="dont-show-scroll vertical-scroll"
+                  cols="3"
+                >
+                  <div
+                    class="w-full"
+                    style="height: 310px;"
+                  />
+                  <action-feed :light-mode="true" />
+                </v-col>
+              </v-row>
+            </v-overlay>
           </div>
         </v-card>
+        <v-badge
+          class="absolute bottom-0 mb-5 mr-5 right-0 w-fit"
+          color="green"
+          offset-x="17"
+          offset-y="17"
+          overlap
+          :style=" chatOverlay ? 'z-index: 203;' : '' "
+        >
+          <v-btn
+            class="blue ml-auto pa-6 white--text"
+            color="white"
+            depressed
+            icon
+            rounded
+            @click="chatOverlay = !chatOverlay"
+          >
+            <v-icon>mdi-message</v-icon>
+          </v-btn>
+          <template v-slot:badge>
+            6
+          </template>
+        </v-badge>
+        <v-overlay
+          class="record-overlay"
+          opacity="0.7"
+          :value="chatOverlay"
+        >
+          <v-row
+            class="central-content flex flex-nowrap justify-space-between mx-auto relative top-6 transparent0 w-full"
+            no-gutters
+          >
+            <v-col
+              cols="9"
+            />
+            <v-col
+              cols="3"
+            >
+              <m6-chat :light-mode="true" />
+            </v-col>
+          </v-row>
+        </v-overlay>
       </v-dialog>
     </template>
   </div>
 </template>
 
 <script>
+import ActionFeed from '@/views/Home/ActionFeed'
+import M6Chat from '@/components/Home/M6Chat'
+
 export default {
   name: 'AppTemplate',
   components: {
+    ActionFeed,
+    M6Chat
   },
   props: {
     propsDialog: {
@@ -60,7 +149,9 @@ export default {
     }
   },
   data: () => ({
-    dialog: false
+    dialog: false,
+    chatOverlay: false,
+    actionOverlay: false
   }),
 
   watch: {
@@ -111,5 +202,10 @@ export default {
 }
 .v-tabs-slider {
     color: #2196F3;
+}
+.record-overlay .v-overlay__content {
+  width: 100%;
+  height: 100%;
+  top: 60px;
 }
 </style>

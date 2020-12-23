@@ -1,10 +1,12 @@
 <template>
   <v-container
-    class="mb-8 px-0 py-0"
+    class="mb-8 px-0 py-0 w-full"
   >
     <post-item
       v-if="Object.keys(actionPost).length > 0"
+      :action-record="true"
       :data="actionPost"
+      :record-i-d="$h.dg(actionPost, 'props.record.id' , '')"
     >
       <template v-slot:record>
         <p
@@ -23,9 +25,9 @@
         <v-badge
           v-for="(follower, index) in actionPost.props.wo_assignments"
           :key="index + 'follower'"
-          :bordered="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
+          :bordered="!(follower.status === 'Complete' || follower.status === 'Declined')"
           :color="follower.status === 'Complete' ? 'green accent-3' : follower.status === 'Declined' ? 'red' :'white black--text'"
-          :dark="follower.status === 'Complete' || follower.status === 'Declined' ? false : true"
+          :dark="!(follower.status === 'Complete' || follower.status === 'Declined')"
           :icon="follower.status === 'Complete' ? 'mdi-check' : follower.status === 'Declined' ? 'mdi-close-circle' : 'mdi-help'"
           offset-x="12"
           offset-y="12"
@@ -96,6 +98,7 @@ export default {
     if (!this.external) {
       this.set_user_data()
       this.set_posts_data()
+      await this.$store.dispatch('GSFeed/cleanFeed')
       await this.$store.dispatch('GSFeed/retrieveFeed')
 
       this.feed.subscribe(async data => {

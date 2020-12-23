@@ -53,7 +53,7 @@
                     v-bind="attrs"
                     icon
                     v-on="on"
-                    @click="$router.go(-1)"
+                    @click="$router.replace('/app/cpm')"
                   >
                     <v-icon color="blue lighten-1">
                       mdi-keyboard-return
@@ -91,20 +91,42 @@
           class="w-full"
         >
           <template v-if="activeTab === 0">
-            <panel-two-columns>
+            <panel-two-columns
+              :left-column="4"
+              :right-column="8"
+            >
               <div
                 slot="leftPanel"
-                class="card-custom-shadow mb-3 px-6 py-5 rounded white"
+                class=""
               >
-                <h3 class="font-weight-bold grey--text spacing-tight text--darken-3">
-                  Project Information
-                </h3>
+                <edit-panel-dialog
+                  v-if="panelToEdit.items"
+                  v-model="showEditPanel"
+                  :panel.sync="panelToEdit"
+                  @update="updateProject"
+                />
                 <v-col
-                  v-for="(section,index) in projectInformation"
+                  v-for="(panel,index) in projectInformation"
                   :key="index"
+                  class="card-custom-shadow mb-3 px-6 py-5 rounded white"
                 >
+                  <h3
+                    class="font-weight-bold grey--text spacing-tight text--darken-3"
+                    style="position: relative"
+                  >
+                    {{ panel.title }}
+                    <v-btn
+                      absolute
+                      fab
+                      right
+                      x-small
+                      @click="showPanelEditModal(panel)"
+                    >
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                  </h3>
                   <v-row
-                    v-for="(item, index) in section"
+                    v-for="(item, index) in panel.items"
                     :key="index"
                   >
                     <v-col class="align-center d-flex flex-grow-0 flex-shrink-0">
@@ -182,7 +204,10 @@
                 slot="rightPanel"
                 class="mb-4 panel px-0"
               >
-                <project-social-media :external="true" class="px-0" />
+                <project-social-media
+                  class="px-0"
+                  :external="true"
+                />
               </div>
             </panel-two-columns>
           </template>
@@ -275,6 +300,13 @@
             </panel-full> -->
           </template>
           <!--REPORTS-->
+
+          <!--SETTINGS-->
+          <template v-if="activeTab === 6">
+            <panel-full>
+              <settings-tab slot="content" />
+            </panel-full>
+          </template>
         </div>
       </app-template-plain>
     </v-row>
@@ -284,7 +316,9 @@
 <script>
 const defaults = {
   money: '0.00',
-  text: 'N/A'
+  text: 'N/A',
+  date: '--/--/----',
+  percent: '0'
 }
 import { mapGetters, mapActions } from 'vuex'
 import RecordContainer from '@/components/RecordMode/RecordContainer'
@@ -303,6 +337,7 @@ import Milestones from '@/modules/cpm/components/projects/panels/schedule/Milest
 import Schedule from '@/modules/cpm/components/projects/panels/schedule/SchedulePanel'
 import Forecasts from '@/modules/cpm/components/projects/panels/Forecasts/ForecastsPanel'
 import ProjectFiles from '@/modules/cpm/components/projects/panels/ProjectFiles'
+import SettingsTab from '@/modules/cpm/components/settings/Settings.vue'
 import {
   db,
   newFirebaseInit,
@@ -311,10 +346,12 @@ import {
 } from '@/utils/Firebase'
 import StatusComment from '../../modules/cpm/components/projects/panels/StatusComment.vue'
 import BudgetComment from '../../modules/cpm/components/projects/panels/BudgetComment.vue'
+import EditPanelDialog from '../Dialogs/EditPanelDialog'
 
 export default {
   name: 'Apps',
   components: {
+    EditPanelDialog,
     RecordContainer,
     AppTemplatePlain,
     PanelFull,
@@ -327,6 +364,7 @@ export default {
     FinancialSpendings,
     Schedule,
     Forecasts,
+    SettingsTab,
     Budgets,
     ProjectFiles,
     StatusComment,
@@ -334,64 +372,148 @@ export default {
 
   },
   data: () => ({
+    showEditPanel: false,
+    panelToEdit: {},
     projectInformation: [
-      [
-        {
-          label: 'Project Manager',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-badge-account'
-        },
-        {
-          label: 'Status',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-list-status'
-        },
-        {
-          label: 'CPA',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-label'
+      {
+        title: 'Project Quickview',
+        type: 'basic',
+        items: [
+          {
+            label: 'Project Manager',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-badge-account'
+          },
+          {
+            label: 'General Contractor',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-badge-account'
+          },
+          {
+            label: 'Status',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-list-status'
+          },
+          {
+            label: 'CPA',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-label'
 
-        },
-        {
-          label: 'Project Title',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-information'
-        },
-        {
-          label: 'Category 1',
-          value: '',
-          default: defaults.text,
-          icon: 'mdi-subtitles-outline'
-        },
-        {
-          label: 'YTD Actuals Capitals',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        },
-        {
-          label: 'YTD Actuals Expenses',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        },
-        {
-          label: 'CPA Capital',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        },
-        {
-          label: 'CPA Capital With Cont',
-          value: '',
-          default: defaults.money,
-          icon: 'mdi-currency-usd'
-        }
-      ]
+          },
+          {
+            label: 'Project Title',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-information'
+          },
+          {
+            label: 'Category 1',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-subtitles-outline'
+          },
+          {
+            label: 'YTD Actuals Capitals',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          },
+          {
+            label: 'YTD Actuals Expenses',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          },
+          {
+            label: 'CPA Capital',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          },
+          {
+            label: 'CPA Capital With Cont',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          }
+        ]
+      },
+      {
+        title: 'Schedule & Budget',
+        type: 'schedule', // use the same for editpaneldialog.vue
+        items: [
+          {
+            label: 'Phase',
+            value: '',
+            default: defaults.text,
+            icon: 'mdi-badge-account'
+          },
+          {
+            label: 'Target Date / Phase',
+            value: '',
+            default: defaults.date,
+            icon: 'mdi-calendar'
+          },
+          {
+            label: 'Construction Start',
+            value: '',
+            default: defaults.date,
+            icon: 'mdi-calendar'
+          },
+          {
+            label: 'Anticipated Construction Finish',
+            value: '',
+            default: defaults.date,
+            icon: 'mdi-calendar'
+          },
+          {
+            label: 'Complete Budget',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Complete Schedule',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Complete',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Budget Status',
+            value: '',
+            default: defaults.percent,
+            icon: 'mdi-percent'
+          },
+          {
+            label: 'Total Project Budget',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          }
+        ]
+      },
+      {
+        title: 'Commitments & Spendings',
+        type: 'milestones',
+        items: [
+          {
+            label: 'Spent to Date',
+            value: '',
+            default: defaults.money,
+            icon: 'mdi-currency-usd'
+          }
+        ]
+      }
     ],
     tab: null,
     items: [
@@ -408,7 +530,8 @@ export default {
       'Schedule',
       'Document Manager',
       'Updates',
-      'Reports'
+      'Reports',
+      'Settings'
     ],
     activeTab: 0
   }),
@@ -440,9 +563,33 @@ export default {
   },
   beforeDestroy() {},
   methods: {
+    async updateProject() {
+      const res = await db.collection('cpm_projects').doc(this.$route.params.id).get()
+      this.project = res.data()
+    },
+    showPanelEditModal(panel) {
+      this.showEditPanel = true
+      this.panelToEdit = { ...panel }
+    },
+    camelize(str) {
+      return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+        return index === 0 ? word.toLowerCase() : word.toUpperCase()
+      }).replace(/\s+/g, '').replace('/', '')
+    },
     ...mapActions({
       getPanelSettings: 'hideCpmPanels/getSettings'
     })
+  },
+  watch: {
+    project: function () {
+      if (this.project) {
+        this.projectInformation.forEach(function (panel) {
+          panel.items.map(function (item) {
+            if (this.project[panel.type]) item.value = this.project[panel.type][this.camelize(item.label)]
+          }.bind(this))
+        }.bind(this))
+      }
+    }
   }
 }
 </script>

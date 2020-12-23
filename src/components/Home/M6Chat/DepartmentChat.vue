@@ -5,7 +5,7 @@
         color="grey darken-4"
         icon
       >
-        <v-icon class="grey--text text--darken-2">
+        <v-icon :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
           mdi-filter
         </v-icon>
       </v-btn>
@@ -14,13 +14,13 @@
         icon
         @click="showSearchInputFunction"
       >
-        <v-icon class="grey--text text--darken-2">
+        <v-icon :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
           mdi-magnify
         </v-icon>
       </v-btn>
     </div>
     <div>
-      <h4 class="mb-4 ml-1">
+      <h4 :class=" !lightMode ? 'mb-4 ml-1' : 'white--text mb-4 ml-1' ">
         {{ department.name }}
       </h4>
       <input
@@ -32,7 +32,8 @@
         type="text"
       >
       <v-btn
-        v-for="user in filteredUsers" :key="'user-' + department.name + user.user.id"
+        v-for="user in filteredUsers"
+        :key="'user-' + department.name + user.user.id"
         class="capitalize d-flex justify-start my-0 pointer px-2 py-6 w-full"
         color="transparent"
         elevation="0"
@@ -43,11 +44,13 @@
           class="mr-3"
           dot
           offset-x="10"
-          offset-y="10">
+          offset-y="10"
+        >
           <v-avatar
             :color="user.user.profilePic ? 'transparent' : 'blue'"
             dark
-            size="36">
+            size="36"
+          >
             <v-img
               v-if="user.user.profilePic"
               :src="user.user.profilePic"
@@ -58,13 +61,16 @@
           </v-avatar>
         </v-badge>
         <div class="align-start d-flex flex-column">
-          <p class="font-weight-bold mb-0">
+          <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
             {{ user.user.firstName }} {{ user.user.lastName }}
           </p>
           <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
         </div>
       </v-btn>
-      <div v-if="filteredUsers.length === 0">
+      <div
+        v-if="filteredUsers.length === 0"
+        :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' "
+      >
         No results found
       </div>
     </div>
@@ -83,6 +89,10 @@ export default {
     department: {
       type: Object,
       default: () => {}
+    },
+    lightMode: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -96,7 +106,7 @@ export default {
     ...mapGetters('Auth', { currentUser: 'getUser' }),
     filteredUsers() {
       if (this.department.users) {
-        return this.department.users.filter( user => {
+        return this.department.users.filter(user => {
           if (user.user.firstName.toLowerCase().trim().indexOf(this.searchInput.toLowerCase().trim()) !== -1) {
             return true
           }
@@ -114,28 +124,36 @@ export default {
       notifDanger: 'notifDanger'
     }),
     async startChat(currentUser) {
-      const response = await this.client.queryUsers({ id: { $in: [currentUser.id] } });
-      if(response.users.length > 0) {
-        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, currentUser.id])
+      const response = await this.client.queryUsers({
+        id: { $in: [currentUser.id] }
+      })
+      if (response.users.length > 0) {
+        this.$store.dispatch('GSChat/createChat', [
+          this.currentUser.id,
+          currentUser.id
+        ])
       } else {
         // Start New GSChat
-        await this.makeUser(currentUser);
-        await this.makeUser(this.currentUser);
+        await this.makeUser(currentUser)
+        await this.makeUser(this.currentUser)
 
-        this.$store.dispatch('GSChat/createChat', [this.currentUser.id, currentUser.id])
+        this.$store.dispatch('GSChat/createChat', [
+          this.currentUser.id,
+          currentUser.id
+        ])
       }
     },
-    async makeUser(user){
+    async makeUser(user) {
       const cUser = {
         id: user.id,
         name: `${user.firstName} ${user.lastName}`,
         image: user.profilePic
       }
 
-      await this.client.disconnect();
+      await this.client.disconnect()
       await this.$store.dispatch('GSChat/getGSToken', user)
       await this.$store.dispatch('GSChat/setUser', cUser)
-      return true;
+      return true
     },
     showSearchInputFunction() {
       this.showSearchInput = !this.showSearchInput

@@ -85,7 +85,7 @@
           </span>
         </v-card-title>
         <v-divider class="grey lighten-3" />
-        <v-card-text class="d-flex flex-wrap justify-end pb-1 vertical-scroll">
+        <v-card-text class="d-flex flex-wrap justify-end pb-1">
           <v-text-field
             v-model="element"
             class="mb-2 mt-3 w-full"

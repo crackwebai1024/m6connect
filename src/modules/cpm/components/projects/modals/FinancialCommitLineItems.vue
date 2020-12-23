@@ -84,7 +84,10 @@
                 </div>
               </v-col>
               <v-col cols="7">
-                <v-autocomplete
+                <v-text-field v-model="lineItem.vendor">
+                  
+                </v-text-field>
+                <!--<v-autocomplete
                   v-model="lineItem.vendor"
                   clearable
                   item-text="title"
@@ -105,7 +108,7 @@
                     </v-chip>
                     {{ item.title }}
                   </template>
-                </v-autocomplete>
+                </v-autocomplete>-->
               </v-col>
             </v-row>
 
@@ -208,8 +211,6 @@
                 <v-menu
                   v-model="paidToDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -335,8 +336,6 @@
                 <v-menu
                   v-model="documentDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -626,8 +625,6 @@
                 <v-menu
                   v-model="startDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -671,8 +668,6 @@
                 <v-menu
                   v-model="deliveryDateMenu"
                   :close-on-content-click="false"
-                  full-width
-                  lazy
                   min-width="290px"
                   :nudge-right="40"
                   offset-y
@@ -816,7 +811,8 @@ export default {
   methods: {
     ...mapActions('cpm/projects/commitments', {
       createLineItem: 'createLineItem',
-      updateLineItem: 'updateLineItem'
+      updateLineItem: 'updateLineItem',
+      updateAccrual: 'updateAccrual'
     }),
     update() {
       if (!this.$refs.form.validate()) {
@@ -830,6 +826,7 @@ export default {
         lineItemId: this.lineItemId
       })
         .then(() => {
+          this.updateAccrual(this.$route.params.id)
           this.showLoading = false
           this.$snotify.success(
             'The line item was successfully updated',
@@ -852,13 +849,13 @@ export default {
         return
       }
       this.showLoading = true
-
       this.createLineItem({
         projectRef: this.projectRef,
         commitmentRef: this.commitmentRef,
         lineItem: this.lineItem
       })
         .then(() => {
+          this.updateAccrual(this.$route.params.id)
           this.showLoading = false
           this.$snotify.success('The line item was added', 'Success')
           this.$emit('close')

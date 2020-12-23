@@ -1,6 +1,7 @@
+/* eslint-disable no-empty-pattern */
+/* eslint-disable camelcase */
 import axios from 'axios'
 import generalListModule from '../../GeneralListModule'
-const convertApps = require('@/store/models/m6apps')
 const ItAppDescription = require('@/store/models/itapp_description')
 const ItAppDependencies = require('@/store/models/itapp_dependencies')
 
@@ -28,7 +29,7 @@ export default {
     async get_filter_apps(cont, data) {
       const response = await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/filter/apps`, data)
 
-      cont.state.itappsRecords = convertApps.toM6Apps(response['data'])
+      cont.state.itappsRecords = response['data']
       generalListModule.state.general_list = cont.state.itappsRecords
     },
     async get_filter_builder_apps(cont, data) {
@@ -54,8 +55,7 @@ export default {
           response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps`)
           break
       }
-
-      cont.state.itappsRecords = convertApps.toM6Apps(response['data'])
+      cont.state.itappsRecords = response['data']
       generalListModule.state.general_list = cont.state.itappsRecords
     },
     async get_description({}, id) {
@@ -99,7 +99,7 @@ export default {
     // Licensing
     async get_licensing({}, appId) {
       const response = await axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/licensing/${appId}`)
-      return Object.keys(response.data).length == 0 ? {} : {
+      return Object.keys(response.data).length === 0 ? {} : {
         id: response.data.id,
         licenseType: response.data.type,
         users: response.data.estimated_users,

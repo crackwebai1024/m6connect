@@ -8,30 +8,26 @@
       class="fill-height"
     >
       <v-col cols="4">
-        <v-card class="card-settings">
+        <v-card class="card-settings px-2">
           <div style="flex-container">
-            <v-tooltip
+            <div
               v-for="(setting, sindex) in settings"
               :key="sindex"
-              right
             >
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  class="blockbtn flex-column"
-                  :class="activeSetting === setting ? 'settingActive' : ''"
-                  icon
-                  style="height:150px; width:100%; cursor: pointer;"
-                  v-on="on"
-                  @click="activateSettingFn(setting)"
-                >
-                  <v-icon style="font-size:80px;">
-                    {{ setting.icon }}
-                  </v-icon>
-                  <div>{{ setting.name }}</div>
-                </v-btn>
-              </template>
-              <span>{{ setting.name }}</span>
-            </v-tooltip>
+              <v-btn
+                class="blockbtn flex-column"
+                :class="activeSetting === setting ? 'settingActive' : ''"
+                icon
+                style="height:150px; width:100%; cursor: pointer;"
+                v-on="on"
+                @click="activateSettingFn(setting)"
+              >
+                <v-icon style="font-size:80px;">
+                  {{ setting.icon }}
+                </v-icon>
+                <div>{{ setting.name }}</div>
+              </v-btn>
+            </div>
           </div>
         </v-card>
       </v-col>
@@ -169,7 +165,7 @@ export default {
               component: 'budget-status'
             },
             {
-              name: 'Budget Categories',
+              name: 'Cost Element Category',
               component: 'budget-categories'
             },
             {

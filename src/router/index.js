@@ -21,6 +21,8 @@ const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" *
 const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
 const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/CloneTool')
 const RapidTable = () => import(/* webpackChunkName: 'RapidTable' */ '@/views/Rapid/RapidTable')
+const ActionsTable = () => import(/* webpackChunkName: 'ActionsTable' */ '@/views/ActionCenter/ActionsTable')
+
 import store from '../store/';
 Vue.use(VueRouter);
 
@@ -75,8 +77,8 @@ const router = new VueRouter({
       }
     },
     {
-      path: "/apps",
-      name: "apps",
+      path: "/records",
+      name: "records",
       component: Apps
     },
     {
@@ -99,7 +101,8 @@ const router = new VueRouter({
       name: "dev",
       component: Dev,
       meta: {
-        public: true
+        public: true,
+        topNav: true
       }
     },
     {
@@ -136,6 +139,11 @@ const router = new VueRouter({
       path: "/rapid/table",
       name: "rapid.index",
       component: RapidTable
+    },
+    {
+      path: "/action-center",
+      name: "actioncenter.index",
+      component: ActionsTable
     }
   ],
 });

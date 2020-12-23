@@ -1,4 +1,6 @@
 import axios from 'axios'
+const DynamicAppPosts     = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/RecordPostListPreview.vue")
+const PreviewTabsManager  = () => import("@/components/RecordMode/RecordComponents/RecordType/DynamicApp/PreviewTabsBuilder.vue")
 const defaultState = {
   app: {}
 }
@@ -11,6 +13,28 @@ const mutations = {
 }
 
 const actions = {
+  async getNavigationPreView(context, appID) {
+    const tabs = []
+    const app = await context.dispatch('getApp', appID)
+
+    app.tabs.forEach((tab, i) => {
+      tabs.push({
+        name: tab.title,
+        index: i,
+        component: PreviewTabsManager,
+        icon: 'mdi-table-row'
+      })
+      if (i === 0) {
+        tabs.push({
+          name: 'Feed',
+          component: DynamicAppPosts,
+          icon: 'mdi-comment-quote'
+        })
+      }
+    })
+
+    return tabs
+  },
   getApp({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {
       axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`).then(({ data }) => {
@@ -207,9 +231,10 @@ const actions = {
     })
   },
 
-  getFieldValuesPerPanel(_, { recordID, panelID } = {}) {
+  getFieldValuesPerPanel(_, { recordID, panelID, ids } = {}) {
     return new Promise((resolve, reject) => {
-      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`)
+      // axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`)
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/by_panel/${recordID}/${panelID}`, { ids })
         .then(({ data }) => {
           resolve(data)
         })
@@ -230,6 +255,36 @@ const actions = {
   deleteFieldsByIds(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/fieldsByIds`, payload)
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
+    })
+  },
+
+  deleteApp(_, payload) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/${payload}`)
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
+    })
+  },
+
+  recordsByApps(_, payload) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/records_by_apps`, payload)
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
+    })
+  },
+
+  getSingleRecordFieldValue(_, { recordID, fieldID, refID } = {}) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/reference/${recordID}/${fieldID}/${refID}`)
         .then(({ data }) => {
           resolve(data)
         })

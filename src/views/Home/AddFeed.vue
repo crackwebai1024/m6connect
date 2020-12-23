@@ -296,9 +296,11 @@ export default {
           object: 1
         }
       }
+      this.itemInfo['company_id'] = this.user.companies.items.find(c => c.active)['id']
       this.itemInfo['start_date'] = new Date().toISOString().slice(0, 10)
       this.itemInfo['requested_date'] = new Date().toISOString().slice(0, 10)
       this.showInput = false
+
       this.postAction(this.itemInfo).then(() => {
         this.workOrder()
       })

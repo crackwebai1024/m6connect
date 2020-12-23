@@ -40,7 +40,7 @@
   </div>
   <v-card>
     <div class="form-group">
-      <label>Current Budget Categories</label>
+      <label>Current Cost Element Category</label>
       <table class="table table-striped">
         <thead>
           <tr>

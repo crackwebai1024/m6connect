@@ -22,11 +22,12 @@ import WorkOrderModule from './modules/Backend/WorkOrder/WorkOrderModule'
 import RapidTicket from './modules/RapidTicket'
 import RecordsInstance from './modules/RecordsInstance'
 import AppAttachments from './modules/AppAttachments'
+import WorkActivity from './modules/WorkActivity'
 import hideCpmPanels from '@/modules/cpm/store/hide-cpm-panels'
 import ganttSettings from '@/modules/cpm/store/gantt-settings'
 import gantt from '@/modules/cpm/store/gantt'
 import cpm from '@/modules/cpm/store'
-
+import AppTables from '@/store/modules/AppTables.js'
 import companies from '@/modules/cpm/store/companies'
 import ImportCPM from './modules/ImportCPM'
 
@@ -189,6 +190,8 @@ export default new Vuex.Store({
     gantt,
     ImportCPM,
     RecordsInstance,
-    cpm
+    cpm,
+    WorkActivity,
+    AppTables
   }
 })

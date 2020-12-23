@@ -212,7 +212,7 @@ const typeMap = {
     {
       json: 'general_info',
       js: 'general_info',
-      typ: u(undefined, r('GeneralInfo'))
+      typ: u(undefined, u(r('GeneralInfo'), null))
     },
     {
       json: 'app_id',
@@ -263,6 +263,11 @@ const typeMap = {
       json: 'app',
       js: 'app',
       typ: u(undefined, r('App'))
+    },
+    {
+      json: 'app_prefix',
+      js: 'app_prefix',
+      typ: u(undefined, 'undefined', u(null, ''))
     }
   ], false),
   'App': o([

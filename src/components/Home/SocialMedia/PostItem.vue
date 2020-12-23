@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable vue/no-template-shadow -->
   <v-container class="px-0 py-0 relative">
     <div class="card-custom-shadow mb-4 rounded white">
       <div
@@ -30,7 +29,8 @@
             </v-avatar>
             <div class="d-flex flex-column">
               <div
-                class="cursor-hover font-weight-bold line-height-1 mb-2 size-15 underline"
+                class="cursor-hover font-weight-bold line-height-1 size-15 underline"
+                style="margin-bottom: 2px;"
               >
                 {{ authorPostItem.data.name }}
               </div>
@@ -96,7 +96,11 @@
             <slot name="record" />
 
             <template v-if="recordFields">
-              <form-show-generator :fields="recordFields" />
+              <form-show-generator
+                :action-record="actionRecord"
+                :fields="recordFields"
+                :record-i-d="recordID"
+              />
             </template>
 
             <slot name="assignments" />
@@ -141,12 +145,12 @@
               <v-btn
                 class="ml-2"
                 color="green accent-3"
-                :disabled="data.message === updateMessage"
+                :disabled="data.message == updateMessage"
                 icon
                 @click="updatePost(data)"
               >
                 <v-icon size="22">
-                  mdi-checkbox-marked-circle-outlined
+                  mdi-check
                 </v-icon>
               </v-btn>
             </div>
@@ -287,7 +291,7 @@
           class="px-5 py-4"
         >
           <v-btn
-            v-if="allIages && images.length>4"
+            v-if="allImages && images.length>4"
             class="float-button"
             color="primary"
             outlined
@@ -305,15 +309,27 @@
               :cols="widthCols()"
             >
               <v-img
+                v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                 aspect-ratio="1.7"
                 class="mx-1 my-1 pointer"
                 :src="image"
                 @click="previewImage(image)"
               />
+              <div class="mx-1 my-1 pointer video-list__container">
+                <video
+                  v-if="image.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
+                  controls
+                >
+                  <source
+                    :src="image"
+                    type="video/mp4"
+                  >
+                </video>
+              </div>
             </v-col>
           </v-row>
           <v-btn
-            v-if="!allIages && images.length>4"
+            v-if="!allImages && images.length>4"
             block
             class="mt-2"
             color="primary"
@@ -335,9 +351,25 @@
           :record-info="data['record_url']"
         />
         <external-url
-          v-if="urlify(data.message)['urls'].length > 0"
+          v-if="urlify(data.message)['urls'].length > 0 && urlify(data.message)['youtubeUrls'].length === 0"
           :urls="urlify(data.message)['urls']"
         />
+        <youtube-video
+          v-if="urlify(data.message)['youtubeUrls'].length > 0"
+          :urls="urlify(data.message)['youtubeUrls']"
+        />
+        <div
+          v-for="(row,index) in videoFileList"
+          :key="index"
+          class="video-list__container"
+        >
+          <video controls>
+            <source
+              :src="row"
+              type="video/mp4"
+            >
+          </video>
+        </div>
       </div>
 
       <v-card-actions class="px-5">
@@ -414,18 +446,63 @@
             </v-btn>
           </v-col>
           <v-col cols="4">
-            <v-btn
-              class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
-              small
-              text
-            >
-              <v-icon
-                class="mr-2"
-                size="18"
-              >
-                mdi-share
-              </v-icon> Share
-            </v-btn>
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
+                  small
+                  text
+                  v-on="on"
+                >
+                  <v-icon
+                    class="mr-2"
+                    size="18"
+                  >
+                    mdi-share
+                  </v-icon> Share
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item class="mb-1 ">
+                  <a
+                    class="share-network-facebook social-button"
+                    href="#"
+                    style="background-color: #00AFF0"
+                  >
+                    <span
+                      class="mr-2 social-icon"
+                    >
+                      M6
+                    </span>
+                    <span>Connect</span>
+                  </a>
+                </v-list-item>
+                <v-list-item
+                  v-for="(social, i) in socialSharingItems"
+                  :key="i"
+                  :class="{'mb-1': i !== socialSharingItems.length - 1}"
+                >
+                  <ShareNetwork
+                    class="mr-2 social-button"
+                    :media="data.images[0]"
+                    :network="social.network"
+                    :style="{backgroundColor: social.color}"
+                    :title="data.message"
+                    url="http://m6works.m6connect.com/"
+                  >
+                    <v-icon
+                      class="mr-2 social-icon"
+                      color="white"
+                      size="18"
+                    >
+                      {{ social.icon }}
+                    </v-icon>
+                    <span>{{ social.name }}</span>
+                  </ShareNetwork>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -501,7 +578,6 @@
 </template>
 
 <script>
-/* eslint-disable camelcase */
 import PostComments from './Comments'
 import { mapGetters, mapActions } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
@@ -509,6 +585,7 @@ import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import FormShowGenerator from '@/components/AppBuilder/Form/FormShowGenerator.vue'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
+import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 
 export default {
   name: 'PostItem',
@@ -518,12 +595,21 @@ export default {
     DeleteDialog,
     PostComments,
     VEmojiPicker,
-    FormShowGenerator
+    FormShowGenerator,
+    YoutubeVideo
   },
   props: {
     data: {
       type: [String, Object],
       default: () => {}
+    },
+    recordID: {
+      type: Number,
+      default: 0
+    },
+    actionRecord: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -548,7 +634,7 @@ export default {
     pictureItems: [],
     likeState: false,
     profileImaga: '',
-    allIages: false,
+    allImages: false,
     commentData: '',
     rotate: '',
     user: {},
@@ -558,7 +644,28 @@ export default {
     // Emoji Dialog
     showDialog: false,
     showSkeleton: false,
-    progressLike: false
+    progressLike: false,
+    // Social Sharing
+    socialSharingItems: [
+      {
+        network: 'facebook',
+        name: 'Facebook',
+        icon: 'mdi-facebook',
+        color: '#1877f2'
+      },
+      {
+        network: 'twitter',
+        name: 'Twitter',
+        icon: 'mdi-twitter',
+        color: '#1da1f2'
+      },
+      {
+        network: 'linkedin',
+        name: 'LinkedIn',
+        icon: 'mdi-linkedin',
+        color: '#007bb5'
+      }
+    ]
   }),
   computed: {
     ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
@@ -578,10 +685,22 @@ export default {
       let authorPostData = this.data.actor
       if (typeof authorPostData === 'string') authorPostData = JSON.parse(authorPostData)
       return authorPostData
+    },
+    videoFileList() {
+      try {
+        if (!this.data.files) return []
+        return this.data.files.filter(row => row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO')
+      } catch (error) {
+        return []
+      }
     }
   },
   mounted() {
     this.images = this.data.images
+    // fix for Action Item
+    if (this.images === undefined) {
+      this.images = []
+    }
     this.pictureItems = this.images.slice(0, 4)
     this.user = this.currentUser
     if (this.data.own_reactions.like !== undefined) {
@@ -591,7 +710,6 @@ export default {
       this.data.actor = JSON.parse(this.data.actor)
     }
     this.updateMessage = this.data.message
-
     if (this.data.props && this.data.props.fields) {
       this.recordFields = this.data.props.fields.map(field => field.app_field)
     }
@@ -639,12 +757,15 @@ export default {
     urlify(text) {
       const urlRegex = /(https?:\/\/[^\s]+)/g
       const textUrls = []
+      let youtubeUrls = []
+
       const res = text.replace(urlRegex, function (url) {
         const path = new URL(url)
         textUrls.push(url)
         return '<a href="' + url + '" target="_blank" class="pointer text-subtitle-1 font-weight-bold blue--text" >' + path.origin + '</a>'
       })
-      return { text: res, urls: textUrls }
+      youtubeUrls = textUrls.filter(row => this.youtubeCheck(row))
+      return { text: res, urls: textUrls, youtubeUrls: youtubeUrls }
     },
     widthCols() {
       return this.images.length === 1 ? 12 : 6
@@ -653,10 +774,10 @@ export default {
       return this.$h.dg(this.data, 'reaction_counts.like', '0')
     },
     showAll() {
-      this.pictureItems = this.allIages
+      this.pictureItems = this.allImages
         ? this.images.slice(0, 4)
         : this.images
-      this.allIages = !this.allIages
+      this.allImages = !this.allImages
     },
     showCommentsPost() {
       this.rotate = this.showComments ? '' : 'full-rotate'
@@ -673,6 +794,7 @@ export default {
         type: 'like',
         whoNotify: activity.actor.id
       }
+
       if (this.data.own_reactions.like) {
         const activ = this.data.own_reactions.like.find(i => i.user_id === this.user.id)
         if (activ) {
@@ -705,7 +827,7 @@ export default {
         }
       }
 
-      this.$store.dispatch('GSFeed/addReaction', payload).then(async () => {
+      this.$store.dispatch('GSFeed/addReaction', payload).then(async response => {
         if (activity.props) {
           await this.$store.dispatch('GSFeed/setActionPost')
           await this.$store.dispatch('WorkOrderModule/setWorkOrder')
@@ -770,7 +892,7 @@ export default {
     cancelUpdate() {
       this.updatePostShow = false
       this.updateMessage = this.data.message
-      this.updateInfo['assignment_list'] = []
+      this.updateInfo.assignment_list = []
     },
     async previewImage(selected) {
       await this.$store.dispatch('GSFeed/setPreviewPost', this.data['id'])
@@ -793,6 +915,10 @@ export default {
       })
 
       return pendingApprovals
+    },
+    youtubeCheck(url) {
+      const youtubeUrlRegex = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/
+      return youtubeUrlRegex.test(url)
     }
   }
 }
@@ -828,5 +954,25 @@ v-icon, p {
 .post-item .v-skeleton-loader__avatar {
   width: 49px !important;
   height: 49px !important;
+}
+.video-list__container video {
+  width: 100%;
+}
+
+/* Social sharing */
+.social-button {
+  padding: 0 8px 0 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  line-height: 1.1;
+}
+.social-button span {
+  color: #fff !important
+}
+.social-button .social-icon {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  padding: 7px;
 }
 </style>
