@@ -836,17 +836,14 @@ export default {
       this.percentage = 0
       this.percentageDialog = true
 
-      //for (let index = 0; index < this.fileData.data.length; index++) {
-        //ONLY 10 -> !!!!!!!!!!!!!!!!
-      for (let index = 0; index < 10; index++) {
+      for (let index = 0; index < this.fileData.data.length; index++) {
+      //for (let index = 0; index < 10; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
         } else {
           console.log('CHECKING ' + index)
           const formatedData = this.formatData(item)
-          console.log({formatedData})
-          return
           let project = ''
           // Check if project exists
           if (formatedData.projects_id_number) {
@@ -975,8 +972,7 @@ export default {
                   }
                 }
               }
-            } else {
-              if (this.isSharp) {
+            } else if (this.isSharp) {
                 const checkLineItem = await this.getSpendingLineItemForShap(
                   project.id, 
                   spending.id, 
@@ -1007,7 +1003,6 @@ export default {
                   console.log('Missing Spending Line item number')
                 }
               }
-            }
           }
         }
 
@@ -1124,8 +1119,7 @@ export default {
           others_uid: api_obj_id,
           others_dist_seq_nbr: dist_seq_nbr
         } = formatedData
-        console.log(others_uid)
-        console.log(dist_seq_nbr)
+        
         const docs = await db.collection('cpm_projects')
           .doc(projectID)
           .collection('spendings')
@@ -1457,18 +1451,19 @@ export default {
 
       const snap = await db.collection('m6works_imports').doc(year).collection(month).doc(day).collection(type).get()
       snap.docs.map(async i => {
-        const data = {
-          ...i.data(),
-          ref: i.ref,
-          id: i.id
-        }
+        const data = i.data()
+
         if (data.ref) {
-          const doc = await data.ref.get()
-          if (doc.exists) {
-            i.ref.delete()
-          } else {
-            console.log('DOC DOESNT EXISTS')
-            i.ref.delete()
+          try {
+            const doc = await data.ref.get()
+            if (doc.exists) {
+              i.ref.delete()
+            } else {
+              console.log('DOC DOESNT EXISTS')
+              i.ref.delete()
+            }
+          } catch (e) {
+            console.error(e)
           }
         }
       })
