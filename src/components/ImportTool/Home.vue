@@ -592,6 +592,10 @@ export default {
             description: ''
           },
           {
+            name: 'Dist Seq Nbr',
+            description: ''
+          },
+          {
             name: 'Cost Code Number',
             description: ''
           }
@@ -653,6 +657,9 @@ export default {
     ...mapState('Companies', {
       currentCompany: 'currentCompany'
     }),
+    isSharp() {
+      return +this.currentCompany.id === 54395
+    },
     rows() {
       const data = []
 
@@ -829,14 +836,17 @@ export default {
       this.percentage = 0
       this.percentageDialog = true
 
-      for (let index = 0; index < this.fileData.data.length; index++) {
-      // for (let index = 0; index < 10; index++) {
+      //for (let index = 0; index < this.fileData.data.length; index++) {
+        //ONLY 10 -> !!!!!!!!!!!!!!!!
+      for (let index = 0; index < 10; index++) {
         const item = this.fileData.data[index]
         if (index <= this.rowNumber) {
           // SKIP HEADERS
         } else {
           console.log('CHECKING ' + index)
           const formatedData = this.formatData(item)
+          console.log({formatedData})
+          return
           let project = ''
           // Check if project exists
           if (formatedData.projects_id_number) {
@@ -966,8 +976,12 @@ export default {
                 }
               }
             } else {
-              if (formatedData.spendingLineItem_line_number) {
-                const checkLineItem = await this.getSpendingLineItem(project.id, spending.id, formatedData.spendingLineItem_line_number)
+              if (this.isSharp) {
+                const checkLineItem = await this.getSpendingLineItemForShap(
+                  project.id, 
+                  spending.id, 
+                  formatedData
+                )
                 if (!checkLineItem) {
                   console.log('Creating Spending Line Item')
                   const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
@@ -976,7 +990,22 @@ export default {
                   console.log('Skipping Line Item, already exists')
                 }
               } else {
-                console.log('Missing Spending Line item number')
+                if (formatedData.spendingLineItem_line_number) {
+                  const checkLineItem = await this.getSpendingLineItem(
+                    project.id, 
+                    spending.id, 
+                    formatedData
+                  )
+                  if (!checkLineItem) {
+                    console.log('Creating Spending Line Item')
+                    const newSpendingLineItem = await this.createSpendingLineItem(project.id, spending.id, formatedData)
+                    await this.storeForRevert('spendingLineItem', newSpendingLineItem.id, newSpendingLineItem)
+                  } else {
+                    console.log('Skipping Line Item, already exists')
+                  }
+                } else {
+                  console.log('Missing Spending Line item number')
+                }
               }
             }
           }
@@ -1066,18 +1095,53 @@ export default {
       }
       return await Promise.all(docs.docs.map(async item => item))
     },
-    async getSpendingLineItem(projectID, spendingID, number) {
-      const docs = await db.collection('cpm_projects')
-        .doc(projectID)
-        .collection('spendings')
-        .doc(spendingID)
-        .collection('line_items')
-        .where('line_number', '==', number.toString())
-        .get()
-      if (docs.empty) {
-        return false
-      } else {
-        return true
+    async getSpendingLineItem(projectID, spendingID, formatedData = {}) {
+      try {
+        const {
+          spendingLineItem_line_number: number
+        } = formatedData
+
+        const docs = await db.collection('cpm_projects')
+          .doc(projectID)
+          .collection('spendings')
+          .doc(spendingID)
+          .collection('line_items')
+          .where('line_number', '==', number.toString())
+          .get()
+
+        if (docs.empty) {
+          return false
+        } else {
+          return true
+        }
+      } catch (e) {
+        throw e
+      }
+    },
+    async getSpendingLineItemForShap(projectID, spendingID, formatedData = {}) {
+      try {
+        const {
+          others_uid: api_obj_id,
+          others_dist_seq_nbr: dist_seq_nbr
+        } = formatedData
+        console.log(others_uid)
+        console.log(dist_seq_nbr)
+        const docs = await db.collection('cpm_projects')
+          .doc(projectID)
+          .collection('spendings')
+          .doc(spendingID)
+          .collection('line_items')
+          .where('api_obj_id', '==', api_obj_id)
+          .where('dist_seq_nbr', '==', dist_seq_nbr)
+          .get()
+
+        if (docs.empty) {
+          return false
+        } else {
+          return true
+        }
+      } catch (e) {
+        throw e
       }
     },
     async createProject(item) {
@@ -1330,6 +1394,7 @@ export default {
         fiscalYear: item.others_fiscal_year || '',
         period: item.others_period || '',
         api_obj_id: item.others_uid || '', // uid,
+        dist_seq_nbr: item.others_dist_seq_nbr || '',
         commitmentLineRef: item.ref || ''
       }
 
