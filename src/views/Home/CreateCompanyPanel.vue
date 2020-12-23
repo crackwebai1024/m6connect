@@ -409,7 +409,6 @@ export default {
     }),
 
     leftPanels() {
-      console.log(this.app)
       return this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
     },
     rightPanels() {

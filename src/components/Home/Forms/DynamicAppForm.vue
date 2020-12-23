@@ -164,8 +164,6 @@ export default {
         let errorMsg = "";
         
         for(var i in error.response.data){
-          console.log(i)
-          console.log(error.response.data[i])
           errorMsg += error.response.data[i]+"<br />"
         }
         this.notifDanger(errorMsg)
