@@ -234,14 +234,12 @@ export default {
     // TODO: The available apps list should be on a global list on the store.
     axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`).then(response => {
       response.data.map(app => {
-        if (parseInt(app.id) !== parseInt(this.$route.params.id)) {
-          this.fieldList.push({
-            id: app.title + app.id,
-            appId: app.id,
-            label: app.title,
-            children: null
-          })
-        }
+        this.fieldList.push({
+          id: app.title + app.id,
+          appId: app.id,
+          label: app.title,
+          children: null
+        })
       })
       if (this.editing && this.field.type === 'referenced') {
         // eslint-disable-next-line camelcase
