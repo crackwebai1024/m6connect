@@ -1,25 +1,12 @@
 <template>
   <v-card>
-    <v-card-title class="d-flex justify-center">
-      <div class="blue--text pa-1 subtitle-2">
-        User Management |
-      </div>
-
-      <div class="blue--text pa-1 subtitle-2">
-        <v-spacer />
-        <v-switch
-          v-model="showPendingOnly"
-          :label=" showPendingOnly ? 'Pending Users' : 'All Users' "
-        />
-      </div>
-    </v-card-title>
     <v-card-text>
       <v-data-table
         class="elevation-0"
         :headers="headers"
-        :items="usersFiltered"
+        :items="users"
         :items-per-page="5"
-        show-expand
+        :custom-sort="sortUsers"
         @click:row="clickedUser"
       >
         <template #item.fullName="{ item }">
@@ -82,7 +69,6 @@ export default {
   name: 'UserMangementTable',
   data: () => ({
     loading: false,
-    showPendingOnly: false
   }),
   methods: {
     ...mapMutations('UserSettingsControl', {
@@ -104,6 +90,39 @@ export default {
       } catch (e) {
         this.loading = false
       }
+    },
+    sortUsers(items, index, isDescending) {
+      index = JSON.parse(JSON.stringify(index))
+      isDescending = JSON.parse(JSON.stringify(isDescending))
+      
+      if (index.length == 0 || isDescending.length == 0)
+        return items
+
+      index = index[0]
+      isDescending = isDescending[0]
+      
+      items.sort((a, b) => {
+        if (index == "status") {
+          if (isDescending) {
+            return a.joinStatus < b.joinStatus ? 1 : -1
+          } else {
+            return a.joinStatus > b.joinStatus ? 1 : -1
+          }
+        } else if (index == "fullName") {
+          if (isDescending) {
+            return a.user.firstName + a.user.lastName < b.user.firstName + b.user.lastName ? 1 : -1
+          } else {
+            return a.user.firstName + a.user.lastName > b.user.firstName + b.user.lastName ? 1 : -1
+          }
+        } else if (index == "email") {
+          if (isDescending) {
+            return a.user.email < b.user.email ? 1 : -1
+          } else {
+            return a.user.email > b.user.email ? 1 : -1
+          }
+        }
+      })
+      return items
     }
   },
   computed: {
@@ -136,11 +155,6 @@ export default {
       })
 
       return headers
-    },
-    usersFiltered() {
-      return this.showPendingOnly ?
-        this.users.filter(u => u.joinStatus === 'PENDING') :
-        this.users
     }
   }
 }
