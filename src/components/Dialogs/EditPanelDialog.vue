@@ -169,7 +169,6 @@ export default {
         }
       }
       // this.$snotify.success('Changes saved')
-      console.log(doc)
       db.collection('cpm_projects').doc(this.$route.params.id).update(doc)
         .then(doc => {
           this.$snotify.success('Changes saved')
