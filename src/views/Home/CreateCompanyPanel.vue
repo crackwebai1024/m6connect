@@ -290,6 +290,7 @@
               :key="panel.id"
               :panel="panel"
               :appID="app.id"
+              @copyPanel="copyPanel"
               @deletePanel="deletePanel"
               @updatePanel="updatePanel"
               @updatingTable=" e => updatingTable(panel, e)"
@@ -307,6 +308,7 @@
                 :key="panel.id"
                 :panel="panel"
                 :appID="app.id"
+                @copyPanel="copyPanel"
                 @deletePanel="deletePanel"
                 @updatePanel="updatePanel"
                 @updatingTable=" e => updatingTable(panel, e)"
@@ -545,7 +547,22 @@ export default {
     },
 
     updatePanel(data) {
-      this.app.tabs[this.activeTab].panels = this.app.tabs[this.activeTab].panels.map(p => p.id == data.id ? data : p)
+      this.app.tabs[this.activeTab].panels = this.app.tabs[this.activeTab].panels.map(p => p.id === data.id ? data : p)
+    },
+
+    async copyPanel(panelId) {
+      this.loading = true
+
+      try {
+        const newPanel = await this.$store.dispatch('AppBuilder/copyPanel', panelId)
+        const copiedIdx = this.app.tabs[this.activeTab].panels.findIndex(p => p.id === panelId)
+        this.app.tabs[this.activeTab].panels.splice(copiedIdx + 1, 0, newPanel)
+        this.notifSuccess('Panel copied successfully')
+      } catch (e) {
+        this.notifDanger('There was an error when copying panel')
+      } finally {
+        this.loading = false
+      }
     },
 
     async responseAppLogo(data) {
