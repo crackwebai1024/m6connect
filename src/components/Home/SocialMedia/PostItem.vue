@@ -446,18 +446,63 @@
             </v-btn>
           </v-col>
           <v-col cols="4">
-            <v-btn
-              class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
-              small
-              text
-            >
-              <v-icon
-                class="mr-2"
-                size="18"
-              >
-                mdi-share
-              </v-icon> Share
-            </v-btn>
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
+                  small
+                  text
+                  v-on="on"
+                >
+                  <v-icon
+                    class="mr-2"
+                    size="18"
+                  >
+                    mdi-share
+                  </v-icon> Share
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item class="mb-1 ">
+                  <a
+                    class="share-network-facebook social-button"
+                    href="#"
+                    style="background-color: #00AFF0"
+                  >
+                    <span
+                      class="mr-2 social-icon"
+                    >
+                      M6
+                    </span>
+                    <span>Connect</span>
+                  </a>
+                </v-list-item>
+                <v-list-item
+                  v-for="(social, i) in socialSharingItems"
+                  :key="i"
+                  :class="{'mb-1': i !== socialSharingItems.length - 1}"
+                >
+                  <ShareNetwork
+                    class="mr-2 social-button"
+                    :media="data.images[0]"
+                    :network="social.network"
+                    :style="{backgroundColor: social.color}"
+                    :title="data.message"
+                    url="http://m6works.m6connect.com/"
+                  >
+                    <v-icon
+                      class="mr-2 social-icon"
+                      color="white"
+                      size="18"
+                    >
+                      {{ social.icon }}
+                    </v-icon>
+                    <span>{{ social.name }}</span>
+                  </ShareNetwork>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </v-col>
         </v-row>
       </v-card-actions>
@@ -599,7 +644,28 @@ export default {
     // Emoji Dialog
     showDialog: false,
     showSkeleton: false,
-    progressLike: false
+    progressLike: false,
+    // Social Sharing
+    socialSharingItems: [
+      {
+        network: 'facebook',
+        name: 'Facebook',
+        icon: 'mdi-facebook',
+        color: '#1877f2'
+      },
+      {
+        network: 'twitter',
+        name: 'Twitter',
+        icon: 'mdi-twitter',
+        color: '#1da1f2'
+      },
+      {
+        network: 'linkedin',
+        name: 'LinkedIn',
+        icon: 'mdi-linkedin',
+        color: '#007bb5'
+      }
+    ]
   }),
   computed: {
     ...mapGetters('Companies', { companyUsers: 'getCurrentCompanyUsers' }),
@@ -644,7 +710,6 @@ export default {
       this.data.actor = JSON.parse(this.data.actor)
     }
     this.updateMessage = this.data.message
-
     if (this.data.props && this.data.props.fields) {
       this.recordFields = this.data.props.fields.map(field => field.app_field)
     }
@@ -892,5 +957,22 @@ v-icon, p {
 }
 .video-list__container video {
   width: 100%;
+}
+
+/* Social sharing */
+.social-button {
+  padding: 0 8px 0 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  line-height: 1.1;
+}
+.social-button span {
+  color: #fff !important
+}
+.social-button .social-icon {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  padding: 7px;
 }
 </style>
