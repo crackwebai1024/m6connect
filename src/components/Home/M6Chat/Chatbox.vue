@@ -369,10 +369,10 @@
               </div>
             </div>
             <v-icon
-              :class="[message.read ? 'blue--text' : 'grey--text']"
+              :class="[ hasMessageBeenViewed(message) ? 'blue--text' : 'grey--text']"
               size="11"
             >
-              mdi-check-all
+              {{ hasMessageBeenViewed(message)  ? 'mdi-check-all' : 'mdi-check' }}
             </v-icon>
             <v-dialog
               v-model="deleteDialog"
@@ -1011,6 +1011,8 @@ export default {
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
+    this.channel.on('user.watching.start', this.userLogsOn)
+    this.channel.on('user.watching.stop', this.userLogsOff)
 
     this.getApps().then(response => {
       response.data.map(app => {
@@ -1053,6 +1055,21 @@ export default {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+    userLogsOn(event) {
+      if(!event) return
+      const index = this.$h.dg(this, 'state.members', []).map( m => m.user.id).indexOf(event.user.id)
+      this.state.members[index].user.last_active = event.received_at.toISOString()
+      this.state.members[index].user.online = true
+    },
+    userLogsOff(event) {
+      const index = this.$h.dg(this.state, 'members', []).map( m => m.user.id).indexOf(event.user.id)
+      this.state.members[index].user.last_active = event.received_at.toISOString()
+      this.state.members[index].user.online = false
+    },
+    hasMessageBeenViewed(message) {
+      const index = this.$h.dg(this.state, 'members', []).map( m => m.user.id).indexOf( this.$h.dg(this.users, `0.user.id`, ''))
+      return new Date(message.created_at) < new Date(this.state.members[index].user.last_active) || this.state.members[index].user.online
+    },
     changeApp(event) {
       this.getActions(event).then(response => {
         this.options['records'] = response.data
@@ -1067,7 +1084,7 @@ export default {
       const images = []
       if (this.messages) {
         this.messages.forEach(msg => {
-          if (typeof (msg.images) !== 'undefined' && msg.images.length > 0) {
+          if (typeof (msg.images) !== 'undefined' && this.$h.dg(msg, 'images', []).length > 0) {
             msg.images.forEach(entry => {
               const img = {
                 message: msg.id,
