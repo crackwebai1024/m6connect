@@ -147,8 +147,6 @@
         </span>
 
         <company-home />
-
-        <app-builder-show />
       </div>
     </div>
   </div>
@@ -166,7 +164,6 @@ import CreateApp from '@/components/Dialogs/CreateAppDialog'
 import AddFeed from './AddFeed'
 import CompanyHome from './CompanyHome'
 import NewRecordDialog from '@/components/Dialogs/NewRecordDialog'
-import AppBuilderShow from './AppBuilderShow'
 import AppsBtnDropDown from '@/components/Home/TopNav/AppsBtnDropDown'
 
 export default {
@@ -182,7 +179,6 @@ export default {
     AddFeed,
     CreateApp,
     CompanyHome,
-    AppBuilderShow,
     AppsBtnDropDown
   },
   data: () => ({

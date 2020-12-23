@@ -338,11 +338,13 @@
                   :key="'imagemsg-' + ind"
                   class="mt-2 mx-1 relative w-fit"
                 >
-                  <img
-                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
-                    class="image-preview"
-                    :src="image"
-                  >
+                  <template v-if="image">
+                    <img
+                      v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
+                      class="image-preview"
+                      :src="image"
+                    >
+                  </template>
                 </div>
               </div>
               <div
@@ -472,11 +474,13 @@
                   :key="'imagemsg-' + messIndex"
                   class="mt-2 mx-1 relative w-fit"
                 >
-                  <img
-                    v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
-                    class="image-preview"
-                    :src="image"
-                  >
+                  <template v-if="image">
+                    <img
+                      v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
+                      class="image-preview"
+                      :src="image"
+                    >
+                  </template>
                 </div>
               </div>
               <div
@@ -532,14 +536,16 @@
           :key="imageIndex"
           class="mb-2 video-list__container"
         >
-          <video
-            v-if="row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
-            controls
-          >
-            <source
-              :src="row"
+          <template v-if="row">
+            <video
+              v-if="row.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
+              controls
             >
-          </video>
+              <source
+                :src="row"
+              >
+            </video>
+          </template>
         </div>
       </div>
     </div>
@@ -1392,7 +1398,13 @@ export default {
       return messageDate.getHours() + ':' + messageDate.getMinutes()
     },
     getFileNames(urlArr) {
-      return urlArr.map(url => url.split('/').pop().replace(/%20/g, ' ')).join(', ')
+      return urlArr.map(url => {
+        if (url) {
+          return url.split('/').pop().replace(/%20/g, ' ')
+        } else {
+          return ''
+        }
+      }).join(', ')
     }
   }
 }
