@@ -18,7 +18,7 @@ const Projects = () => import(/* webpackChunkName: 'Store' */ '@/views/Projects/
 const ProjectPanel = () => import(/* webpackChunkName: 'Store' */ '@/views/ProjectPanel/index')
 const Dev = () => import(/* webpackChunkName: 'Store' */ '@/views/Home/CreateCompanyPanel')
 const AppBuilderShowBlank = () => import(/* webpackChunkName: "AppBuilderShow" */ '@/views/Home/AppBuilderShowBlank.vue')
-const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import/index')
+const ImportTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Import')
 const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/CloneTool')
 const RapidTable = () => import(/* webpackChunkName: 'RapidTable' */ '@/views/Rapid/RapidTable')
 const ActionsTable = () => import(/* webpackChunkName: 'ActionsTable' */ '@/views/ActionCenter/ActionsTable')
