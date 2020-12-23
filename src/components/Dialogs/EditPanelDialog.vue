@@ -106,7 +106,7 @@ export default {
     },
     panel: {
       type: [Object, Array],
-      default: () => {}
+      default: () => new Array()
     }
   },
   data: () => ({

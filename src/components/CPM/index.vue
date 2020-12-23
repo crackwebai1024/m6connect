@@ -100,7 +100,6 @@
                 class=""
               >
                 <edit-panel-dialog
-                  v-if="panelToEdit.items"
                   v-model="showEditPanel"
                   :panel.sync="panelToEdit"
                   @update="updateProject"
