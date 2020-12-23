@@ -2,8 +2,9 @@
   <v-card
     v-if="dataReady"
     class="chat-box d-flex flex-column mx-2 rounded-t-lg"
-    :class="[minimized ? 'minimized' : 'h-full']"
     elevation="3"
+    :height="chatHeight"
+    :width="chatWidth"
   >
     <M6Loading
       :loading="showLoading"
@@ -153,6 +154,19 @@
         </div>
       </div>
       <div class="d-flex">
+        <v-btn
+          class="btn-chat-shadow ml-2"
+          color="white"
+          fab
+          x-small
+          @click="chatExpanded = !chatExpanded"
+        >
+          <v-icon
+            size="15"
+          >
+            {{ expandIcon }}
+          </v-icon>
+        </v-btn>
         <v-dialog
           v-if="channel.id.substr(14, 5) === 'group'"
           v-model="editConfigurationDialog"
@@ -946,12 +960,15 @@ export default {
       'Friday',
       'Saturday'
     ],
-    hideFilesPreview: false
+    hideFilesPreview: false,
+    chatExpanded: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
     ...mapGetters('GSChat', { client: 'client' }),
-
+    expandIcon() {
+      return this.chatExpanded ? 'mdi-arrow-collapse' : 'mdi-arrow-expand'
+    },
     groupedMessages() {
       return this.messages.reduce(function (r, a) {
         r[a.date.day] = [...r[a.date.day] || [], a]
@@ -990,6 +1007,20 @@ export default {
         }
       })
       return srcVideo
+    },
+    chatHeight() {
+      if (this.minimized) {
+        return '60'
+      } else {
+        if (this.chatExpanded) {
+          return '680'
+        } else {
+          return '455'
+        }
+      }
+    },
+    chatWidth() {
+      return this.chatExpanded && !this.minimized ? '500' : '335'
     }
   },
   watch: {
@@ -1424,11 +1455,11 @@ v-icon, p {
   display: inline-block;
 }
 .chat-box {
-  width: 335px;
-  max-height: 455px;
-}
-.chat-box.minimized {
-  height: 55px;
+  -moz-transition: height .5s;
+  -ms-transition: height .5s;
+  -o-transition: height .5s;
+  -webkit-transition: height .5s;
+  transition: height .5s;
 }
 .chat-title {
   min-height: 60px;
