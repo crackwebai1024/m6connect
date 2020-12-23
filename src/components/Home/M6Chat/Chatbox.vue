@@ -8,6 +8,68 @@
     <M6Loading
       :loading="showLoading"
     />
+    <v-dialog
+      v-model="showImagesGallery"
+      fullscreen
+      @keydown.esc="() => showImagesGallery = false"
+      @keydown.left="chatGallery.indexOf(currentGalleryItem--)"
+      @keydown.right="chatGallery.indexOf(currentGalleryItem++)"
+    >
+      <v-card
+        class="align-center d-flex overflow-hidden px-5"
+        style="background: #000000a8"
+      >
+        <v-btn
+          absolute
+          class="mt-10"
+          color="white"
+          fab
+          right
+          top
+        >
+          <v-icon
+            color="black"
+            @click="showImagesGallery = false"
+          >
+            mdi-close
+          </v-icon>
+        </v-btn>
+        <v-row
+          align="center"
+          class=""
+          justify="center"
+          style="height: 100%"
+        >
+          <carousel
+            class="w-full"
+            :navigate-to="currentGalleryItem"
+            :navigation-enabled="true"
+            :pagination-active-color="'#fff'"
+            :pagination-color="'#333'"
+            :pagination-enabled="true"
+            :per-page="1"
+          >
+            <slide
+              v-for="(img, i) of chatGallery"
+              :key="`gallery-item${i}`"
+            >
+              <div
+                class="theme--dark v-image v-responsive"
+                style="height: 80vh;"
+              >
+                <div class="align-center d-flex justify-center v-image__image v-image__image--cover">
+                  <img
+                    alt=""
+                    class="max-w-full"
+                    :src="img.source"
+                  >
+                </div>
+              </div>
+            </slide>
+          </carousel>
+        </v-row>
+      </v-card>
+    </v-dialog>
     <div
       class="align-center chat-title d-flex justify-space-between px-3 rounded-t"
       :class="[minimized ? 'blue lighten-2' : '']"
@@ -20,7 +82,7 @@
         <v-avatar
           class="mr-2"
           size="42"
-          @click='editConfigurationDialog = true'
+          @click="editConfigurationDialog = true"
         >
           <img
             v-if="channel.data.image !== ''"
@@ -97,79 +159,10 @@
 
           width="50%"
         >
-          <template #activator="">
-            <!--<v-hover
-              v-slot="{ hover }"
-            >
-              <div class="relative">
-                <!--<v-card
-                  v-if="hover"
-                  class="absolute bottom-0 left-0 max-w-none pa-1 w-fit z-20"
-                  style="margin-bottom: -64px; margin-left: -130px;"
-                >
-                  <v-btn
-                    v-bind="attrs"
-                    class="black--text capitalize px-3 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-channel'"
-                  >
-                    Delete Conversation
-                  </v-btn>
-                  <v-btn
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-info'"
-                  >
-                    Information
-                  </v-btn>
-                  <v-btn
-                    v-if="channel.data.created_by.id === user.id"
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-add-user'"
-                  >
-                    Add Users
-                  </v-btn>
-                  <v-btn
-                    v-if="channel.data.created_by.id === user.id"
-                    v-bind="attrs"
-                    class="black--text capitalize mt-1 px-1 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-edit'"
-                  >
-                    Edit Configuration
-                  </v-btn>
-                </v-card>
-                <v-btn
-                  class="btn-chat-shadow ml-2"
-                  color="white"
-                  fab
-                  x-small
-                >
-                  <v-icon
-                    size="15"
-                  >
-                    mdi-cogs
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-hover>-->
-          </template>
-          <edit-configuration-dialog @close-dialog='() => editConfigurationDialog = false' :channel='channel'/>
-          <!--
-          
-
-          -->
+          <edit-configuration-dialog
+            :channel="channel"
+            @close-dialog="() => editConfigurationDialog = false"
+          />
         </v-dialog>
         <v-dialog
           v-else
@@ -342,6 +335,7 @@
                     v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
                     class="image-preview"
                     :src="image"
+                    @click="openChatGallery(image)"
                   >
                 </div>
               </div>
@@ -877,25 +871,24 @@
 /* eslint-disable camelcase */
 import { mapGetters, mapActions, mapMutations } from 'vuex'
 import VEmojiPicker from 'v-emoji-picker'
-import DeleteDialog from '@/components/Dialogs/DeleteDialog'
-import AddUserDialog from '@/components/Dialogs/AddUserDialog'
-import InfoUsersDialog from '@/components/Dialogs/InfoUsersDialog'
-import SettingsChannelDialog from '@/components/Dialogs/SettingsChannelDialog'
+import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
 import RecordUrl from '@/components/Home/SocialMedia/RecordUrl.vue'
+import { Carousel, Slide } from 'vue-carousel'
+import CarouselImage from '@/components/Shared/ImageCarousselOverlay/CarouselImage.vue'
 
 export default {
   name: 'Chatbox',
   components: {
-    SettingsChannelDialog,
-    InfoUsersDialog,
-    AddUserDialog,
-    DeleteDialog,
+    EditConfigurationDialog,
     VEmojiPicker,
     ExternalUrl,
     RecordUrl,
-    YoutubeVideo
+    YoutubeVideo,
+    Carousel,
+    Slide,
+    CarouselImage
   },
   props: {
     channel: {
@@ -906,11 +899,14 @@ export default {
   data: () => ({
     deleteDialog: false,
     showLoading: false,
+    showImagesGallery: false,
+    currentGalleryItem: 0,
     hover: false,
     menu: false,
     input: '',
     display: true,
     whoTyping: {},
+    chatGallery: [],
     // user id john doe
     currentUserId: 2,
     messageEdit: '',
@@ -1003,11 +999,14 @@ export default {
           this.messages.splice(ind, 1)
         }
       })
+      this.fetchChatGallery()
     }
   },
   async mounted() {
     this.state = await this.channel.watch()
     this.messages = this.state.messages
+
+    this.fetchChatGallery()
 
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
@@ -1058,6 +1057,28 @@ export default {
       this.getActions(event).then(response => {
         this.options['records'] = response.data
       })
+    },
+    openChatGallery(item = false) {
+      if (item) this.currentGalleryItem = this.chatGallery.findIndex(i => i.source === item)
+
+      this.showImagesGallery = true
+    },
+    fetchChatGallery() {
+      const images = []
+      if (this.messages) {
+        this.messages.forEach(msg => {
+          if (typeof (msg.images) !== 'undefined' && msg.images.length > 0) {
+            msg.images.forEach(entry => {
+              const img = {
+                message: msg.id,
+                source: entry
+              }
+              images.push(img)
+            })
+          }
+        })
+      }
+      this.chatGallery = images
     },
     async selectRecord($event) {
       this.itemInfo['panel'] = null
@@ -1565,5 +1586,40 @@ v-icon, p {
 }
 .preview-doc {
   height: 30px;
+}
+
+
+.VueCarousel-dot {
+  outline: none !important;
+}
+.VueCarousel-slide {
+  max-width: 100%;
+}
+.VueCarousel-slide .v-image__image {
+  background-size: auto !important;
+}
+.VueCarousel-slide .v-responsive__content {
+  max-width: 100%;
+}
+.VueCarousel-navigation-prev {
+  left: 58px !important;
+  padding-right: 13px !important;
+}
+.VueCarousel-navigation-next {
+  right: 58px !important;
+  padding-left: 13px !important;
+}
+.VueCarousel-navigation-prev, .VueCarousel-navigation-next {
+  border-radius: 100%;
+  background: rgb(255 255 255 / 30%) !important;
+  color: white !important;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  justify-content: center;
+  outline: none !important;
+}
+.VueCarousel-pagination {
+  height: 10px
 }
 </style>

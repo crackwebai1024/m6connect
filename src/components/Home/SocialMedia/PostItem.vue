@@ -96,7 +96,11 @@
             <slot name="record" />
 
             <template v-if="recordFields">
-              <form-show-generator :recordID="recordID" :fields="recordFields" />
+              <form-show-generator
+                :action-record="actionRecord"
+                :fields="recordFields"
+                :record-i-d="recordID"
+              />
             </template>
 
             <slot name="assignments" />
@@ -557,6 +561,10 @@ export default {
     recordID: {
       type: Number,
       default: 0
+    },
+    actionRecord: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({

@@ -92,8 +92,6 @@
 <script>
 import { Money } from 'v-money'
 import { db } from '@/utils/Firebase'
-
-
 export default {
   name: 'EditPanelDialog',
   components: { Money },
@@ -159,9 +157,9 @@ export default {
       } else {
         map = {
           milestones: this.panelItems
+
         }
       }
-
 
       // this.$snotify.success('Changes saved')
       db.collection('cpm_projects').doc(this.$route.params.id).update(map)
@@ -178,6 +176,6 @@ export default {
 
 <style>
 .v-text-field {
-    margin-top: 0px
+    margin-top: 0
 }
 </style>
