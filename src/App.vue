@@ -17,15 +17,14 @@
             >
               <action-feed class="fixed left-0 max-w-side mt-60 top-0 w-side" />
               <m6-chat
-                class="fixed max-w-side mt-60 right-0 top-0 w-side"
-                :class="{'d-none': $vuetify.breakpoint.xsAndDown}"
+                class="fixed mt-60 right-0 top-0"
               />
             </div>
 
             <div
               v-if="showSidePanels"
               class="d-flex mt-60 w-full"
-              :class="!$vuetify.breakpoint.sm ? 'justify-center' : 'justify-start'"
+              :class="!$vuetify.breakpoint.mdAndDown ? 'justify-center' : 'justify-start'"
             >
               <router-view />
             </div>
