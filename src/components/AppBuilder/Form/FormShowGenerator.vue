@@ -145,7 +145,25 @@
                   Add {{ $h.dg( f, 'label', '' ) }}
                 </span>
                 <template v-else>
-                  <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span><br>
+                  <span class="mb-0 text-caption">{{ $h.dg( f, 'label', '' ) }}</span>
+                  <v-tooltip
+                    v-if="f.metadata.helpText && f.metadata.helpText !== ''"
+                    top
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        v-bind="attrs"
+                        icon
+                        v-on="on"
+                      >
+                        <v-icon color="blue">
+                          mdi-alert-circle-outline
+                        </v-icon>
+                      </v-btn>
+                    </template>
+                    <span class="help-text__span">{{ f.metadata.helpText }}</span>
+                  </v-tooltip>
+                  <br>
                   <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
                     {{ genericRecord[`${f.id}`]['file_name'] }}
                   </template>
@@ -663,5 +681,11 @@ export default {
 }
 .w-20 {
   width: 20% !important;
+}
+.help-text__span {
+  background-color: #1976d2;
+  color: white;
+  border-radius: 8px;
+  padding: 5px 10px;
 }
 </style>
