@@ -144,7 +144,7 @@ p {
 }
 
 .w-side {
-  width: 440px;
+  width: 360px;
 }
 
 .max-w-full {
@@ -166,6 +166,9 @@ p {
 .max-w-tight {
   max-width: 620px;
 }
+.w-content {
+  width: 742px;
+}
 
 .absolute {
   position: absolute;
@@ -179,13 +182,13 @@ p {
   position: fixed;
 }
 
+.sticky {
+  position: sticky;
+}
+
 // this will help to put an offset to the main-container
 .top-60 {
   top: 60px;
-}
-
-html {
-  overflow: hidden;
 }
 
 .card-custom-shadow {

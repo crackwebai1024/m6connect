@@ -112,11 +112,11 @@
             <v-col
               cols="9"
             />
-            <v-col
-              cols="3"
+            <div
+              class="w-side"
             >
               <m6-chat :light-mode="true" />
-            </v-col>
+            </div>
           </v-row>
         </v-overlay>
       </v-dialog>

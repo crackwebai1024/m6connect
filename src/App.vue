@@ -2,33 +2,35 @@
   <v-app id="complete-app">
     <div class="grey h-viewport lighten-3">
       <template v-if="loggedIn && (!$route.meta.public || $route.meta.topNav)">
+        <top-nav />
         <template v-if="$route.meta.topNav">
-          <top-nav />
-          <div class="mt-60">
-            <router-view />
-          </div>
+          <!-- <router-view class="top-60" /> -->
         </template>
         <template v-else>
-          <top-nav />
           <v-row
-            class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
+            class="grey lighten-3 mx-auto nav-content relative w-full"
             no-gutters
           >
-            <v-col
-              v-show="showSidePanels"
-              cols="3"
+            <div
+              v-if="showSidePanels"
+              class="absolute h-full left-0 top-0 w-full"
             >
-              <action-feed />
-            </v-col>
-            <v-col :cols="!showSidePanels ? 12 : 6">
-              <!-- Home / Company Profile -->
+              <action-feed class="fixed left-0 mt-60 top-0 w-side" />
+              <m6-chat class="fixed mt-60 right-0 top-0" />
+            </div>
+
+            <div
+              v-if="showSidePanels"
+              class="d-flex justify-center mt-60 w-full"
+            >
               <router-view />
-            </v-col>
+            </div>
             <v-col
-              v-show="showSidePanels"
-              cols="3"
+              v-else
+              cols="12"
             >
-              <m6-chat />
+              <!-- Home / Company Profile -->
+              <router-view class="mt-60" />
             </v-col>
           </v-row>
           <!-- Preview overlay -->

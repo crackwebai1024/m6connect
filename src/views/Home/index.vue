@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-full"
+    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll w-content w-full"
   >
     <!-- General use list component-->
     <template v-if="screenStatus()">

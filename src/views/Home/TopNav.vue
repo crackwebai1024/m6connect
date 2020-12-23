@@ -1,5 +1,5 @@
 <template>
-  <div class="blue d-flex darken-3 justify-center nav-bar px-4 w-full">
+  <div class="blue d-flex darken-3 fixed justify-center nav-bar px-4 top-0 w-full">
     <div class="align-center d-flex justify-space-between nav-content w-full">
       <div class="align-center d-flex w-side">
         <img
@@ -31,7 +31,7 @@
           <v-icon
             v-else
             color="white"
-            :large="true"
+            size="30"
           >
             mdi-{{ link.icon }}
           </v-icon>
@@ -223,11 +223,10 @@ export default {
 
 <style lang="scss" scoped>
 .nav-bar {
-  position: fixed;
   z-index: 100;
 }
 .nav-content {
   height: 60px;
-  max-width: 1800px;
+  max-width: 1872px;
 }
 </style>
