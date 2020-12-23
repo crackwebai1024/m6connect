@@ -1009,15 +1009,7 @@ export default {
       return srcVideo
     },
     chatHeight() {
-      if (this.minimized) {
-        return '60'
-      } else {
-        if (this.chatExpanded) {
-          return '680'
-        } else {
-          return '455'
-        }
-      }
+      return this.minimized ? '60' : this.chatExpanded ? '680' : '455'
     },
     chatWidth() {
       return this.chatExpanded && !this.minimized ? '500' : '335'
