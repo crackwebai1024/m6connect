@@ -510,8 +510,12 @@ export default {
         this.notifSuccess('Updated!')
       } catch (e) {
         this.loading = false
-        this.notifDanger(e.response.data.error)
-        return e
+
+        let errorMsg = "";
+        for (var i in e.response.data) {
+          errorMsg += e.response.data[i][0].replace("params.", '')+"<br />"
+        }
+        this.notifDanger(errorMsg)
       }
     },
 
