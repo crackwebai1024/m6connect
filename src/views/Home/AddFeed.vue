@@ -269,7 +269,6 @@ export default {
         this.options['type'] = res['data']['wo_request_type']
       })
     } else {
-      console.log(this.action)
       this.itemInfo['id'] = this.action.id
       this.itemInfo['author'] = this.action.author
       this.itemInfo['due_date'] = new Date(this.action.due_date)
