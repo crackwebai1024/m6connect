@@ -27,7 +27,6 @@ export default {
       }
     },
     updateActionItemInfo({ commit }, data) {
-      console.log(data)
       let item = data['assignment_list'].filter((e) => { return e === auth.state.user.id });
       if ( item.length > 0 ) {
         axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/work_order/${data['id']}`, data);

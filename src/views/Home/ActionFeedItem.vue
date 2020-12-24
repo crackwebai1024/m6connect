@@ -7,7 +7,7 @@
     @mouseover="showActionBtns = true"
   >
     <div class="d-flex card-content__tag absolute pa-0">
-      <edit-action :action="notification">
+      <add-feed :action="notification" :is-add="false">
         <v-btn
           slot="btn"
           icon
@@ -20,7 +20,7 @@
             mdi-pencil
           </v-icon>
         </v-btn>
-      </edit-action>
+      </add-feed>
       <div
         v-if="notification.application"
         :class="notification.colorTag +' white--text d-flex justify-center align-center px-3 text-body-1 font-weight-regular'"
@@ -130,14 +130,14 @@
       <v-btn
         color="grey"
         icon
-        @click="showConfirmDialog = true; confirmMessage = `Do you want to decline this action?`; confirmStatus = false"
+        @click="declineAction"
       >
         <v-icon>mdi-close</v-icon>
       </v-btn>
       <v-btn
         color="green accent-3"
         icon
-        @click="showConfirmDialog = true; confirmMessage = `Do you want to complete this action?`; confirmStatus = true"
+        @click="completeAction"
       >
         <v-icon>mdi-checkbox-marked-circle-outline</v-icon>
       </v-btn>
@@ -166,13 +166,13 @@
 
 <script>
 import { mapActions } from 'vuex'
-import EditAction from './EditAction'
+import AddFeed from './AddFeed'
 import ConfirmDialog from '@/components/Dialogs/ConfirmDialog'
 // import AppBuilderShow from './AppBuilderShow'
 export default {
   name: 'ActionFeedItem',
   components: {
-    EditAction,
+    AddFeed,
     ConfirmDialog
   },
   props: {
@@ -264,15 +264,26 @@ export default {
       setActPost: 'setActionPost'
     }),
     ...mapActions('GeneralListModule', { recordData: 'push_data_to_active' }),
-    async updateStatus(e) {
-      await this.$store.dispatch('WorkOrderModule/updateActionItem', {
+    updateStatus(e) {
+      this.$store.dispatch('WorkOrderModule/updateActionItem', {
         items: this.notification['wo_assignments'],
         value: e ? 'Complete' : 'Declined'
       }).then(() => {
         this.workOrder()
+        this.showConfirmDialog = false
+      }).catch(() => {
+        this.showConfirmDialog = false
       })
-
-      this.showConfirmDialog = false
+    },
+    declineAction() {
+      this.showConfirmDialog = true
+      this.confirmMessage = `Do you want to decline this action?`
+      this.confirmStatus = false
+    },
+    completeAction() {
+      this.showConfirmDialog = true
+      this.confirmMessage = `Do you want to complete this action?`
+      this.confirmStatus = true
     },
     setPost() {
       const { record, colorTag, id } = this.notification
