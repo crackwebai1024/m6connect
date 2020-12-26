@@ -272,7 +272,7 @@
           :class="[message['panel'] && message['panel']['id'] ? 'mx-0' : user.id === message.user.id ? 'ml-8' : 'mr-8' ]"
         >
           <template v-if="user.id === message.user.id">
-            <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
+            <span class="align-center d-flex grey--text mb-3 ml-auto text-caption text-nowrap">{{ messageTime(message.created_at) }}</span>
             <div
               v-if="messageEdit === message.id"
               class="mb-3 ml-2"
@@ -502,7 +502,7 @@
                 </v-row>
               </div>
             </div>
-            <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
+            <span class="align-center d-flex grey--text mb-3 mr-auto text-caption text-nowrap">{{ messageTime(message.created_at) }}</span>
           </template>
         </div>
         <record-url
@@ -1410,7 +1410,14 @@ export default {
     },
     messageTime(time) {
       const messageDate = new Date(time)
-      return messageDate.getHours() + ':' + messageDate.getMinutes()
+      let minutes = messageDate.getMinutes()
+      if (messageDate.getMinutes() < 10) {
+        minutes = '0' + minutes
+      }
+      const hours = messageDate.getHours() >= 12 ? messageDate.getHours() - 12 : messageDate.getHours()
+      const period = messageDate.getHours() >= 12 ? ' pm' : ' am'
+
+      return hours + ':' + minutes + period
     },
     getFileNames(urlArr) {
       return urlArr.map(url => url.split('/').pop().replace(/%20/g, ' ')).join(', ')
