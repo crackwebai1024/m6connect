@@ -324,7 +324,7 @@
               </template>
               <div
                 v-else
-                class="d-flex ml-auto w-fit"
+                class="d-flex flex-wrap ml-auto w-fit"
               >
                 <div
                   v-for="(image, ind) in message.images"
@@ -341,7 +341,7 @@
               </div>
               <div
                 v-if="message.files"
-                class="d-flex ml-auto w-fit"
+                class="d-flex flex-wrap ml-auto w-fit"
               >
                 <v-row
                   v-if="message['files'] && message['files'].length > 0"
@@ -475,7 +475,7 @@
               </div>
               <div
                 v-if="message.files"
-                class="d-flex ml-auto w-fit"
+                class="d-flex flex-wrap ml-auto w-fit"
               >
                 <v-row
                   v-if="message['files'] && message['files'].length > 0"
