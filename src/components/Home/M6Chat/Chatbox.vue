@@ -1410,10 +1410,7 @@ export default {
     },
     messageTime(time) {
       const messageDate = new Date(time)
-      let minutes = messageDate.getMinutes()
-      if (messageDate.getMinutes() < 10) {
-        minutes = '0' + minutes
-      }
+      const minutes = messageDate.getMinutes() < 10 ? '0' + messageDate.getMinutes() : messageDate.getMinutes()
       const hours = messageDate.getHours() >= 12 ? messageDate.getHours() - 12 : messageDate.getHours()
       const period = messageDate.getHours() >= 12 ? ' pm' : ' am'
 
