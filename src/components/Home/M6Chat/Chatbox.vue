@@ -286,7 +286,7 @@
           :class="[message['panel'] && message['panel']['id'] ? 'mx-0' : user.id === message.user.id ? 'ml-8' : 'mr-8' ]"
         >
           <template v-if="user.id === message.user.id">
-            <span class="align-center d-flex grey--text mb-3 ml-auto text-caption">{{ messageTime(message.created_at) }}</span>
+            <span class="align-center d-flex grey--text mb-3 ml-auto text-caption text-nowrap">{{ messageTime(message.created_at) }}</span>
             <div
               v-if="messageEdit === message.id"
               class="mb-3 ml-2"
@@ -338,7 +338,7 @@
               </template>
               <div
                 v-else
-                class="d-flex ml-auto w-fit"
+                class="d-flex flex-wrap ml-auto w-fit"
               >
                 <div
                   v-for="(image, ind) in message.images"
@@ -357,7 +357,7 @@
               </div>
               <div
                 v-if="message.files"
-                class="d-flex ml-auto w-fit"
+                class="d-flex flex-wrap ml-auto w-fit"
               >
                 <v-row
                   v-if="message['files'] && message['files'].length > 0"
@@ -493,7 +493,7 @@
               </div>
               <div
                 v-if="message.files"
-                class="d-flex ml-auto w-fit"
+                class="d-flex flex-wrap ml-auto w-fit"
               >
                 <v-row
                   v-if="message['files'] && message['files'].length > 0"
@@ -520,7 +520,7 @@
                 </v-row>
               </div>
             </div>
-            <span class="align-center d-flex grey--text mb-3 mr-auto text-caption">{{ messageTime(message.created_at) }}</span>
+            <span class="align-center d-flex grey--text mb-3 mr-auto text-caption text-nowrap">{{ messageTime(message.created_at) }}</span>
           </template>
         </div>
         <record-url
@@ -1439,7 +1439,11 @@ export default {
     },
     messageTime(time) {
       const messageDate = new Date(time)
-      return messageDate.getHours() + ':' + messageDate.getMinutes()
+      const minutes = messageDate.getMinutes() < 10 ? '0' + messageDate.getMinutes() : messageDate.getMinutes()
+      const hours = messageDate.getHours() >= 12 ? messageDate.getHours() - 12 : messageDate.getHours()
+      const period = messageDate.getHours() >= 12 ? ' pm' : ' am'
+
+      return hours + ':' + minutes + period
     },
     getFileNames(urlArr) {
       return urlArr.map(url => {
