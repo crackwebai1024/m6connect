@@ -4,17 +4,12 @@
       <slot name="actionbtn" />
     </div>
     <template>
-      <v-dialog
-        v-model="dialog"
-        class="dont-show-scroll vertical-scroll"
-        fullscreen
-        hide-overlay
-        :persistent="isPersistent"
-        scrollable
-        transition="dialog-bottom-transition"
+      <v-row
+        v-if="dialog"
+        class="dont-show-scroll mx-0 vertical-scroll"
       >
         <v-card
-          class="grey lighten-3 relative"
+          class="grey lighten-3 relative w-full"
           tile
         >
           <div class="w-full white">
@@ -79,7 +74,7 @@
           </div>
         </v-card>
         <v-badge
-          class="absolute bottom-0 mb-5 mr-5 right-0 w-fit"
+          class="absolute bottom-0 mb-16 mr-5 right-0 w-fit"
           color="green"
           offset-x="17"
           offset-y="17"
@@ -119,7 +114,7 @@
             </v-col>
           </v-row>
         </v-overlay>
-      </v-dialog>
+      </v-row>
     </template>
   </div>
 </template>
@@ -161,7 +156,6 @@ export default {
   },
   created() {
     this.dialog = this.openDialog
-    this.isPersistent = this.openDialog
   }
 }
 </script>

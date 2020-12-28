@@ -1,6 +1,5 @@
 <template>
-    <div>
-    </div>
+  <app-builder-show />
 </template>
 
 <script>
@@ -8,28 +7,13 @@ import AppBuilderShow from '@/views/Home/AppBuilderShow.vue'
 import { mapMutations, mapActions } from 'vuex'
 
 export default {
+  name: 'AppBuilderShowBlank',
   components: {
     AppBuilderShow
   },
 
-  methods: {
-    ...mapMutations('RecordsInstance', {
-      setDisplayAppBuilderShow: 'setDisplayAppBuilderShow',
-      setCurrentRecord: 'setCurrentRecord'
-    }),
-
-    ...mapActions('AppBuilder', {
-      getRecordById: 'getRecordById',
-      getApp: 'getApp'
-    }),
-
-    ...mapActions('RecordsInstance', {
-      getRecordById: 'getRecordById'
-    })
-
-  },
-
   async mounted() {
+    this.setShowSidePanels(false)
     this.setDisplayAppBuilderShow()
 
     try {
@@ -40,6 +24,23 @@ export default {
 
   beforeDestroy() {
     this.setDisplayAppBuilderShow()
+    this.setShowSidePanels(true)
+  },
+
+  methods: {
+    ...mapMutations('PageControl', {
+      setShowSidePanels: 'setShowSidePanels'
+    }),
+    ...mapMutations('RecordsInstance', {
+      setDisplayAppBuilderShow: 'setDisplayAppBuilderShow',
+      setCurrentRecord: 'setCurrentRecord'
+    }),
+    ...mapActions('AppBuilder', {
+      getApp: 'getApp'
+    }),
+    ...mapActions('RecordsInstance', {
+      getRecordById: 'getRecordById'
+    })
   }
 }
 </script>
