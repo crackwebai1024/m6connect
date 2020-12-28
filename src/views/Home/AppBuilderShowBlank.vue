@@ -1,25 +1,31 @@
 <template>
-  <app-builder-show />
+  <div>
+    <record-stepper v-if="app.layout_type == 'Stepper'" />
+    <app-builder-show v-else />
+  </div>
 </template>
 
 <script>
 import AppBuilderShow from '@/views/Home/AppBuilderShow.vue'
-import { mapMutations, mapActions } from 'vuex'
+import { mapMutations, mapActions, mapState } from 'vuex'
+import RecordStepper from '@/components/RecordStepper/index.vue'
 
 export default {
   name: 'AppBuilderShowBlank',
   components: {
-    AppBuilderShow
+    AppBuilderShow,
+    RecordStepper
   },
 
   async mounted() {
     this.setShowSidePanels(false)
     this.setDisplayAppBuilderShow()
+  },
 
-    try {
-      const record = await this.getRecordById(this.$route.params.id)
-      const app = await this.getApp(record.app_id)
-    } catch (e) {}
+  computed: {
+    ...mapState('AppBuilder', {
+      app: 'app'
+    })
   },
 
   beforeDestroy() {
