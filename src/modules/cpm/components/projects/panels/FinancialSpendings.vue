@@ -129,13 +129,13 @@
 
     <m6-data-table
       :align-actions="alignActions"
-      :footer-props="footerProps"
       :headers="headersSpendings"
-      :items="resources"
-      :options.sync="pagination"
-      :server-items-length="pagination.totalItems"
-      @update:options="debounceSearch(search, false)"
+      :items="resourcesTest"
     >
+      <!--      @update:options="debounceSearch(search, false)"-->
+      <!--      :footer-props="footerProps"-->
+      <!--      :options.sync="pagination"-->
+      <!--      :server-items-length="pagination.totalItems"-->
       <template
         slot="item"
         slot-scope="props"
@@ -157,9 +157,7 @@
           </td>
 
           <td>
-            <template v-for="vendor in removeDuplicates(props.item.vendors)">
-              {{ vendor }}
-            </template>
+            {{ props.item.vendors[0].title }}
           </td>
 
           <td v-if="isFullScreen">
@@ -1480,7 +1478,7 @@ export default {
       },
       commitments: [],
       glaccount: [],
-      autoInit: true,
+      autoInit: false,
       dialogSpendingPaidDateText: false,
       dialogSpendingDateOpenedText: false,
       viewPortHeight:
@@ -1580,14 +1578,15 @@ export default {
       pagination: {
         sortBy: ['number'],
         descending: true,
-        itemsPerPage: 8,
+        itemsPerPage: 10,
         totalItems: 0,
         page: 1
       },
       formWasValidated: false,
       expandedSpending: {},
       loadingExpandedSpendingLineItems: false,
-      showSettings: false
+      showSettings: false,
+      resourcesTest: []
     }
   },
 
@@ -1599,10 +1598,6 @@ export default {
         .doc(this.currentCompany.id)
         .collection('settings')
         .doc('budgets'),
-      commitments: db
-        .collection('cpm_projects')
-        .doc(this.projectId)
-        .collection('commitments'),
       glaccount: db
         .collection('settings')
         .doc(this.currentCompany.id)
@@ -1795,7 +1790,7 @@ export default {
     'pagination.totalItems': function (newValue, oldValue) {
       if (newValue !== oldValue) {
         if (newValue !== this.resourcesRaw.length) {
-          this.fetchResources()
+          this.fetchSpendings()
         }
       }
     },
@@ -1803,6 +1798,7 @@ export default {
   },
 
   mounted() {
+    this.fetchSpendings()
     if (!this.vendors.length) {
       this.fetchVendors()
     }
@@ -1811,7 +1807,7 @@ export default {
       this.openUpdateSpending(payload.spending)
     })
     EventBus.$on('update-list-spending-from-reconciliation', () => {
-      this.fetchResources()
+      this.fetchSpendings()
     })
     EventBus.$on(
       'show-spending-lineitems-from-commitment', payload => {
@@ -1825,8 +1821,12 @@ export default {
   },
 
   methods: {
-    testPagination(v) {
-      console.log(v)
+    fetchSpendings() {
+      this.getSpendings({
+        projectId: this.$route.params.id
+      }).then(response => {
+        this.resourcesTest = response
+      })
     },
     ...mapActions('companies/cpmProjects/spendings', {
       indexResource: 'indexELK'
@@ -1841,7 +1841,8 @@ export default {
       submitDeleteSpending: 'delete',
       createLineItem: 'createLineItem',
       updateLineItem: 'updateLineItem',
-      submitDeleteLineItem: 'deleteLineItem'
+      submitDeleteLineItem: 'deleteLineItem',
+      getSpendings: 'getSpendings'
     }),
     cardDialogClick() {
       this.$refs.cardDialog.doubleClick()
@@ -1854,7 +1855,7 @@ export default {
     assignResourcesData({ data, meta: { lastPage, total } } = {}) {
       if (lastPage && this.pagination.page > lastPage) {
         this.pagination.page = 1
-        return this.fetchResources()
+        return this.fetchSpendings()
       }
 
       this.resourcesRaw = data.map(item => ({ ...item, lineItems: [] }))
@@ -1867,13 +1868,13 @@ export default {
 
     clearSearch() {
       this.search = ''
-      this.fetchResources()
+      this.fetchSpendings()
     },
 
     onSearch(search) {
       this.search = search
       this.showSearchingModal = false
-      this.fetchResources()
+      this.fetchSpendings()
     },
 
     showSpendingLineItemsFromCommitment(payload) {
@@ -1979,7 +1980,7 @@ export default {
               ''}`
           )
 
-          this.fetchResources()
+          this.fetchSpendings()
           resolve(true)
         } catch (error) {
           reject(error)
@@ -2122,7 +2123,7 @@ export default {
           this.$t('alerts.success')
         )
         setTimeout(() => {
-          this.fetchResources()
+          this.fetchSpendings()
         }, 3000)
 
         this.closeDialogLineSpending()
@@ -2181,7 +2182,7 @@ export default {
             this.$t('alerts.success')
           )
           setTimeout(() => {
-            this.fetchResources()
+            this.fetchSpendings()
           }, 3000)
           this.closeDialogLineSpending()
           this.updateSpendingTotals().then(() =>
@@ -2702,7 +2703,7 @@ export default {
 
         // adding files
         await this.updateSaveFilesSpending(this.dialogProperties.id)
-        await this.fetchResources()
+        await this.fetchSpendings()
         await this.solveLineItems(this.dialogProperties.id)
 
         // Resetting modal
