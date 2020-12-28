@@ -63,6 +63,14 @@
           >
             Cancel
           </v-btn>
+          <v-btn
+            class="ml-3"
+            color="amber lighten-2"
+            dark
+            @click="copyingPanel"
+          >
+            Copy Panel
+          </v-btn>
           <v-spacer />
           <v-btn
             color="green"
@@ -264,6 +272,10 @@ export default {
         this.notifDanger('There was an error while updating the panel')
         this.loading = false
       }
+    },
+
+    async copyingPanel() {
+      this.$emit('copyPanel', this.panel.id)
     },
 
     addNewField() {
