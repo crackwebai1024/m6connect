@@ -37,6 +37,7 @@
             <carousel
               class="w-full"
               :navigate-to="navigate"
+              :navigation-enabled="true"
               :pagination-active-color="'#fff'"
               :pagination-color="'#333'"
               :pagination-enabled="true"
