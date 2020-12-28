@@ -142,11 +142,11 @@
         'items-per-page-options': [5,10,15,200]
       }"
       :headers="headers"
-      :items="resources"
-      :options="pagination"
-      :server-items-length="pagination.totalItems"
-      @update:options="debounceSearch(search, false)"
+      :items="resourcesTest"
     >
+      <!--      :options="pagination"-->
+      <!--      :server-items-length="pagination.totalItems"-->
+      <!--      @update:options="debounceSearch(search, false)"-->
       <template v-slot:item="props">
         <tr
           class="step6"
@@ -736,7 +736,8 @@ export default {
       showExpandedSpendingLineItems: false,
       expandedSpendingLineItem: {},
       expandedSpendingLineItemDeleteModal: false,
-      expandedSpendingLineItemToDelete: {}
+      expandedSpendingLineItemToDelete: {},
+      resourcesTest: []
     }
   },
   computed: {
@@ -886,24 +887,32 @@ export default {
   },
   watch: {
     poAmount: function () {
-      this.fetchResources()
+      this.fetchCommitments()
     },
     'pagination.totalItems': function (newValue, oldValue) {
       if (newValue !== oldValue) {
         if (newValue !== this.resourcesRaw.length) {
-          this.fetchResources()
+          this.fetchCommitments()
         }
       }
     }
   },
   mounted() {
+    this.fetchCommitments()
     this.fetchBidManagers().catch(console.error)
     this.fetchProjectManagers().catch(console.error)
     // TODO: Change behaviour instead of refreshing everytime when something change or an spending event change to something better
-    EventBus.$on('refresh-commitments-panel-by-spendings', this.fetchResources)
-    EventBus.$on('reload-reconciliation-commitments', this.fetchResources)
+    EventBus.$on('refresh-commitments-panel-by-spendings', this.fetchCommitments)
+    EventBus.$on('reload-reconciliation-commitments', this.fetchCommitments)
   },
   methods: {
+    fetchCommitments() {
+      this.getCommitments({
+        projectId: this.$route.params.id
+      }).then(response => {
+        this.resourcesTest = response
+      })
+    },
     cardDialogClick() {
       this.$refs.cardDialogReconciliation.doubleClick()
     },
@@ -918,14 +927,16 @@ export default {
       'fetchBidManagers',
       'fetchProjectManagers'
     ]),
-
+    ...mapActions('cpm/projects/commitments', {
+      getCommitments: 'getCommitments'
+    }),
     ...mapActions('cpm/projects/spending', {
       submitDeleteLineItem: 'deleteLineItem'
     }),
     assignResourcesData({ data, meta: { lastPage, total } } = {}) {
       if (lastPage && this.pagination.page > lastPage) {
         this.pagination.page = 1
-        return this.fetchResources()
+        return this.fetchCommitments()
       }
       this.resourcesRaw = data.map(item => ({
         ...item,
@@ -936,12 +947,12 @@ export default {
     },
     clearSearch() {
       this.search = ''
-      this.fetchResources()
+      this.fetchCommitments()
     },
     onSearch(search) {
       this.search = search
       this.showSearchingModal = false
-      this.fetchResources()
+      this.fetchCommitments()
     },
     updateCommitmentsTotals() {
       return new Promise(async (resolve, reject) => {
@@ -1047,7 +1058,7 @@ export default {
       this.commitmentToEdit = null
       this.commitmentId = ''
       this.lineItemId = ''
-      await this.fetchResources()
+      await this.fetchCommitments()
       if (this.$h.dg(this.commitmentToShow, 'id')) {
         this.displayLineItems(this.commitmentToShow)
       }
