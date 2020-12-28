@@ -17,15 +17,20 @@ export default {
     RecordStepper
   },
 
-  async mounted() {
-    this.setShowSidePanels(false)
-    this.setDisplayAppBuilderShow()
-  },
-
   computed: {
     ...mapState('AppBuilder', {
       app: 'app'
     })
+  },
+
+  async mounted() {
+    this.setShowSidePanels(false)
+    this.setDisplayAppBuilderShow()
+
+    try {
+      const record = await this.getRecordById(this.$route.params.id)
+      const app = await this.getApp(record.app_id)
+    } catch (e) {}
   },
 
   beforeDestroy() {
