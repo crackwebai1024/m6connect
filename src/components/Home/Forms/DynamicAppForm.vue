@@ -153,6 +153,9 @@ export default {
       this.post_app(this.itemInfo).then(res => {
         this.pushAppId(res['data']['id'])
         this.$router.push(`/dev/${res['data']['id']}`)
+        this.$nextTick( () => {
+          this.itemInfo = {}
+        })
       })
     },
     pushTab() {
@@ -195,6 +198,7 @@ export default {
       ]
     },
     close() {
+      this.itemInfo = {}
       this.$emit('closeModal')
     },
     validate() {
