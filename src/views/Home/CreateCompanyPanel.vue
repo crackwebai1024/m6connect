@@ -189,6 +189,7 @@
           <v-tabs
             v-if="appLoaded"
             v-model="activeTab"
+            @change="updateTabPanels"
             active-class="font-weight-black blue--text active-tab-company"
           >
             <v-tab
@@ -292,26 +293,13 @@
             <!--                  </div>-->
             <!--                </div>-->
 
-            <panel
-              v-for="panel in leftPanels"
-              :key="panel.id"
-              :panel="panel"
-              :appID="app.id"
-              @copyPanel="copyPanel"
-              @deletePanel="deletePanel"
-              @updatePanel="updatePanel"
-              @updatingTable=" e => updatingTable(panel, e)"
-            />
-            <add-panel @addNewPanel="addNewPanel(0)" />
-          </v-col>
-          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)">
-            <v-col
-              v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
-              class="pa-0 pl-1"
-              cols="7"
+            <draggable
+              v-model="leftPanels"
+              group="panel"
+              @change="onPanelMove(0, $event)"
             >
               <panel
-                v-for="panel in rightPanels"
+                v-for="panel in leftPanels"
                 :key="panel.id"
                 :panel="panel"
                 :appID="app.id"
@@ -320,6 +308,31 @@
                 @updatePanel="updatePanel"
                 @updatingTable=" e => updatingTable(panel, e)"
               />
+            </draggable>
+            <add-panel @addNewPanel="addNewPanel(0)" />
+          </v-col>
+          <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false)">
+            <v-col
+              v-if="$h.dg(app, `tabs.${activeTab}`, { title: '' }).title.toLowerCase() !== 'home'"
+              class="pa-0 pl-1"
+              cols="7"
+            >
+              <draggable
+                v-model="rightPanels"
+                group="panel"
+                @change="onPanelMove(1, $event)"
+              >
+                <panel
+                  v-for="panel in rightPanels"
+                  :key="panel.id"
+                  :panel="panel"
+                  :appID="app.id"
+                  @copyPanel="copyPanel"
+                  @deletePanel="deletePanel"
+                  @updatePanel="updatePanel"
+                  @updatingTable=" e => updatingTable(panel, e)"
+                />
+              </draggable>
               <add-panel @addNewPanel="addNewPanel(1)" />
             </v-col>
 
@@ -392,6 +405,8 @@ import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia.vue'
 import AppActivities from '@/views/AppBuilder/AppActivities'
 import { mapActions, mapMutations, mapGetters } from 'vuex'
 import axios from 'axios'
+import Draggable from 'vuedraggable'
+import { inRange } from 'lodash'
 
 export default {
   name: 'CreateCompanyPanel',
@@ -407,7 +422,8 @@ export default {
     AppActivities,
     TableView,
     IconBuilderDialog,
-    HeaderBuilderDialog
+    HeaderBuilderDialog,
+    Draggable
   },
 
   data: () => ({
@@ -448,25 +464,21 @@ export default {
     iconColor: '',
     showHeaderColor: false,
     headerBackgroundColor: '',
-    headerTextColor: ''
+    headerTextColor: '',
+    leftPanels: [],
+    rightPanels: []
   }),
 
   computed: {
     ...mapGetters('DynamicAppsModule', {
       getAppId: 'getAppId'
-    }),
-
-    leftPanels() {
-      return this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
-    },
-    rightPanels() {
-      return this.app.tabs[this.activeTab].panels.filter(item => item.column === 1)
-    }
+    })
   },
 
   mounted() {
     this.$store.dispatch('AppBuilder/getApp', this.$route.params.id).then(res => {
       this.app = res
+      this.updateTabPanels()
       if (res.metadata) {
         this.app.metadata = JSON.parse(res.metadata)
         this.iconName = this.app.metadata.appIcon ? this.app.metadata.appIcon.icon : 'mdi-account-circle'
@@ -491,7 +503,8 @@ export default {
     ...mapActions('AppBuilder', {
       switchOrderTabs: 'switchOrderTabs',
       updateApp: 'updateApp',
-      deleteApp: 'deleteApp'
+      deleteApp: 'deleteApp',
+      movePanel: 'movePanel'
     }),
 
     ...mapMutations('SnackBarNotif', {
@@ -502,6 +515,61 @@ export default {
     ...mapActions('File', {
       deleteFileFromS3: 'deleteFileFromS3'
     }),
+
+    updateTabPanels() {
+      this.rightPanels = this.app.tabs[this.activeTab].panels.filter(item => item.column === 1)
+      this.leftPanels = this.app.tabs[this.activeTab].panels.filter(item => item.column === 0)
+    },
+
+    async onPanelMove(column, evt) {
+      let ctx
+      if (evt.added) {
+        ctx = evt.added
+
+        // Fix state
+        this.app.tabs[this.activeTab].panels
+          .filter(item => item.column === column && item.weight > evt.newIndex)
+          .forEach(item => item.weight++)
+
+        ctx.element.column = column
+        ctx.element.weight = evt.newIndex
+      } else if (evt.removed) {
+        this.app.tabs[this.activeTab].panels
+          .filter(item => item.column === column && item.weight > evt.oldIndex)
+          .forEach(item => item.weight--)
+      } else {
+        ctx = evt.moved
+
+        // Movement direction
+        const dir = Math.sign(evt.newIndex - ctx.element.weight)
+
+        // Move items with weight between start and end to appropriate place
+        this.app.tabs[this.activeTab].panels
+          .filter(item => item.column === column
+            && inRange(item.weight, ctx.element.weight, evt.newIndex + dir))
+          .forEach(item => item.weight = item.weight - dir)
+
+        ctx.element.weight = evt.newIndex;
+      }
+
+      if (evt.moved || evt.added) {
+        // Save data
+        this.loading = true;
+        try {
+          await this.movePanel({
+            id: ctx.element.id,
+            newWeight: ctx.newIndex,
+            newColumn: column
+          })
+
+          this.notifSuccess('Movement successfully saved')
+        } catch (e) {
+          this.notifDanger('An error occurred while saving movement')
+        } finally {
+          this.loading = false;
+        }
+      }
+    },
 
     async deleteIconLink() {
       try {
@@ -693,6 +761,8 @@ export default {
       this.$store.dispatch('AppBuilder/savePanel', newPanel).then(result => {
         this.app.tabs[this.activeTab].panels.push(result)
       })
+
+      this.updateTabPanels()
     },
 
     addNewField() {
