@@ -107,11 +107,14 @@
             <v-col
               cols="9"
             />
-            <v-col
-              cols="3"
+            <div
+              class="w-side"
             >
-              <m6-chat :light-mode="true" />
-            </v-col>
+              <m6-chat
+                class="ml-auto"
+                :light-mode="true"
+              />
+            </div>
           </v-row>
         </v-overlay>
       </v-row>
