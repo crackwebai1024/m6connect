@@ -103,7 +103,7 @@
                 class=""
               >
                 <edit-panel-dialog
-                  v-if="panelToEdit.items"
+                  v-if='panelToEdit.items'
                   v-model="showEditPanel"
                   :panel.sync="panelToEdit"
                   @update="updateProject"
@@ -397,6 +397,7 @@ export default {
           {
             label: 'Status',
             value: '',
+            model: 'status',
             default: defaults.text,
             icon: 'mdi-list-status'
           },
@@ -410,6 +411,14 @@ export default {
           {
             label: 'Project Title',
             value: '',
+            model: 'title',
+            default: defaults.text,
+            icon: 'mdi-information'
+          },
+          {
+            label: 'Description',
+            value: '',
+            model: 'description',
             default: defaults.text,
             icon: 'mdi-information'
           },
@@ -571,8 +580,8 @@ export default {
       this.project = res.data()
     },
     showPanelEditModal(panel) {
-      this.showEditPanel = true
       this.panelToEdit = { ...panel }
+      this.showEditPanel = true
     },
     camelize(str) {
       return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
@@ -586,9 +595,12 @@ export default {
   watch: {
     project: function () {
       if (this.project) {
+
         this.projectInformation.forEach(function (panel) {
           panel.items.map(function (item) {
-            if (this.project[panel.type]) item.value = this.project[panel.type][this.camelize(item.label)]
+            if (this.project[panel.type]) {
+              item.value = typeof(item.model) != 'undefined' ? this.project[item.model] : this.project[panel.type][this.camelize(item.label)] || 'empty'
+            }
           }.bind(this))
         }.bind(this))
       }
