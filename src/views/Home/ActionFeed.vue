@@ -5,7 +5,7 @@
   >
     <div class="align-center d-flex justify-space-between mb-1 mt-4 pl-3">
       <p :class="['font-weight-bold mb-0', {'white--text': lightMode}]">
-        Action Feed
+        Action Center
         <v-icon
           @click="actionFeedCalendar"
         >
