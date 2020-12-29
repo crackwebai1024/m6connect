@@ -843,7 +843,6 @@
         x-small
         @click="toogleDialogEmoji"
       >
-      <!-- herehere -->
         <v-icon size="22">
           mdi-emoticon-happy-outline
         </v-icon>
@@ -863,7 +862,8 @@
         >
           mdi-send
         </v-icon>
-      </v-btn></div>
+      </v-btn>
+    </div>
   </v-card>
 </template>
 
