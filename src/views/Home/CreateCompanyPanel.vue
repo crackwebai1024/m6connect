@@ -86,15 +86,21 @@
           class="flex-space-between"
         >
           <template v-if="app.iconLink !== ''">
-            <div style="display: flex" >
-            <v-btn color="red darken-2" @click="deleteIconLink" x-small dark fab >
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
+            <div style="display: flex">
+              <v-btn
+                color="red darken-2"
+                dark
+                fab
+                x-small
+                @click="deleteIconLink"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
               <img
-              class="app-icon-link pr-2"
-              :src="app.iconLink"
-            >
-          </div>
+                class="app-icon-link pr-2"
+                :src="app.iconLink"
+              >
+            </div>
           </template>
           <template v-else>
             <v-avatar
@@ -130,7 +136,8 @@
               v-model="app.prefix"
               class="add-field font-weight-regular grey lighten-3 mb-1 pt-1 px-4 rounded-xl"
               label="App Prefix"
-              maxlength="3"
+              maxlength="5"
+              minlength="1"
               :rules="rules.generic"
             />
             <m6-upload
@@ -499,26 +506,26 @@ export default {
     async deleteIconLink() {
       try {
         this.loading = true
-        if(this.$h.dg(this.app, 'iconLink', '').length ) {
-          let splitLink = this.app.iconLink.split('com')
+        if (this.$h.dg(this.app, 'iconLink', '').length) {
+          const splitLink = this.app.iconLink.split('com')
           const key = splitLink[1].substr(1)
 
           await this.deleteFileFromS3({ key })
-          this.app.iconLink = ""
+          this.app.iconLink = ''
           await this.updateApp({ params: this.app })
         }
 
         this.loading = false
         this.notifSuccess('The image was deleted')
-      } catch(e) {
+      } catch (e) {
         this.notifDanger('There was an error while deleting App Icon Image')
         this.loading = false
       }
     },
 
     updatingTable(panel, table) {
-      const index = panel.tables.map( t => t.id ).indexOf(table.id)
-      if(index > -1) {
+      const index = panel.tables.map(t => t.id).indexOf(table.id)
+      if (index > -1) {
         panel.tables[index] = table
       } else {
         panel.tables.push(table)
@@ -605,8 +612,12 @@ export default {
         this.notifSuccess('Updated!')
       } catch (e) {
         this.loading = false
-        this.notifDanger('There was an error while updating')
-        return e
+
+        let errorMsg = ''
+        for (const i in e.response.data) {
+          errorMsg += e.response.data[i][0].replace('params.', '') + '<br />'
+        }
+        this.notifDanger(errorMsg)
       }
     },
 
