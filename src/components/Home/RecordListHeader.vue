@@ -22,7 +22,7 @@
         @change="changeEvent"
       >
         <template #append>
-          <general-list-drop-down v-model="tableView" />
+          <general-list-drop-down :currentApp="appList[selected]" v-model="tableView" />
         </template>
       </v-text-field>
     </div>
@@ -98,7 +98,7 @@ export default {
   },
   data: () => ({
     searchInput: '',
-    tableView: '',
+    tableView: {},
     placeHolder: 'Search All Records',
     flickityOptions: {
       initialIndex: 1,
