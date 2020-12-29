@@ -185,6 +185,11 @@ const actions = {
     })
   },
 
+  async moveField(_, payload) {
+    return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/field/${payload.id}/move`, payload)
+      .then(({ data }) => data);
+  },
+
   updateRecord(_, payload) {
     return new Promise((resolve, reject) => {
       axios.put(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${payload.id}`, payload).then(({ data }) => {
