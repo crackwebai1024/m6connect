@@ -3815,7 +3815,7 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-date-fns@^2.16.1:
+date-fns@^2.1.0, date-fns@^2.16.1:
   version "2.16.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
   integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
@@ -10376,7 +10376,7 @@ vue2-google-maps@^0.10.7:
     babel-runtime "^6.26.0"
     marker-clusterer-plus "^2.1.4"
 
-vue@^2.5.17, vue@^2.6.11:
+vue@^2.5.17, vue@^2.6.10, vue@^2.6.11:
   version "2.6.12"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
@@ -10395,6 +10395,15 @@ vuefire@^2.2.4:
   dependencies:
     "@posva/vuefire-core" "^2.3.3"
 
+vuetify-datetime-picker@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/vuetify-datetime-picker/-/vuetify-datetime-picker-2.1.1.tgz#582341b65fa6e8036cb10d7e56a90d9989335ad9"
+  integrity sha512-xY3YCVNxoe/5Chbm7G2BXrkg12CWLWwnDJZdhNPVKe1p8S72H8NomYOB6SSBzMMEHisRGIRzAQTDwDfDU06x/Q==
+  dependencies:
+    date-fns "^2.1.0"
+    vue "^2.6.10"
+    vuetify "^2.1.3"
+
 vuetify-loader@^1.3.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/vuetify-loader/-/vuetify-loader-1.6.0.tgz#05df0805b3ab2ff0de198109d34f9da3f69da667"
@@ -10407,6 +10416,11 @@ vuetify-money@^1.0.3:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vuetify-money/-/vuetify-money-1.1.0.tgz#fa95e9408e4be9a9bf0e2e4b9b05d0c4f87fbfbc"
   integrity sha512-kJZBKInucAgcqhPUPvvcq/FbV5Mil/tfF4VR88AGlSF15mgtrsyCxJoT41Unlygi9h3Xc8n8tMZkVh8QPivJgA==
+
+vuetify@^2.1.3:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.4.0.tgz#6aa2616b0fecb0614cf85052b0ffbb5cad80bf92"
+  integrity sha512-FBFAtg1ZnNwDBhMzENCzgh0hBV+HMjXejrxeRQqTfKPojKQSQFswtdHatUPmlkArDulZC73GRs2F/IwdF48o5g==
 
 vuetify@^2.2.11:
   version "2.3.19"
