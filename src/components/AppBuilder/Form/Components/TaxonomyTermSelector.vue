@@ -1,5 +1,6 @@
 <template>
   <div class="w-full">
+    <span>Select term</span>
     <v-treeview
       expand-icon="mdi-chevron-down"
       indeterminate-icon="mdi-bookmark-minus"
