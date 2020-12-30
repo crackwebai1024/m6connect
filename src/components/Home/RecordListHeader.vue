@@ -1,6 +1,6 @@
 <template>
   <div
-    class="px-13 py-5 white"
+    class="px-13 py-5 white 123"
     :style="{
       backgroundImage: 'linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(' + require('@/assets/header-background.png') + ')',
       backgroundPosition: 'center center',
@@ -26,7 +26,7 @@
         </template>
       </v-text-field>
     </div>
-    <div>
+    <div class="in-here" >
       <flickity
         ref="flickity"
         :options="flickityOptions"
