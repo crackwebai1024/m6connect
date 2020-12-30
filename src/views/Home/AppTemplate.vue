@@ -116,7 +116,7 @@
               class="w-side relative"
             >
             <v-btn
-              class="blue ml-auto pa-6 white--text"
+              class="white ml-auto pa-6 blue--text"
               color="white"
               depressed
               absolute left
