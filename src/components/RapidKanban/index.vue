@@ -22,23 +22,30 @@
         v-for="task in rapids"
         :key="task.id"
         :slot="task.id"
-        class="item-blocks"
+        class="item-blocks flex-column-space-between pa-4"
+        @click="taskEditModal(task)"
       >
-        <div style="display:inline-block; width: 100%; padding: 3px;">
+        <div class="flex-row-space-between h-card-half" >
+          <h5 >{{ task.title }}</h5>
 
-          <div @click="taskEditModal(task)">
-            {{ task.title }}
-          </div>
-
+          <img class="dev-pic" v-if="transformedUsers[task.rapid_developer[0]].profilePic" :src="transformedUsers[task.rapid_developer[0]].profilePic" alt="rapid developer" />
+          <img class="dev-pic" v-else src="@/assets/default_user.png" alt="default user picture" />
+        </div>
+        <div class="flex-row-space-between h-card-half" >
+          <span class="grey--text" >{{ processDueDate(task.rapid_due_date) }}</span>
+          <v-chip color="blue lighten-5" >
+            <span class="circle mr-2" />
+            <b class="blue--text" >{{ task.status }}</b>
+          </v-chip>
         </div>
       </div>
     </kanban-board>
   </div>
 </template>
-
+/
 
 <script>
-import { mapActions, mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -65,18 +72,22 @@ export default {
           color: '#4CAF50'
         },
         { name: 'Lowest', icon: 'arrow_downward', color: '#8BC34A' }
-      ]
+      ],
+      monthPartials: {
+        "01": "Jan",
+        "02": "Feb",
+        "03": "Mar",
+        "04": "Abr",
+        "05": "May",
+        "06": "Jun",
+        "07": "Jul",
+        "08": "Aug",
+        "09": "Sep",
+        "10": "Oct",
+        "11": "Nov",
+        "12": "Dec"
+      }
     }
-  },
-  watch: {
-    // blocks(newBlocks, oldBlocks) {
-    //   this.blocksGotten = []
-    //   for (let x = 0; x < newBlocks.length; x++) {
-    //     const tempBlock = newBlocks[x]
-    //     // tempBlock.updatePriority = false
-    //     this.blocksGotten.push(tempBlock)
-    //   }
-    // }
   },
   methods: {
     ...mapActions('RapidTicket', {
@@ -88,40 +99,42 @@ export default {
       notifSuccess: 'notifSuccess'
     }),
 
+    processDueDate(orig) {
+      const partial = orig.split(' ')[0]
+      const [ year, month, date ] = partial.split('-')
+
+      return this.monthPartials[month] + ' ' + date
+    },
+
     updateBlock: function (id, status) {
-      // this.blocks.find(b => b.id === id).status = status
-      // this.$emit('update-task-general', this.blocks.find(b => b.id === id))
-      console.log('update-----')
-      console.log(id)
-      console.log('status-----')
-      console.log(status)
     },
     getBlockNums: function (stage) {
-      return this.blocks.filter(b => b.status == stage).length
     },
     getInitials: function (item) {
-      const nameArr = item.assignee.split(' ')
-      return nameArr[0][0].toUpperCase() + nameArr[1][0].toUpperCase()
     },
     taskEditModal: function (task) {
-      this.$emit('edit-task', task)
     },
     detect(prop, task) {
-      task.priority = prop
-      this.$emit('update-task-general', task)
     },
     getPriorityColor(priority) {
-      return this.priorities.find(p => p.name == priority).color
+    }
+  },
+
+  computed: {
+    ...mapGetters('Companies', {
+      users: 'getCurrentCompanyUsers'
+    }), 
+    transformedUsers() {
+      let res = {}
+      this.users.map( u => res[u.user.id] = u.user )
+      return res 
     }
   },
 
   async mounted() {
     try {
       this.rapids = await this.getRapidList()
-      console.log('rapids')
-      console.log(this.rapids)
     } catch(e) {
-      console.log(e)
     }
   }
 }
@@ -338,53 +351,16 @@ export default {
       }
     }
 
-  .circle-text {
-    display: table-cell;
-    height: 30px;
- /*change this and the width for the size of your initial circle*/
-    width: 30px;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 50%;
-  /*make it pretty*/
-    background: #000;
-    color: #fff;
-  /*change this for font-size and font-family*/
-}
-
-
-.avatars {
-  display: inline-flex;
-  flex-direction: row-reverse;
-  padding-left:50px;
-}
-
-.avatar {
-  margin-left: -10px;
-  position: relative;
-  border:1px solid #fff;
-  border-radius: 50%;
-  overflow:hidden;
-  width:50px;
-  height:50px;
-}
-
-.avatar img {
-  width:50px;
-  height:50px;
-}
-
 
 /* experiment from here on */
  @import '../../assets/kanban.scss';
   .drag-container {
-    // max-width: 1400px;
     max-width: 100vw;
     overflow: auto;
-    height: 45vh;
+    height: 45vh !important;
 
     .drag-list {
-      width: 4000px;
+      width: 187.5rem;
     }
 
     .drag-column {
@@ -409,7 +385,8 @@ export default {
           border-radius: 0px;
           opacity: 1;
           color: #404040;
-          width: 20rem !important; 
+          width: 20rem !important;
+          height: 9rem;
 
           &.is-moving {
             -webkit-transform: scale(1.1);
@@ -515,46 +492,40 @@ export default {
     }
   }
 
-
-  .circle-text {
-    display: table-cell;
-    height: 30px;
- /*change this and the width for the size of your initial circle*/
-    width: 30px;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 50%;
-  /*make it pretty*/
-    background: #000;
-    color: #fff;
-  /*change this for font-size and font-family*/
-}
-
 .item-blocks {
-  border-left-style: solid;
-  // width: 100%; 
-  width: 30rem;
+  width: 20rem;
+  height: 100%;
   display: inline-block;
   cursor: pointer;
   display: flex
 }
 
-// .drag-list {
-//     width: 4000px;
-// }
+.flex-row-space-between {
+  width: 95%;
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
-// .drag-container {
-//     width: 100vw;
-//     overflow: auto;
-//     height: 45vh;
-// }
+.flex-column-space-between {
+  display: flex;
+  display: -webkit-flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-// .lists ul {
-//     width: 200vw;
-// }
+.dev-pic {
+  width: auto;
+  height: 2.3rem;
+  border-radius: 50%;
+}
 
-// .drag-item {
-//     width: 20rem;
-// }
-
+.circle {
+  height: 10px;
+  width: 10px;
+  background-color: #2196F3;
+  border-radius: 50%;
+  display: inline-block;
+}
 </style>
