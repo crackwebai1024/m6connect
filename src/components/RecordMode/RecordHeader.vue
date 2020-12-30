@@ -35,6 +35,7 @@ export default {
             "hidden_preview", "full_screen", "close_full_screen"
         ]),
         full(record){
+            this.hidden_preview(this.headerDataRecord)
             record['prefix'] !== null ? this.redirect(record) : this.full_screen(record)
         },
         redirect(record) {

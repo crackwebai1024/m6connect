@@ -8,7 +8,6 @@ const getters = {}
 
 const mutations = {
     setShowSidePanels(state, payload) {
-        console.log('HIDING SIDE PANELS')
         state.showSidePanels = payload
     }
 }
