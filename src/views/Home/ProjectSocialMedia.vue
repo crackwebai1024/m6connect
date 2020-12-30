@@ -82,7 +82,10 @@
               @keyup.enter="addActivity"
             >
               <template #append>
-                <v-row class="align-center d-flex">
+                <v-row
+                  class="align-center d-flex"
+                  style="min-width: 108px;"
+                >
                   <v-menu
                     bottom
                     offset-y

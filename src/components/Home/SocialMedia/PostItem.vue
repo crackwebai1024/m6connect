@@ -416,8 +416,7 @@
         >
           <v-col cols="4">
             <v-btn
-              class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
-              :class="{ 'grey lighten-4 white--text': likeState }"
+              :class="`capitalize ${ likeState ? 'blue--text' : 'grey--text' } h-full my-1 py-5 text--darken-1 text-body-1 w-full`"
               small
               text
               @click="likeActivity(data)"
@@ -426,7 +425,7 @@
                 class="mr-2"
                 size="18"
               >
-                mdi-thumb-up-outline
+                {{ likeIcon }}
               </v-icon> Like
             </v-btn>
           </v-col>

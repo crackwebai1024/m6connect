@@ -153,7 +153,7 @@
           </p>
         </div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex" v-if="!showDeleteOptions" >
         <v-btn
           class="btn-chat-shadow ml-2"
           color="white"
@@ -178,52 +178,19 @@
             @close-dialog="() => editConfigurationDialog = false"
           />
         </v-dialog>
-        <v-dialog
-          v-else
-          v-model="deleteDialog"
-          width="50%"
+        <v-btn
+          class="btn-chat-shadow ml-2"
+          color="white"
+          fab
+          x-small
+          @click="showDeleteOptions = true"
         >
-          <template #activator="{ on, attrs }">
-            <v-hover
-              v-slot="{ hover }"
-            >
-              <div class="relative">
-                <v-card
-                  v-if="hover"
-                  class="absolute left-0 max-w-none pa-1 top-0 w-fit z-20"
-                >
-                  <v-btn
-                    v-bind="attrs"
-                    class="black--text capitalize px-3 text-caption w-full"
-                    elevation="0"
-                    height="25"
-                    v-on="on"
-                    @click="messageEdit = channel.data.id + '-channel'"
-                  >
-                    Delete Conversation
-                  </v-btn>
-                </v-card>
-                <v-btn
-                  class="btn-chat-shadow ml-2"
-                  color="white"
-                  fab
-                  x-small
-                >
-                  <v-icon
-                    size="15"
-                  >
-                    mdi-cogs
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-hover>
-          </template>
-          <delete-dialog
-            v-if="messageEdit === channel.data.id + '-single-channel'"
-            :element="`conversation with '${channel.membersInChannel.user.name}'`"
-            @closeDeleteModal="cleanChat($event)"
-          />
-        </v-dialog>
+          <v-icon
+            size="15"
+          >
+            mdi-delete
+          </v-icon>
+        </v-btn>
         <v-btn
           class="btn-chat-shadow ml-2"
           color="white"
@@ -235,6 +202,58 @@
             size="15"
           >
             mdi-close
+          </v-icon>
+        </v-btn>
+      </div>
+      <div class="d-flex" v-else >
+        <v-tooltip bottom color="#7c7c7c" >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="btn-chat-shadow ml-2"
+              color="white"
+              fab
+              x-small
+              v-bind="attrs"
+              v-on="on"
+              @click="deleteMessages"
+            >
+              <v-icon
+                size="15"
+              >
+                mdi-delete
+              </v-icon>
+            </v-btn>
+          </template>
+          <span>Delete Selected</span>
+        </v-tooltip>
+        <v-tooltip bottom color="#7c7c7c" >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              class="btn-chat-shadow ml-2"
+              color="white"
+              fab
+              x-small
+              v-bind="attrs"
+              v-on="on"
+              @click="deleteAll"
+            >
+              All
+            </v-btn>
+          </template>
+          <span>Delete All</span>
+        </v-tooltip>
+
+        <v-btn
+          class="btn-chat-shadow ml-2"
+          color="white"
+          fab
+          x-small
+          @click="showDeleteOptions = false"
+        >
+          <v-icon
+            size="15"
+          >
+            mdi-arrow-left-circle
           </v-icon>
         </v-btn>
       </div>
@@ -385,12 +404,20 @@
               </div>
             </div>
             <v-icon
-              :class="[message.read ? 'blue--text' : 'grey--text']"
+              :class="[ hasMessageBeenViewed(message) ? 'blue--text' : 'grey--text']"
               size="11"
             >
-              mdi-check-all
+              {{ hasMessageBeenViewed(message)  ? 'mdi-check-all' : 'mdi-check' }}
             </v-icon>
+
+            <v-checkbox
+              v-if="showDeleteOptions"
+              dense
+              v-model="deleteIds"
+              :value="message.id"
+            />
             <v-dialog
+              v-else
               v-model="deleteDialog"
               width="500"
             >
@@ -884,13 +911,28 @@
         </v-icon>
       </v-btn>
     </div>
+    <m6-confirm-delete
+      message="Are you sure you want to delete these messages?"
+      :show="showChatMessageDelete"
+      title="Delete Messages"
+      @cancel="cancelMessagesDelete"
+      @confirm="confirmMessagesDelete"
+    />
+
+    <m6-confirm-delete
+      message="Are you sure you want to delete this chat?"
+      :show="showChatDeleteModal"
+      title="Delete Chat"
+      @cancel="cancelChatDelete"
+      @confirm="confirmChatDelete"
+    />
   </v-card>
 </template>
 
 <script>
 /* eslint-disable camelcase */
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import VEmojiPicker from 'v-emoji-picker'
+import { VEmojiPicker } from 'v-emoji-picker'
 import EditConfigurationDialog from '@/components/Dialogs/EditConfiguration'
 import ExternalUrl from '@/components/Home/SocialMedia/ExternalUrl.vue'
 import YoutubeVideo from '@/components/Home/SocialMedia/YoutubeVideo'
@@ -967,7 +1009,11 @@ export default {
       'Saturday'
     ],
     hideFilesPreview: false,
-    chatExpanded: false
+    chatExpanded: false,
+    showDeleteOptions: false,
+    deleteIds: [],
+    showChatMessageDelete: false,
+    showChatDeleteModal: false
   }),
   computed: {
     ...mapGetters('Auth', { user: 'getUser' }),
@@ -1040,6 +1086,8 @@ export default {
     this.channel.on('message.new', this.addNewMessage)
     this.channel.on('message.deleted', this.deleteMessage)
     this.channel.on('message.updated', this.updateMsg)
+    this.channel.on('user.watching.start', this.userLogsOn)
+    this.channel.on('user.watching.stop', this.userLogsOff)
 
     this.getApps().then(response => {
       response.data.map(app => {
@@ -1082,6 +1130,69 @@ export default {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+    userLogsOn(event) {
+      if (!event) return
+      const index = this.$h.dg(this, 'state.members', []).map( m => m.user.id).indexOf(event.user.id)
+      this.state.members[index].user.last_active = event.received_at.toISOString()
+      this.state.members[index].user.online = true
+    },
+    userLogsOff(event) {
+      const index = this.$h.dg(this.state, 'members', []).map( m => m.user.id).indexOf(event.user.id)
+      this.state.members[index].user.last_active = event.received_at.toISOString()
+      this.state.members[index].user.online = false
+    },
+    hasMessageBeenViewed(message) {
+      const index = this.$h.dg(this.state, 'members', []).map( m => m.user.id).indexOf( this.$h.dg(this.users, `0.user.id`, ''))
+      return new Date(message.created_at) < new Date(this.state.members[index].user.last_active) || this.state.members[index].user.online
+    },
+    cancelChatDelete() {
+      this.showChatDeleteModal = false
+      this.showDeleteOptions = false
+    },
+    async confirmChatDelete() {
+      try {
+        this.showloading = true
+
+        for (let x = 0; x < this.messages.length; x++) {
+          await this.removeMessage(this.messages[x].id)
+        }
+        this.cancelChatDelete()
+        this.showloading = false
+      } catch (e) {
+        this.showChatDelete()
+        this.notifDanger('There was an error while deleting the chat')
+        this.showloading = false
+      }
+    },
+    deleteAll() {
+      this.showChatDeleteModal = true
+    },
+    cancelMessagesDelete(deleted = false) {
+      this.showChatMessageDelete = false
+
+      if (deleted) {
+        this.showDeleteOptions = false
+        this.deleteIds = []
+      }
+    },
+    async confirmMessagesDelete() {
+      try {
+        this.showLoading = true
+        for (let x = 0; x < this.deleteIds.length; x++) {
+          await this.removeMessage(this.deleteIds[x])
+        }
+
+        this.cancelMessagesDelete(true)
+        this.notifSuccess('The messages were deleted')
+        this.showloading = false
+      } catch (e) {
+        this.notifDanger('There was an error while deleting the messages')
+        this.showloading = false
+      }
+    },
+    deleteMessages() {
+      if (this.deleteIds.length) this.showChatMessageDelete = true
+    },
     changeApp(event) {
       this.getActions(event).then(response => {
         this.options['records'] = response.data
@@ -1096,7 +1207,7 @@ export default {
       const images = []
       if (this.messages) {
         this.messages.forEach(msg => {
-          if (typeof (msg.images) !== 'undefined' && msg.images.length > 0) {
+          if (typeof (msg.images) !== 'undefined' && this.$h.dg(msg, 'images', []).length > 0) {
             msg.images.forEach(entry => {
               const img = {
                 message: msg.id,

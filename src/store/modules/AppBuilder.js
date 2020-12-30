@@ -172,12 +172,22 @@ const actions = {
     })
   },
 
+  async movePanel(_, payload) {
+    return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload.id}/move`, payload)
+      .then(({ data }) => data);
+  },
+
   updateField(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/field/${payload.id}/update`, payload).then(({ data }) => {
         resolve(data)
       }).catch(e => reject(e))
     })
+  },
+
+  async moveField(_, payload) {
+    return await axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/field/${payload.id}/move`, payload)
+      .then(({ data }) => data);
   },
 
   updateRecord(_, payload) {

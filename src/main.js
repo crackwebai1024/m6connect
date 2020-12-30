@@ -16,11 +16,14 @@ import VueYouTubeEmbed from 'vue-youtube-embed'
 import VueSocialSharing from 'vue-social-sharing'
 
 import Treeselect from '@riophae/vue-treeselect'
+import DatetimePicker from 'vuetify-datetime-picker'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 Vue.component('treeselect', Treeselect)
 
 Vue.use(VueCarousel)
+
+Vue.use(DatetimePicker)
 
 Vue.use(VueYouTubeEmbed)
 

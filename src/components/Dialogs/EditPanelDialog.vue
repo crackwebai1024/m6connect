@@ -106,7 +106,7 @@ export default {
     },
     panel: {
       type: [Object, Array],
-      default: () => {}
+      default: () => new Array()
     }
   },
   data: () => ({
@@ -144,25 +144,32 @@ export default {
     },
     // Move this function to Vuex mutations
     savePanel() {
-      let map = {}
+      let filteredItems = {...this.panelItems}
+      delete filteredItems['projectTitle']
+      delete filteredItems['description']
+      delete filteredItems['status']
+
+      let doc = {}
 
       if (this.panel.title === 'Project Quickview') {
-        map = {
-          basic: this.panelItems
+        doc = {
+          status: this.panelItems.status || '',
+          description: this.panelItems.description || '',
+          title: this.panelItems.projectTitle || '',
+          basic: filteredItems
         }
       } else if (this.panel.title === 'Schedule & Budget') {
-        map = {
+        doc = {
           schedule: this.panelItems
         }
       } else {
-        map = {
+        doc = {
           milestones: this.panelItems
 
         }
       }
-
       // this.$snotify.success('Changes saved')
-      db.collection('cpm_projects').doc(this.$route.params.id).update(map)
+      db.collection('cpm_projects').doc(this.$route.params.id).update(doc)
         .then(doc => {
           this.$snotify.success('Changes saved')
           this.$emit('update')
