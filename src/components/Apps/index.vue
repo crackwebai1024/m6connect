@@ -1,7 +1,6 @@
 <template>
   <v-container
-    class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll"
-    :class="{'w-full': $vuetify.breakpoint.xs , 'w-3__5': $vuetify.breakpoint.md || $vuetify.breakpoint.sm, 'max-w-content w-content': $vuetify.breakpoint.lgAndUp }"
+    class="d-flex dont-show-scroll h-full pa-20 mt-20 vertical-scroll w-full"
     fluid
     :style="` ${ tableView ? 'width: 100%' : '' } `"
   >
@@ -59,9 +58,18 @@ export default {
   },
   methods: {
     ...mapActions(['reset_image_overlay']),
+    ...mapActions('PageControl', {
+      setShowSidePanels: 'setShowSidePanels'
+    }),
     restartImageArray() {
       this.reset_image_overlay()
     }
+  },
+  mounted() {
+    this.setShowSidePanels(false)
+  },
+  beforeDestroy() {
+    this.setShowSidePanels(true)
   }
 }
 </script>
