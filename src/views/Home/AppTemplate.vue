@@ -55,6 +55,7 @@
               opacity="0.7"
               :value="actionOverlay"
             >
+            
               <v-row
                 class="central-content flex flex-nowrap justify-space-between mx-auto relative top-6 transparent0 w-full"
                 no-gutters
@@ -84,10 +85,14 @@
           <v-btn
             class="blue ml-auto pa-6 white--text"
             color="white"
+            fixed
+            v-show='!chatOverlay'
+            bottom
+            right
             depressed
             icon
             rounded
-            @click="chatOverlay = !chatOverlay"
+            @click="chatOverlay = true"
           >
             <v-icon>mdi-message</v-icon>
           </v-btn>
@@ -108,11 +113,23 @@
               cols="9"
             />
             <div
-              class="w-side"
+              class="w-side relative"
             >
+            <v-btn
+              class="blue ml-auto pa-6 white--text"
+              color="white"
+              depressed
+              absolute left
+              icon
+              rounded
+              @click="chatOverlay = false"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
               <m6-chat
                 class="ml-auto"
                 :light-mode="true"
+                @click.native='chatOverlay = false'
               />
             </div>
           </v-row>
