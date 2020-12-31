@@ -13,11 +13,16 @@
         @changingApps="changingApps"
         @tableViewChange="tableViewChange"
       />
-      <record-filter :showFilterBtn="showFilterBtn" :currentAppID="currentAppID" />
+      <record-filter 
+        :showFilterBtn="showFilterBtn" 
+        :currentAppID="currentAppID" 
+        @recordsToShow="recordsToShow" 
+        @clearFilter="clearFilter"
+      />
     </div>
     <div
       v-if="!loading && headerLoaded"
-      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
+      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mt-10 mx-auto rounded'"
     >
       <template v-if="tableView">
         <records-table
@@ -59,7 +64,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions, mapMutations, mapState } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
 import RecordListHeader from '@/components/Home/RecordListHeader'
 import RecordsTable from '@/components/RecordsTable'
@@ -98,7 +103,8 @@ export default {
     ],
     dynamicTableHeader: [],
     showFilterBtn: false,
-    currentAppID: 0
+    currentAppID: 0,
+    fullRecordList: [],
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -152,7 +158,10 @@ export default {
           }
         }
       ]
-    }
+    },
+    ...mapState('Filtering', {
+      filterSettings: 'filterSettings'
+    })
   },
   watch: {
     tableView(val) {
@@ -165,8 +174,18 @@ export default {
     this.setFilterTag({ key: 'everyone', value: 'All Apps' })
     this.getApps().then(() => {
       this.records = this.list()
+      this.fullRecordList = this.list()
       this.loading = false
+    }).then( () => {
+      this.getFilterSettings()
+      if(this.filterSettings) return
+
+      this.showFilterBtn = true
+      this.currentAppID = this.filterSettings.currentAppID
+      this.setFilterTag(this.filterSettings.filter)
+      this.recordsToShow(this.filterSettings.idsAndFieldsList)
     })
+
     this.selectApp().then(res => {
       res['data'].forEach(app => {
         this.areas2.push(
@@ -212,6 +231,20 @@ export default {
     ...mapActions('RecordsInstance', {
       getRecordsByApp: 'getRecordsByApp'
     }),
+    ...mapMutations('Filtering', {
+      saveFilterSettings: 'saveFilterSettings',
+      getFilterSettings: 'getFilterSettings',
+      saveRecordSearchModel: 'saveRecordSearchModel'
+    }),
+    clearFilter() {
+      this.records = this.fullRecordList.filter( f => f.app_id == this.currentAppID )
+    },
+    recordsToShow(idsAndFieldsList) {
+      const payload = { idsAndFieldsList, filter: this.filter, currentAppID: this.currentAppID }
+      this.saveFilterSettings(payload)
+
+      this.records = this.fullRecordList.filter( r => idsAndFieldsList.ids.includes(r.id) )
+    },
     changeEvent(event) {
       this.records = []
       this.loading = true

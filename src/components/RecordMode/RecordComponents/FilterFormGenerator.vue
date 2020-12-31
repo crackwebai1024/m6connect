@@ -58,6 +58,7 @@ import AppAttachment from '@/components/AppBuilder/Form/Components/Attachment.vu
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
 import TextField from '@/components/AppBuilder/Form/Components/TextField.vue'
 import GMap from '@/components/_partials/GMap'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   props: {
@@ -109,11 +110,34 @@ export default {
     }
   }),
 
+  methods: {
+    ...mapMutations('Filtering', {
+      saveRecordSearchModel: 'saveRecordSearchModel',
+      getRecordSearchModal: 'getRecordSearchModal'
+    })
+  },
+
   watch: {
     recordSearch(val) {
+      this.saveRecordSearchModel(val)
       this.$emit('sendData', val)
+    },
+    recordSearchModel(val) {
+      if(!val) this.recordSearch = {} 
+
+      this.recordSearch = {...val}
     }
   },
+
+  computed: {
+    ...mapState('Filtering', {
+      recordSearchModel: 'recordSearchModel'
+    })
+  },
+
+  mounted() {
+    this.getRecordSearchModal()
+  }
 
 }
 </script>
