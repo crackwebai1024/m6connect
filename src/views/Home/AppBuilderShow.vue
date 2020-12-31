@@ -26,7 +26,7 @@
               color="red darken-1"
               icon
               style="left: -40px; top: 13px;"
-              :to="{ name: 'apps', params: {} }"
+              @click="$router.back()"
             >
               <v-icon>
                 mdi-close
