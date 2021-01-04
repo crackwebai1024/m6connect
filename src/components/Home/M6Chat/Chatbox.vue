@@ -1581,28 +1581,14 @@ export default {
     onPasteImage(event) {
       this.hideFilesPreview = false
       const items = (event.clipboardData || event.originalEvent.clipboardData).items
-      console.log(items)
-      let blob = null
       for (let i = 0; i < items.length; i++) {
-        if (items[i].type.indexOf('image') === 0) {
-          blob = items[i].getAsFile()
+        const item = items[i]
+        if (item.kind === 'file') {
+          const blob = item.getAsFile()
+          const reader = new FileReader()
+          reader.readAsDataURL(blob)
+          this.imageFiles.push(blob)
         }
-      }
-      // load image if there is a pasted image
-      const self = this
-      if (blob !== null) {
-        const reader = new FileReader()
-        reader.onload = function (event) {
-          const blobFile = new File([
-            event.target.result
-          ], 'Screenshot-' + (new Date()).getTime(), {
-            type: 'image/png',
-            lastModified: Date.now()
-          })
-          console.log(blobFile)
-          self.imageFiles.push(blobFile)
-        }
-        reader.readAsDataURL(blob)
       }
     }
   }
