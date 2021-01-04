@@ -40,10 +40,13 @@
       </v-avatar>
       <div class="ml-2">
         <p
-          class="font-weight-bold"
+          class="font-weight-bold d-block"
           style="margin-bottom: -5px;"
         >
           {{ notification.post.actor.data.name }}
+        </p>
+        <p class='d-block'>
+          {{notification.type.value}}
         </p>
         <v-spacer />
       </div>
@@ -303,7 +306,16 @@ export default {
       this.confirmStatus = true
     },
     setPost() {
+
       const { record, colorTag, id } = this.notification
+      
+      if (this.$route.name === 'home') {
+        if (window.scrollY != 0) {
+          window.scrollTo({top: 0, behavior: 'smooth'})
+        }
+      }else {
+        this.$router.push({name: 'home'})
+      }
       const props = {
         id: id,
         record: record,
