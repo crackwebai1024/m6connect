@@ -704,7 +704,8 @@ export default {
       const fieldID = field.metadata.originalReference.id
       try {
         const res = await this.getSingleRecordFieldValue({
-          recordID: record.id,
+          currentRecordID: this.recordID || this.$route.params.id,
+          referenceRecordID: record.id,
           fieldID,
           refID: field.id
         })
@@ -723,6 +724,8 @@ export default {
         this.genericRecord = { ...genericRecord }
         field.referenced_record_id = record.id
       } catch (e) {
+        console.log('e------')
+        console.log(e)
         this.notifDanger('There was an error while getting a reference fields value')
       }
     },
