@@ -121,8 +121,8 @@
       </v-list-item>
       <template v-else >
         <v-list-item v-for="(table, index) in panel.tables" @click="editingTable(table)" :key="`panel-table-${index}`" >
-          {{ table.title }}   
-        </v-list-item> 
+          {{ table.title }}
+        </v-list-item>
       </template>
     </v-list>
     <div class="align-start d-flex">
@@ -144,6 +144,7 @@
       v-if="showFieldModal"
       :editing="editing"
       :field="activeField"
+      :fields-bag="panel.fields"
       :show="showFieldModal"
       @close="showFieldModal = false"
       @result="pushField"
@@ -168,6 +169,7 @@ import Field from '@/components/AppBuilder/Modals/Field'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TableCreator from '@/components/AppBuilder/GenericTable'
 import { mapActions, mapMutations } from 'vuex'
+import { cloneDeep } from 'lodash'
 
 export default {
   name: 'Panel',
@@ -234,7 +236,7 @@ export default {
       notifSuccess: 'notifSuccess'
     }),
 
-    updatingTable(table) { 
+    updatingTable(table) {
       this.activeAppTable = {...table}
       this.$emit('updatingTable', table)
     },
@@ -279,7 +281,7 @@ export default {
     },
 
     addNewField() {
-      this.activeField = { ...this.defaultField }
+      this.activeField = cloneDeep(this.defaultField)
       this.editing = false
       this.showFieldModal = true
     },

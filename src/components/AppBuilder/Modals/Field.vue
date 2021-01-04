@@ -49,6 +49,7 @@
                     item-value="value"
                     :items="types"
                     label="Field Type"
+                    @change="fieldTypeChanged"
                   />
                 </v-col>
                 <v-col cols="12">
@@ -144,20 +145,124 @@
                     value-format="object"
                   />
                 </v-col>
+
+                <!-- calculated field -->
                 <v-col
-                  v-if="field.type === 'referencedToApp'"
+                  v-if="field.type === 'calculated'"
+                  class="pa-5"
                   cols="12"
                 >
-                  <v-autocomplete
-                    v-model="field.referenced_app"
-                    item-text="label"
-                    item-value="appId"
-                    :items="appList"
-                    label="Referenced App"
-                  />
+                  <!-- Result -->
+                  <v-row class="align-center">
+                    <v-col cols="3">
+                      <h3>Set Value To:</h3>
+                    </v-col>
+                    <v-col cols="9">
+                      <v-text-field
+                        v-model="field.metadata.value"
+                        label="Calculated Result"
+                      />
+                    </v-col>
+                  </v-row>
+
+                  <!-- There should be an static IF -->
+                  <v-row>
+                    <v-col cols="12">
+                      <v-row>
+                        <v-col cols="6">
+                          <h3>IF</h3>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+
+                  <!-- List of rows -->
+                  <v-row
+                    v-for="(item, idx) in field.metadata.formula"
+                    :key="idx"
+                  >
+                    <v-col cols="12">
+                      <v-row v-if="item.type === 'field-row'">
+                        <v-col cols="4">
+                          <v-select
+                            v-model="item.operand1"
+                            :items="fieldsBag"
+                            item-text="label"
+                            item-value="id"
+                            label="Field"
+                            dense
+                          />
+                        </v-col>
+
+                        <v-col cols="3">
+                          <v-select
+                            v-if="item.operand1 !== null"
+                            v-model="item.operator"
+                            :items="getOperatorsForField(getFieldById(item.operand1))"
+                            label="Operator"
+                            outlined
+                            dense
+                          />
+                        </v-col>
+
+                        <v-col cols="4">
+                          <v-select
+                            v-if="item.operator !== '' && getFieldById(item.operand1).type === 'autocomplete'"
+                            label="Value"
+                            :items="getFieldById(item.operand1).metadata.options"
+                            dense
+                          />
+
+                          <v-text-field
+                            v-else-if="item.operator !== ''"
+                            label="Value"
+                            :type="getFieldById(item.operand1).type === 'number' ? 'number' : 'text'"
+                            dense
+                          />
+                        </v-col>
+                      </v-row>
+
+                      <v-row v-else>
+                        <v-col cols="3">
+                          <v-select
+                            v-model="item.operator"
+                            :items="nonEmptyOperators"
+                            label="Operator"
+                            solo
+                            dense
+                          />
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="12">
+                      <v-btn
+                        @click="addFormulaItem"
+                        color="primary"
+                      >
+                        Add
+                      </v-btn>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
             </v-col>
+            <v-col
+              v-if="field.type === 'referencedToApp'"
+              cols="12"
+            >
+              <v-autocomplete
+                v-model="field.referenced_app"
+                item-text="label"
+                item-value="appId"
+                :items="appList"
+                label="Referenced App"
+              />
+            </v-col>
+          </v-row>
+          </v-col>
           </v-row>
         </v-container>
       </v-card-text>
@@ -204,6 +309,10 @@ export default {
     field: {
       required: true,
       type: Object
+    },
+    fieldsBag: {
+      required: true,
+      type: Array
     }
   },
   data() {
@@ -223,10 +332,18 @@ export default {
         { label: 'Attachment', value: 'attachment' },
         { label: 'Yes / No', value: 'boolean' },
         { label: 'Reference Field', value: 'referenced' },
+        { label: 'Calculated Field', value: 'calculated' },
         { label: 'Reference App', value: 'referencedToApp' },
         { label: 'Address', value: 'autocomplete-address' }
       ],
-      fieldList: []
+      fieldList: [],
+      operators: {
+        logical: ['AND', 'OR'],
+        math: ['+', '-', '/', '*'],
+        equal: ['='],
+        empty: [''],
+      },
+      panelFields: []
     }
   },
   computed: {
@@ -235,6 +352,14 @@ export default {
     }),
     appList() {
       return this.fieldList.filter(row => Number(row.appId) !== Number(this.currentApp.id))
+    },
+    nonEmptyOperators() {
+      return [
+        ...this.operators.logical,
+        ...this.operators.equal,
+        ...this.operators.math
+      ];
+      return [...Object.values(this.operators)].flat();
     }
   },
 
@@ -255,6 +380,10 @@ export default {
       }
       this.loading = false
     })
+    // Get a copy from types to available fields
+    this.panelFields = this.fieldsBag.map(field => ({
+      text: field.label
+    }))
   },
 
   methods: {
@@ -273,7 +402,7 @@ export default {
     },
     async saveField(field) {
       try {
-        if ( field.machine_name && !this.verifyMachineName(this.$h.dg( field, 'machine_name', '' ) ) ) {
+        if (field.machine_name && !this.verifyMachineName(this.$h.dg(field, 'machine_name', ''))) {
           this.notifDanger('A Machine Name Should Only Contain: Letters, Numbers or Underscores')
           return
         }
@@ -325,6 +454,45 @@ export default {
         this.notifDanger(msg)
       }
     },
+
+    addFormulaItem() {
+      this.field.metadata.formula.push({
+        type: 'operator-row',
+        operator: '',
+      });
+      this.field.metadata.formula.push({
+        type: 'field-row',
+        operand1: null,
+        operator: '',
+        operand2: null,
+      });
+    },
+
+    getOperatorsForField(field) {
+      return [
+        ...this.operators.empty,
+        ...this.operators.equal,
+        ...(field.type === 'number' ? this.operators.math : [])
+      ];
+    },
+
+    fieldTypeChanged(type) {
+      if (type === 'calculated' && !this.field.metadata.formula) {
+        const formula = [{
+          type: 'field-row',
+          operand1: null,
+          operator: '',
+          operand2: null,
+        }];
+
+        this.$set(this.field.metadata, 'formula', formula);
+      }
+    },
+
+    getFieldById(id) {
+      return this.fieldsBag.find(f => f.id === id);
+    },
+
     confirmDelete(field) {
       this.$store.dispatch('AppBuilder/deleteField', field.id)
     },
