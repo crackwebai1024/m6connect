@@ -41,7 +41,7 @@
       </v-btn>
     </div>
     <div>
-      <h4 :class=" !lightMode ? 'grey--text text--darken-2 mb-4 ml-1' : 'white--text mb-4 ml-1' ">
+      <h4 :class=" !lightMode ? 'grey--text text--darken-2 mb-3 ml-1' : 'white--text mb-3 ml-1' ">
         {{ department.name }}
       </h4>
       <input
@@ -106,7 +106,7 @@
               inline
               :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
-              <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
+              <p :class=" !lightMode ? 'grey--text text--darken-2 mb-0' : 'white--text mb-0' ">
                 {{ channel.data.name }}
               </p>
             </v-badge>
@@ -120,7 +120,7 @@
               inline
               :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
             >
-              <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
+              <p :class=" !lightMode ? 'grey--text text--darken-2 mb-0' : 'white--text mb-0' ">
                 {{ channel.membersInChannel.user.name }}
               </p>
             </v-badge>

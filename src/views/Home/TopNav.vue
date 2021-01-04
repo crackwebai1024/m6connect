@@ -1,5 +1,5 @@
 <template>
-  <div class="blue d-flex darken-3 justify-center nav-bar px-4 w-full">
+  <div class="blue d-flex darken-3 fixed justify-center nav-bar px-4 top-0 w-full">
     <div class="align-center d-flex justify-space-between nav-content w-full">
       <div class="align-center d-flex w-side">
         <img
@@ -12,7 +12,7 @@
       <v-tabs
         active-class="blue darken-4"
         background-color="transparent"
-        class="align-center d-flex justify-center max-w-content"
+        class="align-center d-flex justify-center mx-auto w-fit"
         color="white"
         height="60"
         :hide-slider="true"
@@ -31,7 +31,7 @@
           <v-icon
             v-else
             color="white"
-            :large="true"
+            size="30"
           >
             mdi-{{ link.icon }}
           </v-icon>
@@ -147,8 +147,6 @@
         </span>
 
         <company-home />
-
-        <app-builder-show />
       </div>
     </div>
   </div>
@@ -166,7 +164,6 @@ import CreateApp from '@/components/Dialogs/CreateAppDialog'
 import AddFeed from './AddFeed'
 import CompanyHome from './CompanyHome'
 import NewRecordDialog from '@/components/Dialogs/NewRecordDialog'
-import AppBuilderShow from './AppBuilderShow'
 import AppsBtnDropDown from '@/components/Home/TopNav/AppsBtnDropDown'
 
 export default {
@@ -182,7 +179,6 @@ export default {
     AddFeed,
     CreateApp,
     CompanyHome,
-    AppBuilderShow,
     AppsBtnDropDown
   },
   data: () => ({
@@ -223,11 +219,10 @@ export default {
 
 <style lang="scss" scoped>
 .nav-bar {
-  position: fixed;
   z-index: 100;
 }
 .nav-content {
   height: 60px;
-  max-width: 1800px;
+  max-width: 1872px;
 }
 </style>

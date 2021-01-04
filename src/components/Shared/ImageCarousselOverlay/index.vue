@@ -5,7 +5,7 @@
       :value="overlay"
     >
       <v-card
-        class="h-viewport w-viewport"
+        class="h-80 w-80"
         @keydown.esc="closeOverlay"
         @keydown.left="this.images.indexOf(navigate++)"
         @keydown.right="this.images.indexOf(navigate--)"
@@ -17,11 +17,11 @@
           no-gutters
         >
           <v-col
-            class="relative"
+            class="h-80 relative"
             cols="8"
           >
             <v-avatar
-              class="absolute pointer top-0"
+              class="absolute pointer mt-2"
               color="grey lighten-2"
               size="50"
               style="height: 50px; width: 50px; left: 15px; z-index: 100;"
@@ -63,7 +63,7 @@
             </carousel>
           </v-col>
           <v-col
-            class="h-viewport white"
+            class="h-80 white"
             cols="4"
           >
             <v-card
@@ -305,7 +305,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s ease-out;
@@ -344,5 +345,13 @@ export default {
   display: flex;
   justify-content: center;
   outline: none !important;
+}
+
+.h-80 {
+  height: 80vh;
+}
+
+.w-80 {
+  width: 80vw;
 }
 </style>

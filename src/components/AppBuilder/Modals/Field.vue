@@ -49,6 +49,15 @@
                     item-value="value"
                     :items="types"
                     label="Field Type"
+                    @change="cleanMetadata"
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea
+                    v-model="field.metadata.helpText"
+                    filled
+                    label="Help Text"
+                    rows="3"
                   />
                 </v-col>
                 <v-col cols="12">
@@ -148,6 +157,74 @@
                     label="Referenced App"
                   />
                 </v-col>
+                <v-col
+                  v-if="field.type === 'attachment'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.attachmentOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="attachmentOption"
+                    label="Attachment Option"
+                  />
+                  <v-file-input
+                    counter
+                    multiple
+                    show-size
+                    truncate-length="1"
+                  />
+                </v-col>
+                <v-col
+                  v-if="field.type === 'boolean'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.booleanOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="booleanOption"
+                    label="Yes/No Option"
+                  />
+                </v-col>
+                <v-col
+                  v-if="field.type === 'text'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.textOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="textOption"
+                    label="Text Option"
+                  />
+                  <template v-if="field.metadata.textOption === 'textarea'">
+                    <v-text-field
+                      v-model="field.metadata.textOption_rows"
+                      label="Number of rows"
+                      type="number"
+                      value="3"
+                    />
+                    <v-checkbox
+                      v-model="field.metadata.textOption_auto_grow"
+                      hide-details
+                      label="Auto Grow"
+                      value="true"
+                    />
+                  </template>
+                </v-col>
+                <v-col
+                  v-if="field.type === 'number'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.numberOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="numberOption"
+                    label="Number Option"
+                  />
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -206,6 +283,22 @@ export default {
         'mm/dd/YYYY H:m:s',
         'dd/mm/YYYY H:m:s'
       ],
+      attachmentOption: [
+        { text: 'General', value: 'general' },
+        { text: 'Image', value: 'image' }
+      ],
+      textOption: [
+        { text: 'Single Line', value: 'singleLine' },
+        { text: 'Textarea', value: 'textarea' }
+      ],
+      booleanOption: [
+        { text: 'Horizontal Alignment', value: 'horizon' },
+        { text: 'Vertical Alignment', value: 'vertical' }
+      ],
+      numberOption: [
+        { text: 'Genera', value: 'genera' },
+        { text: 'Currency', value: 'currency' }
+      ],
       types: [
         { label: 'Text', value: 'text' },
         { label: 'Number', value: 'number' },
@@ -234,14 +327,12 @@ export default {
     // TODO: The available apps list should be on a global list on the store.
     axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/dynamic_apps/apps`).then(response => {
       response.data.map(app => {
-        if (parseInt(app.id) !== parseInt(this.$route.params.id)) {
-          this.fieldList.push({
-            id: app.title + app.id,
-            appId: app.id,
-            label: app.title,
-            children: null
-          })
-        }
+        this.fieldList.push({
+          id: app.title + app.id,
+          appId: app.id,
+          label: app.title,
+          children: null
+        })
       })
       if (this.editing && this.field.type === 'referenced') {
         // eslint-disable-next-line camelcase
@@ -261,17 +352,17 @@ export default {
       item.splice(index, 1)
     },
     verifyMachineName(txt) {
-      let re = new RegExp('^[a-zA-Z0-9_]*$')
+      const re = new RegExp('^[a-zA-Z0-9_]*$')
       const res = re.test(txt)
       return res
     },
     async saveField(field) {
       try {
-        if( field.machine_name && !this.verifyMachineName(this.$h.dg( field, 'machine_name', '' ) ) ) {
+        if ( field.machine_name && !this.verifyMachineName(this.$h.dg( field, 'machine_name', '' ) ) ) {
           this.notifDanger('A Machine Name Should Only Contain: Letters, Numbers or Underscores')
           return
         }
-        
+
         // eslint-disable-next-line camelcase
         const postData = {
           id: field.id,
@@ -364,6 +455,13 @@ export default {
         })
         return tab
       })
+    },
+
+    cleanMetadata() {
+      this.field.metadata = {
+        options: [],
+        required: false
+      }
     }
   }
 }

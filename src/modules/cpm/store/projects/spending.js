@@ -17,6 +17,20 @@ const mutations = {
 }
 
 const actions = {
+  getSpendings(_, { projectId }) {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
+      try {
+        const result = await axios.post(`${process.env.VUE_APP_FIREBASE_APIURL}/api/projects/get/spendings`, {
+          projectId
+        })
+        resolve(result.data)
+      } catch (e) {
+        reject(e)
+      }
+    })
+  },
+
   create({ dispatch }, { projectId, spending }) {
     if (!projectId || !spending) return Promise.reject('Bad Request when creating spending')
 

@@ -140,11 +140,11 @@
         'items-per-page-options': [5,10,15,200]
       }"
       :headers="headers"
-      :items="resources"
-      :options.sync="pagination"
-      :server-items-length="pagination.totalItems"
-      @update:options="debounceSearch(search, false)"
+      :items="resourcesTest"
     >
+      <!--      :options.sync="pagination"-->
+      <!--      :server-items-length="pagination.totalItems"-->
+      <!--      @update:options="debounceSearch(search, false)"-->
       <template
         slot="item"
         slot-scope="props"
@@ -479,7 +479,8 @@ export default {
         itemsPerPage: 10,
         totalItems: 0,
         page: 1
-      }
+      },
+      resourcesTest: []
     }
   },
   computed: {
@@ -635,29 +636,38 @@ export default {
 
   watch: {
     poAmount: function () {
-      this.fetchResources()
+      this.fetchCommitments()
     },
     'pagination.totalItems': function (newValue, oldValue) {
       if (newValue !== oldValue) {
         if (newValue !== this.resourcesRaw.length) {
-          this.fetchResources()
+          this.fetchCommitments()
         }
       }
     }
   },
 
   mounted() {
+    this.fetchCommitments()
     // TODO: Change behaviour instead of refreshing everytime when something change or an spending event change to something better
-    EventBus.$on('refresh-commitments-panel-by-spendings', this.fetchResources)
-    EventBus.$on('reload-commitments', this.fetchResources)
+    EventBus.$on('refresh-commitments-panel-by-spendings', this.fetchCommitments)
+    EventBus.$on('reload-commitments', this.fetchCommitments)
   },
 
   methods: {
+    fetchCommitments() {
+      this.getCommitments({
+        projectId: this.$route.params.id
+      }).then(response => {
+        this.resourcesTest = response
+      })
+    },
     ...mapActions('companies/cpmProjects/commitments', {
       indexResource: 'index'
     }),
     ...mapActions('cpm/projects/commitments', {
-      deleteCommitmentStore: 'delete'
+      deleteCommitmentStore: 'delete',
+      getCommitments: 'getCommitments'
     }),
     cardDialogClick() {
       this.$refs.cardDialog.doubleClick()
@@ -665,7 +675,7 @@ export default {
     assignResourcesData({ data, meta: { lastPage, total } } = {}) {
       if (lastPage && this.pagination.page > lastPage) {
         this.pagination.page = 1
-        return this.fetchResources()
+        return this.fetchCommitments()
       }
 
       this.resourcesRaw = data.map(item => ({
@@ -678,13 +688,13 @@ export default {
 
     clearSearch() {
       this.search = ''
-      this.fetchResources()
+      this.fetchCommitments()
     },
 
     onSearch(search) {
       this.search = search
       this.showSearchingModal = false
-      this.fetchResources()
+      this.fetchCommitments()
     },
 
     updateCommitmentsTotals() {
@@ -823,7 +833,7 @@ export default {
       this.editShowModal = false
       this.commitmentId = ''
       this.lineItemId = ''
-      await this.fetchResources()
+      await this.fetchCommitments()
       if (this.$h.dg(this.commitmentToShow, 'id')) {
         this.displayLineItems(this.commitmentToShow)
       }
