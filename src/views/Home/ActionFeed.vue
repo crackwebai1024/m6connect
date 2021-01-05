@@ -4,14 +4,14 @@
     class="dont-show-scroll h-sidepanel max-w-side pl-4 transparent vertical-scroll w-full"
   >
     <div class="align-center d-flex justify-space-between mb-1 mt-4 pl-3">
-      <p :class="['mb-0', {'white--text': lightMode}]">
-        Action Center
+      <h4 :class=" !lightMode ? 'grey--text text--darken-2' : 'white--text' ">
+        Activity Center
         <v-icon
           @click="actionFeedCalendar"
         >
           mdi-calendar-clock
         </v-icon>
-      </p>
+      </h4>
       <v-dialog
         v-model="actionFeedCalendarModal"
         max-width="600px"
