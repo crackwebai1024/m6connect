@@ -197,7 +197,7 @@
               >
                 <template v-if="f.type === 'referenced'">
                   <v-autocomplete
-                    class="mr-2 w-20"
+                    class="mr-2"
                     filled
                     item-text="title"
                     item-value="id"
@@ -205,7 +205,7 @@
                     label="Pick a Record"
                     outlined
                     return-object
-                    :value="f.referenced_record_id"
+                    :value="referenceRecordsIds[f.id]"
                     @input=" e => changingRefValue(e, f) "
                   />
                 </template>
@@ -451,7 +451,9 @@ export default {
     recordsByAppsList: {},
     showIndexFields: [],
     editMode: 0,
-    tableRowID: 0
+    tableRowID: 0,
+    referenceRecordsIds: {}, //map[field.id] record.id // record that, the ref field is refering to
+    referenceFieldsIds: {}, // map[field.id] field.id // id of field that is being refered to
   }),
 
   computed: {
@@ -635,8 +637,8 @@ export default {
       let fields = []
       for (let x = 0; x < this.fields.length; x++) {
         const f = this.fields[x]
-        const idForUpdate = this.$h.dg(f, 'metadata.originalReference.id', '') ? f.metadata.originalReference.id : f.id
-        const recordIdForUpdate = this.$h.dg(f, 'referenced_record_id', '') ? f.referenced_record_id : this.recordID ? this.recordID : this.$route.params.id
+        const idForUpdate = this.referenceFieldsIds[f.id] ? this.referenceFieldsIds[f.id] : f.id
+        const recordIdForUpdate = this.referenceRecordsIds[f.id] ? this.referenceRecordsIds[f.id] : this.recordID ? this.recordID : this.$route.params.id
         let value = this.$h.dg(record, `${f.id}`, '')
         if (!value) continue
         if (Array.isArray(value)) {
@@ -691,6 +693,8 @@ export default {
           })
           this.genericRecord = { ...res.values }
           this.typesToIds = res.typesToIds
+          this.referenceRecordsIds = res.referenceRecordsIds
+          this.referenceFieldsIds = res.referenceFieldsIds
           this.isEdit = true
 
           this.loading = false
@@ -722,10 +726,9 @@ export default {
         }
 
         this.genericRecord = { ...genericRecord }
-        field.referenced_record_id = record.id
+        this.referenceRecordsIds[field.id] = record.id
+       
       } catch (e) {
-        console.log('e------')
-        console.log(e)
         this.notifDanger('There was an error while getting a reference fields value')
       }
     },
