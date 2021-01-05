@@ -21,7 +21,6 @@
               <slot name="btns" />
             </div>
           </div>
-
           <div
             class="details-content grey h-fit lighten-3 min-h-full pt-3 relative"
           >
@@ -110,8 +109,8 @@
                 icon
                 left
                 rounded
-                @click="chatOverlay = false"
                 style="left: -50px; top: 6px"
+                @click="chatOverlay = false"
               >
                 <v-icon>mdi-close</v-icon>
               </v-btn>
@@ -131,7 +130,6 @@
 <script>
 import ActionFeed from '@/views/Home/ActionFeed'
 import M6Chat from '@/components/Home/M6Chat'
-
 export default {
   name: 'AppTemplate',
   components: {
@@ -157,7 +155,6 @@ export default {
     chatOverlay: false,
     actionOverlay: false
   }),
-
   watch: {
     propsDialog(val) {
       this.dialog = val
