@@ -1,17 +1,19 @@
 <template>
   <div
-    class="px-13 py-5 white"
+    class="px-13 py-4 white"
     :style="{
       backgroundImage: 'linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(' + require('@/assets/header-background.png') + ')',
       backgroundPosition: 'center center',
-      backgroundSize: 'cover'
+      backgroundSize: 'cover',
+      paddingBottom: '6px!important',
+      marginBottom: '8px!important'
     }"
   >
     <div>
       <v-text-field
         v-model="searchInput"
         background-color="white"
-        class="font-weight-bold py-3"
+        class="font-weight-bold text-capitalize py-2 pt-0 records-search-box"
         dense
         flat
         height="40"
@@ -167,6 +169,10 @@ export default {
 .unselected-item {
   opacity: 0.7;
 }
+.flickity-viewport {
+  margin-left: -15px;
+  margin-right: -25px;
+}
 /* no circle */
 .flickity-button {
   background: transparent;
@@ -183,6 +189,14 @@ export default {
 /* hide disabled button */
 .flickity-button:disabled {
   display: none;
+}
+.flickity-prev-next-button {
+  .flickity-button-icon {
+    top: 0;
+    width: 50%;
+    height: 50%;
+    left: 25%;
+  }
 }
 .flickity-prev-next-button:hover {
   background: transparent;
@@ -202,5 +216,17 @@ export default {
 }
 .img-shadow {
   box-shadow: 0px 0px 4px 4px #ffffff7a;
+}
+.records-search-box {
+  &.v-text-field{
+    margin-top: 0!important;
+    padding-bottom: 6px!important;
+    &.v-input--dense:not(.v-text-field--outlined) input {
+      padding: 8px 0 8px;
+    }
+    .v-btn {
+      height: 40px;
+    }
+  }
 }
 </style>
