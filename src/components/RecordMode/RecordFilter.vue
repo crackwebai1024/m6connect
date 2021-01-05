@@ -152,15 +152,12 @@ export default {
           filterData: this.filteringData,
           fieldsList: this.fieldsList
         })
-        console.log('res----')
-        console.log(res)
         this.$emit('recordsToShow', { ids: res.data,fieldsList: this.fieldsList })
 
         this.loading = false
         this.dialog = false
       } catch(e) {
         this.notifDanger('There was an error while filtering the data')
-        console.log(e)
         this.loading = false
       }
     },

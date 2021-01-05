@@ -30,7 +30,7 @@ const mutations = {
 const actions = {
   filterRecordsByFields(_, payload) {
     return new Promise((resolve, reject) => {
-      axios.post(`http://${process.env.VUE_APP_ENDPOINT}/api/filter/records`, payload)
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/filter/records`, payload)
       .then(resolve)
       .catch(reject)
     }) 
