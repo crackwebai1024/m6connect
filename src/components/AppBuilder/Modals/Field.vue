@@ -109,6 +109,10 @@
                     </v-row>
                   </v-col>
                   <v-col cols="12">
+                    <v-checkbox 
+                      label="Multiple Answers"
+                      v-model="field.metadata.multiple"
+                    />
                     <h4 class="mb-2">
                       Options
                     </h4>
@@ -320,6 +324,14 @@ export default {
     }),
     appList() {
       return this.fieldList.filter(row => Number(row.appId) !== Number(this.currentApp.id))
+    }
+  },
+
+  watch: {
+    "field.type":function (val){
+      if( val === 'autocomplete' ) {
+        this.field.metadata.multiple = true
+      }
     }
   },
 

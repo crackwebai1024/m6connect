@@ -246,8 +246,7 @@
                       :filled="filledInFields"
                       :items="$h.dg( f, 'metadata.originalReference.metadata.options', [] )"
                       :label=" showOuterLabels ? $h.dg( f, 'label', '' ) : null "
-                      :metadata="f.metadata"
-                      :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
+                      :multiple=" $h.dg(f, 'metadata.multiple', false) "
                       outlined
                       :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
                       :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
@@ -265,8 +264,7 @@
                       :filled="filledInFields"
                       :items="$h.dg( f, 'metadata.options', [] )"
                       :label=" showOuterLabels ? $h.dg( f, 'label', '' ) : null "
-                      :metadata="f.metadata"
-                      :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
+                      :multiple=" $h.dg(f, 'metadata.multiple', false) "
                       outlined
                       :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
                       :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
@@ -422,7 +420,6 @@ export default {
       },
       'autocomplete': {
         component: 'v-autocomplete',
-        multiple: true,
         chips: true,
         clearable: true
       },
@@ -673,7 +670,13 @@ export default {
     findTheDifference(reference = [], newData = []) {
       const toDelete = reference.filter(r => !newData.includes(r.value)) || []
       const transformedArray = reference.map(r => r.value)
-      const toCreate = newData.filter(a => !transformedArray.includes(a))
+
+      let toCreate = []
+      if( Array.isArray(newData) ) {
+        toCreate = newData.filter(a => !transformedArray.includes(a))
+      } else if(typeof newData == "string" ) {
+        toCreate.push(newData)
+      }
 
       return { toDelete, toCreate }
     },
@@ -692,6 +695,12 @@ export default {
           this.genericRecord = { ...res.values }
           this.typesToIds = res.typesToIds
           this.isEdit = true
+
+          const singleValMultipleField = this.fields.filter( f => f.type == "autocomplete" && typeof f.metadata.multiple == 'boolean' && !f.metadata.multiple)
+
+          singleValMultipleField.forEach( val => {
+            this.genericRecord[val.id] = this.genericRecord[val.id][0].value
+          })
 
           this.loading = false
         } catch (e) {
