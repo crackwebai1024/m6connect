@@ -10,6 +10,7 @@
       </div>
 
       <v-tabs
+        v-if="$vuetify.breakpoint.mdAndUp"
         active-class="blue darken-4"
         background-color="transparent"
         class="align-center d-flex justify-center mx-auto w-fit"
@@ -193,8 +194,8 @@ export default {
     },
     quickAccessLinks: [
       { url: '/', icon: 'home' },
-      { url: '/records', icon: 'view-comfy', text: 'apps' },
-      { url: '/companies', icon: 'office-building' },
+      { url: '/records', icon: 'office-building', text: 'apps' },
+      { url: '/companies', icon: 'view-comfy' },
       { url: '/store', icon: 'storefront' },
       { url: '/user/settings', icon: 'cog' }
     ]
@@ -216,6 +217,7 @@ export default {
   methods: {}
 }
 </script>
+
 
 <style lang="scss" scoped>
 .nav-bar {
