@@ -83,11 +83,6 @@ const router = new VueRouter({
       component: Apps
     },
     {
-      path: "/apps/app-builder",
-      name: "app-builder",
-      component: AppsBuilderList
-    },
-    {
       path: "/companies",
       name: "companies",
       component: Companies
