@@ -164,7 +164,10 @@
                     <span class="help-text__span">{{ f.metadata.helpText }}</span>
                   </v-tooltip>
                   <br>
-                  <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
+                  <template v-if="f.type === 'boolean' && genericRecord[`${f.id}`] !== undefined">
+                    {{ genericRecord[`${f.id}`] === 'true' ? 'Yes' : 'No' }}
+                  </template>
+                  <template v-else-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
                     {{ genericRecord[`${f.id}`]['file_name'] }}
                   </template>
                   <template v-else-if="f.type === 'number' && genericRecord[`${f.id}`] !== undefined">
