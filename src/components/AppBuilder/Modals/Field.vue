@@ -241,6 +241,71 @@
                     label="Number Option"
                   />
                 </v-col>
+                <v-col
+                  v-if="field.type === 'helper-media'"
+                  cols="12"
+                >
+                  <v-text-field
+                    v-model="helperMedia.name"
+                    prepend-icon="mdi-file-video-outline"
+                    @click="() => $refs.fileInput.click()"
+                  />
+                  <input
+                    v-show="false"
+                    ref="fileInput"
+                    accept="image/*, video/*, video/mp4, video/x-m4v, video/x-matroska"
+                    single
+                    type="file"
+                    @change="onFilesChange"
+                  >
+                  <v-row v-if="helperMedia.type && helperMedia.url">
+                    <v-col cols="12">
+                      <template v-if="helperMedia.type.indexOf('image') !== -1">
+                        <img
+                          class="image-preview"
+                          :src="helperMedia.url"
+                          style="width: 100%; height: 100%;"
+                        >
+                        <v-btn
+                          class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                          color="grey lighten-2"
+                          fab
+                          @click="helperMedia = {}"
+                        >
+                          <v-icon
+                            size="12"
+                          >
+                            mdi-close
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                      <template v-else-if="helperMedia.type.indexOf('video') !== -1">
+                        <video
+                          controls
+                          style="height: 100%; width: 100%"
+                        >
+                          <source
+                            :src="helperMedia.url"
+                            :type="helperMedia.type"
+                          >
+                          Your browser does not support the video tag.
+                        </video>
+                        <v-btn
+                          class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                          color="grey lighten-2"
+                          fab
+                          @click="helperMedia = {}"
+                        >
+                          <v-icon
+                            size="12"
+                          >
+                            mdi-close
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                    </v-col>
+                  </v-row>
+                </v-col>
               </v-row>
             </v-col>
           </v-row>
@@ -327,9 +392,11 @@ export default {
         { label: 'Reference Field', value: 'referenced' },
         { label: 'Reference App', value: 'referencedToApp' },
         { label: 'Address', value: 'autocomplete-address' },
+        { label: 'Helper Media', value: 'helper-media' },
         { label: 'Taxonomy', value: 'taxonomy' }
       ],
-      fieldList: []
+      fieldList: [],
+      helperMedia: {}
     }
   },
   computed: {
@@ -384,6 +451,9 @@ export default {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
     }),
+    ...mapActions('AppAttachments', {
+      setStreamFiles: 'set_stream_attachments'
+    }),
     deleteField() {},
     removeOption(index, item) {
       item.splice(index, 1)
@@ -395,7 +465,7 @@ export default {
     },
     async saveField(field) {
       try {
-        if ( field.machine_name && !this.verifyMachineName(this.$h.dg( field, 'machine_name', '' ) ) ) {
+        if (field.machine_name && !this.verifyMachineName(this.$h.dg( field, 'machine_name', '' ) ) ) {
           this.notifDanger('A Machine Name Should Only Contain: Letters, Numbers or Underscores')
           return
         }
@@ -407,6 +477,7 @@ export default {
           app_id: this.currentApp.id,
           // eslint-disable-next-line camelcase
           panel_id: field.panel_id,
+          // eslint-disable-next-line camelcase
           table_id: field.table_id,
           weight: field.weight,
           metadata: field.metadata,
@@ -431,6 +502,18 @@ export default {
         }
         if ((field.type !== 'referenced') && (field.type !== 'referencedToApp')) {
           delete postData.metadata.originalReference
+        }
+        if (field.type === 'helper-media') {
+          const url = await this.setStreamFiles({
+            files: this.helperMedia.file,
+            headers: {
+              'Content-Type': this.helperMedia['type'],
+              'Content-Name': this.helperMedia['name'],
+              'Stream-Id': this.currentApp.id,
+              'Stream-type': 'helper-media'
+            }
+          })
+          postData.helperMediaURL = url.attachUrl
         }
         if (this.editing) {
           const data = await this.$store.dispatch('AppBuilder/updateField', postData)
@@ -498,6 +581,21 @@ export default {
       this.field.metadata = {
         options: [],
         required: false
+      }
+    },
+
+    onFilesChange(files) {
+      const file = files['srcElement']['files'][0]
+      if (file) {
+        const type = file['type'].substr(0, file['type'].indexOf('/'))
+        if (type === 'image' || type === 'video') {
+          this.helperMedia = {
+            file: file,
+            url: URL.createObjectURL(file),
+            type: file['type'],
+            name: file['name']
+          }
+        }
       }
     }
   }
