@@ -309,7 +309,7 @@
               :cols="widthCols()"
             >
               <v-img
-                v-if="image.split('/').slice(-2)[0].toUpperCase() === 'IMAGE'"
+                v-if="getMediaType(image) === 'image'"
                 aspect-ratio="1.7"
                 class="mx-1 my-1 pointer"
                 :src="image"
@@ -317,7 +317,7 @@
               />
               <div class="mx-1 my-1 pointer video-list__container">
                 <video
-                  v-if="image.split('/').slice(-2)[0].toUpperCase() === 'VIDEO'"
+                  v-if="getMediaType(image) === 'video'"
                   controls
                 >
                   <source
@@ -416,8 +416,7 @@
         >
           <v-col cols="4">
             <v-btn
-              class="capitalize grey--text h-full my-1 py-5 text--darken-1 text-body-1 w-full"
-              :class="{ 'grey lighten-4 white--text': likeState }"
+              :class="`capitalize ${ likeState ? 'blue--text' : 'grey--text' } h-full my-1 py-5 text--darken-1 text-body-1 w-full`"
               small
               text
               @click="likeActivity(data)"
@@ -426,7 +425,7 @@
                 class="mr-2"
                 size="18"
               >
-                mdi-thumb-up-outline
+                {{ likeIcon }}
               </v-icon> Like
             </v-btn>
           </v-col>
@@ -485,7 +484,7 @@
                 >
                   <ShareNetwork
                     class="mr-2 social-button"
-                    :media="data.images[0]"
+                    :media="data.images ? data.images[0] : ''"
                     :network="social.network"
                     :style="{backgroundColor: social.color}"
                     :title="data.message"
@@ -919,6 +918,13 @@ export default {
     youtubeCheck(url) {
       const youtubeUrlRegex = /^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/
       return youtubeUrlRegex.test(url)
+    },
+
+    getMediaType(media) {
+      if (typeof media === 'string') {
+        return media.split('/').slice(-2)[0].toLowerCase()
+      }
+      return false
     }
   }
 }

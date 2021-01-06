@@ -8,7 +8,7 @@
       v-if="!readOnly"
       class="card-custom-shadow h-auto mb-4 rounded"
       hasslot
-      :info="{title: 'Create Post', icon: ''}"
+      :info="{title: '', icon: ''}"
     >
       <template
         v-if="!external"
@@ -66,7 +66,10 @@
           width="40"
         >
         <v-row>
-          <v-col cols="12">
+          <v-col
+            class="pt-0"
+            cols="12"
+          >
             <v-text-field
               v-model="activityText"
               class="font-weight-bold ml-1"
@@ -82,7 +85,10 @@
               @keyup.enter="addActivity"
             >
               <template #append>
-                <v-row class="align-center d-flex">
+                <v-row
+                  class="align-center d-flex"
+                  style="min-width: 108px;"
+                >
                   <v-menu
                     bottom
                     offset-y
