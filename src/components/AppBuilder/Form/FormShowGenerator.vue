@@ -215,6 +215,12 @@
                 <template v-else-if="f.type === 'referencedToApp'">
                   App Name: {{ $h.dg(f, 'metadata.originalReference.label', '') }}
                 </template>
+                <template v-if="f.type === 'taxonomy'">
+                  <taxonomy-term-selector
+                    :metadata="f.metadata"
+                    @changetaxonomy="(value) => genericRecord[`${f.id}`] = value"
+                  />
+                </template>
                 <template v-if="f.type === 'text'">
                   <text-field
                     :label="f.label"
@@ -267,6 +273,7 @@
                       :filled="filledInFields"
                       :items="$h.dg( f, 'metadata.options', [] )"
                       :label=" showOuterLabels ? $h.dg( f, 'label', '' ) : null "
+                      :metadata="f.metadata"
                       :multiple=" $h.dg(f, 'metadata.multiple', false) "
                       outlined
                       :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
@@ -335,6 +342,7 @@ import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
 import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOptions.vue'
 import AppAttachment from '@/components/AppBuilder/Form/Components/Attachment.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
+import TaxonomyTermSelector from '@/components/AppBuilder/Form/Components/TaxonomyTermSelector'
 import TextField from '@/components/AppBuilder/Form/Components/TextField.vue'
 import {
   mapState,
@@ -354,6 +362,7 @@ export default {
     RadioBtnOptions,
     PeopleAutocomplete,
     GMap,
+    TaxonomyTermSelector,
     TextField
   },
 
@@ -436,6 +445,9 @@ export default {
       'referenced': { component: 'v-text-field' },
       'autocomplete-address': {
         component: 'g-map'
+      },
+      'taxonomy': {
+        component: 'taxonomy-term-selector'
       }
     },
     genericRecord: {},

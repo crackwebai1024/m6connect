@@ -80,6 +80,18 @@
             <v-col cols="6">
               <v-row>
                 <v-col
+                  v-if="field.type === 'taxonomy'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.vocabulary"
+                    item-text="title"
+                    item-value="id"
+                    :items="vocabularies"
+                    label="Vocabulary"
+                  />
+                </v-col>
+                <v-col
                   v-if="field.type === 'timestamp'"
                   cols="12"
                 >
@@ -256,7 +268,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 
 import axios from 'axios'
@@ -287,6 +299,7 @@ export default {
         'mm/dd/YYYY H:m:s',
         'dd/mm/YYYY H:m:s'
       ],
+      vocabularies: [],
       attachmentOption: [
         { text: 'General', value: 'general' },
         { text: 'Image', value: 'image' }
@@ -313,7 +326,8 @@ export default {
         { label: 'Yes / No', value: 'boolean' },
         { label: 'Reference Field', value: 'referenced' },
         { label: 'Reference App', value: 'referencedToApp' },
-        { label: 'Address', value: 'autocomplete-address' }
+        { label: 'Address', value: 'autocomplete-address' },
+        { label: 'Taxonomy', value: 'taxonomy' }
       ],
       fieldList: []
     }
@@ -352,9 +366,20 @@ export default {
       }
       this.loading = false
     })
+    this.initVocabulary().then(res => {
+      this.vocabularies = res
+    }).catch(e => {
+      this.notifDanger('Can not fetch vocabularies')
+    })
   },
 
   methods: {
+    ...mapGetters('Taxonomy', {
+      getVocabulary: 'getTaxonomyVocabulary'
+    }),
+    ...mapActions('Taxonomy', {
+      initVocabulary: 'setTaxonomyVocabularies'
+    }),
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
