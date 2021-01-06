@@ -12,22 +12,6 @@
         :items="items"
         label="Please select an APP"
       />
-      <div v-if="helperMedia">
-        <img
-          v-if="helperMedia.split('/').slice(-2)[0] === 'image'"
-          alt="helperMedia"
-          :src="helperMedia"
-          style="height: 100%; width: 100%"
-        >
-        <video
-          v-if="helperMedia.split('/').slice(-2)[0] === 'video'"
-          controls
-          style="height: 100%; width: 100%"
-        >
-          <source :src="helperMedia">
-          Your browser does not support the video tag.
-        </video>
-      </div>
       <v-tabs-items v-model="tab">
         <v-tab-item
           v-for="item in items"
@@ -68,16 +52,6 @@ export default {
       }
     ]
   }),
-
-  computed: {
-    helperMedia() {
-      if (this.tab === 0) {
-        return null
-      } else {
-        return this.items[this.tab].app.helperMedia.length === 1 ? this.items[this.tab].app.helperMedia[0].helper_media : null
-      }
-    }
-  },
 
   async mounted() {
     try {

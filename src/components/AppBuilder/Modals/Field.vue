@@ -476,6 +476,7 @@ export default {
               'Stream-type': 'helper-media'
             }
           })
+          postData.helperMediaURL = url.attachUrl
         }
         if (this.editing) {
           const data = await this.$store.dispatch('AppBuilder/updateField', postData)

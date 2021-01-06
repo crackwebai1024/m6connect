@@ -4,6 +4,22 @@
       class="pa-0 relative"
       fluid
     >
+      <template v-if="helperMediaURL !== ''">
+        <img
+          v-if="helperMediaURL.split('/').slice(-2)[0] === 'image'"
+          alt="helperMedia"
+          :src="helperMediaURL"
+          style="height: 100%; width: 100%"
+        >
+        <video
+          v-if="helperMediaURL.split('/').slice(-2)[0] === 'video'"
+          controls
+          style="height: 100%; width: 100%"
+        >
+          <source :src="helperMediaURL">
+          Your browser does not support the video tag.
+        </video>
+      </template>
       <template v-if="actionRecord">
         <v-btn
           v-if="editMode === 0 || editMode === 2"
@@ -406,6 +422,10 @@ export default {
     actionRecord: {
       type: Boolean,
       default: false
+    },
+    helperMediaURL: {
+      type: String,
+      default: ''
     }
   },
 
