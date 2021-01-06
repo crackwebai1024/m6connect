@@ -146,6 +146,7 @@
           cols="12"
         >
           <v-hover
+            v-if="f.type !== 'helper-media'"
             v-slot="{ hover }"
           >
             <div class="align-start d-flex justify-between mb-1 relative">
