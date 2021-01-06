@@ -7,10 +7,12 @@
       <v-btn
         v-bind="attrs"
         color="primary"
+        class="text-capitalize"
         text
         v-on="on"
       >
         {{ currentChoice }}
+        <v-icon>mdi-chevron-down</v-icon>
       </v-btn>
     </template>
     <v-list>
