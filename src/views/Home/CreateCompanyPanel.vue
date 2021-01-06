@@ -61,7 +61,7 @@
             <add-field @addNewField="addNewField" />
             <v-list>
               <v-list-item
-                v-for="field in app.fields"
+                v-for="field in appFieldsFiltered"
                 :key="field.id"
                 class="my-0 py-0"
               >
@@ -472,7 +472,11 @@ export default {
   computed: {
     ...mapGetters('DynamicAppsModule', {
       getAppId: 'getAppId'
-    })
+    }),
+
+    appFieldsFiltered(){
+      return this.$h.dg(this.app, 'fields', []).filter( f => !f.table_id );
+    }
   },
 
   mounted() {

@@ -301,9 +301,9 @@ const actions = {
     })
   },
 
-  getSingleRecordFieldValue(_, { recordID, fieldID, refID } = {}) {
+  getSingleRecordFieldValue(_, { currentRecordID, referenceRecordID, fieldID, refID } = {}) {
     return new Promise((resolve, reject) => {
-      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/reference/${recordID}/${fieldID}/${refID}`)
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/field_values/reference/${currentRecordID}/${referenceRecordID}/${fieldID}/${refID}`)
         .then(({ data }) => {
           resolve(data)
         })
