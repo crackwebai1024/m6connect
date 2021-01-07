@@ -249,6 +249,7 @@
             v-if="showFieldModal"
             :editing="editing"
             :field="activeField"
+            :fields-bag="panel.fields"
             :show="showFieldModal"
             @close="showFieldModal = false"
             @result="pushField"

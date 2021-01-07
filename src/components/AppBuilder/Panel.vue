@@ -152,6 +152,7 @@
       v-if="showFieldModal"
       :editing="editing"
       :field="activeField"
+      :fields-bag="panel.fields"
       :show="showFieldModal"
       @close="showFieldModal = false"
       @result="pushField"
@@ -176,6 +177,7 @@ import Field from '@/components/AppBuilder/Modals/Field'
 import DeleteDialog from '@/components/Dialogs/DeleteDialog'
 import TableCreator from '@/components/AppBuilder/GenericTable'
 import { mapActions, mapMutations } from 'vuex'
+import { cloneDeep } from 'lodash'
 import Draggable from 'vuedraggable'
 
 export default {
@@ -289,7 +291,7 @@ export default {
     },
 
     addNewField() {
-      this.activeField = { ...this.defaultField }
+      this.activeField = cloneDeep(this.defaultField)
       this.editing = false
       this.showFieldModal = true
     },
