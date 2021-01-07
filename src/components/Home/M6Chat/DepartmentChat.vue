@@ -20,7 +20,7 @@
       </v-btn>
     </div>
     <div>
-      <h4 :class=" !lightMode ? 'mb-4 ml-1' : 'white--text mb-4 ml-1' ">
+      <h4 :class=" !lightMode ? 'mb-3 ml-1' : 'white--text mb-3 ml-1' ">
         {{ department.name }}
       </h4>
       <input
@@ -61,7 +61,7 @@
           </v-avatar>
         </v-badge>
         <div class="align-start d-flex flex-column">
-          <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
+          <p :class=" !lightMode ? 'grey--text text--darken-2 mb-0' : 'white--text mb-0' ">
             {{ user.user.firstName }} {{ user.user.lastName }}
           </p>
           <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>

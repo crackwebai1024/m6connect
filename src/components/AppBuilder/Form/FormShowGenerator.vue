@@ -4,6 +4,22 @@
       class="pa-0 relative"
       fluid
     >
+      <template v-if="helperMediaURL !== ''">
+        <img
+          v-if="helperMediaURL.split('/').slice(-2)[0] === 'image'"
+          alt="helperMedia"
+          :src="helperMediaURL"
+          style="height: 100%; width: 100%"
+        >
+        <video
+          v-if="helperMediaURL.split('/').slice(-2)[0] === 'video'"
+          controls
+          style="height: 100%; width: 100%"
+        >
+          <source :src="helperMediaURL">
+          Your browser does not support the video tag.
+        </video>
+      </template>
       <template v-if="actionRecord">
         <v-btn
           v-if="editMode === 0 || editMode === 2"
@@ -130,6 +146,7 @@
           cols="12"
         >
           <v-hover
+            v-if="f.type !== 'helper-media'"
             v-slot="{ hover }"
           >
             <div class="align-start d-flex justify-between mb-1 relative">
@@ -164,8 +181,20 @@
                     <span class="help-text__span">{{ f.metadata.helpText }}</span>
                   </v-tooltip>
                   <br>
-                  <template v-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
+                  <template v-if="f.type === 'boolean' && genericRecord[`${f.id}`] !== undefined">
+                    {{ genericRecord[`${f.id}`] === 'true' ? 'Yes' : 'No' }}
+                  </template>
+                  <template v-else-if="f.type === 'attachment' && genericRecord[`${f.id}`] !== undefined">
                     {{ genericRecord[`${f.id}`]['file_name'] }}
+                  </template>
+                  <template v-else-if="f.type === 'number' && genericRecord[`${f.id}`] !== undefined">
+                    {{ genNumber(genericRecord[`${f.id}`], f.metadata.numberOption) }}
+                  </template>
+                  <template v-else-if="f.type === 'timestamp' && genericRecord[`${f.id}`] !== undefined">
+                    {{ genTimestamp(genericRecord[`${f.id}`], f.metadata.format) }}
+                  </template>
+                  <template v-else-if="f.type === 'people' && genericRecord[`${f.id}`] !== undefined">
+                    {{ genPeopleValue(genericRecord[`${f.id}`]) }}
                   </template>
                   <template v-else-if="Array.isArray(genericRecord[`${f.id}`])">
                     {{
@@ -188,7 +217,7 @@
               >
                 <template v-if="f.type === 'referenced'">
                   <v-autocomplete
-                    class="mr-2 w-20"
+                    class="mr-2"
                     filled
                     item-text="title"
                     item-value="id"
@@ -196,14 +225,28 @@
                     label="Pick a Record"
                     outlined
                     return-object
-                    :value="f.referenced_record_id"
+                    :value="referenceRecordsIds[f.id]"
                     @input=" e => changingRefValue(e, f) "
                   />
                 </template>
                 <template v-else-if="f.type === 'referencedToApp'">
                   App Name: {{ $h.dg(f, 'metadata.originalReference.label', '') }}
                 </template>
-                <template v-if="f.type !== 'referencedToApp'">
+                <template v-if="f.type === 'taxonomy'">
+                  <taxonomy-term-selector
+                    :metadata="f.metadata"
+                    @changetaxonomy="(value) => genericRecord[`${f.id}`] = value"
+                  />
+                </template>
+                <template v-if="f.type === 'text'">
+                  <text-field
+                    :label="f.label"
+                    :metadata="f.metadata"
+                    :value="genericRecord[`${f.id}`]"
+                    @changeText="(value) => genericRecord[`${f.id}`] = value"
+                  />
+                </template>
+                <template v-else-if="f.type !== 'referencedToApp'">
                   <div
                     v-if="f.machine_name !== 'rapid_snapshot_image' && !showOuterLabels"
                     class="pb-2"
@@ -229,7 +272,7 @@
                       :filled="filledInFields"
                       :items="$h.dg( f, 'metadata.originalReference.metadata.options', [] )"
                       :label=" showOuterLabels ? $h.dg( f, 'label', '' ) : null "
-                      :multiple="$h.dg(typeToComponentMapping[f.metadata.originalReference.type], 'multiple', false)"
+                      :multiple=" $h.dg(f, 'metadata.multiple', false) "
                       outlined
                       :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
                       :type=" $h.dg( typeToComponentMapping[f.metadata.originalReference.type], 'type', '' ) "
@@ -247,7 +290,8 @@
                       :filled="filledInFields"
                       :items="$h.dg( f, 'metadata.options', [] )"
                       :label=" showOuterLabels ? $h.dg( f, 'label', '' ) : null "
-                      :multiple="$h.dg(typeToComponentMapping[f.type], 'multiple', false)"
+                      :metadata="f.metadata"
+                      :multiple=" $h.dg(f, 'metadata.multiple', false) "
                       outlined
                       :rules=" $h.dg( f, 'metadata.required', false) ? formRules.standard : []"
                       :type=" $h.dg( typeToComponentMapping[f.type], 'type', '' ) "
@@ -315,7 +359,14 @@ import DatePicker from '@/components/AppBuilder/Form/Components/DatePicker.vue'
 import RadioBtnOptions from '@/components/AppBuilder/Form/Components/RadioBtnOptions.vue'
 import AppAttachment from '@/components/AppBuilder/Form/Components/Attachment.vue'
 import PeopleAutocomplete from '@/components/AppBuilder/Form/Components/PeopleAutocomplete.vue'
-import { mapState, mapActions, mapMutations } from 'vuex'
+import TaxonomyTermSelector from '@/components/AppBuilder/Form/Components/TaxonomyTermSelector'
+import TextField from '@/components/AppBuilder/Form/Components/TextField.vue'
+import {
+  mapState,
+  mapActions,
+  mapMutations,
+  mapGetters
+} from 'vuex'
 import GMap from '@/components/_partials/GMap'
 
 export default {
@@ -327,7 +378,9 @@ export default {
     VAutocomplete,
     RadioBtnOptions,
     PeopleAutocomplete,
-    GMap
+    GMap,
+    TaxonomyTermSelector,
+    TextField
   },
 
   props: {
@@ -380,6 +433,10 @@ export default {
     actionRecord: {
       type: Boolean,
       default: false
+    },
+    helperMediaURL: {
+      type: String,
+      default: ''
     }
   },
 
@@ -396,7 +453,6 @@ export default {
       },
       'autocomplete': {
         component: 'v-autocomplete',
-        multiple: true,
         chips: true,
         clearable: true
       },
@@ -410,6 +466,9 @@ export default {
       'referenced': { component: 'v-text-field' },
       'autocomplete-address': {
         component: 'g-map'
+      },
+      'taxonomy': {
+        component: 'taxonomy-term-selector'
       }
     },
     genericRecord: {},
@@ -425,13 +484,18 @@ export default {
     recordsByAppsList: {},
     showIndexFields: [],
     editMode: 0,
-    tableRowID: 0
+    tableRowID: 0,
+    referenceRecordsIds: {}, //map[field.id] record.id // record that, the ref field is refering to
+    referenceFieldsIds: {}, // map[field.id] field.id // id of field that is being refered to
   }),
 
   computed: {
     ...mapState('RecordsInstance', {
       currentRecord: 'currentRecord',
       showSelf: 'displayAppBuilderShow'
+    }),
+    ...mapGetters('Companies', {
+      currentCompanyUsers: 'getCurrentCompanyUsers'
     })
 
   },
@@ -606,8 +670,8 @@ export default {
       let fields = []
       for (let x = 0; x < this.fields.length; x++) {
         const f = this.fields[x]
-        const idForUpdate = this.$h.dg(f, 'metadata.originalReference.id', '') ? f.metadata.originalReference.id : f.id
-        const recordIdForUpdate = this.$h.dg(f, 'referenced_record_id', '') ? f.referenced_record_id : this.recordID ? this.recordID : this.$route.params.id
+        const idForUpdate = this.referenceFieldsIds[f.id] ? this.referenceFieldsIds[f.id] : f.id
+        const recordIdForUpdate = this.referenceRecordsIds[f.id] ? this.referenceRecordsIds[f.id] : this.recordID ? this.recordID : this.$route.params.id
         let value = this.$h.dg(record, `${f.id}`, '')
         if (!value) continue
         if (Array.isArray(value)) {
@@ -644,7 +708,13 @@ export default {
     findTheDifference(reference = [], newData = []) {
       const toDelete = reference.filter(r => !newData.includes(r.value)) || []
       const transformedArray = reference.map(r => r.value)
-      const toCreate = newData.filter(a => !transformedArray.includes(a))
+
+      let toCreate = []
+      if( Array.isArray(newData) ) {
+        toCreate = newData.filter(a => !transformedArray.includes(a))
+      } else if(typeof newData == "string" ) {
+        toCreate.push(newData)
+      }
 
       return { toDelete, toCreate }
     },
@@ -662,7 +732,15 @@ export default {
           })
           this.genericRecord = { ...res.values }
           this.typesToIds = res.typesToIds
+          this.referenceRecordsIds = res.referenceRecordsIds
+          this.referenceFieldsIds = res.referenceFieldsIds
           this.isEdit = true
+
+          const singleValMultipleField = this.fields.filter( f => f.type == "autocomplete" && typeof f.metadata.multiple == 'boolean' && !f.metadata.multiple)
+
+          singleValMultipleField.forEach( val => {
+            this.genericRecord[val.id] = this.genericRecord[val.id][0].value
+          })
 
           this.loading = false
         } catch (e) {
@@ -675,7 +753,8 @@ export default {
       const fieldID = field.metadata.originalReference.id
       try {
         const res = await this.getSingleRecordFieldValue({
-          recordID: record.id,
+          currentRecordID: this.recordID || this.$route.params.id,
+          referenceRecordID: record.id,
           fieldID,
           refID: field.id
         })
@@ -692,7 +771,8 @@ export default {
         }
 
         this.genericRecord = { ...genericRecord }
-        field.referenced_record_id = record.id
+        this.referenceRecordsIds[field.id] = record.id
+       
       } catch (e) {
         this.notifDanger('There was an error while getting a reference fields value')
       }
@@ -700,6 +780,42 @@ export default {
     saveValues(index) {
       this.$set(this.showIndexFields, index, false)
       this.updating()
+    },
+    genNumber(value, format) {
+      if (format === 'currency') {
+        return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+      } else {
+        return value
+      }
+    },
+    genTimestamp(value, format) {
+      if (format) {
+        const date = new Date(value)
+        const day = ('0' + date.getDate()).slice(-2)
+        const month = ('0' + (date.getMonth() + 1)).slice(-2)
+        const year = date.getFullYear()
+        const hour = ('0' + date.getHours()).slice(-2)
+        const min = ('0' + date.getMinutes()).slice(-2)
+        const sec = ('0' + date.getSeconds()).slice(-2)
+        switch (format) {
+          case 'mm/dd/YYYY' :
+            return `${month}/${day}/${year}`
+          case 'mm/dd/YYYY H:m:s' :
+            return `${month}/${day}/${year} ${hour}:${min}:${sec}`
+          case 'dd/mm/YYYY H:m:s' :
+            return `${day}/${month}/${year} ${hour}:${min}:${sec}`
+        }
+      } else {
+        return value
+      }
+    },
+    genPeopleValue(peopleArray) {
+      const name = []
+      peopleArray.map(row => {
+        const res = this.currentCompanyUsers.find(u => this.$h.dg(u, 'user.id', '') === row)
+        name.push(this.$h.dg(res, 'user.firstName', '') + ' ' + this.$h.dg(res, 'user.lastName', ''))
+      })
+      return name.join(', ')
     }
   }
 }

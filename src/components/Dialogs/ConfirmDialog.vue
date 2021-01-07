@@ -5,7 +5,7 @@
     </v-card-title>
 
     <v-card-text>
-      Do you want to remove the {{ element }}
+      {{ message }}
     </v-card-text>
 
     <v-divider />
@@ -16,14 +16,14 @@
         outlined
         @click="res(false)"
       >
-        Cancel
+        {{ cancelLabel }}
       </v-btn>
       <v-btn
         color="green darken-1"
         outlined
         @click="res(true)"
       >
-        Remove
+        {{ okLabel }}
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -31,9 +31,11 @@
 
 <script>
 export default {
-  name: 'DeleteDialog',
+  name: 'ConfirmDialog',
   props: {
-    element: String
+    message: String,
+    okLabel: String,
+    cancelLabel: String
   },
   methods: {
     res(a) {

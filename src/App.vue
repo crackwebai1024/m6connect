@@ -2,39 +2,49 @@
   <v-app id="complete-app">
     <div class="grey h-viewport lighten-3">
       <template v-if="loggedIn && (!$route.meta.public || $route.meta.topNav)">
+        <top-nav />
         <template v-if="$route.meta.topNav">
-          <top-nav />
-          <div class="mt-60">
-            <router-view />
-          </div>
+          <router-view class="top-60" />
         </template>
         <template v-else>
-          <top-nav />
           <v-row
-            class="central-content flex flex-nowrap grey justify-space-between lighten-3 max-w-container mx-auto relative top-60 w-full"
+            class="grey lighten-3 mx-auto nav-content relative w-full"
             no-gutters
           >
-            <v-col
-              v-show="showSidePanels"
-              cols="3"
+            <div
+              v-if="showSidePanels"
+              class="absolute h-full left-0 top-0 w-full"
             >
-              <action-feed />
-            </v-col>
-            <v-col :cols="!showSidePanels ? 12 : 6">
-              <!-- Home / Company Profile -->
+              <action-feed
+                class="fixed left-0 max-w-side mt-60 top-0 w-side"
+                :class="{'d-none': $vuetify.breakpoint.mdAndDown, 'w-side': $vuetify.breakpoint.lgAndUp}"
+              />
+              <m6-chat
+                class="fixed mt-60 right-0 top-0"
+                :class="{'d-none': $vuetify.breakpoint.xs, 'w-2__5': $vuetify.breakpoint.mdAndDown, 'w-side': $vuetify.breakpoint.lgAndUp }"
+              />
+            </div>
+
+            <div
+              v-if="showSidePanels"
+              class="d-flex mt-60 w-full"
+              :class="!$vuetify.breakpoint.mdAndDown ? 'justify-center' : 'justify-start'"
+            >
               <router-view />
-            </v-col>
+            </div>
             <v-col
-              v-show="showSidePanels"
-              cols="3"
+              v-else
+              cols="12"
             >
-              <m6-chat />
+              <!-- Home / Company Profile -->
+              <router-view class="mt-60" />
             </v-col>
           </v-row>
           <!-- Preview overlay -->
           <chat-wrapper />
           <general-overlay />
         </template>
+        <footer-nav />
       </template>
       <template v-else>
         <router-view />
@@ -54,6 +64,7 @@
 
 <script>
 import TopNav from '@/views/Home/TopNav'
+import FooterNav from '@/views/Home/FooterNav'
 import ActionFeed from '@/views/Home/ActionFeed'
 import M6Chat from '@/components/Home/M6Chat'
 import ChatWrapper from '@/components/Home/M6Chat/ChatWrapper'
@@ -64,6 +75,7 @@ export default {
   name: 'App',
   components: {
     TopNav,
+    FooterNav,
     ActionFeed,
     M6Chat,
     ChatWrapper,

@@ -1,47 +1,49 @@
 <template>
     <v-card>
         <v-card-text>
-            <div class="flex-column justify-end" >
+            <div class="d-flex justify-end">
                 <v-btn icon @click="showUserData = true" >
                     <v-icon>mdi-lead-pencil</v-icon>
                 </v-btn>
             </div>
             
-            <div class="flex-column flex-center" >
+            <div class="d-flex flex-column justify-center align-center">
                 <img v-if="$h.dg(userData, 'user.profilePic')" :src="$h.dg(userData, 'user.profilePic')" class="round-img" alt="user profile image">
-                <v-icon v-else size="10rem"  >mdi-account-circle</v-icon>
-                <v-chip v-if="$h.dg(userData, 'joinStatus', '')" :color=" statusColors[$h.dg(userData, 'joinStatus', '')] " >
-                    <b class="white--text" >{{ $h.dg(userData, 'joinStatus', '').toLowerCase() }}</b>
+                <v-icon v-else size="10rem" class="placeholder-img">mdi-account-circle</v-icon>
+                <v-chip v-if="$h.dg(userData, 'joinStatus', '')" class="text-capitalize" small :color=" statusColors[$h.dg(userData, 'joinStatus', '')] " text-color="white">
+                    <span class="white--text">{{ $h.dg(userData, 'joinStatus', '').toLowerCase() }}</span>
                 </v-chip>
-                <span class="black--text text-h6" >
+                <span class="text-h6">
                     {{ $h.dg(userData, 'user.firstName', '') }} {{ $h.dg(userData, 'user.lastName', '') }}
                 </span>
-                <span class="text-subtitle-1" >{{ userData.user.email }}</span>
+                <span class="text-subtitle-1 font-weight-light">{{ userData.user.email }}</span>
             </div>
-            <div class="flex-column flex-start pa-2" >
-                <div class="flex-row flex-start pa-1" >
+            <div class="d-flex flex-column align-start pa-2">
+                <div class="d-flex flex-row align-start pa-1 mb-2">
                     <v-icon>mdi-clock-time-four-outline</v-icon>
-                    <div class="flex-column flex-start ml-2" >
+                    <div class="d-flex flex-column align-start ml-2">
                         <span>Last Time Visited:</span>
                         <span>
                             {{ 
                                 $h.dg(userData, 'user.lastVisit', '') ? 
-                                    new Date(userData.user.lastVisit).toLocaleDateString("en-US", this.dateOptions) 
+                                    new Date(userData.user.lastVisit).toLocaleDateString("en-US", this.dateOptions) + " " + new Date(userData.user.lastVisit).toLocaleTimeString("en-US", this.timeOptions)
                                     : null 
                             }}
                         </span>
                     </div>
                 </div>
 
-                <div class="flex-row flex-start pa-1">
-                    <v-icon>mdi-shield</v-icon>
-                    <div class="flex-column flex-start ml-2">
+                <div class="d-flex flex-row flex-start pa-1 mb-2">
+                    <v-icon>mdi-account-lock</v-icon>
+                    <div class="d-flex flex-column flex-start ml-2">
                         <span>User Roles:</span>
                         <div >
                             <v-chip 
                                 v-for="(role, index) in $h.dg(userData, 'roles', [])" 
                                 :key="index" 
-                                :color="role.color" 
+                                :color="role.color"
+                                small
+                                class="text-capitalize"
                             >
                                 <span class="white--text">{{ role.name }}</span>
                             </v-chip>
@@ -49,15 +51,17 @@
                     </div>
                 </div>
 
-                <div class="flex-row flex-start pa-1" >
-                    <v-icon>mdi-account-group</v-icon>
-                    <div class="flex-column flex-start ml-2" >
+                <div class="d-flex flex-row flex-start pa-1 mb-2">
+                    <v-icon>mdi-account-multiple</v-icon>
+                    <div class="d-flex flex-column flex-start ml-2">
                         <span class="pb-2">User Departments:</span>
                         <div>
                             <v-chip 
                                 v-for="(dep, index) in $h.dg(userData, 'departments', [])" 
                                 :key="index" 
                                 :color="dep.color" 
+                                small
+                                class="text-capitalize"
                             >
                                 <span class="white--text">{{ dep.name }}</span>
                             </v-chip>
@@ -86,7 +90,8 @@ export default {
         UserProfileUpdate
     },
     data: () => ({
-        dateOptions: { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' },
+        dateOptions: { year: 'numeric', month: 'long', day: 'numeric' },
+        timeOptions: { hour: '2-digit', minute: '2-digit' },
         showUserData: false
     }),
     computed: {
@@ -101,11 +106,13 @@ export default {
 </script>
 
 <style lang="scss" scoped >
+.round-img, .placeholder-img {
+    width: 8.5rem;
+    height: 8.5rem;
+    margin-bottom: -1rem;
+}
 .round-img {
     object-fit: cover;
     border-radius: 50%;
-    width: 10rem;
-    height: 10rem;
-    margin-bottom: -0.5rem;
 }
 </style>

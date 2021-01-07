@@ -80,6 +80,18 @@
             <v-col cols="6">
               <v-row>
                 <v-col
+                  v-if="field.type === 'taxonomy'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.vocabulary"
+                    item-text="title"
+                    item-value="id"
+                    :items="vocabularies"
+                    label="Vocabulary"
+                  />
+                </v-col>
+                <v-col
                   v-if="field.type === 'timestamp'"
                   cols="12"
                 >
@@ -109,6 +121,10 @@
                     </v-row>
                   </v-col>
                   <v-col cols="12">
+                    <v-checkbox 
+                      label="Multiple Answers"
+                      v-model="field.metadata.multiple"
+                    />
                     <h4 class="mb-2">
                       Options
                     </h4>
@@ -247,6 +263,139 @@
                     </v-col>
                   </v-row>
                 </v-col>
+                <v-col
+                  v-if="field.type === 'attachment'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.attachmentOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="attachmentOption"
+                    label="Attachment Option"
+                  />
+                  <v-file-input
+                    counter
+                    multiple
+                    show-size
+                    truncate-length="1"
+                  />
+                </v-col>
+                <v-col
+                  v-if="field.type === 'boolean'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.booleanOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="booleanOption"
+                    label="Yes/No Option"
+                  />
+                </v-col>
+                <v-col
+                  v-if="field.type === 'text'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.textOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="textOption"
+                    label="Text Option"
+                  />
+                  <template v-if="field.metadata.textOption === 'textarea'">
+                    <v-text-field
+                      v-model="field.metadata.textOption_rows"
+                      label="Number of rows"
+                      type="number"
+                      value="3"
+                    />
+                    <v-checkbox
+                      v-model="field.metadata.textOption_auto_grow"
+                      hide-details
+                      label="Auto Grow"
+                      value="true"
+                    />
+                  </template>
+                </v-col>
+                <v-col
+                  v-if="field.type === 'number'"
+                  cols="12"
+                >
+                  <v-select
+                    v-model="field.metadata.numberOption"
+                    item-text="text"
+                    item-value="value"
+                    :items="numberOption"
+                    label="Number Option"
+                  />
+                </v-col>
+                <v-col
+                  v-if="field.type === 'helper-media'"
+                  cols="12"
+                >
+                  <v-text-field
+                    v-model="helperMedia.name"
+                    prepend-icon="mdi-file-video-outline"
+                    @click="() => $refs.fileInput.click()"
+                  />
+                  <input
+                    v-show="false"
+                    ref="fileInput"
+                    accept="image/*, video/*, video/mp4, video/x-m4v, video/x-matroska"
+                    single
+                    type="file"
+                    @change="onFilesChange"
+                  >
+                  <v-row v-if="helperMedia.type && helperMedia.url">
+                    <v-col cols="12">
+                      <template v-if="helperMedia.type.indexOf('image') !== -1">
+                        <img
+                          class="image-preview"
+                          :src="helperMedia.url"
+                          style="width: 100%; height: 100%;"
+                        >
+                        <v-btn
+                          class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                          color="grey lighten-2"
+                          fab
+                          @click="helperMedia = {}"
+                        >
+                          <v-icon
+                            size="12"
+                          >
+                            mdi-close
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                      <template v-else-if="helperMedia.type.indexOf('video') !== -1">
+                        <video
+                          controls
+                          style="height: 100%; width: 100%"
+                        >
+                          <source
+                            :src="helperMedia.url"
+                            :type="helperMedia.type"
+                          >
+                          Your browser does not support the video tag.
+                        </video>
+                        <v-btn
+                          class="absolute btn-chat-shadow ml-2 right-0 top-0 v-close-btn"
+                          color="grey lighten-2"
+                          fab
+                          @click="helperMedia = {}"
+                        >
+                          <v-icon
+                            size="12"
+                          >
+                            mdi-close
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                    </v-col>
+                  </v-row>
+                </v-col>
               </v-row>
             </v-col>
             <v-col
@@ -288,7 +437,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 
 import axios from 'axios'
@@ -323,6 +472,23 @@ export default {
         'mm/dd/YYYY H:m:s',
         'dd/mm/YYYY H:m:s'
       ],
+      vocabularies: [],
+      attachmentOption: [
+        { text: 'General', value: 'general' },
+        { text: 'Image', value: 'image' }
+      ],
+      textOption: [
+        { text: 'Single Line', value: 'singleLine' },
+        { text: 'Textarea', value: 'textarea' }
+      ],
+      booleanOption: [
+        { text: 'Horizontal Alignment', value: 'horizon' },
+        { text: 'Vertical Alignment', value: 'vertical' }
+      ],
+      numberOption: [
+        { text: 'Genera', value: 'genera' },
+        { text: 'Currency', value: 'currency' }
+      ],
       types: [
         { label: 'Text', value: 'text' },
         { label: 'Number', value: 'number' },
@@ -334,7 +500,9 @@ export default {
         { label: 'Reference Field', value: 'referenced' },
         { label: 'Calculated Field', value: 'calculated' },
         { label: 'Reference App', value: 'referencedToApp' },
-        { label: 'Address', value: 'autocomplete-address' }
+        { label: 'Address', value: 'autocomplete-address' },
+        { label: 'Helper Media', value: 'helper-media' },
+        { label: 'Taxonomy', value: 'taxonomy' }
       ],
       fieldList: [],
       operators: {
@@ -343,7 +511,8 @@ export default {
         equal: ['='],
         empty: [''],
       },
-      panelFields: []
+      panelFields: [],
+      helperMedia: {}
     }
   },
   computed: {
@@ -360,6 +529,14 @@ export default {
         ...this.operators.math
       ];
       return [...Object.values(this.operators)].flat();
+    }
+  },
+
+  watch: {
+    "field.type":function (val){
+      if( val === 'autocomplete' ) {
+        this.field.metadata.multiple = true
+      }
     }
   },
 
@@ -384,12 +561,26 @@ export default {
     this.panelFields = this.fieldsBag.map(field => ({
       text: field.label
     }))
+    this.initVocabulary().then(res => {
+      this.vocabularies = res
+    }).catch(e => {
+      this.notifDanger('Can not fetch vocabularies')
+    })
   },
 
   methods: {
+    ...mapGetters('Taxonomy', {
+      getVocabulary: 'getTaxonomyVocabulary'
+    }),
+    ...mapActions('Taxonomy', {
+      initVocabulary: 'setTaxonomyVocabularies'
+    }),
     ...mapMutations('SnackBarNotif', {
       notifDanger: 'notifDanger',
       notifSuccess: 'notifSuccess'
+    }),
+    ...mapActions('AppAttachments', {
+      setStreamFiles: 'set_stream_attachments'
     }),
     deleteField() {},
     removeOption(index, item) {
@@ -414,6 +605,7 @@ export default {
           app_id: this.currentApp.id,
           // eslint-disable-next-line camelcase
           panel_id: field.panel_id,
+          // eslint-disable-next-line camelcase
           table_id: field.table_id,
           weight: field.weight,
           metadata: field.metadata,
@@ -438,6 +630,18 @@ export default {
         }
         if ((field.type !== 'referenced') && (field.type !== 'referencedToApp')) {
           delete postData.metadata.originalReference
+        }
+        if (field.type === 'helper-media') {
+          const url = await this.setStreamFiles({
+            files: this.helperMedia.file,
+            headers: {
+              'Content-Type': this.helperMedia['type'],
+              'Content-Name': this.helperMedia['name'],
+              'Stream-Id': this.currentApp.id,
+              'Stream-type': 'helper-media'
+            }
+          })
+          postData.helperMediaURL = url.attachUrl
         }
         if (this.editing) {
           const data = await this.$store.dispatch('AppBuilder/updateField', postData)
@@ -538,6 +742,28 @@ export default {
         })
         return tab
       })
+    },
+
+    cleanMetadata() {
+      this.field.metadata = {
+        options: [],
+        required: false
+      }
+    },
+
+    onFilesChange(files) {
+      const file = files['srcElement']['files'][0]
+      if (file) {
+        const type = file['type'].substr(0, file['type'].indexOf('/'))
+        if (type === 'image' || type === 'video') {
+          this.helperMedia = {
+            file: file,
+            url: URL.createObjectURL(file),
+            type: file['type'],
+            name: file['name']
+          }
+        }
+      }
     }
   }
 }

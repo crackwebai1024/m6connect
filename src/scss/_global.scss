@@ -127,12 +127,24 @@ p {
   height: 100vh;
 }
 
+.h-sidepanel{
+  height: calc(100vh - 60px);
+}
+
 .w-full {
   width: 100%;
 }
 
 .w-half {
   width: 50%;
+}
+
+.w-3__5 {
+  width: 60% !important;
+}
+
+.w-2__5 {
+  width: 40%;
 }
 
 .w-viewport {
@@ -144,17 +156,24 @@ p {
 }
 
 .w-side {
-  width: 440px;
+  width: 26% !important;
 }
 
 .max-w-full {
   max-width: 100%;
 }
 
-.max-w-content {
-  max-width: 820px;
+.max-w-side {
+  max-width: 370px;
 }
 
+.max-w-content {
+  max-width: 742px;
+}
+
+.max-w-md {
+  max-width: 900px;
+}
 .max-w-lg {
   max-width: 1024px;
 }
@@ -165,6 +184,9 @@ p {
 
 .max-w-tight {
   max-width: 620px;
+}
+.w-content {
+  width: 48% !important;
 }
 
 .absolute {
@@ -179,13 +201,13 @@ p {
   position: fixed;
 }
 
+.sticky {
+  position: sticky;
+}
+
 // this will help to put an offset to the main-container
 .top-60 {
   top: 60px;
-}
-
-html {
-  overflow: hidden;
 }
 
 .card-custom-shadow {

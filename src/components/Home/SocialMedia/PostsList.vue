@@ -149,6 +149,8 @@ export default {
     successCallback: () => true,
     failCallback: () => false,
     setRecord(record) {
+      record.app_prefix = record.app.prefix
+      record.app_type = record.app.app_type
       this.recordData(record)
       this.changeDrawer(true)
     }

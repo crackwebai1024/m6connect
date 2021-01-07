@@ -41,7 +41,7 @@
       </v-btn>
     </div>
     <div>
-      <h4 :class=" !lightMode ? 'grey--text text--darken-2 mb-4 ml-1' : 'white--text mb-4 ml-1' ">
+      <h4 :class=" !lightMode ? 'grey--text text--darken-2 mb-3 ml-1' : 'white--text mb-3 ml-1' ">
         {{ department.name }}
       </h4>
       <input
@@ -105,9 +105,13 @@
               :content="unread_count[ind]['unread']"
               inline
               :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
+              class="d-flex flex-column justify-center align-start"
             >
-              <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
+              <p :class=" !lightMode ? 'grey--text text--darken-4 mb-0' : 'white--text mb-0' ">
                 {{ channel.data.name }}
+              </p>
+              <p :class=" !lightMode ? 'grey--text text--darken-1 mb-0 pt-2' : 'text--darken-4 mb-0 pt-2' " style="font-size: 0.75rem">
+                {{ channel.last_message ? channel.last_message : "" }}
               </p>
             </v-badge>
             <span :class="'text-caption ' + departmentColor(user.type)">{{ user.departmentName }}</span>
@@ -119,9 +123,13 @@
               :content="unread_count[ind]['unread']"
               inline
               :value="unread_count[ind]['unread'] > 0 ? unread_count[ind]['unread'] : 0"
+              class="d-flex flex-column justify-center align-start"
             >
-              <p :class=" !lightMode ? 'grey--text text--darken-2 font-weight-bold mb-0' : 'white--text font-weight-bold mb-0' ">
+              <p :class=" !lightMode ? 'grey--text text--darken-4 mb-0' : 'white--text mb-0' ">
                 {{ channel.membersInChannel.user.name }}
+              </p>
+              <p :class=" !lightMode ? 'grey--text text--darken-1 mb-0 pt-2' : 'text--darken-4 mb-0 pt-2' " style="font-size: 0.75rem">
+                {{ channel.last_message ? channel.last_message : "" }}
               </p>
             </v-badge>
 
@@ -244,6 +252,33 @@ export default {
     this.client.on('notification.added_to_channel', r => {
       this.$store.dispatch('GSChat/retrieveChats', this.user.id)
     })
+
+    Promise.all(
+      this.filteredChannels.map(async channel => {
+        const channel_state = await channel.watch()
+        
+        if (channel_state.messages.length == 0)
+          channel.last_message = ''
+        else {
+          let last_index = channel_state.messages.length - 1
+
+          if (channel_state.messages[last_index].images) {
+            const images = channel_state.messages[last_index].images
+            last_index = images.length - 1
+            if (images[last_index]) {
+              const splitedUrl = images[last_index].split('/')
+              channel.last_message = splitedUrl[splitedUrl.length - 1]
+            } else {
+              channel.last_message = ''
+            }
+          } else {
+            channel.last_message = channel_state.messages[last_index].text
+          }
+        }
+
+        channel.last_message = channel.last_message.substring(0, 30)
+      })
+    ).catch(err => {})
   },
   methods: {
     ...mapActions('GSChat', ['makeGroupChat']),
