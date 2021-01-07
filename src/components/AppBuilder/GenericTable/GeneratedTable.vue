@@ -4,6 +4,8 @@
       :headers="headers"
       :items="tableDataRows"
       :items-per-page="5"
+
+      :custom-sort="customSort"
     >
       <template v-slot:top>
         <v-toolbar
@@ -57,7 +59,9 @@
 
     <v-dialog
       v-model="showFormModal"
-      persistent
+      scrollable
+      max-width="80%"
+      content-class="scrollable--height-90" 
     >
       <v-card>
         <v-card-title class="blue darken-2 headline white--text">
@@ -190,6 +194,29 @@ export default {
       this.$nextTick( () => {
         this.showFormModal = true
       })
+    },
+
+    customSort: function(items, index, isDesc) {
+      items.sort((a, b) => {
+          if (index[0]=='date') {
+            if (!isDesc[0]) {
+                return new Date(b[index]) - new Date(a[index]);
+            } else {
+                return new Date(a[index]) - new Date(b[index]);
+            }
+          }
+          else {
+            if(typeof a[index] !== 'undefined'){
+              if (!isDesc[0]) {
+                 return a[index].toLowerCase().localeCompare(b[index].toLowerCase());
+              }
+              else {
+                  return b[index].toLowerCase().localeCompare(a[index].toLowerCase());
+              }
+            }
+          }
+      });
+      return items;
     }
   },
 
@@ -198,7 +225,7 @@ export default {
       const fields = [...this.table.fields]
       fields.sort(function(a,b){ return a.order - b.order })
       let headers = fields.map( f => ({ text: f.label, value: f.id }) )
-      headers.push({ text: 'Actions', value: 'actions' })
+      headers.push({ text: 'Actions', value: 'actions', sortable: false })
       return headers
     },
 
@@ -217,7 +244,26 @@ export default {
     } catch (e) {
       this.notifDanger('There was an error while getting data')
     }
-  }
+  },
+
+   watch: {
+    tableDataRows: function (val) {
+      this.tableDataRows.forEach(row => {
+        this.columns.forEach( column => {
+          if(typeof(row[column]) == "undefined"){
+            row[column] = "";
+          }
+        });
+      });
+    },
+   }
 
 }
 </script>
+
+<style>
+  .v-dialog--scrollable.scrollable--height-90{
+    max-height: 90%;
+    position: static
+  }
+</style>
