@@ -56,7 +56,7 @@
       <v-col cols="12">
         <v-autocomplete
           v-model="itemInfo.layout_type"
-          :items="['Profile', 'Stepper']"
+          :items="['Profile', 'Stepper', 'Website']"
           label="Layout Type"
           required
           :rules="stringsRules('Layout Type')"
