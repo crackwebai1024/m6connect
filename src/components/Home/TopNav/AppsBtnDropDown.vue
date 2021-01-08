@@ -46,8 +46,7 @@ export default {
   },
   data: () => ({
     links: [
-      { name: 'Capital Projects', routeName: 'app.cpm' },
-      { name: 'App Builder Apps', routeName: 'app-builder' }
+      { name: 'Capital Projects', routeName: 'app.cpm' }
     ]
   })
 }

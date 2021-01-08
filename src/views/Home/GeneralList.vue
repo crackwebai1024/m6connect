@@ -170,6 +170,7 @@ export default {
       res['data'].forEach(app => {
         this.areas2.push(
           {
+            id: app['id'],
             text: app['title'],
             prefix: app['prefix'],
             type: 'subtitle',

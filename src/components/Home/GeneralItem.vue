@@ -45,18 +45,12 @@ export default {
     ]),
     ...mapActions('GeneralListModule', ['push_data_to_active']),
     updateInfo() {
-      if (!this.recordData['record_number'] && this.recordData['prefix'] !== null) {
-        this.$router.push(`/dev/${this.recordData['id']}`)
-      } else {
-        this.push_data_to_active(this.recordData)
-        this.change_preview_navigation_drawer(true)
-      }
+      this.push_data_to_active(this.recordData)
+      this.change_preview_navigation_drawer(true)
     },
     redirect() {
       if (this.recordData['record_number']) {
         this.$router.push(`/record/${this.recordData['id']}`)
-      } else {
-        this.$router.push(`/dev/${this.recordData['id']}`)
       }
     }
   }
