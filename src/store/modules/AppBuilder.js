@@ -225,6 +225,13 @@ const actions = {
       }).catch(e => reject(e))
     })
   },
+  deleteTable(_, payload) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app_tables/${payload}`).then(({ data }) => {
+        resolve(data)
+      }).catch(e => reject(e))
+    })
+  },
   deleteRecord(_, payload) {
     return new Promise((resolve, reject) => {
       axios.delete(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/record/${payload}`).then(({ data }) => {
