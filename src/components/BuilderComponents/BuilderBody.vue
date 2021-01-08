@@ -198,6 +198,8 @@ export default {
     deletePanel(id) {
       const index = this.app.tabs[this.activeTab].panels.map(item => item.id).indexOf(id)
       this.app.tabs[this.activeTab].panels.splice(index, 1)
+
+      this.updateTabPanels()
     },
 
     updatePanel(data) {
@@ -205,11 +207,21 @@ export default {
     },
 
     updatingTable(panel, table) {
-      const index = panel.tables.map(t => t.id).indexOf(table.id)
+      const index = panel.tables?.map(t => t.id).indexOf(table.id)
       if (index > -1) {
         panel.tables[index] = table
       } else {
-        panel.tables.push(table)
+        if (panel.tables)
+        {
+          panel.tables.push(table)
+        }
+        else
+        {
+          const tables = []
+          tables.push(table)
+          panel['tables'] = tables
+        }
+
       }
 
       panel.tables = [...panel.tables]
@@ -225,9 +237,9 @@ export default {
       }
       this.$store.dispatch('AppBuilder/savePanel', newPanel).then(result => {
         this.app.tabs[this.activeTab].panels.push(result)
+        this.updateTabPanels()
       })
 
-      this.updateTabPanels()
     },
 
   },

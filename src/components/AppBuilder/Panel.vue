@@ -127,8 +127,20 @@
         <table-creator :table="activeAppTable" @updateTable="updatingTable" @close="showTableCreator = false" />
       </v-list-item>
       <template v-else >
-        <v-list-item v-for="(table, index) in panel.tables" @click="editingTable(table)" :key="`panel-table-${index}`" >
-          {{ table.title }}
+        <v-list-item v-for="(table, index) in panel.tables" :key="`panel-table-${index}`" >
+          <v-list-item-content @click="editingTable(table)">
+            {{ table.title }}
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-btn
+              icon
+              @click="deleteTable(table)"
+            >
+              <v-icon color="red lighten-3">
+                mdi-delete
+              </v-icon>
+            </v-btn>
+          </v-list-item-action>
         </v-list-item>
       </template>
     </v-list>
@@ -162,7 +174,7 @@
       width="500"
     >
       <delete-dialog
-        :element="fieldToDelete ? 'Field' : 'Panel'"
+        :element="fieldToDelete ? 'Field' : tableToDelete ? 'Table' : 'Panel'"
         @closeDeleteModal="confirmDelete"
       />
     </v-dialog>
@@ -211,6 +223,7 @@ export default {
       panelEdit: false,
       clonePanel: {},
       fieldToDelete: null,
+      tableToDelete: null,
       panelToDelete: null,
       activeField: {},
       defaultField: {
@@ -307,18 +320,28 @@ export default {
       this.fieldToDelete = field.id
     },
 
+    deleteTable(table) {
+      this.showDeleteModal = true
+      this.tableToDelete = table.id
+    },
+
     async confirmDelete(result) {
       if (result) {
         if (this.fieldToDelete) {
           await this.$store.dispatch('AppBuilder/deleteField', this.fieldToDelete)
           const index = this.panel.fields.map(item => item.id).indexOf(this.fieldToDelete)
           this.panel.fields.splice(index, 1)
+        } else if (this.tableToDelete) {
+          await this.$store.dispatch('AppBuilder/deleteTable', this.tableToDelete)
+          const index = this.panel.tables.map(item => item.id).indexOf(this.tableToDelete)
+          this.panel.tables.splice(index, 1)
         } else if (this.panelToDelete) {
           await this.$store.dispatch('AppBuilder/deletePanel', this.panelToDelete)
           this.$emit('deletePanel', this.panelToDelete)
         }
       }
       this.fieldToDelete = null
+      this.tableToDelete = null
       this.panelToDelete = null
       this.showDeleteModal = false
     },
