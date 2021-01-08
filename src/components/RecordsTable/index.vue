@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="w-full overflow-x-scroll">
     <v-data-table
       :headers="tableHeaders"
       :items="items"
       :items-per-page="5"
+      :class="{'full-width-table': $vuetify.breakpoint.mdAndDown, 'w-full': $vuetify.breakpoint.lgAndUp }"
+      mobile-breakpoint="0"
     >
       <template #item="{ item }">
         <tr>
@@ -192,5 +194,17 @@ export default {
 }
 .router-link {
   text-decoration: none;
+}
+.full-width-table {
+  min-width: 1200px;
+  max-width: none;
+}
+.overflow-x-scroll {
+  overflow-x: scroll;
+}
+</style>
+<style lang="scss">
+.full-width-table .v-data-footer {
+  justify-content: flex-start;
 }
 </style>
