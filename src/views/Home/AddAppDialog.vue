@@ -12,10 +12,10 @@
       max-width="500"
     >
       <v-card>
-        <v-card-title class="headline">
-          New App
+        <v-card-title class="blue ctm-mb-16 headline">
+          <span class="white--text">{{ title }}</span>
         </v-card-title>
-        <v-card-text class="record-text vertical-scroll">
+        <v-card-text class="overflow-visible record-text">
           <dynamic-app-form
             @closeModal="closeModal"
             @closingGenericRecord="closingGenericRecord"
@@ -32,11 +32,17 @@ import ItAppForm from '@/components/Home/Forms/ItAppForm'
 import { validations } from '@/mixins/form-validations'
 
 export default {
-  name: 'CreateAppDialog',
+  name: 'AddAppDialog',
   components: {
     DynamicAppForm
   },
   mixins: [validations],
+  props: {
+    title: {
+      type: String,
+      default: ''
+    }
+  },
   data: () => ({
     tab: null,
     showInput: false,
@@ -64,5 +70,9 @@ export default {
   color: #b6b6b6;
   cursor: not-allowed;
   background-image: none;
+}
+
+.v-card__title.ctm-mb-16 {
+    margin-bottom: 16px !important;
 }
 </style>

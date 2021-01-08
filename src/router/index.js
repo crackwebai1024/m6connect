@@ -23,6 +23,7 @@ const CloneTool = () => import(/* webpackChunkName: 'Store' */ '@/views/Tools/Cl
 const RapidTable = () => import(/* webpackChunkName: 'RapidTable' */ '@/views/Rapid/RapidTable')
 const ActionsTable = () => import(/* webpackChunkName: 'ActionsTable' */ '@/views/ActionCenter/ActionsTable')
 const MarketPlaceAdmin = () => import(/* webpackChunkName: 'MarketPlaceAdmin' */ '@/views/Marketplace/Admin')
+const MasterBuilder = () => import(/* webpackChunkName: "MasterBuilder" */ '@/views/Builder/MasterBuilder')
 
 import store from '../store/';
 Vue.use(VueRouter);
@@ -95,7 +96,7 @@ const router = new VueRouter({
     {
       path: "/dev/:id",
       name: "dev",
-      component: Dev,
+      component: MasterBuilder,
       meta: {
         public: true,
         topNav: true

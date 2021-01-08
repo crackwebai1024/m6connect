@@ -153,7 +153,10 @@
           </p>
         </div>
       </div>
-      <div class="d-flex" v-if="!showDeleteOptions" >
+      <div
+        v-if="!showDeleteOptions"
+        class="d-flex"
+      >
         <v-btn
           class="btn-chat-shadow ml-2"
           color="white"
@@ -205,15 +208,21 @@
           </v-icon>
         </v-btn>
       </div>
-      <div class="d-flex" v-else >
-        <v-tooltip bottom color="#7c7c7c" >
+      <div
+        v-else
+        class="d-flex"
+      >
+        <v-tooltip
+          bottom
+          color="#7c7c7c"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
+              v-bind="attrs"
               class="btn-chat-shadow ml-2"
               color="white"
               fab
               x-small
-              v-bind="attrs"
               v-on="on"
               @click="deleteMessages"
             >
@@ -226,14 +235,17 @@
           </template>
           <span>Delete Selected</span>
         </v-tooltip>
-        <v-tooltip bottom color="#7c7c7c" >
+        <v-tooltip
+          bottom
+          color="#7c7c7c"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
+              v-bind="attrs"
               class="btn-chat-shadow ml-2"
               color="white"
               fab
               x-small
-              v-bind="attrs"
               v-on="on"
               @click="deleteAll"
             >
@@ -407,13 +419,13 @@
               :class="[ hasMessageBeenViewed(message) ? 'blue--text' : 'grey--text']"
               size="11"
             >
-              {{ hasMessageBeenViewed(message)  ? 'mdi-check-all' : 'mdi-check' }}
+              {{ hasMessageBeenViewed(message) ? 'mdi-check-all' : 'mdi-check' }}
             </v-icon>
 
             <v-checkbox
               v-if="showDeleteOptions"
-              dense
               v-model="deleteIds"
+              dense
               :value="message.id"
             />
             <v-dialog
@@ -659,6 +671,7 @@
         </div>
       </div>
     </template>
+    <!-- Videos -->
     <template v-if="srcVideoFiles.length > 0 && !hideFilesPreview">
       <div class="d-flex images-container mx-1 px-0 py-0">
         <div
@@ -881,6 +894,7 @@
         @keydown="stopTyping"
         @keyup="typing"
         @keyup.enter="sendMessage"
+        @paste="onPasteImage($event)"
       >
       <v-btn
         class="btn-chat-shadow grey--text mr-2"
@@ -1132,17 +1146,17 @@ export default {
     }),
     userLogsOn(event) {
       if (!event) return
-      const index = this.$h.dg(this, 'state.members', []).map( m => m.user.id).indexOf(event.user.id)
+      const index = this.$h.dg(this, 'state.members', []).map(m => m.user.id).indexOf(event.user.id)
       this.state.members[index].user.last_active = event.received_at.toISOString()
       this.state.members[index].user.online = true
     },
     userLogsOff(event) {
-      const index = this.$h.dg(this.state, 'members', []).map( m => m.user.id).indexOf(event.user.id)
+      const index = this.$h.dg(this.state, 'members', []).map(m => m.user.id).indexOf(event.user.id)
       this.state.members[index].user.last_active = event.received_at.toISOString()
       this.state.members[index].user.online = false
     },
     hasMessageBeenViewed(message) {
-      const index = this.$h.dg(this.state, 'members', []).map( m => m.user.id).indexOf( this.$h.dg(this.users, `0.user.id`, ''))
+      const index = this.$h.dg(this.state, 'members', []).map(m => m.user.id).indexOf(this.$h.dg(this.users, '0.user.id', ''))
       return new Date(message.created_at) < new Date(this.state.members[index].user.last_active) || this.state.members[index].user.online
     },
     cancelChatDelete() {
@@ -1464,7 +1478,6 @@ export default {
                 text: message['message']['text'],
                 images: urls
               })
-              this.showLoading = false
               this.imageFiles = []
             }
           })
@@ -1564,6 +1577,19 @@ export default {
           return ''
         }
       }).join(', ')
+    },
+    onPasteImage(event) {
+      this.hideFilesPreview = false
+      const items = (event.clipboardData || event.originalEvent.clipboardData).items
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i]
+        if (item.kind === 'file') {
+          const blob = item.getAsFile()
+          const reader = new FileReader()
+          reader.readAsDataURL(blob)
+          this.imageFiles.push(blob)
+        }
+      }
     }
   }
 }

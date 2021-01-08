@@ -1,9 +1,9 @@
 <template>
   <v-card>
-    <v-card-title class="grey headline lighten-2">
-      Create Record
+    <v-card-title class="blue ctm-mb-16 headline">
+      <span class="white--text">{{ title }}</span>
     </v-card-title>
-    <v-card-text class="record-text vertical-scroll">
+    <v-card-text class="overflow-auto record-text">
       <v-autocomplete
         v-model="tab"
         auto-select-first
@@ -14,8 +14,9 @@
       />
       <v-tabs-items v-model="tab">
         <v-tab-item
-          v-for="item in items"
+          v-for="(item) in items"
           :key="item.tab"
+          class="ctm-v-item"
         >
           <component
             :is="item.component"
@@ -35,11 +36,16 @@ import GenericRecord from '@/components/Home/Forms/GenericRecord'
 import { mapActions, mapMutations } from 'vuex'
 
 export default {
-  name: 'NewRecordDialog',
-
+  name: 'AddRecordDialog',
   components: {
     ItAppForm,
     GenericRecord
+  },
+  props: {
+    title: {
+      type: String,
+      default: ''
+    }
   },
 
   data: () => ({
@@ -52,7 +58,6 @@ export default {
       }
     ]
   }),
-
   async mounted() {
     try {
       const res = await this.getAppList()
@@ -92,6 +97,14 @@ export default {
 
 <style scoped>
 .record-text {
-    height: 80vh;
+  height: 80vh;
+}
+
+.v_card__title.ctm-mb-16 {
+  margin-bottom: 16px !important;
+}
+
+.ctm-v-item:last-child {
+  padding-bottom: 50px !important;
 }
 </style>

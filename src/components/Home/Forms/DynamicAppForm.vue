@@ -9,29 +9,33 @@
         class="pa-0 text-center"
         cols="12"
       >
-        <v-avatar
-          class="mr-2 text-center"
-          size="100"
-        >
-          <img
-            v-if="appImage !== ''"
-            :alt="appImage"
-            :src="appImage"
-          >
-          <v-icon
-            v-else
-            size="100"
-          >
-            mdi-application
-          </v-icon>
-        </v-avatar>
         <m6-upload
-          btn-button="purple"
+          btn-button="white"
+          class="ctm-m6-btn"
           @loading="loading = !loading"
           @response="responseRecordImg"
         >
-          <v-icon size="33">
-            mdi-plus-circle
+          <v-avatar
+            class="text-center"
+            size="100"
+          >
+            <img
+              v-if="appImage !== ''"
+              :alt="appImage"
+              :src="appImage"
+            >
+            <v-icon
+              v-else
+              size="100"
+            >
+              mdi-image-outline
+            </v-icon>
+          </v-avatar>
+          <v-icon
+            class="ctm-v-icon-circle"
+            size="20"
+          >
+            mdi-cloud-upload
           </v-icon>
         </m6-upload>
       </v-col>
@@ -56,7 +60,7 @@
       <v-col cols="12">
         <v-autocomplete
           v-model="itemInfo.layout_type"
-          :items="['Profile', 'Stepper']"
+          :items="['Profile', 'Stepper', 'Website']"
           label="Layout Type"
           required
           :rules="stringsRules('Layout Type')"
@@ -72,12 +76,10 @@
       </v-col>
       <v-col
         v-for="(tab, index) in itemInfo.tabs"
-        :key="index+'-tab'"
+        :key="index + '-tab'"
         cols="12"
       >
-        <v-chip
-          color="green"
-        >
+        <v-chip color="green">
           <span class="white--text">{{ tab.title }}</span>
         </v-chip>
       </v-col>
@@ -86,15 +88,17 @@
       <v-spacer />
       <v-btn
         class="mr-4"
-        color="error"
+        color="secondary"
+        outlined
         @click="close"
       >
         Cancel
       </v-btn>
       <v-btn
         class="mr-4"
-        color="success"
+        color="primary"
         :disabled="!valid"
+        outlined
         @click="validate"
       >
         Create
@@ -155,14 +159,15 @@ export default {
       }
       this.itemInfo.author = this.currentUser.id
 
-      this.post_app(this.itemInfo).then(res => {
-        this.pushAppId(res['data']['id'])
-        this.$router.push(`/dev/${res['data']['id']}`)
-        this.$nextTick(() => {
-          this.itemInfo = {}
+      this.post_app(this.itemInfo)
+        .then(res => {
+          this.pushAppId(res['data']['id'])
+          this.$router.push(`/dev/${res['data']['id']}`)
+          this.$nextTick(() => {
+            this.itemInfo = {}
+          })
+          this.close()
         })
-        this.close()
-      })
         .catch(error => {
           let errorMsg = ''
 
@@ -173,9 +178,7 @@ export default {
         })
     },
     pushTab() {
-      this.itemInfo['tabs'].push(
-        this.tab
-      )
+      this.itemInfo['tabs'].push(this.tab)
       this.tab = {
         readOnly: false,
         title: '',
@@ -190,14 +193,10 @@ export default {
       else e.preventDefault()
     },
     selectRules(name) {
-      return [
-        v => !!v || name + ' is required'
-      ]
+      return [v => !!v || name + ' is required']
     },
     radioRules(model) {
-      return [
-        model !== null || 'At least one item should be selected'
-      ]
+      return [model !== null || 'At least one item should be selected']
     },
     stringsRules(name) {
       return [
@@ -224,3 +223,24 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.ctm-v-icon-circle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #2196f3 !important;
+  color: white;
+  border-radius: 50%;
+  padding: 0.2rem;
+  box-sizing: content-box;
+}
+</style>
+
+<style>
+.ctm-m6-btn .v-btn {
+  min-width: 100px;
+  min-height: 100px;
+  position: relative !important;
+}
+</style>
