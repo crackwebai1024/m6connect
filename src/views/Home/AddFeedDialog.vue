@@ -9,37 +9,21 @@
     </div>
     <v-dialog
       v-model="showInput"
-      content-class="overflow-visible"
+      class="overflow-visible"
       max-width="500"
     >
       <v-card>
-        <v-btn
-          class="modal-close-btn"
-          icon
-          @click="showInput=false"
+        <v-card-title
+          class="blue ctm-mb-16 d-flex headline justify-space-between"
         >
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-card-title class="d-flex headline justify-space-between">
-          <span>{{ isAdd ? "New" : "Edit" }} Task</span>
-          <v-btn
-            v-if="!isAdd"
-            icon
-            @click="showDeleteDiaLog = true"
-          >
-            <v-icon
-              class="grey--text text--darken-2"
-            >
-              mdi-trash-can
-            </v-icon>
-          </v-btn>
+          <span class="white--text">{{ title }}</span>
         </v-card-title>
         <v-card-text>
-          <v-container class="mt-2 px-0 py-0 white">
+          <v-container class="mt-2 p-0 white">
             <v-form
               ref="form"
               v-model="valid"
-              @submit.prevent
+              @submit.prevent="function(){}"
             >
               <v-row class="ma-0 w-full">
                 <v-col
@@ -51,7 +35,7 @@
                     :multiple="false"
                     :normalizer="normalizer"
                     :options="options.type"
-                    placeholder="Title"
+                    placeholder="Action Type"
                   />
                 </v-col>
                 <v-col
@@ -100,9 +84,21 @@
                 >
                   <v-text-field
                     ref="inputFeed"
+                    v-model="itemInfo.title"
+                    class="h-full outline-none text-body-1"
+                    placeholder="Title"
+                    :rules="textRules"
+                  />
+                </v-col>
+                <v-col
+                  class="py-0"
+                  cols="12"
+                >
+                  <v-text-field
+                    ref="inputFeed"
                     v-model="itemInfo.description"
                     class="h-full outline-none text-body-1"
-                    placeholder="Notes"
+                    placeholder="Summary"
                     :rules="textRules"
                   />
                 </v-col>
@@ -118,7 +114,7 @@
                 </v-col>
                 <v-col
                   class="py-0"
-                  cols="0"
+                  cols="12"
                 >
                   <v-autocomplete
                     v-model="itemInfo.assignment_list"
@@ -140,17 +136,30 @@
                       slot-scope="data"
                     >
                       <!-- HTML that describe how select should render items when the select is open -->
-                      <span> {{ data.item.user.firstName }} {{ data.item.user.lastName }} </span>
+                      <span>
+                        {{ data.item.user.firstName }}
+                        {{ data.item.user.lastName }}
+                      </span>
                     </template>
                   </v-autocomplete>
                 </v-col>
               </v-row>
-              <v-row class="ma-0 px-3 py-2 w-full">
+              <v-row class="justify-end ma-0 px-3 py-2 w-full">
                 <v-btn
-                  block
+                  class="font-weight-bold mr-4 text-xl white--text"
+                  color="secondary"
+                  outlined
+                  right
+                  @click="showInput = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn
                   class="font-weight-bold text-xl white--text"
-                  color="green darken-2"
+                  color="primary"
                   :disabled="!valid"
+                  outlined
+                  right
                   @click="post"
                 >
                   Submit
@@ -161,36 +170,20 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <v-dialog
-      v-model="showDeleteDiaLog"
-      max-width="350"
-      persistent
-    >
-      <confirm-dialog
-        :cancel-label="`Cancel`"
-        :message="`Do you want to remove this action?`"
-        :ok-label="`Remove`"
-        @closeDeleteModal="$event ? deleteAction({}) : showDeleteDiaLog = false"
-      />
-    </v-dialog>
   </div>
 </template>
 
 <script>
 import { validations } from '@/mixins/form-validations'
 import { mapActions, mapGetters } from 'vuex'
-import ConfirmDialog from '@/components/Dialogs/ConfirmDialog'
 
 export default {
-  name: 'AddFeed',
-  components: {
-    ConfirmDialog
-  },
+  name: 'AddFeedDialog',
   mixins: [validations],
   props: {
-    action: {
-      type: Object,
-      default: () => {}
+    title: {
+      type: String,
+      default: ''
     },
     isAdd: {
       type: Boolean,
@@ -201,23 +194,30 @@ export default {
   data: () => ({
     testValue: null,
     showDeleteDiaLog: false,
-    testOptions: [{
-      id: 'a',
-      label: 'a',
-      children: [{
-        id: 'aa',
-        label: 'aa'
-      }, {
-        id: 'ab',
-        label: 'ab'
-      }]
-    }, {
-      id: 'b',
-      label: 'b'
-    }, {
-      id: 'c',
-      label: 'c'
-    }],
+    testOptions: [
+      {
+        id: 'a',
+        label: 'a',
+        children: [
+          {
+            id: 'aa',
+            label: 'aa'
+          },
+          {
+            id: 'ab',
+            label: 'ab'
+          }
+        ]
+      },
+      {
+        id: 'b',
+        label: 'b'
+      },
+      {
+        id: 'c',
+        label: 'c'
+      }
+    ],
     showInput: false,
     itemInfo: {
       id: null,
@@ -237,10 +237,12 @@ export default {
       records: [],
       type: []
     },
-    availableApps: [{
-      id: -1,
-      title: 'ITApps'
-    }],
+    availableApps: [
+      {
+        id: -1,
+        title: 'ITApps'
+      }
+    ],
     imageFiles: [],
     docFiles: [],
     minimized: false,
@@ -260,7 +262,9 @@ export default {
       this.itemInfo['id'] = this.action.id
       this.itemInfo['author'] = this.action.author
       this.itemInfo['due_date'] = new Date(this.action.due_date)
-      this.itemInfo['assignment_list'] = this.action.wo_assignments.map(assignment => assignment.assignee)
+      this.itemInfo['assignment_list'] = this.action.wo_assignments.map(
+        assignment => assignment.assignee
+      )
       this.itemInfo['description'] = this.action.description
       this.itemInfo['title'] = this.action.title
       this.itemInfo['type'] = this.action.type.id
@@ -333,17 +337,24 @@ export default {
               name: `${this.user.firstName} ${this.user.lastName}`
             }
           }),
-          foreign_id: `${Date.now()}-post-${Math.floor(Math.random() * 9999999)}`,
+          foreign_id: `${Date.now()}-post-${Math.floor(
+            Math.random() * 9999999
+          )}`,
           time: new Date().toISOString(),
           message: this.itemInfo.description,
           verb: 'action',
           object: 1
         }
       }
-      this.itemInfo['company_id'] = this.user.companies.items.find(c => c.active)['id']
+      this.itemInfo['company_id'] = this.user.companies.items.find(
+        c => c.active
+      )['id']
       this.itemInfo['start_date'] = new Date().toISOString().slice(0, 10)
       this.itemInfo['requested_date'] = new Date().toISOString().slice(0, 10)
-      this.itemInfo['due_date'] = this.itemInfo.due_date.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+      this.itemInfo['due_date'] = this.itemInfo.due_date
+        .toISOString()
+        .replace(/T/, ' ')
+        .replace(/\..+/, '')
       this.showInput = false
 
       if (this.isAdd) {
@@ -366,23 +377,31 @@ export default {
 </script>
 
 <style>
-  .disabled {
-    pointer-events:none;
-    color: #B6B6B6;
-    cursor: not-allowed;
-    background-image: none;
-  }
-  .modal-close-btn {
-    position: absolute;
-    left: -10px;
-    top: -10px;
-    z-index: 999;
-    border: 2px solid #ccc;
-    box-shadow: 1px 1px white;
-    background-color: black;
-    color: white !important;
-  }
-  .overflow-visible {
-    overflow: visible;
-  }
+.disabled {
+  pointer-events: none;
+  color: #b6b6b6;
+  cursor: not-allowed;
+  background-image: none;
+}
+.modal-close-btn {
+  position: absolute;
+  left: -10px;
+  top: -10px;
+  z-index: 999;
+  border: 2px solid #ccc;
+  box-shadow: 1px 1px white;
+  background-color: black;
+  color: white !important;
+}
+.overflow-visible {
+  overflow: visible;
+}
+
+.v-dialog.w-500 {
+  max-width: 500px !important;
+}
+
+.v-card__title.ctm-mb-16 {
+  margin-bottom: 16px !important;
+}
 </style>
