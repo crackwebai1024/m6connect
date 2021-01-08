@@ -18,7 +18,7 @@
     </template>
 
     <v-list>
-      <v-list-item v-if="layoutType.toUpperCase() !== 'STEPPER'">
+      <v-list-item v-if="layoutType.toUpperCase() == 'PROFILE'">
         <v-list-item-title>
           <v-btn text @click="addNewTab(false)">
             2 Columns

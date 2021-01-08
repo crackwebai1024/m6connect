@@ -21,7 +21,7 @@
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-card-title class="d-flex headline justify-space-between">
-          <span>{{ isAdd ? "New" : "Edit" }} Action</span>
+          <span>{{ isAdd ? "New" : "Edit" }} Task</span>
           <v-btn
             v-if="!isAdd"
             icon
@@ -51,7 +51,7 @@
                     :multiple="false"
                     :normalizer="normalizer"
                     :options="options.type"
-                    placeholder="Action Type"
+                    placeholder="Title"
                   />
                 </v-col>
                 <v-col
@@ -100,21 +100,9 @@
                 >
                   <v-text-field
                     ref="inputFeed"
-                    v-model="itemInfo.title"
-                    class="h-full outline-none text-body-1"
-                    placeholder="Title"
-                    :rules="textRules"
-                  />
-                </v-col>
-                <v-col
-                  class="py-0"
-                  cols="12"
-                >
-                  <v-text-field
-                    ref="inputFeed"
                     v-model="itemInfo.description"
                     class="h-full outline-none text-body-1"
-                    placeholder="Summary"
+                    placeholder="Notes"
                     :rules="textRules"
                   />
                 </v-col>

@@ -126,14 +126,20 @@
       </template>
 
       <!--GRID VIEW-->
+      <!--        -->
+      <!--        wrap-->
+      <!--        -->
+      <!--        :server-items-length="pagination.totalItems"-->
       <v-data-iterator
         v-if="isGridView"
         class="w-full"
-        :footer-props="footerProps"
+        :footer-props="{
+          'items-per-page-options': [8,16,24],
+        }"
         :items="resources"
+        :options.sync="pagination"
         :server-items-length="pagination.totalItems"
-        wrap
-        @pagination="initialized ? debounceSearch(search) : null"
+        @update:options="initialized ? debounceSearch(search) : null"
       >
         <template v-slot:no-data>
           <m6-no-results />
@@ -605,7 +611,7 @@ export default {
     showAllMileStones: false,
     defaultColors: { listStatus: '#FF0000', listStartDate: '#008000' },
     autoInit: true,
-    initialized: true,
+    initialized: false,
     images: {},
     defaultImage: '/sites/all/themes/m6connect/images/default_userpdf.png',
     user: {},
@@ -641,7 +647,7 @@ export default {
       sortBy: ['title'],
       descending: false,
       itemsPerPage: vm.rowsPerPageItems,
-      totalItems: 0,
+      totalItems: 1,
       page: 1
     },
     settingsProject: {},

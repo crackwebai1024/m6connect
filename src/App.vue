@@ -44,6 +44,7 @@
           <chat-wrapper />
           <general-overlay />
         </template>
+        <footer-nav />
       </template>
       <template v-else>
         <router-view />
@@ -63,6 +64,7 @@
 
 <script>
 import TopNav from '@/views/Home/TopNav'
+import FooterNav from '@/views/Home/FooterNav'
 import ActionFeed from '@/views/Home/ActionFeed'
 import M6Chat from '@/components/Home/M6Chat'
 import ChatWrapper from '@/components/Home/M6Chat/ChatWrapper'
@@ -73,6 +75,7 @@ export default {
   name: 'App',
   components: {
     TopNav,
+    FooterNav,
     ActionFeed,
     M6Chat,
     ChatWrapper,

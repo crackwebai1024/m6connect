@@ -169,8 +169,7 @@ export default {
       try {
         this.loading = true
         await this.updateTable(this.table)
-
-        if(this.table.fields) {
+        if( Boolean(this.$h.dg( this.table, 'fields', []).length) ) {
           this.table.fields.map((f, index) => {
             f.order = index
           })

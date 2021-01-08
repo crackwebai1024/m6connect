@@ -31,6 +31,8 @@ import AppTables from '@/store/modules/AppTables.js'
 import companies from '@/modules/cpm/store/companies'
 import ImportCPM from './modules/ImportCPM'
 import Marketplace from './modules/Marketplace'
+import Taxonomy from './modules/Taxonomy'
+import Builder from './modules/Builder'
 
 Vue.use(Vuex)
 const appLabel = {
@@ -194,6 +196,8 @@ export default new Vuex.Store({
     cpm,
     WorkActivity,
     AppTables,
-    Marketplace
+    Marketplace,
+    Taxonomy,
+    Builder
   }
 })
