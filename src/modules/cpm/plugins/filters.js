@@ -33,7 +33,7 @@ Vue.filter(
       length: 10,
       separator: ''
     }
-  ) => truncate(value, options)
+  ) => (truncate(value, options))
 )
 
 Vue.filter('phone', (phone = '') =>
@@ -48,4 +48,4 @@ Vue.filter('currency', num => {
   })
 })
 
-Vue.filter('trunc', (str = '') => truncate)
+// Vue.filter('trunc', (str = '') => truncate)
