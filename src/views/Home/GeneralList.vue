@@ -1,29 +1,36 @@
 <template>
   <v-container
     class="pa-0 w-full"
-    :class="tableView ? 'mx-10' : ''"
+    :class="tableView.key == 'card' ? 'mx-lg-10 mx-md-4 mx-sm-2 mx-xs-0' : ''"
     fluid
   >
-    <record-list-header
-      v-if="headerLoaded"
-      :app-list="areas.concat(areas2)"
-      class="card-custom-shadow h-auto mb-3 mx-auto rounded"
-      @changeEvent="changeEvent"
-      @changingApps="changingApps"
-      @tableViewChange="tableViewChange"
-    />
-
+    <div>
+      <record-list-header
+        v-if="headerLoaded"
+        :app-list="areas.concat(areas2)"
+        class="card-custom-shadow h-auto mb-3 mx-auto rounded"
+        @changeEvent="changeEvent"
+        @changingApps="changingApps"
+        @tableViewChange="tableViewChange"
+      />
+      <record-filter
+        :showFilterBtn="showFilterBtn"
+        :currentAppID="currentAppID"
+        @recordsToShow="recordsToShow"
+        @clearFilter="clearFilter"
+      />
+    </div>
     <div
       v-if="!loading && headerLoaded"
-      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
+      :class="tableView.key == 'card'?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
     >
-      <template v-if="tableView">
+      <template v-if="tableView.key == 'table'">
         <records-table
           :items="records"
           :table-headers="dynamic ? dynamicTableHeader : headers"
         />
       </template>
-      <template v-else>
+      <template v-else-if="tableView.key == 'card' " >
         <v-row
           v-if="!loading"
           class="w-full"
@@ -46,6 +53,9 @@
           </v-col>
         </v-row>
       </template>
+      <template v-else-if="tableView.key == 'kanban'" >
+        <rapid-kanban />
+      </template>
     </div>
     <v-container v-else>
       <v-progress-circular
@@ -57,17 +67,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { mapGetters, mapActions, mapMutations, mapState } from 'vuex'
 import GeneralItem from '@/components/Home/GeneralItem'
 import RecordListHeader from '@/components/Home/RecordListHeader'
 import RecordsTable from '@/components/RecordsTable'
+import RecordFilter from '@/components/RecordMode/RecordFilter'
+import RapidKanban from '@/components/RapidKanban'
 
 export default {
   name: 'GeneralList',
   components: {
     GeneralItem,
     RecordListHeader,
-    RecordsTable
+    RecordsTable,
+    RecordFilter,
+    RapidKanban
   },
   data: () => ({
     loading: true,
@@ -76,7 +90,7 @@ export default {
     perPage: 8,
     records: [],
     searchInput: '',
-    tableView: false,
+    tableView: { icon: 'mdi-arrange-bring-forward', text: 'Card View', key: 'card' },
     dynamic: false,
     headers: [
       { text: 'Image', value: 'image' },
@@ -92,7 +106,10 @@ export default {
       { text: 'Status', value: 'status' },
       { text: 'Action', value: 'action', sortable: false }
     ],
-    dynamicTableHeader: []
+    dynamicTableHeader: [],
+    showFilterBtn: false,
+    currentAppID: 0,
+    fullRecordList: [],
   }),
   computed: {
     ...mapGetters('GeneralListModule', {
@@ -146,7 +163,10 @@ export default {
           }
         }
       ]
-    }
+    },
+    ...mapState('Filtering', {
+      filterSettings: 'filterSettings'
+    })
   },
   watch: {
     tableView(val) {
@@ -159,12 +179,24 @@ export default {
     this.setFilterTag({ key: 'everyone', value: 'All Apps' })
     this.getApps().then(() => {
       this.records = this.list()
+      this.fullRecordList = this.list()
       this.loading = false
+    }).then( () => {
+      this.getFilterSettings()
+      if(this.filterSettings) return
+
+      this.showFilterBtn = true
+      this.currentAppID = this.filterSettings.currentAppID
+      this.setFilterTag(this.filterSettings.filter)
+      this.recordsToShow(this.filterSettings.idsAndFieldsList)
     })
+
     this.selectApp().then(res => {
       res['data'].forEach(app => {
         this.areas2.push(
           {
+            currentAppID: app['id'],
+            id: app['id'],
             text: app['title'],
             prefix: app['prefix'],
             type: 'subtitle',
@@ -205,6 +237,20 @@ export default {
     ...mapActions('RecordsInstance', {
       getRecordsByApp: 'getRecordsByApp'
     }),
+    ...mapMutations('Filtering', {
+      saveFilterSettings: 'saveFilterSettings',
+      getFilterSettings: 'getFilterSettings',
+      saveRecordSearchModel: 'saveRecordSearchModel'
+    }),
+    clearFilter() {
+      this.records = this.fullRecordList.filter( f => f.app_id == this.currentAppID )
+    },
+    recordsToShow(idsAndFieldsList) {
+      const payload = { idsAndFieldsList, filter: this.filter, currentAppID: this.currentAppID }
+      this.saveFilterSettings(payload)
+
+      this.records = this.fullRecordList.filter( r => idsAndFieldsList.ids.includes(r.id) )
+    },
     changeEvent(event) {
       this.records = []
       this.loading = true
@@ -265,7 +311,9 @@ export default {
     },
     async changingApps(app) {
       try {
+        this.currentAppID = app.currentAppID
         app.function()
+        this.showFilterBtn = true
       } catch (e) {
         // Empty
       }

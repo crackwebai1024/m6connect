@@ -169,7 +169,7 @@
                     />
 
                     <date-picker
-                      v-model="rapidItem.items[i].rapid_dueDate"
+                      v-model="rapidItem.items[i].rapid_due_date"
                       label="Due Date"
                     />
 
@@ -178,6 +178,13 @@
                       :items="statusItems"
                       label="Status"
                     />
+
+                    <v-autocomplete
+                      v-model="rapidItem.items[i].rapid_code_type"
+                      :items="codeTypes"
+                      label="Type"
+                    />
+
                     <attachment v-model="rapidItem.items[i].rapid_attachment" />
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -274,13 +281,8 @@ export default {
     colorPickerSwitchShow: true,
     ratingChosen: {},
     panelModel: null,
-    statusItems: [
-      'Pending',
-      'In Progress',
-      'Code Review',
-      'Done',
-      'Deprecated'
-    ]
+    statusItems:[ 'Backlog', 'Documentation', 'ToDo', 'In Progress', 'Rework', 'Pull Request', 'Review', 'UAT', 'Done' ],
+    codeTypes: [ 'Frontend', 'Backend' ]
   }),
 
   methods: {

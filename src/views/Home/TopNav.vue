@@ -1,5 +1,55 @@
+/* eslint-disable vue/no-unused-vars */
 <template>
   <div class="blue d-flex darken-3 fixed justify-center nav-bar px-4 top-0 w-full">
+    <v-btn
+      v-show="!chatOverlay"
+      class="blue ml-auto pa-6 white--text"
+      :class="{'d-none': $vuetify.breakpoint.smAndUp, 'v-overlay--active': !chatOverlay}"
+      color="white"
+      depressed
+      fixed
+      icon
+      right
+      rounded
+      style="margin-top: -10px;"
+      top
+      @click="chatOverlay = true"
+    >
+      <v-icon>mdi-message</v-icon>
+    </v-btn>
+    <v-overlay
+      class="record-overlay"
+      opacity="0.7"
+      :value="chatOverlay"
+    >
+      <v-row
+        class="central-content flex flex-nowrap justify-space-between mx-auto relative top-6 transparent0 w-full"
+        no-gutters
+      >
+        <div
+          class="relative w-full"
+        >
+          <v-btn
+            absolute
+            class="blue--text ml-auto pa-6 white"
+            color="white"
+            depressed
+            icon
+            right
+            rounded
+            style="margin-top: -54px;"
+            @click="chatOverlay = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <m6-chat
+            class="ml-auto"
+            :light-mode="true"
+            @click.native="chatOverlay = false"
+          />
+        </div>
+      </v-row>
+    </v-overlay>
     <div class="align-center d-flex justify-space-between nav-content w-full">
       <div class="align-center d-flex w-side">
         <img
@@ -8,8 +58,8 @@
           src="@/assets/m6-home-logo.png"
         >
       </div>
-
       <v-tabs
+        v-if="$vuetify.breakpoint.mdAndUp"
         active-class="blue darken-4"
         background-color="transparent"
         class="align-center d-flex justify-center mx-auto w-fit"
@@ -19,7 +69,7 @@
         :value="3"
       >
         <v-tab
-          v-for="(link,i) in quickAccessLinks"
+          v-for="(link, i) in quickAccessLinks"
           :key="'link' + i"
           class="mb-0 px-13"
           :to="link.url"
@@ -37,7 +87,6 @@
           </v-icon>
         </v-tab>
       </v-tabs>
-
       <div class="align-center d-flex justify-end w-side">
         <v-menu
           bottom
@@ -63,15 +112,17 @@
               </v-icon>
             </v-btn>
           </template>
-
           <v-list class="mb-2 pa-0 transparent">
             <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
               <v-tooltip
                 class="tooltip-upload-file"
                 left
               >
-                <template #activator="{ on, attrs }">
-                  <add-feed class="w-full">
+                <template #activator="{ on, attrs}">
+                  <add-feed
+                    class="w-full"
+                    :title="'New Action'"
+                  >
                     <v-btn
                       slot="btn"
                       block
@@ -83,7 +134,9 @@
                     </v-btn>
                   </add-feed>
                 </template>
-                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">New Action</span>
+                <span
+                  class="black--text blue lighten-2 pa-1 rounded text-caption white--text"
+                >New Action</span>
               </v-tooltip>
             </v-list-item>
             <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
@@ -92,7 +145,10 @@
                 left
               >
                 <template #activator="{ on, attrs }">
-                  <create-app class="w-full">
+                  <create-app
+                    class="w-full"
+                    :title="'New App'"
+                  >
                     <v-btn
                       slot="btn"
                       block
@@ -103,7 +159,9 @@
                     </v-btn>
                   </create-app>
                 </template>
-                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
+                <span
+                  class="black--text blue lighten-2 pa-1 rounded text-caption white--text"
+                >Add New Record</span>
               </v-tooltip>
             </v-list-item>
             <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
@@ -114,8 +172,7 @@
                 <template #activator="{ on, attrs }">
                   <v-dialog
                     v-model="dialog"
-                    persistent
-                    width="800"
+                    max-width="500"
                   >
                     <template #activator="{ on, attrs }">
                       <v-btn
@@ -128,10 +185,15 @@
                         Add Record
                       </v-btn>
                     </template>
-                    <new-record-dialog @closeModal="dialog = false" />
+                    <new-record-dialog
+                      :title="'Create Record'"
+                      @closeModal="dialog = false"
+                    />
                   </v-dialog>
                 </template>
-                <span class="black--text blue lighten-2 pa-1 rounded text-caption white--text">Add New Record</span>
+                <span
+                  class="black--text blue lighten-2 pa-1 rounded text-caption white--text"
+                >Add New Record</span>
               </v-tooltip>
             </v-list-item>
             <v-list-item class="ma-0 pa-0 pt-1 uploadfile-btn">
@@ -139,13 +201,11 @@
             </v-list-item>
           </v-list>
         </v-menu>
-
         <user-options />
-
         <span class="font-weight-bold white--text">
-          {{ $h.dg(currentUser, 'firstName', '') }} {{ $h.dg(currentUser, 'lastName', '') }}
+          {{ $h.dg(currentUser, "firstName", "") }}
+          {{ $h.dg(currentUser, "lastName", "") }}
         </span>
-
         <company-home />
       </div>
     </div>
@@ -160,12 +220,12 @@ import UserOptions from '@/components/Home/TopNav/UserOptions'
 // import ProjectSocialMedia from "./ProjectSocialMedia";
 // import PanelFull from "@/components/AppBuilder/Content/PanelFull";
 // import PanelTwoColumns from "@/components/AppBuilder/Content/PanelTwoColumns";
-import CreateApp from '@/components/Dialogs/CreateAppDialog'
-import AddFeed from './AddFeed'
+import CreateApp from './AddAppDialog'
+import AddFeed from './AddFeedDialog'
 import CompanyHome from './CompanyHome'
-import NewRecordDialog from '@/components/Dialogs/NewRecordDialog'
+import NewRecordDialog from './AddRecordDialog'
 import AppsBtnDropDown from '@/components/Home/TopNav/AppsBtnDropDown'
-
+import M6Chat from '@/components/Home/M6Chat'
 export default {
   name: 'TopNav',
   components: {
@@ -179,7 +239,8 @@ export default {
     AddFeed,
     CreateApp,
     CompanyHome,
-    AppsBtnDropDown
+    AppsBtnDropDown,
+    M6Chat
   },
   data: () => ({
     user: {
@@ -193,11 +254,12 @@ export default {
     },
     quickAccessLinks: [
       { url: '/', icon: 'home' },
-      { url: '/records', icon: 'view-comfy', text: 'apps' },
-      { url: '/companies', icon: 'office-building' },
+      { url: '/records', icon: 'office-building', text: 'apps' },
+      { url: '/companies', icon: 'view-comfy' },
       { url: '/store', icon: 'storefront' },
       { url: '/user/settings', icon: 'cog' }
-    ]
+    ],
+    chatOverlay: false
   }),
   computed: {
     ...mapState('Auth', {
@@ -210,12 +272,13 @@ export default {
       return this.showLinks ? 'Less' : 'More'
     },
     heightShowLinksDiv: function () {
-      return (7 * 35) + 'px'
+      return 7 * 35 + 'px'
     }
   },
   methods: {}
 }
 </script>
+
 
 <style lang="scss" scoped>
 .nav-bar {

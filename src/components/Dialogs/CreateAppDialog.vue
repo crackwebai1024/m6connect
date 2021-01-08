@@ -1,15 +1,25 @@
 <template>
   <div>
-    <div v-if="!showInput" @click="showInput = !showInput" class="pointer">
+    <div
+      v-if="!showInput"
+      class="pointer"
+      @click="showInput = !showInput"
+    >
       <slot name="btn" />
     </div>
-    <v-dialog v-model="showInput" max-width="500">
+    <v-dialog
+      v-model="showInput"
+      max-width="500"
+    >
       <v-card>
         <v-card-title class="headline">
-          New Application
+          New App
         </v-card-title>
         <v-card-text class="record-text vertical-scroll">
-          <dynamic-app-form @closeModal="closeModal" @closingGenericRecord="closingGenericRecord" />
+          <dynamic-app-form
+            @closeModal="closeModal"
+            @closingGenericRecord="closingGenericRecord"
+          />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -17,37 +27,35 @@
 </template>
 
 <script>
-import DynamicAppForm from "@/components/Home/Forms/DynamicAppForm";
-import ItAppForm from "@/components/Home/Forms/ItAppForm";
-import { validations } from "@/mixins/form-validations";
-import { mapActions, mapGetters } from "vuex";
+import DynamicAppForm from '@/components/Home/Forms/DynamicAppForm'
+import ItAppForm from '@/components/Home/Forms/ItAppForm'
+import { validations } from '@/mixins/form-validations'
 
 export default {
-  name: "CreateApp",
+  name: 'CreateAppDialog',
   components: {
-    DynamicAppForm,
-    ItAppForm,
+    DynamicAppForm
   },
   mixins: [validations],
   data: () => ({
     tab: null,
     showInput: false,
     items: [
-      { tab: "ItApp",       component: ItAppForm      },
-      { tab: "Dynamic App", component: DynamicAppForm }
+      { tab: 'ItApp', component: ItAppForm },
+      { tab: 'Dynamic App', component: DynamicAppForm }
     ],
-    itemInfo: {},
+    itemInfo: {}
   }),
+  computed: {},
   methods: {
     closeModal() {
-      this.showInput  = false;
+      this.showInput = false
     },
     closingGenericRecord() {
       this.closeModal()
-    },
-  },
-  computed: {},
-};
+    }
+  }
+}
 </script>
 
 <style scoped>
