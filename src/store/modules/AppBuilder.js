@@ -316,6 +316,16 @@ const actions = {
         })
         .catch(e => reject(e))
     })
+  },
+
+  getAppFields(_, appID) {
+    return new Promise((resolve, reject) => {
+      axios.get(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/app/fields/${appID}`)
+        .then(({ data }) => {
+          resolve(data)
+        })
+        .catch(e => reject(e))
+    })
   }
 
 }

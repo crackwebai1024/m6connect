@@ -49,7 +49,7 @@ export default {
         return this.value ? true : false
       },
       set(data) {
-        this.$emit('input', data.toString())
+        this.$emit('input', data)
       }
     }
   }

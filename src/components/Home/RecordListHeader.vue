@@ -28,7 +28,7 @@
         </template>
       </v-text-field>
     </div>
-    <div>
+    <div class="in-here" >
       <flickity
         ref="flickity"
         :options="flickityOptions"
