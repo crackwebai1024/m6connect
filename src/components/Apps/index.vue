@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="d-flex dont-show-scroll h-full pb-0 pt-5 px-0 vertical-scroll"
+    class="d-flex dont-show-scroll h-full mx-0 pb-0 pt-5 px-0 vertical-scroll"
     :class="{'w-full': $vuetify.breakpoint.xs && !tableView , 'w-3__5': ($vuetify.breakpoint.md || $vuetify.breakpoint.sm) && !tableView, 'max-w-content w-content': $vuetify.breakpoint.lgAndUp && !tableView }"
     fluid
     :style="` ${ tableView ? 'width: 100%' : '' } `"

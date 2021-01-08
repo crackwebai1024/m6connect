@@ -1,7 +1,7 @@
 <template>
   <v-container
     class="pa-0 w-full"
-    :class="tableView.key == 'card' ? 'mx-10' : ''"
+    :class="tableView.key == 'card' ? 'mx-lg-10 mx-md-4 mx-sm-2 mx-xs-0' : ''"
     fluid
   >
     <record-list-header
