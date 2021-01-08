@@ -13,10 +13,10 @@
         @changingApps="changingApps"
         @tableViewChange="tableViewChange"
       />
-      <record-filter 
-        :showFilterBtn="showFilterBtn" 
-        :currentAppID="currentAppID" 
-        @recordsToShow="recordsToShow" 
+      <record-filter
+        :showFilterBtn="showFilterBtn"
+        :currentAppID="currentAppID"
+        @recordsToShow="recordsToShow"
         @clearFilter="clearFilter"
       />
     </div>
@@ -196,6 +196,7 @@ export default {
         this.areas2.push(
           {
             currentAppID: app['id'],
+            id: app['id'],
             text: app['title'],
             prefix: app['prefix'],
             type: 'subtitle',

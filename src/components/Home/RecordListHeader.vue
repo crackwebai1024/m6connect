@@ -72,6 +72,16 @@
             >
               mdi-store
             </v-icon>
+            <v-btn
+              v-if="item.id"
+              class="edit-app-button"
+              icon
+              @click="editApp(item)"
+            >
+              <v-icon>
+                mdi-pencil
+              </v-icon>
+            </v-btn>
           </div>
           <div class="item-text">
             {{ item.text }}
@@ -135,6 +145,9 @@ export default {
         if (item.metadata.appIcon) return item.metadata.appIcon.background
       }
       return item.bgColor
+    },
+    editApp(appItem) {
+      this.$router.push(`/dev/${appItem.id}`)
     }
   }
 }
@@ -216,6 +229,13 @@ export default {
 }
 .img-shadow {
   box-shadow: 0px 0px 4px 4px #ffffff7a;
+}
+.edit-app-button {
+  color: white !important;
+  position: absolute !important;
+  right: -10px;
+  top: -10px;
+  z-index: 99;
 }
 .records-search-box {
   &.v-text-field{
