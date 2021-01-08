@@ -29,7 +29,7 @@
       </v-list>
     </v-menu>
     <span class="grey--text">
-      {{ page }} - {{ itemsPerPage }} of {{ numberOfPages }}
+      {{ page > 1 ? lastItem - itemsPerPage : page }} - {{ lastItem }} of {{ numberOfPages }}
     </span>
     <v-btn
       class="px-2"
@@ -69,6 +69,11 @@ export default {
     itemsPerPage: 8,
     page: 1
   }),
+  computed: {
+    lastItem() {
+      return (this.itemsPerPage * this.page) + (this.page - 1)
+    }
+  },
   methods: {
     nextPage() {
       if (this.page + 1 <= this.numberOfPages) {
