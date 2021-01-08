@@ -1,7 +1,7 @@
 <template>
   <v-container
     class="pa-0 w-full"
-    :class="tableView ? 'mx-10' : ''"
+    :class="tableView.key == 'card' ? 'mx-10' : ''"
     fluid
   >
     <div>
@@ -22,15 +22,15 @@
     </div>
     <div
       v-if="!loading && headerLoaded"
-      :class="tableView?'app-list__container':'app-list__container h-auto mb-3 mt-10 mx-auto rounded'"
+      :class="tableView.key == 'card'?'app-list__container':'app-list__container h-auto mb-3 mx-auto rounded'"
     >
-      <template v-if="tableView">
+      <template v-if="tableView.key == 'table'">
         <records-table
           :items="records"
           :table-headers="dynamic ? dynamicTableHeader : headers"
         />
       </template>
-      <template v-else>
+      <template v-else-if="tableView.key == 'card' " >
         <v-row
           v-if="!loading"
           class="w-full"
@@ -53,6 +53,9 @@
           </v-col>
         </v-row>
       </template>
+      <template v-else-if="tableView.key == 'kanban'" >
+        <rapid-kanban />
+      </template>
     </div>
     <v-container v-else>
       <v-progress-circular
@@ -69,6 +72,7 @@ import GeneralItem from '@/components/Home/GeneralItem'
 import RecordListHeader from '@/components/Home/RecordListHeader'
 import RecordsTable from '@/components/RecordsTable'
 import RecordFilter from '@/components/RecordMode/RecordFilter'
+import RapidKanban from '@/components/RapidKanban'
 
 export default {
   name: 'GeneralList',
@@ -76,7 +80,8 @@ export default {
     GeneralItem,
     RecordListHeader,
     RecordsTable,
-    RecordFilter
+    RecordFilter,
+    RapidKanban
   },
   data: () => ({
     loading: true,
@@ -85,7 +90,7 @@ export default {
     perPage: 8,
     records: [],
     searchInput: '',
-    tableView: false,
+    tableView: { icon: 'mdi-arrange-bring-forward', text: 'Card View', key: 'card' },
     dynamic: false,
     headers: [
       { text: 'Image', value: 'image' },

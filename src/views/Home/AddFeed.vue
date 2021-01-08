@@ -8,23 +8,23 @@
       <slot name="btn" />
     </div>
     <v-dialog
-      content-class="overflow-visible"
       v-model="showInput"
+      content-class="overflow-visible"
       max-width="500"
     >
       <v-card>
         <v-btn
-          icon
           class="modal-close-btn"
+          icon
           @click="showInput=false"
         >
           <v-icon>mdi-close</v-icon>
         </v-btn>
-        <v-card-title class="headline d-flex justify-space-between">
-          <span>{{ isAdd ? "New" : "Edit" }} Action</span>
+        <v-card-title class="d-flex headline justify-space-between">
+          <span>{{ isAdd ? "New" : "Edit" }} Task</span>
           <v-btn
-            icon
             v-if="!isAdd"
+            icon
             @click="showDeleteDiaLog = true"
           >
             <v-icon
@@ -51,7 +51,7 @@
                     :multiple="false"
                     :normalizer="normalizer"
                     :options="options.type"
-                    placeholder="Action Type"
+                    placeholder="Title"
                   />
                 </v-col>
                 <v-col
@@ -100,21 +100,9 @@
                 >
                   <v-text-field
                     ref="inputFeed"
-                    v-model="itemInfo.title"
-                    class="h-full outline-none text-body-1"
-                    placeholder="Title"
-                    :rules="textRules"
-                  />
-                </v-col>
-                <v-col
-                  class="py-0"
-                  cols="12"
-                >
-                  <v-text-field
-                    ref="inputFeed"
                     v-model="itemInfo.description"
                     class="h-full outline-none text-body-1"
-                    placeholder="Summary"
+                    placeholder="Notes"
                     :rules="textRules"
                   />
                 </v-col>
@@ -123,9 +111,9 @@
                   cols="12"
                 >
                   <v-datetime-picker
-                    label="Due Datetime"
-                    timeFormat="HH:mm:ss"
                     v-model="itemInfo.due_date"
+                    label="Due Datetime"
+                    time-format="HH:mm:ss"
                   />
                 </v-col>
                 <v-col
@@ -179,9 +167,9 @@
       persistent
     >
       <confirm-dialog
+        :cancel-label="`Cancel`"
         :message="`Do you want to remove this action?`"
-        :okLabel="`Remove`"
-        :cancelLabel="`Cancel`"
+        :ok-label="`Remove`"
         @closeDeleteModal="$event ? deleteAction({}) : showDeleteDiaLog = false"
       />
     </v-dialog>
@@ -192,10 +180,13 @@
 import { validations } from '@/mixins/form-validations'
 import { mapActions, mapGetters } from 'vuex'
 import ConfirmDialog from '@/components/Dialogs/ConfirmDialog'
-import axios from 'axios'
 
 export default {
   name: 'AddFeed',
+  components: {
+    ConfirmDialog
+  },
+  mixins: [validations],
   props: {
     action: {
       type: Object,
@@ -203,13 +194,10 @@ export default {
     },
     isAdd: {
       type: Boolean,
+      // eslint-disable-next-line vue/no-boolean-default
       default: true
     }
   },
-  components: {
-    ConfirmDialog
-  },
-  mixins: [validations],
   data: () => ({
     testValue: null,
     showDeleteDiaLog: false,
@@ -311,7 +299,7 @@ export default {
       } else {
         this.getActions(event).then(response => {
           this.options['records'] = response.data
-        });
+        })
       }
     },
     onImagesChange(e) {

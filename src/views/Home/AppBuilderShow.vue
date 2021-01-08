@@ -26,7 +26,7 @@
               color="red darken-1"
               icon
               style="left: -40px; top: 13px;"
-              :to="{ name: 'apps', params: {} }"
+              @click="$router.back()"
             >
               <v-icon>
                 mdi-close
@@ -235,6 +235,7 @@
             <form-show-generator
               :action-record="true"
               :fields="$h.dg(panel, 'fields', [])"
+              :helperMediaURL="helperMediaURL"
               :panel="panel"
               :show-standard-fields="(tab.readOnly && index === 0)"
             />
@@ -310,6 +311,9 @@ export default {
   mounted() {
     this.$store.dispatch('AppBuilder/getApp', this.$route.params.id).then(res => {
       this.currentApp = res
+      if (res.helperMedia) {
+        this.helperMediaURL = res.helperMedia[0].helper_media ? res.helperMedia[0].helper_media : ''
+      }
       if (res.metadata) {
         this.currentApp.metadata = JSON.parse(res.metadata)
         this.headerBackgroundColor = this.currentApp.metadata.appHeader ? this.currentApp.metadata.appHeader.headerBackgroundColor : '#fff'
@@ -447,7 +451,8 @@ export default {
     currentApp: {},
     showDeleteDialog: false,
     headerBackgroundColor: '#fff',
-    headerTextColor: '#aaa'
+    headerTextColor: '#aaa',
+    helperMediaURL: ''
   })
 
 }

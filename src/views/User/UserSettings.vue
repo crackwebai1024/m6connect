@@ -22,6 +22,8 @@ import SettingsSideNav from '@/components/user/settings/SettingsSideNav'
 import UserMangementTable from '@/components/user/settings/UserMangementTable'
 import UserSettingsDetails from '@/components/user/settings/UserSettingsDetails'
 import CompanyShow from '@/components/Companies/settings/CompanyShow'
+import TaxonomyVocabulary from '@/components/user/settings/TaxonomyVocabulary'
+import TaxonomyTerms from '@/components/user/settings/TaxonomyTerms'
 
 export default {
   name: 'UserSettings',
@@ -29,7 +31,9 @@ export default {
     SettingsSideNav,
     UserMangementTable,
     UserSettingsDetails,
-    CompanyShow
+    CompanyShow,
+    TaxonomyVocabulary,
+    TaxonomyTerms
   },
   methods: {
     ...mapMutations('PageControl', {

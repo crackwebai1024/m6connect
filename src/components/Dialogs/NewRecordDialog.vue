@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import ItAppForm from '@/components/Home/Forms/ItAppForm';
-import GenericRecord from '@/components/Home/Forms/GenericRecord';
+import ItAppForm from '@/components/Home/Forms/ItAppForm'
+import GenericRecord from '@/components/Home/Forms/GenericRecord'
 import { mapActions, mapMutations } from 'vuex'
 
 export default {
@@ -66,6 +66,7 @@ export default {
         })
       }
     } catch (e) {
+      return
     }
   },
 

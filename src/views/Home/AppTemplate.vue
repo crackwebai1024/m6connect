@@ -21,7 +21,6 @@
               <slot name="btns" />
             </div>
           </div>
-
           <div
             class="details-content grey h-fit lighten-3 min-h-full pt-3 relative"
           >
@@ -73,28 +72,20 @@
             </v-overlay>
           </div>
         </v-card>
-        <v-badge
-          class="absolute bottom-0 mb-16 mr-5 right-0 w-fit"
-          color="green"
-          offset-x="17"
-          offset-y="17"
-          overlap
-          :style=" chatOverlay ? 'z-index: 203;' : '' "
+        <v-btn
+          v-show="!chatOverlay"
+          bottom
+          class="blue ml-auto pa-6 white--text"
+          color="white"
+          depressed
+          fixed
+          icon
+          right
+          rounded
+          @click="chatOverlay = true"
         >
-          <v-btn
-            class="blue ml-auto pa-6 white--text"
-            color="white"
-            depressed
-            icon
-            rounded
-            @click="chatOverlay = !chatOverlay"
-          >
-            <v-icon>mdi-message</v-icon>
-          </v-btn>
-          <template v-slot:badge>
-            6
-          </template>
-        </v-badge>
+          <v-icon>mdi-message</v-icon>
+        </v-btn>
         <v-overlay
           class="record-overlay"
           opacity="0.7"
@@ -108,11 +99,25 @@
               cols="9"
             />
             <div
-              class="w-side"
+              class="relative w-side"
             >
+              <v-btn
+                absolute
+                class="blue--text ml-auto pa-6 white"
+                color="white"
+                depressed
+                icon
+                left
+                rounded
+                style="left: -50px; top: 6px"
+                @click="chatOverlay = false"
+              >
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
               <m6-chat
                 class="ml-auto"
                 :light-mode="true"
+                @click.native="chatOverlay = false"
               />
             </div>
           </v-row>
@@ -125,7 +130,6 @@
 <script>
 import ActionFeed from '@/views/Home/ActionFeed'
 import M6Chat from '@/components/Home/M6Chat'
-
 export default {
   name: 'AppTemplate',
   components: {
@@ -151,7 +155,6 @@ export default {
     chatOverlay: false,
     actionOverlay: false
   }),
-
   watch: {
     propsDialog(val) {
       this.dialog = val

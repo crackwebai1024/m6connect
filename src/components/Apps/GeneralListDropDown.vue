@@ -7,10 +7,12 @@
       <v-btn
         v-bind="attrs"
         color="primary"
+        class="text-capitalize"
         text
         v-on="on"
       >
         {{ currentChoice }}
+        <v-icon>mdi-chevron-down</v-icon>
       </v-btn>
     </template>
     <v-list>
@@ -37,17 +39,32 @@
 <script>
 export default {
   name: 'GeneralListDropDown',
+  props: {
+    currentApp: {
+      type: Object,
+      default: () => ({})
+    }
+  },
   data: () => ({
     currentChoice: 'Card View',
-    choices: [
-      { icon: 'mdi-table', text: 'Table View', value: true },
-      { icon: 'mdi-arrange-bring-forward', text: 'Card View', value: false }
+    choicesBase: [
+      { icon: 'mdi-table', text: 'Table View', key: 'table' },
+      { icon: 'mdi-arrange-bring-forward', text: 'Card View', key: 'card' }
     ]
   }),
   methods: {
     pickingView(choice) {
       this.currentChoice = choice.text
-      this.$emit('input', choice.value)
+      this.$emit('input', choice)
+    }
+  },
+  computed: {
+    choices() {
+      let choices = [...this.choicesBase]
+      if( this.$h.dg(this.currentApp, 'prefix', '') == 'RAP' ) 
+        choices.push({ icon: 'mdi-view-parallel', text: 'Kanban View', key: 'kanban' })
+
+      return choices
     }
   }
 }
