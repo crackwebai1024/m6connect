@@ -26,7 +26,10 @@
               @updatingTable=" e => updatingTable(panel, e)"
             />
           </draggable>
-          <add-panel @addNewPanel="addNewPanel(0)" />
+          <div class="d-flex justify-center">
+            <add-panel @addNewPanel="addNewPanel(0)" />
+            <copy-panel @copyPanel="copyPanelFromApp(0)" />
+          </div>
         </v-col>
         <template v-if="!$h.dg(app, `tabs.${activeTab}.full_width`, false) && showSocial">
           <v-col
@@ -50,7 +53,10 @@
                 @updatingTable=" e => updatingTable(panel, e)"
               />
             </draggable>
-            <add-panel @addNewPanel="addNewPanel(1)" />
+            <div class="d-flex justify-center">
+              <add-panel @addNewPanel="addNewPanel(1)" />
+              <copy-panel @copyPanel="copyPanelFromApp(1)" />
+            </div>
           </v-col>
 
           <v-col
@@ -67,6 +73,13 @@
       </v-row>
     </div>
 
+    <copy-panel-dialog
+      v-if="copyPanelDialog"
+      :show="copyPanelDialog"
+      @copy="copyPanelFromAnotherApp"
+      @close="copyPanelDialog = false"
+    />
+
     <m6-loading :loading="loading" />
   </div>
 </template>
@@ -77,6 +90,8 @@ import Panel from '@/components/AppBuilder/Panel'
 import Draggable from 'vuedraggable'
 import AddPanel from '@/components/AppBuilder/Buttons/AddPanel'
 import ProjectSocialMedia from '@/views/Home/ProjectSocialMedia'
+import CopyPanel from '@/components/AppBuilder/Buttons/CopyPanel.vue'
+import CopyPanelDialog from '@/components/AppBuilder/Modals/CopyPanel.vue'
 
 export default {
   props: {
@@ -90,13 +105,17 @@ export default {
     Panel,
     Draggable,
     AddPanel,
-    ProjectSocialMedia
+    ProjectSocialMedia,
+    CopyPanel,
+    CopyPanelDialog
   },
 
   data: () => ({
     loading: false,
     leftPanels: [],
-    rightPanels: []
+    rightPanels: [],
+    copySide: 0,
+    copyPanelDialog: false
   }),
 
   computed: {
@@ -230,6 +249,33 @@ export default {
       this.updateTabPanels()
     },
 
+        copyPanelFromApp(side) {
+      this.copySide = side
+      this.copyPanelDialog = true
+    },
+
+    async copyPanelFromAnotherApp(panel) {
+      this.loading = true
+
+      try {
+        const params = {
+          panelId: panel.panel_id,
+          column: this.copySide,
+          tabId: this.app.tabs[this.activeTab].id,
+        }
+
+        const newPanel = await this.$store.dispatch('AppBuilder/copyPanelFromApp', params)
+        this.app.tabs[this.activeTab].panels.push(newPanel)
+        this.updateTabPanels()
+        this.copyPanelDialog = false
+        this.notifSuccess('Panel copied successfully')
+      } catch (e) {
+        console.log(e);
+        this.notifDanger('There was an error when copying panel')
+      } finally {
+        this.loading = false
+      }
+    }
   },
 
   watch: {
@@ -239,7 +285,8 @@ export default {
         if(!val.id) return 
 
         this.updateTabPanels()
-      }
+      },
+      deep: true
     },
 
     activeTab: {

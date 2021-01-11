@@ -134,6 +134,13 @@ const actions = {
     return axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload}/copy`)
       .then(({ data }) => data);
   },
+  copyPanelFromApp(_, payload) {
+    return axios.post(
+      `${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload.panelId}/copy`,
+      payload
+    )
+      .then(({ data }) => data);
+  },
   savePanel(_, payload) {
     return new Promise((resolve, reject) => {
       axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel`, payload).then(({ data }) => {
