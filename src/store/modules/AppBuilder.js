@@ -131,8 +131,18 @@ const actions = {
   },
 
   copyPanel(_, payload) {
-    return axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload}/copy`)
-      .then(({ data }) => data);
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload}/copy`).then(({ data }) => {
+        resolve(data)
+      }).catch(e => reject(e))
+    })
+  },
+  copyPanelFromApp(_, payload) {
+    return new Promise((resolve, reject) => {
+      axios.post(`${process.env.VUE_APP_HTTP}${process.env.VUE_APP_ENDPOINT}/api/app-builder/panel/${payload.panelId}/copy`, payload).then(({ data }) => {
+        resolve(data)
+      }).catch(e => reject(e))
+    })
   },
   savePanel(_, payload) {
     return new Promise((resolve, reject) => {
