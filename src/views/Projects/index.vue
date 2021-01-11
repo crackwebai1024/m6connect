@@ -25,6 +25,7 @@ import {
 import defaultSettings from '@/modules/cpm/config/defaultSettings'
 
 export default {
+  name: 'index',
   components: {
     ListProjects
   },
@@ -32,11 +33,6 @@ export default {
     return {
       loading: true
     }
-  },
-  methods: {
-    ...mapMutations('PageControl', {
-      setShowSidePanels: 'setShowSidePanels'
-    })
   },
   computed: {
     ...mapState('Companies', {
@@ -59,6 +55,11 @@ export default {
   },
   beforeDestroy() {
     this.setShowSidePanels(true)
+  },
+  methods: {
+    ...mapMutations('PageControl', {
+      setShowSidePanels: 'setShowSidePanels'
+    })
   }
 }
 </script>

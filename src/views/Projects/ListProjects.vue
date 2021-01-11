@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="ma-0 max-w-container pa-0"
+    class="max-w-container mx-auto pa-0"
   >
     <m6-list
       class="fluid it-apps-index max-w-container pt-0"
@@ -133,13 +133,12 @@
       <v-data-iterator
         v-if="isGridView"
         class="w-full"
-        :footer-props="{
-          'items-per-page-options': [8,16,24],
-        }"
+        :footer-props="footerProps"
+        hide-default-footer
         :items="resources"
-        :options.sync="pagination"
-        :server-items-length="pagination.totalItems"
-        @update:options="initialized ? debounceSearch(search) : null"
+        :page="gridPage"
+        wrap
+        @pagination="initialized ? debounceSearch(search) : null"
       >
         <template v-slot:no-data>
           <m6-no-results />
@@ -166,7 +165,7 @@
                 <v-tooltip bottom>
                   <template v-slot:activator="{ on }">
                     <v-btn
-                      v-show="showDeleteIconApplication == index"
+                      v-show="showDeleteIconApplication === index"
                       absolute
                       class="deleteBtn"
                       color="red lighten-1"
@@ -296,6 +295,14 @@
               </v-card>
             </v-col>
           </v-row>
+        </template>
+
+        <template v-slot:footer>
+          <grid-footer
+            :number-of-pages="pagination.totalItems"
+            :options="footerProps"
+            @updatePage="updatePage($event)"
+          />
         </template>
       </v-data-iterator>
 
@@ -567,6 +574,7 @@ import { saveAs } from 'file-saver'
 import { db } from '@/utils/Firebase'
 
 import CPMCreate from '@/modules/cpm/components/projects/modals/CPMCreate'
+import GridFooter from './GridFooter'
 import ListFiltering from '@/modules/cpm/components/projects/modals/ListFiltering'
 
 import M6Info from '@/modules/cpm/components/projects/_partials/M6Info'
@@ -583,7 +591,8 @@ export default {
     'list-filtering': ListFiltering,
     M6Info,
     M6List,
-    'm6-no-results': M6NoResults
+    'm6-no-results': M6NoResults,
+    GridFooter
   },
   mixins: [mixins],
 
@@ -675,7 +684,8 @@ export default {
       final: 'Final Completion',
       live: 'Go Live'
     },
-    lastSearch: {}
+    lastSearch: {},
+    gridPage: 1
   }),
 
   computed: {
@@ -685,6 +695,7 @@ export default {
     ...mapGetters('Auth', {
       currentUser: 'getUser'
     }),
+
     userId() {
       return this.currentUser.id
     },
@@ -1151,6 +1162,11 @@ export default {
     ...mapActions('companies/cpmProjects/general', {
       fetchM6User: 'fetchM6User'
     }),
+    updatePage(page, type = 'grid') {
+      if (type === 'grid') {
+        this.gridPage = page
+      }
+    },
     startTour() {
       this.$intro().exit()
       if (!this.firstProjectId) return
@@ -1220,6 +1236,7 @@ export default {
         })
     },
     getMileStones(projects, gettingCsv = false) {
+      // eslint-disable-next-line no-async-promise-executor
       return new Promise(async (resolve, reject) => {
         try {
           const milestones = gettingCsv ? {} : this.mileStones
@@ -1247,6 +1264,7 @@ export default {
     },
 
     getBudgets(projects, gettingCsv = false) {
+      // eslint-disable-next-line no-async-promise-executor
       return new Promise(async (resolve, reject) => {
         try {
           const ids = projects.map(p => p.id)
