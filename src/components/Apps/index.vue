@@ -15,7 +15,7 @@
     <template v-else>
       <!-- Project List Component -->
       <general-list
-        class="align-content-start main-content px-3"
+        class="align-content-start main-content px-0"
         @tableView=" e => tableView = e "
       />
     </template>

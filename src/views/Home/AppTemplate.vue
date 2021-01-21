@@ -4,15 +4,17 @@
       <slot name="actionbtn" />
     </div>
     <template>
+      <slot name="navheader" v-if="navHeader" />
       <v-row
         v-if="dialog"
+        id="record-header"
         class="dont-show-scroll mx-0 vertical-scroll"
       >
         <v-card
           class="grey lighten-3 relative w-full"
           tile
         >
-          <div class="w-full white">
+          <div class="w-full white" v-if="!navHeader">
             <slot name="header" />
             <v-divider class="blue-grey lighten-5 max-w-lg mx-auto w-full" />
             <div class="align-center d-flex justify-space-between max-w-lg mx-auto py-1 w-full">
@@ -28,7 +30,8 @@
               <slot name="content" />
             </v-row>
             <v-badge
-              class="absolute left-0 ml-5 mt-5 top-0 w-fit"
+              class="absolute left-0 ml-5 mt-5 w-fit"
+              :class="navHeader ? 'top-1' : 'top-0'"
               color="blue"
               offset-x="17"
               offset-y="17"
@@ -148,12 +151,16 @@ export default {
     openDialog: {
       type: Boolean,
       default: false
+    },
+    navHeader: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
     dialog: false,
     chatOverlay: false,
-    actionOverlay: false
+    actionOverlay: false,
   }),
   watch: {
     propsDialog(val) {
@@ -207,5 +214,8 @@ export default {
   width: 100%;
   height: 100%;
   top: 60px;
+}
+.top-1{
+  top: 150px;
 }
 </style>

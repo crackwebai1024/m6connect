@@ -1,7 +1,7 @@
 <template>
   <v-container
     class="d-flex dont-show-scroll h-full ma-0 pb-0 pt-5 px-0 vertical-scroll"
-    :class="{'w-full': $vuetify.breakpoint.xs , 'w-3__5': $vuetify.breakpoint.md || $vuetify.breakpoint.sm, 'max-w-md w-content': $vuetify.breakpoint.lgAndUp }"
+    :class="{'w-full': $vuetify.breakpoint.xs , 'w-3__5': $vuetify.breakpoint.md || $vuetify.breakpoint.sm, 'max-w-lg w-content': $vuetify.breakpoint.lgAndUp }"
   >
     <!-- General use list component-->
     <!-- Companies List Component (add main-content class)-->

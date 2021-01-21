@@ -2,7 +2,7 @@
   <div>
     <v-dialog
       v-model="dialog"
-      class="dont-show-scroll vertical-scroll"
+      class="dont-show-scroll vertical-scroll mytest"
       fullscreen
       hide-overlay
       persistent

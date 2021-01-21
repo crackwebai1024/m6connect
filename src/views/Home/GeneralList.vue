@@ -355,6 +355,6 @@ v-progress-circular {
 }
 .app-item__container {
   margin: 0;
-  padding: 8px;
+  // padding: 8px;
 }
 </style>

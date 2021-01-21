@@ -12,7 +12,7 @@
     </template>
     <template v-else>
       <!-- Companies List Component -->
-      <companies-list class="align-content-start main-content px-3" />
+      <companies-list class="align-content-start main-content px-0" />
     </template>
   </v-container>
 </template>

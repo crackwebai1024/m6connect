@@ -12,7 +12,7 @@
     </template>
     <template v-else>
       <!-- Social Network -->
-      <project-social-media class="main-content px-3" />
+      <project-social-media class="main-content px-0" />
       <image-caroussel-overlay
         :images="imageArray"
         :selected="selectedImage"
